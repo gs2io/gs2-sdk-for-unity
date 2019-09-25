@@ -1,0 +1,17 @@
+.idea
+Assets/Editor
+Assets/Editor.meta
+Assets/Plugins
+Assets/Plugins.meta
+Assets/Resources
+Resources.meta
+Assets/Scenes
+Assets/Scenes.meta
+Library
+Logs
+obj
+Packages
+ProjectSettings
+Temp
+Assembly-CSharp*
+gs2-unity-sdk.*
