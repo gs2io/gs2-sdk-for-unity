@@ -1,0 +1,133 @@
+/*
+ * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
+ * Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * You may not use this file except in compliance with the License.
+ * A copy of the License is located at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * or in the "license" file accompanying this file. This file is distributed
+ * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+using System;
+using System.Collections.Generic;
+using Gs2.Core.Control;
+using Gs2.Core.Model;
+using Gs2.Gs2Limit.Model;
+
+namespace Gs2.Gs2Limit.Request
+{
+	public class CountUpByUserIdRequest : Gs2Request<CountUpByUserIdRequest>
+	{
+
+        /** ネームスペース名 */
+        public string namespaceName { set; get; }
+
+        /**
+         * ネームスペース名を設定
+         *
+         * @param namespaceName ネームスペース名
+         * @return this
+         */
+        public CountUpByUserIdRequest WithNamespaceName(string namespaceName) {
+            this.namespaceName = namespaceName;
+            return this;
+        }
+
+
+        /** 回数制限の種類の名前 */
+        public string limitName { set; get; }
+
+        /**
+         * 回数制限の種類の名前を設定
+         *
+         * @param limitName 回数制限の種類の名前
+         * @return this
+         */
+        public CountUpByUserIdRequest WithLimitName(string limitName) {
+            this.limitName = limitName;
+            return this;
+        }
+
+
+        /** カウンターの名前 */
+        public string counterName { set; get; }
+
+        /**
+         * カウンターの名前を設定
+         *
+         * @param counterName カウンターの名前
+         * @return this
+         */
+        public CountUpByUserIdRequest WithCounterName(string counterName) {
+            this.counterName = counterName;
+            return this;
+        }
+
+
+        /** ユーザーID */
+        public string userId { set; get; }
+
+        /**
+         * ユーザーIDを設定
+         *
+         * @param userId ユーザーID
+         * @return this
+         */
+        public CountUpByUserIdRequest WithUserId(string userId) {
+            this.userId = userId;
+            return this;
+        }
+
+
+        /** カウントアップする量 */
+        public int? countUpValue { set; get; }
+
+        /**
+         * カウントアップする量を設定
+         *
+         * @param countUpValue カウントアップする量
+         * @return this
+         */
+        public CountUpByUserIdRequest WithCountUpValue(int? countUpValue) {
+            this.countUpValue = countUpValue;
+            return this;
+        }
+
+
+        /** カウントアップを許容する最大値 を入力してください */
+        public int? maxValue { set; get; }
+
+        /**
+         * カウントアップを許容する最大値 を入力してくださいを設定
+         *
+         * @param maxValue カウントアップを許容する最大値 を入力してください
+         * @return this
+         */
+        public CountUpByUserIdRequest WithMaxValue(int? maxValue) {
+            this.maxValue = maxValue;
+            return this;
+        }
+
+
+        /** 重複実行回避機能に使用するID */
+        public string duplicationAvoider { set; get; }
+
+        /**
+         * 重複実行回避機能に使用するIDを設定
+         *
+         * @param duplicationAvoider 重複実行回避機能に使用するID
+         * @return this
+         */
+        public CountUpByUserIdRequest WithDuplicationAvoider(string duplicationAvoider) {
+            this.duplicationAvoider = duplicationAvoider;
+            return this;
+        }
+
+
+	}
+}
