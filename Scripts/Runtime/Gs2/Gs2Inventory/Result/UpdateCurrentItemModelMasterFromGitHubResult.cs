@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Inventory.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Result
 {
+	[Preserve]
 	public class UpdateCurrentItemModelMasterFromGitHubResult
 	{
         /** 更新した現在有効な所持品マスター */
         public CurrentItemModelMaster item { set; get; }
 
+
+        public static UpdateCurrentItemModelMasterFromGitHubResult FromDict(JsonData data)
+        {
+            return new UpdateCurrentItemModelMasterFromGitHubResult {
+                item = data.Keys.Contains("item") ? CurrentItemModelMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

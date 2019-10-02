@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Identifier.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Identifier.Result
 {
+	[Preserve]
 	public class CreateIdentifierResult
 	{
         /** 作成したクレデンシャル */
@@ -28,5 +32,13 @@ namespace Gs2.Gs2Identifier.Result
         /** クライアントシークレット */
         public string clientSecret { set; get; }
 
+
+        public static CreateIdentifierResult FromDict(JsonData data)
+        {
+            return new CreateIdentifierResult {
+                item = data.Keys.Contains("item") ? Identifier.FromDict(data["item"]) : null,
+                clientSecret = data.Keys.Contains("clientSecret") ? (string) data["clientSecret"] : null,
+            };
+        }
 	}
 }

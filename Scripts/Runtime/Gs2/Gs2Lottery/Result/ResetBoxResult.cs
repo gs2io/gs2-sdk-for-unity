@@ -15,12 +15,22 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Lottery.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Result
 {
+	[Preserve]
 	public class ResetBoxResult
 	{
+
+        public static ResetBoxResult FromDict(JsonData data)
+        {
+            return new ResetBoxResult {
+            };
+        }
 	}
 }

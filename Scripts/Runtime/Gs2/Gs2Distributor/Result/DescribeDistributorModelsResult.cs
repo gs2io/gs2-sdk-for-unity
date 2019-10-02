@@ -15,15 +15,30 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Distributor.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Distributor.Result
 {
+	[Preserve]
 	public class DescribeDistributorModelsResult
 	{
         /** 配信設定のリスト */
         public List<DistributorModel> items { set; get; }
 
+
+        public static DescribeDistributorModelsResult FromDict(JsonData data)
+        {
+            return new DescribeDistributorModelsResult {
+                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return DistributorModel.FromDict(value);
+                    }
+                ).ToList() : null,
+            };
+        }
 	}
 }

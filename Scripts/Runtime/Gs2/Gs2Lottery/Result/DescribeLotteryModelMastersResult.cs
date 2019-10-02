@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Lottery.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Result
 {
+	[Preserve]
 	public class DescribeLotteryModelMastersResult
 	{
         /** 抽選の種類マスターのリスト */
@@ -28,5 +32,17 @@ namespace Gs2.Gs2Lottery.Result
         /** リストの続きを取得するためのページトークン */
         public string nextPageToken { set; get; }
 
+
+        public static DescribeLotteryModelMastersResult FromDict(JsonData data)
+        {
+            return new DescribeLotteryModelMastersResult {
+                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return LotteryModelMaster.FromDict(value);
+                    }
+                ).ToList() : null,
+                nextPageToken = data.Keys.Contains("nextPageToken") ? (string) data["nextPageToken"] : null,
+            };
+        }
 	}
 }

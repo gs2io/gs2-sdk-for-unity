@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Model
 {
+	[Preserve]
 	public class ExperienceModel
 	{
 
@@ -160,6 +163,18 @@ namespace Gs2.Gs2Experience.Model
                 this.rankThreshold.WriteJson(writer);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static ExperienceModel FromDict(JsonData data)
+        {
+            return new ExperienceModel()
+                .WithExperienceModelId(data.Keys.Contains("experienceModelId") ? (string) data["experienceModelId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithDefaultExperience(data.Keys.Contains("defaultExperience") ? (long?) data["defaultExperience"] : null)
+                .WithDefaultRankCap(data.Keys.Contains("defaultRankCap") ? (long?) data["defaultRankCap"] : null)
+                .WithMaxRankCap(data.Keys.Contains("maxRankCap") ? (long?) data["maxRankCap"] : null)
+                .WithRankThreshold(data.Keys.Contains("rankThreshold") ? Threshold.FromDict(data["rankThreshold"]) : null);
         }
 	}
 }

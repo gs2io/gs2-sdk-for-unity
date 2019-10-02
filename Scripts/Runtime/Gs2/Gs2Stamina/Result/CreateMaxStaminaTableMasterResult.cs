@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Stamina.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Stamina.Result
 {
+	[Preserve]
 	public class CreateMaxStaminaTableMasterResult
 	{
         /** 作成したスタミナの最大値テーブルマスター */
         public MaxStaminaTableMaster item { set; get; }
 
+
+        public static CreateMaxStaminaTableMasterResult FromDict(JsonData data)
+        {
+            return new CreateMaxStaminaTableMasterResult {
+                item = data.Keys.Contains("item") ? MaxStaminaTableMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

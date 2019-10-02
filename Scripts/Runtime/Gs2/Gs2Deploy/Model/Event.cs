@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Deploy.Model
 {
+	[Preserve]
 	public class Event
 	{
 
@@ -141,6 +144,17 @@ namespace Gs2.Gs2Deploy.Model
                 writer.Write(this.eventAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Event FromDict(JsonData data)
+        {
+            return new Event()
+                .WithEventId(data.Keys.Contains("eventId") ? (string) data["eventId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithResourceName(data.Keys.Contains("resourceName") ? (string) data["resourceName"] : null)
+                .WithType(data.Keys.Contains("type") ? (string) data["type"] : null)
+                .WithMessage(data.Keys.Contains("message") ? (string) data["message"] : null)
+                .WithEventAt(data.Keys.Contains("eventAt") ? (long?) data["eventAt"] : null);
         }
 	}
 }

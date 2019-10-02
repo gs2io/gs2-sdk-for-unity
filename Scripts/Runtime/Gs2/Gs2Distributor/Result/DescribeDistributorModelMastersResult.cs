@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Distributor.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Distributor.Result
 {
+	[Preserve]
 	public class DescribeDistributorModelMastersResult
 	{
         /** 配信設定マスターのリスト */
@@ -28,5 +32,17 @@ namespace Gs2.Gs2Distributor.Result
         /** リストの続きを取得するためのページトークン */
         public string nextPageToken { set; get; }
 
+
+        public static DescribeDistributorModelMastersResult FromDict(JsonData data)
+        {
+            return new DescribeDistributorModelMastersResult {
+                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return DistributorModelMaster.FromDict(value);
+                    }
+                ).ToList() : null,
+                nextPageToken = data.Keys.Contains("nextPageToken") ? (string) data["nextPageToken"] : null,
+            };
+        }
 	}
 }

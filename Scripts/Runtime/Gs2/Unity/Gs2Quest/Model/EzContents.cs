@@ -16,10 +16,12 @@
 using Gs2.Gs2Quest.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Quest.Model
 {
+	[Preserve]
 	public class EzContents
 	{
 		/** クエストモデルのメタデータ */

@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Model
 {
+	[Preserve]
 	public class QuestGroupModel
 	{
 
@@ -127,6 +130,20 @@ namespace Gs2.Gs2Quest.Model
                 writer.Write(this.challengePeriodEventId);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static QuestGroupModel FromDict(JsonData data)
+        {
+            return new QuestGroupModel()
+                .WithQuestGroupModelId(data.Keys.Contains("questGroupModelId") ? (string) data["questGroupModelId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithQuests(data.Keys.Contains("quests") ? data["quests"].Cast<JsonData>().Select(value =>
+                    {
+                        return QuestModel.FromDict(value);
+                    }
+                ).ToList() : null)
+                .WithChallengePeriodEventId(data.Keys.Contains("challengePeriodEventId") ? (string) data["challengePeriodEventId"] : null);
         }
 	}
 }

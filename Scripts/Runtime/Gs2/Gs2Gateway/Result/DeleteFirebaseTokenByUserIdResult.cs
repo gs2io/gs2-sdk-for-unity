@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Gateway.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Gateway.Result
 {
+	[Preserve]
 	public class DeleteFirebaseTokenByUserIdResult
 	{
         /** 削除したFirebaseデバイストークン */
         public FirebaseToken item { set; get; }
 
+
+        public static DeleteFirebaseTokenByUserIdResult FromDict(JsonData data)
+        {
+            return new DeleteFirebaseTokenByUserIdResult {
+                item = data.Keys.Contains("item") ? FirebaseToken.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

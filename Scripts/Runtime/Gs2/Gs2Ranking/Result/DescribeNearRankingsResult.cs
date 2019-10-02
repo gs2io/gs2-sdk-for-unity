@@ -15,15 +15,30 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Ranking.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Ranking.Result
 {
+	[Preserve]
 	public class DescribeNearRankingsResult
 	{
         /** ランキングのリスト */
         public List<Ranking> items { set; get; }
 
+
+        public static DescribeNearRankingsResult FromDict(JsonData data)
+        {
+            return new DescribeNearRankingsResult {
+                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return Ranking.FromDict(value);
+                    }
+                ).ToList() : null,
+            };
+        }
 	}
 }

@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Ranking.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Ranking.Result
 {
+	[Preserve]
 	public class PutScoreResult
 	{
         /** 登録したスコア */
         public Score item { set; get; }
 
+
+        public static PutScoreResult FromDict(JsonData data)
+        {
+            return new PutScoreResult {
+                item = data.Keys.Contains("item") ? Score.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

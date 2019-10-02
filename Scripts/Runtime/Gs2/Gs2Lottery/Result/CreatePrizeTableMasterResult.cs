@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Lottery.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Result
 {
+	[Preserve]
 	public class CreatePrizeTableMasterResult
 	{
         /** 作成した排出確率テーブルマスター */
         public PrizeTableMaster item { set; get; }
 
+
+        public static CreatePrizeTableMasterResult FromDict(JsonData data)
+        {
+            return new CreatePrizeTableMasterResult {
+                item = data.Keys.Contains("item") ? PrizeTableMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Money.Model
 {
+	[Preserve]
 	public class Receipt
 	{
 
@@ -236,6 +239,22 @@ namespace Gs2.Gs2Money.Model
                 writer.Write(this.createdAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Receipt FromDict(JsonData data)
+        {
+            return new Receipt()
+                .WithReceiptId(data.Keys.Contains("receiptId") ? (string) data["receiptId"] : null)
+                .WithTransactionId(data.Keys.Contains("transactionId") ? (string) data["transactionId"] : null)
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithType(data.Keys.Contains("type") ? (string) data["type"] : null)
+                .WithSlot(data.Keys.Contains("slot") ? (int?) data["slot"] : null)
+                .WithPrice(data.Keys.Contains("price") ? (float?) data["price"] : null)
+                .WithPaid(data.Keys.Contains("paid") ? (int?) data["paid"] : null)
+                .WithFree(data.Keys.Contains("free") ? (int?) data["free"] : null)
+                .WithTotal(data.Keys.Contains("total") ? (int?) data["total"] : null)
+                .WithContentsId(data.Keys.Contains("contentsId") ? (string) data["contentsId"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null);
         }
 	}
 }

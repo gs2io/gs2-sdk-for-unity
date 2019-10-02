@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Deploy.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Deploy.Result
 {
+	[Preserve]
 	public class DescribeStacksResult
 	{
         /** スタックのリスト */
@@ -28,5 +32,17 @@ namespace Gs2.Gs2Deploy.Result
         /** リストの続きを取得するためのページトークン */
         public string nextPageToken { set; get; }
 
+
+        public static DescribeStacksResult FromDict(JsonData data)
+        {
+            return new DescribeStacksResult {
+                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return Stack.FromDict(value);
+                    }
+                ).ToList() : null,
+                nextPageToken = data.Keys.Contains("nextPageToken") ? (string) data["nextPageToken"] : null,
+            };
+        }
 	}
 }

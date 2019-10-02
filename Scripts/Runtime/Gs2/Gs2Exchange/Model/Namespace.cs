@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Exchange.Model
 {
+	[Preserve]
 	public class Namespace
 	{
 
@@ -179,6 +182,19 @@ namespace Gs2.Gs2Exchange.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Namespace FromDict(JsonData data)
+        {
+            return new Namespace()
+                .WithNamespaceId(data.Keys.Contains("namespaceId") ? (string) data["namespaceId"] : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
+                .WithQueueNamespaceId(data.Keys.Contains("queueNamespaceId") ? (string) data["queueNamespaceId"] : null)
+                .WithKeyId(data.Keys.Contains("keyId") ? (string) data["keyId"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

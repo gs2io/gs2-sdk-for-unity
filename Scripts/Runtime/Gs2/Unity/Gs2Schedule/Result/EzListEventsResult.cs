@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2Schedule.Model;
 using Gs2.Gs2Schedule.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Schedule.Result
 {
+	[Preserve]
 	public class EzListEventsResult
 	{
         /** イベントのリスト */

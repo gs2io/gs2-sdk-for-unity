@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Model
 {
+	[Preserve]
 	public class Reward
 	{
 
@@ -103,6 +106,15 @@ namespace Gs2.Gs2Quest.Model
                 writer.Write(this.value.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Reward FromDict(JsonData data)
+        {
+            return new Reward()
+                .WithAction(data.Keys.Contains("action") ? (string) data["action"] : null)
+                .WithRequest(data.Keys.Contains("request") ? (string) data["request"] : null)
+                .WithItemId(data.Keys.Contains("itemId") ? (string) data["itemId"] : null)
+                .WithValue(data.Keys.Contains("value") ? (int?) data["value"] : null);
         }
 	}
 }

@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Model
 {
+	[Preserve]
 	public class Threshold
 	{
 
@@ -89,6 +92,18 @@ namespace Gs2.Gs2Experience.Model
                 writer.WriteArrayEnd();
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Threshold FromDict(JsonData data)
+        {
+            return new Threshold()
+                .WithThresholdId(data.Keys.Contains("thresholdId") ? (string) data["thresholdId"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithValues(data.Keys.Contains("values") ? data["values"].Cast<JsonData>().Select(value =>
+                    {
+                        return (long?) value;
+                    }
+                ).ToList() : null);
         }
 	}
 }

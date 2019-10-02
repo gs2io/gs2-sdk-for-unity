@@ -15,12 +15,22 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Identifier.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Identifier.Result
 {
+	[Preserve]
 	public class DeleteSecurityPolicyResult
 	{
+
+        public static DeleteSecurityPolicyResult FromDict(JsonData data)
+        {
+            return new DeleteSecurityPolicyResult {
+            };
+        }
 	}
 }

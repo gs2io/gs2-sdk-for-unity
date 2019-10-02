@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2JobQueue.Model
 {
+	[Preserve]
 	public class JobEntry
 	{
 
@@ -84,6 +87,14 @@ namespace Gs2.Gs2JobQueue.Model
                 writer.Write(this.maxTryCount.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static JobEntry FromDict(JsonData data)
+        {
+            return new JobEntry()
+                .WithScriptId(data.Keys.Contains("scriptId") ? (string) data["scriptId"] : null)
+                .WithArgs(data.Keys.Contains("args") ? (string) data["args"] : null)
+                .WithMaxTryCount(data.Keys.Contains("maxTryCount") ? (int?) data["maxTryCount"] : null);
         }
 	}
 }

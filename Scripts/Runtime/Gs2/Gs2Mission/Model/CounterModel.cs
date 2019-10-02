@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Model
 {
+	[Preserve]
 	public class CounterModel
 	{
 
@@ -127,6 +130,20 @@ namespace Gs2.Gs2Mission.Model
                 writer.Write(this.challengePeriodEventId);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static CounterModel FromDict(JsonData data)
+        {
+            return new CounterModel()
+                .WithCounterId(data.Keys.Contains("counterId") ? (string) data["counterId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithScopes(data.Keys.Contains("scopes") ? data["scopes"].Cast<JsonData>().Select(value =>
+                    {
+                        return CounterScopeModel.FromDict(value);
+                    }
+                ).ToList() : null)
+                .WithChallengePeriodEventId(data.Keys.Contains("challengePeriodEventId") ? (string) data["challengePeriodEventId"] : null);
         }
 	}
 }

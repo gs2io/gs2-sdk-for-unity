@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Inventory.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Result
 {
+	[Preserve]
 	public class AcquireItemSetByStampSheetResult
 	{
         /** 加算後の有効期限ごとのアイテム所持数量のリスト */
@@ -34,5 +38,19 @@ namespace Gs2.Gs2Inventory.Result
         /** 所持数量の上限を超えて受け取れずに GS2-Inbox に転送したアイテムの数量 */
         public long? overflowCount { set; get; }
 
+
+        public static AcquireItemSetByStampSheetResult FromDict(JsonData data)
+        {
+            return new AcquireItemSetByStampSheetResult {
+                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return ItemSet.FromDict(value);
+                    }
+                ).ToList() : null,
+                itemModel = data.Keys.Contains("itemModel") ? ItemModel.FromDict(data["itemModel"]) : null,
+                inventory = data.Keys.Contains("inventory") ? Inventory.FromDict(data["inventory"]) : null,
+                overflowCount = data.Keys.Contains("overflowCount") ? (long?) data["overflowCount"] : null,
+            };
+        }
 	}
 }

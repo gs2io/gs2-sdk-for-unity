@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Ranking.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Ranking.Result
 {
+	[Preserve]
 	public class UnsubscribeResult
 	{
         /** 解除した購読対象 */
         public SubscribeUser item { set; get; }
 
+
+        public static UnsubscribeResult FromDict(JsonData data)
+        {
+            return new UnsubscribeResult {
+                item = data.Keys.Contains("item") ? SubscribeUser.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

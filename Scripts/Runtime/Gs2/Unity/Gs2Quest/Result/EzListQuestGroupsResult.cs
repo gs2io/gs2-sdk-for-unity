@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2Quest.Model;
 using Gs2.Gs2Quest.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Quest.Result
 {
+	[Preserve]
 	public class EzListQuestGroupsResult
 	{
         /** クエストグループのリスト */

@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Ranking.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Ranking.Result
 {
+	[Preserve]
 	public class UpdateCurrentRankingMasterResult
 	{
         /** 更新した現在有効なランキング設定 */
         public CurrentRankingMaster item { set; get; }
 
+
+        public static UpdateCurrentRankingMasterResult FromDict(JsonData data)
+        {
+            return new UpdateCurrentRankingMasterResult {
+                item = data.Keys.Contains("item") ? CurrentRankingMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

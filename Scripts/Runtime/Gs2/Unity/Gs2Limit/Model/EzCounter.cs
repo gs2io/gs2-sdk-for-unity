@@ -16,10 +16,12 @@
 using Gs2.Gs2Limit.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Limit.Model
 {
+	[Preserve]
 	public class EzCounter
 	{
 		/** カウンター */

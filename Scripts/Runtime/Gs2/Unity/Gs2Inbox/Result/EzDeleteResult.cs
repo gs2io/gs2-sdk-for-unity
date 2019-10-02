@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2Inbox.Model;
 using Gs2.Gs2Inbox.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Inbox.Result
 {
+	[Preserve]
 	public class EzDeleteResult
 	{
 

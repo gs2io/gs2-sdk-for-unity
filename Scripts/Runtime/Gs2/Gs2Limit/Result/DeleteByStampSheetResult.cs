@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Limit.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Limit.Result
 {
+	[Preserve]
 	public class DeleteByStampSheetResult
 	{
         /** カウンター */
         public Counter item { set; get; }
 
+
+        public static DeleteByStampSheetResult FromDict(JsonData data)
+        {
+            return new DeleteByStampSheetResult {
+                item = data.Keys.Contains("item") ? Counter.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

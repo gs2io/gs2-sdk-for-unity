@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Account.Model
 {
+	[Preserve]
 	public class Account
 	{
 
@@ -122,6 +125,16 @@ namespace Gs2.Gs2Account.Model
                 writer.Write(this.createdAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Account FromDict(JsonData data)
+        {
+            return new Account()
+                .WithAccountId(data.Keys.Contains("accountId") ? (string) data["accountId"] : null)
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithPassword(data.Keys.Contains("password") ? (string) data["password"] : null)
+                .WithTimeOffset(data.Keys.Contains("timeOffset") ? (int?) data["timeOffset"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null);
         }
 	}
 }

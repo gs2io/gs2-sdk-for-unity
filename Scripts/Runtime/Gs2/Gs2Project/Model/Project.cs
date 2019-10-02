@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Project.Model
 {
+	[Preserve]
 	public class Project
 	{
 
@@ -141,6 +144,17 @@ namespace Gs2.Gs2Project.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Project FromDict(JsonData data)
+        {
+            return new Project()
+                .WithProjectId(data.Keys.Contains("projectId") ? (string) data["projectId"] : null)
+                .WithAccountName(data.Keys.Contains("accountName") ? (string) data["accountName"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2Stamina.Model;
 using Gs2.Gs2Stamina.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Stamina.Result
 {
+	[Preserve]
 	public class EzConsumeResult
 	{
         /** スタミナ */

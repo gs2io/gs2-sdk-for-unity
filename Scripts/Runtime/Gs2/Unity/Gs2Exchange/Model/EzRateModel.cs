@@ -16,10 +16,12 @@
 using Gs2.Gs2Exchange.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Exchange.Model
 {
+	[Preserve]
 	public class EzRateModel
 	{
 		/** 交換レートの種類名 */

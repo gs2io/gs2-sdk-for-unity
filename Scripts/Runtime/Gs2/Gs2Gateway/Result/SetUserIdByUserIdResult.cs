@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Gateway.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Gateway.Result
 {
+	[Preserve]
 	public class SetUserIdByUserIdResult
 	{
         /** 更新したWebsocketセッション */
         public WebSocketSession item { set; get; }
 
+
+        public static SetUserIdByUserIdResult FromDict(JsonData data)
+        {
+            return new SetUserIdByUserIdResult {
+                item = data.Keys.Contains("item") ? WebSocketSession.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

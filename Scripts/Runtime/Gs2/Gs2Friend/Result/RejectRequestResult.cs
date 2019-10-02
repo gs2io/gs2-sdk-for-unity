@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Friend.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Friend.Result
 {
+	[Preserve]
 	public class RejectRequestResult
 	{
         /** 拒否したフレンドリクエスト */
         public FriendRequest item { set; get; }
 
+
+        public static RejectRequestResult FromDict(JsonData data)
+        {
+            return new RejectRequestResult {
+                item = data.Keys.Contains("item") ? FriendRequest.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

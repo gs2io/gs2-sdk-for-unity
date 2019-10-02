@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Friend.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Friend.Result
 {
+	[Preserve]
 	public class DeleteFriendByUserIdResult
 	{
         /** フレンドのユーザー */
         public FriendUser item { set; get; }
 
+
+        public static DeleteFriendByUserIdResult FromDict(JsonData data)
+        {
+            return new DeleteFriendByUserIdResult {
+                item = data.Keys.Contains("item") ? FriendUser.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

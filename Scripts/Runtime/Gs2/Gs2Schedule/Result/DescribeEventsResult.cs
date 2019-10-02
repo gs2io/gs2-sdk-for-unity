@@ -15,15 +15,30 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Schedule.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Schedule.Result
 {
+	[Preserve]
 	public class DescribeEventsResult
 	{
         /** イベントのリスト */
         public List<Event> items { set; get; }
 
+
+        public static DescribeEventsResult FromDict(JsonData data)
+        {
+            return new DescribeEventsResult {
+                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return Event.FromDict(value);
+                    }
+                ).ToList() : null,
+            };
+        }
 	}
 }

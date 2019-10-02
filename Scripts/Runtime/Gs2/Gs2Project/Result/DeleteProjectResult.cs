@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Project.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Project.Result
 {
+	[Preserve]
 	public class DeleteProjectResult
 	{
         /** 削除したプロジェクト */
         public Project item { set; get; }
 
+
+        public static DeleteProjectResult FromDict(JsonData data)
+        {
+            return new DeleteProjectResult {
+                item = data.Keys.Contains("item") ? Project.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

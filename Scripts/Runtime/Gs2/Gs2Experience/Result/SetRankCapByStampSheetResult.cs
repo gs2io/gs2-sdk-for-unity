@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Experience.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Result
 {
+	[Preserve]
 	public class SetRankCapByStampSheetResult
 	{
         /** 更新後のステータス */
         public Status item { set; get; }
 
+
+        public static SetRankCapByStampSheetResult FromDict(JsonData data)
+        {
+            return new SetRankCapByStampSheetResult {
+                item = data.Keys.Contains("item") ? Status.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Limit.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Limit.Result
 {
+	[Preserve]
 	public class CountUpByStampTaskResult
 	{
         /** カウントを増やしたカウンター */
@@ -28,5 +32,13 @@ namespace Gs2.Gs2Limit.Result
         /** スタンプタスクの実行結果を記録したコンテキスト */
         public string newContextStack { set; get; }
 
+
+        public static CountUpByStampTaskResult FromDict(JsonData data)
+        {
+            return new CountUpByStampTaskResult {
+                item = data.Keys.Contains("item") ? Counter.FromDict(data["item"]) : null,
+                newContextStack = data.Keys.Contains("newContextStack") ? (string) data["newContextStack"] : null,
+            };
+        }
 	}
 }

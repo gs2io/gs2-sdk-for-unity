@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Inventory.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Result
 {
+	[Preserve]
 	public class ConsumeItemSetByStampTaskResult
 	{
         /** 消費後の有効期限ごとのアイテム所持数量のリスト */
@@ -34,5 +38,19 @@ namespace Gs2.Gs2Inventory.Result
         /** スタンプタスクの実行結果を記録したコンテキスト */
         public string newContextStack { set; get; }
 
+
+        public static ConsumeItemSetByStampTaskResult FromDict(JsonData data)
+        {
+            return new ConsumeItemSetByStampTaskResult {
+                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return ItemSet.FromDict(value);
+                    }
+                ).ToList() : null,
+                itemModel = data.Keys.Contains("itemModel") ? ItemModel.FromDict(data["itemModel"]) : null,
+                inventory = data.Keys.Contains("inventory") ? Inventory.FromDict(data["inventory"]) : null,
+                newContextStack = data.Keys.Contains("newContextStack") ? (string) data["newContextStack"] : null,
+            };
+        }
 	}
 }

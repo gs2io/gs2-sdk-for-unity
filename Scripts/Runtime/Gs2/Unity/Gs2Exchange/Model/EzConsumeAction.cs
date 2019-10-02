@@ -16,10 +16,12 @@
 using Gs2.Gs2Exchange.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Exchange.Model
 {
+	[Preserve]
 	public class EzConsumeAction
 	{
 		/** スタンプタスクで実行するアクションの種類 */

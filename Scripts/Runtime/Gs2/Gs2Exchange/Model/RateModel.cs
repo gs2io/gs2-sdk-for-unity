@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Exchange.Model
 {
+	[Preserve]
 	public class RateModel
 	{
 
@@ -132,6 +135,24 @@ namespace Gs2.Gs2Exchange.Model
                 writer.WriteArrayEnd();
             }
             writer.WriteObjectEnd();
+        }
+
+        public static RateModel FromDict(JsonData data)
+        {
+            return new RateModel()
+                .WithRateModelId(data.Keys.Contains("rateModelId") ? (string) data["rateModelId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithConsumeActions(data.Keys.Contains("consumeActions") ? data["consumeActions"].Cast<JsonData>().Select(value =>
+                    {
+                        return ConsumeAction.FromDict(value);
+                    }
+                ).ToList() : null)
+                .WithAcquireActions(data.Keys.Contains("acquireActions") ? data["acquireActions"].Cast<JsonData>().Select(value =>
+                    {
+                        return AcquireAction.FromDict(value);
+                    }
+                ).ToList() : null);
         }
 	}
 }

@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Model
 {
+	[Preserve]
 	public class ItemModel
 	{
 
@@ -141,6 +144,17 @@ namespace Gs2.Gs2Inventory.Model
                 writer.Write(this.sortValue.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static ItemModel FromDict(JsonData data)
+        {
+            return new ItemModel()
+                .WithItemModelId(data.Keys.Contains("itemModelId") ? (string) data["itemModelId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithStackingLimit(data.Keys.Contains("stackingLimit") ? (long?) data["stackingLimit"] : null)
+                .WithAllowMultipleStacks(data.Keys.Contains("allowMultipleStacks") ? (bool?) data["allowMultipleStacks"] : null)
+                .WithSortValue(data.Keys.Contains("sortValue") ? (int?) data["sortValue"] : null);
         }
 	}
 }

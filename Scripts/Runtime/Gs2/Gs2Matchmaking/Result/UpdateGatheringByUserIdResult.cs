@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Matchmaking.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Matchmaking.Result
 {
+	[Preserve]
 	public class UpdateGatheringByUserIdResult
 	{
         /** ギャザリング */
         public Gathering item { set; get; }
 
+
+        public static UpdateGatheringByUserIdResult FromDict(JsonData data)
+        {
+            return new UpdateGatheringByUserIdResult {
+                item = data.Keys.Contains("item") ? Gathering.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

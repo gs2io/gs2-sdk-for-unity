@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Script.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Script.Result
 {
+	[Preserve]
 	public class UpdateScriptFromGitHubResult
 	{
         /** 更新したスクリプト */
         public Script item { set; get; }
 
+
+        public static UpdateScriptFromGitHubResult FromDict(JsonData data)
+        {
+            return new UpdateScriptFromGitHubResult {
+                item = data.Keys.Contains("item") ? Script.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

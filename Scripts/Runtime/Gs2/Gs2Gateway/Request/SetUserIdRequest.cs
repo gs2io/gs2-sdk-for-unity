@@ -39,21 +39,6 @@ namespace Gs2.Gs2Gateway.Request
         }
 
 
-        /** コネクションID */
-        public string connectionId { set; get; }
-
-        /**
-         * コネクションIDを設定
-         *
-         * @param connectionId コネクションID
-         * @return this
-         */
-        public SetUserIdRequest WithConnectionId(string connectionId) {
-            this.connectionId = connectionId;
-            return this;
-        }
-
-
         /** 同時に異なるクライアントからの接続を許容するか */
         public bool? allowConcurrentAccess { set; get; }
 

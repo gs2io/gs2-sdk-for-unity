@@ -16,10 +16,12 @@
 using Gs2.Gs2Inbox.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Inbox.Model
 {
+	[Preserve]
 	public class EzAcquireAction
 	{
 		/** スタンプシートで実行するアクションの種類 */

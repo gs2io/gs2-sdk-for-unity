@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Deploy.Model
 {
+	[Preserve]
 	public class Stack
 	{
 
@@ -179,6 +182,19 @@ namespace Gs2.Gs2Deploy.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Stack FromDict(JsonData data)
+        {
+            return new Stack()
+                .WithStackId(data.Keys.Contains("stackId") ? (string) data["stackId"] : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
+                .WithTemplate(data.Keys.Contains("template") ? (string) data["template"] : null)
+                .WithStatus(data.Keys.Contains("status") ? (string) data["status"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

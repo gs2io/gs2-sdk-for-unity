@@ -16,10 +16,12 @@
 using Gs2.Gs2Schedule.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Schedule.Model
 {
+	[Preserve]
 	public class EzTrigger
 	{
 		/** トリガー */

@@ -16,10 +16,12 @@
 using Gs2.Gs2Ranking.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Ranking.Model
 {
+	[Preserve]
 	public class EzSubscribeUser
 	{
 		/** 購読するユーザID */

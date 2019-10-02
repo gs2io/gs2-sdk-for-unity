@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Lock.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lock.Result
 {
+	[Preserve]
 	public class LockResult
 	{
         /** ミューテックス */
         public Mutex item { set; get; }
 
+
+        public static LockResult FromDict(JsonData data)
+        {
+            return new LockResult {
+                item = data.Keys.Contains("item") ? Mutex.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

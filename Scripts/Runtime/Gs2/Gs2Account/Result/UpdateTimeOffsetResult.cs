@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Account.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Account.Result
 {
+	[Preserve]
 	public class UpdateTimeOffsetResult
 	{
         /** 更新したゲームプレイヤーアカウント */
         public Account item { set; get; }
 
+
+        public static UpdateTimeOffsetResult FromDict(JsonData data)
+        {
+            return new UpdateTimeOffsetResult {
+                item = data.Keys.Contains("item") ? Account.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

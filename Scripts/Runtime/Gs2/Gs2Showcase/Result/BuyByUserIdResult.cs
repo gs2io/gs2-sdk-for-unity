@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Showcase.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Showcase.Result
 {
+	[Preserve]
 	public class BuyByUserIdResult
 	{
         /** 商品 */
@@ -28,5 +32,13 @@ namespace Gs2.Gs2Showcase.Result
         /** 購入処理の実行に使用するスタンプシート */
         public string stampSheet { set; get; }
 
+
+        public static BuyByUserIdResult FromDict(JsonData data)
+        {
+            return new BuyByUserIdResult {
+                item = data.Keys.Contains("item") ? SalesItem.FromDict(data["item"]) : null,
+                stampSheet = data.Keys.Contains("stampSheet") ? (string) data["stampSheet"] : null,
+            };
+        }
 	}
 }

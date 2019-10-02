@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Money.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Money.Result
 {
+	[Preserve]
 	public class WithdrawResult
 	{
         /** 消費後のウォレット */
@@ -28,5 +32,13 @@ namespace Gs2.Gs2Money.Result
         /** 消費した通貨の価格 */
         public float? price { set; get; }
 
+
+        public static WithdrawResult FromDict(JsonData data)
+        {
+            return new WithdrawResult {
+                item = data.Keys.Contains("item") ? Wallet.FromDict(data["item"]) : null,
+                price = data.Keys.Contains("price") ? (float?) data["price"] : null,
+            };
+        }
 	}
 }

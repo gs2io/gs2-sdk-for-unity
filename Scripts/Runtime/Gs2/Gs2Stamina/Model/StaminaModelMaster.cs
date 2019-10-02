@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Stamina.Model
 {
+	[Preserve]
 	public class StaminaModelMaster
 	{
 
@@ -293,6 +296,25 @@ namespace Gs2.Gs2Stamina.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static StaminaModelMaster FromDict(JsonData data)
+        {
+            return new StaminaModelMaster()
+                .WithStaminaModelId(data.Keys.Contains("staminaModelId") ? (string) data["staminaModelId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
+                .WithRecoverIntervalMinutes(data.Keys.Contains("recoverIntervalMinutes") ? (int?) data["recoverIntervalMinutes"] : null)
+                .WithRecoverValue(data.Keys.Contains("recoverValue") ? (int?) data["recoverValue"] : null)
+                .WithInitialCapacity(data.Keys.Contains("initialCapacity") ? (int?) data["initialCapacity"] : null)
+                .WithIsOverflow(data.Keys.Contains("isOverflow") ? (bool?) data["isOverflow"] : null)
+                .WithMaxCapacity(data.Keys.Contains("maxCapacity") ? (int?) data["maxCapacity"] : null)
+                .WithMaxStaminaTableId(data.Keys.Contains("maxStaminaTableId") ? (string) data["maxStaminaTableId"] : null)
+                .WithRecoverIntervalTableId(data.Keys.Contains("recoverIntervalTableId") ? (string) data["recoverIntervalTableId"] : null)
+                .WithRecoverValueTableId(data.Keys.Contains("recoverValueTableId") ? (string) data["recoverValueTableId"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

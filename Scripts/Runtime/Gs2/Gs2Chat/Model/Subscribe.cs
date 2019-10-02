@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Chat.Model
 {
+	[Preserve]
 	public class Subscribe
 	{
 
@@ -127,6 +130,20 @@ namespace Gs2.Gs2Chat.Model
                 writer.Write(this.createdAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Subscribe FromDict(JsonData data)
+        {
+            return new Subscribe()
+                .WithSubscribeId(data.Keys.Contains("subscribeId") ? (string) data["subscribeId"] : null)
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithRoomName(data.Keys.Contains("roomName") ? (string) data["roomName"] : null)
+                .WithNotificationTypes(data.Keys.Contains("notificationTypes") ? data["notificationTypes"].Cast<JsonData>().Select(value =>
+                    {
+                        return NotificationType.FromDict(value);
+                    }
+                ).ToList() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null);
         }
 	}
 }

@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Key.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Key.Result
 {
+	[Preserve]
 	public class EncryptResult
 	{
         /** 暗号化済みデータ */
         public string data { set; get; }
 
+
+        public static EncryptResult FromDict(JsonData data)
+        {
+            return new EncryptResult {
+                data = data.Keys.Contains("data") ? (string) data["data"] : null,
+            };
+        }
 	}
 }

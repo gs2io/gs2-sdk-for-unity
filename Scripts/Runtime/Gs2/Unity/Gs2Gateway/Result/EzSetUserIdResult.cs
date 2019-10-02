@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2Gateway.Model;
 using Gs2.Gs2Gateway.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Gateway.Result
 {
+	[Preserve]
 	public class EzSetUserIdResult
 	{
         /** 更新したWebsocketセッション */

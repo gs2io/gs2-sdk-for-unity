@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Schedule.Model
 {
+	[Preserve]
 	public class Trigger
 	{
 
@@ -122,6 +125,16 @@ namespace Gs2.Gs2Schedule.Model
                 writer.Write(this.expiresAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Trigger FromDict(JsonData data)
+        {
+            return new Trigger()
+                .WithTriggerId(data.Keys.Contains("triggerId") ? (string) data["triggerId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithExpiresAt(data.Keys.Contains("expiresAt") ? (long?) data["expiresAt"] : null);
         }
 	}
 }

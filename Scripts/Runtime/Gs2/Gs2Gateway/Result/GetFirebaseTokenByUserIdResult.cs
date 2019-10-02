@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Gateway.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Gateway.Result
 {
+	[Preserve]
 	public class GetFirebaseTokenByUserIdResult
 	{
         /** 取得したFirebaseデバイストークン */
         public FirebaseToken item { set; get; }
 
+
+        public static GetFirebaseTokenByUserIdResult FromDict(JsonData data)
+        {
+            return new GetFirebaseTokenByUserIdResult {
+                item = data.Keys.Contains("item") ? FirebaseToken.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

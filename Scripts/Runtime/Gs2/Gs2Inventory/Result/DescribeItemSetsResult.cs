@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Inventory.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Result
 {
+	[Preserve]
 	public class DescribeItemSetsResult
 	{
         /** 有効期限ごとのアイテム所持数量のリスト */
@@ -28,5 +32,17 @@ namespace Gs2.Gs2Inventory.Result
         /** リストの続きを取得するためのページトークン */
         public string nextPageToken { set; get; }
 
+
+        public static DescribeItemSetsResult FromDict(JsonData data)
+        {
+            return new DescribeItemSetsResult {
+                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return ItemSet.FromDict(value);
+                    }
+                ).ToList() : null,
+                nextPageToken = data.Keys.Contains("nextPageToken") ? (string) data["nextPageToken"] : null,
+            };
+        }
 	}
 }

@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2JobQueue.Model
 {
+	[Preserve]
 	public class ResponseCache
 	{
 
@@ -122,6 +125,16 @@ namespace Gs2.Gs2JobQueue.Model
                 writer.Write(this.result);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static ResponseCache FromDict(JsonData data)
+        {
+            return new ResponseCache()
+                .WithRegion(data.Keys.Contains("region") ? (string) data["region"] : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
+                .WithResponseCacheId(data.Keys.Contains("responseCacheId") ? (string) data["responseCacheId"] : null)
+                .WithRequestHash(data.Keys.Contains("requestHash") ? (string) data["requestHash"] : null)
+                .WithResult(data.Keys.Contains("result") ? (string) data["result"] : null);
         }
 	}
 }

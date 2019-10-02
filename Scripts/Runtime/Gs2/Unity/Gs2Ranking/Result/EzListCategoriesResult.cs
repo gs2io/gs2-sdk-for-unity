@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2Ranking.Model;
 using Gs2.Gs2Ranking.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Ranking.Result
 {
+	[Preserve]
 	public class EzListCategoriesResult
 	{
         /** カテゴリのリスト */

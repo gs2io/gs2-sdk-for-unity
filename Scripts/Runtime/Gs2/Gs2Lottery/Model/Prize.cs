@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Model
 {
+	[Preserve]
 	public class Prize
 	{
 
@@ -127,6 +130,20 @@ namespace Gs2.Gs2Lottery.Model
                 writer.Write(this.weight.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Prize FromDict(JsonData data)
+        {
+            return new Prize()
+                .WithPrizeId(data.Keys.Contains("prizeId") ? (string) data["prizeId"] : null)
+                .WithType(data.Keys.Contains("type") ? (string) data["type"] : null)
+                .WithAcquireActions(data.Keys.Contains("acquireActions") ? data["acquireActions"].Cast<JsonData>().Select(value =>
+                    {
+                        return AcquireAction.FromDict(value);
+                    }
+                ).ToList() : null)
+                .WithPrizeTableName(data.Keys.Contains("prizeTableName") ? (string) data["prizeTableName"] : null)
+                .WithWeight(data.Keys.Contains("weight") ? (int?) data["weight"] : null);
         }
 	}
 }

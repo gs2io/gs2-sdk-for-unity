@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Model
 {
+	[Preserve]
 	public class Namespace
 	{
 
@@ -217,6 +220,21 @@ namespace Gs2.Gs2Experience.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Namespace FromDict(JsonData data)
+        {
+            return new Namespace()
+                .WithNamespaceId(data.Keys.Contains("namespaceId") ? (string) data["namespaceId"] : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
+                .WithExperienceCapScriptId(data.Keys.Contains("experienceCapScriptId") ? (string) data["experienceCapScriptId"] : null)
+                .WithChangeExperienceScript(data.Keys.Contains("changeExperienceScript") ? ScriptSetting.FromDict(data["changeExperienceScript"]) : null)
+                .WithChangeRankScript(data.Keys.Contains("changeRankScript") ? ScriptSetting.FromDict(data["changeRankScript"]) : null)
+                .WithChangeRankCapScript(data.Keys.Contains("changeRankCapScript") ? ScriptSetting.FromDict(data["changeRankCapScript"]) : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

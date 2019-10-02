@@ -43,6 +43,252 @@ namespace Gs2.Gs2Mission
 
 		}
 
+        private class ExportMasterTask : Gs2RestSessionTask<Result.ExportMasterResult>
+        {
+			private readonly Request.ExportMasterRequest _request;
+
+			public ExportMasterTask(Request.ExportMasterRequest request, UnityAction<AsyncResult<Result.ExportMasterResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "mission")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/master/export";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  現在有効なミッションのマスターデータをエクスポートします<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator ExportMaster(
+                Request.ExportMasterRequest request,
+                UnityAction<AsyncResult<Result.ExportMasterResult>> callback
+        )
+		{
+			var task = new ExportMasterTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class GetCurrentMissionMasterTask : Gs2RestSessionTask<Result.GetCurrentMissionMasterResult>
+        {
+			private readonly Request.GetCurrentMissionMasterRequest _request;
+
+			public GetCurrentMissionMasterTask(Request.GetCurrentMissionMasterRequest request, UnityAction<AsyncResult<Result.GetCurrentMissionMasterResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "mission")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/master";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  現在有効なミッションを取得します<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetCurrentMissionMaster(
+                Request.GetCurrentMissionMasterRequest request,
+                UnityAction<AsyncResult<Result.GetCurrentMissionMasterResult>> callback
+        )
+		{
+			var task = new GetCurrentMissionMasterTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class UpdateCurrentMissionMasterTask : Gs2RestSessionTask<Result.UpdateCurrentMissionMasterResult>
+        {
+			private readonly Request.UpdateCurrentMissionMasterRequest _request;
+
+			public UpdateCurrentMissionMasterTask(Request.UpdateCurrentMissionMasterRequest request, UnityAction<AsyncResult<Result.UpdateCurrentMissionMasterResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPUT;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "mission")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/master";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.settings != null)
+                {
+                    jsonWriter.WritePropertyName("settings");
+                    jsonWriter.Write(_request.settings.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  現在有効なミッションを更新します<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator UpdateCurrentMissionMaster(
+                Request.UpdateCurrentMissionMasterRequest request,
+                UnityAction<AsyncResult<Result.UpdateCurrentMissionMasterResult>> callback
+        )
+		{
+			var task = new UpdateCurrentMissionMasterTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class UpdateCurrentMissionMasterFromGitHubTask : Gs2RestSessionTask<Result.UpdateCurrentMissionMasterFromGitHubResult>
+        {
+			private readonly Request.UpdateCurrentMissionMasterFromGitHubRequest _request;
+
+			public UpdateCurrentMissionMasterFromGitHubTask(Request.UpdateCurrentMissionMasterFromGitHubRequest request, UnityAction<AsyncResult<Result.UpdateCurrentMissionMasterFromGitHubResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPUT;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "mission")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/master/from_git_hub";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.checkoutSetting != null)
+                {
+                    jsonWriter.WritePropertyName("checkoutSetting");
+                    _request.checkoutSetting.WriteJson(jsonWriter);
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  現在有効なミッションを更新します<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator UpdateCurrentMissionMasterFromGitHub(
+                Request.UpdateCurrentMissionMasterFromGitHubRequest request,
+                UnityAction<AsyncResult<Result.UpdateCurrentMissionMasterFromGitHubResult>> callback
+        )
+		{
+			var task = new UpdateCurrentMissionMasterFromGitHubTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
         private class DescribeCountersTask : Gs2RestSessionTask<Result.DescribeCountersResult>
         {
 			private readonly Request.DescribeCountersRequest _request;
@@ -510,11 +756,11 @@ namespace Gs2.Gs2Mission
 			return Gs2RestSession.Execute(task);
         }
 
-        private class DescribeNamespacesTask : Gs2RestSessionTask<Result.DescribeNamespacesResult>
+        private class DescribeCounterModelsTask : Gs2RestSessionTask<Result.DescribeCounterModelsResult>
         {
-			private readonly Request.DescribeNamespacesRequest _request;
+			private readonly Request.DescribeCounterModelsRequest _request;
 
-			public DescribeNamespacesTask(Request.DescribeNamespacesRequest request, UnityAction<AsyncResult<Result.DescribeNamespacesResult>> userCallback) : base(userCallback)
+			public DescribeCounterModelsTask(Request.DescribeCounterModelsRequest request, UnityAction<AsyncResult<Result.DescribeCounterModelsResult>> userCallback) : base(userCallback)
 			{
 				_request = request;
 			}
@@ -526,18 +772,14 @@ namespace Gs2.Gs2Mission
                 var url = Gs2RestSession.EndpointHost
                     .Replace("{service}", "mission")
                     .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/";
+                    + "/{namespaceName}/counter";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
 
                 var queryStrings = new List<string> ();
                 if (_request.contextStack != null)
                 {
                     queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
-                }
-                if (_request.pageToken != null) {
-                    queryStrings.Add(string.Format("{0}={1}", "pageToken", UnityWebRequest.EscapeURL(_request.pageToken)));
-                }
-                if (_request.limit != null) {
-                    queryStrings.Add(string.Format("{0}={1}", "limit", _request.limit));
                 }
                 url += "?" + string.Join("&", queryStrings.ToArray());
 
@@ -553,158 +795,26 @@ namespace Gs2.Gs2Mission
         }
 
 		/// <summary>
-		///  ネームスペースの一覧を取得<br />
+		///  カウンターの種類の一覧を取得<br />
 		/// </summary>
         ///
 		/// <returns>IEnumerator</returns>
 		/// <param name="callback">コールバックハンドラ</param>
 		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator DescribeNamespaces(
-                Request.DescribeNamespacesRequest request,
-                UnityAction<AsyncResult<Result.DescribeNamespacesResult>> callback
+		public IEnumerator DescribeCounterModels(
+                Request.DescribeCounterModelsRequest request,
+                UnityAction<AsyncResult<Result.DescribeCounterModelsResult>> callback
         )
 		{
-			var task = new DescribeNamespacesTask(request, callback);
+			var task = new DescribeCounterModelsTask(request, callback);
 			return Gs2RestSession.Execute(task);
         }
 
-        private class CreateNamespaceTask : Gs2RestSessionTask<Result.CreateNamespaceResult>
+        private class GetCounterModelTask : Gs2RestSessionTask<Result.GetCounterModelResult>
         {
-			private readonly Request.CreateNamespaceRequest _request;
+			private readonly Request.GetCounterModelRequest _request;
 
-			public CreateNamespaceTask(Request.CreateNamespaceRequest request, UnityAction<AsyncResult<Result.CreateNamespaceResult>> userCallback) : base(userCallback)
-			{
-				_request = request;
-			}
-
-            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
-            {
-				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
-
-                var url = Gs2RestSession.EndpointHost
-                    .Replace("{service}", "mission")
-                    .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/";
-
-                UnityWebRequest.url = url;
-
-                var stringBuilder = new StringBuilder();
-                var jsonWriter = new JsonWriter(stringBuilder);
-                jsonWriter.WriteObjectStart();
-                if (_request.name != null)
-                {
-                    jsonWriter.WritePropertyName("name");
-                    jsonWriter.Write(_request.name.ToString());
-                }
-                if (_request.description != null)
-                {
-                    jsonWriter.WritePropertyName("description");
-                    jsonWriter.Write(_request.description.ToString());
-                }
-                if (_request.missionCompleteTriggerScriptId != null)
-                {
-                    jsonWriter.WritePropertyName("missionCompleteTriggerScriptId");
-                    jsonWriter.Write(_request.missionCompleteTriggerScriptId.ToString());
-                }
-                if (_request.missionCompleteDoneTriggerScriptId != null)
-                {
-                    jsonWriter.WritePropertyName("missionCompleteDoneTriggerScriptId");
-                    jsonWriter.Write(_request.missionCompleteDoneTriggerScriptId.ToString());
-                }
-                if (_request.missionCompleteDoneTriggerQueueNamespaceId != null)
-                {
-                    jsonWriter.WritePropertyName("missionCompleteDoneTriggerQueueNamespaceId");
-                    jsonWriter.Write(_request.missionCompleteDoneTriggerQueueNamespaceId.ToString());
-                }
-                if (_request.counterIncrementTriggerScriptId != null)
-                {
-                    jsonWriter.WritePropertyName("counterIncrementTriggerScriptId");
-                    jsonWriter.Write(_request.counterIncrementTriggerScriptId.ToString());
-                }
-                if (_request.counterIncrementDoneTriggerScriptId != null)
-                {
-                    jsonWriter.WritePropertyName("counterIncrementDoneTriggerScriptId");
-                    jsonWriter.Write(_request.counterIncrementDoneTriggerScriptId.ToString());
-                }
-                if (_request.counterIncrementDoneTriggerQueueNamespaceId != null)
-                {
-                    jsonWriter.WritePropertyName("counterIncrementDoneTriggerQueueNamespaceId");
-                    jsonWriter.Write(_request.counterIncrementDoneTriggerQueueNamespaceId.ToString());
-                }
-                if (_request.receiveRewardsTriggerScriptId != null)
-                {
-                    jsonWriter.WritePropertyName("receiveRewardsTriggerScriptId");
-                    jsonWriter.Write(_request.receiveRewardsTriggerScriptId.ToString());
-                }
-                if (_request.receiveRewardsDoneTriggerScriptId != null)
-                {
-                    jsonWriter.WritePropertyName("receiveRewardsDoneTriggerScriptId");
-                    jsonWriter.Write(_request.receiveRewardsDoneTriggerScriptId.ToString());
-                }
-                if (_request.receiveRewardsDoneTriggerQueueNamespaceId != null)
-                {
-                    jsonWriter.WritePropertyName("receiveRewardsDoneTriggerQueueNamespaceId");
-                    jsonWriter.Write(_request.receiveRewardsDoneTriggerQueueNamespaceId.ToString());
-                }
-                if (_request.queueNamespaceId != null)
-                {
-                    jsonWriter.WritePropertyName("queueNamespaceId");
-                    jsonWriter.Write(_request.queueNamespaceId.ToString());
-                }
-                if (_request.keyId != null)
-                {
-                    jsonWriter.WritePropertyName("keyId");
-                    jsonWriter.Write(_request.keyId.ToString());
-                }
-                if (_request.completeNotification != null)
-                {
-                    jsonWriter.WritePropertyName("completeNotification");
-                    _request.completeNotification.WriteJson(jsonWriter);
-                }
-                if (_request.contextStack != null)
-                {
-                    jsonWriter.WritePropertyName("contextStack");
-                    jsonWriter.Write(_request.contextStack.ToString());
-                }
-                jsonWriter.WriteObjectEnd();
-
-                var body = stringBuilder.ToString();
-                if (!string.IsNullOrEmpty(body))
-                {
-                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
-                }
-                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
-
-                if (_request.requestId != null)
-                {
-                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
-                }
-
-                return Send((Gs2RestSession)gs2Session);
-            }
-        }
-
-		/// <summary>
-		///  ネームスペースを新規作成<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator CreateNamespace(
-                Request.CreateNamespaceRequest request,
-                UnityAction<AsyncResult<Result.CreateNamespaceResult>> callback
-        )
-		{
-			var task = new CreateNamespaceTask(request, callback);
-			return Gs2RestSession.Execute(task);
-        }
-
-        private class GetNamespaceStatusTask : Gs2RestSessionTask<Result.GetNamespaceStatusResult>
-        {
-			private readonly Request.GetNamespaceStatusRequest _request;
-
-			public GetNamespaceStatusTask(Request.GetNamespaceStatusRequest request, UnityAction<AsyncResult<Result.GetNamespaceStatusResult>> userCallback) : base(userCallback)
+			public GetCounterModelTask(Request.GetCounterModelRequest request, UnityAction<AsyncResult<Result.GetCounterModelResult>> userCallback) : base(userCallback)
 			{
 				_request = request;
 			}
@@ -716,9 +826,10 @@ namespace Gs2.Gs2Mission
                 var url = Gs2RestSession.EndpointHost
                     .Replace("{service}", "mission")
                     .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/status";
+                    + "/{namespaceName}/counter/{counterName}";
 
                 url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{counterName}", !string.IsNullOrEmpty(_request.counterName) ? _request.counterName.ToString() : "null");
 
                 var queryStrings = new List<string> ();
                 if (_request.contextStack != null)
@@ -739,255 +850,18 @@ namespace Gs2.Gs2Mission
         }
 
 		/// <summary>
-		///  ネームスペースの状態を取得<br />
+		///  カウンターの種類を取得<br />
 		/// </summary>
         ///
 		/// <returns>IEnumerator</returns>
 		/// <param name="callback">コールバックハンドラ</param>
 		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator GetNamespaceStatus(
-                Request.GetNamespaceStatusRequest request,
-                UnityAction<AsyncResult<Result.GetNamespaceStatusResult>> callback
+		public IEnumerator GetCounterModel(
+                Request.GetCounterModelRequest request,
+                UnityAction<AsyncResult<Result.GetCounterModelResult>> callback
         )
 		{
-			var task = new GetNamespaceStatusTask(request, callback);
-			return Gs2RestSession.Execute(task);
-        }
-
-        private class GetNamespaceTask : Gs2RestSessionTask<Result.GetNamespaceResult>
-        {
-			private readonly Request.GetNamespaceRequest _request;
-
-			public GetNamespaceTask(Request.GetNamespaceRequest request, UnityAction<AsyncResult<Result.GetNamespaceResult>> userCallback) : base(userCallback)
-			{
-				_request = request;
-			}
-
-            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
-            {
-				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
-
-                var url = Gs2RestSession.EndpointHost
-                    .Replace("{service}", "mission")
-                    .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}";
-
-                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
-
-                var queryStrings = new List<string> ();
-                if (_request.contextStack != null)
-                {
-                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
-                }
-                url += "?" + string.Join("&", queryStrings.ToArray());
-
-                UnityWebRequest.url = url;
-
-                if (_request.requestId != null)
-                {
-                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
-                }
-
-                return Send((Gs2RestSession)gs2Session);
-            }
-        }
-
-		/// <summary>
-		///  ネームスペースを取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator GetNamespace(
-                Request.GetNamespaceRequest request,
-                UnityAction<AsyncResult<Result.GetNamespaceResult>> callback
-        )
-		{
-			var task = new GetNamespaceTask(request, callback);
-			return Gs2RestSession.Execute(task);
-        }
-
-        private class UpdateNamespaceTask : Gs2RestSessionTask<Result.UpdateNamespaceResult>
-        {
-			private readonly Request.UpdateNamespaceRequest _request;
-
-			public UpdateNamespaceTask(Request.UpdateNamespaceRequest request, UnityAction<AsyncResult<Result.UpdateNamespaceResult>> userCallback) : base(userCallback)
-			{
-				_request = request;
-			}
-
-            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
-            {
-				UnityWebRequest.method = UnityWebRequest.kHttpVerbPUT;
-
-                var url = Gs2RestSession.EndpointHost
-                    .Replace("{service}", "mission")
-                    .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}";
-
-                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
-
-                UnityWebRequest.url = url;
-
-                var stringBuilder = new StringBuilder();
-                var jsonWriter = new JsonWriter(stringBuilder);
-                jsonWriter.WriteObjectStart();
-                if (_request.description != null)
-                {
-                    jsonWriter.WritePropertyName("description");
-                    jsonWriter.Write(_request.description.ToString());
-                }
-                if (_request.missionCompleteTriggerScriptId != null)
-                {
-                    jsonWriter.WritePropertyName("missionCompleteTriggerScriptId");
-                    jsonWriter.Write(_request.missionCompleteTriggerScriptId.ToString());
-                }
-                if (_request.missionCompleteDoneTriggerScriptId != null)
-                {
-                    jsonWriter.WritePropertyName("missionCompleteDoneTriggerScriptId");
-                    jsonWriter.Write(_request.missionCompleteDoneTriggerScriptId.ToString());
-                }
-                if (_request.missionCompleteDoneTriggerQueueNamespaceId != null)
-                {
-                    jsonWriter.WritePropertyName("missionCompleteDoneTriggerQueueNamespaceId");
-                    jsonWriter.Write(_request.missionCompleteDoneTriggerQueueNamespaceId.ToString());
-                }
-                if (_request.counterIncrementTriggerScriptId != null)
-                {
-                    jsonWriter.WritePropertyName("counterIncrementTriggerScriptId");
-                    jsonWriter.Write(_request.counterIncrementTriggerScriptId.ToString());
-                }
-                if (_request.counterIncrementDoneTriggerScriptId != null)
-                {
-                    jsonWriter.WritePropertyName("counterIncrementDoneTriggerScriptId");
-                    jsonWriter.Write(_request.counterIncrementDoneTriggerScriptId.ToString());
-                }
-                if (_request.counterIncrementDoneTriggerQueueNamespaceId != null)
-                {
-                    jsonWriter.WritePropertyName("counterIncrementDoneTriggerQueueNamespaceId");
-                    jsonWriter.Write(_request.counterIncrementDoneTriggerQueueNamespaceId.ToString());
-                }
-                if (_request.receiveRewardsTriggerScriptId != null)
-                {
-                    jsonWriter.WritePropertyName("receiveRewardsTriggerScriptId");
-                    jsonWriter.Write(_request.receiveRewardsTriggerScriptId.ToString());
-                }
-                if (_request.receiveRewardsDoneTriggerScriptId != null)
-                {
-                    jsonWriter.WritePropertyName("receiveRewardsDoneTriggerScriptId");
-                    jsonWriter.Write(_request.receiveRewardsDoneTriggerScriptId.ToString());
-                }
-                if (_request.receiveRewardsDoneTriggerQueueNamespaceId != null)
-                {
-                    jsonWriter.WritePropertyName("receiveRewardsDoneTriggerQueueNamespaceId");
-                    jsonWriter.Write(_request.receiveRewardsDoneTriggerQueueNamespaceId.ToString());
-                }
-                if (_request.queueNamespaceId != null)
-                {
-                    jsonWriter.WritePropertyName("queueNamespaceId");
-                    jsonWriter.Write(_request.queueNamespaceId.ToString());
-                }
-                if (_request.keyId != null)
-                {
-                    jsonWriter.WritePropertyName("keyId");
-                    jsonWriter.Write(_request.keyId.ToString());
-                }
-                if (_request.completeNotification != null)
-                {
-                    jsonWriter.WritePropertyName("completeNotification");
-                    _request.completeNotification.WriteJson(jsonWriter);
-                }
-                if (_request.contextStack != null)
-                {
-                    jsonWriter.WritePropertyName("contextStack");
-                    jsonWriter.Write(_request.contextStack.ToString());
-                }
-                jsonWriter.WriteObjectEnd();
-
-                var body = stringBuilder.ToString();
-                if (!string.IsNullOrEmpty(body))
-                {
-                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
-                }
-                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
-
-                if (_request.requestId != null)
-                {
-                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
-                }
-
-                return Send((Gs2RestSession)gs2Session);
-            }
-        }
-
-		/// <summary>
-		///  ネームスペースを更新<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator UpdateNamespace(
-                Request.UpdateNamespaceRequest request,
-                UnityAction<AsyncResult<Result.UpdateNamespaceResult>> callback
-        )
-		{
-			var task = new UpdateNamespaceTask(request, callback);
-			return Gs2RestSession.Execute(task);
-        }
-
-        private class DeleteNamespaceTask : Gs2RestSessionTask<Result.DeleteNamespaceResult>
-        {
-			private readonly Request.DeleteNamespaceRequest _request;
-
-			public DeleteNamespaceTask(Request.DeleteNamespaceRequest request, UnityAction<AsyncResult<Result.DeleteNamespaceResult>> userCallback) : base(userCallback)
-			{
-				_request = request;
-			}
-
-            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
-            {
-				UnityWebRequest.method = UnityWebRequest.kHttpVerbDELETE;
-
-                var url = Gs2RestSession.EndpointHost
-                    .Replace("{service}", "mission")
-                    .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}";
-
-                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
-
-                var queryStrings = new List<string> ();
-                if (_request.contextStack != null)
-                {
-                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
-                }
-                url += "?" + string.Join("&", queryStrings.ToArray());
-
-                UnityWebRequest.url = url;
-
-                if (_request.requestId != null)
-                {
-                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
-                }
-
-                return Send((Gs2RestSession)gs2Session);
-            }
-        }
-
-		/// <summary>
-		///  ネームスペースを削除<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator DeleteNamespace(
-                Request.DeleteNamespaceRequest request,
-                UnityAction<AsyncResult<Result.DeleteNamespaceResult>> callback
-        )
-		{
-			var task = new DeleteNamespaceTask(request, callback);
+			var task = new GetCounterModelTask(request, callback);
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2193,11 +2067,11 @@ namespace Gs2.Gs2Mission
 			return Gs2RestSession.Execute(task);
         }
 
-        private class DescribeCounterModelsTask : Gs2RestSessionTask<Result.DescribeCounterModelsResult>
+        private class DescribeNamespacesTask : Gs2RestSessionTask<Result.DescribeNamespacesResult>
         {
-			private readonly Request.DescribeCounterModelsRequest _request;
+			private readonly Request.DescribeNamespacesRequest _request;
 
-			public DescribeCounterModelsTask(Request.DescribeCounterModelsRequest request, UnityAction<AsyncResult<Result.DescribeCounterModelsResult>> userCallback) : base(userCallback)
+			public DescribeNamespacesTask(Request.DescribeNamespacesRequest request, UnityAction<AsyncResult<Result.DescribeNamespacesResult>> userCallback) : base(userCallback)
 			{
 				_request = request;
 			}
@@ -2209,14 +2083,18 @@ namespace Gs2.Gs2Mission
                 var url = Gs2RestSession.EndpointHost
                     .Replace("{service}", "mission")
                     .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/counter";
-
-                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                    + "/";
 
                 var queryStrings = new List<string> ();
                 if (_request.contextStack != null)
                 {
                     queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                if (_request.pageToken != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "pageToken", UnityWebRequest.EscapeURL(_request.pageToken)));
+                }
+                if (_request.limit != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "limit", _request.limit));
                 }
                 url += "?" + string.Join("&", queryStrings.ToArray());
 
@@ -2232,26 +2110,158 @@ namespace Gs2.Gs2Mission
         }
 
 		/// <summary>
-		///  カウンターの種類の一覧を取得<br />
+		///  ネームスペースの一覧を取得<br />
 		/// </summary>
         ///
 		/// <returns>IEnumerator</returns>
 		/// <param name="callback">コールバックハンドラ</param>
 		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator DescribeCounterModels(
-                Request.DescribeCounterModelsRequest request,
-                UnityAction<AsyncResult<Result.DescribeCounterModelsResult>> callback
+		public IEnumerator DescribeNamespaces(
+                Request.DescribeNamespacesRequest request,
+                UnityAction<AsyncResult<Result.DescribeNamespacesResult>> callback
         )
 		{
-			var task = new DescribeCounterModelsTask(request, callback);
+			var task = new DescribeNamespacesTask(request, callback);
 			return Gs2RestSession.Execute(task);
         }
 
-        private class GetCounterModelTask : Gs2RestSessionTask<Result.GetCounterModelResult>
+        private class CreateNamespaceTask : Gs2RestSessionTask<Result.CreateNamespaceResult>
         {
-			private readonly Request.GetCounterModelRequest _request;
+			private readonly Request.CreateNamespaceRequest _request;
 
-			public GetCounterModelTask(Request.GetCounterModelRequest request, UnityAction<AsyncResult<Result.GetCounterModelResult>> userCallback) : base(userCallback)
+			public CreateNamespaceTask(Request.CreateNamespaceRequest request, UnityAction<AsyncResult<Result.CreateNamespaceResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "mission")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/";
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.name != null)
+                {
+                    jsonWriter.WritePropertyName("name");
+                    jsonWriter.Write(_request.name.ToString());
+                }
+                if (_request.description != null)
+                {
+                    jsonWriter.WritePropertyName("description");
+                    jsonWriter.Write(_request.description.ToString());
+                }
+                if (_request.missionCompleteTriggerScriptId != null)
+                {
+                    jsonWriter.WritePropertyName("missionCompleteTriggerScriptId");
+                    jsonWriter.Write(_request.missionCompleteTriggerScriptId.ToString());
+                }
+                if (_request.missionCompleteDoneTriggerScriptId != null)
+                {
+                    jsonWriter.WritePropertyName("missionCompleteDoneTriggerScriptId");
+                    jsonWriter.Write(_request.missionCompleteDoneTriggerScriptId.ToString());
+                }
+                if (_request.missionCompleteDoneTriggerQueueNamespaceId != null)
+                {
+                    jsonWriter.WritePropertyName("missionCompleteDoneTriggerQueueNamespaceId");
+                    jsonWriter.Write(_request.missionCompleteDoneTriggerQueueNamespaceId.ToString());
+                }
+                if (_request.counterIncrementTriggerScriptId != null)
+                {
+                    jsonWriter.WritePropertyName("counterIncrementTriggerScriptId");
+                    jsonWriter.Write(_request.counterIncrementTriggerScriptId.ToString());
+                }
+                if (_request.counterIncrementDoneTriggerScriptId != null)
+                {
+                    jsonWriter.WritePropertyName("counterIncrementDoneTriggerScriptId");
+                    jsonWriter.Write(_request.counterIncrementDoneTriggerScriptId.ToString());
+                }
+                if (_request.counterIncrementDoneTriggerQueueNamespaceId != null)
+                {
+                    jsonWriter.WritePropertyName("counterIncrementDoneTriggerQueueNamespaceId");
+                    jsonWriter.Write(_request.counterIncrementDoneTriggerQueueNamespaceId.ToString());
+                }
+                if (_request.receiveRewardsTriggerScriptId != null)
+                {
+                    jsonWriter.WritePropertyName("receiveRewardsTriggerScriptId");
+                    jsonWriter.Write(_request.receiveRewardsTriggerScriptId.ToString());
+                }
+                if (_request.receiveRewardsDoneTriggerScriptId != null)
+                {
+                    jsonWriter.WritePropertyName("receiveRewardsDoneTriggerScriptId");
+                    jsonWriter.Write(_request.receiveRewardsDoneTriggerScriptId.ToString());
+                }
+                if (_request.receiveRewardsDoneTriggerQueueNamespaceId != null)
+                {
+                    jsonWriter.WritePropertyName("receiveRewardsDoneTriggerQueueNamespaceId");
+                    jsonWriter.Write(_request.receiveRewardsDoneTriggerQueueNamespaceId.ToString());
+                }
+                if (_request.queueNamespaceId != null)
+                {
+                    jsonWriter.WritePropertyName("queueNamespaceId");
+                    jsonWriter.Write(_request.queueNamespaceId.ToString());
+                }
+                if (_request.keyId != null)
+                {
+                    jsonWriter.WritePropertyName("keyId");
+                    jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.completeNotification != null)
+                {
+                    jsonWriter.WritePropertyName("completeNotification");
+                    _request.completeNotification.WriteJson(jsonWriter);
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  ネームスペースを新規作成<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator CreateNamespace(
+                Request.CreateNamespaceRequest request,
+                UnityAction<AsyncResult<Result.CreateNamespaceResult>> callback
+        )
+		{
+			var task = new CreateNamespaceTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class GetNamespaceStatusTask : Gs2RestSessionTask<Result.GetNamespaceStatusResult>
+        {
+			private readonly Request.GetNamespaceStatusRequest _request;
+
+			public GetNamespaceStatusTask(Request.GetNamespaceStatusRequest request, UnityAction<AsyncResult<Result.GetNamespaceStatusResult>> userCallback) : base(userCallback)
 			{
 				_request = request;
 			}
@@ -2263,10 +2273,9 @@ namespace Gs2.Gs2Mission
                 var url = Gs2RestSession.EndpointHost
                     .Replace("{service}", "mission")
                     .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/counter/{counterName}";
+                    + "/{namespaceName}/status";
 
                 url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
-                url = url.Replace("{counterName}", !string.IsNullOrEmpty(_request.counterName) ? _request.counterName.ToString() : "null");
 
                 var queryStrings = new List<string> ();
                 if (_request.contextStack != null)
@@ -2287,18 +2296,255 @@ namespace Gs2.Gs2Mission
         }
 
 		/// <summary>
-		///  カウンターの種類を取得<br />
+		///  ネームスペースの状態を取得<br />
 		/// </summary>
         ///
 		/// <returns>IEnumerator</returns>
 		/// <param name="callback">コールバックハンドラ</param>
 		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator GetCounterModel(
-                Request.GetCounterModelRequest request,
-                UnityAction<AsyncResult<Result.GetCounterModelResult>> callback
+		public IEnumerator GetNamespaceStatus(
+                Request.GetNamespaceStatusRequest request,
+                UnityAction<AsyncResult<Result.GetNamespaceStatusResult>> callback
         )
 		{
-			var task = new GetCounterModelTask(request, callback);
+			var task = new GetNamespaceStatusTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class GetNamespaceTask : Gs2RestSessionTask<Result.GetNamespaceResult>
+        {
+			private readonly Request.GetNamespaceRequest _request;
+
+			public GetNamespaceTask(Request.GetNamespaceRequest request, UnityAction<AsyncResult<Result.GetNamespaceResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "mission")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  ネームスペースを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetNamespace(
+                Request.GetNamespaceRequest request,
+                UnityAction<AsyncResult<Result.GetNamespaceResult>> callback
+        )
+		{
+			var task = new GetNamespaceTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class UpdateNamespaceTask : Gs2RestSessionTask<Result.UpdateNamespaceResult>
+        {
+			private readonly Request.UpdateNamespaceRequest _request;
+
+			public UpdateNamespaceTask(Request.UpdateNamespaceRequest request, UnityAction<AsyncResult<Result.UpdateNamespaceResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPUT;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "mission")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.description != null)
+                {
+                    jsonWriter.WritePropertyName("description");
+                    jsonWriter.Write(_request.description.ToString());
+                }
+                if (_request.missionCompleteTriggerScriptId != null)
+                {
+                    jsonWriter.WritePropertyName("missionCompleteTriggerScriptId");
+                    jsonWriter.Write(_request.missionCompleteTriggerScriptId.ToString());
+                }
+                if (_request.missionCompleteDoneTriggerScriptId != null)
+                {
+                    jsonWriter.WritePropertyName("missionCompleteDoneTriggerScriptId");
+                    jsonWriter.Write(_request.missionCompleteDoneTriggerScriptId.ToString());
+                }
+                if (_request.missionCompleteDoneTriggerQueueNamespaceId != null)
+                {
+                    jsonWriter.WritePropertyName("missionCompleteDoneTriggerQueueNamespaceId");
+                    jsonWriter.Write(_request.missionCompleteDoneTriggerQueueNamespaceId.ToString());
+                }
+                if (_request.counterIncrementTriggerScriptId != null)
+                {
+                    jsonWriter.WritePropertyName("counterIncrementTriggerScriptId");
+                    jsonWriter.Write(_request.counterIncrementTriggerScriptId.ToString());
+                }
+                if (_request.counterIncrementDoneTriggerScriptId != null)
+                {
+                    jsonWriter.WritePropertyName("counterIncrementDoneTriggerScriptId");
+                    jsonWriter.Write(_request.counterIncrementDoneTriggerScriptId.ToString());
+                }
+                if (_request.counterIncrementDoneTriggerQueueNamespaceId != null)
+                {
+                    jsonWriter.WritePropertyName("counterIncrementDoneTriggerQueueNamespaceId");
+                    jsonWriter.Write(_request.counterIncrementDoneTriggerQueueNamespaceId.ToString());
+                }
+                if (_request.receiveRewardsTriggerScriptId != null)
+                {
+                    jsonWriter.WritePropertyName("receiveRewardsTriggerScriptId");
+                    jsonWriter.Write(_request.receiveRewardsTriggerScriptId.ToString());
+                }
+                if (_request.receiveRewardsDoneTriggerScriptId != null)
+                {
+                    jsonWriter.WritePropertyName("receiveRewardsDoneTriggerScriptId");
+                    jsonWriter.Write(_request.receiveRewardsDoneTriggerScriptId.ToString());
+                }
+                if (_request.receiveRewardsDoneTriggerQueueNamespaceId != null)
+                {
+                    jsonWriter.WritePropertyName("receiveRewardsDoneTriggerQueueNamespaceId");
+                    jsonWriter.Write(_request.receiveRewardsDoneTriggerQueueNamespaceId.ToString());
+                }
+                if (_request.queueNamespaceId != null)
+                {
+                    jsonWriter.WritePropertyName("queueNamespaceId");
+                    jsonWriter.Write(_request.queueNamespaceId.ToString());
+                }
+                if (_request.keyId != null)
+                {
+                    jsonWriter.WritePropertyName("keyId");
+                    jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.completeNotification != null)
+                {
+                    jsonWriter.WritePropertyName("completeNotification");
+                    _request.completeNotification.WriteJson(jsonWriter);
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  ネームスペースを更新<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator UpdateNamespace(
+                Request.UpdateNamespaceRequest request,
+                UnityAction<AsyncResult<Result.UpdateNamespaceResult>> callback
+        )
+		{
+			var task = new UpdateNamespaceTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class DeleteNamespaceTask : Gs2RestSessionTask<Result.DeleteNamespaceResult>
+        {
+			private readonly Request.DeleteNamespaceRequest _request;
+
+			public DeleteNamespaceTask(Request.DeleteNamespaceRequest request, UnityAction<AsyncResult<Result.DeleteNamespaceResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbDELETE;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "mission")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  ネームスペースを削除<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DeleteNamespace(
+                Request.DeleteNamespaceRequest request,
+                UnityAction<AsyncResult<Result.DeleteNamespaceResult>> callback
+        )
+		{
+			var task = new DeleteNamespaceTask(request, callback);
 			return Gs2RestSession.Execute(task);
         }
 
@@ -3032,252 +3278,6 @@ namespace Gs2.Gs2Mission
         )
 		{
 			var task = new DeleteMissionTaskModelMasterTask(request, callback);
-			return Gs2RestSession.Execute(task);
-        }
-
-        private class ExportMasterTask : Gs2RestSessionTask<Result.ExportMasterResult>
-        {
-			private readonly Request.ExportMasterRequest _request;
-
-			public ExportMasterTask(Request.ExportMasterRequest request, UnityAction<AsyncResult<Result.ExportMasterResult>> userCallback) : base(userCallback)
-			{
-				_request = request;
-			}
-
-            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
-            {
-				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
-
-                var url = Gs2RestSession.EndpointHost
-                    .Replace("{service}", "mission")
-                    .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/master/export";
-
-                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
-
-                var queryStrings = new List<string> ();
-                if (_request.contextStack != null)
-                {
-                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
-                }
-                url += "?" + string.Join("&", queryStrings.ToArray());
-
-                UnityWebRequest.url = url;
-
-                if (_request.requestId != null)
-                {
-                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
-                }
-
-                return Send((Gs2RestSession)gs2Session);
-            }
-        }
-
-		/// <summary>
-		///  現在有効なミッションのマスターデータをエクスポートします<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator ExportMaster(
-                Request.ExportMasterRequest request,
-                UnityAction<AsyncResult<Result.ExportMasterResult>> callback
-        )
-		{
-			var task = new ExportMasterTask(request, callback);
-			return Gs2RestSession.Execute(task);
-        }
-
-        private class GetCurrentMissionMasterTask : Gs2RestSessionTask<Result.GetCurrentMissionMasterResult>
-        {
-			private readonly Request.GetCurrentMissionMasterRequest _request;
-
-			public GetCurrentMissionMasterTask(Request.GetCurrentMissionMasterRequest request, UnityAction<AsyncResult<Result.GetCurrentMissionMasterResult>> userCallback) : base(userCallback)
-			{
-				_request = request;
-			}
-
-            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
-            {
-				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
-
-                var url = Gs2RestSession.EndpointHost
-                    .Replace("{service}", "mission")
-                    .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/master";
-
-                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
-
-                var queryStrings = new List<string> ();
-                if (_request.contextStack != null)
-                {
-                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
-                }
-                url += "?" + string.Join("&", queryStrings.ToArray());
-
-                UnityWebRequest.url = url;
-
-                if (_request.requestId != null)
-                {
-                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
-                }
-
-                return Send((Gs2RestSession)gs2Session);
-            }
-        }
-
-		/// <summary>
-		///  現在有効なミッションを取得します<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator GetCurrentMissionMaster(
-                Request.GetCurrentMissionMasterRequest request,
-                UnityAction<AsyncResult<Result.GetCurrentMissionMasterResult>> callback
-        )
-		{
-			var task = new GetCurrentMissionMasterTask(request, callback);
-			return Gs2RestSession.Execute(task);
-        }
-
-        private class UpdateCurrentMissionMasterTask : Gs2RestSessionTask<Result.UpdateCurrentMissionMasterResult>
-        {
-			private readonly Request.UpdateCurrentMissionMasterRequest _request;
-
-			public UpdateCurrentMissionMasterTask(Request.UpdateCurrentMissionMasterRequest request, UnityAction<AsyncResult<Result.UpdateCurrentMissionMasterResult>> userCallback) : base(userCallback)
-			{
-				_request = request;
-			}
-
-            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
-            {
-				UnityWebRequest.method = UnityWebRequest.kHttpVerbPUT;
-
-                var url = Gs2RestSession.EndpointHost
-                    .Replace("{service}", "mission")
-                    .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/master";
-
-                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
-
-                UnityWebRequest.url = url;
-
-                var stringBuilder = new StringBuilder();
-                var jsonWriter = new JsonWriter(stringBuilder);
-                jsonWriter.WriteObjectStart();
-                if (_request.settings != null)
-                {
-                    jsonWriter.WritePropertyName("settings");
-                    jsonWriter.Write(_request.settings.ToString());
-                }
-                if (_request.contextStack != null)
-                {
-                    jsonWriter.WritePropertyName("contextStack");
-                    jsonWriter.Write(_request.contextStack.ToString());
-                }
-                jsonWriter.WriteObjectEnd();
-
-                var body = stringBuilder.ToString();
-                if (!string.IsNullOrEmpty(body))
-                {
-                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
-                }
-                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
-
-                if (_request.requestId != null)
-                {
-                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
-                }
-
-                return Send((Gs2RestSession)gs2Session);
-            }
-        }
-
-		/// <summary>
-		///  現在有効なミッションを更新します<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator UpdateCurrentMissionMaster(
-                Request.UpdateCurrentMissionMasterRequest request,
-                UnityAction<AsyncResult<Result.UpdateCurrentMissionMasterResult>> callback
-        )
-		{
-			var task = new UpdateCurrentMissionMasterTask(request, callback);
-			return Gs2RestSession.Execute(task);
-        }
-
-        private class UpdateCurrentMissionMasterFromGitHubTask : Gs2RestSessionTask<Result.UpdateCurrentMissionMasterFromGitHubResult>
-        {
-			private readonly Request.UpdateCurrentMissionMasterFromGitHubRequest _request;
-
-			public UpdateCurrentMissionMasterFromGitHubTask(Request.UpdateCurrentMissionMasterFromGitHubRequest request, UnityAction<AsyncResult<Result.UpdateCurrentMissionMasterFromGitHubResult>> userCallback) : base(userCallback)
-			{
-				_request = request;
-			}
-
-            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
-            {
-				UnityWebRequest.method = UnityWebRequest.kHttpVerbPUT;
-
-                var url = Gs2RestSession.EndpointHost
-                    .Replace("{service}", "mission")
-                    .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/master/from_git_hub";
-
-                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
-
-                UnityWebRequest.url = url;
-
-                var stringBuilder = new StringBuilder();
-                var jsonWriter = new JsonWriter(stringBuilder);
-                jsonWriter.WriteObjectStart();
-                if (_request.checkoutSetting != null)
-                {
-                    jsonWriter.WritePropertyName("checkoutSetting");
-                    _request.checkoutSetting.WriteJson(jsonWriter);
-                }
-                if (_request.contextStack != null)
-                {
-                    jsonWriter.WritePropertyName("contextStack");
-                    jsonWriter.Write(_request.contextStack.ToString());
-                }
-                jsonWriter.WriteObjectEnd();
-
-                var body = stringBuilder.ToString();
-                if (!string.IsNullOrEmpty(body))
-                {
-                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
-                }
-                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
-
-                if (_request.requestId != null)
-                {
-                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
-                }
-
-                return Send((Gs2RestSession)gs2Session);
-            }
-        }
-
-		/// <summary>
-		///  現在有効なミッションを更新します<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator UpdateCurrentMissionMasterFromGitHub(
-                Request.UpdateCurrentMissionMasterFromGitHubRequest request,
-                UnityAction<AsyncResult<Result.UpdateCurrentMissionMasterFromGitHubResult>> callback
-        )
-		{
-			var task = new UpdateCurrentMissionMasterFromGitHubTask(request, callback);
 			return Gs2RestSession.Execute(task);
         }
 	}

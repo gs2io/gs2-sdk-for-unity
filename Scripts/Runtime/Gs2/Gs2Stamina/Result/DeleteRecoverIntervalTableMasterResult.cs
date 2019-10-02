@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Stamina.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Stamina.Result
 {
+	[Preserve]
 	public class DeleteRecoverIntervalTableMasterResult
 	{
         /** 削除したスタミナ回復間隔テーブルマスター */
         public RecoverIntervalTableMaster item { set; get; }
 
+
+        public static DeleteRecoverIntervalTableMasterResult FromDict(JsonData data)
+        {
+            return new DeleteRecoverIntervalTableMasterResult {
+                item = data.Keys.Contains("item") ? RecoverIntervalTableMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

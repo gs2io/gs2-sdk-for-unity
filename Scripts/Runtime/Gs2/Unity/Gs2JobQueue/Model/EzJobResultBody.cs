@@ -16,10 +16,12 @@
 using Gs2.Gs2JobQueue.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2JobQueue.Model
 {
+	[Preserve]
 	public class EzJobResultBody
 	{
 		/** 試行回数 */

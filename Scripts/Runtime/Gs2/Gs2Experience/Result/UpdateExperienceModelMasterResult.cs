@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Experience.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Result
 {
+	[Preserve]
 	public class UpdateExperienceModelMasterResult
 	{
         /** 更新した経験値の種類マスター */
         public ExperienceModelMaster item { set; get; }
 
+
+        public static UpdateExperienceModelMasterResult FromDict(JsonData data)
+        {
+            return new UpdateExperienceModelMasterResult {
+                item = data.Keys.Contains("item") ? ExperienceModelMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

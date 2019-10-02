@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Matchmaking.Model
 {
+	[Preserve]
 	public class AttributeRange
 	{
 
@@ -84,6 +87,14 @@ namespace Gs2.Gs2Matchmaking.Model
                 writer.Write(this.max.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static AttributeRange FromDict(JsonData data)
+        {
+            return new AttributeRange()
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMin(data.Keys.Contains("min") ? (int?) data["min"] : null)
+                .WithMax(data.Keys.Contains("max") ? (int?) data["max"] : null);
         }
 	}
 }

@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Schedule.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Schedule.Result
 {
+	[Preserve]
 	public class UpdateCurrentEventMasterFromGitHubResult
 	{
         /** 更新した現在有効なイベントスケジュールマスター */
         public CurrentEventMaster item { set; get; }
 
+
+        public static UpdateCurrentEventMasterFromGitHubResult FromDict(JsonData data)
+        {
+            return new UpdateCurrentEventMasterFromGitHubResult {
+                item = data.Keys.Contains("item") ? CurrentEventMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

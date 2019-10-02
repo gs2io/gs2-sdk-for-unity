@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Friend.Model
 {
+	[Preserve]
 	public class FriendRequest
 	{
 
@@ -65,6 +68,13 @@ namespace Gs2.Gs2Friend.Model
                 writer.Write(this.targetUserId);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static FriendRequest FromDict(JsonData data)
+        {
+            return new FriendRequest()
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithTargetUserId(data.Keys.Contains("targetUserId") ? (string) data["targetUserId"] : null);
         }
 	}
 }

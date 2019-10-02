@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Quest.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Result
 {
+	[Preserve]
 	public class GetQuestGroupModelMasterResult
 	{
         /** クエストグループマスター */
         public QuestGroupModelMaster item { set; get; }
 
+
+        public static GetQuestGroupModelMasterResult FromDict(JsonData data)
+        {
+            return new GetQuestGroupModelMasterResult {
+                item = data.Keys.Contains("item") ? QuestGroupModelMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

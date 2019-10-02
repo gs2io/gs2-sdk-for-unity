@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2JobQueue.Model;
 using Gs2.Gs2JobQueue.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2JobQueue.Result
 {
+	[Preserve]
 	public class EzRunResult
 	{
         /** ジョブ */

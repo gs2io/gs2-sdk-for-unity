@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Money.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Money.Result
 {
+	[Preserve]
 	public class RecordReceiptByStampTaskResult
 	{
         /** レシート */
         public Receipt item { set; get; }
 
+
+        public static RecordReceiptByStampTaskResult FromDict(JsonData data)
+        {
+            return new RecordReceiptByStampTaskResult {
+                item = data.Keys.Contains("item") ? Receipt.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

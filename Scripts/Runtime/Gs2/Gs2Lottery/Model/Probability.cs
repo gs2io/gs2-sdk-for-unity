@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Model
 {
+	[Preserve]
 	public class Probability
 	{
 
@@ -65,6 +68,13 @@ namespace Gs2.Gs2Lottery.Model
                 writer.Write(this.rate.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Probability FromDict(JsonData data)
+        {
+            return new Probability()
+                .WithPrize(data.Keys.Contains("prize") ? DrawnPrize.FromDict(data["prize"]) : null)
+                .WithRate(data.Keys.Contains("rate") ? (float?) data["rate"] : null);
         }
 	}
 }

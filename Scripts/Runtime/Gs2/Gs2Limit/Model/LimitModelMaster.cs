@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Limit.Model
 {
+	[Preserve]
 	public class LimitModelMaster
 	{
 
@@ -217,6 +220,21 @@ namespace Gs2.Gs2Limit.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static LimitModelMaster FromDict(JsonData data)
+        {
+            return new LimitModelMaster()
+                .WithLimitModelId(data.Keys.Contains("limitModelId") ? (string) data["limitModelId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithResetType(data.Keys.Contains("resetType") ? (string) data["resetType"] : null)
+                .WithResetDayOfMonth(data.Keys.Contains("resetDayOfMonth") ? (int?) data["resetDayOfMonth"] : null)
+                .WithResetDayOfWeek(data.Keys.Contains("resetDayOfWeek") ? (string) data["resetDayOfWeek"] : null)
+                .WithResetHour(data.Keys.Contains("resetHour") ? (int?) data["resetHour"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Stamina.Model
 {
+	[Preserve]
 	public class RecoverIntervalTable
 	{
 
@@ -127,6 +130,20 @@ namespace Gs2.Gs2Stamina.Model
                 writer.WriteArrayEnd();
             }
             writer.WriteObjectEnd();
+        }
+
+        public static RecoverIntervalTable FromDict(JsonData data)
+        {
+            return new RecoverIntervalTable()
+                .WithRecoverIntervalTableId(data.Keys.Contains("recoverIntervalTableId") ? (string) data["recoverIntervalTableId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithExperienceModelId(data.Keys.Contains("experienceModelId") ? (string) data["experienceModelId"] : null)
+                .WithValues(data.Keys.Contains("values") ? data["values"].Cast<JsonData>().Select(value =>
+                    {
+                        return (int?) value;
+                    }
+                ).ToList() : null);
         }
 	}
 }

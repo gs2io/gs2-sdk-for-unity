@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Project.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Project.Result
 {
+	[Preserve]
 	public class IssuePasswordResult
 	{
         /** 新しいパスワード */
         public string newPassword { set; get; }
 
+
+        public static IssuePasswordResult FromDict(JsonData data)
+        {
+            return new IssuePasswordResult {
+                newPassword = data.Keys.Contains("newPassword") ? (string) data["newPassword"] : null,
+            };
+        }
 	}
 }

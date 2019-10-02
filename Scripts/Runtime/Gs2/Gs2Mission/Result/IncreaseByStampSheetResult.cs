@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Mission.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Result
 {
+	[Preserve]
 	public class IncreaseByStampSheetResult
 	{
         /** カウンター加算後のカウンター */
         public Counter item { set; get; }
 
+
+        public static IncreaseByStampSheetResult FromDict(JsonData data)
+        {
+            return new IncreaseByStampSheetResult {
+                item = data.Keys.Contains("item") ? Counter.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

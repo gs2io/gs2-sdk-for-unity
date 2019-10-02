@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Quest.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Result
 {
+	[Preserve]
 	public class DeleteNamespaceResult
 	{
         /** 削除したクエストを分類するカテゴリー */
         public Namespace item { set; get; }
 
+
+        public static DeleteNamespaceResult FromDict(JsonData data)
+        {
+            return new DeleteNamespaceResult {
+                item = data.Keys.Contains("item") ? Namespace.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

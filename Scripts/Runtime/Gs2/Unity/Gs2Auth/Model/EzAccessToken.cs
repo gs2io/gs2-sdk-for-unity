@@ -16,10 +16,12 @@
 using Gs2.Gs2Auth.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Auth.Model
 {
+	[Preserve]
 	public class EzAccessToken
 	{
 		/** アクセストークン */

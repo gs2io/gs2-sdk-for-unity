@@ -15,15 +15,30 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Showcase.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Showcase.Result
 {
+	[Preserve]
 	public class DescribeShowcasesByUserIdResult
 	{
         /** 陳列棚のリスト */
         public List<Showcase> items { set; get; }
 
+
+        public static DescribeShowcasesByUserIdResult FromDict(JsonData data)
+        {
+            return new DescribeShowcasesByUserIdResult {
+                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return Showcase.FromDict(value);
+                    }
+                ).ToList() : null,
+            };
+        }
 	}
 }

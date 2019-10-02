@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Model
 {
+	[Preserve]
 	public class InventoryModel
 	{
 
@@ -146,6 +149,21 @@ namespace Gs2.Gs2Inventory.Model
                 writer.WriteArrayEnd();
             }
             writer.WriteObjectEnd();
+        }
+
+        public static InventoryModel FromDict(JsonData data)
+        {
+            return new InventoryModel()
+                .WithInventoryModelId(data.Keys.Contains("inventoryModelId") ? (string) data["inventoryModelId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithInitialCapacity(data.Keys.Contains("initialCapacity") ? (int?) data["initialCapacity"] : null)
+                .WithMaxCapacity(data.Keys.Contains("maxCapacity") ? (int?) data["maxCapacity"] : null)
+                .WithItemModels(data.Keys.Contains("itemModels") ? data["itemModels"].Cast<JsonData>().Select(value =>
+                    {
+                        return ItemModel.FromDict(value);
+                    }
+                ).ToList() : null);
         }
 	}
 }

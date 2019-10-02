@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Money.Model
 {
+	[Preserve]
 	public class WalletDetail
 	{
 
@@ -160,6 +163,18 @@ namespace Gs2.Gs2Money.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static WalletDetail FromDict(JsonData data)
+        {
+            return new WalletDetail()
+                .WithWalletDetailId(data.Keys.Contains("walletDetailId") ? (string) data["walletDetailId"] : null)
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithSlot(data.Keys.Contains("slot") ? (int?) data["slot"] : null)
+                .WithPrice(data.Keys.Contains("price") ? (float?) data["price"] : null)
+                .WithCount(data.Keys.Contains("count") ? (int?) data["count"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

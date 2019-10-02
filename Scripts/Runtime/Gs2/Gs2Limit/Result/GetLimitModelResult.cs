@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Limit.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Limit.Result
 {
+	[Preserve]
 	public class GetLimitModelResult
 	{
         /** 回数制限の種類 */
         public LimitModel item { set; get; }
 
+
+        public static GetLimitModelResult FromDict(JsonData data)
+        {
+            return new GetLimitModelResult {
+                item = data.Keys.Contains("item") ? LimitModel.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

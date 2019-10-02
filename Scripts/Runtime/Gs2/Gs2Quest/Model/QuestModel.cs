@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Model
 {
+	[Preserve]
 	public class QuestModel
 	{
 
@@ -199,6 +202,35 @@ namespace Gs2.Gs2Quest.Model
                 writer.WriteArrayEnd();
             }
             writer.WriteObjectEnd();
+        }
+
+        public static QuestModel FromDict(JsonData data)
+        {
+            return new QuestModel()
+                .WithQuestModelId(data.Keys.Contains("questModelId") ? (string) data["questModelId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithContents(data.Keys.Contains("contents") ? data["contents"].Cast<JsonData>().Select(value =>
+                    {
+                        return Contents.FromDict(value);
+                    }
+                ).ToList() : null)
+                .WithChallengePeriodEventId(data.Keys.Contains("challengePeriodEventId") ? (string) data["challengePeriodEventId"] : null)
+                .WithConsumeActions(data.Keys.Contains("consumeActions") ? data["consumeActions"].Cast<JsonData>().Select(value =>
+                    {
+                        return ConsumeAction.FromDict(value);
+                    }
+                ).ToList() : null)
+                .WithFailedAcquireActions(data.Keys.Contains("failedAcquireActions") ? data["failedAcquireActions"].Cast<JsonData>().Select(value =>
+                    {
+                        return AcquireAction.FromDict(value);
+                    }
+                ).ToList() : null)
+                .WithPremiseQuestNames(data.Keys.Contains("premiseQuestNames") ? data["premiseQuestNames"].Cast<JsonData>().Select(value =>
+                    {
+                        return (string) value;
+                    }
+                ).ToList() : null);
         }
 	}
 }

@@ -15,12 +15,22 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Key.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Key.Result
 {
+	[Preserve]
 	public class DeleteNamespaceResult
 	{
+
+        public static DeleteNamespaceResult FromDict(JsonData data)
+        {
+            return new DeleteNamespaceResult {
+            };
+        }
 	}
 }

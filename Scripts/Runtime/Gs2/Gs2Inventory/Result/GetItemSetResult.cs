@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Inventory.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Result
 {
+	[Preserve]
 	public class GetItemSetResult
 	{
         /** 有効期限毎の{model_name} */
@@ -31,5 +35,18 @@ namespace Gs2.Gs2Inventory.Result
         /** インベントリ */
         public Inventory inventory { set; get; }
 
+
+        public static GetItemSetResult FromDict(JsonData data)
+        {
+            return new GetItemSetResult {
+                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return ItemSet.FromDict(value);
+                    }
+                ).ToList() : null,
+                itemModel = data.Keys.Contains("itemModel") ? ItemModel.FromDict(data["itemModel"]) : null,
+                inventory = data.Keys.Contains("inventory") ? Inventory.FromDict(data["inventory"]) : null,
+            };
+        }
 	}
 }

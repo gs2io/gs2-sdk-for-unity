@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lock.Model
 {
+	[Preserve]
 	public class Mutex
 	{
 
@@ -160,6 +163,18 @@ namespace Gs2.Gs2Lock.Model
                 writer.Write(this.ttlAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Mutex FromDict(JsonData data)
+        {
+            return new Mutex()
+                .WithMutexId(data.Keys.Contains("mutexId") ? (string) data["mutexId"] : null)
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithPropertyId(data.Keys.Contains("propertyId") ? (string) data["propertyId"] : null)
+                .WithTransactionId(data.Keys.Contains("transactionId") ? (string) data["transactionId"] : null)
+                .WithReferenceCount(data.Keys.Contains("referenceCount") ? (int?) data["referenceCount"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithTtlAt(data.Keys.Contains("ttlAt") ? (long?) data["ttlAt"] : null);
         }
 	}
 }

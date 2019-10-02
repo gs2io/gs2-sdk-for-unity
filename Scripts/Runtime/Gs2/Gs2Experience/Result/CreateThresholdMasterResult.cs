@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Experience.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Result
 {
+	[Preserve]
 	public class CreateThresholdMasterResult
 	{
         /** 作成したランクアップ閾値マスター */
         public ThresholdMaster item { set; get; }
 
+
+        public static CreateThresholdMasterResult FromDict(JsonData data)
+        {
+            return new CreateThresholdMasterResult {
+                item = data.Keys.Contains("item") ? ThresholdMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

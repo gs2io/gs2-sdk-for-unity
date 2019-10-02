@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Identifier.Model
 {
+	[Preserve]
 	public class AttachSecurityPolicy
 	{
 
@@ -89,6 +92,18 @@ namespace Gs2.Gs2Identifier.Model
                 writer.Write(this.attachedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static AttachSecurityPolicy FromDict(JsonData data)
+        {
+            return new AttachSecurityPolicy()
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithSecurityPolicyIds(data.Keys.Contains("securityPolicyIds") ? data["securityPolicyIds"].Cast<JsonData>().Select(value =>
+                    {
+                        return (string) value;
+                    }
+                ).ToList() : null)
+                .WithAttachedAt(data.Keys.Contains("attachedAt") ? (long?) data["attachedAt"] : null);
         }
 	}
 }

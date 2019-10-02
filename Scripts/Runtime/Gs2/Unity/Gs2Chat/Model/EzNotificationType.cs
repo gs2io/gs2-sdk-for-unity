@@ -16,10 +16,12 @@
 using Gs2.Gs2Chat.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Chat.Model
 {
+	[Preserve]
 	public class EzNotificationType
 	{
 		/** 新着メッセージ通知を受け取るカテゴリ */

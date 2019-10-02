@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Lottery.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Result
 {
+	[Preserve]
 	public class GetBoxByUserIdResult
 	{
         /** ボックスから取り出したアイテムのリスト */
         public BoxItems item { set; get; }
 
+
+        public static GetBoxByUserIdResult FromDict(JsonData data)
+        {
+            return new GetBoxByUserIdResult {
+                item = data.Keys.Contains("item") ? BoxItems.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

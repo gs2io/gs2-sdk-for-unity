@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Deploy.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Deploy.Result
 {
+	[Preserve]
 	public class GetOutputResult
 	{
         /** アウトプット */
         public Output item { set; get; }
 
+
+        public static GetOutputResult FromDict(JsonData data)
+        {
+            return new GetOutputResult {
+                item = data.Keys.Contains("item") ? Output.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

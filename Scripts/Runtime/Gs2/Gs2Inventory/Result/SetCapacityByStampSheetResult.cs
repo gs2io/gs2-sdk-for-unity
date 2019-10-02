@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Inventory.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Result
 {
+	[Preserve]
 	public class SetCapacityByStampSheetResult
 	{
         /** 更新後のインベントリ */
         public Inventory item { set; get; }
 
+
+        public static SetCapacityByStampSheetResult FromDict(JsonData data)
+        {
+            return new SetCapacityByStampSheetResult {
+                item = data.Keys.Contains("item") ? Inventory.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

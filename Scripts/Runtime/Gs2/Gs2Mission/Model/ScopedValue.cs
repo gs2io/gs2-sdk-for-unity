@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Model
 {
+	[Preserve]
 	public class ScopedValue
 	{
 
@@ -84,6 +87,14 @@ namespace Gs2.Gs2Mission.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static ScopedValue FromDict(JsonData data)
+        {
+            return new ScopedValue()
+                .WithResetType(data.Keys.Contains("resetType") ? (string) data["resetType"] : null)
+                .WithValue(data.Keys.Contains("value") ? (long?) data["value"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

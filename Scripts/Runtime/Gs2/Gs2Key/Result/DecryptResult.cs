@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Key.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Key.Result
 {
+	[Preserve]
 	public class DecryptResult
 	{
         /** 復号済みデータ */
         public string data { set; get; }
 
+
+        public static DecryptResult FromDict(JsonData data)
+        {
+            return new DecryptResult {
+                data = data.Keys.Contains("data") ? (string) data["data"] : null,
+            };
+        }
 	}
 }

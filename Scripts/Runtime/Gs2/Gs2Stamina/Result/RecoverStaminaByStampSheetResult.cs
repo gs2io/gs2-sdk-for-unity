@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Stamina.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Stamina.Result
 {
+	[Preserve]
 	public class RecoverStaminaByStampSheetResult
 	{
         /** スタミナ */
@@ -28,5 +32,13 @@ namespace Gs2.Gs2Stamina.Result
         /** スタミナ値の上限を超えて受け取れずに GS2-Inbox に転送したスタミナ値 */
         public long? overflowValue { set; get; }
 
+
+        public static RecoverStaminaByStampSheetResult FromDict(JsonData data)
+        {
+            return new RecoverStaminaByStampSheetResult {
+                item = data.Keys.Contains("item") ? Stamina.FromDict(data["item"]) : null,
+                overflowValue = data.Keys.Contains("overflowValue") ? (long?) data["overflowValue"] : null,
+            };
+        }
 	}
 }

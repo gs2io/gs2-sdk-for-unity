@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Chat.Model
 {
+	[Preserve]
 	public class Namespace
 	{
 
@@ -274,6 +277,24 @@ namespace Gs2.Gs2Chat.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Namespace FromDict(JsonData data)
+        {
+            return new Namespace()
+                .WithNamespaceId(data.Keys.Contains("namespaceId") ? (string) data["namespaceId"] : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
+                .WithAllowCreateRoom(data.Keys.Contains("allowCreateRoom") ? (bool?) data["allowCreateRoom"] : null)
+                .WithPostMessageScript(data.Keys.Contains("postMessageScript") ? ScriptSetting.FromDict(data["postMessageScript"]) : null)
+                .WithCreateRoomScript(data.Keys.Contains("createRoomScript") ? ScriptSetting.FromDict(data["createRoomScript"]) : null)
+                .WithDeleteRoomScript(data.Keys.Contains("deleteRoomScript") ? ScriptSetting.FromDict(data["deleteRoomScript"]) : null)
+                .WithSubscribeRoomScript(data.Keys.Contains("subscribeRoomScript") ? ScriptSetting.FromDict(data["subscribeRoomScript"]) : null)
+                .WithUnsubscribeRoomScript(data.Keys.Contains("unsubscribeRoomScript") ? ScriptSetting.FromDict(data["unsubscribeRoomScript"]) : null)
+                .WithPostNotification(data.Keys.Contains("postNotification") ? NotificationSetting.FromDict(data["postNotification"]) : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

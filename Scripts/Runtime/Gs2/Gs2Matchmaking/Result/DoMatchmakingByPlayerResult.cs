@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Matchmaking.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Matchmaking.Result
 {
+	[Preserve]
 	public class DoMatchmakingByPlayerResult
 	{
         /** ギャザリング */
@@ -28,5 +32,13 @@ namespace Gs2.Gs2Matchmaking.Result
         /** マッチメイキングの状態を保持するトークン */
         public string matchmakingContextToken { set; get; }
 
+
+        public static DoMatchmakingByPlayerResult FromDict(JsonData data)
+        {
+            return new DoMatchmakingByPlayerResult {
+                item = data.Keys.Contains("item") ? Gathering.FromDict(data["item"]) : null,
+                matchmakingContextToken = data.Keys.Contains("matchmakingContextToken") ? (string) data["matchmakingContextToken"] : null,
+            };
+        }
 	}
 }

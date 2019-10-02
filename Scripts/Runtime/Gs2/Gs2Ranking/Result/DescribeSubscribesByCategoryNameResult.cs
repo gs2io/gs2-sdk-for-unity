@@ -15,15 +15,30 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Ranking.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Ranking.Result
 {
+	[Preserve]
 	public class DescribeSubscribesByCategoryNameResult
 	{
         /** 購読対象のリスト */
         public List<SubscribeUser> items { set; get; }
 
+
+        public static DescribeSubscribesByCategoryNameResult FromDict(JsonData data)
+        {
+            return new DescribeSubscribesByCategoryNameResult {
+                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return SubscribeUser.FromDict(value);
+                    }
+                ).ToList() : null,
+            };
+        }
 	}
 }

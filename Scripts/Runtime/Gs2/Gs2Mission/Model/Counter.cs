@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Model
 {
+	[Preserve]
 	public class Counter
 	{
 
@@ -146,6 +149,21 @@ namespace Gs2.Gs2Mission.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Counter FromDict(JsonData data)
+        {
+            return new Counter()
+                .WithCounterId(data.Keys.Contains("counterId") ? (string) data["counterId"] : null)
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithValues(data.Keys.Contains("values") ? data["values"].Cast<JsonData>().Select(value =>
+                    {
+                        return ScopedValue.FromDict(value);
+                    }
+                ).ToList() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

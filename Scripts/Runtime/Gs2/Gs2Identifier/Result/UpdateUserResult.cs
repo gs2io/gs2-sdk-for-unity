@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Identifier.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Identifier.Result
 {
+	[Preserve]
 	public class UpdateUserResult
 	{
         /** 更新後のユーザ */
         public User item { set; get; }
 
+
+        public static UpdateUserResult FromDict(JsonData data)
+        {
+            return new UpdateUserResult {
+                item = data.Keys.Contains("item") ? User.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

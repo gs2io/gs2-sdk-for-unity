@@ -16,10 +16,12 @@
 using Gs2.Gs2Lottery.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Lottery.Model
 {
+	[Preserve]
 	public class EzAcquireAction
 	{
 		/** スタンプシートで実行するアクションの種類 */

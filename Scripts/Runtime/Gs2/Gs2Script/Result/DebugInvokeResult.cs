@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Script.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Script.Result
 {
+	[Preserve]
 	public class DebugInvokeResult
 	{
         /** ステータスコード */
@@ -37,5 +41,20 @@ namespace Gs2.Gs2Script.Result
         /** 標準出力の内容のリスト */
         public List<string> output { set; get; }
 
+
+        public static DebugInvokeResult FromDict(JsonData data)
+        {
+            return new DebugInvokeResult {
+                code = data.Keys.Contains("code") ? (int?) data["code"] : null,
+                result = data.Keys.Contains("result") ? (string) data["result"] : null,
+                executeTime = data.Keys.Contains("executeTime") ? (int?) data["executeTime"] : null,
+                charged = data.Keys.Contains("charged") ? (int?) data["charged"] : null,
+                output = data.Keys.Contains("output") ? data["output"].Cast<JsonData>().Select(value =>
+                    {
+                        return (string) value;
+                    }
+                ).ToList() : null,
+            };
+        }
 	}
 }

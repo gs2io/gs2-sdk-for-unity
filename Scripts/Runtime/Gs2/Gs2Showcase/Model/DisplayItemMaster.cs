@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Showcase.Model
 {
+	[Preserve]
 	public class DisplayItemMaster
 	{
 
@@ -122,6 +125,16 @@ namespace Gs2.Gs2Showcase.Model
                 writer.Write(this.salesPeriodEventId);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static DisplayItemMaster FromDict(JsonData data)
+        {
+            return new DisplayItemMaster()
+                .WithDisplayItemId(data.Keys.Contains("displayItemId") ? (string) data["displayItemId"] : null)
+                .WithType(data.Keys.Contains("type") ? (string) data["type"] : null)
+                .WithSalesItemName(data.Keys.Contains("salesItemName") ? (string) data["salesItemName"] : null)
+                .WithSalesItemGroupName(data.Keys.Contains("salesItemGroupName") ? (string) data["salesItemGroupName"] : null)
+                .WithSalesPeriodEventId(data.Keys.Contains("salesPeriodEventId") ? (string) data["salesPeriodEventId"] : null);
         }
 	}
 }

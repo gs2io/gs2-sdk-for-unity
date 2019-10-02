@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Money.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Money.Result
 {
+	[Preserve]
 	public class DepositByStampSheetResult
 	{
         /** 加算後のウォレット */
         public Wallet item { set; get; }
 
+
+        public static DepositByStampSheetResult FromDict(JsonData data)
+        {
+            return new DepositByStampSheetResult {
+                item = data.Keys.Contains("item") ? Wallet.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

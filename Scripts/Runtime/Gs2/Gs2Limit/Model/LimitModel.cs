@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Limit.Model
 {
+	[Preserve]
 	public class LimitModel
 	{
 
@@ -160,6 +163,18 @@ namespace Gs2.Gs2Limit.Model
                 writer.Write(this.resetHour.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static LimitModel FromDict(JsonData data)
+        {
+            return new LimitModel()
+                .WithLimitModelId(data.Keys.Contains("limitModelId") ? (string) data["limitModelId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithResetType(data.Keys.Contains("resetType") ? (string) data["resetType"] : null)
+                .WithResetDayOfMonth(data.Keys.Contains("resetDayOfMonth") ? (int?) data["resetDayOfMonth"] : null)
+                .WithResetDayOfWeek(data.Keys.Contains("resetDayOfWeek") ? (string) data["resetDayOfWeek"] : null)
+                .WithResetHour(data.Keys.Contains("resetHour") ? (int?) data["resetHour"] : null);
         }
 	}
 }

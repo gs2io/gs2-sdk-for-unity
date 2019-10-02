@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Schedule.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Schedule.Result
 {
+	[Preserve]
 	public class TriggerByUserIdResult
 	{
         /** 引いたトリガー */
         public Trigger item { set; get; }
 
+
+        public static TriggerByUserIdResult FromDict(JsonData data)
+        {
+            return new TriggerByUserIdResult {
+                item = data.Keys.Contains("item") ? Trigger.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

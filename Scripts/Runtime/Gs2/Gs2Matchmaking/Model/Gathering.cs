@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Matchmaking.Model
 {
+	[Preserve]
 	public class Gathering
 	{
 
@@ -194,6 +197,31 @@ namespace Gs2.Gs2Matchmaking.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Gathering FromDict(JsonData data)
+        {
+            return new Gathering()
+                .WithGatheringId(data.Keys.Contains("gatheringId") ? (string) data["gatheringId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithAttributeRanges(data.Keys.Contains("attributeRanges") ? data["attributeRanges"].Cast<JsonData>().Select(value =>
+                    {
+                        return AttributeRange.FromDict(value);
+                    }
+                ).ToList() : null)
+                .WithCapacityOfRoles(data.Keys.Contains("capacityOfRoles") ? data["capacityOfRoles"].Cast<JsonData>().Select(value =>
+                    {
+                        return CapacityOfRole.FromDict(value);
+                    }
+                ).ToList() : null)
+                .WithAllowUserIds(data.Keys.Contains("allowUserIds") ? data["allowUserIds"].Cast<JsonData>().Select(value =>
+                    {
+                        return (string) value;
+                    }
+                ).ToList() : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

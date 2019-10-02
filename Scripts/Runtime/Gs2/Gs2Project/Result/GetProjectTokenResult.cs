@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Project.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Project.Result
 {
+	[Preserve]
 	public class GetProjectTokenResult
 	{
         /** サインインしたプロジェクト */
@@ -31,5 +35,14 @@ namespace Gs2.Gs2Project.Result
         /** プロジェクトトークン */
         public string projectToken { set; get; }
 
+
+        public static GetProjectTokenResult FromDict(JsonData data)
+        {
+            return new GetProjectTokenResult {
+                item = data.Keys.Contains("item") ? Project.FromDict(data["item"]) : null,
+                ownerId = data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null,
+                projectToken = data.Keys.Contains("projectToken") ? (string) data["projectToken"] : null,
+            };
+        }
 	}
 }

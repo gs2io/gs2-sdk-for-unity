@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Distributor.Model
 {
+	[Preserve]
 	public class CurrentDistributorMaster
 	{
 
@@ -65,6 +68,13 @@ namespace Gs2.Gs2Distributor.Model
                 writer.Write(this.settings);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static CurrentDistributorMaster FromDict(JsonData data)
+        {
+            return new CurrentDistributorMaster()
+                .WithNamespaceName(data.Keys.Contains("namespaceName") ? (string) data["namespaceName"] : null)
+                .WithSettings(data.Keys.Contains("settings") ? (string) data["settings"] : null);
         }
 	}
 }

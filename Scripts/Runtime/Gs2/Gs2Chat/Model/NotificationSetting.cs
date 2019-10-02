@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Chat.Model
 {
+	[Preserve]
 	public class NotificationSetting
 	{
 
@@ -84,6 +87,14 @@ namespace Gs2.Gs2Chat.Model
                 writer.Write(this.sound);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static NotificationSetting FromDict(JsonData data)
+        {
+            return new NotificationSetting()
+                .WithGatewayNamespaceId(data.Keys.Contains("gatewayNamespaceId") ? (string) data["gatewayNamespaceId"] : null)
+                .WithEnableTransferMobileNotification(data.Keys.Contains("enableTransferMobileNotification") ? (bool?) data["enableTransferMobileNotification"] : null)
+                .WithSound(data.Keys.Contains("sound") ? (string) data["sound"] : null);
         }
 	}
 }

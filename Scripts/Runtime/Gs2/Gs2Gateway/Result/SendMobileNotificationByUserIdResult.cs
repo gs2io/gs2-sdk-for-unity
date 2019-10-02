@@ -15,12 +15,22 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Gateway.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Gateway.Result
 {
+	[Preserve]
 	public class SendMobileNotificationByUserIdResult
 	{
+
+        public static SendMobileNotificationByUserIdResult FromDict(JsonData data)
+        {
+            return new SendMobileNotificationByUserIdResult {
+            };
+        }
 	}
 }

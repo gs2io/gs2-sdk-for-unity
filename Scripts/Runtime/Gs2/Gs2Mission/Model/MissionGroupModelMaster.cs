@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Model
 {
+	[Preserve]
 	public class MissionGroupModelMaster
 	{
 
@@ -160,6 +163,18 @@ namespace Gs2.Gs2Mission.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static MissionGroupModelMaster FromDict(JsonData data)
+        {
+            return new MissionGroupModelMaster()
+                .WithMissionGroupId(data.Keys.Contains("missionGroupId") ? (string) data["missionGroupId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
+                .WithCompleteNotificationNamespaceId(data.Keys.Contains("completeNotificationNamespaceId") ? (string) data["completeNotificationNamespaceId"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

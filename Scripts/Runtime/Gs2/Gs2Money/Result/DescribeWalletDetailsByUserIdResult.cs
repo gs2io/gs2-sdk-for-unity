@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Money.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Money.Result
 {
+	[Preserve]
 	public class DescribeWalletDetailsByUserIdResult
 	{
         /** ウォレットの詳細のリスト */
@@ -28,5 +32,17 @@ namespace Gs2.Gs2Money.Result
         /** リストの続きを取得するためのページトークン */
         public string nextPageToken { set; get; }
 
+
+        public static DescribeWalletDetailsByUserIdResult FromDict(JsonData data)
+        {
+            return new DescribeWalletDetailsByUserIdResult {
+                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return WalletDetail.FromDict(value);
+                    }
+                ).ToList() : null,
+                nextPageToken = data.Keys.Contains("nextPageToken") ? (string) data["nextPageToken"] : null,
+            };
+        }
 	}
 }

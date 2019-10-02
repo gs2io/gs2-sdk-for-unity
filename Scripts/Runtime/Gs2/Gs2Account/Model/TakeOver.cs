@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Account.Model
 {
+	[Preserve]
 	public class TakeOver
 	{
 
@@ -141,6 +144,17 @@ namespace Gs2.Gs2Account.Model
                 writer.Write(this.createdAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static TakeOver FromDict(JsonData data)
+        {
+            return new TakeOver()
+                .WithTakeOverId(data.Keys.Contains("takeOverId") ? (string) data["takeOverId"] : null)
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithType(data.Keys.Contains("type") ? (int?) data["type"] : null)
+                .WithUserIdentifier(data.Keys.Contains("userIdentifier") ? (string) data["userIdentifier"] : null)
+                .WithPassword(data.Keys.Contains("password") ? (string) data["password"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null);
         }
 	}
 }

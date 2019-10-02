@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Identifier.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Identifier.Result
 {
+	[Preserve]
 	public class CreateSecurityPolicyResult
 	{
         /** 作成したセキュリティポリシー */
         public SecurityPolicy item { set; get; }
 
+
+        public static CreateSecurityPolicyResult FromDict(JsonData data)
+        {
+            return new CreateSecurityPolicyResult {
+                item = data.Keys.Contains("item") ? SecurityPolicy.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

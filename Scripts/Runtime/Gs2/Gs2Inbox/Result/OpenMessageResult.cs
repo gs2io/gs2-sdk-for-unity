@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Inbox.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inbox.Result
 {
+	[Preserve]
 	public class OpenMessageResult
 	{
         /** メッセージ */
         public Message item { set; get; }
 
+
+        public static OpenMessageResult FromDict(JsonData data)
+        {
+            return new OpenMessageResult {
+                item = data.Keys.Contains("item") ? Message.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

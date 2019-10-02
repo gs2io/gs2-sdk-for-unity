@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Chat.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Chat.Result
 {
+	[Preserve]
 	public class PostByUserIdResult
 	{
         /** 投稿したメッセージ */
         public Message item { set; get; }
 
+
+        public static PostByUserIdResult FromDict(JsonData data)
+        {
+            return new PostByUserIdResult {
+                item = data.Keys.Contains("item") ? Message.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

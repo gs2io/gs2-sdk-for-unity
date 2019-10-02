@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Chat.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Chat.Result
 {
+	[Preserve]
 	public class UpdateRoomResult
 	{
         /** 更新したルーム */
         public Room item { set; get; }
 
+
+        public static UpdateRoomResult FromDict(JsonData data)
+        {
+            return new UpdateRoomResult {
+                item = data.Keys.Contains("item") ? Room.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

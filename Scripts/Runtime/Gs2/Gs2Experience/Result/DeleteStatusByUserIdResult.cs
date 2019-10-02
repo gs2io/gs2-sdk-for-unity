@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Experience.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Result
 {
+	[Preserve]
 	public class DeleteStatusByUserIdResult
 	{
         /** ステータス */
         public Status item { set; get; }
 
+
+        public static DeleteStatusByUserIdResult FromDict(JsonData data)
+        {
+            return new DeleteStatusByUserIdResult {
+                item = data.Keys.Contains("item") ? Status.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

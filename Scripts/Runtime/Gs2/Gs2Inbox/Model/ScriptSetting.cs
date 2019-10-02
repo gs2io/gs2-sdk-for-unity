@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inbox.Model
 {
+	[Preserve]
 	public class ScriptSetting
 	{
 
@@ -84,6 +87,14 @@ namespace Gs2.Gs2Inbox.Model
                 writer.Write(this.doneTriggerQueueNamespaceId);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static ScriptSetting FromDict(JsonData data)
+        {
+            return new ScriptSetting()
+                .WithTriggerScriptId(data.Keys.Contains("triggerScriptId") ? (string) data["triggerScriptId"] : null)
+                .WithDoneTriggerScriptId(data.Keys.Contains("doneTriggerScriptId") ? (string) data["doneTriggerScriptId"] : null)
+                .WithDoneTriggerQueueNamespaceId(data.Keys.Contains("doneTriggerQueueNamespaceId") ? (string) data["doneTriggerQueueNamespaceId"] : null);
         }
 	}
 }

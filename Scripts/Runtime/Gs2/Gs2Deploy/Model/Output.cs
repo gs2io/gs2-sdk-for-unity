@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Deploy.Model
 {
+	[Preserve]
 	public class Output
 	{
 
@@ -103,6 +106,15 @@ namespace Gs2.Gs2Deploy.Model
                 writer.Write(this.createdAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Output FromDict(JsonData data)
+        {
+            return new Output()
+                .WithOutputId(data.Keys.Contains("outputId") ? (string) data["outputId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithValue(data.Keys.Contains("value") ? (string) data["value"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null);
         }
 	}
 }

@@ -15,15 +15,30 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Lottery.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Result
 {
+	[Preserve]
 	public class DescribeProbabilitiesByUserIdResult
 	{
         /** 景品の当選確率リスト */
         public List<Probability> items { set; get; }
 
+
+        public static DescribeProbabilitiesByUserIdResult FromDict(JsonData data)
+        {
+            return new DescribeProbabilitiesByUserIdResult {
+                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return Probability.FromDict(value);
+                    }
+                ).ToList() : null,
+            };
+        }
 	}
 }

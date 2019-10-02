@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Friend.Model
 {
+	[Preserve]
 	public class Inbox
 	{
 
@@ -127,6 +130,20 @@ namespace Gs2.Gs2Friend.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Inbox FromDict(JsonData data)
+        {
+            return new Inbox()
+                .WithInboxId(data.Keys.Contains("inboxId") ? (string) data["inboxId"] : null)
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithFromUserIds(data.Keys.Contains("fromUserIds") ? data["fromUserIds"].Cast<JsonData>().Select(value =>
+                    {
+                        return (string) value;
+                    }
+                ).ToList() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

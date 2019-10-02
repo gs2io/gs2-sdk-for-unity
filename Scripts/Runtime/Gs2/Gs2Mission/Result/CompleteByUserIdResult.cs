@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Mission.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Result
 {
+	[Preserve]
 	public class CompleteByUserIdResult
 	{
         /** ミッションの達成報酬を受領するスタンプシート */
         public string stampSheet { set; get; }
 
+
+        public static CompleteByUserIdResult FromDict(JsonData data)
+        {
+            return new CompleteByUserIdResult {
+                stampSheet = data.Keys.Contains("stampSheet") ? (string) data["stampSheet"] : null,
+            };
+        }
 	}
 }

@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Inbox.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inbox.Result
 {
+	[Preserve]
 	public class ReadMessageByUserIdResult
 	{
         /** メッセージ */
@@ -28,5 +32,13 @@ namespace Gs2.Gs2Inbox.Result
         /** スタンプシート */
         public string stampSheet { set; get; }
 
+
+        public static ReadMessageByUserIdResult FromDict(JsonData data)
+        {
+            return new ReadMessageByUserIdResult {
+                item = data.Keys.Contains("item") ? Message.FromDict(data["item"]) : null,
+                stampSheet = data.Keys.Contains("stampSheet") ? (string) data["stampSheet"] : null,
+            };
+        }
 	}
 }

@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Experience.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Result
 {
+	[Preserve]
 	public class GetStatusWithSignatureResult
 	{
         /** ステータス */
@@ -31,5 +35,14 @@ namespace Gs2.Gs2Experience.Result
         /** 署名 */
         public string signature { set; get; }
 
+
+        public static GetStatusWithSignatureResult FromDict(JsonData data)
+        {
+            return new GetStatusWithSignatureResult {
+                item = data.Keys.Contains("item") ? Status.FromDict(data["item"]) : null,
+                body = data.Keys.Contains("body") ? (string) data["body"] : null,
+                signature = data.Keys.Contains("signature") ? (string) data["signature"] : null,
+            };
+        }
 	}
 }

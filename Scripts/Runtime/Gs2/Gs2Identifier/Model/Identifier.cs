@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Identifier.Model
 {
+	[Preserve]
 	public class Identifier
 	{
 
@@ -122,6 +125,16 @@ namespace Gs2.Gs2Identifier.Model
                 writer.Write(this.createdAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Identifier FromDict(JsonData data)
+        {
+            return new Identifier()
+                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
+                .WithClientId(data.Keys.Contains("clientId") ? (string) data["clientId"] : null)
+                .WithUserName(data.Keys.Contains("userName") ? (string) data["userName"] : null)
+                .WithClientSecret(data.Keys.Contains("clientSecret") ? (string) data["clientSecret"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null);
         }
 	}
 }

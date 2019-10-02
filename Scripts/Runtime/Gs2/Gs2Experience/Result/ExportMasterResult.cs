@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Experience.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Result
 {
+	[Preserve]
 	public class ExportMasterResult
 	{
         /** 現在有効な経験値設定 */
         public CurrentExperienceMaster item { set; get; }
 
+
+        public static ExportMasterResult FromDict(JsonData data)
+        {
+            return new ExportMasterResult {
+                item = data.Keys.Contains("item") ? CurrentExperienceMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Key.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Key.Result
 {
+	[Preserve]
 	public class CreateKeyResult
 	{
         /** 作成した暗号鍵 */
         public Key item { set; get; }
 
+
+        public static CreateKeyResult FromDict(JsonData data)
+        {
+            return new CreateKeyResult {
+                item = data.Keys.Contains("item") ? Key.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

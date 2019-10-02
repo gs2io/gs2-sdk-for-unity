@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Stamina.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Stamina.Result
 {
+	[Preserve]
 	public class GetStaminaByUserIdResult
 	{
         /** スタミナ */
         public Stamina item { set; get; }
 
+
+        public static GetStaminaByUserIdResult FromDict(JsonData data)
+        {
+            return new GetStaminaByUserIdResult {
+                item = data.Keys.Contains("item") ? Stamina.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

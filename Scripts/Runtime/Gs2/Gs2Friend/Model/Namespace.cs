@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Friend.Model
 {
+	[Preserve]
 	public class Namespace
 	{
 
@@ -350,6 +353,28 @@ namespace Gs2.Gs2Friend.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Namespace FromDict(JsonData data)
+        {
+            return new Namespace()
+                .WithNamespaceId(data.Keys.Contains("namespaceId") ? (string) data["namespaceId"] : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
+                .WithFollowScript(data.Keys.Contains("followScript") ? ScriptSetting.FromDict(data["followScript"]) : null)
+                .WithUnfollowScript(data.Keys.Contains("unfollowScript") ? ScriptSetting.FromDict(data["unfollowScript"]) : null)
+                .WithSendRequestScript(data.Keys.Contains("sendRequestScript") ? ScriptSetting.FromDict(data["sendRequestScript"]) : null)
+                .WithCancelRequestScript(data.Keys.Contains("cancelRequestScript") ? ScriptSetting.FromDict(data["cancelRequestScript"]) : null)
+                .WithAcceptRequestScript(data.Keys.Contains("acceptRequestScript") ? ScriptSetting.FromDict(data["acceptRequestScript"]) : null)
+                .WithRejectRequestScript(data.Keys.Contains("rejectRequestScript") ? ScriptSetting.FromDict(data["rejectRequestScript"]) : null)
+                .WithDeleteFriendScript(data.Keys.Contains("deleteFriendScript") ? ScriptSetting.FromDict(data["deleteFriendScript"]) : null)
+                .WithUpdateProfileScript(data.Keys.Contains("updateProfileScript") ? ScriptSetting.FromDict(data["updateProfileScript"]) : null)
+                .WithFollowNotification(data.Keys.Contains("followNotification") ? NotificationSetting.FromDict(data["followNotification"]) : null)
+                .WithReceiveRequestNotification(data.Keys.Contains("receiveRequestNotification") ? NotificationSetting.FromDict(data["receiveRequestNotification"]) : null)
+                .WithAcceptRequestNotification(data.Keys.Contains("acceptRequestNotification") ? NotificationSetting.FromDict(data["acceptRequestNotification"]) : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

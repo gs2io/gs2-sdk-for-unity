@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Model
 {
+	[Preserve]
 	public class MissionGroupModel
 	{
 
@@ -127,6 +130,20 @@ namespace Gs2.Gs2Mission.Model
                 writer.Write(this.completeNotificationNamespaceId);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static MissionGroupModel FromDict(JsonData data)
+        {
+            return new MissionGroupModel()
+                .WithMissionGroupId(data.Keys.Contains("missionGroupId") ? (string) data["missionGroupId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithTasks(data.Keys.Contains("tasks") ? data["tasks"].Cast<JsonData>().Select(value =>
+                    {
+                        return MissionTaskModel.FromDict(value);
+                    }
+                ).ToList() : null)
+                .WithCompleteNotificationNamespaceId(data.Keys.Contains("completeNotificationNamespaceId") ? (string) data["completeNotificationNamespaceId"] : null);
         }
 	}
 }

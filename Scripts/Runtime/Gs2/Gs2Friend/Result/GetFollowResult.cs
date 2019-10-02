@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Friend.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Friend.Result
 {
+	[Preserve]
 	public class GetFollowResult
 	{
         /** フォローしているユーザー */
         public FollowUser item { set; get; }
 
+
+        public static GetFollowResult FromDict(JsonData data)
+        {
+            return new GetFollowResult {
+                item = data.Keys.Contains("item") ? FollowUser.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

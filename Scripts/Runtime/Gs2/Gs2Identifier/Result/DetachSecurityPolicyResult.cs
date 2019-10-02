@@ -15,15 +15,30 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Identifier.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Identifier.Result
 {
+	[Preserve]
 	public class DetachSecurityPolicyResult
 	{
         /** 剥奪したあとユーザーに引き続き割り当てられているセキュリティポリシーのリスト */
         public List<SecurityPolicy> items { set; get; }
 
+
+        public static DetachSecurityPolicyResult FromDict(JsonData data)
+        {
+            return new DetachSecurityPolicyResult {
+                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return SecurityPolicy.FromDict(value);
+                    }
+                ).ToList() : null,
+            };
+        }
 	}
 }

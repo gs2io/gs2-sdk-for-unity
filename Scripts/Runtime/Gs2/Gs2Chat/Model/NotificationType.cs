@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Chat.Model
 {
+	[Preserve]
 	public class NotificationType
 	{
 
@@ -65,6 +68,13 @@ namespace Gs2.Gs2Chat.Model
                 writer.Write(this.enableTransferMobilePushNotification.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static NotificationType FromDict(JsonData data)
+        {
+            return new NotificationType()
+                .WithCategory(data.Keys.Contains("category") ? (int?) data["category"] : null)
+                .WithEnableTransferMobilePushNotification(data.Keys.Contains("enableTransferMobilePushNotification") ? (bool?) data["enableTransferMobilePushNotification"] : null);
         }
 	}
 }

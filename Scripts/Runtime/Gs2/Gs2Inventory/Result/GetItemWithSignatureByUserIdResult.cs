@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Inventory.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Result
 {
+	[Preserve]
 	public class GetItemWithSignatureByUserIdResult
 	{
         /** 有効期限毎の{model_name} */
@@ -37,5 +41,20 @@ namespace Gs2.Gs2Inventory.Result
         /** 署名 */
         public string signature { set; get; }
 
+
+        public static GetItemWithSignatureByUserIdResult FromDict(JsonData data)
+        {
+            return new GetItemWithSignatureByUserIdResult {
+                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return ItemSet.FromDict(value);
+                    }
+                ).ToList() : null,
+                itemModel = data.Keys.Contains("itemModel") ? ItemModel.FromDict(data["itemModel"]) : null,
+                inventory = data.Keys.Contains("inventory") ? Inventory.FromDict(data["inventory"]) : null,
+                body = data.Keys.Contains("body") ? (string) data["body"] : null,
+                signature = data.Keys.Contains("signature") ? (string) data["signature"] : null,
+            };
+        }
 	}
 }

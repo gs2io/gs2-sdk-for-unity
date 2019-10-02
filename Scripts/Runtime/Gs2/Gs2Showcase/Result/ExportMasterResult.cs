@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Showcase.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Showcase.Result
 {
+	[Preserve]
 	public class ExportMasterResult
 	{
         /** 現在有効な陳列棚マスター */
         public CurrentShowcaseMaster item { set; get; }
 
+
+        public static ExportMasterResult FromDict(JsonData data)
+        {
+            return new ExportMasterResult {
+                item = data.Keys.Contains("item") ? CurrentShowcaseMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

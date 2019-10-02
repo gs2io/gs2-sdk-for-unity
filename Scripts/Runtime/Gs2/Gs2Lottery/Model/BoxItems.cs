@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Model
 {
+	[Preserve]
 	public class BoxItems
 	{
 
@@ -108,6 +111,19 @@ namespace Gs2.Gs2Lottery.Model
                 writer.WriteArrayEnd();
             }
             writer.WriteObjectEnd();
+        }
+
+        public static BoxItems FromDict(JsonData data)
+        {
+            return new BoxItems()
+                .WithBoxId(data.Keys.Contains("boxId") ? (string) data["boxId"] : null)
+                .WithPrizeTableName(data.Keys.Contains("prizeTableName") ? (string) data["prizeTableName"] : null)
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithItems(data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return BoxItem.FromDict(value);
+                    }
+                ).ToList() : null);
         }
 	}
 }

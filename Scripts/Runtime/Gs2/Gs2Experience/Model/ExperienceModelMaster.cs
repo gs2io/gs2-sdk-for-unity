@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Model
 {
+	[Preserve]
 	public class ExperienceModelMaster
 	{
 
@@ -217,6 +220,21 @@ namespace Gs2.Gs2Experience.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static ExperienceModelMaster FromDict(JsonData data)
+        {
+            return new ExperienceModelMaster()
+                .WithExperienceModelId(data.Keys.Contains("experienceModelId") ? (string) data["experienceModelId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithDefaultExperience(data.Keys.Contains("defaultExperience") ? (long?) data["defaultExperience"] : null)
+                .WithDefaultRankCap(data.Keys.Contains("defaultRankCap") ? (long?) data["defaultRankCap"] : null)
+                .WithMaxRankCap(data.Keys.Contains("maxRankCap") ? (long?) data["maxRankCap"] : null)
+                .WithRankThresholdId(data.Keys.Contains("rankThresholdId") ? (string) data["rankThresholdId"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

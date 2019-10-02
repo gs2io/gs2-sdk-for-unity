@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Deploy.Model
 {
+	[Preserve]
 	public class Resource
 	{
 
@@ -227,6 +230,29 @@ namespace Gs2.Gs2Deploy.Model
                 writer.Write(this.createdAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Resource FromDict(JsonData data)
+        {
+            return new Resource()
+                .WithResourceId(data.Keys.Contains("resourceId") ? (string) data["resourceId"] : null)
+                .WithType(data.Keys.Contains("type") ? (string) data["type"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithRequest(data.Keys.Contains("request") ? (string) data["request"] : null)
+                .WithResponse(data.Keys.Contains("response") ? (string) data["response"] : null)
+                .WithRollbackContext(data.Keys.Contains("rollbackContext") ? (string) data["rollbackContext"] : null)
+                .WithRollbackRequest(data.Keys.Contains("rollbackRequest") ? (string) data["rollbackRequest"] : null)
+                .WithRollbackAfter(data.Keys.Contains("rollbackAfter") ? data["rollbackAfter"].Cast<JsonData>().Select(value =>
+                    {
+                        return (string) value;
+                    }
+                ).ToList() : null)
+                .WithOutputKeys(data.Keys.Contains("outputKeys") ? data["outputKeys"].Cast<JsonData>().Select(value =>
+                    {
+                        return (string) value;
+                    }
+                ).ToList() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null);
         }
 	}
 }

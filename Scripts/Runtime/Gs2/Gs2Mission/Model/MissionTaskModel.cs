@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Model
 {
+	[Preserve]
 	public class MissionTaskModel
 	{
 
@@ -203,6 +206,24 @@ namespace Gs2.Gs2Mission.Model
                 writer.Write(this.premiseMissionTaskName);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static MissionTaskModel FromDict(JsonData data)
+        {
+            return new MissionTaskModel()
+                .WithMissionTaskId(data.Keys.Contains("missionTaskId") ? (string) data["missionTaskId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithCounterName(data.Keys.Contains("counterName") ? (string) data["counterName"] : null)
+                .WithResetType(data.Keys.Contains("resetType") ? (string) data["resetType"] : null)
+                .WithTargetValue(data.Keys.Contains("targetValue") ? (long?) data["targetValue"] : null)
+                .WithCompleteAcquireActions(data.Keys.Contains("completeAcquireActions") ? data["completeAcquireActions"].Cast<JsonData>().Select(value =>
+                    {
+                        return AcquireAction.FromDict(value);
+                    }
+                ).ToList() : null)
+                .WithChallengePeriodEventId(data.Keys.Contains("challengePeriodEventId") ? (string) data["challengePeriodEventId"] : null)
+                .WithPremiseMissionTaskName(data.Keys.Contains("premiseMissionTaskName") ? (string) data["premiseMissionTaskName"] : null);
         }
 	}
 }

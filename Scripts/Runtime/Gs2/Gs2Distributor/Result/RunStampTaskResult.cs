@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Distributor.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Distributor.Result
 {
+	[Preserve]
 	public class RunStampTaskResult
 	{
         /** タスクの実行結果を反映したコンテキストスタック */
@@ -28,5 +32,13 @@ namespace Gs2.Gs2Distributor.Result
         /** レスポンス内容 */
         public string result { set; get; }
 
+
+        public static RunStampTaskResult FromDict(JsonData data)
+        {
+            return new RunStampTaskResult {
+                contextStack = data.Keys.Contains("contextStack") ? (string) data["contextStack"] : null,
+                result = data.Keys.Contains("result") ? (string) data["result"] : null,
+            };
+        }
 	}
 }

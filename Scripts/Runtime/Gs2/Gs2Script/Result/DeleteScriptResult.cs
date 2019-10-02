@@ -15,12 +15,22 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Script.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Script.Result
 {
+	[Preserve]
 	public class DeleteScriptResult
 	{
+
+        public static DeleteScriptResult FromDict(JsonData data)
+        {
+            return new DeleteScriptResult {
+            };
+        }
 	}
 }

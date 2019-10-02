@@ -16,10 +16,12 @@
 using Gs2.Gs2Experience.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Experience.Model
 {
+	[Preserve]
 	public class EzThreshold
 	{
 		/** ランクアップ閾値のメタデータ */

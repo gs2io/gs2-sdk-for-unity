@@ -16,10 +16,12 @@
 using Gs2.Gs2Mission.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Mission.Model
 {
+	[Preserve]
 	public class EzMissionGroupModel
 	{
 		/** グループ名 */

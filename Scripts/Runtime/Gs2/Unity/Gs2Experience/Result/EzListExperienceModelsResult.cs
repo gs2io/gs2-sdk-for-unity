@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2Experience.Model;
 using Gs2.Gs2Experience.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Experience.Result
 {
+	[Preserve]
 	public class EzListExperienceModelsResult
 	{
         /** 経験値・ランクアップ閾値モデルのリスト */

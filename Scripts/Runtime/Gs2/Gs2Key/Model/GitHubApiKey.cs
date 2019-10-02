@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Key.Model
 {
+	[Preserve]
 	public class GitHubApiKey
 	{
 
@@ -160,6 +163,18 @@ namespace Gs2.Gs2Key.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static GitHubApiKey FromDict(JsonData data)
+        {
+            return new GitHubApiKey()
+                .WithApiKeyId(data.Keys.Contains("apiKeyId") ? (string) data["apiKeyId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
+                .WithApiKey(data.Keys.Contains("apiKey") ? (string) data["apiKey"] : null)
+                .WithEncryptionKeyName(data.Keys.Contains("encryptionKeyName") ? (string) data["encryptionKeyName"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

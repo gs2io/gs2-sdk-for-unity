@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Deploy.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Deploy.Result
 {
+	[Preserve]
 	public class CreateStackFromGitHubResult
 	{
         /** 作成したスタック */
         public Stack item { set; get; }
 
+
+        public static CreateStackFromGitHubResult FromDict(JsonData data)
+        {
+            return new CreateStackFromGitHubResult {
+                item = data.Keys.Contains("item") ? Stack.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

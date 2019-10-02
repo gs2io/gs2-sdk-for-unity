@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Mission.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Result
 {
+	[Preserve]
 	public class IncreaseCounterByUserIdResult
 	{
         /** 作成したカウンター */
         public Counter item { set; get; }
 
+
+        public static IncreaseCounterByUserIdResult FromDict(JsonData data)
+        {
+            return new IncreaseCounterByUserIdResult {
+                item = data.Keys.Contains("item") ? Counter.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Deploy.Model
 {
+	[Preserve]
 	public class OutputField
 	{
 
@@ -65,6 +68,13 @@ namespace Gs2.Gs2Deploy.Model
                 writer.Write(this.fieldName);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static OutputField FromDict(JsonData data)
+        {
+            return new OutputField()
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithFieldName(data.Keys.Contains("fieldName") ? (string) data["fieldName"] : null);
         }
 	}
 }

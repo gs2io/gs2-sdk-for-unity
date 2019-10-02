@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Exchange.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Exchange.Result
 {
+	[Preserve]
 	public class ExchangeByUserIdResult
 	{
         /** 交換レートモデル */
@@ -28,5 +32,13 @@ namespace Gs2.Gs2Exchange.Result
         /** 交換処理の実行に使用するスタンプシート */
         public string stampSheet { set; get; }
 
+
+        public static ExchangeByUserIdResult FromDict(JsonData data)
+        {
+            return new ExchangeByUserIdResult {
+                item = data.Keys.Contains("item") ? RateModel.FromDict(data["item"]) : null,
+                stampSheet = data.Keys.Contains("stampSheet") ? (string) data["stampSheet"] : null,
+            };
+        }
 	}
 }

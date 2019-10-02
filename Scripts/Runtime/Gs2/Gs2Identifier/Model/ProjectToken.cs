@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Identifier.Model
 {
+	[Preserve]
 	public class ProjectToken
 	{
 
@@ -46,6 +49,12 @@ namespace Gs2.Gs2Identifier.Model
                 writer.Write(this.token);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static ProjectToken FromDict(JsonData data)
+        {
+            return new ProjectToken()
+                .WithToken(data.Keys.Contains("token") ? (string) data["token"] : null);
         }
 	}
 }

@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Friend.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Friend.Result
 {
+	[Preserve]
 	public class UpdateProfileByUserIdResult
 	{
         /** 更新したプロフィール */
         public Profile item { set; get; }
 
+
+        public static UpdateProfileByUserIdResult FromDict(JsonData data)
+        {
+            return new UpdateProfileByUserIdResult {
+                item = data.Keys.Contains("item") ? Profile.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

@@ -15,15 +15,30 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Experience.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Result
 {
+	[Preserve]
 	public class DescribeExperienceModelsResult
 	{
         /** 経験値・ランクアップ閾値モデルのリスト */
         public List<ExperienceModel> items { set; get; }
 
+
+        public static DescribeExperienceModelsResult FromDict(JsonData data)
+        {
+            return new DescribeExperienceModelsResult {
+                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return ExperienceModel.FromDict(value);
+                    }
+                ).ToList() : null,
+            };
+        }
 	}
 }

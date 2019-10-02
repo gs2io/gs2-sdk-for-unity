@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Limit.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Limit.Result
 {
+	[Preserve]
 	public class DeleteLimitModelMasterResult
 	{
         /** 削除した回数制限の種類マスター */
         public LimitModelMaster item { set; get; }
 
+
+        public static DeleteLimitModelMasterResult FromDict(JsonData data)
+        {
+            return new DeleteLimitModelMasterResult {
+                item = data.Keys.Contains("item") ? LimitModelMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

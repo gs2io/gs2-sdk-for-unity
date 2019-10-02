@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Account.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Account.Result
 {
+	[Preserve]
 	public class GetTakeOverResult
 	{
         /** 引き継ぎ設定 */
         public TakeOver item { set; get; }
 
+
+        public static GetTakeOverResult FromDict(JsonData data)
+        {
+            return new GetTakeOverResult {
+                item = data.Keys.Contains("item") ? TakeOver.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2Showcase.Model;
 using Gs2.Gs2Showcase.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Showcase.Result
 {
+	[Preserve]
 	public class EzListResult
 	{
         /** 陳列棚のリスト */

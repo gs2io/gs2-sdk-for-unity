@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Stamina.Model
 {
+	[Preserve]
 	public class MaxStaminaTable
 	{
 
@@ -127,6 +130,20 @@ namespace Gs2.Gs2Stamina.Model
                 writer.WriteArrayEnd();
             }
             writer.WriteObjectEnd();
+        }
+
+        public static MaxStaminaTable FromDict(JsonData data)
+        {
+            return new MaxStaminaTable()
+                .WithMaxStaminaTableId(data.Keys.Contains("maxStaminaTableId") ? (string) data["maxStaminaTableId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithExperienceModelId(data.Keys.Contains("experienceModelId") ? (string) data["experienceModelId"] : null)
+                .WithValues(data.Keys.Contains("values") ? data["values"].Cast<JsonData>().Select(value =>
+                    {
+                        return (int?) value;
+                    }
+                ).ToList() : null);
         }
 	}
 }

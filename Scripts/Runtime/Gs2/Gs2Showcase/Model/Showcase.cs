@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Showcase.Model
 {
+	[Preserve]
 	public class Showcase
 	{
 
@@ -108,6 +111,19 @@ namespace Gs2.Gs2Showcase.Model
                 writer.Write(this.salesPeriodEventId);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Showcase FromDict(JsonData data)
+        {
+            return new Showcase()
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithDisplayItems(data.Keys.Contains("displayItems") ? data["displayItems"].Cast<JsonData>().Select(value =>
+                    {
+                        return DisplayItem.FromDict(value);
+                    }
+                ).ToList() : null)
+                .WithSalesPeriodEventId(data.Keys.Contains("salesPeriodEventId") ? (string) data["salesPeriodEventId"] : null);
         }
 	}
 }

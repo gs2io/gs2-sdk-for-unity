@@ -16,10 +16,12 @@
 using Gs2.Gs2Showcase.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Showcase.Model
 {
+	[Preserve]
 	public class EzSalesItem
 	{
 		/** 商品名 */

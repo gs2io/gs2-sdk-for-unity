@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Mission.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Result
 {
+	[Preserve]
 	public class GetMissionTaskModelResult
 	{
         /** ミッションタスク */
         public MissionTaskModel item { set; get; }
 
+
+        public static GetMissionTaskModelResult FromDict(JsonData data)
+        {
+            return new GetMissionTaskModelResult {
+                item = data.Keys.Contains("item") ? MissionTaskModel.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

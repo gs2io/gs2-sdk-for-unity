@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inbox.Model
 {
+	[Preserve]
 	public class Namespace
 	{
 
@@ -274,6 +277,24 @@ namespace Gs2.Gs2Inbox.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Namespace FromDict(JsonData data)
+        {
+            return new Namespace()
+                .WithNamespaceId(data.Keys.Contains("namespaceId") ? (string) data["namespaceId"] : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
+                .WithIsAutomaticDeletingEnabled(data.Keys.Contains("isAutomaticDeletingEnabled") ? (bool?) data["isAutomaticDeletingEnabled"] : null)
+                .WithReceiveMessageScript(data.Keys.Contains("receiveMessageScript") ? ScriptSetting.FromDict(data["receiveMessageScript"]) : null)
+                .WithReadMessageScript(data.Keys.Contains("readMessageScript") ? ScriptSetting.FromDict(data["readMessageScript"]) : null)
+                .WithDeleteMessageScript(data.Keys.Contains("deleteMessageScript") ? ScriptSetting.FromDict(data["deleteMessageScript"]) : null)
+                .WithQueueNamespaceId(data.Keys.Contains("queueNamespaceId") ? (string) data["queueNamespaceId"] : null)
+                .WithKeyId(data.Keys.Contains("keyId") ? (string) data["keyId"] : null)
+                .WithReceiveNotification(data.Keys.Contains("receiveNotification") ? NotificationSetting.FromDict(data["receiveNotification"]) : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Matchmaking.Model
 {
+	[Preserve]
 	public class Player
 	{
 
@@ -113,6 +116,23 @@ namespace Gs2.Gs2Matchmaking.Model
                 writer.WriteArrayEnd();
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Player FromDict(JsonData data)
+        {
+            return new Player()
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithAttributes(data.Keys.Contains("attributes") ? data["attributes"].Cast<JsonData>().Select(value =>
+                    {
+                        return Attribute.FromDict(value);
+                    }
+                ).ToList() : null)
+                .WithRoleName(data.Keys.Contains("roleName") ? (string) data["roleName"] : null)
+                .WithDenyUserIds(data.Keys.Contains("denyUserIds") ? data["denyUserIds"].Cast<JsonData>().Select(value =>
+                    {
+                        return (string) value;
+                    }
+                ).ToList() : null);
         }
 	}
 }

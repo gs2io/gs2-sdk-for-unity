@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Quest.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Result
 {
+	[Preserve]
 	public class GetProgressResult
 	{
         /** クエスト挑戦 */
         public Progress item { set; get; }
 
+
+        public static GetProgressResult FromDict(JsonData data)
+        {
+            return new GetProgressResult {
+                item = data.Keys.Contains("item") ? Progress.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

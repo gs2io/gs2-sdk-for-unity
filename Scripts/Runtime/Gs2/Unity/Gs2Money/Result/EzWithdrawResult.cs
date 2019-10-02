@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2Money.Model;
 using Gs2.Gs2Money.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Money.Result
 {
+	[Preserve]
 	public class EzWithdrawResult
 	{
         /** 消費後のウォレット */

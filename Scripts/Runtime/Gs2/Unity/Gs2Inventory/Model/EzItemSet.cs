@@ -16,10 +16,12 @@
 using Gs2.Gs2Inventory.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Inventory.Model
 {
+	[Preserve]
 	public class EzItemSet
 	{
 		/** 有効期限ごとのアイテム所持数量 */

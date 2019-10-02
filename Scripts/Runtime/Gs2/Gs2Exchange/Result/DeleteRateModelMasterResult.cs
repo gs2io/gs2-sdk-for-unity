@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Exchange.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Exchange.Result
 {
+	[Preserve]
 	public class DeleteRateModelMasterResult
 	{
         /** 削除した交換レートマスター */
         public RateModelMaster item { set; get; }
 
+
+        public static DeleteRateModelMasterResult FromDict(JsonData data)
+        {
+            return new DeleteRateModelMasterResult {
+                item = data.Keys.Contains("item") ? RateModelMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

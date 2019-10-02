@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Auth.Model
 {
+	[Preserve]
 	public class AccessToken
 	{
 
@@ -103,6 +106,15 @@ namespace Gs2.Gs2Auth.Model
                 writer.Write(this.expire.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static AccessToken FromDict(JsonData data)
+        {
+            return new AccessToken()
+                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
+                .WithToken(data.Keys.Contains("token") ? (string) data["token"] : null)
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithExpire(data.Keys.Contains("expire") ? (long?) data["expire"] : null);
         }
 	}
 }

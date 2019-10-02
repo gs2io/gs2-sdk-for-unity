@@ -16,10 +16,12 @@
 using Gs2.Gs2Gateway.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Gateway.Model
 {
+	[Preserve]
 	public class EzWebSocketSession
 	{
 		/** コネクションID */

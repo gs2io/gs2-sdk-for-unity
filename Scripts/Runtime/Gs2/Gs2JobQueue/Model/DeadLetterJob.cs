@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2JobQueue.Model
 {
+	[Preserve]
 	public class DeadLetterJob
 	{
 
@@ -184,6 +187,23 @@ namespace Gs2.Gs2JobQueue.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static DeadLetterJob FromDict(JsonData data)
+        {
+            return new DeadLetterJob()
+                .WithDeadLetterJobId(data.Keys.Contains("deadLetterJobId") ? (string) data["deadLetterJobId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithScriptId(data.Keys.Contains("scriptId") ? (string) data["scriptId"] : null)
+                .WithArgs(data.Keys.Contains("args") ? (string) data["args"] : null)
+                .WithResult(data.Keys.Contains("result") ? data["result"].Cast<JsonData>().Select(value =>
+                    {
+                        return JobResultBody.FromDict(value);
+                    }
+                ).ToList() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

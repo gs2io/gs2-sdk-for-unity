@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Ranking.Model
 {
+	[Preserve]
 	public class SubscribeUser
 	{
 
@@ -84,6 +87,14 @@ namespace Gs2.Gs2Ranking.Model
                 writer.Write(this.targetUserId);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static SubscribeUser FromDict(JsonData data)
+        {
+            return new SubscribeUser()
+                .WithCategoryName(data.Keys.Contains("categoryName") ? (string) data["categoryName"] : null)
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithTargetUserId(data.Keys.Contains("targetUserId") ? (string) data["targetUserId"] : null);
         }
 	}
 }

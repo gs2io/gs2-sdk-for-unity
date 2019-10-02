@@ -15,15 +15,30 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Exchange.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Exchange.Result
 {
+	[Preserve]
 	public class DescribeRateModelsResult
 	{
         /** 交換レートモデルのリスト */
         public List<RateModel> items { set; get; }
 
+
+        public static DescribeRateModelsResult FromDict(JsonData data)
+        {
+            return new DescribeRateModelsResult {
+                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return RateModel.FromDict(value);
+                    }
+                ).ToList() : null,
+            };
+        }
 	}
 }

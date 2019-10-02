@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Model
 {
+	[Preserve]
 	public class Status
 	{
 
@@ -198,6 +201,20 @@ namespace Gs2.Gs2Experience.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Status FromDict(JsonData data)
+        {
+            return new Status()
+                .WithStatusId(data.Keys.Contains("statusId") ? (string) data["statusId"] : null)
+                .WithExperienceName(data.Keys.Contains("experienceName") ? (string) data["experienceName"] : null)
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithPropertyId(data.Keys.Contains("propertyId") ? (string) data["propertyId"] : null)
+                .WithExperienceValue(data.Keys.Contains("experienceValue") ? (long?) data["experienceValue"] : null)
+                .WithRankValue(data.Keys.Contains("rankValue") ? (long?) data["rankValue"] : null)
+                .WithRankCapValue(data.Keys.Contains("rankCapValue") ? (long?) data["rankCapValue"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

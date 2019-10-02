@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Lottery.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Result
 {
+	[Preserve]
 	public class UpdateLotteryModelMasterResult
 	{
         /** 更新した抽選の種類マスター */
         public LotteryModelMaster item { set; get; }
 
+
+        public static UpdateLotteryModelMasterResult FromDict(JsonData data)
+        {
+            return new UpdateLotteryModelMasterResult {
+                item = data.Keys.Contains("item") ? LotteryModelMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

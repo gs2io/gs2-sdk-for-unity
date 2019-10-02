@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Distributor.Model
 {
+	[Preserve]
 	public class DistributorModelMaster
 	{
 
@@ -203,6 +206,24 @@ namespace Gs2.Gs2Distributor.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static DistributorModelMaster FromDict(JsonData data)
+        {
+            return new DistributorModelMaster()
+                .WithDistributorModelId(data.Keys.Contains("distributorModelId") ? (string) data["distributorModelId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithAssumeUserId(data.Keys.Contains("assumeUserId") ? (string) data["assumeUserId"] : null)
+                .WithInboxNamespaceId(data.Keys.Contains("inboxNamespaceId") ? (string) data["inboxNamespaceId"] : null)
+                .WithWhiteListTargetIds(data.Keys.Contains("whiteListTargetIds") ? data["whiteListTargetIds"].Cast<JsonData>().Select(value =>
+                    {
+                        return (string) value;
+                    }
+                ).ToList() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

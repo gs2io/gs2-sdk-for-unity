@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2Chat.Model;
 using Gs2.Gs2Chat.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Chat.Result
 {
+	[Preserve]
 	public class EzListSubscribeRoomsResult
 	{
         /** 購読のリスト */

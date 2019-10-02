@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Showcase.Model
 {
+	[Preserve]
 	public class SalesItemGroup
 	{
 
@@ -89,6 +92,18 @@ namespace Gs2.Gs2Showcase.Model
                 writer.WriteArrayEnd();
             }
             writer.WriteObjectEnd();
+        }
+
+        public static SalesItemGroup FromDict(JsonData data)
+        {
+            return new SalesItemGroup()
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithSalesItems(data.Keys.Contains("salesItems") ? data["salesItems"].Cast<JsonData>().Select(value =>
+                    {
+                        return SalesItem.FromDict(value);
+                    }
+                ).ToList() : null);
         }
 	}
 }

@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Friend.Model
 {
+	[Preserve]
 	public class Profile
 	{
 
@@ -160,6 +163,18 @@ namespace Gs2.Gs2Friend.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Profile FromDict(JsonData data)
+        {
+            return new Profile()
+                .WithProfileId(data.Keys.Contains("profileId") ? (string) data["profileId"] : null)
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithPublicProfile(data.Keys.Contains("publicProfile") ? (string) data["publicProfile"] : null)
+                .WithFollowerProfile(data.Keys.Contains("followerProfile") ? (string) data["followerProfile"] : null)
+                .WithFriendProfile(data.Keys.Contains("friendProfile") ? (string) data["friendProfile"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

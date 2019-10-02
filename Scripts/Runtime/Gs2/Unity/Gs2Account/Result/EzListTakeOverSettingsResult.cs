@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2Account.Model;
 using Gs2.Gs2Account.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Account.Result
 {
+	[Preserve]
 	public class EzListTakeOverSettingsResult
 	{
         /** 引き継ぎ設定のリスト */

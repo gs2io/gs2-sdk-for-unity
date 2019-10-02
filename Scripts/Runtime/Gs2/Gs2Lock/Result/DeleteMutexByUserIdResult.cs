@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Lock.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lock.Result
 {
+	[Preserve]
 	public class DeleteMutexByUserIdResult
 	{
         /** ミューテックス */
         public Mutex item { set; get; }
 
+
+        public static DeleteMutexByUserIdResult FromDict(JsonData data)
+        {
+            return new DeleteMutexByUserIdResult {
+                item = data.Keys.Contains("item") ? Mutex.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

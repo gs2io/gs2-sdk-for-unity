@@ -15,15 +15,30 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2JobQueue.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2JobQueue.Result
 {
+	[Preserve]
 	public class PushByUserIdResult
 	{
         /** 追加した{model_name}の一覧 */
         public List<Job> items { set; get; }
 
+
+        public static PushByUserIdResult FromDict(JsonData data)
+        {
+            return new PushByUserIdResult {
+                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return Job.FromDict(value);
+                    }
+                ).ToList() : null,
+            };
+        }
 	}
 }

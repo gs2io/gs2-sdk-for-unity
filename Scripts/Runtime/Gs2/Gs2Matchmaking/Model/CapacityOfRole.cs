@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Matchmaking.Model
 {
+	[Preserve]
 	public class CapacityOfRole
 	{
 
@@ -113,6 +116,23 @@ namespace Gs2.Gs2Matchmaking.Model
                 writer.WriteArrayEnd();
             }
             writer.WriteObjectEnd();
+        }
+
+        public static CapacityOfRole FromDict(JsonData data)
+        {
+            return new CapacityOfRole()
+                .WithRoleName(data.Keys.Contains("roleName") ? (string) data["roleName"] : null)
+                .WithRoleAliases(data.Keys.Contains("roleAliases") ? data["roleAliases"].Cast<JsonData>().Select(value =>
+                    {
+                        return (string) value;
+                    }
+                ).ToList() : null)
+                .WithCapacity(data.Keys.Contains("capacity") ? (int?) data["capacity"] : null)
+                .WithParticipants(data.Keys.Contains("participants") ? data["participants"].Cast<JsonData>().Select(value =>
+                    {
+                        return Player.FromDict(value);
+                    }
+                ).ToList() : null);
         }
 	}
 }

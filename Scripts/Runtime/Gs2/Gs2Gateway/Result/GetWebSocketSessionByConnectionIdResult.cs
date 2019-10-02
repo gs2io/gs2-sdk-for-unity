@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Gateway.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Gateway.Result
 {
+	[Preserve]
 	public class GetWebSocketSessionByConnectionIdResult
 	{
         /** 取得したWebsocketセッション */
         public WebSocketSession item { set; get; }
 
+
+        public static GetWebSocketSessionByConnectionIdResult FromDict(JsonData data)
+        {
+            return new GetWebSocketSessionByConnectionIdResult {
+                item = data.Keys.Contains("item") ? WebSocketSession.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

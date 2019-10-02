@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Stamina.Model
 {
+	[Preserve]
 	public class CurrentStaminaMaster
 	{
 
@@ -65,6 +68,13 @@ namespace Gs2.Gs2Stamina.Model
                 writer.Write(this.settings);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static CurrentStaminaMaster FromDict(JsonData data)
+        {
+            return new CurrentStaminaMaster()
+                .WithNamespaceName(data.Keys.Contains("namespaceName") ? (string) data["namespaceName"] : null)
+                .WithSettings(data.Keys.Contains("settings") ? (string) data["settings"] : null);
         }
 	}
 }

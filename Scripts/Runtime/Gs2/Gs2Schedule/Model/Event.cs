@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Schedule.Model
 {
+	[Preserve]
 	public class Event
 	{
 
@@ -312,6 +315,26 @@ namespace Gs2.Gs2Schedule.Model
                 writer.Write(this.relativeDuration.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Event FromDict(JsonData data)
+        {
+            return new Event()
+                .WithEventId(data.Keys.Contains("eventId") ? (string) data["eventId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithScheduleType(data.Keys.Contains("scheduleType") ? (string) data["scheduleType"] : null)
+                .WithRepeatType(data.Keys.Contains("repeatType") ? (string) data["repeatType"] : null)
+                .WithAbsoluteBegin(data.Keys.Contains("absoluteBegin") ? (long?) data["absoluteBegin"] : null)
+                .WithAbsoluteEnd(data.Keys.Contains("absoluteEnd") ? (long?) data["absoluteEnd"] : null)
+                .WithRepeatBeginDayOfMonth(data.Keys.Contains("repeatBeginDayOfMonth") ? (int?) data["repeatBeginDayOfMonth"] : null)
+                .WithRepeatEndDayOfMonth(data.Keys.Contains("repeatEndDayOfMonth") ? (int?) data["repeatEndDayOfMonth"] : null)
+                .WithRepeatBeginDayOfWeek(data.Keys.Contains("repeatBeginDayOfWeek") ? (string) data["repeatBeginDayOfWeek"] : null)
+                .WithRepeatEndDayOfWeek(data.Keys.Contains("repeatEndDayOfWeek") ? (string) data["repeatEndDayOfWeek"] : null)
+                .WithRepeatBeginHour(data.Keys.Contains("repeatBeginHour") ? (int?) data["repeatBeginHour"] : null)
+                .WithRepeatEndHour(data.Keys.Contains("repeatEndHour") ? (int?) data["repeatEndHour"] : null)
+                .WithRelativeTriggerName(data.Keys.Contains("relativeTriggerName") ? (string) data["relativeTriggerName"] : null)
+                .WithRelativeDuration(data.Keys.Contains("relativeDuration") ? (int?) data["relativeDuration"] : null);
         }
 	}
 }

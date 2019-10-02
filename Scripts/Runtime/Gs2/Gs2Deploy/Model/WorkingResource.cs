@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Deploy.Model
 {
+	[Preserve]
 	public class WorkingResource
 	{
 
@@ -270,6 +273,35 @@ namespace Gs2.Gs2Deploy.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static WorkingResource FromDict(JsonData data)
+        {
+            return new WorkingResource()
+                .WithResourceId(data.Keys.Contains("resourceId") ? (string) data["resourceId"] : null)
+                .WithContext(data.Keys.Contains("context") ? (string) data["context"] : null)
+                .WithType(data.Keys.Contains("type") ? (string) data["type"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithRequest(data.Keys.Contains("request") ? (string) data["request"] : null)
+                .WithAfter(data.Keys.Contains("after") ? data["after"].Cast<JsonData>().Select(value =>
+                    {
+                        return (string) value;
+                    }
+                ).ToList() : null)
+                .WithRollbackContext(data.Keys.Contains("rollbackContext") ? (string) data["rollbackContext"] : null)
+                .WithRollbackRequest(data.Keys.Contains("rollbackRequest") ? (string) data["rollbackRequest"] : null)
+                .WithRollbackAfter(data.Keys.Contains("rollbackAfter") ? data["rollbackAfter"].Cast<JsonData>().Select(value =>
+                    {
+                        return (string) value;
+                    }
+                ).ToList() : null)
+                .WithOutputFields(data.Keys.Contains("outputFields") ? data["outputFields"].Cast<JsonData>().Select(value =>
+                    {
+                        return OutputField.FromDict(value);
+                    }
+                ).ToList() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

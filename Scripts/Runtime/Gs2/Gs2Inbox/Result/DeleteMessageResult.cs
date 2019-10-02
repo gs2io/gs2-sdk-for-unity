@@ -15,12 +15,22 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Inbox.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inbox.Result
 {
+	[Preserve]
 	public class DeleteMessageResult
 	{
+
+        public static DeleteMessageResult FromDict(JsonData data)
+        {
+            return new DeleteMessageResult {
+            };
+        }
 	}
 }

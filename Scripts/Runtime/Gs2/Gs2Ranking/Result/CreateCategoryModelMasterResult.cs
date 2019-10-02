@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Ranking.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Ranking.Result
 {
+	[Preserve]
 	public class CreateCategoryModelMasterResult
 	{
         /** 作成したカテゴリマスター */
         public CategoryModelMaster item { set; get; }
 
+
+        public static CreateCategoryModelMasterResult FromDict(JsonData data)
+        {
+            return new CreateCategoryModelMasterResult {
+                item = data.Keys.Contains("item") ? CategoryModelMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

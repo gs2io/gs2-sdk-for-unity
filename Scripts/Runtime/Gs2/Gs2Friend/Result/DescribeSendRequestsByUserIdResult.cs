@@ -15,15 +15,30 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Friend.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Friend.Result
 {
+	[Preserve]
 	public class DescribeSendRequestsByUserIdResult
 	{
         /** フレンドリクエストのリスト */
         public List<FriendRequest> items { set; get; }
 
+
+        public static DescribeSendRequestsByUserIdResult FromDict(JsonData data)
+        {
+            return new DescribeSendRequestsByUserIdResult {
+                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return FriendRequest.FromDict(value);
+                    }
+                ).ToList() : null,
+            };
+        }
 	}
 }

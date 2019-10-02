@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2JobQueue.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2JobQueue.Result
 {
+	[Preserve]
 	public class RunByUserIdResult
 	{
         /** ジョブ */
@@ -31,5 +35,14 @@ namespace Gs2.Gs2JobQueue.Result
         /** None */
         public bool? isLastJob { set; get; }
 
+
+        public static RunByUserIdResult FromDict(JsonData data)
+        {
+            return new RunByUserIdResult {
+                item = data.Keys.Contains("item") ? Job.FromDict(data["item"]) : null,
+                result = data.Keys.Contains("result") ? JobResultBody.FromDict(data["result"]) : null,
+                isLastJob = data.Keys.Contains("isLastJob") ? (bool?) data["isLastJob"] : null,
+            };
+        }
 	}
 }

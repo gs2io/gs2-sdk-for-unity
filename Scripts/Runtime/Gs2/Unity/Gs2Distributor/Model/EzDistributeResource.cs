@@ -16,10 +16,12 @@
 using Gs2.Gs2Distributor.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Distributor.Model
 {
+	[Preserve]
 	public class EzDistributeResource
 	{
 		/** スタンプシートで実行するアクションの種類 */

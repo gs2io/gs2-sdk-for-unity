@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Ranking.Model
 {
+	[Preserve]
 	public class Namespace
 	{
 
@@ -79,6 +82,20 @@ namespace Gs2.Gs2Ranking.Model
             return this;
         }
 
+        /** 最終集計日時リスト */
+        public List<CalculatedAt> lastCalculatedAts { set; get; }
+
+        /**
+         * 最終集計日時リストを設定
+         *
+         * @param lastCalculatedAts 最終集計日時リスト
+         * @return this
+         */
+        public Namespace WithLastCalculatedAts(List<CalculatedAt> lastCalculatedAts) {
+            this.lastCalculatedAts = lastCalculatedAts;
+            return this;
+        }
+
         /** 作成日時 */
         public long? createdAt { set; get; }
 
@@ -130,6 +147,16 @@ namespace Gs2.Gs2Ranking.Model
                 writer.WritePropertyName("description");
                 writer.Write(this.description);
             }
+            if(this.lastCalculatedAts != null)
+            {
+                writer.WritePropertyName("lastCalculatedAts");
+                writer.WriteArrayStart();
+                foreach(var item in this.lastCalculatedAts)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
             if(this.createdAt.HasValue)
             {
                 writer.WritePropertyName("createdAt");
@@ -141,6 +168,22 @@ namespace Gs2.Gs2Ranking.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Namespace FromDict(JsonData data)
+        {
+            return new Namespace()
+                .WithNamespaceId(data.Keys.Contains("namespaceId") ? (string) data["namespaceId"] : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
+                .WithLastCalculatedAts(data.Keys.Contains("lastCalculatedAts") ? data["lastCalculatedAts"].Cast<JsonData>().Select(value =>
+                    {
+                        return CalculatedAt.FromDict(value);
+                    }
+                ).ToList() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

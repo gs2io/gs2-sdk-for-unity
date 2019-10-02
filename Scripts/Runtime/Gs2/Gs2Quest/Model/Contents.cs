@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Model
 {
+	[Preserve]
 	public class Contents
 	{
 
@@ -89,6 +92,18 @@ namespace Gs2.Gs2Quest.Model
                 writer.Write(this.weight.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Contents FromDict(JsonData data)
+        {
+            return new Contents()
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithCompleteAcquireActions(data.Keys.Contains("completeAcquireActions") ? data["completeAcquireActions"].Cast<JsonData>().Select(value =>
+                    {
+                        return AcquireAction.FromDict(value);
+                    }
+                ).ToList() : null)
+                .WithWeight(data.Keys.Contains("weight") ? (int?) data["weight"] : null);
         }
 	}
 }

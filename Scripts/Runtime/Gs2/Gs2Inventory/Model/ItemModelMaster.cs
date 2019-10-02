@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Model
 {
+	[Preserve]
 	public class ItemModelMaster
 	{
 
@@ -217,6 +220,21 @@ namespace Gs2.Gs2Inventory.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static ItemModelMaster FromDict(JsonData data)
+        {
+            return new ItemModelMaster()
+                .WithItemModelId(data.Keys.Contains("itemModelId") ? (string) data["itemModelId"] : null)
+                .WithInventoryName(data.Keys.Contains("inventoryName") ? (string) data["inventoryName"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithStackingLimit(data.Keys.Contains("stackingLimit") ? (long?) data["stackingLimit"] : null)
+                .WithAllowMultipleStacks(data.Keys.Contains("allowMultipleStacks") ? (bool?) data["allowMultipleStacks"] : null)
+                .WithSortValue(data.Keys.Contains("sortValue") ? (int?) data["sortValue"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

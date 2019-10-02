@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Model
 {
+	[Preserve]
 	public class CounterScopeModel
 	{
 
@@ -103,6 +106,15 @@ namespace Gs2.Gs2Mission.Model
                 writer.Write(this.resetHour.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static CounterScopeModel FromDict(JsonData data)
+        {
+            return new CounterScopeModel()
+                .WithResetType(data.Keys.Contains("resetType") ? (string) data["resetType"] : null)
+                .WithResetDayOfMonth(data.Keys.Contains("resetDayOfMonth") ? (int?) data["resetDayOfMonth"] : null)
+                .WithResetDayOfWeek(data.Keys.Contains("resetDayOfWeek") ? (string) data["resetDayOfWeek"] : null)
+                .WithResetHour(data.Keys.Contains("resetHour") ? (int?) data["resetHour"] : null);
         }
 	}
 }

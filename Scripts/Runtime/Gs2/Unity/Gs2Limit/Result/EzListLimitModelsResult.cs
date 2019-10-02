@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2Limit.Model;
 using Gs2.Gs2Limit.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Limit.Result
 {
+	[Preserve]
 	public class EzListLimitModelsResult
 	{
         /** 回数制限の種類のリスト */

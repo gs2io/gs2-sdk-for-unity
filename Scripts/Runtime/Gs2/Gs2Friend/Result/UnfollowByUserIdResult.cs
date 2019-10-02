@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Friend.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Friend.Result
 {
+	[Preserve]
 	public class UnfollowByUserIdResult
 	{
         /** アンフォローしたユーザ */
         public FollowUser item { set; get; }
 
+
+        public static UnfollowByUserIdResult FromDict(JsonData data)
+        {
+            return new UnfollowByUserIdResult {
+                item = data.Keys.Contains("item") ? FollowUser.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

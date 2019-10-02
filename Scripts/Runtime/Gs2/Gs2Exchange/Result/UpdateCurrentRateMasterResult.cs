@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Exchange.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Exchange.Result
 {
+	[Preserve]
 	public class UpdateCurrentRateMasterResult
 	{
         /** 更新した現在有効な交換レート設定 */
         public CurrentRateMaster item { set; get; }
 
+
+        public static UpdateCurrentRateMasterResult FromDict(JsonData data)
+        {
+            return new UpdateCurrentRateMasterResult {
+                item = data.Keys.Contains("item") ? CurrentRateMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Schedule.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Schedule.Result
 {
+	[Preserve]
 	public class DeleteEventMasterResult
 	{
         /** 削除したイベントマスター */
         public EventMaster item { set; get; }
 
+
+        public static DeleteEventMasterResult FromDict(JsonData data)
+        {
+            return new DeleteEventMasterResult {
+                item = data.Keys.Contains("item") ? EventMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

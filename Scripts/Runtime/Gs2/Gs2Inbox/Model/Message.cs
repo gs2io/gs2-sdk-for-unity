@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inbox.Model
 {
+	[Preserve]
 	public class Message
 	{
 
@@ -184,6 +187,23 @@ namespace Gs2.Gs2Inbox.Model
                 writer.Write(this.readAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Message FromDict(JsonData data)
+        {
+            return new Message()
+                .WithMessageId(data.Keys.Contains("messageId") ? (string) data["messageId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithIsRead(data.Keys.Contains("isRead") ? (bool?) data["isRead"] : null)
+                .WithReadAcquireActions(data.Keys.Contains("readAcquireActions") ? data["readAcquireActions"].Cast<JsonData>().Select(value =>
+                    {
+                        return AcquireAction.FromDict(value);
+                    }
+                ).ToList() : null)
+                .WithReceivedAt(data.Keys.Contains("receivedAt") ? (long?) data["receivedAt"] : null)
+                .WithReadAt(data.Keys.Contains("readAt") ? (long?) data["readAt"] : null);
         }
 	}
 }

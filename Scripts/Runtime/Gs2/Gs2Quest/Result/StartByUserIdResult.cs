@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Quest.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Result
 {
+	[Preserve]
 	public class StartByUserIdResult
 	{
         /** クエストの開始処理の実行に使用するスタンプシート */
         public string stampSheet { set; get; }
 
+
+        public static StartByUserIdResult FromDict(JsonData data)
+        {
+            return new StartByUserIdResult {
+                stampSheet = data.Keys.Contains("stampSheet") ? (string) data["stampSheet"] : null,
+            };
+        }
 	}
 }

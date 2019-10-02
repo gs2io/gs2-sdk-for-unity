@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Money.Model
 {
+	[Preserve]
 	public class Namespace
 	{
 
@@ -331,6 +334,27 @@ namespace Gs2.Gs2Money.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Namespace FromDict(JsonData data)
+        {
+            return new Namespace()
+                .WithNamespaceId(data.Keys.Contains("namespaceId") ? (string) data["namespaceId"] : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
+                .WithPriority(data.Keys.Contains("priority") ? (string) data["priority"] : null)
+                .WithShareFree(data.Keys.Contains("shareFree") ? (bool?) data["shareFree"] : null)
+                .WithCurrency(data.Keys.Contains("currency") ? (string) data["currency"] : null)
+                .WithAppleKey(data.Keys.Contains("appleKey") ? (string) data["appleKey"] : null)
+                .WithGoogleKey(data.Keys.Contains("googleKey") ? (string) data["googleKey"] : null)
+                .WithEnableFakeReceipt(data.Keys.Contains("enableFakeReceipt") ? (bool?) data["enableFakeReceipt"] : null)
+                .WithCreateWalletScript(data.Keys.Contains("createWalletScript") ? ScriptSetting.FromDict(data["createWalletScript"]) : null)
+                .WithDepositScript(data.Keys.Contains("depositScript") ? ScriptSetting.FromDict(data["depositScript"]) : null)
+                .WithWithdrawScript(data.Keys.Contains("withdrawScript") ? ScriptSetting.FromDict(data["withdrawScript"]) : null)
+                .WithBalance(data.Keys.Contains("balance") ? (double?) data["balance"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

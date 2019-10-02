@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Distributor.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Distributor.Result
 {
+	[Preserve]
 	public class UpdateCurrentDistributorMasterResult
 	{
         /** 更新した現在有効な配信設定 */
         public CurrentDistributorMaster item { set; get; }
 
+
+        public static UpdateCurrentDistributorMasterResult FromDict(JsonData data)
+        {
+            return new UpdateCurrentDistributorMasterResult {
+                item = data.Keys.Contains("item") ? CurrentDistributorMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

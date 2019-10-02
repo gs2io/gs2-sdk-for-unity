@@ -16,10 +16,12 @@
 using Gs2.Gs2Matchmaking.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Matchmaking.Model
 {
+	[Preserve]
 	public class EzCapacityOfRole
 	{
 		/** ロール名 */

@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Stamina.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Stamina.Result
 {
+	[Preserve]
 	public class DeleteRecoverValueTableMasterResult
 	{
         /** 削除したスタミナ回復量テーブルマスター */
         public RecoverValueTableMaster item { set; get; }
 
+
+        public static DeleteRecoverValueTableMasterResult FromDict(JsonData data)
+        {
+            return new DeleteRecoverValueTableMasterResult {
+                item = data.Keys.Contains("item") ? RecoverValueTableMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

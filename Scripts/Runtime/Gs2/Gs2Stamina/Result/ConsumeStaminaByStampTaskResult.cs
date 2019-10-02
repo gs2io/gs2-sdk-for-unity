@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Stamina.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Stamina.Result
 {
+	[Preserve]
 	public class ConsumeStaminaByStampTaskResult
 	{
         /** スタミナ */
@@ -28,5 +32,13 @@ namespace Gs2.Gs2Stamina.Result
         /** スタンプタスクの実行結果を記録したコンテキスト */
         public string newContextStack { set; get; }
 
+
+        public static ConsumeStaminaByStampTaskResult FromDict(JsonData data)
+        {
+            return new ConsumeStaminaByStampTaskResult {
+                item = data.Keys.Contains("item") ? Stamina.FromDict(data["item"]) : null,
+                newContextStack = data.Keys.Contains("newContextStack") ? (string) data["newContextStack"] : null,
+            };
+        }
 	}
 }

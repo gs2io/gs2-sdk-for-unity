@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Model
 {
+	[Preserve]
 	public class ConsumeAction
 	{
 
@@ -65,6 +68,13 @@ namespace Gs2.Gs2Quest.Model
                 writer.Write(this.request);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static ConsumeAction FromDict(JsonData data)
+        {
+            return new ConsumeAction()
+                .WithAction(data.Keys.Contains("action") ? (string) data["action"] : null)
+                .WithRequest(data.Keys.Contains("request") ? (string) data["request"] : null);
         }
 	}
 }

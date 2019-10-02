@@ -16,10 +16,12 @@
 using Gs2.Gs2Lock.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Lock.Model
 {
+	[Preserve]
 	public class EzMutex
 	{
 		/** ミューテックス */

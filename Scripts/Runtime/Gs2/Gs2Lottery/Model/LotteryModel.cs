@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Model
 {
+	[Preserve]
 	public class LotteryModel
 	{
 
@@ -160,6 +163,18 @@ namespace Gs2.Gs2Lottery.Model
                 writer.Write(this.choicePrizeTableScriptId);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static LotteryModel FromDict(JsonData data)
+        {
+            return new LotteryModel()
+                .WithLotteryModelId(data.Keys.Contains("lotteryModelId") ? (string) data["lotteryModelId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithMode(data.Keys.Contains("mode") ? (string) data["mode"] : null)
+                .WithMethod(data.Keys.Contains("method") ? (string) data["method"] : null)
+                .WithPrizeTableName(data.Keys.Contains("prizeTableName") ? (string) data["prizeTableName"] : null)
+                .WithChoicePrizeTableScriptId(data.Keys.Contains("choicePrizeTableScriptId") ? (string) data["choicePrizeTableScriptId"] : null);
         }
 	}
 }

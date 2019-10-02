@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Chat.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Chat.Result
 {
+	[Preserve]
 	public class DeleteMessageResult
 	{
         /** 削除したメッセージ */
         public Message item { set; get; }
 
+
+        public static DeleteMessageResult FromDict(JsonData data)
+        {
+            return new DeleteMessageResult {
+                item = data.Keys.Contains("item") ? Message.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

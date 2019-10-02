@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2Lottery.Model;
 using Gs2.Gs2Lottery.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Lottery.Result
 {
+	[Preserve]
 	public class EzGetBoxResult
 	{
         /** ボックスから取り出したアイテムのリスト */

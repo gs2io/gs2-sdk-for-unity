@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Model
 {
+	[Preserve]
 	public class CompletedQuestList
 	{
 
@@ -146,6 +149,21 @@ namespace Gs2.Gs2Quest.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static CompletedQuestList FromDict(JsonData data)
+        {
+            return new CompletedQuestList()
+                .WithCompletedQuestListId(data.Keys.Contains("completedQuestListId") ? (string) data["completedQuestListId"] : null)
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithQuestGroupName(data.Keys.Contains("questGroupName") ? (string) data["questGroupName"] : null)
+                .WithCompleteQuestNames(data.Keys.Contains("completeQuestNames") ? data["completeQuestNames"].Cast<JsonData>().Select(value =>
+                    {
+                        return (string) value;
+                    }
+                ).ToList() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

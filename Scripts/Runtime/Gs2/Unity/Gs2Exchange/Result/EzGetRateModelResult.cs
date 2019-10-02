@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2Exchange.Model;
 using Gs2.Gs2Exchange.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Exchange.Result
 {
+	[Preserve]
 	public class EzGetRateModelResult
 	{
         /** 交換レートモデル */

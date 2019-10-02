@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Chat.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Chat.Result
 {
+	[Preserve]
 	public class UpdateNotificationTypeByUserIdResult
 	{
         /** 更新した購読 */
         public Subscribe item { set; get; }
 
+
+        public static UpdateNotificationTypeByUserIdResult FromDict(JsonData data)
+        {
+            return new UpdateNotificationTypeByUserIdResult {
+                item = data.Keys.Contains("item") ? Subscribe.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

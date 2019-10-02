@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Identifier.Model
 {
+	[Preserve]
 	public class SecurityPolicy
 	{
 
@@ -160,6 +163,18 @@ namespace Gs2.Gs2Identifier.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static SecurityPolicy FromDict(JsonData data)
+        {
+            return new SecurityPolicy()
+                .WithSecurityPolicyId(data.Keys.Contains("securityPolicyId") ? (string) data["securityPolicyId"] : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
+                .WithPolicy(data.Keys.Contains("policy") ? (string) data["policy"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

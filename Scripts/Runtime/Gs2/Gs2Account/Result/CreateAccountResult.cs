@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Account.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Account.Result
 {
+	[Preserve]
 	public class CreateAccountResult
 	{
         /** 作成したゲームプレイヤーアカウント */
         public Account item { set; get; }
 
+
+        public static CreateAccountResult FromDict(JsonData data)
+        {
+            return new CreateAccountResult {
+                item = data.Keys.Contains("item") ? Account.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

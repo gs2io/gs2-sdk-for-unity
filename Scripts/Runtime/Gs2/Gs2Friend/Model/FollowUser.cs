@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Friend.Model
 {
+	[Preserve]
 	public class FollowUser
 	{
 
@@ -84,6 +87,14 @@ namespace Gs2.Gs2Friend.Model
                 writer.Write(this.followerProfile);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static FollowUser FromDict(JsonData data)
+        {
+            return new FollowUser()
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithPublicProfile(data.Keys.Contains("publicProfile") ? (string) data["publicProfile"] : null)
+                .WithFollowerProfile(data.Keys.Contains("followerProfile") ? (string) data["followerProfile"] : null);
         }
 	}
 }

@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2JobQueue.Model
 {
+	[Preserve]
 	public class JobResultBody
 	{
 
@@ -103,6 +106,15 @@ namespace Gs2.Gs2JobQueue.Model
                 writer.Write(this.tryAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static JobResultBody FromDict(JsonData data)
+        {
+            return new JobResultBody()
+                .WithTryNumber(data.Keys.Contains("tryNumber") ? (int?) data["tryNumber"] : null)
+                .WithStatusCode(data.Keys.Contains("statusCode") ? (int?) data["statusCode"] : null)
+                .WithResult(data.Keys.Contains("result") ? (string) data["result"] : null)
+                .WithTryAt(data.Keys.Contains("tryAt") ? (long?) data["tryAt"] : null);
         }
 	}
 }

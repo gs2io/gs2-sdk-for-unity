@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Mission.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Result
 {
+	[Preserve]
 	public class GetCounterModelResult
 	{
         /** カウンターの種類 */
         public CounterModel item { set; get; }
 
+
+        public static GetCounterModelResult FromDict(JsonData data)
+        {
+            return new GetCounterModelResult {
+                item = data.Keys.Contains("item") ? CounterModel.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

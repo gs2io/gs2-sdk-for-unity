@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Project.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Project.Result
 {
+	[Preserve]
 	public class SignInResult
 	{
         /** サインインしたGS2アカウント */
@@ -28,5 +32,13 @@ namespace Gs2.Gs2Project.Result
         /** GS2-Console にアクセスするのに使用するトークン */
         public string accountToken { set; get; }
 
+
+        public static SignInResult FromDict(JsonData data)
+        {
+            return new SignInResult {
+                item = data.Keys.Contains("item") ? Account.FromDict(data["item"]) : null,
+                accountToken = data.Keys.Contains("accountToken") ? (string) data["accountToken"] : null,
+            };
+        }
 	}
 }

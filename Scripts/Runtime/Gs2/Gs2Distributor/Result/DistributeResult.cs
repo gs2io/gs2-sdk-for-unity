@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Distributor.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Distributor.Result
 {
+	[Preserve]
 	public class DistributeResult
 	{
         /** 処理した DistributeResource */
@@ -31,5 +35,14 @@ namespace Gs2.Gs2Distributor.Result
         /** レスポンス内容 */
         public string result { set; get; }
 
+
+        public static DistributeResult FromDict(JsonData data)
+        {
+            return new DistributeResult {
+                distributeResource = data.Keys.Contains("distributeResource") ? DistributeResource.FromDict(data["distributeResource"]) : null,
+                inboxNamespaceId = data.Keys.Contains("inboxNamespaceId") ? (string) data["inboxNamespaceId"] : null,
+                result = data.Keys.Contains("result") ? (string) data["result"] : null,
+            };
+        }
 	}
 }

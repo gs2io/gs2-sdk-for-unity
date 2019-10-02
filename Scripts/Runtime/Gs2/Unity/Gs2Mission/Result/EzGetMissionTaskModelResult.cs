@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2Mission.Model;
 using Gs2.Gs2Mission.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Mission.Result
 {
+	[Preserve]
 	public class EzGetMissionTaskModelResult
 	{
         /** ミッションタスク */

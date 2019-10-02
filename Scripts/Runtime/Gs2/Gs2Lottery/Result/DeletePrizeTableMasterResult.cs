@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Lottery.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Result
 {
+	[Preserve]
 	public class DeletePrizeTableMasterResult
 	{
         /** 削除した排出確率テーブルマスター */
         public PrizeTableMaster item { set; get; }
 
+
+        public static DeletePrizeTableMasterResult FromDict(JsonData data)
+        {
+            return new DeletePrizeTableMasterResult {
+                item = data.Keys.Contains("item") ? PrizeTableMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

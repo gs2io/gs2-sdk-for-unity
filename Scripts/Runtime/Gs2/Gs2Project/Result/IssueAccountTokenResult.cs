@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Project.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Project.Result
 {
+	[Preserve]
 	public class IssueAccountTokenResult
 	{
         /** GS2-Console にアクセスするのに使用するトークン */
         public string accountToken { set; get; }
 
+
+        public static IssueAccountTokenResult FromDict(JsonData data)
+        {
+            return new IssueAccountTokenResult {
+                accountToken = data.Keys.Contains("accountToken") ? (string) data["accountToken"] : null,
+            };
+        }
 	}
 }

@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2Distributor.Model;
 using Gs2.Gs2Distributor.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Distributor.Result
 {
+	[Preserve]
 	public class EzListDistributorModelsResult
 	{
         /** 配信設定のリスト */

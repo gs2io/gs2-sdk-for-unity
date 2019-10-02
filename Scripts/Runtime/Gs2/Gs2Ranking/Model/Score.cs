@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Ranking.Model
 {
+	[Preserve]
 	public class Score
 	{
 
@@ -179,6 +182,19 @@ namespace Gs2.Gs2Ranking.Model
                 writer.Write(this.createdAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Score FromDict(JsonData data)
+        {
+            return new Score()
+                .WithScoreId(data.Keys.Contains("scoreId") ? (string) data["scoreId"] : null)
+                .WithCategoryName(data.Keys.Contains("categoryName") ? (string) data["categoryName"] : null)
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithUniqueId(data.Keys.Contains("uniqueId") ? (string) data["uniqueId"] : null)
+                .WithScorerUserId(data.Keys.Contains("scorerUserId") ? (string) data["scorerUserId"] : null)
+                .WithScore(data.Keys.Contains("score") ? (long?) data["score"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null);
         }
 	}
 }

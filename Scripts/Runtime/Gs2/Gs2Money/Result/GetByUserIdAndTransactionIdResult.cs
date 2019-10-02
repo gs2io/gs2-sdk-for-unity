@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Money.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Money.Result
 {
+	[Preserve]
 	public class GetByUserIdAndTransactionIdResult
 	{
         /** レシート */
         public Receipt item { set; get; }
 
+
+        public static GetByUserIdAndTransactionIdResult FromDict(JsonData data)
+        {
+            return new GetByUserIdAndTransactionIdResult {
+                item = data.Keys.Contains("item") ? Receipt.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

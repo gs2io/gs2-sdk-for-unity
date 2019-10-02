@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Matchmaking.Model
 {
+	[Preserve]
 	public class Namespace
 	{
 
@@ -312,6 +315,26 @@ namespace Gs2.Gs2Matchmaking.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Namespace FromDict(JsonData data)
+        {
+            return new Namespace()
+                .WithNamespaceId(data.Keys.Contains("namespaceId") ? (string) data["namespaceId"] : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
+                .WithCreateGatheringTriggerType(data.Keys.Contains("createGatheringTriggerType") ? (string) data["createGatheringTriggerType"] : null)
+                .WithCreateGatheringTriggerRealtimeNamespaceId(data.Keys.Contains("createGatheringTriggerRealtimeNamespaceId") ? (string) data["createGatheringTriggerRealtimeNamespaceId"] : null)
+                .WithCreateGatheringTriggerScriptId(data.Keys.Contains("createGatheringTriggerScriptId") ? (string) data["createGatheringTriggerScriptId"] : null)
+                .WithCompleteMatchmakingTriggerType(data.Keys.Contains("completeMatchmakingTriggerType") ? (string) data["completeMatchmakingTriggerType"] : null)
+                .WithCompleteMatchmakingTriggerRealtimeNamespaceId(data.Keys.Contains("completeMatchmakingTriggerRealtimeNamespaceId") ? (string) data["completeMatchmakingTriggerRealtimeNamespaceId"] : null)
+                .WithCompleteMatchmakingTriggerScriptId(data.Keys.Contains("completeMatchmakingTriggerScriptId") ? (string) data["completeMatchmakingTriggerScriptId"] : null)
+                .WithJoinNotification(data.Keys.Contains("joinNotification") ? NotificationSetting.FromDict(data["joinNotification"]) : null)
+                .WithLeaveNotification(data.Keys.Contains("leaveNotification") ? NotificationSetting.FromDict(data["leaveNotification"]) : null)
+                .WithCompleteNotification(data.Keys.Contains("completeNotification") ? NotificationSetting.FromDict(data["completeNotification"]) : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Distributor.Model
 {
+	[Preserve]
 	public class DistributorModel
 	{
 
@@ -146,6 +149,21 @@ namespace Gs2.Gs2Distributor.Model
                 writer.WriteArrayEnd();
             }
             writer.WriteObjectEnd();
+        }
+
+        public static DistributorModel FromDict(JsonData data)
+        {
+            return new DistributorModel()
+                .WithDistributorModelId(data.Keys.Contains("distributorModelId") ? (string) data["distributorModelId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithAssumeUserId(data.Keys.Contains("assumeUserId") ? (string) data["assumeUserId"] : null)
+                .WithInboxNamespaceId(data.Keys.Contains("inboxNamespaceId") ? (string) data["inboxNamespaceId"] : null)
+                .WithWhiteListTargetIds(data.Keys.Contains("whiteListTargetIds") ? data["whiteListTargetIds"].Cast<JsonData>().Select(value =>
+                    {
+                        return (string) value;
+                    }
+                ).ToList() : null);
         }
 	}
 }

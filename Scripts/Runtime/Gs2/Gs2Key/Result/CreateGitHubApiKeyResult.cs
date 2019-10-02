@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Key.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Key.Result
 {
+	[Preserve]
 	public class CreateGitHubApiKeyResult
 	{
         /** 作成したGitHub のAPIキー */
         public GitHubApiKey item { set; get; }
 
+
+        public static CreateGitHubApiKeyResult FromDict(JsonData data)
+        {
+            return new CreateGitHubApiKeyResult {
+                item = data.Keys.Contains("item") ? GitHubApiKey.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

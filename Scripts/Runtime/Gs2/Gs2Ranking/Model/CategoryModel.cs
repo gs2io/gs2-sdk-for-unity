@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Ranking.Model
 {
+	[Preserve]
 	public class CategoryModel
 	{
 
@@ -198,6 +201,20 @@ namespace Gs2.Gs2Ranking.Model
                 writer.Write(this.calculateIntervalMinutes.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static CategoryModel FromDict(JsonData data)
+        {
+            return new CategoryModel()
+                .WithCategoryModelId(data.Keys.Contains("categoryModelId") ? (string) data["categoryModelId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithMinimumValue(data.Keys.Contains("minimumValue") ? (long?) data["minimumValue"] : null)
+                .WithMaximumValue(data.Keys.Contains("maximumValue") ? (long?) data["maximumValue"] : null)
+                .WithOrderDirection(data.Keys.Contains("orderDirection") ? (string) data["orderDirection"] : null)
+                .WithScope(data.Keys.Contains("scope") ? (string) data["scope"] : null)
+                .WithUniqueByUserId(data.Keys.Contains("uniqueByUserId") ? (bool?) data["uniqueByUserId"] : null)
+                .WithCalculateIntervalMinutes(data.Keys.Contains("calculateIntervalMinutes") ? (int?) data["calculateIntervalMinutes"] : null);
         }
 	}
 }

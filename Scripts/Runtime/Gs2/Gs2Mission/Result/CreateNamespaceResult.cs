@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Mission.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Result
 {
+	[Preserve]
 	public class CreateNamespaceResult
 	{
         /** 作成したネームスペース */
         public Namespace item { set; get; }
 
+
+        public static CreateNamespaceResult FromDict(JsonData data)
+        {
+            return new CreateNamespaceResult {
+                item = data.Keys.Contains("item") ? Namespace.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

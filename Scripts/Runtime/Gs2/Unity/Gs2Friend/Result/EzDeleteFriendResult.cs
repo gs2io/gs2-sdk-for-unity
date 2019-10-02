@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2Friend.Model;
 using Gs2.Gs2Friend.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Friend.Result
 {
+	[Preserve]
 	public class EzDeleteFriendResult
 	{
         /** フレンドのユーザー */

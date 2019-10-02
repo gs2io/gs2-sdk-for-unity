@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Distributor.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Distributor.Result
 {
+	[Preserve]
 	public class DeleteDistributorModelMasterResult
 	{
         /** 削除した配信設定マスター */
         public DistributorModelMaster item { set; get; }
 
+
+        public static DeleteDistributorModelMasterResult FromDict(JsonData data)
+        {
+            return new DeleteDistributorModelMasterResult {
+                item = data.Keys.Contains("item") ? DistributorModelMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

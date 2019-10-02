@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Gateway.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Gateway.Result
 {
+	[Preserve]
 	public class UpdateNamespaceResult
 	{
         /** 更新したネームスペース */
         public Namespace item { set; get; }
 
+
+        public static UpdateNamespaceResult FromDict(JsonData data)
+        {
+            return new UpdateNamespaceResult {
+                item = data.Keys.Contains("item") ? Namespace.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

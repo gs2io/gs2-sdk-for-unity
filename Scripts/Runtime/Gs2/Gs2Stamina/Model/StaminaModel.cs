@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Stamina.Model
 {
+	[Preserve]
 	public class StaminaModel
 	{
 
@@ -236,6 +239,22 @@ namespace Gs2.Gs2Stamina.Model
                 this.recoverValueTable.WriteJson(writer);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static StaminaModel FromDict(JsonData data)
+        {
+            return new StaminaModel()
+                .WithStaminaModelId(data.Keys.Contains("staminaModelId") ? (string) data["staminaModelId"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithRecoverIntervalMinutes(data.Keys.Contains("recoverIntervalMinutes") ? (int?) data["recoverIntervalMinutes"] : null)
+                .WithRecoverValue(data.Keys.Contains("recoverValue") ? (int?) data["recoverValue"] : null)
+                .WithInitialCapacity(data.Keys.Contains("initialCapacity") ? (int?) data["initialCapacity"] : null)
+                .WithIsOverflow(data.Keys.Contains("isOverflow") ? (bool?) data["isOverflow"] : null)
+                .WithMaxCapacity(data.Keys.Contains("maxCapacity") ? (int?) data["maxCapacity"] : null)
+                .WithMaxStaminaTable(data.Keys.Contains("maxStaminaTable") ? MaxStaminaTable.FromDict(data["maxStaminaTable"]) : null)
+                .WithRecoverIntervalTable(data.Keys.Contains("recoverIntervalTable") ? RecoverIntervalTable.FromDict(data["recoverIntervalTable"]) : null)
+                .WithRecoverValueTable(data.Keys.Contains("recoverValueTable") ? RecoverValueTable.FromDict(data["recoverValueTable"]) : null);
         }
 	}
 }

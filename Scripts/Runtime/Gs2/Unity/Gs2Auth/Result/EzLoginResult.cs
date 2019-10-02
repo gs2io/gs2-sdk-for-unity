@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2Auth.Model;
 using Gs2.Gs2Auth.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Auth.Result
 {
+	[Preserve]
 	public class EzLoginResult
 	{
         /** アクセストークン */

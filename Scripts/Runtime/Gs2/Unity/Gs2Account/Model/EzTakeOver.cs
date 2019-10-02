@@ -16,10 +16,12 @@
 using Gs2.Gs2Account.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Account.Model
 {
+	[Preserve]
 	public class EzTakeOver
 	{
 		/** ユーザーID */

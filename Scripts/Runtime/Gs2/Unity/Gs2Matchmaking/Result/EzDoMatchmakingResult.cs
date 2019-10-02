@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2Matchmaking.Model;
 using Gs2.Gs2Matchmaking.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Matchmaking.Result
 {
+	[Preserve]
 	public class EzDoMatchmakingResult
 	{
         /** ギャザリング */

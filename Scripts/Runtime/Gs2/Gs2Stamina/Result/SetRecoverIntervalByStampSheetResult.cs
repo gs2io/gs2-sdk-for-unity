@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Stamina.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Stamina.Result
 {
+	[Preserve]
 	public class SetRecoverIntervalByStampSheetResult
 	{
         /** スタミナ */
         public Stamina item { set; get; }
 
+
+        public static SetRecoverIntervalByStampSheetResult FromDict(JsonData data)
+        {
+            return new SetRecoverIntervalByStampSheetResult {
+                item = data.Keys.Contains("item") ? Stamina.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

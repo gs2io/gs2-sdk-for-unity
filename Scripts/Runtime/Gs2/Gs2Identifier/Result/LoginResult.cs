@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Identifier.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Identifier.Result
 {
+	[Preserve]
 	public class LoginResult
 	{
         /** プロジェクトトークン */
@@ -31,5 +35,14 @@ namespace Gs2.Gs2Identifier.Result
         /** 有効期間(秒) */
         public int? expiresIn { set; get; }
 
+
+        public static LoginResult FromDict(JsonData data)
+        {
+            return new LoginResult {
+                accessToken = data.Keys.Contains("accessToken") ? (string) data["accessToken"] : null,
+                tokenType = data.Keys.Contains("tokenType") ? (string) data["tokenType"] : null,
+                expiresIn = data.Keys.Contains("expiresIn") ? (int?) data["expiresIn"] : null,
+            };
+        }
 	}
 }

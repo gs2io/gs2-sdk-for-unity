@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Model
 {
+	[Preserve]
 	public class Complete
 	{
 
@@ -170,6 +173,26 @@ namespace Gs2.Gs2Mission.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Complete FromDict(JsonData data)
+        {
+            return new Complete()
+                .WithCompleteId(data.Keys.Contains("completeId") ? (string) data["completeId"] : null)
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithMissionGroupName(data.Keys.Contains("missionGroupName") ? (string) data["missionGroupName"] : null)
+                .WithCompletedMissionTaskNames(data.Keys.Contains("completedMissionTaskNames") ? data["completedMissionTaskNames"].Cast<JsonData>().Select(value =>
+                    {
+                        return (string) value;
+                    }
+                ).ToList() : null)
+                .WithReceivedMissionTaskNames(data.Keys.Contains("receivedMissionTaskNames") ? data["receivedMissionTaskNames"].Cast<JsonData>().Select(value =>
+                    {
+                        return (string) value;
+                    }
+                ).ToList() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
         }
 	}
 }

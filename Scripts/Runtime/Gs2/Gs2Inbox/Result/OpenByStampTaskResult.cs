@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Inbox.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inbox.Result
 {
+	[Preserve]
 	public class OpenByStampTaskResult
 	{
         /** メッセージ */
@@ -28,5 +32,13 @@ namespace Gs2.Gs2Inbox.Result
         /** スタンプタスクの実行結果を記録したコンテキスト */
         public string newContextStack { set; get; }
 
+
+        public static OpenByStampTaskResult FromDict(JsonData data)
+        {
+            return new OpenByStampTaskResult {
+                item = data.Keys.Contains("item") ? Message.FromDict(data["item"]) : null,
+                newContextStack = data.Keys.Contains("newContextStack") ? (string) data["newContextStack"] : null,
+            };
+        }
 	}
 }

@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Script.Model
 {
+	[Preserve]
 	public class GitHubCheckoutSetting
 	{
 
@@ -160,6 +163,18 @@ namespace Gs2.Gs2Script.Model
                 writer.Write(this.tagName);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static GitHubCheckoutSetting FromDict(JsonData data)
+        {
+            return new GitHubCheckoutSetting()
+                .WithGitHubApiKeyId(data.Keys.Contains("gitHubApiKeyId") ? (string) data["gitHubApiKeyId"] : null)
+                .WithRepositoryName(data.Keys.Contains("repositoryName") ? (string) data["repositoryName"] : null)
+                .WithSourcePath(data.Keys.Contains("sourcePath") ? (string) data["sourcePath"] : null)
+                .WithReferenceType(data.Keys.Contains("referenceType") ? (string) data["referenceType"] : null)
+                .WithCommitHash(data.Keys.Contains("commitHash") ? (string) data["commitHash"] : null)
+                .WithBranchName(data.Keys.Contains("branchName") ? (string) data["branchName"] : null)
+                .WithTagName(data.Keys.Contains("tagName") ? (string) data["tagName"] : null);
         }
 	}
 }

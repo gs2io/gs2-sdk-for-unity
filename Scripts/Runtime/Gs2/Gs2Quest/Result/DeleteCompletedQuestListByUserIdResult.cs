@@ -15,15 +15,26 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Quest.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Result
 {
+	[Preserve]
 	public class DeleteCompletedQuestListByUserIdResult
 	{
         /** クエスト進行 */
         public CompletedQuestList item { set; get; }
 
+
+        public static DeleteCompletedQuestListByUserIdResult FromDict(JsonData data)
+        {
+            return new DeleteCompletedQuestListByUserIdResult {
+                item = data.Keys.Contains("item") ? CompletedQuestList.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

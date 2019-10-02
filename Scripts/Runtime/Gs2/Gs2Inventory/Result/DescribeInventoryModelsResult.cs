@@ -15,15 +15,30 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Inventory.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Result
 {
+	[Preserve]
 	public class DescribeInventoryModelsResult
 	{
         /** インベントリモデルのリスト */
         public List<InventoryModel> items { set; get; }
 
+
+        public static DescribeInventoryModelsResult FromDict(JsonData data)
+        {
+            return new DescribeInventoryModelsResult {
+                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return InventoryModel.FromDict(value);
+                    }
+                ).ToList() : null,
+            };
+        }
 	}
 }

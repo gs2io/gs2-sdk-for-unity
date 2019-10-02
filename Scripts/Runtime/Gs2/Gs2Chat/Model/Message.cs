@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Chat.Model
 {
+	[Preserve]
 	public class Message
 	{
 
@@ -160,6 +163,18 @@ namespace Gs2.Gs2Chat.Model
                 writer.Write(this.createdAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+        public static Message FromDict(JsonData data)
+        {
+            return new Message()
+                .WithMessageId(data.Keys.Contains("messageId") ? (string) data["messageId"] : null)
+                .WithRoomName(data.Keys.Contains("roomName") ? (string) data["roomName"] : null)
+                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
+                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
+                .WithCategory(data.Keys.Contains("category") ? (int?) data["category"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null);
         }
 	}
 }
