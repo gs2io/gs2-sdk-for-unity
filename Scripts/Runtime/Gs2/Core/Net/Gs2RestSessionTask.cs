@@ -87,7 +87,7 @@ namespace Gs2.Core.Net
                 {
                     if (!string.IsNullOrEmpty(gs2Response.Message) && gs2Response.Message != "Null")
                     {
-                        result = JsonMapper.ToObject<T>(gs2Response.Message);
+                        result = (T)typeof(T).GetMethod("FromDict")?.Invoke(null, new object[] { JsonMapper.ToObject(gs2Response.Message) });
                     }
                 }
                 catch (JsonException jsonException)

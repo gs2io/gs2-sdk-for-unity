@@ -39,7 +39,7 @@ namespace Gs2.Unity.Util
         
         public T ToRequest<T> () where T: IRequest 
         {
-            return JsonMapper.ToObject<T>(Args);
+            return (T)typeof(T).GetMethod("FromDict")?.Invoke(null, new object[] { Args });
         }
 
         public string TaskId => _stampTask.taskId;

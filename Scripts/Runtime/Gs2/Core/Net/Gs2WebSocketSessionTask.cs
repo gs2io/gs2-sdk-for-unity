@@ -14,6 +14,7 @@
  * permissions and limitations under the License.
  */
 
+using Gs2.Core.Model;
 using Gs2.Core.Exception;
 using LitJson;
 using UnityEngine.Events;
@@ -49,7 +50,7 @@ namespace Gs2.Core.Net
                     if (!string.IsNullOrEmpty(gs2Response.Message) && gs2Response.Message != "Null")
                     {
                         var message = JsonMapper.ToObject(gs2Response.Message);
-                        result = JsonMapper.ToObject<T>(message["body"].ToJson());
+                        result = (T)typeof(T).GetMethod("FromDict")?.Invoke(null, new object[] { message["body"] });
                     }
                 }
                 catch (System.Exception e)
