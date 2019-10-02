@@ -137,18 +137,19 @@ namespace Gs2.Gs2Exchange.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static RateModel FromDict(JsonData data)
         {
             return new RateModel()
-                .WithRateModelId(data.Keys.Contains("rateModelId") ? (string) data["rateModelId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithConsumeActions(data.Keys.Contains("consumeActions") ? data["consumeActions"].Cast<JsonData>().Select(value =>
+                .WithRateModelId(data.Keys.Contains("rateModelId") && data["rateModelId"] != null ? (string) data["rateModelId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithConsumeActions(data.Keys.Contains("consumeActions") && data["consumeActions"] != null ? data["consumeActions"].Cast<JsonData>().Select(value =>
                     {
                         return ConsumeAction.FromDict(value);
                     }
                 ).ToList() : null)
-                .WithAcquireActions(data.Keys.Contains("acquireActions") ? data["acquireActions"].Cast<JsonData>().Select(value =>
+                .WithAcquireActions(data.Keys.Contains("acquireActions") && data["acquireActions"] != null ? data["acquireActions"].Cast<JsonData>().Select(value =>
                     {
                         return AcquireAction.FromDict(value);
                     }

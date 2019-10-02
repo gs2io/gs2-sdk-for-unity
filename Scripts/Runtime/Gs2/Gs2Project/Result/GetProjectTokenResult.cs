@@ -36,12 +36,13 @@ namespace Gs2.Gs2Project.Result
         public string projectToken { set; get; }
 
 
+    	[Preserve]
         public static GetProjectTokenResult FromDict(JsonData data)
         {
             return new GetProjectTokenResult {
-                item = data.Keys.Contains("item") ? Project.FromDict(data["item"]) : null,
-                ownerId = data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null,
-                projectToken = data.Keys.Contains("projectToken") ? (string) data["projectToken"] : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Project.FromDict(data["item"]) : null,
+                ownerId = data.Keys.Contains("ownerId") && data["ownerId"] != null ? (string) data["ownerId"] : null,
+                projectToken = data.Keys.Contains("projectToken") && data["projectToken"] != null ? (string) data["projectToken"] : null,
             };
         }
 	}

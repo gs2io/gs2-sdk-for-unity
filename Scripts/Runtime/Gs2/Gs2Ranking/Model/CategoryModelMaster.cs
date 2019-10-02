@@ -260,21 +260,22 @@ namespace Gs2.Gs2Ranking.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static CategoryModelMaster FromDict(JsonData data)
         {
             return new CategoryModelMaster()
-                .WithCategoryModelId(data.Keys.Contains("categoryModelId") ? (string) data["categoryModelId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithMinimumValue(data.Keys.Contains("minimumValue") ? (long?) data["minimumValue"] : null)
-                .WithMaximumValue(data.Keys.Contains("maximumValue") ? (long?) data["maximumValue"] : null)
-                .WithOrderDirection(data.Keys.Contains("orderDirection") ? (string) data["orderDirection"] : null)
-                .WithScope(data.Keys.Contains("scope") ? (string) data["scope"] : null)
-                .WithUniqueByUserId(data.Keys.Contains("uniqueByUserId") ? (bool?) data["uniqueByUserId"] : null)
-                .WithCalculateIntervalMinutes(data.Keys.Contains("calculateIntervalMinutes") ? (int?) data["calculateIntervalMinutes"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithCategoryModelId(data.Keys.Contains("categoryModelId") && data["categoryModelId"] != null ? (string) data["categoryModelId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithMinimumValue(data.Keys.Contains("minimumValue") && data["minimumValue"] != null ? (long?) data["minimumValue"] : null)
+                .WithMaximumValue(data.Keys.Contains("maximumValue") && data["maximumValue"] != null ? (long?) data["maximumValue"] : null)
+                .WithOrderDirection(data.Keys.Contains("orderDirection") && data["orderDirection"] != null ? (string) data["orderDirection"] : null)
+                .WithScope(data.Keys.Contains("scope") && data["scope"] != null ? (string) data["scope"] : null)
+                .WithUniqueByUserId(data.Keys.Contains("uniqueByUserId") && data["uniqueByUserId"] != null ? (bool?) data["uniqueByUserId"] : null)
+                .WithCalculateIntervalMinutes(data.Keys.Contains("calculateIntervalMinutes") && data["calculateIntervalMinutes"] != null ? (int?) data["calculateIntervalMinutes"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

@@ -151,15 +151,16 @@ namespace Gs2.Gs2Distributor.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static DistributorModel FromDict(JsonData data)
         {
             return new DistributorModel()
-                .WithDistributorModelId(data.Keys.Contains("distributorModelId") ? (string) data["distributorModelId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithAssumeUserId(data.Keys.Contains("assumeUserId") ? (string) data["assumeUserId"] : null)
-                .WithInboxNamespaceId(data.Keys.Contains("inboxNamespaceId") ? (string) data["inboxNamespaceId"] : null)
-                .WithWhiteListTargetIds(data.Keys.Contains("whiteListTargetIds") ? data["whiteListTargetIds"].Cast<JsonData>().Select(value =>
+                .WithDistributorModelId(data.Keys.Contains("distributorModelId") && data["distributorModelId"] != null ? (string) data["distributorModelId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithAssumeUserId(data.Keys.Contains("assumeUserId") && data["assumeUserId"] != null ? (string) data["assumeUserId"] : null)
+                .WithInboxNamespaceId(data.Keys.Contains("inboxNamespaceId") && data["inboxNamespaceId"] != null ? (string) data["inboxNamespaceId"] : null)
+                .WithWhiteListTargetIds(data.Keys.Contains("whiteListTargetIds") && data["whiteListTargetIds"] != null ? data["whiteListTargetIds"].Cast<JsonData>().Select(value =>
                     {
                         return (string) value;
                     }

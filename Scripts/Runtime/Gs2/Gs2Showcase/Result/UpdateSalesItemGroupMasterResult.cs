@@ -30,10 +30,11 @@ namespace Gs2.Gs2Showcase.Result
         public SalesItemGroupMaster item { set; get; }
 
 
+    	[Preserve]
         public static UpdateSalesItemGroupMasterResult FromDict(JsonData data)
         {
             return new UpdateSalesItemGroupMasterResult {
-                item = data.Keys.Contains("item") ? SalesItemGroupMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? SalesItemGroupMaster.FromDict(data["item"]) : null,
             };
         }
 	}

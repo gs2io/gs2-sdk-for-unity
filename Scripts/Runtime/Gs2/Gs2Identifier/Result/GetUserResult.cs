@@ -30,10 +30,11 @@ namespace Gs2.Gs2Identifier.Result
         public User item { set; get; }
 
 
+    	[Preserve]
         public static GetUserResult FromDict(JsonData data)
         {
             return new GetUserResult {
-                item = data.Keys.Contains("item") ? User.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? User.FromDict(data["item"]) : null,
             };
         }
 	}

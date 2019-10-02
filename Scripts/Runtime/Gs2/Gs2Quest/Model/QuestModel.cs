@@ -204,29 +204,30 @@ namespace Gs2.Gs2Quest.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static QuestModel FromDict(JsonData data)
         {
             return new QuestModel()
-                .WithQuestModelId(data.Keys.Contains("questModelId") ? (string) data["questModelId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithContents(data.Keys.Contains("contents") ? data["contents"].Cast<JsonData>().Select(value =>
+                .WithQuestModelId(data.Keys.Contains("questModelId") && data["questModelId"] != null ? (string) data["questModelId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithContents(data.Keys.Contains("contents") && data["contents"] != null ? data["contents"].Cast<JsonData>().Select(value =>
                     {
                         return Contents.FromDict(value);
                     }
                 ).ToList() : null)
-                .WithChallengePeriodEventId(data.Keys.Contains("challengePeriodEventId") ? (string) data["challengePeriodEventId"] : null)
-                .WithConsumeActions(data.Keys.Contains("consumeActions") ? data["consumeActions"].Cast<JsonData>().Select(value =>
+                .WithChallengePeriodEventId(data.Keys.Contains("challengePeriodEventId") && data["challengePeriodEventId"] != null ? (string) data["challengePeriodEventId"] : null)
+                .WithConsumeActions(data.Keys.Contains("consumeActions") && data["consumeActions"] != null ? data["consumeActions"].Cast<JsonData>().Select(value =>
                     {
                         return ConsumeAction.FromDict(value);
                     }
                 ).ToList() : null)
-                .WithFailedAcquireActions(data.Keys.Contains("failedAcquireActions") ? data["failedAcquireActions"].Cast<JsonData>().Select(value =>
+                .WithFailedAcquireActions(data.Keys.Contains("failedAcquireActions") && data["failedAcquireActions"] != null ? data["failedAcquireActions"].Cast<JsonData>().Select(value =>
                     {
                         return AcquireAction.FromDict(value);
                     }
                 ).ToList() : null)
-                .WithPremiseQuestNames(data.Keys.Contains("premiseQuestNames") ? data["premiseQuestNames"].Cast<JsonData>().Select(value =>
+                .WithPremiseQuestNames(data.Keys.Contains("premiseQuestNames") && data["premiseQuestNames"] != null ? data["premiseQuestNames"].Cast<JsonData>().Select(value =>
                     {
                         return (string) value;
                     }

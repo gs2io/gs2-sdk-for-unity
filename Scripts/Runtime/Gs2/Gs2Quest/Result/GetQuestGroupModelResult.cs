@@ -30,10 +30,11 @@ namespace Gs2.Gs2Quest.Result
         public QuestGroupModel item { set; get; }
 
 
+    	[Preserve]
         public static GetQuestGroupModelResult FromDict(JsonData data)
         {
             return new GetQuestGroupModelResult {
-                item = data.Keys.Contains("item") ? QuestGroupModel.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? QuestGroupModel.FromDict(data["item"]) : null,
             };
         }
 	}

@@ -146,15 +146,16 @@ namespace Gs2.Gs2Project.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Project FromDict(JsonData data)
         {
             return new Project()
-                .WithProjectId(data.Keys.Contains("projectId") ? (string) data["projectId"] : null)
-                .WithAccountName(data.Keys.Contains("accountName") ? (string) data["accountName"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithProjectId(data.Keys.Contains("projectId") && data["projectId"] != null ? (string) data["projectId"] : null)
+                .WithAccountName(data.Keys.Contains("accountName") && data["accountName"] != null ? (string) data["accountName"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

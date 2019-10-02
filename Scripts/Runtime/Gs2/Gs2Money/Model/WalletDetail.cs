@@ -165,16 +165,17 @@ namespace Gs2.Gs2Money.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static WalletDetail FromDict(JsonData data)
         {
             return new WalletDetail()
-                .WithWalletDetailId(data.Keys.Contains("walletDetailId") ? (string) data["walletDetailId"] : null)
-                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
-                .WithSlot(data.Keys.Contains("slot") ? (int?) data["slot"] : null)
-                .WithPrice(data.Keys.Contains("price") ? (float?) data["price"] : null)
-                .WithCount(data.Keys.Contains("count") ? (int?) data["count"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithWalletDetailId(data.Keys.Contains("walletDetailId") && data["walletDetailId"] != null ? (string) data["walletDetailId"] : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithSlot(data.Keys.Contains("slot") && data["slot"] != null ? (int?) data["slot"] : null)
+                .WithPrice(data.Keys.Contains("price") && data["price"] != null ? (float?) data["price"] : null)
+                .WithCount(data.Keys.Contains("count") && data["count"] != null ? (int?) data["count"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

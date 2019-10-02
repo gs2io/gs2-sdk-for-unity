@@ -30,10 +30,11 @@ namespace Gs2.Gs2Lottery.Result
         public PrizeTable item { set; get; }
 
 
+    	[Preserve]
         public static GetPrizeTableResult FromDict(JsonData data)
         {
             return new GetPrizeTableResult {
-                item = data.Keys.Contains("item") ? PrizeTable.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? PrizeTable.FromDict(data["item"]) : null,
             };
         }
 	}

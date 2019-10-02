@@ -374,27 +374,28 @@ namespace Gs2.Gs2Schedule.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static EventMaster FromDict(JsonData data)
         {
             return new EventMaster()
-                .WithEventId(data.Keys.Contains("eventId") ? (string) data["eventId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithScheduleType(data.Keys.Contains("scheduleType") ? (string) data["scheduleType"] : null)
-                .WithRepeatType(data.Keys.Contains("repeatType") ? (string) data["repeatType"] : null)
-                .WithAbsoluteBegin(data.Keys.Contains("absoluteBegin") ? (long?) data["absoluteBegin"] : null)
-                .WithAbsoluteEnd(data.Keys.Contains("absoluteEnd") ? (long?) data["absoluteEnd"] : null)
-                .WithRepeatBeginDayOfMonth(data.Keys.Contains("repeatBeginDayOfMonth") ? (int?) data["repeatBeginDayOfMonth"] : null)
-                .WithRepeatEndDayOfMonth(data.Keys.Contains("repeatEndDayOfMonth") ? (int?) data["repeatEndDayOfMonth"] : null)
-                .WithRepeatBeginDayOfWeek(data.Keys.Contains("repeatBeginDayOfWeek") ? (string) data["repeatBeginDayOfWeek"] : null)
-                .WithRepeatEndDayOfWeek(data.Keys.Contains("repeatEndDayOfWeek") ? (string) data["repeatEndDayOfWeek"] : null)
-                .WithRepeatBeginHour(data.Keys.Contains("repeatBeginHour") ? (int?) data["repeatBeginHour"] : null)
-                .WithRepeatEndHour(data.Keys.Contains("repeatEndHour") ? (int?) data["repeatEndHour"] : null)
-                .WithRelativeTriggerName(data.Keys.Contains("relativeTriggerName") ? (string) data["relativeTriggerName"] : null)
-                .WithRelativeDuration(data.Keys.Contains("relativeDuration") ? (int?) data["relativeDuration"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithEventId(data.Keys.Contains("eventId") && data["eventId"] != null ? (string) data["eventId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithScheduleType(data.Keys.Contains("scheduleType") && data["scheduleType"] != null ? (string) data["scheduleType"] : null)
+                .WithRepeatType(data.Keys.Contains("repeatType") && data["repeatType"] != null ? (string) data["repeatType"] : null)
+                .WithAbsoluteBegin(data.Keys.Contains("absoluteBegin") && data["absoluteBegin"] != null ? (long?) data["absoluteBegin"] : null)
+                .WithAbsoluteEnd(data.Keys.Contains("absoluteEnd") && data["absoluteEnd"] != null ? (long?) data["absoluteEnd"] : null)
+                .WithRepeatBeginDayOfMonth(data.Keys.Contains("repeatBeginDayOfMonth") && data["repeatBeginDayOfMonth"] != null ? (int?) data["repeatBeginDayOfMonth"] : null)
+                .WithRepeatEndDayOfMonth(data.Keys.Contains("repeatEndDayOfMonth") && data["repeatEndDayOfMonth"] != null ? (int?) data["repeatEndDayOfMonth"] : null)
+                .WithRepeatBeginDayOfWeek(data.Keys.Contains("repeatBeginDayOfWeek") && data["repeatBeginDayOfWeek"] != null ? (string) data["repeatBeginDayOfWeek"] : null)
+                .WithRepeatEndDayOfWeek(data.Keys.Contains("repeatEndDayOfWeek") && data["repeatEndDayOfWeek"] != null ? (string) data["repeatEndDayOfWeek"] : null)
+                .WithRepeatBeginHour(data.Keys.Contains("repeatBeginHour") && data["repeatBeginHour"] != null ? (int?) data["repeatBeginHour"] : null)
+                .WithRepeatEndHour(data.Keys.Contains("repeatEndHour") && data["repeatEndHour"] != null ? (int?) data["repeatEndHour"] : null)
+                .WithRelativeTriggerName(data.Keys.Contains("relativeTriggerName") && data["relativeTriggerName"] != null ? (string) data["relativeTriggerName"] : null)
+                .WithRelativeDuration(data.Keys.Contains("relativeDuration") && data["relativeDuration"] != null ? (int?) data["relativeDuration"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

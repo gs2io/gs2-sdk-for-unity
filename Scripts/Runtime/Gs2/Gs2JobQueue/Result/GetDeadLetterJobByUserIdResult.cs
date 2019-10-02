@@ -30,10 +30,11 @@ namespace Gs2.Gs2JobQueue.Result
         public DeadLetterJob item { set; get; }
 
 
+    	[Preserve]
         public static GetDeadLetterJobByUserIdResult FromDict(JsonData data)
         {
             return new GetDeadLetterJobByUserIdResult {
-                item = data.Keys.Contains("item") ? DeadLetterJob.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? DeadLetterJob.FromDict(data["item"]) : null,
             };
         }
 	}

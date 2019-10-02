@@ -30,10 +30,11 @@ namespace Gs2.Gs2Matchmaking.Result
         public Gathering item { set; get; }
 
 
+    	[Preserve]
         public static UpdateGatheringResult FromDict(JsonData data)
         {
             return new UpdateGatheringResult {
-                item = data.Keys.Contains("item") ? Gathering.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gathering.FromDict(data["item"]) : null,
             };
         }
 	}

@@ -184,17 +184,18 @@ namespace Gs2.Gs2Inventory.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static InventoryModelMaster FromDict(JsonData data)
         {
             return new InventoryModelMaster()
-                .WithInventoryModelId(data.Keys.Contains("inventoryModelId") ? (string) data["inventoryModelId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
-                .WithInitialCapacity(data.Keys.Contains("initialCapacity") ? (int?) data["initialCapacity"] : null)
-                .WithMaxCapacity(data.Keys.Contains("maxCapacity") ? (int?) data["maxCapacity"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithInventoryModelId(data.Keys.Contains("inventoryModelId") && data["inventoryModelId"] != null ? (string) data["inventoryModelId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
+                .WithInitialCapacity(data.Keys.Contains("initialCapacity") && data["initialCapacity"] != null ? (int?) data["initialCapacity"] : null)
+                .WithMaxCapacity(data.Keys.Contains("maxCapacity") && data["maxCapacity"] != null ? (int?) data["maxCapacity"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

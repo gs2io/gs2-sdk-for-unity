@@ -36,12 +36,13 @@ namespace Gs2.Gs2Identifier.Result
         public int? expiresIn { set; get; }
 
 
+    	[Preserve]
         public static LoginResult FromDict(JsonData data)
         {
             return new LoginResult {
-                accessToken = data.Keys.Contains("accessToken") ? (string) data["accessToken"] : null,
-                tokenType = data.Keys.Contains("tokenType") ? (string) data["tokenType"] : null,
-                expiresIn = data.Keys.Contains("expiresIn") ? (int?) data["expiresIn"] : null,
+                accessToken = data.Keys.Contains("accessToken") && data["accessToken"] != null ? (string) data["accessToken"] : null,
+                tokenType = data.Keys.Contains("tokenType") && data["tokenType"] != null ? (string) data["tokenType"] : null,
+                expiresIn = data.Keys.Contains("expiresIn") && data["expiresIn"] != null ? (int?) data["expiresIn"] : null,
             };
         }
 	}

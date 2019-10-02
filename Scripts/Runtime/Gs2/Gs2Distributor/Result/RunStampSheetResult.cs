@@ -30,10 +30,11 @@ namespace Gs2.Gs2Distributor.Result
         public string result { set; get; }
 
 
+    	[Preserve]
         public static RunStampSheetResult FromDict(JsonData data)
         {
             return new RunStampSheetResult {
-                result = data.Keys.Contains("result") ? (string) data["result"] : null,
+                result = data.Keys.Contains("result") && data["result"] != null ? (string) data["result"] : null,
             };
         }
 	}

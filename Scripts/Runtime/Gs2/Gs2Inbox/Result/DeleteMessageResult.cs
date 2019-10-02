@@ -27,6 +27,7 @@ namespace Gs2.Gs2Inbox.Result
 	public class DeleteMessageResult
 	{
 
+    	[Preserve]
         public static DeleteMessageResult FromDict(JsonData data)
         {
             return new DeleteMessageResult {

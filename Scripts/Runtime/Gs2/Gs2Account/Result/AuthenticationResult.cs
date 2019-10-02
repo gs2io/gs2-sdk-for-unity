@@ -36,12 +36,13 @@ namespace Gs2.Gs2Account.Result
         public string signature { set; get; }
 
 
+    	[Preserve]
         public static AuthenticationResult FromDict(JsonData data)
         {
             return new AuthenticationResult {
-                item = data.Keys.Contains("item") ? Account.FromDict(data["item"]) : null,
-                body = data.Keys.Contains("body") ? (string) data["body"] : null,
-                signature = data.Keys.Contains("signature") ? (string) data["signature"] : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Account.FromDict(data["item"]) : null,
+                body = data.Keys.Contains("body") && data["body"] != null ? (string) data["body"] : null,
+                signature = data.Keys.Contains("signature") && data["signature"] != null ? (string) data["signature"] : null,
             };
         }
 	}

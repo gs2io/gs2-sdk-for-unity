@@ -30,10 +30,11 @@ namespace Gs2.Gs2Friend.Result
         public FriendUser item { set; get; }
 
 
+    	[Preserve]
         public static DeleteFriendByUserIdResult FromDict(JsonData data)
         {
             return new DeleteFriendByUserIdResult {
-                item = data.Keys.Contains("item") ? FriendUser.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? FriendUser.FromDict(data["item"]) : null,
             };
         }
 	}

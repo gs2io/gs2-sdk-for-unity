@@ -151,15 +151,16 @@ namespace Gs2.Gs2Inventory.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static InventoryModel FromDict(JsonData data)
         {
             return new InventoryModel()
-                .WithInventoryModelId(data.Keys.Contains("inventoryModelId") ? (string) data["inventoryModelId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithInitialCapacity(data.Keys.Contains("initialCapacity") ? (int?) data["initialCapacity"] : null)
-                .WithMaxCapacity(data.Keys.Contains("maxCapacity") ? (int?) data["maxCapacity"] : null)
-                .WithItemModels(data.Keys.Contains("itemModels") ? data["itemModels"].Cast<JsonData>().Select(value =>
+                .WithInventoryModelId(data.Keys.Contains("inventoryModelId") && data["inventoryModelId"] != null ? (string) data["inventoryModelId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithInitialCapacity(data.Keys.Contains("initialCapacity") && data["initialCapacity"] != null ? (int?) data["initialCapacity"] : null)
+                .WithMaxCapacity(data.Keys.Contains("maxCapacity") && data["maxCapacity"] != null ? (int?) data["maxCapacity"] : null)
+                .WithItemModels(data.Keys.Contains("itemModels") && data["itemModels"] != null ? data["itemModels"].Cast<JsonData>().Select(value =>
                     {
                         return ItemModel.FromDict(value);
                     }

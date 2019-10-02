@@ -30,10 +30,11 @@ namespace Gs2.Gs2Gateway.Result
         public WebSocketSession item { set; get; }
 
 
+    	[Preserve]
         public static GetWebSocketSessionResult FromDict(JsonData data)
         {
             return new GetWebSocketSessionResult {
-                item = data.Keys.Contains("item") ? WebSocketSession.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? WebSocketSession.FromDict(data["item"]) : null,
             };
         }
 	}

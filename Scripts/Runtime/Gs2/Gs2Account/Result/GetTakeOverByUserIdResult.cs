@@ -30,10 +30,11 @@ namespace Gs2.Gs2Account.Result
         public TakeOver item { set; get; }
 
 
+    	[Preserve]
         public static GetTakeOverByUserIdResult FromDict(JsonData data)
         {
             return new GetTakeOverByUserIdResult {
-                item = data.Keys.Contains("item") ? TakeOver.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? TakeOver.FromDict(data["item"]) : null,
             };
         }
 	}

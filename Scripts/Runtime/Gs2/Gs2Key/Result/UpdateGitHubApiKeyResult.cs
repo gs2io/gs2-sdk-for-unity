@@ -30,10 +30,11 @@ namespace Gs2.Gs2Key.Result
         public GitHubApiKey item { set; get; }
 
 
+    	[Preserve]
         public static UpdateGitHubApiKeyResult FromDict(JsonData data)
         {
             return new UpdateGitHubApiKeyResult {
-                item = data.Keys.Contains("item") ? GitHubApiKey.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? GitHubApiKey.FromDict(data["item"]) : null,
             };
         }
 	}

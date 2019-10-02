@@ -33,11 +33,12 @@ namespace Gs2.Gs2Exchange.Result
         public string stampSheet { set; get; }
 
 
+    	[Preserve]
         public static ExchangeResult FromDict(JsonData data)
         {
             return new ExchangeResult {
-                item = data.Keys.Contains("item") ? RateModel.FromDict(data["item"]) : null,
-                stampSheet = data.Keys.Contains("stampSheet") ? (string) data["stampSheet"] : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? RateModel.FromDict(data["item"]) : null,
+                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? (string) data["stampSheet"] : null,
             };
         }
 	}

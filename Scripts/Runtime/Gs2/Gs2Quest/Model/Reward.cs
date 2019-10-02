@@ -108,13 +108,14 @@ namespace Gs2.Gs2Quest.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Reward FromDict(JsonData data)
         {
             return new Reward()
-                .WithAction(data.Keys.Contains("action") ? (string) data["action"] : null)
-                .WithRequest(data.Keys.Contains("request") ? (string) data["request"] : null)
-                .WithItemId(data.Keys.Contains("itemId") ? (string) data["itemId"] : null)
-                .WithValue(data.Keys.Contains("value") ? (int?) data["value"] : null);
+                .WithAction(data.Keys.Contains("action") && data["action"] != null ? (string) data["action"] : null)
+                .WithRequest(data.Keys.Contains("request") && data["request"] != null ? (string) data["request"] : null)
+                .WithItemId(data.Keys.Contains("itemId") && data["itemId"] != null ? (string) data["itemId"] : null)
+                .WithValue(data.Keys.Contains("value") && data["value"] != null ? (int?) data["value"] : null);
         }
 	}
 }

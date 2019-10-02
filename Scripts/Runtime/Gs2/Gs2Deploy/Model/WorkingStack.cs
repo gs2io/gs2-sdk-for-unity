@@ -127,14 +127,15 @@ namespace Gs2.Gs2Deploy.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static WorkingStack FromDict(JsonData data)
         {
             return new WorkingStack()
-                .WithStackId(data.Keys.Contains("stackId") ? (string) data["stackId"] : null)
-                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithStackId(data.Keys.Contains("stackId") && data["stackId"] != null ? (string) data["stackId"] : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? (string) data["ownerId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

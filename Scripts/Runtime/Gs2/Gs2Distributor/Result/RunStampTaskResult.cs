@@ -33,11 +33,12 @@ namespace Gs2.Gs2Distributor.Result
         public string result { set; get; }
 
 
+    	[Preserve]
         public static RunStampTaskResult FromDict(JsonData data)
         {
             return new RunStampTaskResult {
-                contextStack = data.Keys.Contains("contextStack") ? (string) data["contextStack"] : null,
-                result = data.Keys.Contains("result") ? (string) data["result"] : null,
+                contextStack = data.Keys.Contains("contextStack") && data["contextStack"] != null ? (string) data["contextStack"] : null,
+                result = data.Keys.Contains("result") && data["result"] != null ? (string) data["result"] : null,
             };
         }
 	}

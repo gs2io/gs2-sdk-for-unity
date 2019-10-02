@@ -146,15 +146,16 @@ namespace Gs2.Gs2Key.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Namespace FromDict(JsonData data)
         {
             return new Namespace()
-                .WithNamespaceId(data.Keys.Contains("namespaceId") ? (string) data["namespaceId"] : null)
-                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithNamespaceId(data.Keys.Contains("namespaceId") && data["namespaceId"] != null ? (string) data["namespaceId"] : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? (string) data["ownerId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

@@ -374,27 +374,28 @@ namespace Gs2.Gs2Mission.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Namespace FromDict(JsonData data)
         {
             return new Namespace()
-                .WithNamespaceId(data.Keys.Contains("namespaceId") ? (string) data["namespaceId"] : null)
-                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
-                .WithMissionCompleteTriggerScriptId(data.Keys.Contains("missionCompleteTriggerScriptId") ? (string) data["missionCompleteTriggerScriptId"] : null)
-                .WithMissionCompleteDoneTriggerScriptId(data.Keys.Contains("missionCompleteDoneTriggerScriptId") ? (string) data["missionCompleteDoneTriggerScriptId"] : null)
-                .WithMissionCompleteDoneTriggerQueueNamespaceId(data.Keys.Contains("missionCompleteDoneTriggerQueueNamespaceId") ? (string) data["missionCompleteDoneTriggerQueueNamespaceId"] : null)
-                .WithCounterIncrementTriggerScriptId(data.Keys.Contains("counterIncrementTriggerScriptId") ? (string) data["counterIncrementTriggerScriptId"] : null)
-                .WithCounterIncrementDoneTriggerScriptId(data.Keys.Contains("counterIncrementDoneTriggerScriptId") ? (string) data["counterIncrementDoneTriggerScriptId"] : null)
-                .WithCounterIncrementDoneTriggerQueueNamespaceId(data.Keys.Contains("counterIncrementDoneTriggerQueueNamespaceId") ? (string) data["counterIncrementDoneTriggerQueueNamespaceId"] : null)
-                .WithReceiveRewardsTriggerScriptId(data.Keys.Contains("receiveRewardsTriggerScriptId") ? (string) data["receiveRewardsTriggerScriptId"] : null)
-                .WithReceiveRewardsDoneTriggerScriptId(data.Keys.Contains("receiveRewardsDoneTriggerScriptId") ? (string) data["receiveRewardsDoneTriggerScriptId"] : null)
-                .WithReceiveRewardsDoneTriggerQueueNamespaceId(data.Keys.Contains("receiveRewardsDoneTriggerQueueNamespaceId") ? (string) data["receiveRewardsDoneTriggerQueueNamespaceId"] : null)
-                .WithQueueNamespaceId(data.Keys.Contains("queueNamespaceId") ? (string) data["queueNamespaceId"] : null)
-                .WithKeyId(data.Keys.Contains("keyId") ? (string) data["keyId"] : null)
-                .WithCompleteNotification(data.Keys.Contains("completeNotification") ? NotificationSetting.FromDict(data["completeNotification"]) : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithNamespaceId(data.Keys.Contains("namespaceId") && data["namespaceId"] != null ? (string) data["namespaceId"] : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? (string) data["ownerId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
+                .WithMissionCompleteTriggerScriptId(data.Keys.Contains("missionCompleteTriggerScriptId") && data["missionCompleteTriggerScriptId"] != null ? (string) data["missionCompleteTriggerScriptId"] : null)
+                .WithMissionCompleteDoneTriggerScriptId(data.Keys.Contains("missionCompleteDoneTriggerScriptId") && data["missionCompleteDoneTriggerScriptId"] != null ? (string) data["missionCompleteDoneTriggerScriptId"] : null)
+                .WithMissionCompleteDoneTriggerQueueNamespaceId(data.Keys.Contains("missionCompleteDoneTriggerQueueNamespaceId") && data["missionCompleteDoneTriggerQueueNamespaceId"] != null ? (string) data["missionCompleteDoneTriggerQueueNamespaceId"] : null)
+                .WithCounterIncrementTriggerScriptId(data.Keys.Contains("counterIncrementTriggerScriptId") && data["counterIncrementTriggerScriptId"] != null ? (string) data["counterIncrementTriggerScriptId"] : null)
+                .WithCounterIncrementDoneTriggerScriptId(data.Keys.Contains("counterIncrementDoneTriggerScriptId") && data["counterIncrementDoneTriggerScriptId"] != null ? (string) data["counterIncrementDoneTriggerScriptId"] : null)
+                .WithCounterIncrementDoneTriggerQueueNamespaceId(data.Keys.Contains("counterIncrementDoneTriggerQueueNamespaceId") && data["counterIncrementDoneTriggerQueueNamespaceId"] != null ? (string) data["counterIncrementDoneTriggerQueueNamespaceId"] : null)
+                .WithReceiveRewardsTriggerScriptId(data.Keys.Contains("receiveRewardsTriggerScriptId") && data["receiveRewardsTriggerScriptId"] != null ? (string) data["receiveRewardsTriggerScriptId"] : null)
+                .WithReceiveRewardsDoneTriggerScriptId(data.Keys.Contains("receiveRewardsDoneTriggerScriptId") && data["receiveRewardsDoneTriggerScriptId"] != null ? (string) data["receiveRewardsDoneTriggerScriptId"] : null)
+                .WithReceiveRewardsDoneTriggerQueueNamespaceId(data.Keys.Contains("receiveRewardsDoneTriggerQueueNamespaceId") && data["receiveRewardsDoneTriggerQueueNamespaceId"] != null ? (string) data["receiveRewardsDoneTriggerQueueNamespaceId"] : null)
+                .WithQueueNamespaceId(data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? (string) data["queueNamespaceId"] : null)
+                .WithKeyId(data.Keys.Contains("keyId") && data["keyId"] != null ? (string) data["keyId"] : null)
+                .WithCompleteNotification(data.Keys.Contains("completeNotification") && data["completeNotification"] != null ? NotificationSetting.FromDict(data["completeNotification"]) : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

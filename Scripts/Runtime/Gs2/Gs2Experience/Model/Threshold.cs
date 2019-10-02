@@ -94,12 +94,13 @@ namespace Gs2.Gs2Experience.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Threshold FromDict(JsonData data)
         {
             return new Threshold()
-                .WithThresholdId(data.Keys.Contains("thresholdId") ? (string) data["thresholdId"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithValues(data.Keys.Contains("values") ? data["values"].Cast<JsonData>().Select(value =>
+                .WithThresholdId(data.Keys.Contains("thresholdId") && data["thresholdId"] != null ? (string) data["thresholdId"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithValues(data.Keys.Contains("values") && data["values"] != null ? data["values"].Cast<JsonData>().Select(value =>
                     {
                         return (long?) value;
                     }

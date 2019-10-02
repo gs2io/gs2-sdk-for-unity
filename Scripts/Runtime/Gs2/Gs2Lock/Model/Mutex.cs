@@ -165,16 +165,17 @@ namespace Gs2.Gs2Lock.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Mutex FromDict(JsonData data)
         {
             return new Mutex()
-                .WithMutexId(data.Keys.Contains("mutexId") ? (string) data["mutexId"] : null)
-                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
-                .WithPropertyId(data.Keys.Contains("propertyId") ? (string) data["propertyId"] : null)
-                .WithTransactionId(data.Keys.Contains("transactionId") ? (string) data["transactionId"] : null)
-                .WithReferenceCount(data.Keys.Contains("referenceCount") ? (int?) data["referenceCount"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithTtlAt(data.Keys.Contains("ttlAt") ? (long?) data["ttlAt"] : null);
+                .WithMutexId(data.Keys.Contains("mutexId") && data["mutexId"] != null ? (string) data["mutexId"] : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithPropertyId(data.Keys.Contains("propertyId") && data["propertyId"] != null ? (string) data["propertyId"] : null)
+                .WithTransactionId(data.Keys.Contains("transactionId") && data["transactionId"] != null ? (string) data["transactionId"] : null)
+                .WithReferenceCount(data.Keys.Contains("referenceCount") && data["referenceCount"] != null ? (int?) data["referenceCount"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithTtlAt(data.Keys.Contains("ttlAt") && data["ttlAt"] != null ? (long?) data["ttlAt"] : null);
         }
 	}
 }

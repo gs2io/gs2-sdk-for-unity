@@ -27,6 +27,7 @@ namespace Gs2.Gs2Account.Result
 	public class DeleteTakeOverResult
 	{
 
+    	[Preserve]
         public static DeleteTakeOverResult FromDict(JsonData data)
         {
             return new DeleteTakeOverResult {

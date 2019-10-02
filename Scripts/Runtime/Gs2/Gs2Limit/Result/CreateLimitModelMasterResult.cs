@@ -30,10 +30,11 @@ namespace Gs2.Gs2Limit.Result
         public LimitModelMaster item { set; get; }
 
 
+    	[Preserve]
         public static CreateLimitModelMasterResult FromDict(JsonData data)
         {
             return new CreateLimitModelMasterResult {
-                item = data.Keys.Contains("item") ? LimitModelMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? LimitModelMaster.FromDict(data["item"]) : null,
             };
         }
 	}

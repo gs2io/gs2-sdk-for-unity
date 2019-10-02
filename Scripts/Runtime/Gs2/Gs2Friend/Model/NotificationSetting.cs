@@ -89,12 +89,13 @@ namespace Gs2.Gs2Friend.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static NotificationSetting FromDict(JsonData data)
         {
             return new NotificationSetting()
-                .WithGatewayNamespaceId(data.Keys.Contains("gatewayNamespaceId") ? (string) data["gatewayNamespaceId"] : null)
-                .WithEnableTransferMobileNotification(data.Keys.Contains("enableTransferMobileNotification") ? (bool?) data["enableTransferMobileNotification"] : null)
-                .WithSound(data.Keys.Contains("sound") ? (string) data["sound"] : null);
+                .WithGatewayNamespaceId(data.Keys.Contains("gatewayNamespaceId") && data["gatewayNamespaceId"] != null ? (string) data["gatewayNamespaceId"] : null)
+                .WithEnableTransferMobileNotification(data.Keys.Contains("enableTransferMobileNotification") && data["enableTransferMobileNotification"] != null ? (bool?) data["enableTransferMobileNotification"] : null)
+                .WithSound(data.Keys.Contains("sound") && data["sound"] != null ? (string) data["sound"] : null);
         }
 	}
 }

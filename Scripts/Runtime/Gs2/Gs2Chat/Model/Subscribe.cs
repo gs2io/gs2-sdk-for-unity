@@ -132,18 +132,19 @@ namespace Gs2.Gs2Chat.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Subscribe FromDict(JsonData data)
         {
             return new Subscribe()
-                .WithSubscribeId(data.Keys.Contains("subscribeId") ? (string) data["subscribeId"] : null)
-                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
-                .WithRoomName(data.Keys.Contains("roomName") ? (string) data["roomName"] : null)
-                .WithNotificationTypes(data.Keys.Contains("notificationTypes") ? data["notificationTypes"].Cast<JsonData>().Select(value =>
+                .WithSubscribeId(data.Keys.Contains("subscribeId") && data["subscribeId"] != null ? (string) data["subscribeId"] : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithRoomName(data.Keys.Contains("roomName") && data["roomName"] != null ? (string) data["roomName"] : null)
+                .WithNotificationTypes(data.Keys.Contains("notificationTypes") && data["notificationTypes"] != null ? data["notificationTypes"].Cast<JsonData>().Select(value =>
                     {
                         return NotificationType.FromDict(value);
                     }
                 ).ToList() : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null);
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null);
         }
 	}
 }

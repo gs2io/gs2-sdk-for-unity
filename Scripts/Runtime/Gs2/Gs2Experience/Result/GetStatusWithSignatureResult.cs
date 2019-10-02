@@ -36,12 +36,13 @@ namespace Gs2.Gs2Experience.Result
         public string signature { set; get; }
 
 
+    	[Preserve]
         public static GetStatusWithSignatureResult FromDict(JsonData data)
         {
             return new GetStatusWithSignatureResult {
-                item = data.Keys.Contains("item") ? Status.FromDict(data["item"]) : null,
-                body = data.Keys.Contains("body") ? (string) data["body"] : null,
-                signature = data.Keys.Contains("signature") ? (string) data["signature"] : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Status.FromDict(data["item"]) : null,
+                body = data.Keys.Contains("body") && data["body"] != null ? (string) data["body"] : null,
+                signature = data.Keys.Contains("signature") && data["signature"] != null ? (string) data["signature"] : null,
             };
         }
 	}

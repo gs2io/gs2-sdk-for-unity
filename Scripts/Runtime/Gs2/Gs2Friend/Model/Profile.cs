@@ -165,16 +165,17 @@ namespace Gs2.Gs2Friend.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Profile FromDict(JsonData data)
         {
             return new Profile()
-                .WithProfileId(data.Keys.Contains("profileId") ? (string) data["profileId"] : null)
-                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
-                .WithPublicProfile(data.Keys.Contains("publicProfile") ? (string) data["publicProfile"] : null)
-                .WithFollowerProfile(data.Keys.Contains("followerProfile") ? (string) data["followerProfile"] : null)
-                .WithFriendProfile(data.Keys.Contains("friendProfile") ? (string) data["friendProfile"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithProfileId(data.Keys.Contains("profileId") && data["profileId"] != null ? (string) data["profileId"] : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithPublicProfile(data.Keys.Contains("publicProfile") && data["publicProfile"] != null ? (string) data["publicProfile"] : null)
+                .WithFollowerProfile(data.Keys.Contains("followerProfile") && data["followerProfile"] != null ? (string) data["followerProfile"] : null)
+                .WithFriendProfile(data.Keys.Contains("friendProfile") && data["friendProfile"] != null ? (string) data["friendProfile"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

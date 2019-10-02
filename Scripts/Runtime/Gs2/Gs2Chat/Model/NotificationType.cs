@@ -70,11 +70,12 @@ namespace Gs2.Gs2Chat.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static NotificationType FromDict(JsonData data)
         {
             return new NotificationType()
-                .WithCategory(data.Keys.Contains("category") ? (int?) data["category"] : null)
-                .WithEnableTransferMobilePushNotification(data.Keys.Contains("enableTransferMobilePushNotification") ? (bool?) data["enableTransferMobilePushNotification"] : null);
+                .WithCategory(data.Keys.Contains("category") && data["category"] != null ? (int?) data["category"] : null)
+                .WithEnableTransferMobilePushNotification(data.Keys.Contains("enableTransferMobilePushNotification") && data["enableTransferMobilePushNotification"] != null ? (bool?) data["enableTransferMobilePushNotification"] : null);
         }
 	}
 }

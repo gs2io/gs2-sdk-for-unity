@@ -146,15 +146,16 @@ namespace Gs2.Gs2Inventory.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static ItemModel FromDict(JsonData data)
         {
             return new ItemModel()
-                .WithItemModelId(data.Keys.Contains("itemModelId") ? (string) data["itemModelId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithStackingLimit(data.Keys.Contains("stackingLimit") ? (long?) data["stackingLimit"] : null)
-                .WithAllowMultipleStacks(data.Keys.Contains("allowMultipleStacks") ? (bool?) data["allowMultipleStacks"] : null)
-                .WithSortValue(data.Keys.Contains("sortValue") ? (int?) data["sortValue"] : null);
+                .WithItemModelId(data.Keys.Contains("itemModelId") && data["itemModelId"] != null ? (string) data["itemModelId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithStackingLimit(data.Keys.Contains("stackingLimit") && data["stackingLimit"] != null ? (long?) data["stackingLimit"] : null)
+                .WithAllowMultipleStacks(data.Keys.Contains("allowMultipleStacks") && data["allowMultipleStacks"] != null ? (bool?) data["allowMultipleStacks"] : null)
+                .WithSortValue(data.Keys.Contains("sortValue") && data["sortValue"] != null ? (int?) data["sortValue"] : null);
         }
 	}
 }

@@ -30,10 +30,11 @@ namespace Gs2.Gs2Lottery.Result
         public List<LotteryModel> items { set; get; }
 
 
+    	[Preserve]
         public static DescribeLotteryModelsResult FromDict(JsonData data)
         {
             return new DescribeLotteryModelsResult {
-                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
                         return LotteryModel.FromDict(value);
                     }

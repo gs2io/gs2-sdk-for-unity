@@ -30,10 +30,11 @@ namespace Gs2.Gs2Distributor.Result
         public List<DistributorModel> items { set; get; }
 
 
+    	[Preserve]
         public static DescribeDistributorModelsResult FromDict(JsonData data)
         {
             return new DescribeDistributorModelsResult {
-                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
                         return DistributorModel.FromDict(value);
                     }

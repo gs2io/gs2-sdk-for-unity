@@ -30,10 +30,11 @@ namespace Gs2.Gs2Distributor.Result
         public CurrentDistributorMaster item { set; get; }
 
 
+    	[Preserve]
         public static UpdateCurrentDistributorMasterFromGitHubResult FromDict(JsonData data)
         {
             return new UpdateCurrentDistributorMasterFromGitHubResult {
-                item = data.Keys.Contains("item") ? CurrentDistributorMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? CurrentDistributorMaster.FromDict(data["item"]) : null,
             };
         }
 	}

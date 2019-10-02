@@ -36,12 +36,13 @@ namespace Gs2.Gs2Distributor.Result
         public string result { set; get; }
 
 
+    	[Preserve]
         public static DistributeResult FromDict(JsonData data)
         {
             return new DistributeResult {
-                distributeResource = data.Keys.Contains("distributeResource") ? DistributeResource.FromDict(data["distributeResource"]) : null,
-                inboxNamespaceId = data.Keys.Contains("inboxNamespaceId") ? (string) data["inboxNamespaceId"] : null,
-                result = data.Keys.Contains("result") ? (string) data["result"] : null,
+                distributeResource = data.Keys.Contains("distributeResource") && data["distributeResource"] != null ? DistributeResource.FromDict(data["distributeResource"]) : null,
+                inboxNamespaceId = data.Keys.Contains("inboxNamespaceId") && data["inboxNamespaceId"] != null ? (string) data["inboxNamespaceId"] : null,
+                result = data.Keys.Contains("result") && data["result"] != null ? (string) data["result"] : null,
             };
         }
 	}

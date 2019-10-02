@@ -70,11 +70,12 @@ namespace Gs2.Gs2Inbox.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Config FromDict(JsonData data)
         {
             return new Config()
-                .WithKey(data.Keys.Contains("key") ? (string) data["key"] : null)
-                .WithValue(data.Keys.Contains("value") ? (string) data["value"] : null);
+                .WithKey(data.Keys.Contains("key") && data["key"] != null ? (string) data["key"] : null)
+                .WithValue(data.Keys.Contains("value") && data["value"] != null ? (string) data["value"] : null);
         }
 	}
 }

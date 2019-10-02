@@ -30,10 +30,11 @@ namespace Gs2.Gs2Schedule.Result
         public EventMaster item { set; get; }
 
 
+    	[Preserve]
         public static GetEventMasterResult FromDict(JsonData data)
         {
             return new GetEventMasterResult {
-                item = data.Keys.Contains("item") ? EventMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? EventMaster.FromDict(data["item"]) : null,
             };
         }
 	}

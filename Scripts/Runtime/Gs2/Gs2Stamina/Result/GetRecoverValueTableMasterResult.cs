@@ -30,10 +30,11 @@ namespace Gs2.Gs2Stamina.Result
         public RecoverValueTableMaster item { set; get; }
 
 
+    	[Preserve]
         public static GetRecoverValueTableMasterResult FromDict(JsonData data)
         {
             return new GetRecoverValueTableMasterResult {
-                item = data.Keys.Contains("item") ? RecoverValueTableMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? RecoverValueTableMaster.FromDict(data["item"]) : null,
             };
         }
 	}

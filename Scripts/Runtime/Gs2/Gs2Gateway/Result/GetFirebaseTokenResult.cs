@@ -30,10 +30,11 @@ namespace Gs2.Gs2Gateway.Result
         public FirebaseToken item { set; get; }
 
 
+    	[Preserve]
         public static GetFirebaseTokenResult FromDict(JsonData data)
         {
             return new GetFirebaseTokenResult {
-                item = data.Keys.Contains("item") ? FirebaseToken.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? FirebaseToken.FromDict(data["item"]) : null,
             };
         }
 	}

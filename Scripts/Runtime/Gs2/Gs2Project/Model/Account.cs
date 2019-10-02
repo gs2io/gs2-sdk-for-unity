@@ -222,19 +222,20 @@ namespace Gs2.Gs2Project.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Account FromDict(JsonData data)
         {
             return new Account()
-                .WithAccountId(data.Keys.Contains("accountId") ? (string) data["accountId"] : null)
-                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithEmail(data.Keys.Contains("email") ? (string) data["email"] : null)
-                .WithFullName(data.Keys.Contains("fullName") ? (string) data["fullName"] : null)
-                .WithCompanyName(data.Keys.Contains("companyName") ? (string) data["companyName"] : null)
-                .WithPassword(data.Keys.Contains("password") ? (string) data["password"] : null)
-                .WithStatus(data.Keys.Contains("status") ? (string) data["status"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithAccountId(data.Keys.Contains("accountId") && data["accountId"] != null ? (string) data["accountId"] : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? (string) data["ownerId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithEmail(data.Keys.Contains("email") && data["email"] != null ? (string) data["email"] : null)
+                .WithFullName(data.Keys.Contains("fullName") && data["fullName"] != null ? (string) data["fullName"] : null)
+                .WithCompanyName(data.Keys.Contains("companyName") && data["companyName"] != null ? (string) data["companyName"] : null)
+                .WithPassword(data.Keys.Contains("password") && data["password"] != null ? (string) data["password"] : null)
+                .WithStatus(data.Keys.Contains("status") && data["status"] != null ? (string) data["status"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

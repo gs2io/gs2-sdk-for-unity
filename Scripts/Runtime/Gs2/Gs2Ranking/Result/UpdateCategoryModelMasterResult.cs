@@ -30,10 +30,11 @@ namespace Gs2.Gs2Ranking.Result
         public CategoryModelMaster item { set; get; }
 
 
+    	[Preserve]
         public static UpdateCategoryModelMasterResult FromDict(JsonData data)
         {
             return new UpdateCategoryModelMasterResult {
-                item = data.Keys.Contains("item") ? CategoryModelMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? CategoryModelMaster.FromDict(data["item"]) : null,
             };
         }
 	}

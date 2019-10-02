@@ -222,19 +222,20 @@ namespace Gs2.Gs2Inventory.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static ItemModelMaster FromDict(JsonData data)
         {
             return new ItemModelMaster()
-                .WithItemModelId(data.Keys.Contains("itemModelId") ? (string) data["itemModelId"] : null)
-                .WithInventoryName(data.Keys.Contains("inventoryName") ? (string) data["inventoryName"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithStackingLimit(data.Keys.Contains("stackingLimit") ? (long?) data["stackingLimit"] : null)
-                .WithAllowMultipleStacks(data.Keys.Contains("allowMultipleStacks") ? (bool?) data["allowMultipleStacks"] : null)
-                .WithSortValue(data.Keys.Contains("sortValue") ? (int?) data["sortValue"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithItemModelId(data.Keys.Contains("itemModelId") && data["itemModelId"] != null ? (string) data["itemModelId"] : null)
+                .WithInventoryName(data.Keys.Contains("inventoryName") && data["inventoryName"] != null ? (string) data["inventoryName"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithStackingLimit(data.Keys.Contains("stackingLimit") && data["stackingLimit"] != null ? (long?) data["stackingLimit"] : null)
+                .WithAllowMultipleStacks(data.Keys.Contains("allowMultipleStacks") && data["allowMultipleStacks"] != null ? (bool?) data["allowMultipleStacks"] : null)
+                .WithSortValue(data.Keys.Contains("sortValue") && data["sortValue"] != null ? (int?) data["sortValue"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

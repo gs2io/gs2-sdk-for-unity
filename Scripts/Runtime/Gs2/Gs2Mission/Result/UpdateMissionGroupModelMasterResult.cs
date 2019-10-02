@@ -30,10 +30,11 @@ namespace Gs2.Gs2Mission.Result
         public MissionGroupModelMaster item { set; get; }
 
 
+    	[Preserve]
         public static UpdateMissionGroupModelMasterResult FromDict(JsonData data)
         {
             return new UpdateMissionGroupModelMasterResult {
-                item = data.Keys.Contains("item") ? MissionGroupModelMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? MissionGroupModelMaster.FromDict(data["item"]) : null,
             };
         }
 	}

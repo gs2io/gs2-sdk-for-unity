@@ -30,10 +30,11 @@ namespace Gs2.Gs2Gateway.Result
         public string protocol { set; get; }
 
 
+    	[Preserve]
         public static SendNotificationResult FromDict(JsonData data)
         {
             return new SendNotificationResult {
-                protocol = data.Keys.Contains("protocol") ? (string) data["protocol"] : null,
+                protocol = data.Keys.Contains("protocol") && data["protocol"] != null ? (string) data["protocol"] : null,
             };
         }
 	}

@@ -108,13 +108,14 @@ namespace Gs2.Gs2Auth.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static AccessToken FromDict(JsonData data)
         {
             return new AccessToken()
-                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
-                .WithToken(data.Keys.Contains("token") ? (string) data["token"] : null)
-                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
-                .WithExpire(data.Keys.Contains("expire") ? (long?) data["expire"] : null);
+                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? (string) data["ownerId"] : null)
+                .WithToken(data.Keys.Contains("token") && data["token"] != null ? (string) data["token"] : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithExpire(data.Keys.Contains("expire") && data["expire"] != null ? (long?) data["expire"] : null);
         }
 	}
 }

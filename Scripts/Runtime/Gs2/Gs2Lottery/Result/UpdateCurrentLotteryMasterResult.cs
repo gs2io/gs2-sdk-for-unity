@@ -30,10 +30,11 @@ namespace Gs2.Gs2Lottery.Result
         public CurrentLotteryMaster item { set; get; }
 
 
+    	[Preserve]
         public static UpdateCurrentLotteryMasterResult FromDict(JsonData data)
         {
             return new UpdateCurrentLotteryMasterResult {
-                item = data.Keys.Contains("item") ? CurrentLotteryMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? CurrentLotteryMaster.FromDict(data["item"]) : null,
             };
         }
 	}

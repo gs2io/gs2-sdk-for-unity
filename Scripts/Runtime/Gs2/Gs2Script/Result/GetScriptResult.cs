@@ -30,10 +30,11 @@ namespace Gs2.Gs2Script.Result
         public Script item { set; get; }
 
 
+    	[Preserve]
         public static GetScriptResult FromDict(JsonData data)
         {
             return new GetScriptResult {
-                item = data.Keys.Contains("item") ? Script.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Script.FromDict(data["item"]) : null,
             };
         }
 	}

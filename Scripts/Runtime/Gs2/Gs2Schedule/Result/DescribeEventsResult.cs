@@ -30,10 +30,11 @@ namespace Gs2.Gs2Schedule.Result
         public List<Event> items { set; get; }
 
 
+    	[Preserve]
         public static DescribeEventsResult FromDict(JsonData data)
         {
             return new DescribeEventsResult {
-                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
                         return Event.FromDict(value);
                     }

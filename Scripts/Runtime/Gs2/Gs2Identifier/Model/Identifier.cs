@@ -127,14 +127,15 @@ namespace Gs2.Gs2Identifier.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Identifier FromDict(JsonData data)
         {
             return new Identifier()
-                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
-                .WithClientId(data.Keys.Contains("clientId") ? (string) data["clientId"] : null)
-                .WithUserName(data.Keys.Contains("userName") ? (string) data["userName"] : null)
-                .WithClientSecret(data.Keys.Contains("clientSecret") ? (string) data["clientSecret"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null);
+                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? (string) data["ownerId"] : null)
+                .WithClientId(data.Keys.Contains("clientId") && data["clientId"] != null ? (string) data["clientId"] : null)
+                .WithUserName(data.Keys.Contains("userName") && data["userName"] != null ? (string) data["userName"] : null)
+                .WithClientSecret(data.Keys.Contains("clientSecret") && data["clientSecret"] != null ? (string) data["clientSecret"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null);
         }
 	}
 }

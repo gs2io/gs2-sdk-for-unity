@@ -30,10 +30,11 @@ namespace Gs2.Gs2Exchange.Result
         public List<RateModel> items { set; get; }
 
 
+    	[Preserve]
         public static DescribeRateModelsResult FromDict(JsonData data)
         {
             return new DescribeRateModelsResult {
-                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
                         return RateModel.FromDict(value);
                     }

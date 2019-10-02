@@ -27,6 +27,7 @@ namespace Gs2.Gs2Script.Result
 	public class DeleteScriptResult
 	{
 
+    	[Preserve]
         public static DeleteScriptResult FromDict(JsonData data)
         {
             return new DeleteScriptResult {

@@ -33,11 +33,12 @@ namespace Gs2.Gs2Project.Result
         public string accountToken { set; get; }
 
 
+    	[Preserve]
         public static SignInResult FromDict(JsonData data)
         {
             return new SignInResult {
-                item = data.Keys.Contains("item") ? Account.FromDict(data["item"]) : null,
-                accountToken = data.Keys.Contains("accountToken") ? (string) data["accountToken"] : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Account.FromDict(data["item"]) : null,
+                accountToken = data.Keys.Contains("accountToken") && data["accountToken"] != null ? (string) data["accountToken"] : null,
             };
         }
 	}

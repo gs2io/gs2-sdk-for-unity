@@ -33,11 +33,12 @@ namespace Gs2.Gs2Showcase.Result
         public string stampSheet { set; get; }
 
 
+    	[Preserve]
         public static BuyResult FromDict(JsonData data)
         {
             return new BuyResult {
-                item = data.Keys.Contains("item") ? SalesItem.FromDict(data["item"]) : null,
-                stampSheet = data.Keys.Contains("stampSheet") ? (string) data["stampSheet"] : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? SalesItem.FromDict(data["item"]) : null,
+                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? (string) data["stampSheet"] : null,
             };
         }
 	}

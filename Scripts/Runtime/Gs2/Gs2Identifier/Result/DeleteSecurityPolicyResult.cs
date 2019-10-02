@@ -27,6 +27,7 @@ namespace Gs2.Gs2Identifier.Result
 	public class DeleteSecurityPolicyResult
 	{
 
+    	[Preserve]
         public static DeleteSecurityPolicyResult FromDict(JsonData data)
         {
             return new DeleteSecurityPolicyResult {

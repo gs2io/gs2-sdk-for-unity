@@ -30,10 +30,11 @@ namespace Gs2.Gs2Project.Result
         public Project item { set; get; }
 
 
+    	[Preserve]
         public static CreateProjectResult FromDict(JsonData data)
         {
             return new CreateProjectResult {
-                item = data.Keys.Contains("item") ? Project.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Project.FromDict(data["item"]) : null,
             };
         }
 	}

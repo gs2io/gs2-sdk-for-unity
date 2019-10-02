@@ -30,10 +30,11 @@ namespace Gs2.Gs2Ranking.Result
         public CurrentRankingMaster item { set; get; }
 
 
+    	[Preserve]
         public static UpdateCurrentRankingMasterFromGitHubResult FromDict(JsonData data)
         {
             return new UpdateCurrentRankingMasterFromGitHubResult {
-                item = data.Keys.Contains("item") ? CurrentRankingMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? CurrentRankingMaster.FromDict(data["item"]) : null,
             };
         }
 	}

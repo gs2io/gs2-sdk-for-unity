@@ -70,11 +70,12 @@ namespace Gs2.Gs2Showcase.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static ConsumeAction FromDict(JsonData data)
         {
             return new ConsumeAction()
-                .WithAction(data.Keys.Contains("action") ? (string) data["action"] : null)
-                .WithRequest(data.Keys.Contains("request") ? (string) data["request"] : null);
+                .WithAction(data.Keys.Contains("action") && data["action"] != null ? (string) data["action"] : null)
+                .WithRequest(data.Keys.Contains("request") && data["request"] != null ? (string) data["request"] : null);
         }
 	}
 }

@@ -203,18 +203,19 @@ namespace Gs2.Gs2Inventory.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static ItemSet FromDict(JsonData data)
         {
             return new ItemSet()
-                .WithItemSetId(data.Keys.Contains("itemSetId") ? (string) data["itemSetId"] : null)
-                .WithInventoryName(data.Keys.Contains("inventoryName") ? (string) data["inventoryName"] : null)
-                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
-                .WithItemName(data.Keys.Contains("itemName") ? (string) data["itemName"] : null)
-                .WithCount(data.Keys.Contains("count") ? (long?) data["count"] : null)
-                .WithSortValue(data.Keys.Contains("sortValue") ? (int?) data["sortValue"] : null)
-                .WithExpiresAt(data.Keys.Contains("expiresAt") ? (long?) data["expiresAt"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithItemSetId(data.Keys.Contains("itemSetId") && data["itemSetId"] != null ? (string) data["itemSetId"] : null)
+                .WithInventoryName(data.Keys.Contains("inventoryName") && data["inventoryName"] != null ? (string) data["inventoryName"] : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithItemName(data.Keys.Contains("itemName") && data["itemName"] != null ? (string) data["itemName"] : null)
+                .WithCount(data.Keys.Contains("count") && data["count"] != null ? (long?) data["count"] : null)
+                .WithSortValue(data.Keys.Contains("sortValue") && data["sortValue"] != null ? (int?) data["sortValue"] : null)
+                .WithExpiresAt(data.Keys.Contains("expiresAt") && data["expiresAt"] != null ? (long?) data["expiresAt"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

@@ -33,11 +33,12 @@ namespace Gs2.Gs2Matchmaking.Result
         public string matchmakingContextToken { set; get; }
 
 
+    	[Preserve]
         public static DoMatchmakingResult FromDict(JsonData data)
         {
             return new DoMatchmakingResult {
-                item = data.Keys.Contains("item") ? Gathering.FromDict(data["item"]) : null,
-                matchmakingContextToken = data.Keys.Contains("matchmakingContextToken") ? (string) data["matchmakingContextToken"] : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gathering.FromDict(data["item"]) : null,
+                matchmakingContextToken = data.Keys.Contains("matchmakingContextToken") && data["matchmakingContextToken"] != null ? (string) data["matchmakingContextToken"] : null,
             };
         }
 	}

@@ -151,19 +151,20 @@ namespace Gs2.Gs2Lottery.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Box FromDict(JsonData data)
         {
             return new Box()
-                .WithBoxId(data.Keys.Contains("boxId") ? (string) data["boxId"] : null)
-                .WithPrizeTableName(data.Keys.Contains("prizeTableName") ? (string) data["prizeTableName"] : null)
-                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
-                .WithDrawnIndexes(data.Keys.Contains("drawnIndexes") ? data["drawnIndexes"].Cast<JsonData>().Select(value =>
+                .WithBoxId(data.Keys.Contains("boxId") && data["boxId"] != null ? (string) data["boxId"] : null)
+                .WithPrizeTableName(data.Keys.Contains("prizeTableName") && data["prizeTableName"] != null ? (string) data["prizeTableName"] : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithDrawnIndexes(data.Keys.Contains("drawnIndexes") && data["drawnIndexes"] != null ? data["drawnIndexes"].Cast<JsonData>().Select(value =>
                     {
                         return (int?) value;
                     }
                 ).ToList() : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

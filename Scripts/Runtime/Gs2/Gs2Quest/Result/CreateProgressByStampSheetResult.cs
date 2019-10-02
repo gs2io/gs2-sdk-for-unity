@@ -30,10 +30,11 @@ namespace Gs2.Gs2Quest.Result
         public Progress item { set; get; }
 
 
+    	[Preserve]
         public static CreateProgressByStampSheetResult FromDict(JsonData data)
         {
             return new CreateProgressByStampSheetResult {
-                item = data.Keys.Contains("item") ? Progress.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Progress.FromDict(data["item"]) : null,
             };
         }
 	}

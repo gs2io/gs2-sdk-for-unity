@@ -30,10 +30,11 @@ namespace Gs2.Gs2Account.Result
         public Account item { set; get; }
 
 
+    	[Preserve]
         public static UpdateTimeOffsetResult FromDict(JsonData data)
         {
             return new UpdateTimeOffsetResult {
-                item = data.Keys.Contains("item") ? Account.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Account.FromDict(data["item"]) : null,
             };
         }
 	}

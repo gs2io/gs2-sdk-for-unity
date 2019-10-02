@@ -30,10 +30,11 @@ namespace Gs2.Gs2Experience.Result
         public CurrentExperienceMaster item { set; get; }
 
 
+    	[Preserve]
         public static UpdateCurrentExperienceMasterResult FromDict(JsonData data)
         {
             return new UpdateCurrentExperienceMasterResult {
-                item = data.Keys.Contains("item") ? CurrentExperienceMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? CurrentExperienceMaster.FromDict(data["item"]) : null,
             };
         }
 	}

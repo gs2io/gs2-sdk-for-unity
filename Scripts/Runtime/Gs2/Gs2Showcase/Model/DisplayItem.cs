@@ -127,14 +127,15 @@ namespace Gs2.Gs2Showcase.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static DisplayItem FromDict(JsonData data)
         {
             return new DisplayItem()
-                .WithDisplayItemId(data.Keys.Contains("displayItemId") ? (string) data["displayItemId"] : null)
-                .WithType(data.Keys.Contains("type") ? (string) data["type"] : null)
-                .WithSalesItem(data.Keys.Contains("salesItem") ? SalesItem.FromDict(data["salesItem"]) : null)
-                .WithSalesItemGroup(data.Keys.Contains("salesItemGroup") ? SalesItemGroup.FromDict(data["salesItemGroup"]) : null)
-                .WithSalesPeriodEventId(data.Keys.Contains("salesPeriodEventId") ? (string) data["salesPeriodEventId"] : null);
+                .WithDisplayItemId(data.Keys.Contains("displayItemId") && data["displayItemId"] != null ? (string) data["displayItemId"] : null)
+                .WithType(data.Keys.Contains("type") && data["type"] != null ? (string) data["type"] : null)
+                .WithSalesItem(data.Keys.Contains("salesItem") && data["salesItem"] != null ? SalesItem.FromDict(data["salesItem"]) : null)
+                .WithSalesItemGroup(data.Keys.Contains("salesItemGroup") && data["salesItemGroup"] != null ? SalesItemGroup.FromDict(data["salesItemGroup"]) : null)
+                .WithSalesPeriodEventId(data.Keys.Contains("salesPeriodEventId") && data["salesPeriodEventId"] != null ? (string) data["salesPeriodEventId"] : null);
         }
 	}
 }

@@ -30,10 +30,11 @@ namespace Gs2.Gs2Limit.Result
         public Namespace item { set; get; }
 
 
+    	[Preserve]
         public static CreateNamespaceResult FromDict(JsonData data)
         {
             return new CreateNamespaceResult {
-                item = data.Keys.Contains("item") ? Namespace.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Namespace.FromDict(data["item"]) : null,
             };
         }
 	}

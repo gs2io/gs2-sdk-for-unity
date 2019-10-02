@@ -30,10 +30,11 @@ namespace Gs2.Gs2Ranking.Result
         public Score item { set; get; }
 
 
+    	[Preserve]
         public static PutScoreResult FromDict(JsonData data)
         {
             return new PutScoreResult {
-                item = data.Keys.Contains("item") ? Score.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Score.FromDict(data["item"]) : null,
             };
         }
 	}

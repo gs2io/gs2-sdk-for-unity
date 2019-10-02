@@ -30,10 +30,11 @@ namespace Gs2.Gs2Experience.Result
         public ThresholdMaster item { set; get; }
 
 
+    	[Preserve]
         public static CreateThresholdMasterResult FromDict(JsonData data)
         {
             return new CreateThresholdMasterResult {
-                item = data.Keys.Contains("item") ? ThresholdMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? ThresholdMaster.FromDict(data["item"]) : null,
             };
         }
 	}

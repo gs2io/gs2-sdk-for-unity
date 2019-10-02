@@ -30,10 +30,11 @@ namespace Gs2.Gs2Lock.Result
         public Mutex item { set; get; }
 
 
+    	[Preserve]
         public static LockByUserIdResult FromDict(JsonData data)
         {
             return new LockByUserIdResult {
-                item = data.Keys.Contains("item") ? Mutex.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Mutex.FromDict(data["item"]) : null,
             };
         }
 	}

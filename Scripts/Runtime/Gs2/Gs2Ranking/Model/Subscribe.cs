@@ -132,18 +132,19 @@ namespace Gs2.Gs2Ranking.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Subscribe FromDict(JsonData data)
         {
             return new Subscribe()
-                .WithSubscribeId(data.Keys.Contains("subscribeId") ? (string) data["subscribeId"] : null)
-                .WithCategoryName(data.Keys.Contains("categoryName") ? (string) data["categoryName"] : null)
-                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
-                .WithTargetUserIds(data.Keys.Contains("targetUserIds") ? data["targetUserIds"].Cast<JsonData>().Select(value =>
+                .WithSubscribeId(data.Keys.Contains("subscribeId") && data["subscribeId"] != null ? (string) data["subscribeId"] : null)
+                .WithCategoryName(data.Keys.Contains("categoryName") && data["categoryName"] != null ? (string) data["categoryName"] : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithTargetUserIds(data.Keys.Contains("targetUserIds") && data["targetUserIds"] != null ? data["targetUserIds"].Cast<JsonData>().Select(value =>
                     {
                         return (string) value;
                     }
                 ).ToList() : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null);
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null);
         }
 	}
 }

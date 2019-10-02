@@ -30,10 +30,11 @@ namespace Gs2.Gs2Inventory.Result
         public ItemModel item { set; get; }
 
 
+    	[Preserve]
         public static GetItemModelResult FromDict(JsonData data)
         {
             return new GetItemModelResult {
-                item = data.Keys.Contains("item") ? ItemModel.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? ItemModel.FromDict(data["item"]) : null,
             };
         }
 	}

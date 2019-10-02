@@ -30,10 +30,11 @@ namespace Gs2.Gs2Mission.Result
         public Complete item { set; get; }
 
 
+    	[Preserve]
         public static ReceiveByUserIdResult FromDict(JsonData data)
         {
             return new ReceiveByUserIdResult {
-                item = data.Keys.Contains("item") ? Complete.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Complete.FromDict(data["item"]) : null,
             };
         }
 	}

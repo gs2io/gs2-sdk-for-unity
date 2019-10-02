@@ -30,10 +30,11 @@ namespace Gs2.Gs2Showcase.Result
         public ShowcaseMaster item { set; get; }
 
 
+    	[Preserve]
         public static DeleteShowcaseMasterResult FromDict(JsonData data)
         {
             return new DeleteShowcaseMasterResult {
-                item = data.Keys.Contains("item") ? ShowcaseMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? ShowcaseMaster.FromDict(data["item"]) : null,
             };
         }
 	}

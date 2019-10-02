@@ -30,10 +30,11 @@ namespace Gs2.Gs2Key.Result
         public Key item { set; get; }
 
 
+    	[Preserve]
         public static CreateKeyResult FromDict(JsonData data)
         {
             return new CreateKeyResult {
-                item = data.Keys.Contains("item") ? Key.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Key.FromDict(data["item"]) : null,
             };
         }
 	}

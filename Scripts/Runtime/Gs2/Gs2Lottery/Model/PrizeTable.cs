@@ -113,13 +113,14 @@ namespace Gs2.Gs2Lottery.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static PrizeTable FromDict(JsonData data)
         {
             return new PrizeTable()
-                .WithPrizeTableId(data.Keys.Contains("prizeTableId") ? (string) data["prizeTableId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithPrizes(data.Keys.Contains("prizes") ? data["prizes"].Cast<JsonData>().Select(value =>
+                .WithPrizeTableId(data.Keys.Contains("prizeTableId") && data["prizeTableId"] != null ? (string) data["prizeTableId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithPrizes(data.Keys.Contains("prizes") && data["prizes"] != null ? data["prizes"].Cast<JsonData>().Select(value =>
                     {
                         return Prize.FromDict(value);
                     }

@@ -30,10 +30,11 @@ namespace Gs2.Gs2Identifier.Result
         public SecurityPolicy item { set; get; }
 
 
+    	[Preserve]
         public static CreateSecurityPolicyResult FromDict(JsonData data)
         {
             return new CreateSecurityPolicyResult {
-                item = data.Keys.Contains("item") ? SecurityPolicy.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? SecurityPolicy.FromDict(data["item"]) : null,
             };
         }
 	}

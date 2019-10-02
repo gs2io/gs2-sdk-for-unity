@@ -33,11 +33,12 @@ namespace Gs2.Gs2Mission.Result
         public string newContextStack { set; get; }
 
 
+    	[Preserve]
         public static ReceiveByStampTaskResult FromDict(JsonData data)
         {
             return new ReceiveByStampTaskResult {
-                item = data.Keys.Contains("item") ? Complete.FromDict(data["item"]) : null,
-                newContextStack = data.Keys.Contains("newContextStack") ? (string) data["newContextStack"] : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Complete.FromDict(data["item"]) : null,
+                newContextStack = data.Keys.Contains("newContextStack") && data["newContextStack"] != null ? (string) data["newContextStack"] : null,
             };
         }
 	}

@@ -27,6 +27,7 @@ namespace Gs2.Gs2Friend.Result
 	public class DeleteProfileByUserIdResult
 	{
 
+    	[Preserve]
         public static DeleteProfileByUserIdResult FromDict(JsonData data)
         {
             return new DeleteProfileByUserIdResult {

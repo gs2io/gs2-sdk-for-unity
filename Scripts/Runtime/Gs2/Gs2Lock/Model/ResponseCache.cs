@@ -127,14 +127,15 @@ namespace Gs2.Gs2Lock.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static ResponseCache FromDict(JsonData data)
         {
             return new ResponseCache()
-                .WithRegion(data.Keys.Contains("region") ? (string) data["region"] : null)
-                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
-                .WithResponseCacheId(data.Keys.Contains("responseCacheId") ? (string) data["responseCacheId"] : null)
-                .WithRequestHash(data.Keys.Contains("requestHash") ? (string) data["requestHash"] : null)
-                .WithResult(data.Keys.Contains("result") ? (string) data["result"] : null);
+                .WithRegion(data.Keys.Contains("region") && data["region"] != null ? (string) data["region"] : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? (string) data["ownerId"] : null)
+                .WithResponseCacheId(data.Keys.Contains("responseCacheId") && data["responseCacheId"] != null ? (string) data["responseCacheId"] : null)
+                .WithRequestHash(data.Keys.Contains("requestHash") && data["requestHash"] != null ? (string) data["requestHash"] : null)
+                .WithResult(data.Keys.Contains("result") && data["result"] != null ? (string) data["result"] : null);
         }
 	}
 }

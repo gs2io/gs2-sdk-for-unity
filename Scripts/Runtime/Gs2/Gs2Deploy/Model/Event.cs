@@ -146,15 +146,16 @@ namespace Gs2.Gs2Deploy.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Event FromDict(JsonData data)
         {
             return new Event()
-                .WithEventId(data.Keys.Contains("eventId") ? (string) data["eventId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithResourceName(data.Keys.Contains("resourceName") ? (string) data["resourceName"] : null)
-                .WithType(data.Keys.Contains("type") ? (string) data["type"] : null)
-                .WithMessage(data.Keys.Contains("message") ? (string) data["message"] : null)
-                .WithEventAt(data.Keys.Contains("eventAt") ? (long?) data["eventAt"] : null);
+                .WithEventId(data.Keys.Contains("eventId") && data["eventId"] != null ? (string) data["eventId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithResourceName(data.Keys.Contains("resourceName") && data["resourceName"] != null ? (string) data["resourceName"] : null)
+                .WithType(data.Keys.Contains("type") && data["type"] != null ? (string) data["type"] : null)
+                .WithMessage(data.Keys.Contains("message") && data["message"] != null ? (string) data["message"] : null)
+                .WithEventAt(data.Keys.Contains("eventAt") && data["eventAt"] != null ? (long?) data["eventAt"] : null);
         }
 	}
 }

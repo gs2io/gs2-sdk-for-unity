@@ -30,10 +30,11 @@ namespace Gs2.Gs2Inventory.Result
         public CurrentItemModelMaster item { set; get; }
 
 
+    	[Preserve]
         public static ExportMasterResult FromDict(JsonData data)
         {
             return new ExportMasterResult {
-                item = data.Keys.Contains("item") ? CurrentItemModelMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? CurrentItemModelMaster.FromDict(data["item"]) : null,
             };
         }
 	}

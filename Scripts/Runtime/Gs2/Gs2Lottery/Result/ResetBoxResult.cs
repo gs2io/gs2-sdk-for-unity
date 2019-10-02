@@ -27,6 +27,7 @@ namespace Gs2.Gs2Lottery.Result
 	public class ResetBoxResult
 	{
 
+    	[Preserve]
         public static ResetBoxResult FromDict(JsonData data)
         {
             return new ResetBoxResult {

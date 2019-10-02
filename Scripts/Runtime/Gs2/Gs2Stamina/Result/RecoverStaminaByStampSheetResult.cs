@@ -33,11 +33,12 @@ namespace Gs2.Gs2Stamina.Result
         public long? overflowValue { set; get; }
 
 
+    	[Preserve]
         public static RecoverStaminaByStampSheetResult FromDict(JsonData data)
         {
             return new RecoverStaminaByStampSheetResult {
-                item = data.Keys.Contains("item") ? Stamina.FromDict(data["item"]) : null,
-                overflowValue = data.Keys.Contains("overflowValue") ? (long?) data["overflowValue"] : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Stamina.FromDict(data["item"]) : null,
+                overflowValue = data.Keys.Contains("overflowValue") && data["overflowValue"] != null ? (long?) data["overflowValue"] : null,
             };
         }
 	}

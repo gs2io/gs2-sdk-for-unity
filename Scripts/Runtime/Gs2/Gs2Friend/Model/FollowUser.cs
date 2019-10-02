@@ -89,12 +89,13 @@ namespace Gs2.Gs2Friend.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static FollowUser FromDict(JsonData data)
         {
             return new FollowUser()
-                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
-                .WithPublicProfile(data.Keys.Contains("publicProfile") ? (string) data["publicProfile"] : null)
-                .WithFollowerProfile(data.Keys.Contains("followerProfile") ? (string) data["followerProfile"] : null);
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithPublicProfile(data.Keys.Contains("publicProfile") && data["publicProfile"] != null ? (string) data["publicProfile"] : null)
+                .WithFollowerProfile(data.Keys.Contains("followerProfile") && data["followerProfile"] != null ? (string) data["followerProfile"] : null);
         }
 	}
 }

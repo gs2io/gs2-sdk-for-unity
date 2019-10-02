@@ -30,10 +30,11 @@ namespace Gs2.Gs2Friend.Result
         public PublicProfile item { set; get; }
 
 
+    	[Preserve]
         public static GetPublicProfileResult FromDict(JsonData data)
         {
             return new GetPublicProfileResult {
-                item = data.Keys.Contains("item") ? PublicProfile.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? PublicProfile.FromDict(data["item"]) : null,
             };
         }
 	}

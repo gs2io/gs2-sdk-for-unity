@@ -33,11 +33,12 @@ namespace Gs2.Gs2Stamina.Result
         public string newContextStack { set; get; }
 
 
+    	[Preserve]
         public static ConsumeStaminaByStampTaskResult FromDict(JsonData data)
         {
             return new ConsumeStaminaByStampTaskResult {
-                item = data.Keys.Contains("item") ? Stamina.FromDict(data["item"]) : null,
-                newContextStack = data.Keys.Contains("newContextStack") ? (string) data["newContextStack"] : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Stamina.FromDict(data["item"]) : null,
+                newContextStack = data.Keys.Contains("newContextStack") && data["newContextStack"] != null ? (string) data["newContextStack"] : null,
             };
         }
 	}

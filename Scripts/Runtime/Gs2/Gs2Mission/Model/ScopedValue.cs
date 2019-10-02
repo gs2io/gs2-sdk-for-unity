@@ -89,12 +89,13 @@ namespace Gs2.Gs2Mission.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static ScopedValue FromDict(JsonData data)
         {
             return new ScopedValue()
-                .WithResetType(data.Keys.Contains("resetType") ? (string) data["resetType"] : null)
-                .WithValue(data.Keys.Contains("value") ? (long?) data["value"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithResetType(data.Keys.Contains("resetType") && data["resetType"] != null ? (string) data["resetType"] : null)
+                .WithValue(data.Keys.Contains("value") && data["value"] != null ? (long?) data["value"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

@@ -265,25 +265,26 @@ namespace Gs2.Gs2Mission.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static MissionTaskModelMaster FromDict(JsonData data)
         {
             return new MissionTaskModelMaster()
-                .WithMissionTaskId(data.Keys.Contains("missionTaskId") ? (string) data["missionTaskId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
-                .WithCounterName(data.Keys.Contains("counterName") ? (string) data["counterName"] : null)
-                .WithResetType(data.Keys.Contains("resetType") ? (string) data["resetType"] : null)
-                .WithTargetValue(data.Keys.Contains("targetValue") ? (long?) data["targetValue"] : null)
-                .WithCompleteAcquireActions(data.Keys.Contains("completeAcquireActions") ? data["completeAcquireActions"].Cast<JsonData>().Select(value =>
+                .WithMissionTaskId(data.Keys.Contains("missionTaskId") && data["missionTaskId"] != null ? (string) data["missionTaskId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
+                .WithCounterName(data.Keys.Contains("counterName") && data["counterName"] != null ? (string) data["counterName"] : null)
+                .WithResetType(data.Keys.Contains("resetType") && data["resetType"] != null ? (string) data["resetType"] : null)
+                .WithTargetValue(data.Keys.Contains("targetValue") && data["targetValue"] != null ? (long?) data["targetValue"] : null)
+                .WithCompleteAcquireActions(data.Keys.Contains("completeAcquireActions") && data["completeAcquireActions"] != null ? data["completeAcquireActions"].Cast<JsonData>().Select(value =>
                     {
                         return AcquireAction.FromDict(value);
                     }
                 ).ToList() : null)
-                .WithChallengePeriodEventId(data.Keys.Contains("challengePeriodEventId") ? (string) data["challengePeriodEventId"] : null)
-                .WithPremiseMissionTaskName(data.Keys.Contains("premiseMissionTaskName") ? (string) data["premiseMissionTaskName"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithChallengePeriodEventId(data.Keys.Contains("challengePeriodEventId") && data["challengePeriodEventId"] != null ? (string) data["challengePeriodEventId"] : null)
+                .WithPremiseMissionTaskName(data.Keys.Contains("premiseMissionTaskName") && data["premiseMissionTaskName"] != null ? (string) data["premiseMissionTaskName"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

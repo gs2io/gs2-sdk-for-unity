@@ -30,10 +30,11 @@ namespace Gs2.Gs2Money.Result
         public Receipt item { set; get; }
 
 
+    	[Preserve]
         public static RecordReceiptResult FromDict(JsonData data)
         {
             return new RecordReceiptResult {
-                item = data.Keys.Contains("item") ? Receipt.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Receipt.FromDict(data["item"]) : null,
             };
         }
 	}

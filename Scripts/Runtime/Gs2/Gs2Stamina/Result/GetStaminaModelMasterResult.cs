@@ -30,10 +30,11 @@ namespace Gs2.Gs2Stamina.Result
         public StaminaModelMaster item { set; get; }
 
 
+    	[Preserve]
         public static GetStaminaModelMasterResult FromDict(JsonData data)
         {
             return new GetStaminaModelMasterResult {
-                item = data.Keys.Contains("item") ? StaminaModelMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? StaminaModelMaster.FromDict(data["item"]) : null,
             };
         }
 	}

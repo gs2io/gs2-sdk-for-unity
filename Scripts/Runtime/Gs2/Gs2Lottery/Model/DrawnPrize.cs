@@ -56,10 +56,11 @@ namespace Gs2.Gs2Lottery.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static DrawnPrize FromDict(JsonData data)
         {
             return new DrawnPrize()
-                .WithAcquireActions(data.Keys.Contains("acquireActions") ? data["acquireActions"].Cast<JsonData>().Select(value =>
+                .WithAcquireActions(data.Keys.Contains("acquireActions") && data["acquireActions"] != null ? data["acquireActions"].Cast<JsonData>().Select(value =>
                     {
                         return AcquireAction.FromDict(value);
                     }

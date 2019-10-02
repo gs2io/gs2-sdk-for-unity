@@ -30,10 +30,11 @@ namespace Gs2.Gs2Deploy.Result
         public Stack item { set; get; }
 
 
+    	[Preserve]
         public static DeleteStackResult FromDict(JsonData data)
         {
             return new DeleteStackResult {
-                item = data.Keys.Contains("item") ? Stack.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Stack.FromDict(data["item"]) : null,
             };
         }
 	}

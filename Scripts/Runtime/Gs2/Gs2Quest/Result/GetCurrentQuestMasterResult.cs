@@ -30,10 +30,11 @@ namespace Gs2.Gs2Quest.Result
         public CurrentQuestMaster item { set; get; }
 
 
+    	[Preserve]
         public static GetCurrentQuestMasterResult FromDict(JsonData data)
         {
             return new GetCurrentQuestMasterResult {
-                item = data.Keys.Contains("item") ? CurrentQuestMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? CurrentQuestMaster.FromDict(data["item"]) : null,
             };
         }
 	}

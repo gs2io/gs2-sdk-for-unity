@@ -30,10 +30,11 @@ namespace Gs2.Gs2Deploy.Result
         public Stack item { set; get; }
 
 
+    	[Preserve]
         public static CreateStackFromGitHubResult FromDict(JsonData data)
         {
             return new CreateStackFromGitHubResult {
-                item = data.Keys.Contains("item") ? Stack.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Stack.FromDict(data["item"]) : null,
             };
         }
 	}

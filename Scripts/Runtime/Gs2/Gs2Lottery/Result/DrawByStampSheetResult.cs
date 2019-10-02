@@ -36,16 +36,17 @@ namespace Gs2.Gs2Lottery.Result
         public BoxItems boxItems { set; get; }
 
 
+    	[Preserve]
         public static DrawByStampSheetResult FromDict(JsonData data)
         {
             return new DrawByStampSheetResult {
-                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
                         return DrawnPrize.FromDict(value);
                     }
                 ).ToList() : null,
-                stampSheet = data.Keys.Contains("stampSheet") ? (string) data["stampSheet"] : null,
-                boxItems = data.Keys.Contains("boxItems") ? BoxItems.FromDict(data["boxItems"]) : null,
+                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? (string) data["stampSheet"] : null,
+                boxItems = data.Keys.Contains("boxItems") && data["boxItems"] != null ? BoxItems.FromDict(data["boxItems"]) : null,
             };
         }
 	}

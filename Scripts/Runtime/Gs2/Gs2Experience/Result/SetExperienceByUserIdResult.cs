@@ -30,10 +30,11 @@ namespace Gs2.Gs2Experience.Result
         public Status item { set; get; }
 
 
+    	[Preserve]
         public static SetExperienceByUserIdResult FromDict(JsonData data)
         {
             return new SetExperienceByUserIdResult {
-                item = data.Keys.Contains("item") ? Status.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Status.FromDict(data["item"]) : null,
             };
         }
 	}

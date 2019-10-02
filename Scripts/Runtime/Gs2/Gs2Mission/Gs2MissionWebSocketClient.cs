@@ -43,6 +43,526 @@ namespace Gs2.Gs2Mission
 
 		}
 
+        private class DescribeMissionTaskModelMastersTask : Gs2WebSocketSessionTask<Result.DescribeMissionTaskModelMastersResult>
+        {
+			private readonly Request.DescribeMissionTaskModelMastersRequest _request;
+
+			public DescribeMissionTaskModelMastersTask(Request.DescribeMissionTaskModelMastersRequest request, UnityAction<AsyncResult<Result.DescribeMissionTaskModelMastersResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.missionGroupName != null)
+                {
+                    jsonWriter.WritePropertyName("missionGroupName");
+                    jsonWriter.Write(_request.missionGroupName.ToString());
+                }
+                if (_request.pageToken != null)
+                {
+                    jsonWriter.WritePropertyName("pageToken");
+                    jsonWriter.Write(_request.pageToken.ToString());
+                }
+                if (_request.limit != null)
+                {
+                    jsonWriter.WritePropertyName("limit");
+                    jsonWriter.Write(_request.limit.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("mission");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("missionTaskModelMaster");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("describeMissionTaskModelMasters");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  ミッションタスクマスターの一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DescribeMissionTaskModelMasters(
+                Request.DescribeMissionTaskModelMastersRequest request,
+                UnityAction<AsyncResult<Result.DescribeMissionTaskModelMastersResult>> callback
+        )
+		{
+			var task = new DescribeMissionTaskModelMastersTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class CreateMissionTaskModelMasterTask : Gs2WebSocketSessionTask<Result.CreateMissionTaskModelMasterResult>
+        {
+			private readonly Request.CreateMissionTaskModelMasterRequest _request;
+
+			public CreateMissionTaskModelMasterTask(Request.CreateMissionTaskModelMasterRequest request, UnityAction<AsyncResult<Result.CreateMissionTaskModelMasterResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.missionGroupName != null)
+                {
+                    jsonWriter.WritePropertyName("missionGroupName");
+                    jsonWriter.Write(_request.missionGroupName.ToString());
+                }
+                if (_request.name != null)
+                {
+                    jsonWriter.WritePropertyName("name");
+                    jsonWriter.Write(_request.name.ToString());
+                }
+                if (_request.metadata != null)
+                {
+                    jsonWriter.WritePropertyName("metadata");
+                    jsonWriter.Write(_request.metadata.ToString());
+                }
+                if (_request.description != null)
+                {
+                    jsonWriter.WritePropertyName("description");
+                    jsonWriter.Write(_request.description.ToString());
+                }
+                if (_request.counterName != null)
+                {
+                    jsonWriter.WritePropertyName("counterName");
+                    jsonWriter.Write(_request.counterName.ToString());
+                }
+                if (_request.resetType != null)
+                {
+                    jsonWriter.WritePropertyName("resetType");
+                    jsonWriter.Write(_request.resetType.ToString());
+                }
+                if (_request.targetValue != null)
+                {
+                    jsonWriter.WritePropertyName("targetValue");
+                    jsonWriter.Write(_request.targetValue.ToString());
+                }
+                if (_request.completeAcquireActions != null)
+                {
+                    jsonWriter.WritePropertyName("completeAcquireActions");
+                    jsonWriter.WriteArrayStart();
+                    foreach(var item in _request.completeAcquireActions)
+                    {
+                        item.WriteJson(jsonWriter);
+                    }
+                    jsonWriter.WriteArrayEnd();
+                }
+                if (_request.challengePeriodEventId != null)
+                {
+                    jsonWriter.WritePropertyName("challengePeriodEventId");
+                    jsonWriter.Write(_request.challengePeriodEventId.ToString());
+                }
+                if (_request.premiseMissionTaskName != null)
+                {
+                    jsonWriter.WritePropertyName("premiseMissionTaskName");
+                    jsonWriter.Write(_request.premiseMissionTaskName.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("mission");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("missionTaskModelMaster");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("createMissionTaskModelMaster");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  ミッションタスクマスターを新規作成<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator CreateMissionTaskModelMaster(
+                Request.CreateMissionTaskModelMasterRequest request,
+                UnityAction<AsyncResult<Result.CreateMissionTaskModelMasterResult>> callback
+        )
+		{
+			var task = new CreateMissionTaskModelMasterTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class GetMissionTaskModelMasterTask : Gs2WebSocketSessionTask<Result.GetMissionTaskModelMasterResult>
+        {
+			private readonly Request.GetMissionTaskModelMasterRequest _request;
+
+			public GetMissionTaskModelMasterTask(Request.GetMissionTaskModelMasterRequest request, UnityAction<AsyncResult<Result.GetMissionTaskModelMasterResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.missionGroupName != null)
+                {
+                    jsonWriter.WritePropertyName("missionGroupName");
+                    jsonWriter.Write(_request.missionGroupName.ToString());
+                }
+                if (_request.missionTaskName != null)
+                {
+                    jsonWriter.WritePropertyName("missionTaskName");
+                    jsonWriter.Write(_request.missionTaskName.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("mission");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("missionTaskModelMaster");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("getMissionTaskModelMaster");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  ミッションタスクマスターを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetMissionTaskModelMaster(
+                Request.GetMissionTaskModelMasterRequest request,
+                UnityAction<AsyncResult<Result.GetMissionTaskModelMasterResult>> callback
+        )
+		{
+			var task = new GetMissionTaskModelMasterTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class UpdateMissionTaskModelMasterTask : Gs2WebSocketSessionTask<Result.UpdateMissionTaskModelMasterResult>
+        {
+			private readonly Request.UpdateMissionTaskModelMasterRequest _request;
+
+			public UpdateMissionTaskModelMasterTask(Request.UpdateMissionTaskModelMasterRequest request, UnityAction<AsyncResult<Result.UpdateMissionTaskModelMasterResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.missionGroupName != null)
+                {
+                    jsonWriter.WritePropertyName("missionGroupName");
+                    jsonWriter.Write(_request.missionGroupName.ToString());
+                }
+                if (_request.missionTaskName != null)
+                {
+                    jsonWriter.WritePropertyName("missionTaskName");
+                    jsonWriter.Write(_request.missionTaskName.ToString());
+                }
+                if (_request.metadata != null)
+                {
+                    jsonWriter.WritePropertyName("metadata");
+                    jsonWriter.Write(_request.metadata.ToString());
+                }
+                if (_request.description != null)
+                {
+                    jsonWriter.WritePropertyName("description");
+                    jsonWriter.Write(_request.description.ToString());
+                }
+                if (_request.counterName != null)
+                {
+                    jsonWriter.WritePropertyName("counterName");
+                    jsonWriter.Write(_request.counterName.ToString());
+                }
+                if (_request.resetType != null)
+                {
+                    jsonWriter.WritePropertyName("resetType");
+                    jsonWriter.Write(_request.resetType.ToString());
+                }
+                if (_request.targetValue != null)
+                {
+                    jsonWriter.WritePropertyName("targetValue");
+                    jsonWriter.Write(_request.targetValue.ToString());
+                }
+                if (_request.completeAcquireActions != null)
+                {
+                    jsonWriter.WritePropertyName("completeAcquireActions");
+                    jsonWriter.WriteArrayStart();
+                    foreach(var item in _request.completeAcquireActions)
+                    {
+                        item.WriteJson(jsonWriter);
+                    }
+                    jsonWriter.WriteArrayEnd();
+                }
+                if (_request.challengePeriodEventId != null)
+                {
+                    jsonWriter.WritePropertyName("challengePeriodEventId");
+                    jsonWriter.Write(_request.challengePeriodEventId.ToString());
+                }
+                if (_request.premiseMissionTaskName != null)
+                {
+                    jsonWriter.WritePropertyName("premiseMissionTaskName");
+                    jsonWriter.Write(_request.premiseMissionTaskName.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("mission");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("missionTaskModelMaster");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("updateMissionTaskModelMaster");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  ミッションタスクマスターを更新<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator UpdateMissionTaskModelMaster(
+                Request.UpdateMissionTaskModelMasterRequest request,
+                UnityAction<AsyncResult<Result.UpdateMissionTaskModelMasterResult>> callback
+        )
+		{
+			var task = new UpdateMissionTaskModelMasterTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class DeleteMissionTaskModelMasterTask : Gs2WebSocketSessionTask<Result.DeleteMissionTaskModelMasterResult>
+        {
+			private readonly Request.DeleteMissionTaskModelMasterRequest _request;
+
+			public DeleteMissionTaskModelMasterTask(Request.DeleteMissionTaskModelMasterRequest request, UnityAction<AsyncResult<Result.DeleteMissionTaskModelMasterResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.missionGroupName != null)
+                {
+                    jsonWriter.WritePropertyName("missionGroupName");
+                    jsonWriter.Write(_request.missionGroupName.ToString());
+                }
+                if (_request.missionTaskName != null)
+                {
+                    jsonWriter.WritePropertyName("missionTaskName");
+                    jsonWriter.Write(_request.missionTaskName.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("mission");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("missionTaskModelMaster");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("deleteMissionTaskModelMaster");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  ミッションタスクマスターを削除<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DeleteMissionTaskModelMaster(
+                Request.DeleteMissionTaskModelMasterRequest request,
+                UnityAction<AsyncResult<Result.DeleteMissionTaskModelMasterResult>> callback
+        )
+		{
+			var task = new DeleteMissionTaskModelMasterTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
         private class ExportMasterTask : Gs2WebSocketSessionTask<Result.ExportMasterResult>
         {
 			private readonly Request.ExportMasterRequest _request;
@@ -3790,526 +4310,6 @@ namespace Gs2.Gs2Mission
         )
 		{
 			var task = new DeleteMissionGroupModelMasterTask(request, callback);
-			return Gs2WebSocketSession.Execute(task);
-        }
-
-        private class DescribeMissionTaskModelMastersTask : Gs2WebSocketSessionTask<Result.DescribeMissionTaskModelMastersResult>
-        {
-			private readonly Request.DescribeMissionTaskModelMastersRequest _request;
-
-			public DescribeMissionTaskModelMastersTask(Request.DescribeMissionTaskModelMastersRequest request, UnityAction<AsyncResult<Result.DescribeMissionTaskModelMastersResult>> userCallback) : base(userCallback)
-			{
-				_request = request;
-			}
-
-            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
-            {
-                var stringBuilder = new StringBuilder();
-                var jsonWriter = new JsonWriter(stringBuilder);
-
-                jsonWriter.WriteObjectStart();
-
-                if (_request.namespaceName != null)
-                {
-                    jsonWriter.WritePropertyName("namespaceName");
-                    jsonWriter.Write(_request.namespaceName.ToString());
-                }
-                if (_request.missionGroupName != null)
-                {
-                    jsonWriter.WritePropertyName("missionGroupName");
-                    jsonWriter.Write(_request.missionGroupName.ToString());
-                }
-                if (_request.pageToken != null)
-                {
-                    jsonWriter.WritePropertyName("pageToken");
-                    jsonWriter.Write(_request.pageToken.ToString());
-                }
-                if (_request.limit != null)
-                {
-                    jsonWriter.WritePropertyName("limit");
-                    jsonWriter.Write(_request.limit.ToString());
-                }
-                if (_request.contextStack != null)
-                {
-                    jsonWriter.WritePropertyName("contextStack");
-                    jsonWriter.Write(_request.contextStack.ToString());
-                }
-                if (_request.requestId != null)
-                {
-                    jsonWriter.WritePropertyName("xGs2RequestId");
-                    jsonWriter.Write(_request.requestId);
-                }
-
-                jsonWriter.WritePropertyName("xGs2ClientId");
-                jsonWriter.Write(gs2Session.Credential.ClientId);
-                jsonWriter.WritePropertyName("xGs2ProjectToken");
-                jsonWriter.Write(gs2Session.ProjectToken);
-
-                jsonWriter.WritePropertyName("x_gs2");
-                jsonWriter.WriteObjectStart();
-                jsonWriter.WritePropertyName("service");
-                jsonWriter.Write("mission");
-                jsonWriter.WritePropertyName("component");
-                jsonWriter.Write("missionTaskModelMaster");
-                jsonWriter.WritePropertyName("function");
-                jsonWriter.Write("describeMissionTaskModelMasters");
-                jsonWriter.WritePropertyName("contentType");
-                jsonWriter.Write("application/json");
-                jsonWriter.WritePropertyName("requestId");
-                jsonWriter.Write(Gs2SessionTaskId.ToString());
-                jsonWriter.WriteObjectEnd();
-
-                jsonWriter.WriteObjectEnd();
-
-                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
-
-                return new EmptyCoroutine();
-            }
-        }
-
-		/// <summary>
-		///  ミッションタスクマスターの一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator DescribeMissionTaskModelMasters(
-                Request.DescribeMissionTaskModelMastersRequest request,
-                UnityAction<AsyncResult<Result.DescribeMissionTaskModelMastersResult>> callback
-        )
-		{
-			var task = new DescribeMissionTaskModelMastersTask(request, callback);
-			return Gs2WebSocketSession.Execute(task);
-        }
-
-        private class CreateMissionTaskModelMasterTask : Gs2WebSocketSessionTask<Result.CreateMissionTaskModelMasterResult>
-        {
-			private readonly Request.CreateMissionTaskModelMasterRequest _request;
-
-			public CreateMissionTaskModelMasterTask(Request.CreateMissionTaskModelMasterRequest request, UnityAction<AsyncResult<Result.CreateMissionTaskModelMasterResult>> userCallback) : base(userCallback)
-			{
-				_request = request;
-			}
-
-            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
-            {
-                var stringBuilder = new StringBuilder();
-                var jsonWriter = new JsonWriter(stringBuilder);
-
-                jsonWriter.WriteObjectStart();
-
-                if (_request.namespaceName != null)
-                {
-                    jsonWriter.WritePropertyName("namespaceName");
-                    jsonWriter.Write(_request.namespaceName.ToString());
-                }
-                if (_request.missionGroupName != null)
-                {
-                    jsonWriter.WritePropertyName("missionGroupName");
-                    jsonWriter.Write(_request.missionGroupName.ToString());
-                }
-                if (_request.name != null)
-                {
-                    jsonWriter.WritePropertyName("name");
-                    jsonWriter.Write(_request.name.ToString());
-                }
-                if (_request.metadata != null)
-                {
-                    jsonWriter.WritePropertyName("metadata");
-                    jsonWriter.Write(_request.metadata.ToString());
-                }
-                if (_request.description != null)
-                {
-                    jsonWriter.WritePropertyName("description");
-                    jsonWriter.Write(_request.description.ToString());
-                }
-                if (_request.counterName != null)
-                {
-                    jsonWriter.WritePropertyName("counterName");
-                    jsonWriter.Write(_request.counterName.ToString());
-                }
-                if (_request.resetType != null)
-                {
-                    jsonWriter.WritePropertyName("resetType");
-                    jsonWriter.Write(_request.resetType.ToString());
-                }
-                if (_request.targetValue != null)
-                {
-                    jsonWriter.WritePropertyName("targetValue");
-                    jsonWriter.Write(_request.targetValue.ToString());
-                }
-                if (_request.completeAcquireActions != null)
-                {
-                    jsonWriter.WritePropertyName("completeAcquireActions");
-                    jsonWriter.WriteArrayStart();
-                    foreach(var item in _request.completeAcquireActions)
-                    {
-                        item.WriteJson(jsonWriter);
-                    }
-                    jsonWriter.WriteArrayEnd();
-                }
-                if (_request.challengePeriodEventId != null)
-                {
-                    jsonWriter.WritePropertyName("challengePeriodEventId");
-                    jsonWriter.Write(_request.challengePeriodEventId.ToString());
-                }
-                if (_request.premiseMissionTaskName != null)
-                {
-                    jsonWriter.WritePropertyName("premiseMissionTaskName");
-                    jsonWriter.Write(_request.premiseMissionTaskName.ToString());
-                }
-                if (_request.contextStack != null)
-                {
-                    jsonWriter.WritePropertyName("contextStack");
-                    jsonWriter.Write(_request.contextStack.ToString());
-                }
-                if (_request.requestId != null)
-                {
-                    jsonWriter.WritePropertyName("xGs2RequestId");
-                    jsonWriter.Write(_request.requestId);
-                }
-
-                jsonWriter.WritePropertyName("xGs2ClientId");
-                jsonWriter.Write(gs2Session.Credential.ClientId);
-                jsonWriter.WritePropertyName("xGs2ProjectToken");
-                jsonWriter.Write(gs2Session.ProjectToken);
-
-                jsonWriter.WritePropertyName("x_gs2");
-                jsonWriter.WriteObjectStart();
-                jsonWriter.WritePropertyName("service");
-                jsonWriter.Write("mission");
-                jsonWriter.WritePropertyName("component");
-                jsonWriter.Write("missionTaskModelMaster");
-                jsonWriter.WritePropertyName("function");
-                jsonWriter.Write("createMissionTaskModelMaster");
-                jsonWriter.WritePropertyName("contentType");
-                jsonWriter.Write("application/json");
-                jsonWriter.WritePropertyName("requestId");
-                jsonWriter.Write(Gs2SessionTaskId.ToString());
-                jsonWriter.WriteObjectEnd();
-
-                jsonWriter.WriteObjectEnd();
-
-                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
-
-                return new EmptyCoroutine();
-            }
-        }
-
-		/// <summary>
-		///  ミッションタスクマスターを新規作成<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator CreateMissionTaskModelMaster(
-                Request.CreateMissionTaskModelMasterRequest request,
-                UnityAction<AsyncResult<Result.CreateMissionTaskModelMasterResult>> callback
-        )
-		{
-			var task = new CreateMissionTaskModelMasterTask(request, callback);
-			return Gs2WebSocketSession.Execute(task);
-        }
-
-        private class GetMissionTaskModelMasterTask : Gs2WebSocketSessionTask<Result.GetMissionTaskModelMasterResult>
-        {
-			private readonly Request.GetMissionTaskModelMasterRequest _request;
-
-			public GetMissionTaskModelMasterTask(Request.GetMissionTaskModelMasterRequest request, UnityAction<AsyncResult<Result.GetMissionTaskModelMasterResult>> userCallback) : base(userCallback)
-			{
-				_request = request;
-			}
-
-            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
-            {
-                var stringBuilder = new StringBuilder();
-                var jsonWriter = new JsonWriter(stringBuilder);
-
-                jsonWriter.WriteObjectStart();
-
-                if (_request.namespaceName != null)
-                {
-                    jsonWriter.WritePropertyName("namespaceName");
-                    jsonWriter.Write(_request.namespaceName.ToString());
-                }
-                if (_request.missionGroupName != null)
-                {
-                    jsonWriter.WritePropertyName("missionGroupName");
-                    jsonWriter.Write(_request.missionGroupName.ToString());
-                }
-                if (_request.missionTaskName != null)
-                {
-                    jsonWriter.WritePropertyName("missionTaskName");
-                    jsonWriter.Write(_request.missionTaskName.ToString());
-                }
-                if (_request.contextStack != null)
-                {
-                    jsonWriter.WritePropertyName("contextStack");
-                    jsonWriter.Write(_request.contextStack.ToString());
-                }
-                if (_request.requestId != null)
-                {
-                    jsonWriter.WritePropertyName("xGs2RequestId");
-                    jsonWriter.Write(_request.requestId);
-                }
-
-                jsonWriter.WritePropertyName("xGs2ClientId");
-                jsonWriter.Write(gs2Session.Credential.ClientId);
-                jsonWriter.WritePropertyName("xGs2ProjectToken");
-                jsonWriter.Write(gs2Session.ProjectToken);
-
-                jsonWriter.WritePropertyName("x_gs2");
-                jsonWriter.WriteObjectStart();
-                jsonWriter.WritePropertyName("service");
-                jsonWriter.Write("mission");
-                jsonWriter.WritePropertyName("component");
-                jsonWriter.Write("missionTaskModelMaster");
-                jsonWriter.WritePropertyName("function");
-                jsonWriter.Write("getMissionTaskModelMaster");
-                jsonWriter.WritePropertyName("contentType");
-                jsonWriter.Write("application/json");
-                jsonWriter.WritePropertyName("requestId");
-                jsonWriter.Write(Gs2SessionTaskId.ToString());
-                jsonWriter.WriteObjectEnd();
-
-                jsonWriter.WriteObjectEnd();
-
-                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
-
-                return new EmptyCoroutine();
-            }
-        }
-
-		/// <summary>
-		///  ミッションタスクマスターを取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator GetMissionTaskModelMaster(
-                Request.GetMissionTaskModelMasterRequest request,
-                UnityAction<AsyncResult<Result.GetMissionTaskModelMasterResult>> callback
-        )
-		{
-			var task = new GetMissionTaskModelMasterTask(request, callback);
-			return Gs2WebSocketSession.Execute(task);
-        }
-
-        private class UpdateMissionTaskModelMasterTask : Gs2WebSocketSessionTask<Result.UpdateMissionTaskModelMasterResult>
-        {
-			private readonly Request.UpdateMissionTaskModelMasterRequest _request;
-
-			public UpdateMissionTaskModelMasterTask(Request.UpdateMissionTaskModelMasterRequest request, UnityAction<AsyncResult<Result.UpdateMissionTaskModelMasterResult>> userCallback) : base(userCallback)
-			{
-				_request = request;
-			}
-
-            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
-            {
-                var stringBuilder = new StringBuilder();
-                var jsonWriter = new JsonWriter(stringBuilder);
-
-                jsonWriter.WriteObjectStart();
-
-                if (_request.namespaceName != null)
-                {
-                    jsonWriter.WritePropertyName("namespaceName");
-                    jsonWriter.Write(_request.namespaceName.ToString());
-                }
-                if (_request.missionGroupName != null)
-                {
-                    jsonWriter.WritePropertyName("missionGroupName");
-                    jsonWriter.Write(_request.missionGroupName.ToString());
-                }
-                if (_request.missionTaskName != null)
-                {
-                    jsonWriter.WritePropertyName("missionTaskName");
-                    jsonWriter.Write(_request.missionTaskName.ToString());
-                }
-                if (_request.metadata != null)
-                {
-                    jsonWriter.WritePropertyName("metadata");
-                    jsonWriter.Write(_request.metadata.ToString());
-                }
-                if (_request.description != null)
-                {
-                    jsonWriter.WritePropertyName("description");
-                    jsonWriter.Write(_request.description.ToString());
-                }
-                if (_request.counterName != null)
-                {
-                    jsonWriter.WritePropertyName("counterName");
-                    jsonWriter.Write(_request.counterName.ToString());
-                }
-                if (_request.resetType != null)
-                {
-                    jsonWriter.WritePropertyName("resetType");
-                    jsonWriter.Write(_request.resetType.ToString());
-                }
-                if (_request.targetValue != null)
-                {
-                    jsonWriter.WritePropertyName("targetValue");
-                    jsonWriter.Write(_request.targetValue.ToString());
-                }
-                if (_request.completeAcquireActions != null)
-                {
-                    jsonWriter.WritePropertyName("completeAcquireActions");
-                    jsonWriter.WriteArrayStart();
-                    foreach(var item in _request.completeAcquireActions)
-                    {
-                        item.WriteJson(jsonWriter);
-                    }
-                    jsonWriter.WriteArrayEnd();
-                }
-                if (_request.challengePeriodEventId != null)
-                {
-                    jsonWriter.WritePropertyName("challengePeriodEventId");
-                    jsonWriter.Write(_request.challengePeriodEventId.ToString());
-                }
-                if (_request.premiseMissionTaskName != null)
-                {
-                    jsonWriter.WritePropertyName("premiseMissionTaskName");
-                    jsonWriter.Write(_request.premiseMissionTaskName.ToString());
-                }
-                if (_request.contextStack != null)
-                {
-                    jsonWriter.WritePropertyName("contextStack");
-                    jsonWriter.Write(_request.contextStack.ToString());
-                }
-                if (_request.requestId != null)
-                {
-                    jsonWriter.WritePropertyName("xGs2RequestId");
-                    jsonWriter.Write(_request.requestId);
-                }
-
-                jsonWriter.WritePropertyName("xGs2ClientId");
-                jsonWriter.Write(gs2Session.Credential.ClientId);
-                jsonWriter.WritePropertyName("xGs2ProjectToken");
-                jsonWriter.Write(gs2Session.ProjectToken);
-
-                jsonWriter.WritePropertyName("x_gs2");
-                jsonWriter.WriteObjectStart();
-                jsonWriter.WritePropertyName("service");
-                jsonWriter.Write("mission");
-                jsonWriter.WritePropertyName("component");
-                jsonWriter.Write("missionTaskModelMaster");
-                jsonWriter.WritePropertyName("function");
-                jsonWriter.Write("updateMissionTaskModelMaster");
-                jsonWriter.WritePropertyName("contentType");
-                jsonWriter.Write("application/json");
-                jsonWriter.WritePropertyName("requestId");
-                jsonWriter.Write(Gs2SessionTaskId.ToString());
-                jsonWriter.WriteObjectEnd();
-
-                jsonWriter.WriteObjectEnd();
-
-                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
-
-                return new EmptyCoroutine();
-            }
-        }
-
-		/// <summary>
-		///  ミッションタスクマスターを更新<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator UpdateMissionTaskModelMaster(
-                Request.UpdateMissionTaskModelMasterRequest request,
-                UnityAction<AsyncResult<Result.UpdateMissionTaskModelMasterResult>> callback
-        )
-		{
-			var task = new UpdateMissionTaskModelMasterTask(request, callback);
-			return Gs2WebSocketSession.Execute(task);
-        }
-
-        private class DeleteMissionTaskModelMasterTask : Gs2WebSocketSessionTask<Result.DeleteMissionTaskModelMasterResult>
-        {
-			private readonly Request.DeleteMissionTaskModelMasterRequest _request;
-
-			public DeleteMissionTaskModelMasterTask(Request.DeleteMissionTaskModelMasterRequest request, UnityAction<AsyncResult<Result.DeleteMissionTaskModelMasterResult>> userCallback) : base(userCallback)
-			{
-				_request = request;
-			}
-
-            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
-            {
-                var stringBuilder = new StringBuilder();
-                var jsonWriter = new JsonWriter(stringBuilder);
-
-                jsonWriter.WriteObjectStart();
-
-                if (_request.namespaceName != null)
-                {
-                    jsonWriter.WritePropertyName("namespaceName");
-                    jsonWriter.Write(_request.namespaceName.ToString());
-                }
-                if (_request.missionGroupName != null)
-                {
-                    jsonWriter.WritePropertyName("missionGroupName");
-                    jsonWriter.Write(_request.missionGroupName.ToString());
-                }
-                if (_request.missionTaskName != null)
-                {
-                    jsonWriter.WritePropertyName("missionTaskName");
-                    jsonWriter.Write(_request.missionTaskName.ToString());
-                }
-                if (_request.contextStack != null)
-                {
-                    jsonWriter.WritePropertyName("contextStack");
-                    jsonWriter.Write(_request.contextStack.ToString());
-                }
-                if (_request.requestId != null)
-                {
-                    jsonWriter.WritePropertyName("xGs2RequestId");
-                    jsonWriter.Write(_request.requestId);
-                }
-
-                jsonWriter.WritePropertyName("xGs2ClientId");
-                jsonWriter.Write(gs2Session.Credential.ClientId);
-                jsonWriter.WritePropertyName("xGs2ProjectToken");
-                jsonWriter.Write(gs2Session.ProjectToken);
-
-                jsonWriter.WritePropertyName("x_gs2");
-                jsonWriter.WriteObjectStart();
-                jsonWriter.WritePropertyName("service");
-                jsonWriter.Write("mission");
-                jsonWriter.WritePropertyName("component");
-                jsonWriter.Write("missionTaskModelMaster");
-                jsonWriter.WritePropertyName("function");
-                jsonWriter.Write("deleteMissionTaskModelMaster");
-                jsonWriter.WritePropertyName("contentType");
-                jsonWriter.Write("application/json");
-                jsonWriter.WritePropertyName("requestId");
-                jsonWriter.Write(Gs2SessionTaskId.ToString());
-                jsonWriter.WriteObjectEnd();
-
-                jsonWriter.WriteObjectEnd();
-
-                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
-
-                return new EmptyCoroutine();
-            }
-        }
-
-		/// <summary>
-		///  ミッションタスクマスターを削除<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator DeleteMissionTaskModelMaster(
-                Request.DeleteMissionTaskModelMasterRequest request,
-                UnityAction<AsyncResult<Result.DeleteMissionTaskModelMasterResult>> callback
-        )
-		{
-			var task = new DeleteMissionTaskModelMasterTask(request, callback);
 			return Gs2WebSocketSession.Execute(task);
         }
 	}

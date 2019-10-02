@@ -108,13 +108,14 @@ namespace Gs2.Gs2Deploy.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Output FromDict(JsonData data)
         {
             return new Output()
-                .WithOutputId(data.Keys.Contains("outputId") ? (string) data["outputId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithValue(data.Keys.Contains("value") ? (string) data["value"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null);
+                .WithOutputId(data.Keys.Contains("outputId") && data["outputId"] != null ? (string) data["outputId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithValue(data.Keys.Contains("value") && data["value"] != null ? (string) data["value"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null);
         }
 	}
 }

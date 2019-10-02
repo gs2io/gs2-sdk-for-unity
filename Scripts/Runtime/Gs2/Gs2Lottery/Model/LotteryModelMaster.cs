@@ -222,19 +222,20 @@ namespace Gs2.Gs2Lottery.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static LotteryModelMaster FromDict(JsonData data)
         {
             return new LotteryModelMaster()
-                .WithLotteryModelId(data.Keys.Contains("lotteryModelId") ? (string) data["lotteryModelId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
-                .WithMode(data.Keys.Contains("mode") ? (string) data["mode"] : null)
-                .WithMethod(data.Keys.Contains("method") ? (string) data["method"] : null)
-                .WithPrizeTableName(data.Keys.Contains("prizeTableName") ? (string) data["prizeTableName"] : null)
-                .WithChoicePrizeTableScriptId(data.Keys.Contains("choicePrizeTableScriptId") ? (string) data["choicePrizeTableScriptId"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithLotteryModelId(data.Keys.Contains("lotteryModelId") && data["lotteryModelId"] != null ? (string) data["lotteryModelId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
+                .WithMode(data.Keys.Contains("mode") && data["mode"] != null ? (string) data["mode"] : null)
+                .WithMethod(data.Keys.Contains("method") && data["method"] != null ? (string) data["method"] : null)
+                .WithPrizeTableName(data.Keys.Contains("prizeTableName") && data["prizeTableName"] != null ? (string) data["prizeTableName"] : null)
+                .WithChoicePrizeTableScriptId(data.Keys.Contains("choicePrizeTableScriptId") && data["choicePrizeTableScriptId"] != null ? (string) data["choicePrizeTableScriptId"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

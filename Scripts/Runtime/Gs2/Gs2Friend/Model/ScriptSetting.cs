@@ -89,12 +89,13 @@ namespace Gs2.Gs2Friend.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static ScriptSetting FromDict(JsonData data)
         {
             return new ScriptSetting()
-                .WithTriggerScriptId(data.Keys.Contains("triggerScriptId") ? (string) data["triggerScriptId"] : null)
-                .WithDoneTriggerScriptId(data.Keys.Contains("doneTriggerScriptId") ? (string) data["doneTriggerScriptId"] : null)
-                .WithDoneTriggerQueueNamespaceId(data.Keys.Contains("doneTriggerQueueNamespaceId") ? (string) data["doneTriggerQueueNamespaceId"] : null);
+                .WithTriggerScriptId(data.Keys.Contains("triggerScriptId") && data["triggerScriptId"] != null ? (string) data["triggerScriptId"] : null)
+                .WithDoneTriggerScriptId(data.Keys.Contains("doneTriggerScriptId") && data["doneTriggerScriptId"] != null ? (string) data["doneTriggerScriptId"] : null)
+                .WithDoneTriggerQueueNamespaceId(data.Keys.Contains("doneTriggerQueueNamespaceId") && data["doneTriggerQueueNamespaceId"] != null ? (string) data["doneTriggerQueueNamespaceId"] : null);
         }
 	}
 }

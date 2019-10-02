@@ -30,10 +30,11 @@ namespace Gs2.Gs2Deploy.Result
         public string status { set; get; }
 
 
+    	[Preserve]
         public static GetStackStatusResult FromDict(JsonData data)
         {
             return new GetStackStatusResult {
-                status = data.Keys.Contains("status") ? (string) data["status"] : null,
+                status = data.Keys.Contains("status") && data["status"] != null ? (string) data["status"] : null,
             };
         }
 	}

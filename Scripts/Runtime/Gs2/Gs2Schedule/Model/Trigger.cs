@@ -127,14 +127,15 @@ namespace Gs2.Gs2Schedule.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Trigger FromDict(JsonData data)
         {
             return new Trigger()
-                .WithTriggerId(data.Keys.Contains("triggerId") ? (string) data["triggerId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithExpiresAt(data.Keys.Contains("expiresAt") ? (long?) data["expiresAt"] : null);
+                .WithTriggerId(data.Keys.Contains("triggerId") && data["triggerId"] != null ? (string) data["triggerId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithExpiresAt(data.Keys.Contains("expiresAt") && data["expiresAt"] != null ? (long?) data["expiresAt"] : null);
         }
 	}
 }

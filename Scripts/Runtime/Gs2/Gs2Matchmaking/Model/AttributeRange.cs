@@ -89,12 +89,13 @@ namespace Gs2.Gs2Matchmaking.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static AttributeRange FromDict(JsonData data)
         {
             return new AttributeRange()
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithMin(data.Keys.Contains("min") ? (int?) data["min"] : null)
-                .WithMax(data.Keys.Contains("max") ? (int?) data["max"] : null);
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithMin(data.Keys.Contains("min") && data["min"] != null ? (int?) data["min"] : null)
+                .WithMax(data.Keys.Contains("max") && data["max"] != null ? (int?) data["max"] : null);
         }
 	}
 }

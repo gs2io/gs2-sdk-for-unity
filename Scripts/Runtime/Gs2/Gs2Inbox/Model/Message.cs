@@ -189,21 +189,22 @@ namespace Gs2.Gs2Inbox.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Message FromDict(JsonData data)
         {
             return new Message()
-                .WithMessageId(data.Keys.Contains("messageId") ? (string) data["messageId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithIsRead(data.Keys.Contains("isRead") ? (bool?) data["isRead"] : null)
-                .WithReadAcquireActions(data.Keys.Contains("readAcquireActions") ? data["readAcquireActions"].Cast<JsonData>().Select(value =>
+                .WithMessageId(data.Keys.Contains("messageId") && data["messageId"] != null ? (string) data["messageId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithIsRead(data.Keys.Contains("isRead") && data["isRead"] != null ? (bool?) data["isRead"] : null)
+                .WithReadAcquireActions(data.Keys.Contains("readAcquireActions") && data["readAcquireActions"] != null ? data["readAcquireActions"].Cast<JsonData>().Select(value =>
                     {
                         return AcquireAction.FromDict(value);
                     }
                 ).ToList() : null)
-                .WithReceivedAt(data.Keys.Contains("receivedAt") ? (long?) data["receivedAt"] : null)
-                .WithReadAt(data.Keys.Contains("readAt") ? (long?) data["readAt"] : null);
+                .WithReceivedAt(data.Keys.Contains("receivedAt") && data["receivedAt"] != null ? (long?) data["receivedAt"] : null)
+                .WithReadAt(data.Keys.Contains("readAt") && data["readAt"] != null ? (long?) data["readAt"] : null);
         }
 	}
 }

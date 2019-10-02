@@ -30,10 +30,11 @@ namespace Gs2.Gs2Exchange.Result
         public CurrentRateMaster item { set; get; }
 
 
+    	[Preserve]
         public static UpdateCurrentRateMasterResult FromDict(JsonData data)
         {
             return new UpdateCurrentRateMasterResult {
-                item = data.Keys.Contains("item") ? CurrentRateMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? CurrentRateMaster.FromDict(data["item"]) : null,
             };
         }
 	}

@@ -165,16 +165,17 @@ namespace Gs2.Gs2Limit.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static LimitModel FromDict(JsonData data)
         {
             return new LimitModel()
-                .WithLimitModelId(data.Keys.Contains("limitModelId") ? (string) data["limitModelId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithResetType(data.Keys.Contains("resetType") ? (string) data["resetType"] : null)
-                .WithResetDayOfMonth(data.Keys.Contains("resetDayOfMonth") ? (int?) data["resetDayOfMonth"] : null)
-                .WithResetDayOfWeek(data.Keys.Contains("resetDayOfWeek") ? (string) data["resetDayOfWeek"] : null)
-                .WithResetHour(data.Keys.Contains("resetHour") ? (int?) data["resetHour"] : null);
+                .WithLimitModelId(data.Keys.Contains("limitModelId") && data["limitModelId"] != null ? (string) data["limitModelId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithResetType(data.Keys.Contains("resetType") && data["resetType"] != null ? (string) data["resetType"] : null)
+                .WithResetDayOfMonth(data.Keys.Contains("resetDayOfMonth") && data["resetDayOfMonth"] != null ? (int?) data["resetDayOfMonth"] : null)
+                .WithResetDayOfWeek(data.Keys.Contains("resetDayOfWeek") && data["resetDayOfWeek"] != null ? (string) data["resetDayOfWeek"] : null)
+                .WithResetHour(data.Keys.Contains("resetHour") && data["resetHour"] != null ? (int?) data["resetHour"] : null);
         }
 	}
 }

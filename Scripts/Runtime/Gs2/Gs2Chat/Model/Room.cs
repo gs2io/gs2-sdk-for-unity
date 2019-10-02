@@ -189,21 +189,22 @@ namespace Gs2.Gs2Chat.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Room FromDict(JsonData data)
         {
             return new Room()
-                .WithRoomId(data.Keys.Contains("roomId") ? (string) data["roomId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithPassword(data.Keys.Contains("password") ? (string) data["password"] : null)
-                .WithWhiteListUserIds(data.Keys.Contains("whiteListUserIds") ? data["whiteListUserIds"].Cast<JsonData>().Select(value =>
+                .WithRoomId(data.Keys.Contains("roomId") && data["roomId"] != null ? (string) data["roomId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithPassword(data.Keys.Contains("password") && data["password"] != null ? (string) data["password"] : null)
+                .WithWhiteListUserIds(data.Keys.Contains("whiteListUserIds") && data["whiteListUserIds"] != null ? data["whiteListUserIds"].Cast<JsonData>().Select(value =>
                     {
                         return (string) value;
                     }
                 ).ToList() : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

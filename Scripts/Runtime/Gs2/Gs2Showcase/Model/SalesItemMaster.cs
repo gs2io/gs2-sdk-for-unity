@@ -194,25 +194,26 @@ namespace Gs2.Gs2Showcase.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static SalesItemMaster FromDict(JsonData data)
         {
             return new SalesItemMaster()
-                .WithSalesItemId(data.Keys.Contains("salesItemId") ? (string) data["salesItemId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithConsumeActions(data.Keys.Contains("consumeActions") ? data["consumeActions"].Cast<JsonData>().Select(value =>
+                .WithSalesItemId(data.Keys.Contains("salesItemId") && data["salesItemId"] != null ? (string) data["salesItemId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithConsumeActions(data.Keys.Contains("consumeActions") && data["consumeActions"] != null ? data["consumeActions"].Cast<JsonData>().Select(value =>
                     {
                         return ConsumeAction.FromDict(value);
                     }
                 ).ToList() : null)
-                .WithAcquireActions(data.Keys.Contains("acquireActions") ? data["acquireActions"].Cast<JsonData>().Select(value =>
+                .WithAcquireActions(data.Keys.Contains("acquireActions") && data["acquireActions"] != null ? data["acquireActions"].Cast<JsonData>().Select(value =>
                     {
                         return AcquireAction.FromDict(value);
                     }
                 ).ToList() : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

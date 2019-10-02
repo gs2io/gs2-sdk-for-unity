@@ -30,10 +30,11 @@ namespace Gs2.Gs2Friend.Result
         public FriendRequest item { set; get; }
 
 
+    	[Preserve]
         public static GetSendRequestByUserIdResult FromDict(JsonData data)
         {
             return new GetSendRequestByUserIdResult {
-                item = data.Keys.Contains("item") ? FriendRequest.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? FriendRequest.FromDict(data["item"]) : null,
             };
         }
 	}

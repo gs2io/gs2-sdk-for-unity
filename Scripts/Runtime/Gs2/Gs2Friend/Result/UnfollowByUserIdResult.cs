@@ -30,10 +30,11 @@ namespace Gs2.Gs2Friend.Result
         public FollowUser item { set; get; }
 
 
+    	[Preserve]
         public static UnfollowByUserIdResult FromDict(JsonData data)
         {
             return new UnfollowByUserIdResult {
-                item = data.Keys.Contains("item") ? FollowUser.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? FollowUser.FromDict(data["item"]) : null,
             };
         }
 	}

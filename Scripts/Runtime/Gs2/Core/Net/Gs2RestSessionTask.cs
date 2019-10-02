@@ -14,6 +14,7 @@
  * permissions and limitations under the License.
  */
 
+using System;
 using System.Collections;
 using Gs2.Core.Exception;
 using LitJson;
@@ -87,7 +88,12 @@ namespace Gs2.Core.Net
                 {
                     if (!string.IsNullOrEmpty(gs2Response.Message) && gs2Response.Message != "Null")
                     {
-                        result = (T)typeof(T).GetMethod("FromDict")?.Invoke(null, new object[] { JsonMapper.ToObject(gs2Response.Message) });
+                        var method = typeof(T).GetMethod("FromDict");
+                        if (method == null)
+                        {
+                            throw new InvalidProgramException("not have 'FromDict'" + typeof(T));
+                        }
+                        result = (T)method.Invoke(null, new object[] { JsonMapper.ToObject(gs2Response.Message) });
                     }
                 }
                 catch (JsonException jsonException)

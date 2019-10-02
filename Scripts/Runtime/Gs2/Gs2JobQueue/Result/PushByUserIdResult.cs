@@ -30,10 +30,11 @@ namespace Gs2.Gs2JobQueue.Result
         public List<Job> items { set; get; }
 
 
+    	[Preserve]
         public static PushByUserIdResult FromDict(JsonData data)
         {
             return new PushByUserIdResult {
-                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
                         return Job.FromDict(value);
                     }

@@ -94,16 +94,17 @@ namespace Gs2.Gs2Lottery.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static BoxItem FromDict(JsonData data)
         {
             return new BoxItem()
-                .WithAcquireActions(data.Keys.Contains("acquireActions") ? data["acquireActions"].Cast<JsonData>().Select(value =>
+                .WithAcquireActions(data.Keys.Contains("acquireActions") && data["acquireActions"] != null ? data["acquireActions"].Cast<JsonData>().Select(value =>
                     {
                         return AcquireAction.FromDict(value);
                     }
                 ).ToList() : null)
-                .WithRemaining(data.Keys.Contains("remaining") ? (int?) data["remaining"] : null)
-                .WithInitial(data.Keys.Contains("initial") ? (int?) data["initial"] : null);
+                .WithRemaining(data.Keys.Contains("remaining") && data["remaining"] != null ? (int?) data["remaining"] : null)
+                .WithInitial(data.Keys.Contains("initial") && data["initial"] != null ? (int?) data["initial"] : null);
         }
 	}
 }

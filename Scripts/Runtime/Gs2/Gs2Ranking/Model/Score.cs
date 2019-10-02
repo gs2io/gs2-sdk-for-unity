@@ -184,17 +184,18 @@ namespace Gs2.Gs2Ranking.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Score FromDict(JsonData data)
         {
             return new Score()
-                .WithScoreId(data.Keys.Contains("scoreId") ? (string) data["scoreId"] : null)
-                .WithCategoryName(data.Keys.Contains("categoryName") ? (string) data["categoryName"] : null)
-                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
-                .WithUniqueId(data.Keys.Contains("uniqueId") ? (string) data["uniqueId"] : null)
-                .WithScorerUserId(data.Keys.Contains("scorerUserId") ? (string) data["scorerUserId"] : null)
-                .WithScore(data.Keys.Contains("score") ? (long?) data["score"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null);
+                .WithScoreId(data.Keys.Contains("scoreId") && data["scoreId"] != null ? (string) data["scoreId"] : null)
+                .WithCategoryName(data.Keys.Contains("categoryName") && data["categoryName"] != null ? (string) data["categoryName"] : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithUniqueId(data.Keys.Contains("uniqueId") && data["uniqueId"] != null ? (string) data["uniqueId"] : null)
+                .WithScorerUserId(data.Keys.Contains("scorerUserId") && data["scorerUserId"] != null ? (string) data["scorerUserId"] : null)
+                .WithScore(data.Keys.Contains("score") && data["score"] != null ? (long?) data["score"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null);
         }
 	}
 }

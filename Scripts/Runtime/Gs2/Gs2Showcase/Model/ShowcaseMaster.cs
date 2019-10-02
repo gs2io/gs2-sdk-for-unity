@@ -189,21 +189,22 @@ namespace Gs2.Gs2Showcase.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static ShowcaseMaster FromDict(JsonData data)
         {
             return new ShowcaseMaster()
-                .WithShowcaseId(data.Keys.Contains("showcaseId") ? (string) data["showcaseId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithDisplayItems(data.Keys.Contains("displayItems") ? data["displayItems"].Cast<JsonData>().Select(value =>
+                .WithShowcaseId(data.Keys.Contains("showcaseId") && data["showcaseId"] != null ? (string) data["showcaseId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithDisplayItems(data.Keys.Contains("displayItems") && data["displayItems"] != null ? data["displayItems"].Cast<JsonData>().Select(value =>
                     {
                         return DisplayItemMaster.FromDict(value);
                     }
                 ).ToList() : null)
-                .WithSalesPeriodEventId(data.Keys.Contains("salesPeriodEventId") ? (string) data["salesPeriodEventId"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithSalesPeriodEventId(data.Keys.Contains("salesPeriodEventId") && data["salesPeriodEventId"] != null ? (string) data["salesPeriodEventId"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

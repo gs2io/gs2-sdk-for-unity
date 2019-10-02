@@ -30,10 +30,11 @@ namespace Gs2.Gs2Exchange.Result
         public RateModelMaster item { set; get; }
 
 
+    	[Preserve]
         public static CreateRateModelMasterResult FromDict(JsonData data)
         {
             return new CreateRateModelMasterResult {
-                item = data.Keys.Contains("item") ? RateModelMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? RateModelMaster.FromDict(data["item"]) : null,
             };
         }
 	}

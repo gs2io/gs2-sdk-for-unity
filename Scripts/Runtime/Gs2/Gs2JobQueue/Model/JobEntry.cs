@@ -89,12 +89,13 @@ namespace Gs2.Gs2JobQueue.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static JobEntry FromDict(JsonData data)
         {
             return new JobEntry()
-                .WithScriptId(data.Keys.Contains("scriptId") ? (string) data["scriptId"] : null)
-                .WithArgs(data.Keys.Contains("args") ? (string) data["args"] : null)
-                .WithMaxTryCount(data.Keys.Contains("maxTryCount") ? (int?) data["maxTryCount"] : null);
+                .WithScriptId(data.Keys.Contains("scriptId") && data["scriptId"] != null ? (string) data["scriptId"] : null)
+                .WithArgs(data.Keys.Contains("args") && data["args"] != null ? (string) data["args"] : null)
+                .WithMaxTryCount(data.Keys.Contains("maxTryCount") && data["maxTryCount"] != null ? (int?) data["maxTryCount"] : null);
         }
 	}
 }

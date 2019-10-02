@@ -30,10 +30,11 @@ namespace Gs2.Gs2Project.Result
         public string issuePasswordToken { set; get; }
 
 
+    	[Preserve]
         public static ForgetResult FromDict(JsonData data)
         {
             return new ForgetResult {
-                issuePasswordToken = data.Keys.Contains("issuePasswordToken") ? (string) data["issuePasswordToken"] : null,
+                issuePasswordToken = data.Keys.Contains("issuePasswordToken") && data["issuePasswordToken"] != null ? (string) data["issuePasswordToken"] : null,
             };
         }
 	}

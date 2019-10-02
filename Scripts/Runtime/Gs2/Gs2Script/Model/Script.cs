@@ -165,16 +165,17 @@ namespace Gs2.Gs2Script.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Script FromDict(JsonData data)
         {
             return new Script()
-                .WithScriptId(data.Keys.Contains("scriptId") ? (string) data["scriptId"] : null)
-                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
-                .WithScript(data.Keys.Contains("script") ? (string) data["script"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithScriptId(data.Keys.Contains("scriptId") && data["scriptId"] != null ? (string) data["scriptId"] : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? (string) data["ownerId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
+                .WithScript(data.Keys.Contains("script") && data["script"] != null ? (string) data["script"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

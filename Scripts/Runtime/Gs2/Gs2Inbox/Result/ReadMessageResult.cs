@@ -33,11 +33,12 @@ namespace Gs2.Gs2Inbox.Result
         public string stampSheet { set; get; }
 
 
+    	[Preserve]
         public static ReadMessageResult FromDict(JsonData data)
         {
             return new ReadMessageResult {
-                item = data.Keys.Contains("item") ? Message.FromDict(data["item"]) : null,
-                stampSheet = data.Keys.Contains("stampSheet") ? (string) data["stampSheet"] : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Message.FromDict(data["item"]) : null,
+                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? (string) data["stampSheet"] : null,
             };
         }
 	}

@@ -132,18 +132,19 @@ namespace Gs2.Gs2Friend.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Follow FromDict(JsonData data)
         {
             return new Follow()
-                .WithFollowId(data.Keys.Contains("followId") ? (string) data["followId"] : null)
-                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
-                .WithTargetUserIds(data.Keys.Contains("targetUserIds") ? data["targetUserIds"].Cast<JsonData>().Select(value =>
+                .WithFollowId(data.Keys.Contains("followId") && data["followId"] != null ? (string) data["followId"] : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithTargetUserIds(data.Keys.Contains("targetUserIds") && data["targetUserIds"] != null ? data["targetUserIds"].Cast<JsonData>().Select(value =>
                     {
                         return (string) value;
                     }
                 ).ToList() : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

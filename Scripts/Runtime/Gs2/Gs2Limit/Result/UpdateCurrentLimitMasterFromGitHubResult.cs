@@ -30,10 +30,11 @@ namespace Gs2.Gs2Limit.Result
         public CurrentLimitMaster item { set; get; }
 
 
+    	[Preserve]
         public static UpdateCurrentLimitMasterFromGitHubResult FromDict(JsonData data)
         {
             return new UpdateCurrentLimitMasterFromGitHubResult {
-                item = data.Keys.Contains("item") ? CurrentLimitMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? CurrentLimitMaster.FromDict(data["item"]) : null,
             };
         }
 	}

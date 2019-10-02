@@ -222,19 +222,20 @@ namespace Gs2.Gs2Experience.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static ExperienceModelMaster FromDict(JsonData data)
         {
             return new ExperienceModelMaster()
-                .WithExperienceModelId(data.Keys.Contains("experienceModelId") ? (string) data["experienceModelId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithDefaultExperience(data.Keys.Contains("defaultExperience") ? (long?) data["defaultExperience"] : null)
-                .WithDefaultRankCap(data.Keys.Contains("defaultRankCap") ? (long?) data["defaultRankCap"] : null)
-                .WithMaxRankCap(data.Keys.Contains("maxRankCap") ? (long?) data["maxRankCap"] : null)
-                .WithRankThresholdId(data.Keys.Contains("rankThresholdId") ? (string) data["rankThresholdId"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithExperienceModelId(data.Keys.Contains("experienceModelId") && data["experienceModelId"] != null ? (string) data["experienceModelId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithDefaultExperience(data.Keys.Contains("defaultExperience") && data["defaultExperience"] != null ? (long?) data["defaultExperience"] : null)
+                .WithDefaultRankCap(data.Keys.Contains("defaultRankCap") && data["defaultRankCap"] != null ? (long?) data["defaultRankCap"] : null)
+                .WithMaxRankCap(data.Keys.Contains("maxRankCap") && data["maxRankCap"] != null ? (long?) data["maxRankCap"] : null)
+                .WithRankThresholdId(data.Keys.Contains("rankThresholdId") && data["rankThresholdId"] != null ? (string) data["rankThresholdId"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

@@ -36,12 +36,13 @@ namespace Gs2.Gs2JobQueue.Result
         public bool? isLastJob { set; get; }
 
 
+    	[Preserve]
         public static RunResult FromDict(JsonData data)
         {
             return new RunResult {
-                item = data.Keys.Contains("item") ? Job.FromDict(data["item"]) : null,
-                result = data.Keys.Contains("result") ? JobResultBody.FromDict(data["result"]) : null,
-                isLastJob = data.Keys.Contains("isLastJob") ? (bool?) data["isLastJob"] : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Job.FromDict(data["item"]) : null,
+                result = data.Keys.Contains("result") && data["result"] != null ? JobResultBody.FromDict(data["result"]) : null,
+                isLastJob = data.Keys.Contains("isLastJob") && data["isLastJob"] != null ? (bool?) data["isLastJob"] : null,
             };
         }
 	}

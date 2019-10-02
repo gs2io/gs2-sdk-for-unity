@@ -298,23 +298,24 @@ namespace Gs2.Gs2Stamina.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static StaminaModelMaster FromDict(JsonData data)
         {
             return new StaminaModelMaster()
-                .WithStaminaModelId(data.Keys.Contains("staminaModelId") ? (string) data["staminaModelId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
-                .WithRecoverIntervalMinutes(data.Keys.Contains("recoverIntervalMinutes") ? (int?) data["recoverIntervalMinutes"] : null)
-                .WithRecoverValue(data.Keys.Contains("recoverValue") ? (int?) data["recoverValue"] : null)
-                .WithInitialCapacity(data.Keys.Contains("initialCapacity") ? (int?) data["initialCapacity"] : null)
-                .WithIsOverflow(data.Keys.Contains("isOverflow") ? (bool?) data["isOverflow"] : null)
-                .WithMaxCapacity(data.Keys.Contains("maxCapacity") ? (int?) data["maxCapacity"] : null)
-                .WithMaxStaminaTableId(data.Keys.Contains("maxStaminaTableId") ? (string) data["maxStaminaTableId"] : null)
-                .WithRecoverIntervalTableId(data.Keys.Contains("recoverIntervalTableId") ? (string) data["recoverIntervalTableId"] : null)
-                .WithRecoverValueTableId(data.Keys.Contains("recoverValueTableId") ? (string) data["recoverValueTableId"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithStaminaModelId(data.Keys.Contains("staminaModelId") && data["staminaModelId"] != null ? (string) data["staminaModelId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
+                .WithRecoverIntervalMinutes(data.Keys.Contains("recoverIntervalMinutes") && data["recoverIntervalMinutes"] != null ? (int?) data["recoverIntervalMinutes"] : null)
+                .WithRecoverValue(data.Keys.Contains("recoverValue") && data["recoverValue"] != null ? (int?) data["recoverValue"] : null)
+                .WithInitialCapacity(data.Keys.Contains("initialCapacity") && data["initialCapacity"] != null ? (int?) data["initialCapacity"] : null)
+                .WithIsOverflow(data.Keys.Contains("isOverflow") && data["isOverflow"] != null ? (bool?) data["isOverflow"] : null)
+                .WithMaxCapacity(data.Keys.Contains("maxCapacity") && data["maxCapacity"] != null ? (int?) data["maxCapacity"] : null)
+                .WithMaxStaminaTableId(data.Keys.Contains("maxStaminaTableId") && data["maxStaminaTableId"] != null ? (string) data["maxStaminaTableId"] : null)
+                .WithRecoverIntervalTableId(data.Keys.Contains("recoverIntervalTableId") && data["recoverIntervalTableId"] != null ? (string) data["recoverIntervalTableId"] : null)
+                .WithRecoverValueTableId(data.Keys.Contains("recoverValueTableId") && data["recoverValueTableId"] != null ? (string) data["recoverValueTableId"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

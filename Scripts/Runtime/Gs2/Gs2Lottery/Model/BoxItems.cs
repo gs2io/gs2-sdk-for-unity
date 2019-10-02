@@ -113,13 +113,14 @@ namespace Gs2.Gs2Lottery.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static BoxItems FromDict(JsonData data)
         {
             return new BoxItems()
-                .WithBoxId(data.Keys.Contains("boxId") ? (string) data["boxId"] : null)
-                .WithPrizeTableName(data.Keys.Contains("prizeTableName") ? (string) data["prizeTableName"] : null)
-                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
-                .WithItems(data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                .WithBoxId(data.Keys.Contains("boxId") && data["boxId"] != null ? (string) data["boxId"] : null)
+                .WithPrizeTableName(data.Keys.Contains("prizeTableName") && data["prizeTableName"] != null ? (string) data["prizeTableName"] : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithItems(data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
                         return BoxItem.FromDict(value);
                     }

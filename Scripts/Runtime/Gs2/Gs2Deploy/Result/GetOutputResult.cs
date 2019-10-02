@@ -30,10 +30,11 @@ namespace Gs2.Gs2Deploy.Result
         public Output item { set; get; }
 
 
+    	[Preserve]
         public static GetOutputResult FromDict(JsonData data)
         {
             return new GetOutputResult {
-                item = data.Keys.Contains("item") ? Output.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Output.FromDict(data["item"]) : null,
             };
         }
 	}

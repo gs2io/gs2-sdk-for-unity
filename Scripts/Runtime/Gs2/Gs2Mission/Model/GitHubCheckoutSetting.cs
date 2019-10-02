@@ -165,16 +165,17 @@ namespace Gs2.Gs2Mission.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static GitHubCheckoutSetting FromDict(JsonData data)
         {
             return new GitHubCheckoutSetting()
-                .WithGitHubApiKeyId(data.Keys.Contains("gitHubApiKeyId") ? (string) data["gitHubApiKeyId"] : null)
-                .WithRepositoryName(data.Keys.Contains("repositoryName") ? (string) data["repositoryName"] : null)
-                .WithSourcePath(data.Keys.Contains("sourcePath") ? (string) data["sourcePath"] : null)
-                .WithReferenceType(data.Keys.Contains("referenceType") ? (string) data["referenceType"] : null)
-                .WithCommitHash(data.Keys.Contains("commitHash") ? (string) data["commitHash"] : null)
-                .WithBranchName(data.Keys.Contains("branchName") ? (string) data["branchName"] : null)
-                .WithTagName(data.Keys.Contains("tagName") ? (string) data["tagName"] : null);
+                .WithGitHubApiKeyId(data.Keys.Contains("gitHubApiKeyId") && data["gitHubApiKeyId"] != null ? (string) data["gitHubApiKeyId"] : null)
+                .WithRepositoryName(data.Keys.Contains("repositoryName") && data["repositoryName"] != null ? (string) data["repositoryName"] : null)
+                .WithSourcePath(data.Keys.Contains("sourcePath") && data["sourcePath"] != null ? (string) data["sourcePath"] : null)
+                .WithReferenceType(data.Keys.Contains("referenceType") && data["referenceType"] != null ? (string) data["referenceType"] : null)
+                .WithCommitHash(data.Keys.Contains("commitHash") && data["commitHash"] != null ? (string) data["commitHash"] : null)
+                .WithBranchName(data.Keys.Contains("branchName") && data["branchName"] != null ? (string) data["branchName"] : null)
+                .WithTagName(data.Keys.Contains("tagName") && data["tagName"] != null ? (string) data["tagName"] : null);
         }
 	}
 }

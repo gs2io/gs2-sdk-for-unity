@@ -108,13 +108,14 @@ namespace Gs2.Gs2JobQueue.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static JobResultBody FromDict(JsonData data)
         {
             return new JobResultBody()
-                .WithTryNumber(data.Keys.Contains("tryNumber") ? (int?) data["tryNumber"] : null)
-                .WithStatusCode(data.Keys.Contains("statusCode") ? (int?) data["statusCode"] : null)
-                .WithResult(data.Keys.Contains("result") ? (string) data["result"] : null)
-                .WithTryAt(data.Keys.Contains("tryAt") ? (long?) data["tryAt"] : null);
+                .WithTryNumber(data.Keys.Contains("tryNumber") && data["tryNumber"] != null ? (int?) data["tryNumber"] : null)
+                .WithStatusCode(data.Keys.Contains("statusCode") && data["statusCode"] != null ? (int?) data["statusCode"] : null)
+                .WithResult(data.Keys.Contains("result") && data["result"] != null ? (string) data["result"] : null)
+                .WithTryAt(data.Keys.Contains("tryAt") && data["tryAt"] != null ? (long?) data["tryAt"] : null);
         }
 	}
 }

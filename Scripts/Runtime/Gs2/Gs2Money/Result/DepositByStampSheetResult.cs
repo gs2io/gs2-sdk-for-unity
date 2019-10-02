@@ -30,10 +30,11 @@ namespace Gs2.Gs2Money.Result
         public Wallet item { set; get; }
 
 
+    	[Preserve]
         public static DepositByStampSheetResult FromDict(JsonData data)
         {
             return new DepositByStampSheetResult {
-                item = data.Keys.Contains("item") ? Wallet.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Wallet.FromDict(data["item"]) : null,
             };
         }
 	}

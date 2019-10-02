@@ -70,11 +70,12 @@ namespace Gs2.Gs2Matchmaking.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Attribute FromDict(JsonData data)
         {
             return new Attribute()
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithValue(data.Keys.Contains("value") ? (int?) data["value"] : null);
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithValue(data.Keys.Contains("value") && data["value"] != null ? (int?) data["value"] : null);
         }
 	}
 }

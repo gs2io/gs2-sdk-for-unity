@@ -27,6 +27,7 @@ namespace Gs2.Gs2Key.Result
 	public class DeleteGitHubApiKeyResult
 	{
 
+    	[Preserve]
         public static DeleteGitHubApiKeyResult FromDict(JsonData data)
         {
             return new DeleteGitHubApiKeyResult {

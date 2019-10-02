@@ -146,15 +146,16 @@ namespace Gs2.Gs2JobQueue.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static JobResult FromDict(JsonData data)
         {
             return new JobResult()
-                .WithJobResultId(data.Keys.Contains("jobResultId") ? (string) data["jobResultId"] : null)
-                .WithJobId(data.Keys.Contains("jobId") ? (string) data["jobId"] : null)
-                .WithTryNumber(data.Keys.Contains("tryNumber") ? (int?) data["tryNumber"] : null)
-                .WithStatusCode(data.Keys.Contains("statusCode") ? (int?) data["statusCode"] : null)
-                .WithResult(data.Keys.Contains("result") ? (string) data["result"] : null)
-                .WithTryAt(data.Keys.Contains("tryAt") ? (long?) data["tryAt"] : null);
+                .WithJobResultId(data.Keys.Contains("jobResultId") && data["jobResultId"] != null ? (string) data["jobResultId"] : null)
+                .WithJobId(data.Keys.Contains("jobId") && data["jobId"] != null ? (string) data["jobId"] : null)
+                .WithTryNumber(data.Keys.Contains("tryNumber") && data["tryNumber"] != null ? (int?) data["tryNumber"] : null)
+                .WithStatusCode(data.Keys.Contains("statusCode") && data["statusCode"] != null ? (int?) data["statusCode"] : null)
+                .WithResult(data.Keys.Contains("result") && data["result"] != null ? (string) data["result"] : null)
+                .WithTryAt(data.Keys.Contains("tryAt") && data["tryAt"] != null ? (long?) data["tryAt"] : null);
         }
 	}
 }

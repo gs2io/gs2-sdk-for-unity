@@ -30,10 +30,11 @@ namespace Gs2.Gs2Friend.Result
         public Profile item { set; get; }
 
 
+    	[Preserve]
         public static GetProfileByUserIdResult FromDict(JsonData data)
         {
             return new GetProfileByUserIdResult {
-                item = data.Keys.Contains("item") ? Profile.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Profile.FromDict(data["item"]) : null,
             };
         }
 	}

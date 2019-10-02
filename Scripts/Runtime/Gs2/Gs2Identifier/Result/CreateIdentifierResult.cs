@@ -33,11 +33,12 @@ namespace Gs2.Gs2Identifier.Result
         public string clientSecret { set; get; }
 
 
+    	[Preserve]
         public static CreateIdentifierResult FromDict(JsonData data)
         {
             return new CreateIdentifierResult {
-                item = data.Keys.Contains("item") ? Identifier.FromDict(data["item"]) : null,
-                clientSecret = data.Keys.Contains("clientSecret") ? (string) data["clientSecret"] : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Identifier.FromDict(data["item"]) : null,
+                clientSecret = data.Keys.Contains("clientSecret") && data["clientSecret"] != null ? (string) data["clientSecret"] : null,
             };
         }
 	}

@@ -30,10 +30,11 @@ namespace Gs2.Gs2Key.Result
         public string data { set; get; }
 
 
+    	[Preserve]
         public static EncryptResult FromDict(JsonData data)
         {
             return new EncryptResult {
-                data = data.Keys.Contains("data") ? (string) data["data"] : null,
+                data = data.Keys.Contains("data") && data["data"] != null ? (string) data["data"] : null,
             };
         }
 	}

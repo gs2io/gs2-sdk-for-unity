@@ -165,16 +165,17 @@ namespace Gs2.Gs2Key.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static GitHubApiKey FromDict(JsonData data)
         {
             return new GitHubApiKey()
-                .WithApiKeyId(data.Keys.Contains("apiKeyId") ? (string) data["apiKeyId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
-                .WithApiKey(data.Keys.Contains("apiKey") ? (string) data["apiKey"] : null)
-                .WithEncryptionKeyName(data.Keys.Contains("encryptionKeyName") ? (string) data["encryptionKeyName"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithApiKeyId(data.Keys.Contains("apiKeyId") && data["apiKeyId"] != null ? (string) data["apiKeyId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
+                .WithApiKey(data.Keys.Contains("apiKey") && data["apiKey"] != null ? (string) data["apiKey"] : null)
+                .WithEncryptionKeyName(data.Keys.Contains("encryptionKeyName") && data["encryptionKeyName"] != null ? (string) data["encryptionKeyName"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

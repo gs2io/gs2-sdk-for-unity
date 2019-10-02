@@ -27,6 +27,7 @@ namespace Gs2.Gs2Gateway.Result
 	public class SendMobileNotificationByUserIdResult
 	{
 
+    	[Preserve]
         public static SendMobileNotificationByUserIdResult FromDict(JsonData data)
         {
             return new SendMobileNotificationByUserIdResult {

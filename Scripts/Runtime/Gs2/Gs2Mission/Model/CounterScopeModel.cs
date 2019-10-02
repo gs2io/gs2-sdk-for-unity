@@ -108,13 +108,14 @@ namespace Gs2.Gs2Mission.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static CounterScopeModel FromDict(JsonData data)
         {
             return new CounterScopeModel()
-                .WithResetType(data.Keys.Contains("resetType") ? (string) data["resetType"] : null)
-                .WithResetDayOfMonth(data.Keys.Contains("resetDayOfMonth") ? (int?) data["resetDayOfMonth"] : null)
-                .WithResetDayOfWeek(data.Keys.Contains("resetDayOfWeek") ? (string) data["resetDayOfWeek"] : null)
-                .WithResetHour(data.Keys.Contains("resetHour") ? (int?) data["resetHour"] : null);
+                .WithResetType(data.Keys.Contains("resetType") && data["resetType"] != null ? (string) data["resetType"] : null)
+                .WithResetDayOfMonth(data.Keys.Contains("resetDayOfMonth") && data["resetDayOfMonth"] != null ? (int?) data["resetDayOfMonth"] : null)
+                .WithResetDayOfWeek(data.Keys.Contains("resetDayOfWeek") && data["resetDayOfWeek"] != null ? (string) data["resetDayOfWeek"] : null)
+                .WithResetHour(data.Keys.Contains("resetHour") && data["resetHour"] != null ? (int?) data["resetHour"] : null);
         }
 	}
 }

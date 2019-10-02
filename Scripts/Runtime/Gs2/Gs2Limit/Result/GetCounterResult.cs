@@ -30,10 +30,11 @@ namespace Gs2.Gs2Limit.Result
         public Counter item { set; get; }
 
 
+    	[Preserve]
         public static GetCounterResult FromDict(JsonData data)
         {
             return new GetCounterResult {
-                item = data.Keys.Contains("item") ? Counter.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Counter.FromDict(data["item"]) : null,
             };
         }
 	}

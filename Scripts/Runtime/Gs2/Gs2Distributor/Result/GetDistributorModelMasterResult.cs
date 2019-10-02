@@ -30,10 +30,11 @@ namespace Gs2.Gs2Distributor.Result
         public DistributorModelMaster item { set; get; }
 
 
+    	[Preserve]
         public static GetDistributorModelMasterResult FromDict(JsonData data)
         {
             return new GetDistributorModelMasterResult {
-                item = data.Keys.Contains("item") ? DistributorModelMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? DistributorModelMaster.FromDict(data["item"]) : null,
             };
         }
 	}

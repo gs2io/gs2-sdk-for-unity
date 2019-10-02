@@ -33,11 +33,12 @@ namespace Gs2.Gs2Money.Result
         public float? price { set; get; }
 
 
+    	[Preserve]
         public static WithdrawResult FromDict(JsonData data)
         {
             return new WithdrawResult {
-                item = data.Keys.Contains("item") ? Wallet.FromDict(data["item"]) : null,
-                price = data.Keys.Contains("price") ? (float?) data["price"] : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Wallet.FromDict(data["item"]) : null,
+                price = data.Keys.Contains("price") && data["price"] != null ? (float?) data["price"] : null,
             };
         }
 	}

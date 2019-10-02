@@ -170,20 +170,21 @@ namespace Gs2.Gs2Showcase.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static SalesItemGroupMaster FromDict(JsonData data)
         {
             return new SalesItemGroupMaster()
-                .WithSalesItemGroupId(data.Keys.Contains("salesItemGroupId") ? (string) data["salesItemGroupId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithSalesItemNames(data.Keys.Contains("salesItemNames") ? data["salesItemNames"].Cast<JsonData>().Select(value =>
+                .WithSalesItemGroupId(data.Keys.Contains("salesItemGroupId") && data["salesItemGroupId"] != null ? (string) data["salesItemGroupId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithSalesItemNames(data.Keys.Contains("salesItemNames") && data["salesItemNames"] != null ? data["salesItemNames"].Cast<JsonData>().Select(value =>
                     {
                         return (string) value;
                     }
                 ).ToList() : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

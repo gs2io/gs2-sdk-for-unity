@@ -30,10 +30,11 @@ namespace Gs2.Gs2Stamina.Result
         public MaxStaminaTableMaster item { set; get; }
 
 
+    	[Preserve]
         public static DeleteMaxStaminaTableMasterResult FromDict(JsonData data)
         {
             return new DeleteMaxStaminaTableMasterResult {
-                item = data.Keys.Contains("item") ? MaxStaminaTableMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? MaxStaminaTableMaster.FromDict(data["item"]) : null,
             };
         }
 	}

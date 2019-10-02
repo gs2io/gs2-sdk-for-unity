@@ -70,11 +70,12 @@ namespace Gs2.Gs2Exchange.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static CurrentRateMaster FromDict(JsonData data)
         {
             return new CurrentRateMaster()
-                .WithNamespaceName(data.Keys.Contains("namespaceName") ? (string) data["namespaceName"] : null)
-                .WithSettings(data.Keys.Contains("settings") ? (string) data["settings"] : null);
+                .WithNamespaceName(data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null)
+                .WithSettings(data.Keys.Contains("settings") && data["settings"] != null ? (string) data["settings"] : null);
         }
 	}
 }

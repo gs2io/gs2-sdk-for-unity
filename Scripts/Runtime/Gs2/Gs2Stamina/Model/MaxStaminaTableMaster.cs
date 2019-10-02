@@ -151,15 +151,16 @@ namespace Gs2.Gs2Stamina.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static MaxStaminaTableMaster FromDict(JsonData data)
         {
             return new MaxStaminaTableMaster()
-                .WithMaxStaminaTableId(data.Keys.Contains("maxStaminaTableId") ? (string) data["maxStaminaTableId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
-                .WithExperienceModelId(data.Keys.Contains("experienceModelId") ? (string) data["experienceModelId"] : null)
-                .WithValues(data.Keys.Contains("values") ? data["values"].Cast<JsonData>().Select(value =>
+                .WithMaxStaminaTableId(data.Keys.Contains("maxStaminaTableId") && data["maxStaminaTableId"] != null ? (string) data["maxStaminaTableId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
+                .WithExperienceModelId(data.Keys.Contains("experienceModelId") && data["experienceModelId"] != null ? (string) data["experienceModelId"] : null)
+                .WithValues(data.Keys.Contains("values") && data["values"] != null ? data["values"].Cast<JsonData>().Select(value =>
                     {
                         return (int?) value;
                     }

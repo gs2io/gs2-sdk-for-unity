@@ -36,16 +36,17 @@ namespace Gs2.Gs2Inventory.Result
         public Inventory inventory { set; get; }
 
 
+    	[Preserve]
         public static ConsumeItemSetByUserIdResult FromDict(JsonData data)
         {
             return new ConsumeItemSetByUserIdResult {
-                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
                         return ItemSet.FromDict(value);
                     }
                 ).ToList() : null,
-                itemModel = data.Keys.Contains("itemModel") ? ItemModel.FromDict(data["itemModel"]) : null,
-                inventory = data.Keys.Contains("inventory") ? Inventory.FromDict(data["inventory"]) : null,
+                itemModel = data.Keys.Contains("itemModel") && data["itemModel"] != null ? ItemModel.FromDict(data["itemModel"]) : null,
+                inventory = data.Keys.Contains("inventory") && data["inventory"] != null ? Inventory.FromDict(data["inventory"]) : null,
             };
         }
 	}

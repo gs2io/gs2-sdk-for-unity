@@ -70,11 +70,12 @@ namespace Gs2.Gs2Friend.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static FriendRequest FromDict(JsonData data)
         {
             return new FriendRequest()
-                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
-                .WithTargetUserId(data.Keys.Contains("targetUserId") ? (string) data["targetUserId"] : null);
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithTargetUserId(data.Keys.Contains("targetUserId") && data["targetUserId"] != null ? (string) data["targetUserId"] : null);
         }
 	}
 }

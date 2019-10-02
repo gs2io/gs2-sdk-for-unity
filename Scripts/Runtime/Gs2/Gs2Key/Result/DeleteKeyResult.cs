@@ -27,6 +27,7 @@ namespace Gs2.Gs2Key.Result
 	public class DeleteKeyResult
 	{
 
+    	[Preserve]
         public static DeleteKeyResult FromDict(JsonData data)
         {
             return new DeleteKeyResult {

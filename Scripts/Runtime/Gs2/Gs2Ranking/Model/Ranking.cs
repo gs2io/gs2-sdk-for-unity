@@ -146,15 +146,16 @@ namespace Gs2.Gs2Ranking.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Ranking FromDict(JsonData data)
         {
             return new Ranking()
-                .WithRank(data.Keys.Contains("rank") ? (long?) data["rank"] : null)
-                .WithIndex(data.Keys.Contains("index") ? (long?) data["index"] : null)
-                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
-                .WithScore(data.Keys.Contains("score") ? (long?) data["score"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null);
+                .WithRank(data.Keys.Contains("rank") && data["rank"] != null ? (long?) data["rank"] : null)
+                .WithIndex(data.Keys.Contains("index") && data["index"] != null ? (long?) data["index"] : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithScore(data.Keys.Contains("score") && data["score"] != null ? (long?) data["score"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null);
         }
 	}
 }

@@ -30,10 +30,11 @@ namespace Gs2.Gs2Chat.Result
         public Room item { set; get; }
 
 
+    	[Preserve]
         public static CreateRoomResult FromDict(JsonData data)
         {
             return new CreateRoomResult {
-                item = data.Keys.Contains("item") ? Room.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Room.FromDict(data["item"]) : null,
             };
         }
 	}

@@ -30,10 +30,11 @@ namespace Gs2.Gs2Showcase.Result
         public CurrentShowcaseMaster item { set; get; }
 
 
+    	[Preserve]
         public static UpdateCurrentShowcaseMasterFromGitHubResult FromDict(JsonData data)
         {
             return new UpdateCurrentShowcaseMasterFromGitHubResult {
-                item = data.Keys.Contains("item") ? CurrentShowcaseMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? CurrentShowcaseMaster.FromDict(data["item"]) : null,
             };
         }
 	}

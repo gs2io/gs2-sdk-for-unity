@@ -203,18 +203,19 @@ namespace Gs2.Gs2Experience.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Status FromDict(JsonData data)
         {
             return new Status()
-                .WithStatusId(data.Keys.Contains("statusId") ? (string) data["statusId"] : null)
-                .WithExperienceName(data.Keys.Contains("experienceName") ? (string) data["experienceName"] : null)
-                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
-                .WithPropertyId(data.Keys.Contains("propertyId") ? (string) data["propertyId"] : null)
-                .WithExperienceValue(data.Keys.Contains("experienceValue") ? (long?) data["experienceValue"] : null)
-                .WithRankValue(data.Keys.Contains("rankValue") ? (long?) data["rankValue"] : null)
-                .WithRankCapValue(data.Keys.Contains("rankCapValue") ? (long?) data["rankCapValue"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithStatusId(data.Keys.Contains("statusId") && data["statusId"] != null ? (string) data["statusId"] : null)
+                .WithExperienceName(data.Keys.Contains("experienceName") && data["experienceName"] != null ? (string) data["experienceName"] : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithPropertyId(data.Keys.Contains("propertyId") && data["propertyId"] != null ? (string) data["propertyId"] : null)
+                .WithExperienceValue(data.Keys.Contains("experienceValue") && data["experienceValue"] != null ? (long?) data["experienceValue"] : null)
+                .WithRankValue(data.Keys.Contains("rankValue") && data["rankValue"] != null ? (long?) data["rankValue"] : null)
+                .WithRankCapValue(data.Keys.Contains("rankCapValue") && data["rankCapValue"] != null ? (long?) data["rankCapValue"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

@@ -39,17 +39,18 @@ namespace Gs2.Gs2Inventory.Result
         public long? overflowCount { set; get; }
 
 
+    	[Preserve]
         public static AcquireItemSetByUserIdResult FromDict(JsonData data)
         {
             return new AcquireItemSetByUserIdResult {
-                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
                         return ItemSet.FromDict(value);
                     }
                 ).ToList() : null,
-                itemModel = data.Keys.Contains("itemModel") ? ItemModel.FromDict(data["itemModel"]) : null,
-                inventory = data.Keys.Contains("inventory") ? Inventory.FromDict(data["inventory"]) : null,
-                overflowCount = data.Keys.Contains("overflowCount") ? (long?) data["overflowCount"] : null,
+                itemModel = data.Keys.Contains("itemModel") && data["itemModel"] != null ? ItemModel.FromDict(data["itemModel"]) : null,
+                inventory = data.Keys.Contains("inventory") && data["inventory"] != null ? Inventory.FromDict(data["inventory"]) : null,
+                overflowCount = data.Keys.Contains("overflowCount") && data["overflowCount"] != null ? (long?) data["overflowCount"] : null,
             };
         }
 	}

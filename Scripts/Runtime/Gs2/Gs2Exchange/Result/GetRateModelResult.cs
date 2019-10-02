@@ -30,10 +30,11 @@ namespace Gs2.Gs2Exchange.Result
         public RateModel item { set; get; }
 
 
+    	[Preserve]
         public static GetRateModelResult FromDict(JsonData data)
         {
             return new GetRateModelResult {
-                item = data.Keys.Contains("item") ? RateModel.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? RateModel.FromDict(data["item"]) : null,
             };
         }
 	}

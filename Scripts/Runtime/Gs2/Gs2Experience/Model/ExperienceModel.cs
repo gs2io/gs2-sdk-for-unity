@@ -165,16 +165,17 @@ namespace Gs2.Gs2Experience.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static ExperienceModel FromDict(JsonData data)
         {
             return new ExperienceModel()
-                .WithExperienceModelId(data.Keys.Contains("experienceModelId") ? (string) data["experienceModelId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithDefaultExperience(data.Keys.Contains("defaultExperience") ? (long?) data["defaultExperience"] : null)
-                .WithDefaultRankCap(data.Keys.Contains("defaultRankCap") ? (long?) data["defaultRankCap"] : null)
-                .WithMaxRankCap(data.Keys.Contains("maxRankCap") ? (long?) data["maxRankCap"] : null)
-                .WithRankThreshold(data.Keys.Contains("rankThreshold") ? Threshold.FromDict(data["rankThreshold"]) : null);
+                .WithExperienceModelId(data.Keys.Contains("experienceModelId") && data["experienceModelId"] != null ? (string) data["experienceModelId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithDefaultExperience(data.Keys.Contains("defaultExperience") && data["defaultExperience"] != null ? (long?) data["defaultExperience"] : null)
+                .WithDefaultRankCap(data.Keys.Contains("defaultRankCap") && data["defaultRankCap"] != null ? (long?) data["defaultRankCap"] : null)
+                .WithMaxRankCap(data.Keys.Contains("maxRankCap") && data["maxRankCap"] != null ? (long?) data["maxRankCap"] : null)
+                .WithRankThreshold(data.Keys.Contains("rankThreshold") && data["rankThreshold"] != null ? Threshold.FromDict(data["rankThreshold"]) : null);
         }
 	}
 }

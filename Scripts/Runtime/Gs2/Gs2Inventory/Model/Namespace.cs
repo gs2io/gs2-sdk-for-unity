@@ -203,18 +203,19 @@ namespace Gs2.Gs2Inventory.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Namespace FromDict(JsonData data)
         {
             return new Namespace()
-                .WithNamespaceId(data.Keys.Contains("namespaceId") ? (string) data["namespaceId"] : null)
-                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
-                .WithAcquireScript(data.Keys.Contains("acquireScript") ? ScriptSetting.FromDict(data["acquireScript"]) : null)
-                .WithOverflowScript(data.Keys.Contains("overflowScript") ? ScriptSetting.FromDict(data["overflowScript"]) : null)
-                .WithConsumeScript(data.Keys.Contains("consumeScript") ? ScriptSetting.FromDict(data["consumeScript"]) : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithNamespaceId(data.Keys.Contains("namespaceId") && data["namespaceId"] != null ? (string) data["namespaceId"] : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? (string) data["ownerId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
+                .WithAcquireScript(data.Keys.Contains("acquireScript") && data["acquireScript"] != null ? ScriptSetting.FromDict(data["acquireScript"]) : null)
+                .WithOverflowScript(data.Keys.Contains("overflowScript") && data["overflowScript"] != null ? ScriptSetting.FromDict(data["overflowScript"]) : null)
+                .WithConsumeScript(data.Keys.Contains("consumeScript") && data["consumeScript"] != null ? ScriptSetting.FromDict(data["consumeScript"]) : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

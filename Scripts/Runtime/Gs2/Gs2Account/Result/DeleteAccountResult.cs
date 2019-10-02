@@ -27,6 +27,7 @@ namespace Gs2.Gs2Account.Result
 	public class DeleteAccountResult
 	{
 
+    	[Preserve]
         public static DeleteAccountResult FromDict(JsonData data)
         {
             return new DeleteAccountResult {

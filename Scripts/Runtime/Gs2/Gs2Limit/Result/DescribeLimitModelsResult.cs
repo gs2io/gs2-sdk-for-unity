@@ -30,10 +30,11 @@ namespace Gs2.Gs2Limit.Result
         public List<LimitModel> items { set; get; }
 
 
+    	[Preserve]
         public static DescribeLimitModelsResult FromDict(JsonData data)
         {
             return new DescribeLimitModelsResult {
-                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
                         return LimitModel.FromDict(value);
                     }

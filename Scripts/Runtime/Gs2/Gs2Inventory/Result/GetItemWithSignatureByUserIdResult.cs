@@ -42,18 +42,19 @@ namespace Gs2.Gs2Inventory.Result
         public string signature { set; get; }
 
 
+    	[Preserve]
         public static GetItemWithSignatureByUserIdResult FromDict(JsonData data)
         {
             return new GetItemWithSignatureByUserIdResult {
-                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
                         return ItemSet.FromDict(value);
                     }
                 ).ToList() : null,
-                itemModel = data.Keys.Contains("itemModel") ? ItemModel.FromDict(data["itemModel"]) : null,
-                inventory = data.Keys.Contains("inventory") ? Inventory.FromDict(data["inventory"]) : null,
-                body = data.Keys.Contains("body") ? (string) data["body"] : null,
-                signature = data.Keys.Contains("signature") ? (string) data["signature"] : null,
+                itemModel = data.Keys.Contains("itemModel") && data["itemModel"] != null ? ItemModel.FromDict(data["itemModel"]) : null,
+                inventory = data.Keys.Contains("inventory") && data["inventory"] != null ? Inventory.FromDict(data["inventory"]) : null,
+                body = data.Keys.Contains("body") && data["body"] != null ? (string) data["body"] : null,
+                signature = data.Keys.Contains("signature") && data["signature"] != null ? (string) data["signature"] : null,
             };
         }
 	}

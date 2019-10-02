@@ -27,6 +27,7 @@ namespace Gs2.Gs2Stamina.Result
 	public class DeleteStaminaByUserIdResult
 	{
 
+    	[Preserve]
         public static DeleteStaminaByUserIdResult FromDict(JsonData data)
         {
             return new DeleteStaminaByUserIdResult {

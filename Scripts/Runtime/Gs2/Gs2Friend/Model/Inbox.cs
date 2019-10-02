@@ -132,18 +132,19 @@ namespace Gs2.Gs2Friend.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Inbox FromDict(JsonData data)
         {
             return new Inbox()
-                .WithInboxId(data.Keys.Contains("inboxId") ? (string) data["inboxId"] : null)
-                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
-                .WithFromUserIds(data.Keys.Contains("fromUserIds") ? data["fromUserIds"].Cast<JsonData>().Select(value =>
+                .WithInboxId(data.Keys.Contains("inboxId") && data["inboxId"] != null ? (string) data["inboxId"] : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithFromUserIds(data.Keys.Contains("fromUserIds") && data["fromUserIds"] != null ? data["fromUserIds"].Cast<JsonData>().Select(value =>
                     {
                         return (string) value;
                     }
                 ).ToList() : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

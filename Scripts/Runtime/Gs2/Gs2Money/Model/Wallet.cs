@@ -165,16 +165,17 @@ namespace Gs2.Gs2Money.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Wallet FromDict(JsonData data)
         {
             return new Wallet()
-                .WithWalletId(data.Keys.Contains("walletId") ? (string) data["walletId"] : null)
-                .WithUserId(data.Keys.Contains("userId") ? (string) data["userId"] : null)
-                .WithSlot(data.Keys.Contains("slot") ? (int?) data["slot"] : null)
-                .WithPaid(data.Keys.Contains("paid") ? (int?) data["paid"] : null)
-                .WithFree(data.Keys.Contains("free") ? (int?) data["free"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithWalletId(data.Keys.Contains("walletId") && data["walletId"] != null ? (string) data["walletId"] : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithSlot(data.Keys.Contains("slot") && data["slot"] != null ? (int?) data["slot"] : null)
+                .WithPaid(data.Keys.Contains("paid") && data["paid"] != null ? (int?) data["paid"] : null)
+                .WithFree(data.Keys.Contains("free") && data["free"] != null ? (int?) data["free"] : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

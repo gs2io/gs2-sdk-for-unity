@@ -94,12 +94,13 @@ namespace Gs2.Gs2Showcase.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static SalesItemGroup FromDict(JsonData data)
         {
             return new SalesItemGroup()
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") ? (string) data["metadata"] : null)
-                .WithSalesItems(data.Keys.Contains("salesItems") ? data["salesItems"].Cast<JsonData>().Select(value =>
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithSalesItems(data.Keys.Contains("salesItems") && data["salesItems"] != null ? data["salesItems"].Cast<JsonData>().Select(value =>
                     {
                         return SalesItem.FromDict(value);
                     }

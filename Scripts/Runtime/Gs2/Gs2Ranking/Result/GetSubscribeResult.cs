@@ -30,10 +30,11 @@ namespace Gs2.Gs2Ranking.Result
         public SubscribeUser item { set; get; }
 
 
+    	[Preserve]
         public static GetSubscribeResult FromDict(JsonData data)
         {
             return new GetSubscribeResult {
-                item = data.Keys.Contains("item") ? SubscribeUser.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? SubscribeUser.FromDict(data["item"]) : null,
             };
         }
 	}

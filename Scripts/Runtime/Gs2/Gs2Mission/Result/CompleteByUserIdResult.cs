@@ -30,10 +30,11 @@ namespace Gs2.Gs2Mission.Result
         public string stampSheet { set; get; }
 
 
+    	[Preserve]
         public static CompleteByUserIdResult FromDict(JsonData data)
         {
             return new CompleteByUserIdResult {
-                stampSheet = data.Keys.Contains("stampSheet") ? (string) data["stampSheet"] : null,
+                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? (string) data["stampSheet"] : null,
             };
         }
 	}

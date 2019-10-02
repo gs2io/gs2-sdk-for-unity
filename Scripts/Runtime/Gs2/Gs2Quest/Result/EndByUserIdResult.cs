@@ -33,11 +33,12 @@ namespace Gs2.Gs2Quest.Result
         public string stampSheet { set; get; }
 
 
+    	[Preserve]
         public static EndByUserIdResult FromDict(JsonData data)
         {
             return new EndByUserIdResult {
-                item = data.Keys.Contains("item") ? Progress.FromDict(data["item"]) : null,
-                stampSheet = data.Keys.Contains("stampSheet") ? (string) data["stampSheet"] : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Progress.FromDict(data["item"]) : null,
+                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? (string) data["stampSheet"] : null,
             };
         }
 	}

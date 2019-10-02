@@ -33,11 +33,12 @@ namespace Gs2.Gs2Money.Result
         public string newContextStack { set; get; }
 
 
+    	[Preserve]
         public static WithdrawByStampTaskResult FromDict(JsonData data)
         {
             return new WithdrawByStampTaskResult {
-                item = data.Keys.Contains("item") ? Wallet.FromDict(data["item"]) : null,
-                newContextStack = data.Keys.Contains("newContextStack") ? (string) data["newContextStack"] : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Wallet.FromDict(data["item"]) : null,
+                newContextStack = data.Keys.Contains("newContextStack") && data["newContextStack"] != null ? (string) data["newContextStack"] : null,
             };
         }
 	}

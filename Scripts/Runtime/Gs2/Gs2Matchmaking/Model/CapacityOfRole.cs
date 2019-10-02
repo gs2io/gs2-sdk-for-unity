@@ -118,17 +118,18 @@ namespace Gs2.Gs2Matchmaking.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static CapacityOfRole FromDict(JsonData data)
         {
             return new CapacityOfRole()
-                .WithRoleName(data.Keys.Contains("roleName") ? (string) data["roleName"] : null)
-                .WithRoleAliases(data.Keys.Contains("roleAliases") ? data["roleAliases"].Cast<JsonData>().Select(value =>
+                .WithRoleName(data.Keys.Contains("roleName") && data["roleName"] != null ? (string) data["roleName"] : null)
+                .WithRoleAliases(data.Keys.Contains("roleAliases") && data["roleAliases"] != null ? data["roleAliases"].Cast<JsonData>().Select(value =>
                     {
                         return (string) value;
                     }
                 ).ToList() : null)
-                .WithCapacity(data.Keys.Contains("capacity") ? (int?) data["capacity"] : null)
-                .WithParticipants(data.Keys.Contains("participants") ? data["participants"].Cast<JsonData>().Select(value =>
+                .WithCapacity(data.Keys.Contains("capacity") && data["capacity"] != null ? (int?) data["capacity"] : null)
+                .WithParticipants(data.Keys.Contains("participants") && data["participants"] != null ? data["participants"].Cast<JsonData>().Select(value =>
                     {
                         return Player.FromDict(value);
                     }

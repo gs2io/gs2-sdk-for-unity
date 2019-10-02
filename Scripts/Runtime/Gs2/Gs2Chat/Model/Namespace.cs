@@ -279,22 +279,23 @@ namespace Gs2.Gs2Chat.Model
             writer.WriteObjectEnd();
         }
 
+    	[Preserve]
         public static Namespace FromDict(JsonData data)
         {
             return new Namespace()
-                .WithNamespaceId(data.Keys.Contains("namespaceId") ? (string) data["namespaceId"] : null)
-                .WithOwnerId(data.Keys.Contains("ownerId") ? (string) data["ownerId"] : null)
-                .WithName(data.Keys.Contains("name") ? (string) data["name"] : null)
-                .WithDescription(data.Keys.Contains("description") ? (string) data["description"] : null)
-                .WithAllowCreateRoom(data.Keys.Contains("allowCreateRoom") ? (bool?) data["allowCreateRoom"] : null)
-                .WithPostMessageScript(data.Keys.Contains("postMessageScript") ? ScriptSetting.FromDict(data["postMessageScript"]) : null)
-                .WithCreateRoomScript(data.Keys.Contains("createRoomScript") ? ScriptSetting.FromDict(data["createRoomScript"]) : null)
-                .WithDeleteRoomScript(data.Keys.Contains("deleteRoomScript") ? ScriptSetting.FromDict(data["deleteRoomScript"]) : null)
-                .WithSubscribeRoomScript(data.Keys.Contains("subscribeRoomScript") ? ScriptSetting.FromDict(data["subscribeRoomScript"]) : null)
-                .WithUnsubscribeRoomScript(data.Keys.Contains("unsubscribeRoomScript") ? ScriptSetting.FromDict(data["unsubscribeRoomScript"]) : null)
-                .WithPostNotification(data.Keys.Contains("postNotification") ? NotificationSetting.FromDict(data["postNotification"]) : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") ? (long?) data["updatedAt"] : null);
+                .WithNamespaceId(data.Keys.Contains("namespaceId") && data["namespaceId"] != null ? (string) data["namespaceId"] : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? (string) data["ownerId"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
+                .WithAllowCreateRoom(data.Keys.Contains("allowCreateRoom") && data["allowCreateRoom"] != null ? (bool?) data["allowCreateRoom"] : null)
+                .WithPostMessageScript(data.Keys.Contains("postMessageScript") && data["postMessageScript"] != null ? ScriptSetting.FromDict(data["postMessageScript"]) : null)
+                .WithCreateRoomScript(data.Keys.Contains("createRoomScript") && data["createRoomScript"] != null ? ScriptSetting.FromDict(data["createRoomScript"]) : null)
+                .WithDeleteRoomScript(data.Keys.Contains("deleteRoomScript") && data["deleteRoomScript"] != null ? ScriptSetting.FromDict(data["deleteRoomScript"]) : null)
+                .WithSubscribeRoomScript(data.Keys.Contains("subscribeRoomScript") && data["subscribeRoomScript"] != null ? ScriptSetting.FromDict(data["subscribeRoomScript"]) : null)
+                .WithUnsubscribeRoomScript(data.Keys.Contains("unsubscribeRoomScript") && data["unsubscribeRoomScript"] != null ? ScriptSetting.FromDict(data["unsubscribeRoomScript"]) : null)
+                .WithPostNotification(data.Keys.Contains("postNotification") && data["postNotification"] != null ? NotificationSetting.FromDict(data["postNotification"]) : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }
 	}
 }

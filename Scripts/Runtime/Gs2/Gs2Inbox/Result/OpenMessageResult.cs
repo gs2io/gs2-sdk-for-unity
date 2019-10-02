@@ -30,10 +30,11 @@ namespace Gs2.Gs2Inbox.Result
         public Message item { set; get; }
 
 
+    	[Preserve]
         public static OpenMessageResult FromDict(JsonData data)
         {
             return new OpenMessageResult {
-                item = data.Keys.Contains("item") ? Message.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Message.FromDict(data["item"]) : null,
             };
         }
 	}

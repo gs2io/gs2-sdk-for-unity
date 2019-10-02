@@ -33,15 +33,16 @@ namespace Gs2.Gs2Script.Result
         public string nextPageToken { set; get; }
 
 
+    	[Preserve]
         public static DescribeScriptsResult FromDict(JsonData data)
         {
             return new DescribeScriptsResult {
-                items = data.Keys.Contains("items") ? data["items"].Cast<JsonData>().Select(value =>
+                items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
                         return Script.FromDict(value);
                     }
                 ).ToList() : null,
-                nextPageToken = data.Keys.Contains("nextPageToken") ? (string) data["nextPageToken"] : null,
+                nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? (string) data["nextPageToken"] : null,
             };
         }
 	}
