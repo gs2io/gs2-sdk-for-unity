@@ -48,7 +48,8 @@ namespace Gs2.Core.Net
                 {
                     if (!string.IsNullOrEmpty(gs2Response.Message) && gs2Response.Message != "Null")
                     {
-                        result = JsonMapper.ToObject<Gs2WebSocketResponse.Gs2Message<T>>(gs2Response.Message).body;
+                        var message = JsonMapper.ToObject(gs2Response.Message);
+                        result = JsonMapper.ToObject<T>(message["body"].ToJson());
                     }
                 }
                 catch (System.Exception e)

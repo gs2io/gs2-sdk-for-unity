@@ -22,7 +22,6 @@ using Gs2.Core.Exception;
 using Gs2.Core.Model;
 using Gs2.Gs2Identifier.Model;
 using LitJson;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;

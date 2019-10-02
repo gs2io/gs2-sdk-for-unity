@@ -14,6 +14,8 @@
  * permissions and limitations under the License.
  */
 
+using LitJson;
+
 namespace Gs2.Core.Model
 {
     public class NotificationMessage
@@ -23,5 +25,15 @@ namespace Gs2.Core.Model
         public string subject { set; get; }
                 
         public string payload { set; get; }
+
+        public static NotificationMessage FromDict(JsonData data)
+        {
+            return new NotificationMessage
+            {
+                issuer = data.Keys.Contains("issuer") ? (string)data["issuer"] : null,
+                subject = data.Keys.Contains("subject") ? (string)data["subject"] : null,
+                payload = data.Keys.Contains("payload") ? (string)data["payload"] : null,
+            };
+        }
     }
 }

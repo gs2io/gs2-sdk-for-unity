@@ -15,6 +15,7 @@
  */
 
 using System.Collections;
+using System.Collections.Generic;
 using System.Security.Authentication;
 using Gs2.Core.Exception;
 using Gs2.Core.Model;
@@ -41,6 +42,20 @@ namespace Gs2.Core.Net
 
             /** 有効期間(秒) */
             public int? expires_in { set; get; }
+
+            public static LoginResult FromDict(JsonData data)
+            {
+                if (data == null)
+                {
+                    return new LoginResult();
+                }
+                return new LoginResult
+                {
+                    access_token = data.Keys.Contains("access_token") ? (string)data["access_token"] : null,
+                    token_type = data.Keys.Contains("token_type") ? (string)data["token_type"] : null,
+                    expires_in = data.Keys.Contains("expires_in") ? (int?)data["expires_in"] : null,
+                };
+            }
 
         }
 
@@ -97,16 +112,7 @@ namespace Gs2.Core.Net
                             {
                                 if (gs2WebSocketResponse.Error == null)
                                 {
-                                    LoginResult loginResult = null;
-                                    try
-                                    {
-                                        loginResult = JsonMapper.ToObject<Gs2WebSocketResponse.Gs2Message<LoginResult>>(gs2WebSocketResponse.Message).body;
-                                    }
-                                    catch (JsonException e)
-                                    {
-                                        loginResult = new LoginResult();
-                                    }
-
+                                    LoginResult loginResult = LoginResult.FromDict(gs2WebSocketResponse.Body);
                                     if (loginResult.access_token != null)
                                     {
                                         _state = State.Available;
@@ -134,14 +140,9 @@ namespace Gs2.Core.Net
                             if (gs2WebSocketResponse.Gs2SessionTaskId == Gs2SessionTaskId.InvalidId)
                             {
                                 // API 応答以外のメッセージ
-                                try
-                                {
-                                    OnNotificationMessage?.Invoke(
-                                        JsonMapper.ToObject<Gs2WebSocketResponse.Gs2Message<NotificationMessage>>(gs2WebSocketResponse.Message).body
-                                    );
-                                }
-                                catch (JsonException e)
-                                {}
+                                OnNotificationMessage?.Invoke(
+                                    NotificationMessage.FromDict(gs2WebSocketResponse.Body)
+                                );
                             }
                             else
                             {

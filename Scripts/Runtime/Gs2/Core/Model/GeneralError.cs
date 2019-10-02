@@ -14,6 +14,8 @@
  * permissions and limitations under the License.
  */
 
+using LitJson;
+
 namespace Gs2.Core.Model
 {
 	public class GeneralError
@@ -25,6 +27,14 @@ namespace Gs2.Core.Model
 		{
 			set { message = value; }
 			get { return message; }
+		}
+
+		public static GeneralError FromDict(JsonData data)
+		{
+			return new GeneralError
+			{
+				message = data.Keys.Contains("message") ? (string)data["message"] : null,
+			};
 		}
 	}
 }
