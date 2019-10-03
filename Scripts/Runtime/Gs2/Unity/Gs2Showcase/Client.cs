@@ -50,22 +50,25 @@ namespace Gs2.Unity.Gs2Showcase
 		/// <param name="callback">コールバックハンドラ</param>
 		/// <param name="session">ゲームセッション</param>
 		/// <param name="namespaceName">ネームスペース名</param>
-		public IEnumerator List(
-		        UnityAction<AsyncResult<EzListResult>> callback,
+		/// <param name="showcaseName">商品名</param>
+		public IEnumerator GetShowcase(
+		        UnityAction<AsyncResult<EzGetShowcaseResult>> callback,
 		        GameSession session,
-                string namespaceName
+                string namespaceName,
+                string showcaseName
         )
 		{
-            yield return _client.DescribeShowcases(
-                new DescribeShowcasesRequest()
+            yield return _client.GetShowcase(
+                new GetShowcaseRequest()
                     .WithNamespaceName(namespaceName)
+                    .WithShowcaseName(showcaseName)
                     .WithAccessToken(session.AccessToken.token),
 				r =>
 				{
 				    if(r.Result == null)
 				    {
                         callback.Invoke(
-                            new AsyncResult<EzListResult>(
+                            new AsyncResult<EzGetShowcaseResult>(
                                 null,
                                 r.Error
                             )
@@ -74,8 +77,8 @@ namespace Gs2.Unity.Gs2Showcase
 				    else
 				    {
                         callback.Invoke(
-                            new AsyncResult<EzListResult>(
-                                new EzListResult(r.Result),
+                            new AsyncResult<EzGetShowcaseResult>(
+                                new EzGetShowcaseResult(r.Result),
                                 r.Error
                             )
                         );

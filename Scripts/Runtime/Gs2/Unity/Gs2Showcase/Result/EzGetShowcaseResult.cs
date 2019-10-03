@@ -23,20 +23,19 @@ using UnityEngine.Scripting;
 namespace Gs2.Unity.Gs2Showcase.Result
 {
 	[Preserve]
-	public class EzListResult
+	public class EzGetShowcaseResult
 	{
-        /** 陳列棚のリスト */
-        public List<EzShowcase> Items { get; private set; }
+        /** 陳列棚 */
+        public EzShowcase Item { get; private set; }
 
 
-        public EzListResult(
-            DescribeShowcasesResult result
+        public EzGetShowcaseResult(
+            GetShowcaseResult result
         )
         {
-            Items = new List<EzShowcase>();
-            foreach (var item_ in result.items)
+            if(result.item != null)
             {
-                Items.Add(new EzShowcase(item_));
+                Item = new EzShowcase(result.item);
             }
         }
 	}
