@@ -29,20 +29,12 @@ namespace Gs2.Gs2Showcase.Result
         /** 陳列棚 */
         public Showcase item { set; get; }
 
-        /** 購入可能な商品 */
-        public List<SalesItem> salesItems { set; get; }
-
 
     	[Preserve]
         public static GetShowcaseByUserIdResult FromDict(JsonData data)
         {
             return new GetShowcaseByUserIdResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? Showcase.FromDict(data["item"]) : null,
-                salesItems = data.Keys.Contains("salesItems") && data["salesItems"] != null ? data["salesItems"].Cast<JsonData>().Select(value =>
-                    {
-                        return SalesItem.FromDict(value);
-                    }
-                ).ToList() : null,
             };
         }
 	}
