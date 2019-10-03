@@ -28,6 +28,9 @@ namespace Gs2.Unity.Gs2Showcase.Result
         /** 陳列棚 */
         public EzShowcase Item { get; private set; }
 
+        /** 購入可能な商品 */
+        public List<EzSalesItem> SalesItems { get; private set; }
+
 
         public EzGetShowcaseResult(
             GetShowcaseResult result
@@ -36,6 +39,11 @@ namespace Gs2.Unity.Gs2Showcase.Result
             if(result.item != null)
             {
                 Item = new EzShowcase(result.item);
+            }
+            SalesItems = new List<EzSalesItem>();
+            foreach (var item_ in result.salesItems)
+            {
+                SalesItems.Add(new EzSalesItem(item_));
             }
         }
 	}
