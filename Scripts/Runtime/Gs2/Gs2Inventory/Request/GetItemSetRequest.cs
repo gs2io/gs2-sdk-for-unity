@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Inventory.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Request
 {
+	[Preserve]
 	public class GetItemSetRequest : Gs2Request<GetItemSetRequest>
 	{
 
@@ -111,6 +115,18 @@ namespace Gs2.Gs2Inventory.Request
         public GetItemSetRequest WithAccessToken(string accessToken) {
             this.accessToken = accessToken;
             return this;
+        }
+
+    	[Preserve]
+        public static GetItemSetRequest FromDict(JsonData data)
+        {
+            return new GetItemSetRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                inventoryName = data.Keys.Contains("inventoryName") && data["inventoryName"] != null ? (string) data["inventoryName"] : null,
+                itemName = data.Keys.Contains("itemName") && data["itemName"] != null ? (string) data["itemName"] : null,
+                expiresAt = data.Keys.Contains("expiresAt") && data["expiresAt"] != null ? (long?) data["expiresAt"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
         }
 
 	}

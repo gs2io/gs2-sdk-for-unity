@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Identifier.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Identifier.Request
 {
+	[Preserve]
 	public class DeleteIdentifierRequest : Gs2Request<DeleteIdentifierRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Identifier.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DeleteIdentifierRequest FromDict(JsonData data)
+        {
+            return new DeleteIdentifierRequest {
+                userName = data.Keys.Contains("userName") && data["userName"] != null ? (string) data["userName"] : null,
+                clientId = data.Keys.Contains("clientId") && data["clientId"] != null ? (string) data["clientId"] : null,
+            };
+        }
 
 	}
 }

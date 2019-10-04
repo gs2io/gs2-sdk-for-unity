@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Limit.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Limit.Request
 {
+	[Preserve]
 	public class CreateLimitModelMasterRequest : Gs2Request<CreateLimitModelMasterRequest>
 	{
 
@@ -143,6 +147,21 @@ namespace Gs2.Gs2Limit.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static CreateLimitModelMasterRequest FromDict(JsonData data)
+        {
+            return new CreateLimitModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
+                resetType = data.Keys.Contains("resetType") && data["resetType"] != null ? (string) data["resetType"] : null,
+                resetDayOfMonth = data.Keys.Contains("resetDayOfMonth") && data["resetDayOfMonth"] != null ? (int?) data["resetDayOfMonth"] : null,
+                resetDayOfWeek = data.Keys.Contains("resetDayOfWeek") && data["resetDayOfWeek"] != null ? (string) data["resetDayOfWeek"] : null,
+                resetHour = data.Keys.Contains("resetHour") && data["resetHour"] != null ? (int?) data["resetHour"] : null,
+            };
+        }
 
 	}
 }

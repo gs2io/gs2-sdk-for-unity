@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2JobQueue.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2JobQueue.Request
 {
+	[Preserve]
 	public class GetDeadLetterJobByUserIdRequest : Gs2Request<GetDeadLetterJobByUserIdRequest>
 	{
 
@@ -83,6 +87,17 @@ namespace Gs2.Gs2JobQueue.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static GetDeadLetterJobByUserIdRequest FromDict(JsonData data)
+        {
+            return new GetDeadLetterJobByUserIdRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                deadLetterJobName = data.Keys.Contains("deadLetterJobName") && data["deadLetterJobName"] != null ? (string) data["deadLetterJobName"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

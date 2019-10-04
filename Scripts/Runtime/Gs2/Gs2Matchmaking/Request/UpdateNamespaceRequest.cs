@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Matchmaking.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Matchmaking.Request
 {
+	[Preserve]
 	public class UpdateNamespaceRequest : Gs2Request<UpdateNamespaceRequest>
 	{
 
@@ -188,6 +192,24 @@ namespace Gs2.Gs2Matchmaking.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateNamespaceRequest FromDict(JsonData data)
+        {
+            return new UpdateNamespaceRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                createGatheringTriggerType = data.Keys.Contains("createGatheringTriggerType") && data["createGatheringTriggerType"] != null ? (string) data["createGatheringTriggerType"] : null,
+                createGatheringTriggerRealtimeNamespaceId = data.Keys.Contains("createGatheringTriggerRealtimeNamespaceId") && data["createGatheringTriggerRealtimeNamespaceId"] != null ? (string) data["createGatheringTriggerRealtimeNamespaceId"] : null,
+                createGatheringTriggerScriptId = data.Keys.Contains("createGatheringTriggerScriptId") && data["createGatheringTriggerScriptId"] != null ? (string) data["createGatheringTriggerScriptId"] : null,
+                completeMatchmakingTriggerType = data.Keys.Contains("completeMatchmakingTriggerType") && data["completeMatchmakingTriggerType"] != null ? (string) data["completeMatchmakingTriggerType"] : null,
+                completeMatchmakingTriggerRealtimeNamespaceId = data.Keys.Contains("completeMatchmakingTriggerRealtimeNamespaceId") && data["completeMatchmakingTriggerRealtimeNamespaceId"] != null ? (string) data["completeMatchmakingTriggerRealtimeNamespaceId"] : null,
+                completeMatchmakingTriggerScriptId = data.Keys.Contains("completeMatchmakingTriggerScriptId") && data["completeMatchmakingTriggerScriptId"] != null ? (string) data["completeMatchmakingTriggerScriptId"] : null,
+                joinNotification = data.Keys.Contains("joinNotification") && data["joinNotification"] != null ? NotificationSetting.FromDict(data["joinNotification"]) : null,
+                leaveNotification = data.Keys.Contains("leaveNotification") && data["leaveNotification"] != null ? NotificationSetting.FromDict(data["leaveNotification"]) : null,
+                completeNotification = data.Keys.Contains("completeNotification") && data["completeNotification"] != null ? NotificationSetting.FromDict(data["completeNotification"]) : null,
+            };
+        }
 
 	}
 }

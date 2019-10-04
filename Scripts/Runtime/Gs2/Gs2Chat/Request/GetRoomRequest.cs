@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Chat.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Chat.Request
 {
+	[Preserve]
 	public class GetRoomRequest : Gs2Request<GetRoomRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Chat.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static GetRoomRequest FromDict(JsonData data)
+        {
+            return new GetRoomRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                roomName = data.Keys.Contains("roomName") && data["roomName"] != null ? (string) data["roomName"] : null,
+            };
+        }
 
 	}
 }

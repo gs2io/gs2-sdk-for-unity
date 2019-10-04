@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Money.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Money.Request
 {
+	[Preserve]
 	public class DepositByUserIdRequest : Gs2Request<DepositByUserIdRequest>
 	{
 
@@ -113,6 +117,19 @@ namespace Gs2.Gs2Money.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DepositByUserIdRequest FromDict(JsonData data)
+        {
+            return new DepositByUserIdRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                slot = data.Keys.Contains("slot") && data["slot"] != null ? (int?) data["slot"] : null,
+                price = data.Keys.Contains("price") && data["price"] != null ? (float?) data["price"] : null,
+                count = data.Keys.Contains("count") && data["count"] != null ? (int?) data["count"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Experience.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Request
 {
+	[Preserve]
 	public class DescribeStatusesByUserIdRequest : Gs2Request<DescribeStatusesByUserIdRequest>
 	{
 
@@ -113,6 +117,19 @@ namespace Gs2.Gs2Experience.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DescribeStatusesByUserIdRequest FromDict(JsonData data)
+        {
+            return new DescribeStatusesByUserIdRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                experienceName = data.Keys.Contains("experienceName") && data["experienceName"] != null ? (string) data["experienceName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                pageToken = data.Keys.Contains("pageToken") && data["pageToken"] != null ? (string) data["pageToken"] : null,
+                limit = data.Keys.Contains("limit") && data["limit"] != null ? (long?) data["limit"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

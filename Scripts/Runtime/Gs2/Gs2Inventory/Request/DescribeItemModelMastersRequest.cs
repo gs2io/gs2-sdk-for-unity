@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Inventory.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Request
 {
+	[Preserve]
 	public class DescribeItemModelMastersRequest : Gs2Request<DescribeItemModelMastersRequest>
 	{
 
@@ -83,6 +87,17 @@ namespace Gs2.Gs2Inventory.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DescribeItemModelMastersRequest FromDict(JsonData data)
+        {
+            return new DescribeItemModelMastersRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                inventoryName = data.Keys.Contains("inventoryName") && data["inventoryName"] != null ? (string) data["inventoryName"] : null,
+                pageToken = data.Keys.Contains("pageToken") && data["pageToken"] != null ? (string) data["pageToken"] : null,
+                limit = data.Keys.Contains("limit") && data["limit"] != null ? (long?) data["limit"] : null,
+            };
+        }
 
 	}
 }

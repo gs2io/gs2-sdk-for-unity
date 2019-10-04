@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Identifier.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Identifier.Request
 {
+	[Preserve]
 	public class AttachSecurityPolicyRequest : Gs2Request<AttachSecurityPolicyRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Identifier.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static AttachSecurityPolicyRequest FromDict(JsonData data)
+        {
+            return new AttachSecurityPolicyRequest {
+                userName = data.Keys.Contains("userName") && data["userName"] != null ? (string) data["userName"] : null,
+                securityPolicyId = data.Keys.Contains("securityPolicyId") && data["securityPolicyId"] != null ? (string) data["securityPolicyId"] : null,
+            };
+        }
 
 	}
 }

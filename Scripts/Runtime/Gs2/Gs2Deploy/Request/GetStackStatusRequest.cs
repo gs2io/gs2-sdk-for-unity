@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Deploy.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Deploy.Request
 {
+	[Preserve]
 	public class GetStackStatusRequest : Gs2Request<GetStackStatusRequest>
 	{
 
@@ -38,6 +42,14 @@ namespace Gs2.Gs2Deploy.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static GetStackStatusRequest FromDict(JsonData data)
+        {
+            return new GetStackStatusRequest {
+                stackName = data.Keys.Contains("stackName") && data["stackName"] != null ? (string) data["stackName"] : null,
+            };
+        }
 
 	}
 }

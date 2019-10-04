@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Quest.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Request
 {
+	[Preserve]
 	public class StartRequest : Gs2Request<StartRequest>
 	{
 
@@ -126,6 +130,23 @@ namespace Gs2.Gs2Quest.Request
         public StartRequest WithAccessToken(string accessToken) {
             this.accessToken = accessToken;
             return this;
+        }
+
+    	[Preserve]
+        public static StartRequest FromDict(JsonData data)
+        {
+            return new StartRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                questGroupName = data.Keys.Contains("questGroupName") && data["questGroupName"] != null ? (string) data["questGroupName"] : null,
+                questName = data.Keys.Contains("questName") && data["questName"] != null ? (string) data["questName"] : null,
+                force = data.Keys.Contains("force") && data["force"] != null ? (bool?) data["force"] : null,
+                config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
+                    {
+                        return Config.FromDict(value);
+                    }
+                ).ToList() : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
         }
 
 	}

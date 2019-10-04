@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Mission.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Request
 {
+	[Preserve]
 	public class CreateCounterModelMasterRequest : Gs2Request<CreateCounterModelMasterRequest>
 	{
 
@@ -113,6 +117,23 @@ namespace Gs2.Gs2Mission.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static CreateCounterModelMasterRequest FromDict(JsonData data)
+        {
+            return new CreateCounterModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                scopes = data.Keys.Contains("scopes") && data["scopes"] != null ? data["scopes"].Cast<JsonData>().Select(value =>
+                    {
+                        return CounterScopeModel.FromDict(value);
+                    }
+                ).ToList() : null,
+                challengePeriodEventId = data.Keys.Contains("challengePeriodEventId") && data["challengePeriodEventId"] != null ? (string) data["challengePeriodEventId"] : null,
+            };
+        }
 
 	}
 }

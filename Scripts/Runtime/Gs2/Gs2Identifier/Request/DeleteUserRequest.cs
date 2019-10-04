@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Identifier.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Identifier.Request
 {
+	[Preserve]
 	public class DeleteUserRequest : Gs2Request<DeleteUserRequest>
 	{
 
@@ -38,6 +42,14 @@ namespace Gs2.Gs2Identifier.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DeleteUserRequest FromDict(JsonData data)
+        {
+            return new DeleteUserRequest {
+                userName = data.Keys.Contains("userName") && data["userName"] != null ? (string) data["userName"] : null,
+            };
+        }
 
 	}
 }

@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Mission.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Request
 {
+	[Preserve]
 	public class GetCompleteByUserIdRequest : Gs2Request<GetCompleteByUserIdRequest>
 	{
 
@@ -83,6 +87,17 @@ namespace Gs2.Gs2Mission.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static GetCompleteByUserIdRequest FromDict(JsonData data)
+        {
+            return new GetCompleteByUserIdRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                missionGroupName = data.Keys.Contains("missionGroupName") && data["missionGroupName"] != null ? (string) data["missionGroupName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

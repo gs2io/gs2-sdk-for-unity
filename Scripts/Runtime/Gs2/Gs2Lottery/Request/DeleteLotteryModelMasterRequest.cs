@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Lottery.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Request
 {
+	[Preserve]
 	public class DeleteLotteryModelMasterRequest : Gs2Request<DeleteLotteryModelMasterRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Lottery.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DeleteLotteryModelMasterRequest FromDict(JsonData data)
+        {
+            return new DeleteLotteryModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                lotteryName = data.Keys.Contains("lotteryName") && data["lotteryName"] != null ? (string) data["lotteryName"] : null,
+            };
+        }
 
 	}
 }

@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Inventory.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Request
 {
+	[Preserve]
 	public class SetCapacityByUserIdRequest : Gs2Request<SetCapacityByUserIdRequest>
 	{
 
@@ -98,6 +102,18 @@ namespace Gs2.Gs2Inventory.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static SetCapacityByUserIdRequest FromDict(JsonData data)
+        {
+            return new SetCapacityByUserIdRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                inventoryName = data.Keys.Contains("inventoryName") && data["inventoryName"] != null ? (string) data["inventoryName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                newCapacityValue = data.Keys.Contains("newCapacityValue") && data["newCapacityValue"] != null ? (int?) data["newCapacityValue"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

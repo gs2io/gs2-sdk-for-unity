@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Quest.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Request
 {
+	[Preserve]
 	public class EndByUserIdRequest : Gs2Request<EndByUserIdRequest>
 	{
 
@@ -128,6 +132,28 @@ namespace Gs2.Gs2Quest.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static EndByUserIdRequest FromDict(JsonData data)
+        {
+            return new EndByUserIdRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                transactionId = data.Keys.Contains("transactionId") && data["transactionId"] != null ? (string) data["transactionId"] : null,
+                rewards = data.Keys.Contains("rewards") && data["rewards"] != null ? data["rewards"].Cast<JsonData>().Select(value =>
+                    {
+                        return Reward.FromDict(value);
+                    }
+                ).ToList() : null,
+                isComplete = data.Keys.Contains("isComplete") && data["isComplete"] != null ? (bool?) data["isComplete"] : null,
+                config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
+                    {
+                        return Config.FromDict(value);
+                    }
+                ).ToList() : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

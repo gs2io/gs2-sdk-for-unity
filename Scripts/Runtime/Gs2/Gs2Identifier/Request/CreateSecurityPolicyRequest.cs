@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Identifier.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Identifier.Request
 {
+	[Preserve]
 	public class CreateSecurityPolicyRequest : Gs2Request<CreateSecurityPolicyRequest>
 	{
 
@@ -68,6 +72,16 @@ namespace Gs2.Gs2Identifier.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static CreateSecurityPolicyRequest FromDict(JsonData data)
+        {
+            return new CreateSecurityPolicyRequest {
+                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                policy = data.Keys.Contains("policy") && data["policy"] != null ? (string) data["policy"] : null,
+            };
+        }
 
 	}
 }

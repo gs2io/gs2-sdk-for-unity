@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Chat.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Chat.Request
 {
+	[Preserve]
 	public class CreateRoomFromBackendRequest : Gs2Request<CreateRoomFromBackendRequest>
 	{
 
@@ -113,6 +117,23 @@ namespace Gs2.Gs2Chat.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static CreateRoomFromBackendRequest FromDict(JsonData data)
+        {
+            return new CreateRoomFromBackendRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
+                password = data.Keys.Contains("password") && data["password"] != null ? (string) data["password"] : null,
+                whiteListUserIds = data.Keys.Contains("whiteListUserIds") && data["whiteListUserIds"] != null ? data["whiteListUserIds"].Cast<JsonData>().Select(value =>
+                    {
+                        return (string) value;
+                    }
+                ).ToList() : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

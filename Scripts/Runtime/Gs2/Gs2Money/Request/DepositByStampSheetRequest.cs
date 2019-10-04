@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Money.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Money.Request
 {
+	[Preserve]
 	public class DepositByStampSheetRequest : Gs2Request<DepositByStampSheetRequest>
 	{
 
@@ -68,6 +72,16 @@ namespace Gs2.Gs2Money.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DepositByStampSheetRequest FromDict(JsonData data)
+        {
+            return new DepositByStampSheetRequest {
+                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? (string) data["stampSheet"] : null,
+                keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? (string) data["keyId"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

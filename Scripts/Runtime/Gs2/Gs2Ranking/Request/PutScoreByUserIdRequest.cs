@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Ranking.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Ranking.Request
 {
+	[Preserve]
 	public class PutScoreByUserIdRequest : Gs2Request<PutScoreByUserIdRequest>
 	{
 
@@ -113,6 +117,19 @@ namespace Gs2.Gs2Ranking.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static PutScoreByUserIdRequest FromDict(JsonData data)
+        {
+            return new PutScoreByUserIdRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                categoryName = data.Keys.Contains("categoryName") && data["categoryName"] != null ? (string) data["categoryName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                score = data.Keys.Contains("score") && data["score"] != null ? (long?) data["score"] : null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

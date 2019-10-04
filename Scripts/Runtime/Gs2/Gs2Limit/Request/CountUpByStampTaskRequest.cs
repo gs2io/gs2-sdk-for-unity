@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Limit.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Limit.Request
 {
+	[Preserve]
 	public class CountUpByStampTaskRequest : Gs2Request<CountUpByStampTaskRequest>
 	{
 
@@ -68,6 +72,16 @@ namespace Gs2.Gs2Limit.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static CountUpByStampTaskRequest FromDict(JsonData data)
+        {
+            return new CountUpByStampTaskRequest {
+                stampTask = data.Keys.Contains("stampTask") && data["stampTask"] != null ? (string) data["stampTask"] : null,
+                keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? (string) data["keyId"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

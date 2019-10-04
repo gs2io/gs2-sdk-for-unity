@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Experience.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Request
 {
+	[Preserve]
 	public class UpdateCurrentExperienceMasterFromGitHubRequest : Gs2Request<UpdateCurrentExperienceMasterFromGitHubRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Experience.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateCurrentExperienceMasterFromGitHubRequest FromDict(JsonData data)
+        {
+            return new UpdateCurrentExperienceMasterFromGitHubRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
+            };
+        }
 
 	}
 }

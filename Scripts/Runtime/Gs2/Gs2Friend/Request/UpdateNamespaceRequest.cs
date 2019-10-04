@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Friend.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Friend.Request
 {
+	[Preserve]
 	public class UpdateNamespaceRequest : Gs2Request<UpdateNamespaceRequest>
 	{
 
@@ -218,6 +222,26 @@ namespace Gs2.Gs2Friend.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateNamespaceRequest FromDict(JsonData data)
+        {
+            return new UpdateNamespaceRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                followScript = data.Keys.Contains("followScript") && data["followScript"] != null ? ScriptSetting.FromDict(data["followScript"]) : null,
+                unfollowScript = data.Keys.Contains("unfollowScript") && data["unfollowScript"] != null ? ScriptSetting.FromDict(data["unfollowScript"]) : null,
+                sendRequestScript = data.Keys.Contains("sendRequestScript") && data["sendRequestScript"] != null ? ScriptSetting.FromDict(data["sendRequestScript"]) : null,
+                cancelRequestScript = data.Keys.Contains("cancelRequestScript") && data["cancelRequestScript"] != null ? ScriptSetting.FromDict(data["cancelRequestScript"]) : null,
+                acceptRequestScript = data.Keys.Contains("acceptRequestScript") && data["acceptRequestScript"] != null ? ScriptSetting.FromDict(data["acceptRequestScript"]) : null,
+                rejectRequestScript = data.Keys.Contains("rejectRequestScript") && data["rejectRequestScript"] != null ? ScriptSetting.FromDict(data["rejectRequestScript"]) : null,
+                deleteFriendScript = data.Keys.Contains("deleteFriendScript") && data["deleteFriendScript"] != null ? ScriptSetting.FromDict(data["deleteFriendScript"]) : null,
+                updateProfileScript = data.Keys.Contains("updateProfileScript") && data["updateProfileScript"] != null ? ScriptSetting.FromDict(data["updateProfileScript"]) : null,
+                followNotification = data.Keys.Contains("followNotification") && data["followNotification"] != null ? NotificationSetting.FromDict(data["followNotification"]) : null,
+                receiveRequestNotification = data.Keys.Contains("receiveRequestNotification") && data["receiveRequestNotification"] != null ? NotificationSetting.FromDict(data["receiveRequestNotification"]) : null,
+                acceptRequestNotification = data.Keys.Contains("acceptRequestNotification") && data["acceptRequestNotification"] != null ? NotificationSetting.FromDict(data["acceptRequestNotification"]) : null,
+            };
+        }
 
 	}
 }

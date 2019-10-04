@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Script.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Script.Request
 {
+	[Preserve]
 	public class DebugInvokeRequest : Gs2Request<DebugInvokeRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Script.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DebugInvokeRequest FromDict(JsonData data)
+        {
+            return new DebugInvokeRequest {
+                script = data.Keys.Contains("script") && data["script"] != null ? (string) data["script"] : null,
+                args = data.Keys.Contains("args") && data["args"] != null ? (string) data["args"] : null,
+            };
+        }
 
 	}
 }

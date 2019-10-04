@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Lock.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lock.Request
 {
+	[Preserve]
 	public class GetMutexRequest : Gs2Request<GetMutexRequest>
 	{
 
@@ -81,6 +85,16 @@ namespace Gs2.Gs2Lock.Request
         public GetMutexRequest WithAccessToken(string accessToken) {
             this.accessToken = accessToken;
             return this;
+        }
+
+    	[Preserve]
+        public static GetMutexRequest FromDict(JsonData data)
+        {
+            return new GetMutexRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                propertyId = data.Keys.Contains("propertyId") && data["propertyId"] != null ? (string) data["propertyId"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
         }
 
 	}

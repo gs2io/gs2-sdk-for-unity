@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Friend.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Friend.Request
 {
+	[Preserve]
 	public class DeleteFriendRequest : Gs2Request<DeleteFriendRequest>
 	{
 
@@ -81,6 +85,16 @@ namespace Gs2.Gs2Friend.Request
         public DeleteFriendRequest WithAccessToken(string accessToken) {
             this.accessToken = accessToken;
             return this;
+        }
+
+    	[Preserve]
+        public static DeleteFriendRequest FromDict(JsonData data)
+        {
+            return new DeleteFriendRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                targetUserId = data.Keys.Contains("targetUserId") && data["targetUserId"] != null ? (string) data["targetUserId"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
         }
 
 	}

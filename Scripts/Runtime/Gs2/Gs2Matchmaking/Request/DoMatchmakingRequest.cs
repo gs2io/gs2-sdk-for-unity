@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Matchmaking.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Matchmaking.Request
 {
+	[Preserve]
 	public class DoMatchmakingRequest : Gs2Request<DoMatchmakingRequest>
 	{
 
@@ -96,6 +100,17 @@ namespace Gs2.Gs2Matchmaking.Request
         public DoMatchmakingRequest WithAccessToken(string accessToken) {
             this.accessToken = accessToken;
             return this;
+        }
+
+    	[Preserve]
+        public static DoMatchmakingRequest FromDict(JsonData data)
+        {
+            return new DoMatchmakingRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                player = data.Keys.Contains("player") && data["player"] != null ? Player.FromDict(data["player"]) : null,
+                matchmakingContextToken = data.Keys.Contains("matchmakingContextToken") && data["matchmakingContextToken"] != null ? (string) data["matchmakingContextToken"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
         }
 
 	}

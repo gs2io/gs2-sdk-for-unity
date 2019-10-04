@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Experience.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Request
 {
+	[Preserve]
 	public class UpdateNamespaceRequest : Gs2Request<UpdateNamespaceRequest>
 	{
 
@@ -113,6 +117,19 @@ namespace Gs2.Gs2Experience.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateNamespaceRequest FromDict(JsonData data)
+        {
+            return new UpdateNamespaceRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                experienceCapScriptId = data.Keys.Contains("experienceCapScriptId") && data["experienceCapScriptId"] != null ? (string) data["experienceCapScriptId"] : null,
+                changeExperienceScript = data.Keys.Contains("changeExperienceScript") && data["changeExperienceScript"] != null ? ScriptSetting.FromDict(data["changeExperienceScript"]) : null,
+                changeRankScript = data.Keys.Contains("changeRankScript") && data["changeRankScript"] != null ? ScriptSetting.FromDict(data["changeRankScript"]) : null,
+                changeRankCapScript = data.Keys.Contains("changeRankCapScript") && data["changeRankCapScript"] != null ? ScriptSetting.FromDict(data["changeRankCapScript"]) : null,
+            };
+        }
 
 	}
 }

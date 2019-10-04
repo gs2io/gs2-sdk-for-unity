@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Exchange.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Exchange.Request
 {
+	[Preserve]
 	public class DescribeRateModelMastersRequest : Gs2Request<DescribeRateModelMastersRequest>
 	{
 
@@ -68,6 +72,16 @@ namespace Gs2.Gs2Exchange.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DescribeRateModelMastersRequest FromDict(JsonData data)
+        {
+            return new DescribeRateModelMastersRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                pageToken = data.Keys.Contains("pageToken") && data["pageToken"] != null ? (string) data["pageToken"] : null,
+                limit = data.Keys.Contains("limit") && data["limit"] != null ? (long?) data["limit"] : null,
+            };
+        }
 
 	}
 }

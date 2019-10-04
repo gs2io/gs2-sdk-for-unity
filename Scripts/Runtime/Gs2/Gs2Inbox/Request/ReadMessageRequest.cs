@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Inbox.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inbox.Request
 {
+	[Preserve]
 	public class ReadMessageRequest : Gs2Request<ReadMessageRequest>
 	{
 
@@ -96,6 +100,21 @@ namespace Gs2.Gs2Inbox.Request
         public ReadMessageRequest WithAccessToken(string accessToken) {
             this.accessToken = accessToken;
             return this;
+        }
+
+    	[Preserve]
+        public static ReadMessageRequest FromDict(JsonData data)
+        {
+            return new ReadMessageRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                messageName = data.Keys.Contains("messageName") && data["messageName"] != null ? (string) data["messageName"] : null,
+                config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
+                    {
+                        return Config.FromDict(value);
+                    }
+                ).ToList() : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
         }
 
 	}

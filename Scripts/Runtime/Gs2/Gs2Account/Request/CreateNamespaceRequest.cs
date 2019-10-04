@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Account.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Account.Request
 {
+	[Preserve]
 	public class CreateNamespaceRequest : Gs2Request<CreateNamespaceRequest>
 	{
 
@@ -128,6 +132,20 @@ namespace Gs2.Gs2Account.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static CreateNamespaceRequest FromDict(JsonData data)
+        {
+            return new CreateNamespaceRequest {
+                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                changePasswordIfTakeOver = data.Keys.Contains("changePasswordIfTakeOver") && data["changePasswordIfTakeOver"] != null ? (bool?) data["changePasswordIfTakeOver"] : null,
+                createAccountScript = data.Keys.Contains("createAccountScript") && data["createAccountScript"] != null ? ScriptSetting.FromDict(data["createAccountScript"]) : null,
+                authenticationScript = data.Keys.Contains("authenticationScript") && data["authenticationScript"] != null ? ScriptSetting.FromDict(data["authenticationScript"]) : null,
+                createTakeOverScript = data.Keys.Contains("createTakeOverScript") && data["createTakeOverScript"] != null ? ScriptSetting.FromDict(data["createTakeOverScript"]) : null,
+                doTakeOverScript = data.Keys.Contains("doTakeOverScript") && data["doTakeOverScript"] != null ? ScriptSetting.FromDict(data["doTakeOverScript"]) : null,
+            };
+        }
 
 	}
 }

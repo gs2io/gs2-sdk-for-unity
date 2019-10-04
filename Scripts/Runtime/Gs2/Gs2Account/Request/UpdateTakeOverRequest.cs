@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Account.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Account.Request
 {
+	[Preserve]
 	public class UpdateTakeOverRequest : Gs2Request<UpdateTakeOverRequest>
 	{
 
@@ -111,6 +115,18 @@ namespace Gs2.Gs2Account.Request
         public UpdateTakeOverRequest WithAccessToken(string accessToken) {
             this.accessToken = accessToken;
             return this;
+        }
+
+    	[Preserve]
+        public static UpdateTakeOverRequest FromDict(JsonData data)
+        {
+            return new UpdateTakeOverRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                type = data.Keys.Contains("type") && data["type"] != null ? (int?) data["type"] : null,
+                oldPassword = data.Keys.Contains("oldPassword") && data["oldPassword"] != null ? (string) data["oldPassword"] : null,
+                password = data.Keys.Contains("password") && data["password"] != null ? (string) data["password"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
         }
 
 	}

@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Inventory.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Request
 {
+	[Preserve]
 	public class ConsumeItemSetByStampTaskRequest : Gs2Request<ConsumeItemSetByStampTaskRequest>
 	{
 
@@ -68,6 +72,16 @@ namespace Gs2.Gs2Inventory.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static ConsumeItemSetByStampTaskRequest FromDict(JsonData data)
+        {
+            return new ConsumeItemSetByStampTaskRequest {
+                stampTask = data.Keys.Contains("stampTask") && data["stampTask"] != null ? (string) data["stampTask"] : null,
+                keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? (string) data["keyId"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Account.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Account.Request
 {
+	[Preserve]
 	public class GetNamespaceRequest : Gs2Request<GetNamespaceRequest>
 	{
 
@@ -38,6 +42,14 @@ namespace Gs2.Gs2Account.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static GetNamespaceRequest FromDict(JsonData data)
+        {
+            return new GetNamespaceRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+            };
+        }
 
 	}
 }

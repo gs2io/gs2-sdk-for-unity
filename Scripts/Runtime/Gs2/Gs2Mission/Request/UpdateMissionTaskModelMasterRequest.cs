@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Mission.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Request
 {
+	[Preserve]
 	public class UpdateMissionTaskModelMasterRequest : Gs2Request<UpdateMissionTaskModelMasterRequest>
 	{
 
@@ -188,6 +192,28 @@ namespace Gs2.Gs2Mission.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateMissionTaskModelMasterRequest FromDict(JsonData data)
+        {
+            return new UpdateMissionTaskModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                missionGroupName = data.Keys.Contains("missionGroupName") && data["missionGroupName"] != null ? (string) data["missionGroupName"] : null,
+                missionTaskName = data.Keys.Contains("missionTaskName") && data["missionTaskName"] != null ? (string) data["missionTaskName"] : null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                counterName = data.Keys.Contains("counterName") && data["counterName"] != null ? (string) data["counterName"] : null,
+                resetType = data.Keys.Contains("resetType") && data["resetType"] != null ? (string) data["resetType"] : null,
+                targetValue = data.Keys.Contains("targetValue") && data["targetValue"] != null ? (long?) data["targetValue"] : null,
+                completeAcquireActions = data.Keys.Contains("completeAcquireActions") && data["completeAcquireActions"] != null ? data["completeAcquireActions"].Cast<JsonData>().Select(value =>
+                    {
+                        return AcquireAction.FromDict(value);
+                    }
+                ).ToList() : null,
+                challengePeriodEventId = data.Keys.Contains("challengePeriodEventId") && data["challengePeriodEventId"] != null ? (string) data["challengePeriodEventId"] : null,
+                premiseMissionTaskName = data.Keys.Contains("premiseMissionTaskName") && data["premiseMissionTaskName"] != null ? (string) data["premiseMissionTaskName"] : null,
+            };
+        }
 
 	}
 }

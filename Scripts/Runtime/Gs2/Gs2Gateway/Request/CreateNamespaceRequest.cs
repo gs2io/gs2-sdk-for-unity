@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Gateway.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Gateway.Request
 {
+	[Preserve]
 	public class CreateNamespaceRequest : Gs2Request<CreateNamespaceRequest>
 	{
 
@@ -68,6 +72,16 @@ namespace Gs2.Gs2Gateway.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static CreateNamespaceRequest FromDict(JsonData data)
+        {
+            return new CreateNamespaceRequest {
+                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                firebaseSecret = data.Keys.Contains("firebaseSecret") && data["firebaseSecret"] != null ? (string) data["firebaseSecret"] : null,
+            };
+        }
 
 	}
 }

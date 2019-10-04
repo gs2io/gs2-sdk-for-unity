@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Schedule.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Schedule.Request
 {
+	[Preserve]
 	public class TriggerByUserIdRequest : Gs2Request<TriggerByUserIdRequest>
 	{
 
@@ -113,6 +117,19 @@ namespace Gs2.Gs2Schedule.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static TriggerByUserIdRequest FromDict(JsonData data)
+        {
+            return new TriggerByUserIdRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                triggerName = data.Keys.Contains("triggerName") && data["triggerName"] != null ? (string) data["triggerName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                triggerStrategy = data.Keys.Contains("triggerStrategy") && data["triggerStrategy"] != null ? (string) data["triggerStrategy"] : null,
+                ttl = data.Keys.Contains("ttl") && data["ttl"] != null ? (int?) data["ttl"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

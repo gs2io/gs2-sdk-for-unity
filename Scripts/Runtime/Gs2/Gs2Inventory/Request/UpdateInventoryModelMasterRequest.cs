@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Inventory.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Request
 {
+	[Preserve]
 	public class UpdateInventoryModelMasterRequest : Gs2Request<UpdateInventoryModelMasterRequest>
 	{
 
@@ -113,6 +117,19 @@ namespace Gs2.Gs2Inventory.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateInventoryModelMasterRequest FromDict(JsonData data)
+        {
+            return new UpdateInventoryModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                inventoryName = data.Keys.Contains("inventoryName") && data["inventoryName"] != null ? (string) data["inventoryName"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
+                initialCapacity = data.Keys.Contains("initialCapacity") && data["initialCapacity"] != null ? (int?) data["initialCapacity"] : null,
+                maxCapacity = data.Keys.Contains("maxCapacity") && data["maxCapacity"] != null ? (int?) data["maxCapacity"] : null,
+            };
+        }
 
 	}
 }

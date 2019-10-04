@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Exchange.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Exchange.Request
 {
+	[Preserve]
 	public class DeleteRateModelMasterRequest : Gs2Request<DeleteRateModelMasterRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Exchange.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DeleteRateModelMasterRequest FromDict(JsonData data)
+        {
+            return new DeleteRateModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                rateName = data.Keys.Contains("rateName") && data["rateName"] != null ? (string) data["rateName"] : null,
+            };
+        }
 
 	}
 }

@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Limit.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Limit.Request
 {
+	[Preserve]
 	public class CountUpByUserIdRequest : Gs2Request<CountUpByUserIdRequest>
 	{
 
@@ -128,6 +132,20 @@ namespace Gs2.Gs2Limit.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static CountUpByUserIdRequest FromDict(JsonData data)
+        {
+            return new CountUpByUserIdRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                limitName = data.Keys.Contains("limitName") && data["limitName"] != null ? (string) data["limitName"] : null,
+                counterName = data.Keys.Contains("counterName") && data["counterName"] != null ? (string) data["counterName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                countUpValue = data.Keys.Contains("countUpValue") && data["countUpValue"] != null ? (int?) data["countUpValue"] : null,
+                maxValue = data.Keys.Contains("maxValue") && data["maxValue"] != null ? (int?) data["maxValue"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

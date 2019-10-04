@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Quest.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Request
 {
+	[Preserve]
 	public class UpdateCurrentQuestMasterRequest : Gs2Request<UpdateCurrentQuestMasterRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Quest.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateCurrentQuestMasterRequest FromDict(JsonData data)
+        {
+            return new UpdateCurrentQuestMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                settings = data.Keys.Contains("settings") && data["settings"] != null ? (string) data["settings"] : null,
+            };
+        }
 
 	}
 }

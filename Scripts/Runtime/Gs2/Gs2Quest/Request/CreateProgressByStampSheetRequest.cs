@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Quest.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Request
 {
+	[Preserve]
 	public class CreateProgressByStampSheetRequest : Gs2Request<CreateProgressByStampSheetRequest>
 	{
 
@@ -83,6 +87,21 @@ namespace Gs2.Gs2Quest.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static CreateProgressByStampSheetRequest FromDict(JsonData data)
+        {
+            return new CreateProgressByStampSheetRequest {
+                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? (string) data["stampSheet"] : null,
+                keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? (string) data["keyId"] : null,
+                config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
+                    {
+                        return Config.FromDict(value);
+                    }
+                ).ToList() : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

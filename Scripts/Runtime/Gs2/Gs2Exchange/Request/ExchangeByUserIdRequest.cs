@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Exchange.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Exchange.Request
 {
+	[Preserve]
 	public class ExchangeByUserIdRequest : Gs2Request<ExchangeByUserIdRequest>
 	{
 
@@ -113,6 +117,23 @@ namespace Gs2.Gs2Exchange.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static ExchangeByUserIdRequest FromDict(JsonData data)
+        {
+            return new ExchangeByUserIdRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                rateName = data.Keys.Contains("rateName") && data["rateName"] != null ? (string) data["rateName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                count = data.Keys.Contains("count") && data["count"] != null ? (int?) data["count"] : null,
+                config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
+                    {
+                        return Config.FromDict(value);
+                    }
+                ).ToList() : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

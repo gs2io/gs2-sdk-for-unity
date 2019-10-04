@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Auth.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Auth.Request
 {
+	[Preserve]
 	public class LoginBySignatureRequest : Gs2Request<LoginBySignatureRequest>
 	{
 
@@ -98,6 +102,18 @@ namespace Gs2.Gs2Auth.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static LoginBySignatureRequest FromDict(JsonData data)
+        {
+            return new LoginBySignatureRequest {
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? (string) data["keyId"] : null,
+                body = data.Keys.Contains("body") && data["body"] != null ? (string) data["body"] : null,
+                signature = data.Keys.Contains("signature") && data["signature"] != null ? (string) data["signature"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

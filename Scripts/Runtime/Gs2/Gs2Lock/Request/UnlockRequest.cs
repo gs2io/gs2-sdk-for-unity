@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Lock.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lock.Request
 {
+	[Preserve]
 	public class UnlockRequest : Gs2Request<UnlockRequest>
 	{
 
@@ -96,6 +100,17 @@ namespace Gs2.Gs2Lock.Request
         public UnlockRequest WithAccessToken(string accessToken) {
             this.accessToken = accessToken;
             return this;
+        }
+
+    	[Preserve]
+        public static UnlockRequest FromDict(JsonData data)
+        {
+            return new UnlockRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                propertyId = data.Keys.Contains("propertyId") && data["propertyId"] != null ? (string) data["propertyId"] : null,
+                transactionId = data.Keys.Contains("transactionId") && data["transactionId"] != null ? (string) data["transactionId"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
         }
 
 	}

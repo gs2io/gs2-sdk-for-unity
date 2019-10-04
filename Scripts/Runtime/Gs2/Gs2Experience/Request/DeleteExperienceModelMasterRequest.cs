@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Experience.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Request
 {
+	[Preserve]
 	public class DeleteExperienceModelMasterRequest : Gs2Request<DeleteExperienceModelMasterRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Experience.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DeleteExperienceModelMasterRequest FromDict(JsonData data)
+        {
+            return new DeleteExperienceModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                experienceName = data.Keys.Contains("experienceName") && data["experienceName"] != null ? (string) data["experienceName"] : null,
+            };
+        }
 
 	}
 }

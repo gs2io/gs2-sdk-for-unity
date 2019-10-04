@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Mission.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Request
 {
+	[Preserve]
 	public class DeleteMissionGroupModelMasterRequest : Gs2Request<DeleteMissionGroupModelMasterRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Mission.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DeleteMissionGroupModelMasterRequest FromDict(JsonData data)
+        {
+            return new DeleteMissionGroupModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                missionGroupName = data.Keys.Contains("missionGroupName") && data["missionGroupName"] != null ? (string) data["missionGroupName"] : null,
+            };
+        }
 
 	}
 }

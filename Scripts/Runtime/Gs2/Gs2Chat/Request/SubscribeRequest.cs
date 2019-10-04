@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Chat.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Chat.Request
 {
+	[Preserve]
 	public class SubscribeRequest : Gs2Request<SubscribeRequest>
 	{
 
@@ -96,6 +100,21 @@ namespace Gs2.Gs2Chat.Request
         public SubscribeRequest WithAccessToken(string accessToken) {
             this.accessToken = accessToken;
             return this;
+        }
+
+    	[Preserve]
+        public static SubscribeRequest FromDict(JsonData data)
+        {
+            return new SubscribeRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                roomName = data.Keys.Contains("roomName") && data["roomName"] != null ? (string) data["roomName"] : null,
+                notificationTypes = data.Keys.Contains("notificationTypes") && data["notificationTypes"] != null ? data["notificationTypes"].Cast<JsonData>().Select(value =>
+                    {
+                        return NotificationType.FromDict(value);
+                    }
+                ).ToList() : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
         }
 
 	}

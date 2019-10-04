@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Stamina.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Stamina.Request
 {
+	[Preserve]
 	public class UpdateRecoverValueTableMasterRequest : Gs2Request<UpdateRecoverValueTableMasterRequest>
 	{
 
@@ -113,6 +117,23 @@ namespace Gs2.Gs2Stamina.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateRecoverValueTableMasterRequest FromDict(JsonData data)
+        {
+            return new UpdateRecoverValueTableMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                recoverValueTableName = data.Keys.Contains("recoverValueTableName") && data["recoverValueTableName"] != null ? (string) data["recoverValueTableName"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
+                experienceModelId = data.Keys.Contains("experienceModelId") && data["experienceModelId"] != null ? (string) data["experienceModelId"] : null,
+                values = data.Keys.Contains("values") && data["values"] != null ? data["values"].Cast<JsonData>().Select(value =>
+                    {
+                        return (int?) value;
+                    }
+                ).ToList() : null,
+            };
+        }
 
 	}
 }

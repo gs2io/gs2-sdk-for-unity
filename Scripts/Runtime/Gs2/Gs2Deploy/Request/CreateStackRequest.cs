@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Deploy.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Deploy.Request
 {
+	[Preserve]
 	public class CreateStackRequest : Gs2Request<CreateStackRequest>
 	{
 
@@ -68,6 +72,16 @@ namespace Gs2.Gs2Deploy.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static CreateStackRequest FromDict(JsonData data)
+        {
+            return new CreateStackRequest {
+                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                template = data.Keys.Contains("template") && data["template"] != null ? (string) data["template"] : null,
+            };
+        }
 
 	}
 }

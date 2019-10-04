@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Project.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Project.Request
 {
+	[Preserve]
 	public class SignInRequest : Gs2Request<SignInRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Project.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static SignInRequest FromDict(JsonData data)
+        {
+            return new SignInRequest {
+                email = data.Keys.Contains("email") && data["email"] != null ? (string) data["email"] : null,
+                password = data.Keys.Contains("password") && data["password"] != null ? (string) data["password"] : null,
+            };
+        }
 
 	}
 }

@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Chat.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Chat.Request
 {
+	[Preserve]
 	public class UpdateNamespaceRequest : Gs2Request<UpdateNamespaceRequest>
 	{
 
@@ -158,6 +162,22 @@ namespace Gs2.Gs2Chat.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateNamespaceRequest FromDict(JsonData data)
+        {
+            return new UpdateNamespaceRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                allowCreateRoom = data.Keys.Contains("allowCreateRoom") && data["allowCreateRoom"] != null ? (bool?) data["allowCreateRoom"] : null,
+                postMessageScript = data.Keys.Contains("postMessageScript") && data["postMessageScript"] != null ? ScriptSetting.FromDict(data["postMessageScript"]) : null,
+                createRoomScript = data.Keys.Contains("createRoomScript") && data["createRoomScript"] != null ? ScriptSetting.FromDict(data["createRoomScript"]) : null,
+                deleteRoomScript = data.Keys.Contains("deleteRoomScript") && data["deleteRoomScript"] != null ? ScriptSetting.FromDict(data["deleteRoomScript"]) : null,
+                subscribeRoomScript = data.Keys.Contains("subscribeRoomScript") && data["subscribeRoomScript"] != null ? ScriptSetting.FromDict(data["subscribeRoomScript"]) : null,
+                unsubscribeRoomScript = data.Keys.Contains("unsubscribeRoomScript") && data["unsubscribeRoomScript"] != null ? ScriptSetting.FromDict(data["unsubscribeRoomScript"]) : null,
+                postNotification = data.Keys.Contains("postNotification") && data["postNotification"] != null ? NotificationSetting.FromDict(data["postNotification"]) : null,
+            };
+        }
 
 	}
 }

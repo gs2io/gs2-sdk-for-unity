@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Mission.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Request
 {
+	[Preserve]
 	public class CreateNamespaceRequest : Gs2Request<CreateNamespaceRequest>
 	{
 
@@ -233,6 +237,27 @@ namespace Gs2.Gs2Mission.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static CreateNamespaceRequest FromDict(JsonData data)
+        {
+            return new CreateNamespaceRequest {
+                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                missionCompleteTriggerScriptId = data.Keys.Contains("missionCompleteTriggerScriptId") && data["missionCompleteTriggerScriptId"] != null ? (string) data["missionCompleteTriggerScriptId"] : null,
+                missionCompleteDoneTriggerScriptId = data.Keys.Contains("missionCompleteDoneTriggerScriptId") && data["missionCompleteDoneTriggerScriptId"] != null ? (string) data["missionCompleteDoneTriggerScriptId"] : null,
+                missionCompleteDoneTriggerQueueNamespaceId = data.Keys.Contains("missionCompleteDoneTriggerQueueNamespaceId") && data["missionCompleteDoneTriggerQueueNamespaceId"] != null ? (string) data["missionCompleteDoneTriggerQueueNamespaceId"] : null,
+                counterIncrementTriggerScriptId = data.Keys.Contains("counterIncrementTriggerScriptId") && data["counterIncrementTriggerScriptId"] != null ? (string) data["counterIncrementTriggerScriptId"] : null,
+                counterIncrementDoneTriggerScriptId = data.Keys.Contains("counterIncrementDoneTriggerScriptId") && data["counterIncrementDoneTriggerScriptId"] != null ? (string) data["counterIncrementDoneTriggerScriptId"] : null,
+                counterIncrementDoneTriggerQueueNamespaceId = data.Keys.Contains("counterIncrementDoneTriggerQueueNamespaceId") && data["counterIncrementDoneTriggerQueueNamespaceId"] != null ? (string) data["counterIncrementDoneTriggerQueueNamespaceId"] : null,
+                receiveRewardsTriggerScriptId = data.Keys.Contains("receiveRewardsTriggerScriptId") && data["receiveRewardsTriggerScriptId"] != null ? (string) data["receiveRewardsTriggerScriptId"] : null,
+                receiveRewardsDoneTriggerScriptId = data.Keys.Contains("receiveRewardsDoneTriggerScriptId") && data["receiveRewardsDoneTriggerScriptId"] != null ? (string) data["receiveRewardsDoneTriggerScriptId"] : null,
+                receiveRewardsDoneTriggerQueueNamespaceId = data.Keys.Contains("receiveRewardsDoneTriggerQueueNamespaceId") && data["receiveRewardsDoneTriggerQueueNamespaceId"] != null ? (string) data["receiveRewardsDoneTriggerQueueNamespaceId"] : null,
+                queueNamespaceId = data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? (string) data["queueNamespaceId"] : null,
+                keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? (string) data["keyId"] : null,
+                completeNotification = data.Keys.Contains("completeNotification") && data["completeNotification"] != null ? NotificationSetting.FromDict(data["completeNotification"]) : null,
+            };
+        }
 
 	}
 }

@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Inventory.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Request
 {
+	[Preserve]
 	public class ConsumeItemSetRequest : Gs2Request<ConsumeItemSetRequest>
 	{
 
@@ -126,6 +130,19 @@ namespace Gs2.Gs2Inventory.Request
         public ConsumeItemSetRequest WithAccessToken(string accessToken) {
             this.accessToken = accessToken;
             return this;
+        }
+
+    	[Preserve]
+        public static ConsumeItemSetRequest FromDict(JsonData data)
+        {
+            return new ConsumeItemSetRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                inventoryName = data.Keys.Contains("inventoryName") && data["inventoryName"] != null ? (string) data["inventoryName"] : null,
+                itemName = data.Keys.Contains("itemName") && data["itemName"] != null ? (string) data["itemName"] : null,
+                consumeCount = data.Keys.Contains("consumeCount") && data["consumeCount"] != null ? (long?) data["consumeCount"] : null,
+                expiresAt = data.Keys.Contains("expiresAt") && data["expiresAt"] != null ? (long?) data["expiresAt"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
         }
 
 	}

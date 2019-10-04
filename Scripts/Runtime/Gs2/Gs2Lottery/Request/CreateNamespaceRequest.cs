@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Lottery.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Request
 {
+	[Preserve]
 	public class CreateNamespaceRequest : Gs2Request<CreateNamespaceRequest>
 	{
 
@@ -113,6 +117,19 @@ namespace Gs2.Gs2Lottery.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static CreateNamespaceRequest FromDict(JsonData data)
+        {
+            return new CreateNamespaceRequest {
+                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                queueNamespaceId = data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? (string) data["queueNamespaceId"] : null,
+                keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? (string) data["keyId"] : null,
+                lotteryTriggerScriptId = data.Keys.Contains("lotteryTriggerScriptId") && data["lotteryTriggerScriptId"] != null ? (string) data["lotteryTriggerScriptId"] : null,
+                choicePrizeTableScriptId = data.Keys.Contains("choicePrizeTableScriptId") && data["choicePrizeTableScriptId"] != null ? (string) data["choicePrizeTableScriptId"] : null,
+            };
+        }
 
 	}
 }

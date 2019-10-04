@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Showcase.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Showcase.Request
 {
+	[Preserve]
 	public class UpdateCurrentShowcaseMasterFromGitHubRequest : Gs2Request<UpdateCurrentShowcaseMasterFromGitHubRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Showcase.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateCurrentShowcaseMasterFromGitHubRequest FromDict(JsonData data)
+        {
+            return new UpdateCurrentShowcaseMasterFromGitHubRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
+            };
+        }
 
 	}
 }

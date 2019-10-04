@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Distributor.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Distributor.Request
 {
+	[Preserve]
 	public class DistributeRequest : Gs2Request<DistributeRequest>
 	{
 
@@ -96,6 +100,17 @@ namespace Gs2.Gs2Distributor.Request
         public DistributeRequest WithAccessToken(string accessToken) {
             this.accessToken = accessToken;
             return this;
+        }
+
+    	[Preserve]
+        public static DistributeRequest FromDict(JsonData data)
+        {
+            return new DistributeRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                distributorName = data.Keys.Contains("distributorName") && data["distributorName"] != null ? (string) data["distributorName"] : null,
+                distributeResource = data.Keys.Contains("distributeResource") && data["distributeResource"] != null ? DistributeResource.FromDict(data["distributeResource"]) : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
         }
 
 	}

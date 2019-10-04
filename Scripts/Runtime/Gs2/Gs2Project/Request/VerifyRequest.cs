@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Project.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Project.Request
 {
+	[Preserve]
 	public class VerifyRequest : Gs2Request<VerifyRequest>
 	{
 
@@ -38,6 +42,14 @@ namespace Gs2.Gs2Project.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static VerifyRequest FromDict(JsonData data)
+        {
+            return new VerifyRequest {
+                verifyToken = data.Keys.Contains("verifyToken") && data["verifyToken"] != null ? (string) data["verifyToken"] : null,
+            };
+        }
 
 	}
 }

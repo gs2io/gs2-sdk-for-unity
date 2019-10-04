@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Key.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Key.Request
 {
+	[Preserve]
 	public class UpdateGitHubApiKeyRequest : Gs2Request<UpdateGitHubApiKeyRequest>
 	{
 
@@ -98,6 +102,18 @@ namespace Gs2.Gs2Key.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateGitHubApiKeyRequest FromDict(JsonData data)
+        {
+            return new UpdateGitHubApiKeyRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                apiKeyName = data.Keys.Contains("apiKeyName") && data["apiKeyName"] != null ? (string) data["apiKeyName"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                apiKey = data.Keys.Contains("apiKey") && data["apiKey"] != null ? (string) data["apiKey"] : null,
+                encryptionKeyName = data.Keys.Contains("encryptionKeyName") && data["encryptionKeyName"] != null ? (string) data["encryptionKeyName"] : null,
+            };
+        }
 
 	}
 }

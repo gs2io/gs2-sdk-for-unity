@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Exchange.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Exchange.Request
 {
+	[Preserve]
 	public class UpdateRateModelMasterRequest : Gs2Request<UpdateRateModelMasterRequest>
 	{
 
@@ -113,6 +117,27 @@ namespace Gs2.Gs2Exchange.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateRateModelMasterRequest FromDict(JsonData data)
+        {
+            return new UpdateRateModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                rateName = data.Keys.Contains("rateName") && data["rateName"] != null ? (string) data["rateName"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
+                acquireActions = data.Keys.Contains("acquireActions") && data["acquireActions"] != null ? data["acquireActions"].Cast<JsonData>().Select(value =>
+                    {
+                        return AcquireAction.FromDict(value);
+                    }
+                ).ToList() : null,
+                consumeActions = data.Keys.Contains("consumeActions") && data["consumeActions"] != null ? data["consumeActions"].Cast<JsonData>().Select(value =>
+                    {
+                        return ConsumeAction.FromDict(value);
+                    }
+                ).ToList() : null,
+            };
+        }
 
 	}
 }

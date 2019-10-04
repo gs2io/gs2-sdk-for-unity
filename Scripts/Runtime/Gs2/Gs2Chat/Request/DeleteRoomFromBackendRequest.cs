@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Chat.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Chat.Request
 {
+	[Preserve]
 	public class DeleteRoomFromBackendRequest : Gs2Request<DeleteRoomFromBackendRequest>
 	{
 
@@ -83,6 +87,17 @@ namespace Gs2.Gs2Chat.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DeleteRoomFromBackendRequest FromDict(JsonData data)
+        {
+            return new DeleteRoomFromBackendRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                roomName = data.Keys.Contains("roomName") && data["roomName"] != null ? (string) data["roomName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

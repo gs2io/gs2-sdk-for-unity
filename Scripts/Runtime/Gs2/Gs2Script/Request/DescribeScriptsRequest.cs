@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Script.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Script.Request
 {
+	[Preserve]
 	public class DescribeScriptsRequest : Gs2Request<DescribeScriptsRequest>
 	{
 
@@ -68,6 +72,16 @@ namespace Gs2.Gs2Script.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DescribeScriptsRequest FromDict(JsonData data)
+        {
+            return new DescribeScriptsRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                pageToken = data.Keys.Contains("pageToken") && data["pageToken"] != null ? (string) data["pageToken"] : null,
+                limit = data.Keys.Contains("limit") && data["limit"] != null ? (long?) data["limit"] : null,
+            };
+        }
 
 	}
 }

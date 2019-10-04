@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Distributor.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Distributor.Request
 {
+	[Preserve]
 	public class GetDistributorModelMasterRequest : Gs2Request<GetDistributorModelMasterRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Distributor.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static GetDistributorModelMasterRequest FromDict(JsonData data)
+        {
+            return new GetDistributorModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                distributorName = data.Keys.Contains("distributorName") && data["distributorName"] != null ? (string) data["distributorName"] : null,
+            };
+        }
 
 	}
 }

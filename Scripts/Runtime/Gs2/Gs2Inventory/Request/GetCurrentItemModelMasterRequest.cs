@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Inventory.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Request
 {
+	[Preserve]
 	public class GetCurrentItemModelMasterRequest : Gs2Request<GetCurrentItemModelMasterRequest>
 	{
 
@@ -38,6 +42,14 @@ namespace Gs2.Gs2Inventory.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static GetCurrentItemModelMasterRequest FromDict(JsonData data)
+        {
+            return new GetCurrentItemModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+            };
+        }
 
 	}
 }

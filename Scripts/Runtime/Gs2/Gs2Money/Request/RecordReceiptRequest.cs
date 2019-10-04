@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Money.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Money.Request
 {
+	[Preserve]
 	public class RecordReceiptRequest : Gs2Request<RecordReceiptRequest>
 	{
 
@@ -98,6 +102,18 @@ namespace Gs2.Gs2Money.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static RecordReceiptRequest FromDict(JsonData data)
+        {
+            return new RecordReceiptRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                contentsId = data.Keys.Contains("contentsId") && data["contentsId"] != null ? (string) data["contentsId"] : null,
+                receipt = data.Keys.Contains("receipt") && data["receipt"] != null ? (string) data["receipt"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Stamina.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Stamina.Request
 {
+	[Preserve]
 	public class UpdateStaminaByUserIdRequest : Gs2Request<UpdateStaminaByUserIdRequest>
 	{
 
@@ -143,6 +147,21 @@ namespace Gs2.Gs2Stamina.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateStaminaByUserIdRequest FromDict(JsonData data)
+        {
+            return new UpdateStaminaByUserIdRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                staminaName = data.Keys.Contains("staminaName") && data["staminaName"] != null ? (string) data["staminaName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                value = data.Keys.Contains("value") && data["value"] != null ? (int?) data["value"] : null,
+                maxValue = data.Keys.Contains("maxValue") && data["maxValue"] != null ? (int?) data["maxValue"] : null,
+                recoverIntervalMinutes = data.Keys.Contains("recoverIntervalMinutes") && data["recoverIntervalMinutes"] != null ? (int?) data["recoverIntervalMinutes"] : null,
+                recoverValue = data.Keys.Contains("recoverValue") && data["recoverValue"] != null ? (int?) data["recoverValue"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

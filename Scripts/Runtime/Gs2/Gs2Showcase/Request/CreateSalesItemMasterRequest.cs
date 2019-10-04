@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Showcase.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Showcase.Request
 {
+	[Preserve]
 	public class CreateSalesItemMasterRequest : Gs2Request<CreateSalesItemMasterRequest>
 	{
 
@@ -113,6 +117,27 @@ namespace Gs2.Gs2Showcase.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static CreateSalesItemMasterRequest FromDict(JsonData data)
+        {
+            return new CreateSalesItemMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
+                consumeActions = data.Keys.Contains("consumeActions") && data["consumeActions"] != null ? data["consumeActions"].Cast<JsonData>().Select(value =>
+                    {
+                        return ConsumeAction.FromDict(value);
+                    }
+                ).ToList() : null,
+                acquireActions = data.Keys.Contains("acquireActions") && data["acquireActions"] != null ? data["acquireActions"].Cast<JsonData>().Select(value =>
+                    {
+                        return AcquireAction.FromDict(value);
+                    }
+                ).ToList() : null,
+            };
+        }
 
 	}
 }

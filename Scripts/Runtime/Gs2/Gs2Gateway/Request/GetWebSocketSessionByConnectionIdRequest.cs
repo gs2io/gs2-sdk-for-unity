@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Gateway.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Gateway.Request
 {
+	[Preserve]
 	public class GetWebSocketSessionByConnectionIdRequest : Gs2Request<GetWebSocketSessionByConnectionIdRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Gateway.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static GetWebSocketSessionByConnectionIdRequest FromDict(JsonData data)
+        {
+            return new GetWebSocketSessionByConnectionIdRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                connectionId = data.Keys.Contains("connectionId") && data["connectionId"] != null ? (string) data["connectionId"] : null,
+            };
+        }
 
 	}
 }

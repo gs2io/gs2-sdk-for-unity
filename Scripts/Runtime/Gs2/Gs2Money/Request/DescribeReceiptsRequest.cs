@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Money.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Money.Request
 {
+	[Preserve]
 	public class DescribeReceiptsRequest : Gs2Request<DescribeReceiptsRequest>
 	{
 
@@ -143,6 +147,21 @@ namespace Gs2.Gs2Money.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DescribeReceiptsRequest FromDict(JsonData data)
+        {
+            return new DescribeReceiptsRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                slot = data.Keys.Contains("slot") && data["slot"] != null ? (int?) data["slot"] : null,
+                begin = data.Keys.Contains("begin") && data["begin"] != null ? (long?) data["begin"] : null,
+                end = data.Keys.Contains("end") && data["end"] != null ? (long?) data["end"] : null,
+                pageToken = data.Keys.Contains("pageToken") && data["pageToken"] != null ? (string) data["pageToken"] : null,
+                limit = data.Keys.Contains("limit") && data["limit"] != null ? (long?) data["limit"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Mission.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Request
 {
+	[Preserve]
 	public class GetMissionTaskModelMasterRequest : Gs2Request<GetMissionTaskModelMasterRequest>
 	{
 
@@ -68,6 +72,16 @@ namespace Gs2.Gs2Mission.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static GetMissionTaskModelMasterRequest FromDict(JsonData data)
+        {
+            return new GetMissionTaskModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                missionGroupName = data.Keys.Contains("missionGroupName") && data["missionGroupName"] != null ? (string) data["missionGroupName"] : null,
+                missionTaskName = data.Keys.Contains("missionTaskName") && data["missionTaskName"] != null ? (string) data["missionTaskName"] : null,
+            };
+        }
 
 	}
 }

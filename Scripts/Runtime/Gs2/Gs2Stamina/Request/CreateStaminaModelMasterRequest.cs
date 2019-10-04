@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Stamina.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Stamina.Request
 {
+	[Preserve]
 	public class CreateStaminaModelMasterRequest : Gs2Request<CreateStaminaModelMasterRequest>
 	{
 
@@ -203,6 +207,25 @@ namespace Gs2.Gs2Stamina.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static CreateStaminaModelMasterRequest FromDict(JsonData data)
+        {
+            return new CreateStaminaModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
+                recoverIntervalMinutes = data.Keys.Contains("recoverIntervalMinutes") && data["recoverIntervalMinutes"] != null ? (int?) data["recoverIntervalMinutes"] : null,
+                recoverValue = data.Keys.Contains("recoverValue") && data["recoverValue"] != null ? (int?) data["recoverValue"] : null,
+                initialCapacity = data.Keys.Contains("initialCapacity") && data["initialCapacity"] != null ? (int?) data["initialCapacity"] : null,
+                isOverflow = data.Keys.Contains("isOverflow") && data["isOverflow"] != null ? (bool?) data["isOverflow"] : null,
+                maxCapacity = data.Keys.Contains("maxCapacity") && data["maxCapacity"] != null ? (int?) data["maxCapacity"] : null,
+                maxStaminaTableId = data.Keys.Contains("maxStaminaTableId") && data["maxStaminaTableId"] != null ? (string) data["maxStaminaTableId"] : null,
+                recoverIntervalTableId = data.Keys.Contains("recoverIntervalTableId") && data["recoverIntervalTableId"] != null ? (string) data["recoverIntervalTableId"] : null,
+                recoverValueTableId = data.Keys.Contains("recoverValueTableId") && data["recoverValueTableId"] != null ? (string) data["recoverValueTableId"] : null,
+            };
+        }
 
 	}
 }

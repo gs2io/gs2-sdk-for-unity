@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Stamina.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Stamina.Request
 {
+	[Preserve]
 	public class GetRecoverIntervalTableMasterRequest : Gs2Request<GetRecoverIntervalTableMasterRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Stamina.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static GetRecoverIntervalTableMasterRequest FromDict(JsonData data)
+        {
+            return new GetRecoverIntervalTableMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                recoverIntervalTableName = data.Keys.Contains("recoverIntervalTableName") && data["recoverIntervalTableName"] != null ? (string) data["recoverIntervalTableName"] : null,
+            };
+        }
 
 	}
 }

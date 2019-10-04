@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Showcase.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Showcase.Request
 {
+	[Preserve]
 	public class DeleteShowcaseMasterRequest : Gs2Request<DeleteShowcaseMasterRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Showcase.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DeleteShowcaseMasterRequest FromDict(JsonData data)
+        {
+            return new DeleteShowcaseMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                showcaseName = data.Keys.Contains("showcaseName") && data["showcaseName"] != null ? (string) data["showcaseName"] : null,
+            };
+        }
 
 	}
 }

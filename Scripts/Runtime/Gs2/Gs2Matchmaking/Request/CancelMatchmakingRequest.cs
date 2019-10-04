@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Matchmaking.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Matchmaking.Request
 {
+	[Preserve]
 	public class CancelMatchmakingRequest : Gs2Request<CancelMatchmakingRequest>
 	{
 
@@ -81,6 +85,16 @@ namespace Gs2.Gs2Matchmaking.Request
         public CancelMatchmakingRequest WithAccessToken(string accessToken) {
             this.accessToken = accessToken;
             return this;
+        }
+
+    	[Preserve]
+        public static CancelMatchmakingRequest FromDict(JsonData data)
+        {
+            return new CancelMatchmakingRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                gatheringName = data.Keys.Contains("gatheringName") && data["gatheringName"] != null ? (string) data["gatheringName"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
         }
 
 	}

@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Showcase.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Showcase.Request
 {
+	[Preserve]
 	public class GetSalesItemMasterRequest : Gs2Request<GetSalesItemMasterRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Showcase.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static GetSalesItemMasterRequest FromDict(JsonData data)
+        {
+            return new GetSalesItemMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                salesItemName = data.Keys.Contains("salesItemName") && data["salesItemName"] != null ? (string) data["salesItemName"] : null,
+            };
+        }
 
 	}
 }

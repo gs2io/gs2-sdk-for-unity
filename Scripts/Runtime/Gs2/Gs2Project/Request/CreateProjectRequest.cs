@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Project.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Project.Request
 {
+	[Preserve]
 	public class CreateProjectRequest : Gs2Request<CreateProjectRequest>
 	{
 
@@ -68,6 +72,16 @@ namespace Gs2.Gs2Project.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static CreateProjectRequest FromDict(JsonData data)
+        {
+            return new CreateProjectRequest {
+                accountToken = data.Keys.Contains("accountToken") && data["accountToken"] != null ? (string) data["accountToken"] : null,
+                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+            };
+        }
 
 	}
 }

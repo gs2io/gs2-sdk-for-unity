@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Showcase.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Showcase.Request
 {
+	[Preserve]
 	public class GetShowcaseRequest : Gs2Request<GetShowcaseRequest>
 	{
 
@@ -81,6 +85,16 @@ namespace Gs2.Gs2Showcase.Request
         public GetShowcaseRequest WithAccessToken(string accessToken) {
             this.accessToken = accessToken;
             return this;
+        }
+
+    	[Preserve]
+        public static GetShowcaseRequest FromDict(JsonData data)
+        {
+            return new GetShowcaseRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                showcaseName = data.Keys.Contains("showcaseName") && data["showcaseName"] != null ? (string) data["showcaseName"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
         }
 
 	}

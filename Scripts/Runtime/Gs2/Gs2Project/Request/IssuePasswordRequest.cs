@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Project.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Project.Request
 {
+	[Preserve]
 	public class IssuePasswordRequest : Gs2Request<IssuePasswordRequest>
 	{
 
@@ -38,6 +42,14 @@ namespace Gs2.Gs2Project.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static IssuePasswordRequest FromDict(JsonData data)
+        {
+            return new IssuePasswordRequest {
+                issuePasswordToken = data.Keys.Contains("issuePasswordToken") && data["issuePasswordToken"] != null ? (string) data["issuePasswordToken"] : null,
+            };
+        }
 
 	}
 }

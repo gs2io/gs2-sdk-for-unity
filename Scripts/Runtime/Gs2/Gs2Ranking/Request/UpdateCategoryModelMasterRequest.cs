@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Ranking.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Ranking.Request
 {
+	[Preserve]
 	public class UpdateCategoryModelMasterRequest : Gs2Request<UpdateCategoryModelMasterRequest>
 	{
 
@@ -173,6 +177,23 @@ namespace Gs2.Gs2Ranking.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateCategoryModelMasterRequest FromDict(JsonData data)
+        {
+            return new UpdateCategoryModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                categoryName = data.Keys.Contains("categoryName") && data["categoryName"] != null ? (string) data["categoryName"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
+                minimumValue = data.Keys.Contains("minimumValue") && data["minimumValue"] != null ? (long?) data["minimumValue"] : null,
+                maximumValue = data.Keys.Contains("maximumValue") && data["maximumValue"] != null ? (long?) data["maximumValue"] : null,
+                orderDirection = data.Keys.Contains("orderDirection") && data["orderDirection"] != null ? (string) data["orderDirection"] : null,
+                scope = data.Keys.Contains("scope") && data["scope"] != null ? (string) data["scope"] : null,
+                uniqueByUserId = data.Keys.Contains("uniqueByUserId") && data["uniqueByUserId"] != null ? (bool?) data["uniqueByUserId"] : null,
+                calculateIntervalMinutes = data.Keys.Contains("calculateIntervalMinutes") && data["calculateIntervalMinutes"] != null ? (int?) data["calculateIntervalMinutes"] : null,
+            };
+        }
 
 	}
 }

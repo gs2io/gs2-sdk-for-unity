@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Schedule.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Schedule.Request
 {
+	[Preserve]
 	public class DeleteTriggerByUserIdRequest : Gs2Request<DeleteTriggerByUserIdRequest>
 	{
 
@@ -83,6 +87,17 @@ namespace Gs2.Gs2Schedule.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DeleteTriggerByUserIdRequest FromDict(JsonData data)
+        {
+            return new DeleteTriggerByUserIdRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                triggerName = data.Keys.Contains("triggerName") && data["triggerName"] != null ? (string) data["triggerName"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

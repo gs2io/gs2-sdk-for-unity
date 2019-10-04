@@ -15,14 +15,25 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Project.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Project.Request
 {
+	[Preserve]
 	public class DeleteAccountRequest : Gs2Request<DeleteAccountRequest>
 	{
+
+    	[Preserve]
+        public static DeleteAccountRequest FromDict(JsonData data)
+        {
+            return new DeleteAccountRequest {
+            };
+        }
 
 	}
 }

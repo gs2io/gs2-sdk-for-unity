@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Experience.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Request
 {
+	[Preserve]
 	public class GetThresholdMasterRequest : Gs2Request<GetThresholdMasterRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Experience.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static GetThresholdMasterRequest FromDict(JsonData data)
+        {
+            return new GetThresholdMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                thresholdName = data.Keys.Contains("thresholdName") && data["thresholdName"] != null ? (string) data["thresholdName"] : null,
+            };
+        }
 
 	}
 }

@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Ranking.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Ranking.Request
 {
+	[Preserve]
 	public class UpdateCurrentRankingMasterFromGitHubRequest : Gs2Request<UpdateCurrentRankingMasterFromGitHubRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Ranking.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateCurrentRankingMasterFromGitHubRequest FromDict(JsonData data)
+        {
+            return new UpdateCurrentRankingMasterFromGitHubRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
+            };
+        }
 
 	}
 }

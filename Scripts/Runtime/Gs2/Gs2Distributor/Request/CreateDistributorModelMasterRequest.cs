@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Distributor.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Distributor.Request
 {
+	[Preserve]
 	public class CreateDistributorModelMasterRequest : Gs2Request<CreateDistributorModelMasterRequest>
 	{
 
@@ -128,6 +132,24 @@ namespace Gs2.Gs2Distributor.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static CreateDistributorModelMasterRequest FromDict(JsonData data)
+        {
+            return new CreateDistributorModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
+                assumeUserId = data.Keys.Contains("assumeUserId") && data["assumeUserId"] != null ? (string) data["assumeUserId"] : null,
+                inboxNamespaceId = data.Keys.Contains("inboxNamespaceId") && data["inboxNamespaceId"] != null ? (string) data["inboxNamespaceId"] : null,
+                whiteListTargetIds = data.Keys.Contains("whiteListTargetIds") && data["whiteListTargetIds"] != null ? data["whiteListTargetIds"].Cast<JsonData>().Select(value =>
+                    {
+                        return (string) value;
+                    }
+                ).ToList() : null,
+            };
+        }
 
 	}
 }

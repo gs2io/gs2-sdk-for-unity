@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Script.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Script.Request
 {
+	[Preserve]
 	public class UpdateScriptFromGitHubRequest : Gs2Request<UpdateScriptFromGitHubRequest>
 	{
 
@@ -83,6 +87,17 @@ namespace Gs2.Gs2Script.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateScriptFromGitHubRequest FromDict(JsonData data)
+        {
+            return new UpdateScriptFromGitHubRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                scriptName = data.Keys.Contains("scriptName") && data["scriptName"] != null ? (string) data["scriptName"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
+            };
+        }
 
 	}
 }

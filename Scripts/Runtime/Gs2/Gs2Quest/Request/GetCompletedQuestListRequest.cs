@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Quest.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Request
 {
+	[Preserve]
 	public class GetCompletedQuestListRequest : Gs2Request<GetCompletedQuestListRequest>
 	{
 
@@ -81,6 +85,16 @@ namespace Gs2.Gs2Quest.Request
         public GetCompletedQuestListRequest WithAccessToken(string accessToken) {
             this.accessToken = accessToken;
             return this;
+        }
+
+    	[Preserve]
+        public static GetCompletedQuestListRequest FromDict(JsonData data)
+        {
+            return new GetCompletedQuestListRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                questGroupName = data.Keys.Contains("questGroupName") && data["questGroupName"] != null ? (string) data["questGroupName"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
         }
 
 	}

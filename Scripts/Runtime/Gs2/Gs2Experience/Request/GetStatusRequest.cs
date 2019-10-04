@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Experience.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Request
 {
+	[Preserve]
 	public class GetStatusRequest : Gs2Request<GetStatusRequest>
 	{
 
@@ -96,6 +100,17 @@ namespace Gs2.Gs2Experience.Request
         public GetStatusRequest WithAccessToken(string accessToken) {
             this.accessToken = accessToken;
             return this;
+        }
+
+    	[Preserve]
+        public static GetStatusRequest FromDict(JsonData data)
+        {
+            return new GetStatusRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                experienceName = data.Keys.Contains("experienceName") && data["experienceName"] != null ? (string) data["experienceName"] : null,
+                propertyId = data.Keys.Contains("propertyId") && data["propertyId"] != null ? (string) data["propertyId"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
         }
 
 	}

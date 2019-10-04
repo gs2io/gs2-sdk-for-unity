@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Stamina.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Stamina.Request
 {
+	[Preserve]
 	public class GetStaminaModelMasterRequest : Gs2Request<GetStaminaModelMasterRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Stamina.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static GetStaminaModelMasterRequest FromDict(JsonData data)
+        {
+            return new GetStaminaModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                staminaName = data.Keys.Contains("staminaName") && data["staminaName"] != null ? (string) data["staminaName"] : null,
+            };
+        }
 
 	}
 }

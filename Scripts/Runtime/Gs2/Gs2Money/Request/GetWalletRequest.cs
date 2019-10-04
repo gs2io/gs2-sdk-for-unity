@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Money.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Money.Request
 {
+	[Preserve]
 	public class GetWalletRequest : Gs2Request<GetWalletRequest>
 	{
 
@@ -81,6 +85,16 @@ namespace Gs2.Gs2Money.Request
         public GetWalletRequest WithAccessToken(string accessToken) {
             this.accessToken = accessToken;
             return this;
+        }
+
+    	[Preserve]
+        public static GetWalletRequest FromDict(JsonData data)
+        {
+            return new GetWalletRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                slot = data.Keys.Contains("slot") && data["slot"] != null ? (int?) data["slot"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
         }
 
 	}

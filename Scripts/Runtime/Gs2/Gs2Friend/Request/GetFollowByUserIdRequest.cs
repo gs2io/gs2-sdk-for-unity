@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Friend.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Friend.Request
 {
+	[Preserve]
 	public class GetFollowByUserIdRequest : Gs2Request<GetFollowByUserIdRequest>
 	{
 
@@ -98,6 +102,18 @@ namespace Gs2.Gs2Friend.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static GetFollowByUserIdRequest FromDict(JsonData data)
+        {
+            return new GetFollowByUserIdRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                targetUserId = data.Keys.Contains("targetUserId") && data["targetUserId"] != null ? (string) data["targetUserId"] : null,
+                withProfile = data.Keys.Contains("withProfile") && data["withProfile"] != null ? (bool?) data["withProfile"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

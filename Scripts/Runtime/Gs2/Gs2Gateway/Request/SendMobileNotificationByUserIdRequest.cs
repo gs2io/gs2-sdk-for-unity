@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Gateway.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Gateway.Request
 {
+	[Preserve]
 	public class SendMobileNotificationByUserIdRequest : Gs2Request<SendMobileNotificationByUserIdRequest>
 	{
 
@@ -113,6 +117,19 @@ namespace Gs2.Gs2Gateway.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static SendMobileNotificationByUserIdRequest FromDict(JsonData data)
+        {
+            return new SendMobileNotificationByUserIdRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                subject = data.Keys.Contains("subject") && data["subject"] != null ? (string) data["subject"] : null,
+                payload = data.Keys.Contains("payload") && data["payload"] != null ? (string) data["payload"] : null,
+                sound = data.Keys.Contains("sound") && data["sound"] != null ? (string) data["sound"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

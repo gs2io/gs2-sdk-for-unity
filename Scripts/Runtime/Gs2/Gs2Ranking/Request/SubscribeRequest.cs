@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Ranking.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Ranking.Request
 {
+	[Preserve]
 	public class SubscribeRequest : Gs2Request<SubscribeRequest>
 	{
 
@@ -96,6 +100,17 @@ namespace Gs2.Gs2Ranking.Request
         public SubscribeRequest WithAccessToken(string accessToken) {
             this.accessToken = accessToken;
             return this;
+        }
+
+    	[Preserve]
+        public static SubscribeRequest FromDict(JsonData data)
+        {
+            return new SubscribeRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                categoryName = data.Keys.Contains("categoryName") && data["categoryName"] != null ? (string) data["categoryName"] : null,
+                targetUserId = data.Keys.Contains("targetUserId") && data["targetUserId"] != null ? (string) data["targetUserId"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
         }
 
 	}

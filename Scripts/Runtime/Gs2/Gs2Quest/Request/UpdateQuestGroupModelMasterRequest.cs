@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Quest.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Request
 {
+	[Preserve]
 	public class UpdateQuestGroupModelMasterRequest : Gs2Request<UpdateQuestGroupModelMasterRequest>
 	{
 
@@ -98,6 +102,18 @@ namespace Gs2.Gs2Quest.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateQuestGroupModelMasterRequest FromDict(JsonData data)
+        {
+            return new UpdateQuestGroupModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                questGroupName = data.Keys.Contains("questGroupName") && data["questGroupName"] != null ? (string) data["questGroupName"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
+                challengePeriodEventId = data.Keys.Contains("challengePeriodEventId") && data["challengePeriodEventId"] != null ? (string) data["challengePeriodEventId"] : null,
+            };
+        }
 
 	}
 }

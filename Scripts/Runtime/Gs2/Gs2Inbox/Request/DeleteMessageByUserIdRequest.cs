@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Inbox.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inbox.Request
 {
+	[Preserve]
 	public class DeleteMessageByUserIdRequest : Gs2Request<DeleteMessageByUserIdRequest>
 	{
 
@@ -83,6 +87,17 @@ namespace Gs2.Gs2Inbox.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DeleteMessageByUserIdRequest FromDict(JsonData data)
+        {
+            return new DeleteMessageByUserIdRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                messageName = data.Keys.Contains("messageName") && data["messageName"] != null ? (string) data["messageName"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Quest.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Request
 {
+	[Preserve]
 	public class DeleteQuestModelMasterRequest : Gs2Request<DeleteQuestModelMasterRequest>
 	{
 
@@ -68,6 +72,16 @@ namespace Gs2.Gs2Quest.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DeleteQuestModelMasterRequest FromDict(JsonData data)
+        {
+            return new DeleteQuestModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                questGroupName = data.Keys.Contains("questGroupName") && data["questGroupName"] != null ? (string) data["questGroupName"] : null,
+                questName = data.Keys.Contains("questName") && data["questName"] != null ? (string) data["questName"] : null,
+            };
+        }
 
 	}
 }

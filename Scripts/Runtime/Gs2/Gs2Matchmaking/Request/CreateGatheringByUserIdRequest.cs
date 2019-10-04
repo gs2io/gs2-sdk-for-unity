@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Matchmaking.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Matchmaking.Request
 {
+	[Preserve]
 	public class CreateGatheringByUserIdRequest : Gs2Request<CreateGatheringByUserIdRequest>
 	{
 
@@ -128,6 +132,32 @@ namespace Gs2.Gs2Matchmaking.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static CreateGatheringByUserIdRequest FromDict(JsonData data)
+        {
+            return new CreateGatheringByUserIdRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                player = data.Keys.Contains("player") && data["player"] != null ? Player.FromDict(data["player"]) : null,
+                attributeRanges = data.Keys.Contains("attributeRanges") && data["attributeRanges"] != null ? data["attributeRanges"].Cast<JsonData>().Select(value =>
+                    {
+                        return AttributeRange.FromDict(value);
+                    }
+                ).ToList() : null,
+                capacityOfRoles = data.Keys.Contains("capacityOfRoles") && data["capacityOfRoles"] != null ? data["capacityOfRoles"].Cast<JsonData>().Select(value =>
+                    {
+                        return CapacityOfRole.FromDict(value);
+                    }
+                ).ToList() : null,
+                allowUserIds = data.Keys.Contains("allowUserIds") && data["allowUserIds"] != null ? data["allowUserIds"].Cast<JsonData>().Select(value =>
+                    {
+                        return (string) value;
+                    }
+                ).ToList() : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

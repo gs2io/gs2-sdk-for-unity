@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Gateway.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Gateway.Request
 {
+	[Preserve]
 	public class SetFirebaseTokenByUserIdRequest : Gs2Request<SetFirebaseTokenByUserIdRequest>
 	{
 
@@ -83,6 +87,17 @@ namespace Gs2.Gs2Gateway.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static SetFirebaseTokenByUserIdRequest FromDict(JsonData data)
+        {
+            return new SetFirebaseTokenByUserIdRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                token = data.Keys.Contains("token") && data["token"] != null ? (string) data["token"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Ranking.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Ranking.Request
 {
+	[Preserve]
 	public class DescribeCategoryModelMastersRequest : Gs2Request<DescribeCategoryModelMastersRequest>
 	{
 
@@ -68,6 +72,16 @@ namespace Gs2.Gs2Ranking.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DescribeCategoryModelMastersRequest FromDict(JsonData data)
+        {
+            return new DescribeCategoryModelMastersRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                pageToken = data.Keys.Contains("pageToken") && data["pageToken"] != null ? (string) data["pageToken"] : null,
+                limit = data.Keys.Contains("limit") && data["limit"] != null ? (long?) data["limit"] : null,
+            };
+        }
 
 	}
 }

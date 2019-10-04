@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Friend.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Friend.Request
 {
+	[Preserve]
 	public class UpdateProfileRequest : Gs2Request<UpdateProfileRequest>
 	{
 
@@ -111,6 +115,18 @@ namespace Gs2.Gs2Friend.Request
         public UpdateProfileRequest WithAccessToken(string accessToken) {
             this.accessToken = accessToken;
             return this;
+        }
+
+    	[Preserve]
+        public static UpdateProfileRequest FromDict(JsonData data)
+        {
+            return new UpdateProfileRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                publicProfile = data.Keys.Contains("publicProfile") && data["publicProfile"] != null ? (string) data["publicProfile"] : null,
+                followerProfile = data.Keys.Contains("followerProfile") && data["followerProfile"] != null ? (string) data["followerProfile"] : null,
+                friendProfile = data.Keys.Contains("friendProfile") && data["friendProfile"] != null ? (string) data["friendProfile"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
         }
 
 	}

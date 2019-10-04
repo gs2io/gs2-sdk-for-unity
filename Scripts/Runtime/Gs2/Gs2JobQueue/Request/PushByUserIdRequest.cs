@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2JobQueue.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2JobQueue.Request
 {
+	[Preserve]
 	public class PushByUserIdRequest : Gs2Request<PushByUserIdRequest>
 	{
 
@@ -83,6 +87,21 @@ namespace Gs2.Gs2JobQueue.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static PushByUserIdRequest FromDict(JsonData data)
+        {
+            return new PushByUserIdRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                jobs = data.Keys.Contains("jobs") && data["jobs"] != null ? data["jobs"].Cast<JsonData>().Select(value =>
+                    {
+                        return JobEntry.FromDict(value);
+                    }
+                ).ToList() : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

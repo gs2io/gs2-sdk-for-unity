@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Key.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Key.Request
 {
+	[Preserve]
 	public class DeleteGitHubApiKeyRequest : Gs2Request<DeleteGitHubApiKeyRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Key.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DeleteGitHubApiKeyRequest FromDict(JsonData data)
+        {
+            return new DeleteGitHubApiKeyRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                apiKeyName = data.Keys.Contains("apiKeyName") && data["apiKeyName"] != null ? (string) data["apiKeyName"] : null,
+            };
+        }
 
 	}
 }

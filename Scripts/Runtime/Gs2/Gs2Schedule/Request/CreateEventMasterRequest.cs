@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Schedule.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Schedule.Request
 {
+	[Preserve]
 	public class CreateEventMasterRequest : Gs2Request<CreateEventMasterRequest>
 	{
 
@@ -263,6 +267,29 @@ namespace Gs2.Gs2Schedule.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static CreateEventMasterRequest FromDict(JsonData data)
+        {
+            return new CreateEventMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
+                scheduleType = data.Keys.Contains("scheduleType") && data["scheduleType"] != null ? (string) data["scheduleType"] : null,
+                absoluteBegin = data.Keys.Contains("absoluteBegin") && data["absoluteBegin"] != null ? (long?) data["absoluteBegin"] : null,
+                absoluteEnd = data.Keys.Contains("absoluteEnd") && data["absoluteEnd"] != null ? (long?) data["absoluteEnd"] : null,
+                repeatType = data.Keys.Contains("repeatType") && data["repeatType"] != null ? (string) data["repeatType"] : null,
+                repeatBeginDayOfMonth = data.Keys.Contains("repeatBeginDayOfMonth") && data["repeatBeginDayOfMonth"] != null ? (int?) data["repeatBeginDayOfMonth"] : null,
+                repeatEndDayOfMonth = data.Keys.Contains("repeatEndDayOfMonth") && data["repeatEndDayOfMonth"] != null ? (int?) data["repeatEndDayOfMonth"] : null,
+                repeatBeginDayOfWeek = data.Keys.Contains("repeatBeginDayOfWeek") && data["repeatBeginDayOfWeek"] != null ? (string) data["repeatBeginDayOfWeek"] : null,
+                repeatEndDayOfWeek = data.Keys.Contains("repeatEndDayOfWeek") && data["repeatEndDayOfWeek"] != null ? (string) data["repeatEndDayOfWeek"] : null,
+                repeatBeginHour = data.Keys.Contains("repeatBeginHour") && data["repeatBeginHour"] != null ? (int?) data["repeatBeginHour"] : null,
+                repeatEndHour = data.Keys.Contains("repeatEndHour") && data["repeatEndHour"] != null ? (int?) data["repeatEndHour"] : null,
+                relativeTriggerName = data.Keys.Contains("relativeTriggerName") && data["relativeTriggerName"] != null ? (string) data["relativeTriggerName"] : null,
+                relativeDuration = data.Keys.Contains("relativeDuration") && data["relativeDuration"] != null ? (int?) data["relativeDuration"] : null,
+            };
+        }
 
 	}
 }

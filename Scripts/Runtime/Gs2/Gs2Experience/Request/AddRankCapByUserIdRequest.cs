@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Experience.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Request
 {
+	[Preserve]
 	public class AddRankCapByUserIdRequest : Gs2Request<AddRankCapByUserIdRequest>
 	{
 
@@ -113,6 +117,19 @@ namespace Gs2.Gs2Experience.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static AddRankCapByUserIdRequest FromDict(JsonData data)
+        {
+            return new AddRankCapByUserIdRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
+                experienceName = data.Keys.Contains("experienceName") && data["experienceName"] != null ? (string) data["experienceName"] : null,
+                propertyId = data.Keys.Contains("propertyId") && data["propertyId"] != null ? (string) data["propertyId"] : null,
+                rankCapValue = data.Keys.Contains("rankCapValue") && data["rankCapValue"] != null ? (long?) data["rankCapValue"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+            };
+        }
 
 	}
 }

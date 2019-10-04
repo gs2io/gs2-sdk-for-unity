@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Identifier.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Identifier.Request
 {
+	[Preserve]
 	public class CreateIdentifierRequest : Gs2Request<CreateIdentifierRequest>
 	{
 
@@ -38,6 +42,14 @@ namespace Gs2.Gs2Identifier.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static CreateIdentifierRequest FromDict(JsonData data)
+        {
+            return new CreateIdentifierRequest {
+                userName = data.Keys.Contains("userName") && data["userName"] != null ? (string) data["userName"] : null,
+            };
+        }
 
 	}
 }

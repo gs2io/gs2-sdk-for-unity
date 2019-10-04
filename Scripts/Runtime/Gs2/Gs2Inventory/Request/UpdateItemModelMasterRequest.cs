@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Inventory.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Request
 {
+	[Preserve]
 	public class UpdateItemModelMasterRequest : Gs2Request<UpdateItemModelMasterRequest>
 	{
 
@@ -143,6 +147,21 @@ namespace Gs2.Gs2Inventory.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateItemModelMasterRequest FromDict(JsonData data)
+        {
+            return new UpdateItemModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                inventoryName = data.Keys.Contains("inventoryName") && data["inventoryName"] != null ? (string) data["inventoryName"] : null,
+                itemName = data.Keys.Contains("itemName") && data["itemName"] != null ? (string) data["itemName"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
+                stackingLimit = data.Keys.Contains("stackingLimit") && data["stackingLimit"] != null ? (long?) data["stackingLimit"] : null,
+                allowMultipleStacks = data.Keys.Contains("allowMultipleStacks") && data["allowMultipleStacks"] != null ? (bool?) data["allowMultipleStacks"] : null,
+                sortValue = data.Keys.Contains("sortValue") && data["sortValue"] != null ? (int?) data["sortValue"] : null,
+            };
+        }
 
 	}
 }

@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Inventory.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Request
 {
+	[Preserve]
 	public class UpdateNamespaceRequest : Gs2Request<UpdateNamespaceRequest>
 	{
 
@@ -98,6 +102,18 @@ namespace Gs2.Gs2Inventory.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateNamespaceRequest FromDict(JsonData data)
+        {
+            return new UpdateNamespaceRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                acquireScript = data.Keys.Contains("acquireScript") && data["acquireScript"] != null ? ScriptSetting.FromDict(data["acquireScript"]) : null,
+                overflowScript = data.Keys.Contains("overflowScript") && data["overflowScript"] != null ? ScriptSetting.FromDict(data["overflowScript"]) : null,
+                consumeScript = data.Keys.Contains("consumeScript") && data["consumeScript"] != null ? ScriptSetting.FromDict(data["consumeScript"]) : null,
+            };
+        }
 
 	}
 }

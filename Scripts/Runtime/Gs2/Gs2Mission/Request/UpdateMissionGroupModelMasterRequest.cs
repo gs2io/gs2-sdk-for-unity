@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Mission.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Request
 {
+	[Preserve]
 	public class UpdateMissionGroupModelMasterRequest : Gs2Request<UpdateMissionGroupModelMasterRequest>
 	{
 
@@ -98,6 +102,18 @@ namespace Gs2.Gs2Mission.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateMissionGroupModelMasterRequest FromDict(JsonData data)
+        {
+            return new UpdateMissionGroupModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                missionGroupName = data.Keys.Contains("missionGroupName") && data["missionGroupName"] != null ? (string) data["missionGroupName"] : null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
+                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                completeNotificationNamespaceId = data.Keys.Contains("completeNotificationNamespaceId") && data["completeNotificationNamespaceId"] != null ? (string) data["completeNotificationNamespaceId"] : null,
+            };
+        }
 
 	}
 }

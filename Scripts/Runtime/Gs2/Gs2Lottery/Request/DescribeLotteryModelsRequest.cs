@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Lottery.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Request
 {
+	[Preserve]
 	public class DescribeLotteryModelsRequest : Gs2Request<DescribeLotteryModelsRequest>
 	{
 
@@ -38,6 +42,14 @@ namespace Gs2.Gs2Lottery.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DescribeLotteryModelsRequest FromDict(JsonData data)
+        {
+            return new DescribeLotteryModelsRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+            };
+        }
 
 	}
 }

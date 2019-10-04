@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Stamina.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Stamina.Request
 {
+	[Preserve]
 	public class DeleteMaxStaminaTableMasterRequest : Gs2Request<DeleteMaxStaminaTableMasterRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Stamina.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DeleteMaxStaminaTableMasterRequest FromDict(JsonData data)
+        {
+            return new DeleteMaxStaminaTableMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                maxStaminaTableName = data.Keys.Contains("maxStaminaTableName") && data["maxStaminaTableName"] != null ? (string) data["maxStaminaTableName"] : null,
+            };
+        }
 
 	}
 }
