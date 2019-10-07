@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Gs2.Core;
+using Gs2.Core.Exception;
 using Gs2.Unity.Gs2Distributor.Result;
 using UnityEngine.Events;
 
@@ -25,7 +26,7 @@ namespace Gs2.Unity.Util
 {
 	public class StampSheetStateMachine
 	{
-		public delegate void ErrorHandler(Exception e);
+		public delegate void ErrorHandler(Gs2Exception e);
 		public delegate void DoneStampTaskHandler(EzStampTask task, EzRunStampTaskResult result);
 		public delegate void CompleteStampSheetHandler(EzStampSheet sheet, EzRunStampSheetResult result);
 		
