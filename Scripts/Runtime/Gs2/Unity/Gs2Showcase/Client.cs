@@ -97,12 +97,14 @@ namespace Gs2.Unity.Gs2Showcase
 		/// <param name="namespaceName">ネームスペース名</param>
 		/// <param name="showcaseName">商品名</param>
 		/// <param name="displayItemId">陳列商品ID</param>
+		/// <param name="config">設定値</param>
 		public IEnumerator Buy(
 		        UnityAction<AsyncResult<EzBuyResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string showcaseName,
-                string displayItemId
+                string displayItemId,
+                List<EzConfig> config=null
         )
 		{
             yield return _client.Buy(
@@ -110,6 +112,7 @@ namespace Gs2.Unity.Gs2Showcase
                     .WithNamespaceName(namespaceName)
                     .WithShowcaseName(showcaseName)
                     .WithDisplayItemId(displayItemId)
+                    .WithConfig(config != null ? config.Select(item => item.ToModel()).ToList() : new List<Config>(new Config[]{}))
                     .WithAccessToken(session.AccessToken.token),
 				r =>
 				{
