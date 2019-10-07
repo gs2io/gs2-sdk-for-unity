@@ -95,17 +95,20 @@ namespace Gs2.Unity.Gs2Showcase
 		/// <param name="callback">コールバックハンドラ</param>
 		/// <param name="session">ゲームセッション</param>
 		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="showcaseName">商品名</param>
 		/// <param name="displayItemId">陳列商品ID</param>
 		public IEnumerator Buy(
 		        UnityAction<AsyncResult<EzBuyResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string displayItemId=null
+                string showcaseName,
+                string displayItemId
         )
 		{
             yield return _client.Buy(
                 new BuyRequest()
                     .WithNamespaceName(namespaceName)
+                    .WithShowcaseName(showcaseName)
                     .WithDisplayItemId(displayItemId)
                     .WithAccessToken(session.AccessToken.token),
 				r =>
