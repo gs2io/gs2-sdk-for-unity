@@ -45,9 +45,9 @@ namespace Gs2.Unity.Util
 		public StampSheetStateMachine(
 			string stampSheet,
 			Gs2.Unity.Client client,
-			string distributorNamespaceName,
-			string distributorDistributorName,
-			string stampSheetEncryptKeyId
+			string distributorNamespaceName = null,
+			string distributorDistributorName = null,
+			string stampSheetEncryptKeyId = null
 		)
 		{
 			_stampSheet = new EzStampSheet(stampSheet);
