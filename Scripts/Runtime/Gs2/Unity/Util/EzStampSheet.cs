@@ -69,14 +69,12 @@ namespace Gs2.Unity.Util
             string stackContext,
             Gs2.Unity.Client client,
             string distributorNamespaceName,
-            string distributorDistributorName,
             string stampSheetEncryptKeyId
         )
         {
             yield return client.Distributor.RunStampSheet(
                 callback,
                 distributorNamespaceName,
-                distributorDistributorName,
                 _stampSheetStr,
                 stampSheetEncryptKeyId,
                 stackContext

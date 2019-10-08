@@ -28,8 +28,6 @@ namespace Gs2.Unity.Gs2Distributor.Model
 		public string Name { get; set; }
 		/** ディストリビューターの種類のメタデータ */
 		public string Metadata { get; set; }
-		/** 所持品の配布処理の権限判定に使用する ユーザ のGRN */
-		public string AssumeUserId { get; set; }
 		/** 所持品がキャパシティをオーバーしたときに転送するプレゼントボックスのネームスペース のGRN */
 		public string InboxNamespaceId { get; set; }
 		/** ディストリビューターを通して処理出来る対象のリソースGRNのホワイトリスト */
@@ -44,7 +42,6 @@ namespace Gs2.Unity.Gs2Distributor.Model
 		{
 			Name = @distributorModel.name;
 			Metadata = @distributorModel.metadata;
-			AssumeUserId = @distributorModel.assumeUserId;
 			InboxNamespaceId = @distributorModel.inboxNamespaceId;
 			WhiteListTargetIds = @distributorModel.whiteListTargetIds != null ? @distributorModel.whiteListTargetIds.Select(value =>
                 {
@@ -58,7 +55,6 @@ namespace Gs2.Unity.Gs2Distributor.Model
             return new DistributorModel {
                 name = Name,
                 metadata = Metadata,
-                assumeUserId = AssumeUserId,
                 inboxNamespaceId = InboxNamespaceId,
                 whiteListTargetIds = WhiteListTargetIds != null ? WhiteListTargetIds.Select(Value0 =>
                         {

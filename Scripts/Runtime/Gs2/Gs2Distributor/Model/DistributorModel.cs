@@ -68,20 +68,6 @@ namespace Gs2.Gs2Distributor.Model
             return this;
         }
 
-        /** 所持品の配布処理の権限判定に使用する ユーザ のGRN */
-        public string assumeUserId { set; get; }
-
-        /**
-         * 所持品の配布処理の権限判定に使用する ユーザ のGRNを設定
-         *
-         * @param assumeUserId 所持品の配布処理の権限判定に使用する ユーザ のGRN
-         * @return this
-         */
-        public DistributorModel WithAssumeUserId(string assumeUserId) {
-            this.assumeUserId = assumeUserId;
-            return this;
-        }
-
         /** 所持品がキャパシティをオーバーしたときに転送するプレゼントボックスのネームスペース のGRN */
         public string inboxNamespaceId { set; get; }
 
@@ -128,11 +114,6 @@ namespace Gs2.Gs2Distributor.Model
                 writer.WritePropertyName("metadata");
                 writer.Write(this.metadata);
             }
-            if(this.assumeUserId != null)
-            {
-                writer.WritePropertyName("assumeUserId");
-                writer.Write(this.assumeUserId);
-            }
             if(this.inboxNamespaceId != null)
             {
                 writer.WritePropertyName("inboxNamespaceId");
@@ -158,7 +139,6 @@ namespace Gs2.Gs2Distributor.Model
                 .WithDistributorModelId(data.Keys.Contains("distributorModelId") && data["distributorModelId"] != null ? (string) data["distributorModelId"] : null)
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
-                .WithAssumeUserId(data.Keys.Contains("assumeUserId") && data["assumeUserId"] != null ? (string) data["assumeUserId"] : null)
                 .WithInboxNamespaceId(data.Keys.Contains("inboxNamespaceId") && data["inboxNamespaceId"] != null ? (string) data["inboxNamespaceId"] : null)
                 .WithWhiteListTargetIds(data.Keys.Contains("whiteListTargetIds") && data["whiteListTargetIds"] != null ? data["whiteListTargetIds"].Cast<JsonData>().Select(value =>
                     {

@@ -37,7 +37,6 @@ namespace Gs2.Unity.Util
 		private readonly EzStampSheet _stampSheet;
 		private readonly Gs2.Unity.Client _client;
 		private readonly string _distributorNamespaceName;
-		private readonly string _distributorDistributorName;
 		private readonly string _stampSheetEncryptKeyId;
 
 		private bool _running;
@@ -46,14 +45,12 @@ namespace Gs2.Unity.Util
 			string stampSheet,
 			Gs2.Unity.Client client,
 			string distributorNamespaceName,
-			string distributorDistributorName,
 			string stampSheetEncryptKeyId
 		)
 		{
 			_stampSheet = new EzStampSheet(stampSheet);
 			_client = client;
 			_distributorNamespaceName = distributorNamespaceName;
-			_distributorDistributorName = distributorDistributorName;
 			_stampSheetEncryptKeyId = stampSheetEncryptKeyId;
 			_running = false;
 		}
@@ -62,14 +59,12 @@ namespace Gs2.Unity.Util
 			EzStampSheet stampSheet,
 			Gs2.Unity.Client client,
 			string distributorNamespaceName,
-			string distributorDistributorName,
 			string stampSheetEncryptKeyId
 		)
 		{
 			_stampSheet = stampSheet;
 			_client = client;
 			_distributorNamespaceName = distributorNamespaceName;
-			_distributorDistributorName = distributorDistributorName;
 			_stampSheetEncryptKeyId = stampSheetEncryptKeyId;
 			_running = false;
 		}
@@ -116,7 +111,6 @@ namespace Gs2.Unity.Util
 					stackContext,
 					_client,
 					_distributorNamespaceName,
-					_distributorDistributorName,
 					_stampSheetEncryptKeyId
 				);
 			}
@@ -142,7 +136,6 @@ namespace Gs2.Unity.Util
 				stackContext,
 				_client,
 				_distributorNamespaceName,
-				_distributorDistributorName,
 				_stampSheetEncryptKeyId
 			);
 		}

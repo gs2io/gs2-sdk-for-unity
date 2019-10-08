@@ -82,6 +82,20 @@ namespace Gs2.Gs2Distributor.Model
             return this;
         }
 
+        /** 所持品の配布処理の権限判定に使用する ユーザ のGRN */
+        public string assumeUserId { set; get; }
+
+        /**
+         * 所持品の配布処理の権限判定に使用する ユーザ のGRNを設定
+         *
+         * @param assumeUserId 所持品の配布処理の権限判定に使用する ユーザ のGRN
+         * @return this
+         */
+        public Namespace WithAssumeUserId(string assumeUserId) {
+            this.assumeUserId = assumeUserId;
+            return this;
+        }
+
         /** 作成日時 */
         public long? createdAt { set; get; }
 
@@ -133,6 +147,11 @@ namespace Gs2.Gs2Distributor.Model
                 writer.WritePropertyName("description");
                 writer.Write(this.description);
             }
+            if(this.assumeUserId != null)
+            {
+                writer.WritePropertyName("assumeUserId");
+                writer.Write(this.assumeUserId);
+            }
             if(this.createdAt.HasValue)
             {
                 writer.WritePropertyName("createdAt");
@@ -154,6 +173,7 @@ namespace Gs2.Gs2Distributor.Model
                 .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? (string) data["ownerId"] : null)
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
                 .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
+                .WithAssumeUserId(data.Keys.Contains("assumeUserId") && data["assumeUserId"] != null ? (string) data["assumeUserId"] : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
         }

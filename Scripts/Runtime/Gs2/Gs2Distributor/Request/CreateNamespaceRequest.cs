@@ -58,12 +58,28 @@ namespace Gs2.Gs2Distributor.Request
         }
 
 
+        /** 所持品の配布処理の権限判定に使用する ユーザ のGRN */
+        public string assumeUserId { set; get; }
+
+        /**
+         * 所持品の配布処理の権限判定に使用する ユーザ のGRNを設定
+         *
+         * @param assumeUserId 所持品の配布処理の権限判定に使用する ユーザ のGRN
+         * @return this
+         */
+        public CreateNamespaceRequest WithAssumeUserId(string assumeUserId) {
+            this.assumeUserId = assumeUserId;
+            return this;
+        }
+
+
     	[Preserve]
         public static CreateNamespaceRequest FromDict(JsonData data)
         {
             return new CreateNamespaceRequest {
                 name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
                 description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                assumeUserId = data.Keys.Contains("assumeUserId") && data["assumeUserId"] != null ? (string) data["assumeUserId"] : null,
             };
         }
 

@@ -127,14 +127,12 @@ namespace Gs2.Unity.Gs2Distributor
         ///
 		/// <returns>IEnumerator</returns>
 		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="distributorName">ディストリビューターの種類名</param>
 		/// <param name="stampTask">実行するスタンプタスク</param>
 		/// <param name="keyId">スタンプシートの暗号化に使用した暗号鍵GRN</param>
 		/// <param name="contextStack">スタンプシートの実行状況を記録するスタックメモリ</param>
 		public IEnumerator RunStampTask(
 		        UnityAction<AsyncResult<EzRunStampTaskResult>> callback,
                 string namespaceName,
-                string distributorName,
                 string stampTask,
                 string keyId,
                 string contextStack=null
@@ -143,7 +141,6 @@ namespace Gs2.Unity.Gs2Distributor
             yield return _client.RunStampTask(
                 new RunStampTaskRequest()
                     .WithNamespaceName(namespaceName)
-                    .WithDistributorName(distributorName)
                     .WithStampTask(stampTask)
                     .WithKeyId(keyId)
                     .WithContextStack(contextStack),
@@ -177,14 +174,12 @@ namespace Gs2.Unity.Gs2Distributor
         ///
 		/// <returns>IEnumerator</returns>
 		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="distributorName">ディストリビューターの種類名</param>
 		/// <param name="stampSheet">実行するスタンプタスク</param>
 		/// <param name="keyId">スタンプシートの暗号化に使用した暗号鍵GRN</param>
 		/// <param name="contextStack">スタンプシートの実行状況を記録するスタックメモリ</param>
 		public IEnumerator RunStampSheet(
 		        UnityAction<AsyncResult<EzRunStampSheetResult>> callback,
                 string namespaceName,
-                string distributorName,
                 string stampSheet,
                 string keyId,
                 string contextStack=null
@@ -193,7 +188,6 @@ namespace Gs2.Unity.Gs2Distributor
             yield return _client.RunStampSheet(
                 new RunStampSheetRequest()
                     .WithNamespaceName(namespaceName)
-                    .WithDistributorName(distributorName)
                     .WithStampSheet(stampSheet)
                     .WithKeyId(keyId)
                     .WithContextStack(contextStack),

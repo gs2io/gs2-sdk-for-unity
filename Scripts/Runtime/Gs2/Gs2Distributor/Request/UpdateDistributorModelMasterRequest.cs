@@ -88,21 +88,6 @@ namespace Gs2.Gs2Distributor.Request
         }
 
 
-        /** 所持品の配布処理の権限判定に使用する ユーザ のGRN */
-        public string assumeUserId { set; get; }
-
-        /**
-         * 所持品の配布処理の権限判定に使用する ユーザ のGRNを設定
-         *
-         * @param assumeUserId 所持品の配布処理の権限判定に使用する ユーザ のGRN
-         * @return this
-         */
-        public UpdateDistributorModelMasterRequest WithAssumeUserId(string assumeUserId) {
-            this.assumeUserId = assumeUserId;
-            return this;
-        }
-
-
         /** 所持品がキャパシティをオーバーしたときに転送するプレゼントボックスのネームスペース のGRN */
         public string inboxNamespaceId { set; get; }
 
@@ -141,7 +126,6 @@ namespace Gs2.Gs2Distributor.Request
                 distributorName = data.Keys.Contains("distributorName") && data["distributorName"] != null ? (string) data["distributorName"] : null,
                 description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
                 metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
-                assumeUserId = data.Keys.Contains("assumeUserId") && data["assumeUserId"] != null ? (string) data["assumeUserId"] : null,
                 inboxNamespaceId = data.Keys.Contains("inboxNamespaceId") && data["inboxNamespaceId"] != null ? (string) data["inboxNamespaceId"] : null,
                 whiteListTargetIds = data.Keys.Contains("whiteListTargetIds") && data["whiteListTargetIds"] != null ? data["whiteListTargetIds"].Cast<JsonData>().Select(value =>
                     {

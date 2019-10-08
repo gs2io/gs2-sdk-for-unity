@@ -149,6 +149,11 @@ namespace Gs2.Gs2Distributor
                     jsonWriter.WritePropertyName("description");
                     jsonWriter.Write(_request.description.ToString());
                 }
+                if (_request.assumeUserId != null)
+                {
+                    jsonWriter.WritePropertyName("assumeUserId");
+                    jsonWriter.Write(_request.assumeUserId.ToString());
+                }
                 if (_request.contextStack != null)
                 {
                     jsonWriter.WritePropertyName("contextStack");
@@ -378,6 +383,11 @@ namespace Gs2.Gs2Distributor
                 {
                     jsonWriter.WritePropertyName("description");
                     jsonWriter.Write(_request.description.ToString());
+                }
+                if (_request.assumeUserId != null)
+                {
+                    jsonWriter.WritePropertyName("assumeUserId");
+                    jsonWriter.Write(_request.assumeUserId.ToString());
                 }
                 if (_request.contextStack != null)
                 {
@@ -629,11 +639,6 @@ namespace Gs2.Gs2Distributor
                     jsonWriter.WritePropertyName("metadata");
                     jsonWriter.Write(_request.metadata.ToString());
                 }
-                if (_request.assumeUserId != null)
-                {
-                    jsonWriter.WritePropertyName("assumeUserId");
-                    jsonWriter.Write(_request.assumeUserId.ToString());
-                }
                 if (_request.inboxNamespaceId != null)
                 {
                     jsonWriter.WritePropertyName("inboxNamespaceId");
@@ -818,11 +823,6 @@ namespace Gs2.Gs2Distributor
                 {
                     jsonWriter.WritePropertyName("metadata");
                     jsonWriter.Write(_request.metadata.ToString());
-                }
-                if (_request.assumeUserId != null)
-                {
-                    jsonWriter.WritePropertyName("assumeUserId");
-                    jsonWriter.Write(_request.assumeUserId.ToString());
                 }
                 if (_request.inboxNamespaceId != null)
                 {
@@ -1554,11 +1554,6 @@ namespace Gs2.Gs2Distributor
                     jsonWriter.WritePropertyName("namespaceName");
                     jsonWriter.Write(_request.namespaceName.ToString());
                 }
-                if (_request.distributorName != null)
-                {
-                    jsonWriter.WritePropertyName("distributorName");
-                    jsonWriter.Write(_request.distributorName.ToString());
-                }
                 if (_request.stampTask != null)
                 {
                     jsonWriter.WritePropertyName("stampTask");
@@ -1648,11 +1643,6 @@ namespace Gs2.Gs2Distributor
                 {
                     jsonWriter.WritePropertyName("namespaceName");
                     jsonWriter.Write(_request.namespaceName.ToString());
-                }
-                if (_request.distributorName != null)
-                {
-                    jsonWriter.WritePropertyName("distributorName");
-                    jsonWriter.Write(_request.distributorName.ToString());
                 }
                 if (_request.stampSheet != null)
                 {

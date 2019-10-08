@@ -43,21 +43,6 @@ namespace Gs2.Gs2Distributor.Request
         }
 
 
-        /** ディストリビューターの種類名 */
-        public string distributorName { set; get; }
-
-        /**
-         * ディストリビューターの種類名を設定
-         *
-         * @param distributorName ディストリビューターの種類名
-         * @return this
-         */
-        public RunStampSheetRequest WithDistributorName(string distributorName) {
-            this.distributorName = distributorName;
-            return this;
-        }
-
-
         /** 実行するスタンプタスク */
         public string stampSheet { set; get; }
 
@@ -108,7 +93,6 @@ namespace Gs2.Gs2Distributor.Request
         {
             return new RunStampSheetRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                distributorName = data.Keys.Contains("distributorName") && data["distributorName"] != null ? (string) data["distributorName"] : null,
                 stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? (string) data["stampSheet"] : null,
                 keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? (string) data["keyId"] : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,

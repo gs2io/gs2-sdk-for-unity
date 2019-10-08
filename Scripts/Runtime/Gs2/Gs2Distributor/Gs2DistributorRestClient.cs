@@ -134,6 +134,11 @@ namespace Gs2.Gs2Distributor
                     jsonWriter.WritePropertyName("description");
                     jsonWriter.Write(_request.description.ToString());
                 }
+                if (_request.assumeUserId != null)
+                {
+                    jsonWriter.WritePropertyName("assumeUserId");
+                    jsonWriter.Write(_request.assumeUserId.ToString());
+                }
                 if (_request.contextStack != null)
                 {
                     jsonWriter.WritePropertyName("contextStack");
@@ -310,6 +315,11 @@ namespace Gs2.Gs2Distributor
                 {
                     jsonWriter.WritePropertyName("description");
                     jsonWriter.Write(_request.description.ToString());
+                }
+                if (_request.assumeUserId != null)
+                {
+                    jsonWriter.WritePropertyName("assumeUserId");
+                    jsonWriter.Write(_request.assumeUserId.ToString());
                 }
                 if (_request.contextStack != null)
                 {
@@ -504,11 +514,6 @@ namespace Gs2.Gs2Distributor
                     jsonWriter.WritePropertyName("metadata");
                     jsonWriter.Write(_request.metadata.ToString());
                 }
-                if (_request.assumeUserId != null)
-                {
-                    jsonWriter.WritePropertyName("assumeUserId");
-                    jsonWriter.Write(_request.assumeUserId.ToString());
-                }
                 if (_request.inboxNamespaceId != null)
                 {
                     jsonWriter.WritePropertyName("inboxNamespaceId");
@@ -653,11 +658,6 @@ namespace Gs2.Gs2Distributor
                 {
                     jsonWriter.WritePropertyName("metadata");
                     jsonWriter.Write(_request.metadata.ToString());
-                }
-                if (_request.assumeUserId != null)
-                {
-                    jsonWriter.WritePropertyName("assumeUserId");
-                    jsonWriter.Write(_request.assumeUserId.ToString());
                 }
                 if (_request.inboxNamespaceId != null)
                 {
@@ -1139,7 +1139,7 @@ namespace Gs2.Gs2Distributor
                 var url = Gs2RestSession.EndpointHost
                     .Replace("{service}", "distributor")
                     .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/distributor/{distributorName}/distribute";
+                    + "/{namespaceName}/distribute";
 
                 url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
                 url = url.Replace("{distributorName}", !string.IsNullOrEmpty(_request.distributorName) ? _request.distributorName.ToString() : "null");
@@ -1217,10 +1217,9 @@ namespace Gs2.Gs2Distributor
                 var url = Gs2RestSession.EndpointHost
                     .Replace("{service}", "distributor")
                     .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/distributor/{distributorName}/distribute/stamp/task/run";
+                    + "/{namespaceName}/distribute/stamp/task/run";
 
                 url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
-                url = url.Replace("{distributorName}", !string.IsNullOrEmpty(_request.distributorName) ? _request.distributorName.ToString() : "null");
 
                 UnityWebRequest.url = url;
 
@@ -1296,10 +1295,9 @@ namespace Gs2.Gs2Distributor
                 var url = Gs2RestSession.EndpointHost
                     .Replace("{service}", "distributor")
                     .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/distributor/{distributorName}/distribute/stamp/sheet/run";
+                    + "/{namespaceName}/distribute/stamp/sheet/run";
 
                 url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
-                url = url.Replace("{distributorName}", !string.IsNullOrEmpty(_request.distributorName) ? _request.distributorName.ToString() : "null");
 
                 UnityWebRequest.url = url;
 
