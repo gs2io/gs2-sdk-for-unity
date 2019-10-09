@@ -155,16 +155,16 @@ namespace Gs2.Gs2Lottery.Model
         public static Box FromDict(JsonData data)
         {
             return new Box()
-                .WithBoxId(data.Keys.Contains("boxId") && data["boxId"] != null ? (string) data["boxId"] : null)
-                .WithPrizeTableName(data.Keys.Contains("prizeTableName") && data["prizeTableName"] != null ? (string) data["prizeTableName"] : null)
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithBoxId(data.Keys.Contains("boxId") && data["boxId"] != null ? data["boxId"].ToString() : null)
+                .WithPrizeTableName(data.Keys.Contains("prizeTableName") && data["prizeTableName"] != null ? data["prizeTableName"].ToString() : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
                 .WithDrawnIndexes(data.Keys.Contains("drawnIndexes") && data["drawnIndexes"] != null ? data["drawnIndexes"].Cast<JsonData>().Select(value =>
                     {
-                        return (int?) value;
+                        return (int?)int.Parse(value.ToString());
                     }
                 ).ToList() : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
 	}
 }

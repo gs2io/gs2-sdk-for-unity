@@ -34,7 +34,7 @@ namespace Gs2.Gs2Quest.Result
         public static GetNamespaceStatusResult FromDict(JsonData data)
         {
             return new GetNamespaceStatusResult {
-                status = data.Keys.Contains("status") && data["status"] != null ? (string) data["status"] : null,
+                status = data.Keys.Contains("status") && data["status"] != null ? data["status"].ToString() : null,
             };
         }
 	}

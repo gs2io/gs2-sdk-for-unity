@@ -77,9 +77,9 @@ namespace Gs2.Gs2Deploy.Request
         public static CreateStackRequest FromDict(JsonData data)
         {
             return new CreateStackRequest {
-                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
-                template = data.Keys.Contains("template") && data["template"] != null ? (string) data["template"] : null,
+                name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                template = data.Keys.Contains("template") && data["template"] != null ? data["template"].ToString(): null,
             };
         }
 

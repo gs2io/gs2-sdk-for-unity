@@ -47,7 +47,7 @@ namespace Gs2.Gs2Ranking.Request
         public static DescribeCategoryModelsRequest FromDict(JsonData data)
         {
             return new DescribeCategoryModelsRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
             };
         }
 

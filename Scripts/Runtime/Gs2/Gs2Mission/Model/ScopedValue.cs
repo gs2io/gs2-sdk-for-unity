@@ -93,9 +93,9 @@ namespace Gs2.Gs2Mission.Model
         public static ScopedValue FromDict(JsonData data)
         {
             return new ScopedValue()
-                .WithResetType(data.Keys.Contains("resetType") && data["resetType"] != null ? (string) data["resetType"] : null)
-                .WithValue(data.Keys.Contains("value") && data["value"] != null ? (long?) data["value"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
+                .WithResetType(data.Keys.Contains("resetType") && data["resetType"] != null ? data["resetType"].ToString() : null)
+                .WithValue(data.Keys.Contains("value") && data["value"] != null ? (long?)long.Parse(data["value"].ToString()) : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
 	}
 }

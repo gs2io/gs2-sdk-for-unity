@@ -77,8 +77,8 @@ namespace Gs2.Gs2Deploy.Request
         public static CreateStackFromGitHubRequest FromDict(JsonData data)
         {
             return new CreateStackFromGitHubRequest {
-                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
             };
         }

@@ -169,13 +169,13 @@ namespace Gs2.Gs2Lock.Model
         public static Mutex FromDict(JsonData data)
         {
             return new Mutex()
-                .WithMutexId(data.Keys.Contains("mutexId") && data["mutexId"] != null ? (string) data["mutexId"] : null)
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
-                .WithPropertyId(data.Keys.Contains("propertyId") && data["propertyId"] != null ? (string) data["propertyId"] : null)
-                .WithTransactionId(data.Keys.Contains("transactionId") && data["transactionId"] != null ? (string) data["transactionId"] : null)
-                .WithReferenceCount(data.Keys.Contains("referenceCount") && data["referenceCount"] != null ? (int?) data["referenceCount"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
-                .WithTtlAt(data.Keys.Contains("ttlAt") && data["ttlAt"] != null ? (long?) data["ttlAt"] : null);
+                .WithMutexId(data.Keys.Contains("mutexId") && data["mutexId"] != null ? data["mutexId"].ToString() : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
+                .WithPropertyId(data.Keys.Contains("propertyId") && data["propertyId"] != null ? data["propertyId"].ToString() : null)
+                .WithTransactionId(data.Keys.Contains("transactionId") && data["transactionId"] != null ? data["transactionId"].ToString() : null)
+                .WithReferenceCount(data.Keys.Contains("referenceCount") && data["referenceCount"] != null ? (int?)int.Parse(data["referenceCount"].ToString()) : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
+                .WithTtlAt(data.Keys.Contains("ttlAt") && data["ttlAt"] != null ? (long?)long.Parse(data["ttlAt"].ToString()) : null);
         }
 	}
 }

@@ -92,10 +92,10 @@ namespace Gs2.Gs2Gateway.Request
         public static SetFirebaseTokenByUserIdRequest FromDict(JsonData data)
         {
             return new SetFirebaseTokenByUserIdRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
-                token = data.Keys.Contains("token") && data["token"] != null ? (string) data["token"] : null,
-                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
+                token = data.Keys.Contains("token") && data["token"] != null ? data["token"].ToString(): null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
 

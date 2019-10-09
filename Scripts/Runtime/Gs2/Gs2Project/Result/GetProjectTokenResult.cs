@@ -41,8 +41,8 @@ namespace Gs2.Gs2Project.Result
         {
             return new GetProjectTokenResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? Project.FromDict(data["item"]) : null,
-                ownerId = data.Keys.Contains("ownerId") && data["ownerId"] != null ? (string) data["ownerId"] : null,
-                projectToken = data.Keys.Contains("projectToken") && data["projectToken"] != null ? (string) data["projectToken"] : null,
+                ownerId = data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null,
+                projectToken = data.Keys.Contains("projectToken") && data["projectToken"] != null ? data["projectToken"].ToString() : null,
             };
         }
 	}

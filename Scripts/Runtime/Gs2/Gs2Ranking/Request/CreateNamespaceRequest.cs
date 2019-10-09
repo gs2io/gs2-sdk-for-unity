@@ -62,8 +62,8 @@ namespace Gs2.Gs2Ranking.Request
         public static CreateNamespaceRequest FromDict(JsonData data)
         {
             return new CreateNamespaceRequest {
-                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
             };
         }
 

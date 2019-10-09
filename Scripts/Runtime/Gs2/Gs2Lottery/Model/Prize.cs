@@ -136,15 +136,15 @@ namespace Gs2.Gs2Lottery.Model
         public static Prize FromDict(JsonData data)
         {
             return new Prize()
-                .WithPrizeId(data.Keys.Contains("prizeId") && data["prizeId"] != null ? (string) data["prizeId"] : null)
-                .WithType(data.Keys.Contains("type") && data["type"] != null ? (string) data["type"] : null)
+                .WithPrizeId(data.Keys.Contains("prizeId") && data["prizeId"] != null ? data["prizeId"].ToString() : null)
+                .WithType(data.Keys.Contains("type") && data["type"] != null ? data["type"].ToString() : null)
                 .WithAcquireActions(data.Keys.Contains("acquireActions") && data["acquireActions"] != null ? data["acquireActions"].Cast<JsonData>().Select(value =>
                     {
                         return AcquireAction.FromDict(value);
                     }
                 ).ToList() : null)
-                .WithPrizeTableName(data.Keys.Contains("prizeTableName") && data["prizeTableName"] != null ? (string) data["prizeTableName"] : null)
-                .WithWeight(data.Keys.Contains("weight") && data["weight"] != null ? (int?) data["weight"] : null);
+                .WithPrizeTableName(data.Keys.Contains("prizeTableName") && data["prizeTableName"] != null ? data["prizeTableName"].ToString() : null)
+                .WithWeight(data.Keys.Contains("weight") && data["weight"] != null ? (int?)int.Parse(data["weight"].ToString()) : null);
         }
 	}
 }

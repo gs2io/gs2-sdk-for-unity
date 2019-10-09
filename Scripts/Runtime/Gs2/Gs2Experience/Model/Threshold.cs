@@ -98,11 +98,11 @@ namespace Gs2.Gs2Experience.Model
         public static Threshold FromDict(JsonData data)
         {
             return new Threshold()
-                .WithThresholdId(data.Keys.Contains("thresholdId") && data["thresholdId"] != null ? (string) data["thresholdId"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithThresholdId(data.Keys.Contains("thresholdId") && data["thresholdId"] != null ? data["thresholdId"].ToString() : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
                 .WithValues(data.Keys.Contains("values") && data["values"] != null ? data["values"].Cast<JsonData>().Select(value =>
                     {
-                        return (long?) value;
+                        return (long?)long.Parse(value.ToString());
                     }
                 ).ToList() : null);
         }

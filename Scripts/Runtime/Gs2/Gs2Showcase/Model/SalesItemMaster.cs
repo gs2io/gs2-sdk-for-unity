@@ -198,10 +198,10 @@ namespace Gs2.Gs2Showcase.Model
         public static SalesItemMaster FromDict(JsonData data)
         {
             return new SalesItemMaster()
-                .WithSalesItemId(data.Keys.Contains("salesItemId") && data["salesItemId"] != null ? (string) data["salesItemId"] : null)
-                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
-                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithSalesItemId(data.Keys.Contains("salesItemId") && data["salesItemId"] != null ? data["salesItemId"].ToString() : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
                 .WithConsumeActions(data.Keys.Contains("consumeActions") && data["consumeActions"] != null ? data["consumeActions"].Cast<JsonData>().Select(value =>
                     {
                         return ConsumeAction.FromDict(value);
@@ -212,8 +212,8 @@ namespace Gs2.Gs2Showcase.Model
                         return AcquireAction.FromDict(value);
                     }
                 ).ToList() : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
 	}
 }

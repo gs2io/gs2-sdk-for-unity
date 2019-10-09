@@ -47,7 +47,7 @@ namespace Gs2.Gs2Showcase.Request
         public static GetCurrentShowcaseMasterRequest FromDict(JsonData data)
         {
             return new GetCurrentShowcaseMasterRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
             };
         }
 

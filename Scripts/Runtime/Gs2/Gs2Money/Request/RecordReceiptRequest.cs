@@ -107,11 +107,11 @@ namespace Gs2.Gs2Money.Request
         public static RecordReceiptRequest FromDict(JsonData data)
         {
             return new RecordReceiptRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
-                contentsId = data.Keys.Contains("contentsId") && data["contentsId"] != null ? (string) data["contentsId"] : null,
-                receipt = data.Keys.Contains("receipt") && data["receipt"] != null ? (string) data["receipt"] : null,
-                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
+                contentsId = data.Keys.Contains("contentsId") && data["contentsId"] != null ? data["contentsId"].ToString(): null,
+                receipt = data.Keys.Contains("receipt") && data["receipt"] != null ? data["receipt"].ToString(): null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
 

@@ -179,21 +179,21 @@ namespace Gs2.Gs2Mission.Model
         public static Complete FromDict(JsonData data)
         {
             return new Complete()
-                .WithCompleteId(data.Keys.Contains("completeId") && data["completeId"] != null ? (string) data["completeId"] : null)
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
-                .WithMissionGroupName(data.Keys.Contains("missionGroupName") && data["missionGroupName"] != null ? (string) data["missionGroupName"] : null)
+                .WithCompleteId(data.Keys.Contains("completeId") && data["completeId"] != null ? data["completeId"].ToString() : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
+                .WithMissionGroupName(data.Keys.Contains("missionGroupName") && data["missionGroupName"] != null ? data["missionGroupName"].ToString() : null)
                 .WithCompletedMissionTaskNames(data.Keys.Contains("completedMissionTaskNames") && data["completedMissionTaskNames"] != null ? data["completedMissionTaskNames"].Cast<JsonData>().Select(value =>
                     {
-                        return (string) value;
+                        return value.ToString();
                     }
                 ).ToList() : null)
                 .WithReceivedMissionTaskNames(data.Keys.Contains("receivedMissionTaskNames") && data["receivedMissionTaskNames"] != null ? data["receivedMissionTaskNames"].Cast<JsonData>().Select(value =>
                     {
-                        return (string) value;
+                        return value.ToString();
                     }
                 ).ToList() : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
 	}
 }

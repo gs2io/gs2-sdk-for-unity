@@ -227,8 +227,8 @@ namespace Gs2.Gs2Friend.Request
         public static CreateNamespaceRequest FromDict(JsonData data)
         {
             return new CreateNamespaceRequest {
-                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 followScript = data.Keys.Contains("followScript") && data["followScript"] != null ? ScriptSetting.FromDict(data["followScript"]) : null,
                 unfollowScript = data.Keys.Contains("unfollowScript") && data["unfollowScript"] != null ? ScriptSetting.FromDict(data["unfollowScript"]) : null,
                 sendRequestScript = data.Keys.Contains("sendRequestScript") && data["sendRequestScript"] != null ? ScriptSetting.FromDict(data["sendRequestScript"]) : null,

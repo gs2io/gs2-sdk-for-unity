@@ -62,8 +62,8 @@ namespace Gs2.Gs2Deploy.Request
         public static GetOutputRequest FromDict(JsonData data)
         {
             return new GetOutputRequest {
-                stackName = data.Keys.Contains("stackName") && data["stackName"] != null ? (string) data["stackName"] : null,
-                outputName = data.Keys.Contains("outputName") && data["outputName"] != null ? (string) data["outputName"] : null,
+                stackName = data.Keys.Contains("stackName") && data["stackName"] != null ? data["stackName"].ToString(): null,
+                outputName = data.Keys.Contains("outputName") && data["outputName"] != null ? data["outputName"].ToString(): null,
             };
         }
 

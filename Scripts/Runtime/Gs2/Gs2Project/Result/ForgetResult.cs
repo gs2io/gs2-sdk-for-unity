@@ -34,7 +34,7 @@ namespace Gs2.Gs2Project.Result
         public static ForgetResult FromDict(JsonData data)
         {
             return new ForgetResult {
-                issuePasswordToken = data.Keys.Contains("issuePasswordToken") && data["issuePasswordToken"] != null ? (string) data["issuePasswordToken"] : null,
+                issuePasswordToken = data.Keys.Contains("issuePasswordToken") && data["issuePasswordToken"] != null ? data["issuePasswordToken"].ToString() : null,
             };
         }
 	}

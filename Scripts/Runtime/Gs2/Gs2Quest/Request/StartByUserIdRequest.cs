@@ -137,17 +137,17 @@ namespace Gs2.Gs2Quest.Request
         public static StartByUserIdRequest FromDict(JsonData data)
         {
             return new StartByUserIdRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                questGroupName = data.Keys.Contains("questGroupName") && data["questGroupName"] != null ? (string) data["questGroupName"] : null,
-                questName = data.Keys.Contains("questName") && data["questName"] != null ? (string) data["questName"] : null,
-                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
-                force = data.Keys.Contains("force") && data["force"] != null ? (bool?) data["force"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                questGroupName = data.Keys.Contains("questGroupName") && data["questGroupName"] != null ? data["questGroupName"].ToString(): null,
+                questName = data.Keys.Contains("questName") && data["questName"] != null ? data["questName"].ToString(): null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
+                force = data.Keys.Contains("force") && data["force"] != null ? (bool?)bool.Parse(data["force"].ToString()) : null,
                 config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
                     {
                         return Config.FromDict(value);
                     }
                 ).ToList() : null,
-                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
 

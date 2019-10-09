@@ -62,8 +62,8 @@ namespace Gs2.Gs2Limit.Request
         public static DeleteLimitModelMasterRequest FromDict(JsonData data)
         {
             return new DeleteLimitModelMasterRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                limitName = data.Keys.Contains("limitName") && data["limitName"] != null ? (string) data["limitName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                limitName = data.Keys.Contains("limitName") && data["limitName"] != null ? data["limitName"].ToString(): null,
             };
         }
 

@@ -62,8 +62,8 @@ namespace Gs2.Gs2Identifier.Request
         public static LoginRequest FromDict(JsonData data)
         {
             return new LoginRequest {
-                clientId = data.Keys.Contains("clientId") && data["clientId"] != null ? (string) data["clientId"] : null,
-                clientSecret = data.Keys.Contains("clientSecret") && data["clientSecret"] != null ? (string) data["clientSecret"] : null,
+                clientId = data.Keys.Contains("clientId") && data["clientId"] != null ? data["clientId"].ToString(): null,
+                clientSecret = data.Keys.Contains("clientSecret") && data["clientSecret"] != null ? data["clientSecret"].ToString(): null,
             };
         }
 

@@ -62,8 +62,8 @@ namespace Gs2.Gs2Key.Request
         public static GetKeyRequest FromDict(JsonData data)
         {
             return new GetKeyRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                keyName = data.Keys.Contains("keyName") && data["keyName"] != null ? (string) data["keyName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                keyName = data.Keys.Contains("keyName") && data["keyName"] != null ? data["keyName"].ToString(): null,
             };
         }
 

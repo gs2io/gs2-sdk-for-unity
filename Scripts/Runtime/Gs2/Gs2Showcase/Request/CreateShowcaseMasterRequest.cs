@@ -122,16 +122,16 @@ namespace Gs2.Gs2Showcase.Request
         public static CreateShowcaseMasterRequest FromDict(JsonData data)
         {
             return new CreateShowcaseMasterRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
-                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
                 displayItems = data.Keys.Contains("displayItems") && data["displayItems"] != null ? data["displayItems"].Cast<JsonData>().Select(value =>
                     {
                         return DisplayItemMaster.FromDict(value);
                     }
                 ).ToList() : null,
-                salesPeriodEventId = data.Keys.Contains("salesPeriodEventId") && data["salesPeriodEventId"] != null ? (string) data["salesPeriodEventId"] : null,
+                salesPeriodEventId = data.Keys.Contains("salesPeriodEventId") && data["salesPeriodEventId"] != null ? data["salesPeriodEventId"].ToString(): null,
             };
         }
 

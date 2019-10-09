@@ -74,8 +74,8 @@ namespace Gs2.Gs2Matchmaking.Model
         public static Attribute FromDict(JsonData data)
         {
             return new Attribute()
-                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
-                .WithValue(data.Keys.Contains("value") && data["value"] != null ? (int?) data["value"] : null);
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithValue(data.Keys.Contains("value") && data["value"] != null ? (int?)int.Parse(data["value"].ToString()) : null);
         }
 	}
 }

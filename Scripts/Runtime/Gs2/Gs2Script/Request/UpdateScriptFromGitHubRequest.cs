@@ -92,9 +92,9 @@ namespace Gs2.Gs2Script.Request
         public static UpdateScriptFromGitHubRequest FromDict(JsonData data)
         {
             return new UpdateScriptFromGitHubRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                scriptName = data.Keys.Contains("scriptName") && data["scriptName"] != null ? (string) data["scriptName"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                scriptName = data.Keys.Contains("scriptName") && data["scriptName"] != null ? data["scriptName"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
             };
         }

@@ -62,8 +62,8 @@ namespace Gs2.Gs2Identifier.Request
         public static DescribeCommonSecurityPoliciesRequest FromDict(JsonData data)
         {
             return new DescribeCommonSecurityPoliciesRequest {
-                pageToken = data.Keys.Contains("pageToken") && data["pageToken"] != null ? (string) data["pageToken"] : null,
-                limit = data.Keys.Contains("limit") && data["limit"] != null ? (long?) data["limit"] : null,
+                pageToken = data.Keys.Contains("pageToken") && data["pageToken"] != null ? data["pageToken"].ToString(): null,
+                limit = data.Keys.Contains("limit") && data["limit"] != null ? (long?)long.Parse(data["limit"].ToString()) : null,
             };
         }
 

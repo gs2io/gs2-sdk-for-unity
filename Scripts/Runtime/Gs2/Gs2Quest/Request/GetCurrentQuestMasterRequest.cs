@@ -47,7 +47,7 @@ namespace Gs2.Gs2Quest.Request
         public static GetCurrentQuestMasterRequest FromDict(JsonData data)
         {
             return new GetCurrentQuestMasterRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
             };
         }
 

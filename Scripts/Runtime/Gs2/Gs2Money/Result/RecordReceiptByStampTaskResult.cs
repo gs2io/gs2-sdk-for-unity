@@ -29,12 +29,16 @@ namespace Gs2.Gs2Money.Result
         /** レシート */
         public Receipt item { set; get; }
 
+        /** スタンプタスクの実行結果を記録したコンテキスト */
+        public string newContextStack { set; get; }
+
 
     	[Preserve]
         public static RecordReceiptByStampTaskResult FromDict(JsonData data)
         {
             return new RecordReceiptByStampTaskResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? Receipt.FromDict(data["item"]) : null,
+                newContextStack = data.Keys.Contains("newContextStack") && data["newContextStack"] != null ? data["newContextStack"].ToString() : null,
             };
         }
 	}

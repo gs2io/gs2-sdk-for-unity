@@ -77,9 +77,9 @@ namespace Gs2.Gs2Identifier.Request
         public static UpdateSecurityPolicyRequest FromDict(JsonData data)
         {
             return new UpdateSecurityPolicyRequest {
-                securityPolicyName = data.Keys.Contains("securityPolicyName") && data["securityPolicyName"] != null ? (string) data["securityPolicyName"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
-                policy = data.Keys.Contains("policy") && data["policy"] != null ? (string) data["policy"] : null,
+                securityPolicyName = data.Keys.Contains("securityPolicyName") && data["securityPolicyName"] != null ? data["securityPolicyName"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                policy = data.Keys.Contains("policy") && data["policy"] != null ? data["policy"].ToString(): null,
             };
         }
 

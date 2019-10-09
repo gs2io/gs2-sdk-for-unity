@@ -92,10 +92,10 @@ namespace Gs2.Gs2Script.Request
         public static UpdateScriptRequest FromDict(JsonData data)
         {
             return new UpdateScriptRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                scriptName = data.Keys.Contains("scriptName") && data["scriptName"] != null ? (string) data["scriptName"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
-                script = data.Keys.Contains("script") && data["script"] != null ? (string) data["script"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                scriptName = data.Keys.Contains("scriptName") && data["scriptName"] != null ? data["scriptName"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                script = data.Keys.Contains("script") && data["script"] != null ? data["script"].ToString(): null,
             };
         }
 

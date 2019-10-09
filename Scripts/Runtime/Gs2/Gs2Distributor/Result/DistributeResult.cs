@@ -41,8 +41,8 @@ namespace Gs2.Gs2Distributor.Result
         {
             return new DistributeResult {
                 distributeResource = data.Keys.Contains("distributeResource") && data["distributeResource"] != null ? DistributeResource.FromDict(data["distributeResource"]) : null,
-                inboxNamespaceId = data.Keys.Contains("inboxNamespaceId") && data["inboxNamespaceId"] != null ? (string) data["inboxNamespaceId"] : null,
-                result = data.Keys.Contains("result") && data["result"] != null ? (string) data["result"] : null,
+                inboxNamespaceId = data.Keys.Contains("inboxNamespaceId") && data["inboxNamespaceId"] != null ? data["inboxNamespaceId"].ToString() : null,
+                result = data.Keys.Contains("result") && data["result"] != null ? data["result"].ToString() : null,
             };
         }
 	}

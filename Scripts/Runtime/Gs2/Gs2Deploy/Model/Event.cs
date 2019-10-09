@@ -150,12 +150,12 @@ namespace Gs2.Gs2Deploy.Model
         public static Event FromDict(JsonData data)
         {
             return new Event()
-                .WithEventId(data.Keys.Contains("eventId") && data["eventId"] != null ? (string) data["eventId"] : null)
-                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
-                .WithResourceName(data.Keys.Contains("resourceName") && data["resourceName"] != null ? (string) data["resourceName"] : null)
-                .WithType(data.Keys.Contains("type") && data["type"] != null ? (string) data["type"] : null)
-                .WithMessage(data.Keys.Contains("message") && data["message"] != null ? (string) data["message"] : null)
-                .WithEventAt(data.Keys.Contains("eventAt") && data["eventAt"] != null ? (long?) data["eventAt"] : null);
+                .WithEventId(data.Keys.Contains("eventId") && data["eventId"] != null ? data["eventId"].ToString() : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithResourceName(data.Keys.Contains("resourceName") && data["resourceName"] != null ? data["resourceName"].ToString() : null)
+                .WithType(data.Keys.Contains("type") && data["type"] != null ? data["type"].ToString() : null)
+                .WithMessage(data.Keys.Contains("message") && data["message"] != null ? data["message"].ToString() : null)
+                .WithEventAt(data.Keys.Contains("eventAt") && data["eventAt"] != null ? (long?)long.Parse(data["eventAt"].ToString()) : null);
         }
 	}
 }

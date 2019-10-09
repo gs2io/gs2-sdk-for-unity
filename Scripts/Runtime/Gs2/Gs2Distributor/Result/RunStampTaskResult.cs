@@ -37,8 +37,8 @@ namespace Gs2.Gs2Distributor.Result
         public static RunStampTaskResult FromDict(JsonData data)
         {
             return new RunStampTaskResult {
-                contextStack = data.Keys.Contains("contextStack") && data["contextStack"] != null ? (string) data["contextStack"] : null,
-                result = data.Keys.Contains("result") && data["result"] != null ? (string) data["result"] : null,
+                contextStack = data.Keys.Contains("contextStack") && data["contextStack"] != null ? data["contextStack"].ToString() : null,
+                result = data.Keys.Contains("result") && data["result"] != null ? data["result"].ToString() : null,
             };
         }
 	}

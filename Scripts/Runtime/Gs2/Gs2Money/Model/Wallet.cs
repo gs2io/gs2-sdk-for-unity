@@ -169,13 +169,13 @@ namespace Gs2.Gs2Money.Model
         public static Wallet FromDict(JsonData data)
         {
             return new Wallet()
-                .WithWalletId(data.Keys.Contains("walletId") && data["walletId"] != null ? (string) data["walletId"] : null)
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
-                .WithSlot(data.Keys.Contains("slot") && data["slot"] != null ? (int?) data["slot"] : null)
-                .WithPaid(data.Keys.Contains("paid") && data["paid"] != null ? (int?) data["paid"] : null)
-                .WithFree(data.Keys.Contains("free") && data["free"] != null ? (int?) data["free"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
+                .WithWalletId(data.Keys.Contains("walletId") && data["walletId"] != null ? data["walletId"].ToString() : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
+                .WithSlot(data.Keys.Contains("slot") && data["slot"] != null ? (int?)int.Parse(data["slot"].ToString()) : null)
+                .WithPaid(data.Keys.Contains("paid") && data["paid"] != null ? (int?)int.Parse(data["paid"].ToString()) : null)
+                .WithFree(data.Keys.Contains("free") && data["free"] != null ? (int?)int.Parse(data["free"].ToString()) : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
 	}
 }

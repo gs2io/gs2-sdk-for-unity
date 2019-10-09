@@ -47,7 +47,7 @@ namespace Gs2.Gs2Identifier.Request
         public static GetHasSecurityPolicyRequest FromDict(JsonData data)
         {
             return new GetHasSecurityPolicyRequest {
-                userName = data.Keys.Contains("userName") && data["userName"] != null ? (string) data["userName"] : null,
+                userName = data.Keys.Contains("userName") && data["userName"] != null ? data["userName"].ToString(): null,
             };
         }
 

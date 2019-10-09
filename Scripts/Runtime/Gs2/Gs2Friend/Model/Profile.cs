@@ -169,13 +169,13 @@ namespace Gs2.Gs2Friend.Model
         public static Profile FromDict(JsonData data)
         {
             return new Profile()
-                .WithProfileId(data.Keys.Contains("profileId") && data["profileId"] != null ? (string) data["profileId"] : null)
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
-                .WithPublicProfile(data.Keys.Contains("publicProfile") && data["publicProfile"] != null ? (string) data["publicProfile"] : null)
-                .WithFollowerProfile(data.Keys.Contains("followerProfile") && data["followerProfile"] != null ? (string) data["followerProfile"] : null)
-                .WithFriendProfile(data.Keys.Contains("friendProfile") && data["friendProfile"] != null ? (string) data["friendProfile"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
+                .WithProfileId(data.Keys.Contains("profileId") && data["profileId"] != null ? data["profileId"].ToString() : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
+                .WithPublicProfile(data.Keys.Contains("publicProfile") && data["publicProfile"] != null ? data["publicProfile"].ToString() : null)
+                .WithFollowerProfile(data.Keys.Contains("followerProfile") && data["followerProfile"] != null ? data["followerProfile"].ToString() : null)
+                .WithFriendProfile(data.Keys.Contains("friendProfile") && data["friendProfile"] != null ? data["friendProfile"].ToString() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
 	}
 }

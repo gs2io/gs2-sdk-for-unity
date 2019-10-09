@@ -38,7 +38,7 @@ namespace Gs2.Gs2Limit.Result
         {
             return new CountUpByStampTaskResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? Counter.FromDict(data["item"]) : null,
-                newContextStack = data.Keys.Contains("newContextStack") && data["newContextStack"] != null ? (string) data["newContextStack"] : null,
+                newContextStack = data.Keys.Contains("newContextStack") && data["newContextStack"] != null ? data["newContextStack"].ToString() : null,
             };
         }
 	}

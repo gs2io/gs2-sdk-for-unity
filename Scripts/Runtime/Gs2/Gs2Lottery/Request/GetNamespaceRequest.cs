@@ -47,7 +47,7 @@ namespace Gs2.Gs2Lottery.Request
         public static GetNamespaceRequest FromDict(JsonData data)
         {
             return new GetNamespaceRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
             };
         }
 

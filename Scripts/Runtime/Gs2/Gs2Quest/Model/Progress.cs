@@ -193,18 +193,18 @@ namespace Gs2.Gs2Quest.Model
         public static Progress FromDict(JsonData data)
         {
             return new Progress()
-                .WithProgressId(data.Keys.Contains("progressId") && data["progressId"] != null ? (string) data["progressId"] : null)
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
-                .WithTransactionId(data.Keys.Contains("transactionId") && data["transactionId"] != null ? (string) data["transactionId"] : null)
-                .WithQuestModelId(data.Keys.Contains("questModelId") && data["questModelId"] != null ? (string) data["questModelId"] : null)
-                .WithRandomSeed(data.Keys.Contains("randomSeed") && data["randomSeed"] != null ? (long?) data["randomSeed"] : null)
+                .WithProgressId(data.Keys.Contains("progressId") && data["progressId"] != null ? data["progressId"].ToString() : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
+                .WithTransactionId(data.Keys.Contains("transactionId") && data["transactionId"] != null ? data["transactionId"].ToString() : null)
+                .WithQuestModelId(data.Keys.Contains("questModelId") && data["questModelId"] != null ? data["questModelId"].ToString() : null)
+                .WithRandomSeed(data.Keys.Contains("randomSeed") && data["randomSeed"] != null ? (long?)long.Parse(data["randomSeed"].ToString()) : null)
                 .WithRewards(data.Keys.Contains("rewards") && data["rewards"] != null ? data["rewards"].Cast<JsonData>().Select(value =>
                     {
                         return Reward.FromDict(value);
                     }
                 ).ToList() : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
 	}
 }

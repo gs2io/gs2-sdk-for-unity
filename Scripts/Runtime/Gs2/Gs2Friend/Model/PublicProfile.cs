@@ -74,8 +74,8 @@ namespace Gs2.Gs2Friend.Model
         public static PublicProfile FromDict(JsonData data)
         {
             return new PublicProfile()
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
-                .WithPublicProfile(data.Keys.Contains("publicProfile") && data["publicProfile"] != null ? (string) data["publicProfile"] : null);
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
+                .WithPublicProfile(data.Keys.Contains("publicProfile") && data["publicProfile"] != null ? data["publicProfile"].ToString() : null);
         }
 	}
 }

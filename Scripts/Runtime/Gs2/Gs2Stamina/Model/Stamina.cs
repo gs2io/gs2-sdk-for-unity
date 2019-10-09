@@ -264,18 +264,18 @@ namespace Gs2.Gs2Stamina.Model
         public static Stamina FromDict(JsonData data)
         {
             return new Stamina()
-                .WithStaminaId(data.Keys.Contains("staminaId") && data["staminaId"] != null ? (string) data["staminaId"] : null)
-                .WithStaminaName(data.Keys.Contains("staminaName") && data["staminaName"] != null ? (string) data["staminaName"] : null)
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
-                .WithValue(data.Keys.Contains("value") && data["value"] != null ? (int?) data["value"] : null)
-                .WithMaxValue(data.Keys.Contains("maxValue") && data["maxValue"] != null ? (int?) data["maxValue"] : null)
-                .WithRecoverIntervalMinutes(data.Keys.Contains("recoverIntervalMinutes") && data["recoverIntervalMinutes"] != null ? (int?) data["recoverIntervalMinutes"] : null)
-                .WithRecoverValue(data.Keys.Contains("recoverValue") && data["recoverValue"] != null ? (int?) data["recoverValue"] : null)
-                .WithOverflowValue(data.Keys.Contains("overflowValue") && data["overflowValue"] != null ? (int?) data["overflowValue"] : null)
-                .WithNextRecoverAt(data.Keys.Contains("nextRecoverAt") && data["nextRecoverAt"] != null ? (long?) data["nextRecoverAt"] : null)
-                .WithLastRecoveredAt(data.Keys.Contains("lastRecoveredAt") && data["lastRecoveredAt"] != null ? (long?) data["lastRecoveredAt"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
+                .WithStaminaId(data.Keys.Contains("staminaId") && data["staminaId"] != null ? data["staminaId"].ToString() : null)
+                .WithStaminaName(data.Keys.Contains("staminaName") && data["staminaName"] != null ? data["staminaName"].ToString() : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
+                .WithValue(data.Keys.Contains("value") && data["value"] != null ? (int?)int.Parse(data["value"].ToString()) : null)
+                .WithMaxValue(data.Keys.Contains("maxValue") && data["maxValue"] != null ? (int?)int.Parse(data["maxValue"].ToString()) : null)
+                .WithRecoverIntervalMinutes(data.Keys.Contains("recoverIntervalMinutes") && data["recoverIntervalMinutes"] != null ? (int?)int.Parse(data["recoverIntervalMinutes"].ToString()) : null)
+                .WithRecoverValue(data.Keys.Contains("recoverValue") && data["recoverValue"] != null ? (int?)int.Parse(data["recoverValue"].ToString()) : null)
+                .WithOverflowValue(data.Keys.Contains("overflowValue") && data["overflowValue"] != null ? (int?)int.Parse(data["overflowValue"].ToString()) : null)
+                .WithNextRecoverAt(data.Keys.Contains("nextRecoverAt") && data["nextRecoverAt"] != null ? (long?)long.Parse(data["nextRecoverAt"].ToString()) : null)
+                .WithLastRecoveredAt(data.Keys.Contains("lastRecoveredAt") && data["lastRecoveredAt"] != null ? (long?)long.Parse(data["lastRecoveredAt"].ToString()) : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
 	}
 }

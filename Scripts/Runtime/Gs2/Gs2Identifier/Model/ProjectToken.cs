@@ -55,7 +55,7 @@ namespace Gs2.Gs2Identifier.Model
         public static ProjectToken FromDict(JsonData data)
         {
             return new ProjectToken()
-                .WithToken(data.Keys.Contains("token") && data["token"] != null ? (string) data["token"] : null);
+                .WithToken(data.Keys.Contains("token") && data["token"] != null ? data["token"].ToString() : null);
         }
 	}
 }

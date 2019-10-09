@@ -62,8 +62,8 @@ namespace Gs2.Gs2Experience.Request
         public static UpdateCurrentExperienceMasterRequest FromDict(JsonData data)
         {
             return new UpdateCurrentExperienceMasterRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                settings = data.Keys.Contains("settings") && data["settings"] != null ? (string) data["settings"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                settings = data.Keys.Contains("settings") && data["settings"] != null ? data["settings"].ToString(): null,
             };
         }
 

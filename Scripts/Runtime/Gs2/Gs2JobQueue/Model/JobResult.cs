@@ -150,12 +150,12 @@ namespace Gs2.Gs2JobQueue.Model
         public static JobResult FromDict(JsonData data)
         {
             return new JobResult()
-                .WithJobResultId(data.Keys.Contains("jobResultId") && data["jobResultId"] != null ? (string) data["jobResultId"] : null)
-                .WithJobId(data.Keys.Contains("jobId") && data["jobId"] != null ? (string) data["jobId"] : null)
-                .WithTryNumber(data.Keys.Contains("tryNumber") && data["tryNumber"] != null ? (int?) data["tryNumber"] : null)
-                .WithStatusCode(data.Keys.Contains("statusCode") && data["statusCode"] != null ? (int?) data["statusCode"] : null)
-                .WithResult(data.Keys.Contains("result") && data["result"] != null ? (string) data["result"] : null)
-                .WithTryAt(data.Keys.Contains("tryAt") && data["tryAt"] != null ? (long?) data["tryAt"] : null);
+                .WithJobResultId(data.Keys.Contains("jobResultId") && data["jobResultId"] != null ? data["jobResultId"].ToString() : null)
+                .WithJobId(data.Keys.Contains("jobId") && data["jobId"] != null ? data["jobId"].ToString() : null)
+                .WithTryNumber(data.Keys.Contains("tryNumber") && data["tryNumber"] != null ? (int?)int.Parse(data["tryNumber"].ToString()) : null)
+                .WithStatusCode(data.Keys.Contains("statusCode") && data["statusCode"] != null ? (int?)int.Parse(data["statusCode"].ToString()) : null)
+                .WithResult(data.Keys.Contains("result") && data["result"] != null ? data["result"].ToString() : null)
+                .WithTryAt(data.Keys.Contains("tryAt") && data["tryAt"] != null ? (long?)long.Parse(data["tryAt"].ToString()) : null);
         }
 	}
 }

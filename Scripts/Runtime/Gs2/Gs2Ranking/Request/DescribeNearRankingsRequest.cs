@@ -77,9 +77,9 @@ namespace Gs2.Gs2Ranking.Request
         public static DescribeNearRankingsRequest FromDict(JsonData data)
         {
             return new DescribeNearRankingsRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                categoryName = data.Keys.Contains("categoryName") && data["categoryName"] != null ? (string) data["categoryName"] : null,
-                score = data.Keys.Contains("score") && data["score"] != null ? (long?) data["score"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                categoryName = data.Keys.Contains("categoryName") && data["categoryName"] != null ? data["categoryName"].ToString(): null,
+                score = data.Keys.Contains("score") && data["score"] != null ? (long?)long.Parse(data["score"].ToString()) : null,
             };
         }
 

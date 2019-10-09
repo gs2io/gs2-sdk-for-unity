@@ -207,15 +207,15 @@ namespace Gs2.Gs2Experience.Model
         public static Status FromDict(JsonData data)
         {
             return new Status()
-                .WithStatusId(data.Keys.Contains("statusId") && data["statusId"] != null ? (string) data["statusId"] : null)
-                .WithExperienceName(data.Keys.Contains("experienceName") && data["experienceName"] != null ? (string) data["experienceName"] : null)
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
-                .WithPropertyId(data.Keys.Contains("propertyId") && data["propertyId"] != null ? (string) data["propertyId"] : null)
-                .WithExperienceValue(data.Keys.Contains("experienceValue") && data["experienceValue"] != null ? (long?) data["experienceValue"] : null)
-                .WithRankValue(data.Keys.Contains("rankValue") && data["rankValue"] != null ? (long?) data["rankValue"] : null)
-                .WithRankCapValue(data.Keys.Contains("rankCapValue") && data["rankCapValue"] != null ? (long?) data["rankCapValue"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
+                .WithStatusId(data.Keys.Contains("statusId") && data["statusId"] != null ? data["statusId"].ToString() : null)
+                .WithExperienceName(data.Keys.Contains("experienceName") && data["experienceName"] != null ? data["experienceName"].ToString() : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
+                .WithPropertyId(data.Keys.Contains("propertyId") && data["propertyId"] != null ? data["propertyId"].ToString() : null)
+                .WithExperienceValue(data.Keys.Contains("experienceValue") && data["experienceValue"] != null ? (long?)long.Parse(data["experienceValue"].ToString()) : null)
+                .WithRankValue(data.Keys.Contains("rankValue") && data["rankValue"] != null ? (long?)long.Parse(data["rankValue"].ToString()) : null)
+                .WithRankCapValue(data.Keys.Contains("rankCapValue") && data["rankCapValue"] != null ? (long?)long.Parse(data["rankCapValue"].ToString()) : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
 	}
 }

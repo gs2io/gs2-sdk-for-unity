@@ -107,11 +107,11 @@ namespace Gs2.Gs2Key.Request
         public static UpdateGitHubApiKeyRequest FromDict(JsonData data)
         {
             return new UpdateGitHubApiKeyRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                apiKeyName = data.Keys.Contains("apiKeyName") && data["apiKeyName"] != null ? (string) data["apiKeyName"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
-                apiKey = data.Keys.Contains("apiKey") && data["apiKey"] != null ? (string) data["apiKey"] : null,
-                encryptionKeyName = data.Keys.Contains("encryptionKeyName") && data["encryptionKeyName"] != null ? (string) data["encryptionKeyName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                apiKeyName = data.Keys.Contains("apiKeyName") && data["apiKeyName"] != null ? data["apiKeyName"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                apiKey = data.Keys.Contains("apiKey") && data["apiKey"] != null ? data["apiKey"].ToString(): null,
+                encryptionKeyName = data.Keys.Contains("encryptionKeyName") && data["encryptionKeyName"] != null ? data["encryptionKeyName"].ToString(): null,
             };
         }
 

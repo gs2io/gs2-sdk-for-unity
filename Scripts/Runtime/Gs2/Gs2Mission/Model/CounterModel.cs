@@ -136,15 +136,15 @@ namespace Gs2.Gs2Mission.Model
         public static CounterModel FromDict(JsonData data)
         {
             return new CounterModel()
-                .WithCounterId(data.Keys.Contains("counterId") && data["counterId"] != null ? (string) data["counterId"] : null)
-                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithCounterId(data.Keys.Contains("counterId") && data["counterId"] != null ? data["counterId"].ToString() : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
                 .WithScopes(data.Keys.Contains("scopes") && data["scopes"] != null ? data["scopes"].Cast<JsonData>().Select(value =>
                     {
                         return CounterScopeModel.FromDict(value);
                     }
                 ).ToList() : null)
-                .WithChallengePeriodEventId(data.Keys.Contains("challengePeriodEventId") && data["challengePeriodEventId"] != null ? (string) data["challengePeriodEventId"] : null);
+                .WithChallengePeriodEventId(data.Keys.Contains("challengePeriodEventId") && data["challengePeriodEventId"] != null ? data["challengePeriodEventId"].ToString() : null);
         }
 	}
 }

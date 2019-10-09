@@ -188,14 +188,14 @@ namespace Gs2.Gs2Deploy.Model
         public static Stack FromDict(JsonData data)
         {
             return new Stack()
-                .WithStackId(data.Keys.Contains("stackId") && data["stackId"] != null ? (string) data["stackId"] : null)
-                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? (string) data["ownerId"] : null)
-                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
-                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
-                .WithTemplate(data.Keys.Contains("template") && data["template"] != null ? (string) data["template"] : null)
-                .WithStatus(data.Keys.Contains("status") && data["status"] != null ? (string) data["status"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
+                .WithStackId(data.Keys.Contains("stackId") && data["stackId"] != null ? data["stackId"].ToString() : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
+                .WithTemplate(data.Keys.Contains("template") && data["template"] != null ? data["template"].ToString() : null)
+                .WithStatus(data.Keys.Contains("status") && data["status"] != null ? data["status"].ToString() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
 	}
 }

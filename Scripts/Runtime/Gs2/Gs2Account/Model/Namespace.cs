@@ -245,17 +245,17 @@ namespace Gs2.Gs2Account.Model
         public static Namespace FromDict(JsonData data)
         {
             return new Namespace()
-                .WithNamespaceId(data.Keys.Contains("namespaceId") && data["namespaceId"] != null ? (string) data["namespaceId"] : null)
-                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? (string) data["ownerId"] : null)
-                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
-                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null)
-                .WithChangePasswordIfTakeOver(data.Keys.Contains("changePasswordIfTakeOver") && data["changePasswordIfTakeOver"] != null ? (bool?) data["changePasswordIfTakeOver"] : null)
+                .WithNamespaceId(data.Keys.Contains("namespaceId") && data["namespaceId"] != null ? data["namespaceId"].ToString() : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
+                .WithChangePasswordIfTakeOver(data.Keys.Contains("changePasswordIfTakeOver") && data["changePasswordIfTakeOver"] != null ? (bool?)bool.Parse(data["changePasswordIfTakeOver"].ToString()) : null)
                 .WithCreateAccountScript(data.Keys.Contains("createAccountScript") && data["createAccountScript"] != null ? ScriptSetting.FromDict(data["createAccountScript"]) : null)
                 .WithAuthenticationScript(data.Keys.Contains("authenticationScript") && data["authenticationScript"] != null ? ScriptSetting.FromDict(data["authenticationScript"]) : null)
                 .WithCreateTakeOverScript(data.Keys.Contains("createTakeOverScript") && data["createTakeOverScript"] != null ? ScriptSetting.FromDict(data["createTakeOverScript"]) : null)
                 .WithDoTakeOverScript(data.Keys.Contains("doTakeOverScript") && data["doTakeOverScript"] != null ? ScriptSetting.FromDict(data["doTakeOverScript"]) : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
 	}
 }

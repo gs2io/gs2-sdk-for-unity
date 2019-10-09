@@ -107,8 +107,8 @@ namespace Gs2.Gs2Inventory.Request
         public static CreateNamespaceRequest FromDict(JsonData data)
         {
             return new CreateNamespaceRequest {
-                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 acquireScript = data.Keys.Contains("acquireScript") && data["acquireScript"] != null ? ScriptSetting.FromDict(data["acquireScript"]) : null,
                 overflowScript = data.Keys.Contains("overflowScript") && data["overflowScript"] != null ? ScriptSetting.FromDict(data["overflowScript"]) : null,
                 consumeScript = data.Keys.Contains("consumeScript") && data["consumeScript"] != null ? ScriptSetting.FromDict(data["consumeScript"]) : null,

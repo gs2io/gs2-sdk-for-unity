@@ -47,7 +47,7 @@ namespace Gs2.Gs2Deploy.Request
         public static DeleteStackRequest FromDict(JsonData data)
         {
             return new DeleteStackRequest {
-                stackName = data.Keys.Contains("stackName") && data["stackName"] != null ? (string) data["stackName"] : null,
+                stackName = data.Keys.Contains("stackName") && data["stackName"] != null ? data["stackName"].ToString(): null,
             };
         }
 

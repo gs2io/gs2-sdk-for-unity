@@ -62,8 +62,8 @@ namespace Gs2.Gs2Script.Request
         public static DebugInvokeRequest FromDict(JsonData data)
         {
             return new DebugInvokeRequest {
-                script = data.Keys.Contains("script") && data["script"] != null ? (string) data["script"] : null,
-                args = data.Keys.Contains("args") && data["args"] != null ? (string) data["args"] : null,
+                script = data.Keys.Contains("script") && data["script"] != null ? data["script"].ToString(): null,
+                args = data.Keys.Contains("args") && data["args"] != null ? data["args"].ToString(): null,
             };
         }
 

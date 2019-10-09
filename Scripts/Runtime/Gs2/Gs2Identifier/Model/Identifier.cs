@@ -131,11 +131,11 @@ namespace Gs2.Gs2Identifier.Model
         public static Identifier FromDict(JsonData data)
         {
             return new Identifier()
-                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? (string) data["ownerId"] : null)
-                .WithClientId(data.Keys.Contains("clientId") && data["clientId"] != null ? (string) data["clientId"] : null)
-                .WithUserName(data.Keys.Contains("userName") && data["userName"] != null ? (string) data["userName"] : null)
-                .WithClientSecret(data.Keys.Contains("clientSecret") && data["clientSecret"] != null ? (string) data["clientSecret"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null);
+                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
+                .WithClientId(data.Keys.Contains("clientId") && data["clientId"] != null ? data["clientId"].ToString() : null)
+                .WithUserName(data.Keys.Contains("userName") && data["userName"] != null ? data["userName"].ToString() : null)
+                .WithClientSecret(data.Keys.Contains("clientSecret") && data["clientSecret"] != null ? data["clientSecret"].ToString() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null);
         }
 	}
 }

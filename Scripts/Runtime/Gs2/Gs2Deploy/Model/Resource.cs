@@ -236,24 +236,24 @@ namespace Gs2.Gs2Deploy.Model
         public static Resource FromDict(JsonData data)
         {
             return new Resource()
-                .WithResourceId(data.Keys.Contains("resourceId") && data["resourceId"] != null ? (string) data["resourceId"] : null)
-                .WithType(data.Keys.Contains("type") && data["type"] != null ? (string) data["type"] : null)
-                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
-                .WithRequest(data.Keys.Contains("request") && data["request"] != null ? (string) data["request"] : null)
-                .WithResponse(data.Keys.Contains("response") && data["response"] != null ? (string) data["response"] : null)
-                .WithRollbackContext(data.Keys.Contains("rollbackContext") && data["rollbackContext"] != null ? (string) data["rollbackContext"] : null)
-                .WithRollbackRequest(data.Keys.Contains("rollbackRequest") && data["rollbackRequest"] != null ? (string) data["rollbackRequest"] : null)
+                .WithResourceId(data.Keys.Contains("resourceId") && data["resourceId"] != null ? data["resourceId"].ToString() : null)
+                .WithType(data.Keys.Contains("type") && data["type"] != null ? data["type"].ToString() : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithRequest(data.Keys.Contains("request") && data["request"] != null ? data["request"].ToString() : null)
+                .WithResponse(data.Keys.Contains("response") && data["response"] != null ? data["response"].ToString() : null)
+                .WithRollbackContext(data.Keys.Contains("rollbackContext") && data["rollbackContext"] != null ? data["rollbackContext"].ToString() : null)
+                .WithRollbackRequest(data.Keys.Contains("rollbackRequest") && data["rollbackRequest"] != null ? data["rollbackRequest"].ToString() : null)
                 .WithRollbackAfter(data.Keys.Contains("rollbackAfter") && data["rollbackAfter"] != null ? data["rollbackAfter"].Cast<JsonData>().Select(value =>
                     {
-                        return (string) value;
+                        return value.ToString();
                     }
                 ).ToList() : null)
                 .WithOutputKeys(data.Keys.Contains("outputKeys") && data["outputKeys"] != null ? data["outputKeys"].Cast<JsonData>().Select(value =>
                     {
-                        return (string) value;
+                        return value.ToString();
                     }
                 ).ToList() : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null);
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null);
         }
 	}
 }

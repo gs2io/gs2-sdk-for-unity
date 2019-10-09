@@ -203,8 +203,8 @@ namespace Gs2.Gs2Matchmaking.Model
         public static Gathering FromDict(JsonData data)
         {
             return new Gathering()
-                .WithGatheringId(data.Keys.Contains("gatheringId") && data["gatheringId"] != null ? (string) data["gatheringId"] : null)
-                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
+                .WithGatheringId(data.Keys.Contains("gatheringId") && data["gatheringId"] != null ? data["gatheringId"].ToString() : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithAttributeRanges(data.Keys.Contains("attributeRanges") && data["attributeRanges"] != null ? data["attributeRanges"].Cast<JsonData>().Select(value =>
                     {
                         return AttributeRange.FromDict(value);
@@ -217,12 +217,12 @@ namespace Gs2.Gs2Matchmaking.Model
                 ).ToList() : null)
                 .WithAllowUserIds(data.Keys.Contains("allowUserIds") && data["allowUserIds"] != null ? data["allowUserIds"].Cast<JsonData>().Select(value =>
                     {
-                        return (string) value;
+                        return value.ToString();
                     }
                 ).ToList() : null)
-                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
 	}
 }

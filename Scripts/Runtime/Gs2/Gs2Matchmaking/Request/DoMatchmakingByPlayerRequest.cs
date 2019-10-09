@@ -77,9 +77,9 @@ namespace Gs2.Gs2Matchmaking.Request
         public static DoMatchmakingByPlayerRequest FromDict(JsonData data)
         {
             return new DoMatchmakingByPlayerRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 player = data.Keys.Contains("player") && data["player"] != null ? Player.FromDict(data["player"]) : null,
-                matchmakingContextToken = data.Keys.Contains("matchmakingContextToken") && data["matchmakingContextToken"] != null ? (string) data["matchmakingContextToken"] : null,
+                matchmakingContextToken = data.Keys.Contains("matchmakingContextToken") && data["matchmakingContextToken"] != null ? data["matchmakingContextToken"].ToString(): null,
             };
         }
 

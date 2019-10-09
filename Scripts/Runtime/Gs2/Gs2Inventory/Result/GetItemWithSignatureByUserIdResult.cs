@@ -53,8 +53,8 @@ namespace Gs2.Gs2Inventory.Result
                 ).ToList() : null,
                 itemModel = data.Keys.Contains("itemModel") && data["itemModel"] != null ? ItemModel.FromDict(data["itemModel"]) : null,
                 inventory = data.Keys.Contains("inventory") && data["inventory"] != null ? Inventory.FromDict(data["inventory"]) : null,
-                body = data.Keys.Contains("body") && data["body"] != null ? (string) data["body"] : null,
-                signature = data.Keys.Contains("signature") && data["signature"] != null ? (string) data["signature"] : null,
+                body = data.Keys.Contains("body") && data["body"] != null ? data["body"].ToString() : null,
+                signature = data.Keys.Contains("signature") && data["signature"] != null ? data["signature"].ToString() : null,
             };
         }
 	}

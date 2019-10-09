@@ -137,13 +137,13 @@ namespace Gs2.Gs2Gateway.Request
         public static SendNotificationRequest FromDict(JsonData data)
         {
             return new SendNotificationRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
-                subject = data.Keys.Contains("subject") && data["subject"] != null ? (string) data["subject"] : null,
-                payload = data.Keys.Contains("payload") && data["payload"] != null ? (string) data["payload"] : null,
-                enableTransferMobileNotification = data.Keys.Contains("enableTransferMobileNotification") && data["enableTransferMobileNotification"] != null ? (bool?) data["enableTransferMobileNotification"] : null,
-                sound = data.Keys.Contains("sound") && data["sound"] != null ? (string) data["sound"] : null,
-                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
+                subject = data.Keys.Contains("subject") && data["subject"] != null ? data["subject"].ToString(): null,
+                payload = data.Keys.Contains("payload") && data["payload"] != null ? data["payload"].ToString(): null,
+                enableTransferMobileNotification = data.Keys.Contains("enableTransferMobileNotification") && data["enableTransferMobileNotification"] != null ? (bool?)bool.Parse(data["enableTransferMobileNotification"].ToString()) : null,
+                sound = data.Keys.Contains("sound") && data["sound"] != null ? data["sound"].ToString(): null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
 

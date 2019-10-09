@@ -131,11 +131,11 @@ namespace Gs2.Gs2Experience.Model
         public static ResponseCache FromDict(JsonData data)
         {
             return new ResponseCache()
-                .WithRegion(data.Keys.Contains("region") && data["region"] != null ? (string) data["region"] : null)
-                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? (string) data["ownerId"] : null)
-                .WithResponseCacheId(data.Keys.Contains("responseCacheId") && data["responseCacheId"] != null ? (string) data["responseCacheId"] : null)
-                .WithRequestHash(data.Keys.Contains("requestHash") && data["requestHash"] != null ? (string) data["requestHash"] : null)
-                .WithResult(data.Keys.Contains("result") && data["result"] != null ? (string) data["result"] : null);
+                .WithRegion(data.Keys.Contains("region") && data["region"] != null ? data["region"].ToString() : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
+                .WithResponseCacheId(data.Keys.Contains("responseCacheId") && data["responseCacheId"] != null ? data["responseCacheId"].ToString() : null)
+                .WithRequestHash(data.Keys.Contains("requestHash") && data["requestHash"] != null ? data["requestHash"].ToString() : null)
+                .WithResult(data.Keys.Contains("result") && data["result"] != null ? data["result"].ToString() : null);
         }
 	}
 }

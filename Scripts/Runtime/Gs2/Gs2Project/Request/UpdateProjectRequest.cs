@@ -77,9 +77,9 @@ namespace Gs2.Gs2Project.Request
         public static UpdateProjectRequest FromDict(JsonData data)
         {
             return new UpdateProjectRequest {
-                accountToken = data.Keys.Contains("accountToken") && data["accountToken"] != null ? (string) data["accountToken"] : null,
-                projectName = data.Keys.Contains("projectName") && data["projectName"] != null ? (string) data["projectName"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                accountToken = data.Keys.Contains("accountToken") && data["accountToken"] != null ? data["accountToken"].ToString(): null,
+                projectName = data.Keys.Contains("projectName") && data["projectName"] != null ? data["projectName"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
             };
         }
 

@@ -62,8 +62,8 @@ namespace Gs2.Gs2Identifier.Request
         public static DetachSecurityPolicyRequest FromDict(JsonData data)
         {
             return new DetachSecurityPolicyRequest {
-                userName = data.Keys.Contains("userName") && data["userName"] != null ? (string) data["userName"] : null,
-                securityPolicyId = data.Keys.Contains("securityPolicyId") && data["securityPolicyId"] != null ? (string) data["securityPolicyId"] : null,
+                userName = data.Keys.Contains("userName") && data["userName"] != null ? data["userName"].ToString(): null,
+                securityPolicyId = data.Keys.Contains("securityPolicyId") && data["securityPolicyId"] != null ? data["securityPolicyId"].ToString(): null,
             };
         }
 

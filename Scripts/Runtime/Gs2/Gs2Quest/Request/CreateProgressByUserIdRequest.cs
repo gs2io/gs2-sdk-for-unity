@@ -122,16 +122,16 @@ namespace Gs2.Gs2Quest.Request
         public static CreateProgressByUserIdRequest FromDict(JsonData data)
         {
             return new CreateProgressByUserIdRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
-                questModelId = data.Keys.Contains("questModelId") && data["questModelId"] != null ? (string) data["questModelId"] : null,
-                force = data.Keys.Contains("force") && data["force"] != null ? (bool?) data["force"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
+                questModelId = data.Keys.Contains("questModelId") && data["questModelId"] != null ? data["questModelId"].ToString(): null,
+                force = data.Keys.Contains("force") && data["force"] != null ? (bool?)bool.Parse(data["force"].ToString()) : null,
                 config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
                     {
                         return Config.FromDict(value);
                     }
                 ).ToList() : null,
-                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
 

@@ -74,8 +74,8 @@ namespace Gs2.Gs2Chat.Model
         public static NotificationType FromDict(JsonData data)
         {
             return new NotificationType()
-                .WithCategory(data.Keys.Contains("category") && data["category"] != null ? (int?) data["category"] : null)
-                .WithEnableTransferMobilePushNotification(data.Keys.Contains("enableTransferMobilePushNotification") && data["enableTransferMobilePushNotification"] != null ? (bool?) data["enableTransferMobilePushNotification"] : null);
+                .WithCategory(data.Keys.Contains("category") && data["category"] != null ? (int?)int.Parse(data["category"].ToString()) : null)
+                .WithEnableTransferMobilePushNotification(data.Keys.Contains("enableTransferMobilePushNotification") && data["enableTransferMobilePushNotification"] != null ? (bool?)bool.Parse(data["enableTransferMobilePushNotification"].ToString()) : null);
         }
 	}
 }

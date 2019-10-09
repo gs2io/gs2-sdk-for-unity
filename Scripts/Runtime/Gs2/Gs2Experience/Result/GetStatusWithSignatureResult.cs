@@ -41,8 +41,8 @@ namespace Gs2.Gs2Experience.Result
         {
             return new GetStatusWithSignatureResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? Status.FromDict(data["item"]) : null,
-                body = data.Keys.Contains("body") && data["body"] != null ? (string) data["body"] : null,
-                signature = data.Keys.Contains("signature") && data["signature"] != null ? (string) data["signature"] : null,
+                body = data.Keys.Contains("body") && data["body"] != null ? data["body"].ToString() : null,
+                signature = data.Keys.Contains("signature") && data["signature"] != null ? data["signature"].ToString() : null,
             };
         }
 	}

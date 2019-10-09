@@ -62,8 +62,8 @@ namespace Gs2.Gs2Showcase.Request
         public static DeleteSalesItemGroupMasterRequest FromDict(JsonData data)
         {
             return new DeleteSalesItemGroupMasterRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                salesItemGroupName = data.Keys.Contains("salesItemGroupName") && data["salesItemGroupName"] != null ? (string) data["salesItemGroupName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                salesItemGroupName = data.Keys.Contains("salesItemGroupName") && data["salesItemGroupName"] != null ? data["salesItemGroupName"].ToString(): null,
             };
         }
 

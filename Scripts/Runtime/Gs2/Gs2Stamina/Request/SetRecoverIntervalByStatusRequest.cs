@@ -136,12 +136,12 @@ namespace Gs2.Gs2Stamina.Request
         public static SetRecoverIntervalByStatusRequest FromDict(JsonData data)
         {
             return new SetRecoverIntervalByStatusRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                staminaName = data.Keys.Contains("staminaName") && data["staminaName"] != null ? (string) data["staminaName"] : null,
-                keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? (string) data["keyId"] : null,
-                signedStatusBody = data.Keys.Contains("signedStatusBody") && data["signedStatusBody"] != null ? (string) data["signedStatusBody"] : null,
-                signedStatusSignature = data.Keys.Contains("signedStatusSignature") && data["signedStatusSignature"] != null ? (string) data["signedStatusSignature"] : null,
-                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                staminaName = data.Keys.Contains("staminaName") && data["staminaName"] != null ? data["staminaName"].ToString(): null,
+                keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString(): null,
+                signedStatusBody = data.Keys.Contains("signedStatusBody") && data["signedStatusBody"] != null ? data["signedStatusBody"].ToString(): null,
+                signedStatusSignature = data.Keys.Contains("signedStatusSignature") && data["signedStatusSignature"] != null ? data["signedStatusSignature"].ToString(): null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
 

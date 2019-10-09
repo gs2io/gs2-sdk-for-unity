@@ -62,7 +62,7 @@ namespace Gs2.Gs2Lottery.Request
         public static UpdateCurrentLotteryMasterFromGitHubRequest FromDict(JsonData data)
         {
             return new UpdateCurrentLotteryMasterFromGitHubRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
             };
         }

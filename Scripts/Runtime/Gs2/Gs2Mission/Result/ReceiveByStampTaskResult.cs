@@ -38,7 +38,7 @@ namespace Gs2.Gs2Mission.Result
         {
             return new ReceiveByStampTaskResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? Complete.FromDict(data["item"]) : null,
-                newContextStack = data.Keys.Contains("newContextStack") && data["newContextStack"] != null ? (string) data["newContextStack"] : null,
+                newContextStack = data.Keys.Contains("newContextStack") && data["newContextStack"] != null ? data["newContextStack"].ToString() : null,
             };
         }
 	}

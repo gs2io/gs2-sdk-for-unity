@@ -107,11 +107,11 @@ namespace Gs2.Gs2Chat.Request
         public static DescribeMessagesRequest FromDict(JsonData data)
         {
             return new DescribeMessagesRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                roomName = data.Keys.Contains("roomName") && data["roomName"] != null ? (string) data["roomName"] : null,
-                password = data.Keys.Contains("password") && data["password"] != null ? (string) data["password"] : null,
-                startAt = data.Keys.Contains("startAt") && data["startAt"] != null ? (long?) data["startAt"] : null,
-                limit = data.Keys.Contains("limit") && data["limit"] != null ? (long?) data["limit"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                roomName = data.Keys.Contains("roomName") && data["roomName"] != null ? data["roomName"].ToString(): null,
+                password = data.Keys.Contains("password") && data["password"] != null ? data["password"].ToString(): null,
+                startAt = data.Keys.Contains("startAt") && data["startAt"] != null ? (long?)long.Parse(data["startAt"].ToString()) : null,
+                limit = data.Keys.Contains("limit") && data["limit"] != null ? (long?)long.Parse(data["limit"].ToString()) : null,
             };
         }
 

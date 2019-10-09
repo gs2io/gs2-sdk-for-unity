@@ -40,9 +40,9 @@ namespace Gs2.Gs2Auth.Result
         public static LoginBySignatureResult FromDict(JsonData data)
         {
             return new LoginBySignatureResult {
-                token = data.Keys.Contains("token") && data["token"] != null ? (string) data["token"] : null,
-                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
-                expire = data.Keys.Contains("expire") && data["expire"] != null ? (long?) data["expire"] : null,
+                token = data.Keys.Contains("token") && data["token"] != null ? data["token"].ToString() : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null,
+                expire = data.Keys.Contains("expire") && data["expire"] != null ? (long?)long.Parse(data["expire"].ToString()) : null,
             };
         }
 	}

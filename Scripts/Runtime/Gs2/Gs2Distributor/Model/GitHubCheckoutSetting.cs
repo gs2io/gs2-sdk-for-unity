@@ -169,13 +169,13 @@ namespace Gs2.Gs2Distributor.Model
         public static GitHubCheckoutSetting FromDict(JsonData data)
         {
             return new GitHubCheckoutSetting()
-                .WithGitHubApiKeyId(data.Keys.Contains("gitHubApiKeyId") && data["gitHubApiKeyId"] != null ? (string) data["gitHubApiKeyId"] : null)
-                .WithRepositoryName(data.Keys.Contains("repositoryName") && data["repositoryName"] != null ? (string) data["repositoryName"] : null)
-                .WithSourcePath(data.Keys.Contains("sourcePath") && data["sourcePath"] != null ? (string) data["sourcePath"] : null)
-                .WithReferenceType(data.Keys.Contains("referenceType") && data["referenceType"] != null ? (string) data["referenceType"] : null)
-                .WithCommitHash(data.Keys.Contains("commitHash") && data["commitHash"] != null ? (string) data["commitHash"] : null)
-                .WithBranchName(data.Keys.Contains("branchName") && data["branchName"] != null ? (string) data["branchName"] : null)
-                .WithTagName(data.Keys.Contains("tagName") && data["tagName"] != null ? (string) data["tagName"] : null);
+                .WithGitHubApiKeyId(data.Keys.Contains("gitHubApiKeyId") && data["gitHubApiKeyId"] != null ? data["gitHubApiKeyId"].ToString() : null)
+                .WithRepositoryName(data.Keys.Contains("repositoryName") && data["repositoryName"] != null ? data["repositoryName"].ToString() : null)
+                .WithSourcePath(data.Keys.Contains("sourcePath") && data["sourcePath"] != null ? data["sourcePath"].ToString() : null)
+                .WithReferenceType(data.Keys.Contains("referenceType") && data["referenceType"] != null ? data["referenceType"].ToString() : null)
+                .WithCommitHash(data.Keys.Contains("commitHash") && data["commitHash"] != null ? data["commitHash"].ToString() : null)
+                .WithBranchName(data.Keys.Contains("branchName") && data["branchName"] != null ? data["branchName"].ToString() : null)
+                .WithTagName(data.Keys.Contains("tagName") && data["tagName"] != null ? data["tagName"].ToString() : null);
         }
 	}
 }

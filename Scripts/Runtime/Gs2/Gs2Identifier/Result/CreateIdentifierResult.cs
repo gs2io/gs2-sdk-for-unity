@@ -38,7 +38,7 @@ namespace Gs2.Gs2Identifier.Result
         {
             return new CreateIdentifierResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? Identifier.FromDict(data["item"]) : null,
-                clientSecret = data.Keys.Contains("clientSecret") && data["clientSecret"] != null ? (string) data["clientSecret"] : null,
+                clientSecret = data.Keys.Contains("clientSecret") && data["clientSecret"] != null ? data["clientSecret"].ToString() : null,
             };
         }
 	}

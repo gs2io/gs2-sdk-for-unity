@@ -77,9 +77,9 @@ namespace Gs2.Gs2Project.Request
         public static DescribeProjectsRequest FromDict(JsonData data)
         {
             return new DescribeProjectsRequest {
-                accountToken = data.Keys.Contains("accountToken") && data["accountToken"] != null ? (string) data["accountToken"] : null,
-                pageToken = data.Keys.Contains("pageToken") && data["pageToken"] != null ? (string) data["pageToken"] : null,
-                limit = data.Keys.Contains("limit") && data["limit"] != null ? (long?) data["limit"] : null,
+                accountToken = data.Keys.Contains("accountToken") && data["accountToken"] != null ? data["accountToken"].ToString(): null,
+                pageToken = data.Keys.Contains("pageToken") && data["pageToken"] != null ? data["pageToken"].ToString(): null,
+                limit = data.Keys.Contains("limit") && data["limit"] != null ? (long?)long.Parse(data["limit"].ToString()) : null,
             };
         }
 

@@ -62,8 +62,8 @@ namespace Gs2.Gs2Exchange.Request
         public static GetRateModelRequest FromDict(JsonData data)
         {
             return new GetRateModelRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                rateName = data.Keys.Contains("rateName") && data["rateName"] != null ? (string) data["rateName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                rateName = data.Keys.Contains("rateName") && data["rateName"] != null ? data["rateName"].ToString(): null,
             };
         }
 

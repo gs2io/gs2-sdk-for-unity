@@ -93,9 +93,9 @@ namespace Gs2.Gs2Ranking.Model
         public static SubscribeUser FromDict(JsonData data)
         {
             return new SubscribeUser()
-                .WithCategoryName(data.Keys.Contains("categoryName") && data["categoryName"] != null ? (string) data["categoryName"] : null)
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
-                .WithTargetUserId(data.Keys.Contains("targetUserId") && data["targetUserId"] != null ? (string) data["targetUserId"] : null);
+                .WithCategoryName(data.Keys.Contains("categoryName") && data["categoryName"] != null ? data["categoryName"].ToString() : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
+                .WithTargetUserId(data.Keys.Contains("targetUserId") && data["targetUserId"] != null ? data["targetUserId"].ToString() : null);
         }
 	}
 }

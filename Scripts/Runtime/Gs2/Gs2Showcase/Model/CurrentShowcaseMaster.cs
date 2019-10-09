@@ -74,8 +74,8 @@ namespace Gs2.Gs2Showcase.Model
         public static CurrentShowcaseMaster FromDict(JsonData data)
         {
             return new CurrentShowcaseMaster()
-                .WithNamespaceName(data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null)
-                .WithSettings(data.Keys.Contains("settings") && data["settings"] != null ? (string) data["settings"] : null);
+                .WithNamespaceName(data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString() : null)
+                .WithSettings(data.Keys.Contains("settings") && data["settings"] != null ? data["settings"].ToString() : null);
         }
 	}
 }

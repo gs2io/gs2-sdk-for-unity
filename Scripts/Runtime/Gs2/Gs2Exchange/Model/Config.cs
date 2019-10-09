@@ -74,8 +74,8 @@ namespace Gs2.Gs2Exchange.Model
         public static Config FromDict(JsonData data)
         {
             return new Config()
-                .WithKey(data.Keys.Contains("key") && data["key"] != null ? (string) data["key"] : null)
-                .WithValue(data.Keys.Contains("value") && data["value"] != null ? (string) data["value"] : null);
+                .WithKey(data.Keys.Contains("key") && data["key"] != null ? data["key"].ToString() : null)
+                .WithValue(data.Keys.Contains("value") && data["value"] != null ? data["value"].ToString() : null);
         }
 	}
 }

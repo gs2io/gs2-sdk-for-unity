@@ -34,7 +34,7 @@ namespace Gs2.Gs2Project.Result
         public static IssueAccountTokenResult FromDict(JsonData data)
         {
             return new IssueAccountTokenResult {
-                accountToken = data.Keys.Contains("accountToken") && data["accountToken"] != null ? (string) data["accountToken"] : null,
+                accountToken = data.Keys.Contains("accountToken") && data["accountToken"] != null ? data["accountToken"].ToString() : null,
             };
         }
 	}

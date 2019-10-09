@@ -45,7 +45,7 @@ namespace Gs2.Gs2Lottery.Result
                         return DrawnPrize.FromDict(value);
                     }
                 ).ToList() : null,
-                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? (string) data["stampSheet"] : null,
+                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? data["stampSheet"].ToString() : null,
                 boxItems = data.Keys.Contains("boxItems") && data["boxItems"] != null ? BoxItems.FromDict(data["boxItems"]) : null,
             };
         }

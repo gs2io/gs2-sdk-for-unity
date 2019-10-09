@@ -62,8 +62,8 @@ namespace Gs2.Gs2Key.Request
         public static DeleteGitHubApiKeyRequest FromDict(JsonData data)
         {
             return new DeleteGitHubApiKeyRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                apiKeyName = data.Keys.Contains("apiKeyName") && data["apiKeyName"] != null ? (string) data["apiKeyName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                apiKeyName = data.Keys.Contains("apiKeyName") && data["apiKeyName"] != null ? data["apiKeyName"].ToString(): null,
             };
         }
 

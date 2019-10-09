@@ -34,7 +34,7 @@ namespace Gs2.Gs2Quest.Result
         public static StartByUserIdResult FromDict(JsonData data)
         {
             return new StartByUserIdResult {
-                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? (string) data["stampSheet"] : null,
+                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? data["stampSheet"].ToString() : null,
             };
         }
 	}

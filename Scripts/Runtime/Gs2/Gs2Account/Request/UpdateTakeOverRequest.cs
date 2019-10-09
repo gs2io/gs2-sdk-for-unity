@@ -121,11 +121,11 @@ namespace Gs2.Gs2Account.Request
         public static UpdateTakeOverRequest FromDict(JsonData data)
         {
             return new UpdateTakeOverRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                type = data.Keys.Contains("type") && data["type"] != null ? (int?) data["type"] : null,
-                oldPassword = data.Keys.Contains("oldPassword") && data["oldPassword"] != null ? (string) data["oldPassword"] : null,
-                password = data.Keys.Contains("password") && data["password"] != null ? (string) data["password"] : null,
-                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                type = data.Keys.Contains("type") && data["type"] != null ? (int?)int.Parse(data["type"].ToString()) : null,
+                oldPassword = data.Keys.Contains("oldPassword") && data["oldPassword"] != null ? data["oldPassword"].ToString(): null,
+                password = data.Keys.Contains("password") && data["password"] != null ? data["password"].ToString(): null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
 

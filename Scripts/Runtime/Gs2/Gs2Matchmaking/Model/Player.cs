@@ -122,16 +122,16 @@ namespace Gs2.Gs2Matchmaking.Model
         public static Player FromDict(JsonData data)
         {
             return new Player()
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
                 .WithAttributes(data.Keys.Contains("attributes") && data["attributes"] != null ? data["attributes"].Cast<JsonData>().Select(value =>
                     {
                         return Attribute.FromDict(value);
                     }
                 ).ToList() : null)
-                .WithRoleName(data.Keys.Contains("roleName") && data["roleName"] != null ? (string) data["roleName"] : null)
+                .WithRoleName(data.Keys.Contains("roleName") && data["roleName"] != null ? data["roleName"].ToString() : null)
                 .WithDenyUserIds(data.Keys.Contains("denyUserIds") && data["denyUserIds"] != null ? data["denyUserIds"].Cast<JsonData>().Select(value =>
                     {
-                        return (string) value;
+                        return value.ToString();
                     }
                 ).ToList() : null);
         }

@@ -62,8 +62,8 @@ namespace Gs2.Gs2Identifier.Request
         public static UpdateUserRequest FromDict(JsonData data)
         {
             return new UpdateUserRequest {
-                userName = data.Keys.Contains("userName") && data["userName"] != null ? (string) data["userName"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                userName = data.Keys.Contains("userName") && data["userName"] != null ? data["userName"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
             };
         }
 

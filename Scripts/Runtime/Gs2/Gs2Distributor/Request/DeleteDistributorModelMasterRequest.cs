@@ -62,8 +62,8 @@ namespace Gs2.Gs2Distributor.Request
         public static DeleteDistributorModelMasterRequest FromDict(JsonData data)
         {
             return new DeleteDistributorModelMasterRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                distributorName = data.Keys.Contains("distributorName") && data["distributorName"] != null ? (string) data["distributorName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                distributorName = data.Keys.Contains("distributorName") && data["distributorName"] != null ? data["distributorName"].ToString(): null,
             };
         }
 

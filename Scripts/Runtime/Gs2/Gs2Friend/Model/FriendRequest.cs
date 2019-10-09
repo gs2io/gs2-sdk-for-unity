@@ -74,8 +74,8 @@ namespace Gs2.Gs2Friend.Model
         public static FriendRequest FromDict(JsonData data)
         {
             return new FriendRequest()
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
-                .WithTargetUserId(data.Keys.Contains("targetUserId") && data["targetUserId"] != null ? (string) data["targetUserId"] : null);
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
+                .WithTargetUserId(data.Keys.Contains("targetUserId") && data["targetUserId"] != null ? data["targetUserId"].ToString() : null);
         }
 	}
 }

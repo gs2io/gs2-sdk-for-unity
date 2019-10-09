@@ -122,13 +122,13 @@ namespace Gs2.Gs2Matchmaking.Model
         public static CapacityOfRole FromDict(JsonData data)
         {
             return new CapacityOfRole()
-                .WithRoleName(data.Keys.Contains("roleName") && data["roleName"] != null ? (string) data["roleName"] : null)
+                .WithRoleName(data.Keys.Contains("roleName") && data["roleName"] != null ? data["roleName"].ToString() : null)
                 .WithRoleAliases(data.Keys.Contains("roleAliases") && data["roleAliases"] != null ? data["roleAliases"].Cast<JsonData>().Select(value =>
                     {
-                        return (string) value;
+                        return value.ToString();
                     }
                 ).ToList() : null)
-                .WithCapacity(data.Keys.Contains("capacity") && data["capacity"] != null ? (int?) data["capacity"] : null)
+                .WithCapacity(data.Keys.Contains("capacity") && data["capacity"] != null ? (int?)int.Parse(data["capacity"].ToString()) : null)
                 .WithParticipants(data.Keys.Contains("participants") && data["participants"] != null ? data["participants"].Cast<JsonData>().Select(value =>
                     {
                         return Player.FromDict(value);

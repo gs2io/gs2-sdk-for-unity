@@ -93,9 +93,9 @@ namespace Gs2.Gs2Matchmaking.Model
         public static AttributeRange FromDict(JsonData data)
         {
             return new AttributeRange()
-                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
-                .WithMin(data.Keys.Contains("min") && data["min"] != null ? (int?) data["min"] : null)
-                .WithMax(data.Keys.Contains("max") && data["max"] != null ? (int?) data["max"] : null);
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithMin(data.Keys.Contains("min") && data["min"] != null ? (int?)int.Parse(data["min"].ToString()) : null)
+                .WithMax(data.Keys.Contains("max") && data["max"] != null ? (int?)int.Parse(data["max"].ToString()) : null);
         }
 	}
 }

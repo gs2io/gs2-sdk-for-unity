@@ -62,8 +62,8 @@ namespace Gs2.Gs2Showcase.Request
         public static GetSalesItemMasterRequest FromDict(JsonData data)
         {
             return new GetSalesItemMasterRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                salesItemName = data.Keys.Contains("salesItemName") && data["salesItemName"] != null ? (string) data["salesItemName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                salesItemName = data.Keys.Contains("salesItemName") && data["salesItemName"] != null ? data["salesItemName"].ToString(): null,
             };
         }
 

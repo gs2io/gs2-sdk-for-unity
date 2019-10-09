@@ -38,7 +38,7 @@ namespace Gs2.Gs2Money.Result
         {
             return new WithdrawResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? Wallet.FromDict(data["item"]) : null,
-                price = data.Keys.Contains("price") && data["price"] != null ? (float?) data["price"] : null,
+                price = data.Keys.Contains("price") && data["price"] != null ? (float?)float.Parse(data["price"].ToString()) : null,
             };
         }
 	}

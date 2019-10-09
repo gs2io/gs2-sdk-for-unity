@@ -112,10 +112,10 @@ namespace Gs2.Gs2Deploy.Model
         public static Output FromDict(JsonData data)
         {
             return new Output()
-                .WithOutputId(data.Keys.Contains("outputId") && data["outputId"] != null ? (string) data["outputId"] : null)
-                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
-                .WithValue(data.Keys.Contains("value") && data["value"] != null ? (string) data["value"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null);
+                .WithOutputId(data.Keys.Contains("outputId") && data["outputId"] != null ? data["outputId"].ToString() : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithValue(data.Keys.Contains("value") && data["value"] != null ? data["value"].ToString() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null);
         }
 	}
 }

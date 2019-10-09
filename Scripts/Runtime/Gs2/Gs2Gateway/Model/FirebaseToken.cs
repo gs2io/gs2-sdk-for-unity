@@ -150,12 +150,12 @@ namespace Gs2.Gs2Gateway.Model
         public static FirebaseToken FromDict(JsonData data)
         {
             return new FirebaseToken()
-                .WithFirebaseTokenId(data.Keys.Contains("firebaseTokenId") && data["firebaseTokenId"] != null ? (string) data["firebaseTokenId"] : null)
-                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? (string) data["ownerId"] : null)
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
-                .WithToken(data.Keys.Contains("token") && data["token"] != null ? (string) data["token"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
+                .WithFirebaseTokenId(data.Keys.Contains("firebaseTokenId") && data["firebaseTokenId"] != null ? data["firebaseTokenId"].ToString() : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
+                .WithToken(data.Keys.Contains("token") && data["token"] != null ? data["token"].ToString() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
 	}
 }

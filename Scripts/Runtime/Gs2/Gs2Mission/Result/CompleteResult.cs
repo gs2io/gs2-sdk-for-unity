@@ -34,7 +34,7 @@ namespace Gs2.Gs2Mission.Result
         public static CompleteResult FromDict(JsonData data)
         {
             return new CompleteResult {
-                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? (string) data["stampSheet"] : null,
+                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? data["stampSheet"].ToString() : null,
             };
         }
 	}

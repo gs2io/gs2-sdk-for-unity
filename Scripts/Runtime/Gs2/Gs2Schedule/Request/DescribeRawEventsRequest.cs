@@ -47,7 +47,7 @@ namespace Gs2.Gs2Schedule.Request
         public static DescribeRawEventsRequest FromDict(JsonData data)
         {
             return new DescribeRawEventsRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
             };
         }
 

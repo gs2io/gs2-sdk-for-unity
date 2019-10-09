@@ -131,11 +131,11 @@ namespace Gs2.Gs2Showcase.Model
         public static DisplayItem FromDict(JsonData data)
         {
             return new DisplayItem()
-                .WithDisplayItemId(data.Keys.Contains("displayItemId") && data["displayItemId"] != null ? (string) data["displayItemId"] : null)
-                .WithType(data.Keys.Contains("type") && data["type"] != null ? (string) data["type"] : null)
+                .WithDisplayItemId(data.Keys.Contains("displayItemId") && data["displayItemId"] != null ? data["displayItemId"].ToString() : null)
+                .WithType(data.Keys.Contains("type") && data["type"] != null ? data["type"].ToString() : null)
                 .WithSalesItem(data.Keys.Contains("salesItem") && data["salesItem"] != null ? SalesItem.FromDict(data["salesItem"]) : null)
                 .WithSalesItemGroup(data.Keys.Contains("salesItemGroup") && data["salesItemGroup"] != null ? SalesItemGroup.FromDict(data["salesItemGroup"]) : null)
-                .WithSalesPeriodEventId(data.Keys.Contains("salesPeriodEventId") && data["salesPeriodEventId"] != null ? (string) data["salesPeriodEventId"] : null);
+                .WithSalesPeriodEventId(data.Keys.Contains("salesPeriodEventId") && data["salesPeriodEventId"] != null ? data["salesPeriodEventId"].ToString() : null);
         }
 	}
 }

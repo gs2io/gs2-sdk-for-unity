@@ -38,7 +38,7 @@ namespace Gs2.Gs2Inbox.Result
         {
             return new ReadMessageResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? Message.FromDict(data["item"]) : null,
-                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? (string) data["stampSheet"] : null,
+                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? data["stampSheet"].ToString() : null,
             };
         }
 	}

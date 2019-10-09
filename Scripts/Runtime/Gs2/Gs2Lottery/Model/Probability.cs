@@ -75,7 +75,7 @@ namespace Gs2.Gs2Lottery.Model
         {
             return new Probability()
                 .WithPrize(data.Keys.Contains("prize") && data["prize"] != null ? DrawnPrize.FromDict(data["prize"]) : null)
-                .WithRate(data.Keys.Contains("rate") && data["rate"] != null ? (float?) data["rate"] : null);
+                .WithRate(data.Keys.Contains("rate") && data["rate"] != null ? (float?)float.Parse(data["rate"].ToString()) : null);
         }
 	}
 }

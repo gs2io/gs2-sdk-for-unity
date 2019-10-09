@@ -167,14 +167,14 @@ namespace Gs2.Gs2Inbox.Request
         public static CreateNamespaceRequest FromDict(JsonData data)
         {
             return new CreateNamespaceRequest {
-                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
-                isAutomaticDeletingEnabled = data.Keys.Contains("isAutomaticDeletingEnabled") && data["isAutomaticDeletingEnabled"] != null ? (bool?) data["isAutomaticDeletingEnabled"] : null,
+                name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                isAutomaticDeletingEnabled = data.Keys.Contains("isAutomaticDeletingEnabled") && data["isAutomaticDeletingEnabled"] != null ? (bool?)bool.Parse(data["isAutomaticDeletingEnabled"].ToString()) : null,
                 receiveMessageScript = data.Keys.Contains("receiveMessageScript") && data["receiveMessageScript"] != null ? ScriptSetting.FromDict(data["receiveMessageScript"]) : null,
                 readMessageScript = data.Keys.Contains("readMessageScript") && data["readMessageScript"] != null ? ScriptSetting.FromDict(data["readMessageScript"]) : null,
                 deleteMessageScript = data.Keys.Contains("deleteMessageScript") && data["deleteMessageScript"] != null ? ScriptSetting.FromDict(data["deleteMessageScript"]) : null,
-                queueNamespaceId = data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? (string) data["queueNamespaceId"] : null,
-                keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? (string) data["keyId"] : null,
+                queueNamespaceId = data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? data["queueNamespaceId"].ToString(): null,
+                keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString(): null,
                 receiveNotification = data.Keys.Contains("receiveNotification") && data["receiveNotification"] != null ? NotificationSetting.FromDict(data["receiveNotification"]) : null,
             };
         }

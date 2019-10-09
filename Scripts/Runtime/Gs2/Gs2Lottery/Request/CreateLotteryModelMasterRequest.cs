@@ -152,14 +152,14 @@ namespace Gs2.Gs2Lottery.Request
         public static CreateLotteryModelMasterRequest FromDict(JsonData data)
         {
             return new CreateLotteryModelMasterRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
-                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
-                mode = data.Keys.Contains("mode") && data["mode"] != null ? (string) data["mode"] : null,
-                method = data.Keys.Contains("method") && data["method"] != null ? (string) data["method"] : null,
-                prizeTableName = data.Keys.Contains("prizeTableName") && data["prizeTableName"] != null ? (string) data["prizeTableName"] : null,
-                choicePrizeTableScriptId = data.Keys.Contains("choicePrizeTableScriptId") && data["choicePrizeTableScriptId"] != null ? (string) data["choicePrizeTableScriptId"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
+                mode = data.Keys.Contains("mode") && data["mode"] != null ? data["mode"].ToString(): null,
+                method = data.Keys.Contains("method") && data["method"] != null ? data["method"].ToString(): null,
+                prizeTableName = data.Keys.Contains("prizeTableName") && data["prizeTableName"] != null ? data["prizeTableName"].ToString(): null,
+                choicePrizeTableScriptId = data.Keys.Contains("choicePrizeTableScriptId") && data["choicePrizeTableScriptId"] != null ? data["choicePrizeTableScriptId"].ToString(): null,
             };
         }
 

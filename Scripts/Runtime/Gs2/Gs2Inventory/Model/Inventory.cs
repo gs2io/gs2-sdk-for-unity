@@ -169,13 +169,13 @@ namespace Gs2.Gs2Inventory.Model
         public static Inventory FromDict(JsonData data)
         {
             return new Inventory()
-                .WithInventoryId(data.Keys.Contains("inventoryId") && data["inventoryId"] != null ? (string) data["inventoryId"] : null)
-                .WithInventoryName(data.Keys.Contains("inventoryName") && data["inventoryName"] != null ? (string) data["inventoryName"] : null)
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
-                .WithCurrentInventoryCapacityUsage(data.Keys.Contains("currentInventoryCapacityUsage") && data["currentInventoryCapacityUsage"] != null ? (int?) data["currentInventoryCapacityUsage"] : null)
-                .WithCurrentInventoryMaxCapacity(data.Keys.Contains("currentInventoryMaxCapacity") && data["currentInventoryMaxCapacity"] != null ? (int?) data["currentInventoryMaxCapacity"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
+                .WithInventoryId(data.Keys.Contains("inventoryId") && data["inventoryId"] != null ? data["inventoryId"].ToString() : null)
+                .WithInventoryName(data.Keys.Contains("inventoryName") && data["inventoryName"] != null ? data["inventoryName"].ToString() : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
+                .WithCurrentInventoryCapacityUsage(data.Keys.Contains("currentInventoryCapacityUsage") && data["currentInventoryCapacityUsage"] != null ? (int?)int.Parse(data["currentInventoryCapacityUsage"].ToString()) : null)
+                .WithCurrentInventoryMaxCapacity(data.Keys.Contains("currentInventoryMaxCapacity") && data["currentInventoryMaxCapacity"] != null ? (int?)int.Parse(data["currentInventoryMaxCapacity"].ToString()) : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
 	}
 }

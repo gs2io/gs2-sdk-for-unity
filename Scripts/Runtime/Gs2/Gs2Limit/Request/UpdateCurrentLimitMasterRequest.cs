@@ -62,8 +62,8 @@ namespace Gs2.Gs2Limit.Request
         public static UpdateCurrentLimitMasterRequest FromDict(JsonData data)
         {
             return new UpdateCurrentLimitMasterRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                settings = data.Keys.Contains("settings") && data["settings"] != null ? (string) data["settings"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                settings = data.Keys.Contains("settings") && data["settings"] != null ? data["settings"].ToString(): null,
             };
         }
 

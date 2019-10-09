@@ -47,7 +47,7 @@ namespace Gs2.Gs2Experience.Request
         public static DescribeExperienceModelsRequest FromDict(JsonData data)
         {
             return new DescribeExperienceModelsRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
             };
         }
 

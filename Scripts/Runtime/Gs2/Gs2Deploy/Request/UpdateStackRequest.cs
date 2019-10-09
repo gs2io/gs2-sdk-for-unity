@@ -77,9 +77,9 @@ namespace Gs2.Gs2Deploy.Request
         public static UpdateStackRequest FromDict(JsonData data)
         {
             return new UpdateStackRequest {
-                stackName = data.Keys.Contains("stackName") && data["stackName"] != null ? (string) data["stackName"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
-                template = data.Keys.Contains("template") && data["template"] != null ? (string) data["template"] : null,
+                stackName = data.Keys.Contains("stackName") && data["stackName"] != null ? data["stackName"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                template = data.Keys.Contains("template") && data["template"] != null ? data["template"].ToString(): null,
             };
         }
 

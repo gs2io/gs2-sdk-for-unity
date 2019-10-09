@@ -42,7 +42,7 @@ namespace Gs2.Gs2JobQueue.Result
             return new RunResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? Job.FromDict(data["item"]) : null,
                 result = data.Keys.Contains("result") && data["result"] != null ? JobResultBody.FromDict(data["result"]) : null,
-                isLastJob = data.Keys.Contains("isLastJob") && data["isLastJob"] != null ? (bool?) data["isLastJob"] : null,
+                isLastJob = data.Keys.Contains("isLastJob") && data["isLastJob"] != null ? (bool?)bool.Parse(data["isLastJob"].ToString()) : null,
             };
         }
 	}

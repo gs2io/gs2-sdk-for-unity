@@ -92,10 +92,10 @@ namespace Gs2.Gs2Account.Request
         public static DoTakeOverRequest FromDict(JsonData data)
         {
             return new DoTakeOverRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                type = data.Keys.Contains("type") && data["type"] != null ? (int?) data["type"] : null,
-                userIdentifier = data.Keys.Contains("userIdentifier") && data["userIdentifier"] != null ? (string) data["userIdentifier"] : null,
-                password = data.Keys.Contains("password") && data["password"] != null ? (string) data["password"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                type = data.Keys.Contains("type") && data["type"] != null ? (int?)int.Parse(data["type"].ToString()) : null,
+                userIdentifier = data.Keys.Contains("userIdentifier") && data["userIdentifier"] != null ? data["userIdentifier"].ToString(): null,
+                password = data.Keys.Contains("password") && data["password"] != null ? data["password"].ToString(): null,
             };
         }
 

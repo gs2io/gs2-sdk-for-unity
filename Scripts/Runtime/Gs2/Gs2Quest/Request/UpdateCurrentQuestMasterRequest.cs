@@ -62,8 +62,8 @@ namespace Gs2.Gs2Quest.Request
         public static UpdateCurrentQuestMasterRequest FromDict(JsonData data)
         {
             return new UpdateCurrentQuestMasterRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                settings = data.Keys.Contains("settings") && data["settings"] != null ? (string) data["settings"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                settings = data.Keys.Contains("settings") && data["settings"] != null ? data["settings"].ToString(): null,
             };
         }
 

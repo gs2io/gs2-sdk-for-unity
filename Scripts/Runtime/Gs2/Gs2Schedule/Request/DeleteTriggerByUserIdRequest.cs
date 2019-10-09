@@ -92,10 +92,10 @@ namespace Gs2.Gs2Schedule.Request
         public static DeleteTriggerByUserIdRequest FromDict(JsonData data)
         {
             return new DeleteTriggerByUserIdRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
-                triggerName = data.Keys.Contains("triggerName") && data["triggerName"] != null ? (string) data["triggerName"] : null,
-                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
+                triggerName = data.Keys.Contains("triggerName") && data["triggerName"] != null ? data["triggerName"].ToString(): null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
 

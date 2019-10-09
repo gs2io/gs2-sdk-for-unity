@@ -77,9 +77,9 @@ namespace Gs2.Gs2Mission.Request
         public static GetMissionTaskModelRequest FromDict(JsonData data)
         {
             return new GetMissionTaskModelRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                missionGroupName = data.Keys.Contains("missionGroupName") && data["missionGroupName"] != null ? (string) data["missionGroupName"] : null,
-                missionTaskName = data.Keys.Contains("missionTaskName") && data["missionTaskName"] != null ? (string) data["missionTaskName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                missionGroupName = data.Keys.Contains("missionGroupName") && data["missionGroupName"] != null ? data["missionGroupName"].ToString(): null,
+                missionTaskName = data.Keys.Contains("missionTaskName") && data["missionTaskName"] != null ? data["missionTaskName"].ToString(): null,
             };
         }
 

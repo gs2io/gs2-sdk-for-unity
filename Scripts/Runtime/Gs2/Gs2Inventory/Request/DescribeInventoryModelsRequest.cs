@@ -47,7 +47,7 @@ namespace Gs2.Gs2Inventory.Request
         public static DescribeInventoryModelsRequest FromDict(JsonData data)
         {
             return new DescribeInventoryModelsRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
             };
         }
 

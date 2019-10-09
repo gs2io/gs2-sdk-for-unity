@@ -62,8 +62,8 @@ namespace Gs2.Gs2Gateway.Request
         public static GetWebSocketSessionByConnectionIdRequest FromDict(JsonData data)
         {
             return new GetWebSocketSessionByConnectionIdRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                connectionId = data.Keys.Contains("connectionId") && data["connectionId"] != null ? (string) data["connectionId"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                connectionId = data.Keys.Contains("connectionId") && data["connectionId"] != null ? data["connectionId"].ToString(): null,
             };
         }
 

@@ -62,8 +62,8 @@ namespace Gs2.Gs2Identifier.Request
         public static DeleteIdentifierRequest FromDict(JsonData data)
         {
             return new DeleteIdentifierRequest {
-                userName = data.Keys.Contains("userName") && data["userName"] != null ? (string) data["userName"] : null,
-                clientId = data.Keys.Contains("clientId") && data["clientId"] != null ? (string) data["clientId"] : null,
+                userName = data.Keys.Contains("userName") && data["userName"] != null ? data["userName"].ToString(): null,
+                clientId = data.Keys.Contains("clientId") && data["clientId"] != null ? data["clientId"].ToString(): null,
             };
         }
 

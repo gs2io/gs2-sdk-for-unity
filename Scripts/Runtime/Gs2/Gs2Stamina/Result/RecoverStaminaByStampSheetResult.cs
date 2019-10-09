@@ -38,7 +38,7 @@ namespace Gs2.Gs2Stamina.Result
         {
             return new RecoverStaminaByStampSheetResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? Stamina.FromDict(data["item"]) : null,
-                overflowValue = data.Keys.Contains("overflowValue") && data["overflowValue"] != null ? (long?) data["overflowValue"] : null,
+                overflowValue = data.Keys.Contains("overflowValue") && data["overflowValue"] != null ? (long?)long.Parse(data["overflowValue"].ToString()) : null,
             };
         }
 	}

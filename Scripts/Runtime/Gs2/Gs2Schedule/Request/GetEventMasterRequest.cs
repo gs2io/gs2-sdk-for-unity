@@ -62,8 +62,8 @@ namespace Gs2.Gs2Schedule.Request
         public static GetEventMasterRequest FromDict(JsonData data)
         {
             return new GetEventMasterRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                eventName = data.Keys.Contains("eventName") && data["eventName"] != null ? (string) data["eventName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                eventName = data.Keys.Contains("eventName") && data["eventName"] != null ? data["eventName"].ToString(): null,
             };
         }
 

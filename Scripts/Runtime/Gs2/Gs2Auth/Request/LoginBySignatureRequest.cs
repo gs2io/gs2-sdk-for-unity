@@ -107,11 +107,11 @@ namespace Gs2.Gs2Auth.Request
         public static LoginBySignatureRequest FromDict(JsonData data)
         {
             return new LoginBySignatureRequest {
-                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
-                keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? (string) data["keyId"] : null,
-                body = data.Keys.Contains("body") && data["body"] != null ? (string) data["body"] : null,
-                signature = data.Keys.Contains("signature") && data["signature"] != null ? (string) data["signature"] : null,
-                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
+                keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString(): null,
+                body = data.Keys.Contains("body") && data["body"] != null ? data["body"].ToString(): null,
+                signature = data.Keys.Contains("signature") && data["signature"] != null ? data["signature"].ToString(): null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
 

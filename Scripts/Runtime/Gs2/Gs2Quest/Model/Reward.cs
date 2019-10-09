@@ -112,10 +112,10 @@ namespace Gs2.Gs2Quest.Model
         public static Reward FromDict(JsonData data)
         {
             return new Reward()
-                .WithAction(data.Keys.Contains("action") && data["action"] != null ? (string) data["action"] : null)
-                .WithRequest(data.Keys.Contains("request") && data["request"] != null ? (string) data["request"] : null)
-                .WithItemId(data.Keys.Contains("itemId") && data["itemId"] != null ? (string) data["itemId"] : null)
-                .WithValue(data.Keys.Contains("value") && data["value"] != null ? (int?) data["value"] : null);
+                .WithAction(data.Keys.Contains("action") && data["action"] != null ? data["action"].ToString() : null)
+                .WithRequest(data.Keys.Contains("request") && data["request"] != null ? data["request"].ToString() : null)
+                .WithItemId(data.Keys.Contains("itemId") && data["itemId"] != null ? data["itemId"].ToString() : null)
+                .WithValue(data.Keys.Contains("value") && data["value"] != null ? (int?)int.Parse(data["value"].ToString()) : null);
         }
 	}
 }

@@ -34,7 +34,7 @@ namespace Gs2.Gs2Project.Result
         public static IssuePasswordResult FromDict(JsonData data)
         {
             return new IssuePasswordResult {
-                newPassword = data.Keys.Contains("newPassword") && data["newPassword"] != null ? (string) data["newPassword"] : null,
+                newPassword = data.Keys.Contains("newPassword") && data["newPassword"] != null ? data["newPassword"].ToString() : null,
             };
         }
 	}

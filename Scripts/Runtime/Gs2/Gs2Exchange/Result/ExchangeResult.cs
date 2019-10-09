@@ -38,7 +38,7 @@ namespace Gs2.Gs2Exchange.Result
         {
             return new ExchangeResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? RateModel.FromDict(data["item"]) : null,
-                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? (string) data["stampSheet"] : null,
+                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? data["stampSheet"].ToString() : null,
             };
         }
 	}

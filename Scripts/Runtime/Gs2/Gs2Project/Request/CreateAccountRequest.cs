@@ -92,10 +92,10 @@ namespace Gs2.Gs2Project.Request
         public static CreateAccountRequest FromDict(JsonData data)
         {
             return new CreateAccountRequest {
-                email = data.Keys.Contains("email") && data["email"] != null ? (string) data["email"] : null,
-                fullName = data.Keys.Contains("fullName") && data["fullName"] != null ? (string) data["fullName"] : null,
-                companyName = data.Keys.Contains("companyName") && data["companyName"] != null ? (string) data["companyName"] : null,
-                password = data.Keys.Contains("password") && data["password"] != null ? (string) data["password"] : null,
+                email = data.Keys.Contains("email") && data["email"] != null ? data["email"].ToString(): null,
+                fullName = data.Keys.Contains("fullName") && data["fullName"] != null ? data["fullName"].ToString(): null,
+                companyName = data.Keys.Contains("companyName") && data["companyName"] != null ? data["companyName"].ToString(): null,
+                password = data.Keys.Contains("password") && data["password"] != null ? data["password"].ToString(): null,
             };
         }
 

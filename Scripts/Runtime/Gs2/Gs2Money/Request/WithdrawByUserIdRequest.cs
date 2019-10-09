@@ -122,12 +122,12 @@ namespace Gs2.Gs2Money.Request
         public static WithdrawByUserIdRequest FromDict(JsonData data)
         {
             return new WithdrawByUserIdRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                userId = data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null,
-                slot = data.Keys.Contains("slot") && data["slot"] != null ? (int?) data["slot"] : null,
-                count = data.Keys.Contains("count") && data["count"] != null ? (int?) data["count"] : null,
-                paidOnly = data.Keys.Contains("paidOnly") && data["paidOnly"] != null ? (bool?) data["paidOnly"] : null,
-                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
+                slot = data.Keys.Contains("slot") && data["slot"] != null ? (int?)int.Parse(data["slot"].ToString()) : null,
+                count = data.Keys.Contains("count") && data["count"] != null ? (int?)int.Parse(data["count"].ToString()) : null,
+                paidOnly = data.Keys.Contains("paidOnly") && data["paidOnly"] != null ? (bool?)bool.Parse(data["paidOnly"].ToString()) : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
 

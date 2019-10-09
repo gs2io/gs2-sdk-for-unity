@@ -136,20 +136,20 @@ namespace Gs2.Gs2Quest.Request
         public static EndRequest FromDict(JsonData data)
         {
             return new EndRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                transactionId = data.Keys.Contains("transactionId") && data["transactionId"] != null ? (string) data["transactionId"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                transactionId = data.Keys.Contains("transactionId") && data["transactionId"] != null ? data["transactionId"].ToString(): null,
                 rewards = data.Keys.Contains("rewards") && data["rewards"] != null ? data["rewards"].Cast<JsonData>().Select(value =>
                     {
                         return Reward.FromDict(value);
                     }
                 ).ToList() : null,
-                isComplete = data.Keys.Contains("isComplete") && data["isComplete"] != null ? (bool?) data["isComplete"] : null,
+                isComplete = data.Keys.Contains("isComplete") && data["isComplete"] != null ? (bool?)bool.Parse(data["isComplete"].ToString()) : null,
                 config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
                     {
                         return Config.FromDict(value);
                     }
                 ).ToList() : null,
-                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
 

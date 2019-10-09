@@ -107,13 +107,13 @@ namespace Gs2.Gs2Experience.Request
         public static UpdateThresholdMasterRequest FromDict(JsonData data)
         {
             return new UpdateThresholdMasterRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                thresholdName = data.Keys.Contains("thresholdName") && data["thresholdName"] != null ? (string) data["thresholdName"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
-                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                thresholdName = data.Keys.Contains("thresholdName") && data["thresholdName"] != null ? data["thresholdName"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
                 values = data.Keys.Contains("values") && data["values"] != null ? data["values"].Cast<JsonData>().Select(value =>
                     {
-                        return (long?) value;
+                        return (long?)long.Parse(value.ToString());
                     }
                 ).ToList() : null,
             };

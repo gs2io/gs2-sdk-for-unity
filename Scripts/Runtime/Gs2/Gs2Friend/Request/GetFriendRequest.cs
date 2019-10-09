@@ -106,10 +106,10 @@ namespace Gs2.Gs2Friend.Request
         public static GetFriendRequest FromDict(JsonData data)
         {
             return new GetFriendRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                targetUserId = data.Keys.Contains("targetUserId") && data["targetUserId"] != null ? (string) data["targetUserId"] : null,
-                withProfile = data.Keys.Contains("withProfile") && data["withProfile"] != null ? (bool?) data["withProfile"] : null,
-                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                targetUserId = data.Keys.Contains("targetUserId") && data["targetUserId"] != null ? data["targetUserId"].ToString(): null,
+                withProfile = data.Keys.Contains("withProfile") && data["withProfile"] != null ? (bool?)bool.Parse(data["withProfile"].ToString()) : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
 

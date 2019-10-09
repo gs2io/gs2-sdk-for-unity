@@ -91,9 +91,9 @@ namespace Gs2.Gs2Gateway.Request
         public static SetUserIdRequest FromDict(JsonData data)
         {
             return new SetUserIdRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                allowConcurrentAccess = data.Keys.Contains("allowConcurrentAccess") && data["allowConcurrentAccess"] != null ? (bool?) data["allowConcurrentAccess"] : null,
-                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                allowConcurrentAccess = data.Keys.Contains("allowConcurrentAccess") && data["allowConcurrentAccess"] != null ? (bool?)bool.Parse(data["allowConcurrentAccess"].ToString()) : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
 

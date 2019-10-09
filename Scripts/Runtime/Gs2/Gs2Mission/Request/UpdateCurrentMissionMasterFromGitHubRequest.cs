@@ -62,7 +62,7 @@ namespace Gs2.Gs2Mission.Request
         public static UpdateCurrentMissionMasterFromGitHubRequest FromDict(JsonData data)
         {
             return new UpdateCurrentMissionMasterFromGitHubRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
             };
         }

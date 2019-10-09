@@ -167,9 +167,9 @@ namespace Gs2.Gs2Chat.Request
         public static CreateNamespaceRequest FromDict(JsonData data)
         {
             return new CreateNamespaceRequest {
-                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
-                allowCreateRoom = data.Keys.Contains("allowCreateRoom") && data["allowCreateRoom"] != null ? (bool?) data["allowCreateRoom"] : null,
+                name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                allowCreateRoom = data.Keys.Contains("allowCreateRoom") && data["allowCreateRoom"] != null ? (bool?)bool.Parse(data["allowCreateRoom"].ToString()) : null,
                 postMessageScript = data.Keys.Contains("postMessageScript") && data["postMessageScript"] != null ? ScriptSetting.FromDict(data["postMessageScript"]) : null,
                 createRoomScript = data.Keys.Contains("createRoomScript") && data["createRoomScript"] != null ? ScriptSetting.FromDict(data["createRoomScript"]) : null,
                 deleteRoomScript = data.Keys.Contains("deleteRoomScript") && data["deleteRoomScript"] != null ? ScriptSetting.FromDict(data["deleteRoomScript"]) : null,

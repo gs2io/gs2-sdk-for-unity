@@ -137,9 +137,9 @@ namespace Gs2.Gs2Account.Request
         public static UpdateNamespaceRequest FromDict(JsonData data)
         {
             return new UpdateNamespaceRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
-                changePasswordIfTakeOver = data.Keys.Contains("changePasswordIfTakeOver") && data["changePasswordIfTakeOver"] != null ? (bool?) data["changePasswordIfTakeOver"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                changePasswordIfTakeOver = data.Keys.Contains("changePasswordIfTakeOver") && data["changePasswordIfTakeOver"] != null ? (bool?)bool.Parse(data["changePasswordIfTakeOver"].ToString()) : null,
                 createAccountScript = data.Keys.Contains("createAccountScript") && data["createAccountScript"] != null ? ScriptSetting.FromDict(data["createAccountScript"]) : null,
                 authenticationScript = data.Keys.Contains("authenticationScript") && data["authenticationScript"] != null ? ScriptSetting.FromDict(data["authenticationScript"]) : null,
                 createTakeOverScript = data.Keys.Contains("createTakeOverScript") && data["createTakeOverScript"] != null ? ScriptSetting.FromDict(data["createTakeOverScript"]) : null,

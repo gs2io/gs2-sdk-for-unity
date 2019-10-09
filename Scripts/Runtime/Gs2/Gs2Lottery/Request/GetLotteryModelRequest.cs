@@ -62,8 +62,8 @@ namespace Gs2.Gs2Lottery.Request
         public static GetLotteryModelRequest FromDict(JsonData data)
         {
             return new GetLotteryModelRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                lotteryName = data.Keys.Contains("lotteryName") && data["lotteryName"] != null ? (string) data["lotteryName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                lotteryName = data.Keys.Contains("lotteryName") && data["lotteryName"] != null ? data["lotteryName"].ToString(): null,
             };
         }
 

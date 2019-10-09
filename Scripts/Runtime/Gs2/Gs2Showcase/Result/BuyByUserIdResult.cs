@@ -38,7 +38,7 @@ namespace Gs2.Gs2Showcase.Result
         {
             return new BuyByUserIdResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? SalesItem.FromDict(data["item"]) : null,
-                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? (string) data["stampSheet"] : null,
+                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? data["stampSheet"].ToString() : null,
             };
         }
 	}

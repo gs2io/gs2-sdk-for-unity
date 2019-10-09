@@ -93,9 +93,9 @@ namespace Gs2.Gs2JobQueue.Model
         public static JobEntry FromDict(JsonData data)
         {
             return new JobEntry()
-                .WithScriptId(data.Keys.Contains("scriptId") && data["scriptId"] != null ? (string) data["scriptId"] : null)
-                .WithArgs(data.Keys.Contains("args") && data["args"] != null ? (string) data["args"] : null)
-                .WithMaxTryCount(data.Keys.Contains("maxTryCount") && data["maxTryCount"] != null ? (int?) data["maxTryCount"] : null);
+                .WithScriptId(data.Keys.Contains("scriptId") && data["scriptId"] != null ? data["scriptId"].ToString() : null)
+                .WithArgs(data.Keys.Contains("args") && data["args"] != null ? data["args"].ToString() : null)
+                .WithMaxTryCount(data.Keys.Contains("maxTryCount") && data["maxTryCount"] != null ? (int?)int.Parse(data["maxTryCount"].ToString()) : null);
         }
 	}
 }

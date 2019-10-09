@@ -122,9 +122,9 @@ namespace Gs2.Gs2Experience.Request
         public static UpdateNamespaceRequest FromDict(JsonData data)
         {
             return new UpdateNamespaceRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
-                experienceCapScriptId = data.Keys.Contains("experienceCapScriptId") && data["experienceCapScriptId"] != null ? (string) data["experienceCapScriptId"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                experienceCapScriptId = data.Keys.Contains("experienceCapScriptId") && data["experienceCapScriptId"] != null ? data["experienceCapScriptId"].ToString(): null,
                 changeExperienceScript = data.Keys.Contains("changeExperienceScript") && data["changeExperienceScript"] != null ? ScriptSetting.FromDict(data["changeExperienceScript"]) : null,
                 changeRankScript = data.Keys.Contains("changeRankScript") && data["changeRankScript"] != null ? ScriptSetting.FromDict(data["changeRankScript"]) : null,
                 changeRankCapScript = data.Keys.Contains("changeRankCapScript") && data["changeRankCapScript"] != null ? ScriptSetting.FromDict(data["changeRankCapScript"]) : null,

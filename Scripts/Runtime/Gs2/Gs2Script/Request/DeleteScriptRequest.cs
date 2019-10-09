@@ -62,8 +62,8 @@ namespace Gs2.Gs2Script.Request
         public static DeleteScriptRequest FromDict(JsonData data)
         {
             return new DeleteScriptRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                scriptName = data.Keys.Contains("scriptName") && data["scriptName"] != null ? (string) data["scriptName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                scriptName = data.Keys.Contains("scriptName") && data["scriptName"] != null ? data["scriptName"].ToString(): null,
             };
         }
 

@@ -47,7 +47,7 @@ namespace Gs2.Gs2Project.Request
         public static VerifyRequest FromDict(JsonData data)
         {
             return new VerifyRequest {
-                verifyToken = data.Keys.Contains("verifyToken") && data["verifyToken"] != null ? (string) data["verifyToken"] : null,
+                verifyToken = data.Keys.Contains("verifyToken") && data["verifyToken"] != null ? data["verifyToken"].ToString(): null,
             };
         }
 

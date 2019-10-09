@@ -38,7 +38,7 @@ namespace Gs2.Gs2Quest.Result
         {
             return new EndByUserIdResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? Progress.FromDict(data["item"]) : null,
-                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? (string) data["stampSheet"] : null,
+                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? data["stampSheet"].ToString() : null,
             };
         }
 	}

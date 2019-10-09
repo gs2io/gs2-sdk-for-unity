@@ -34,7 +34,7 @@ namespace Gs2.Gs2Key.Result
         public static DecryptResult FromDict(JsonData data)
         {
             return new DecryptResult {
-                data = data.Keys.Contains("data") && data["data"] != null ? (string) data["data"] : null,
+                data = data.Keys.Contains("data") && data["data"] != null ? data["data"].ToString() : null,
             };
         }
 	}

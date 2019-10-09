@@ -150,12 +150,12 @@ namespace Gs2.Gs2Account.Model
         public static TakeOver FromDict(JsonData data)
         {
             return new TakeOver()
-                .WithTakeOverId(data.Keys.Contains("takeOverId") && data["takeOverId"] != null ? (string) data["takeOverId"] : null)
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
-                .WithType(data.Keys.Contains("type") && data["type"] != null ? (int?) data["type"] : null)
-                .WithUserIdentifier(data.Keys.Contains("userIdentifier") && data["userIdentifier"] != null ? (string) data["userIdentifier"] : null)
-                .WithPassword(data.Keys.Contains("password") && data["password"] != null ? (string) data["password"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null);
+                .WithTakeOverId(data.Keys.Contains("takeOverId") && data["takeOverId"] != null ? data["takeOverId"].ToString() : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
+                .WithType(data.Keys.Contains("type") && data["type"] != null ? (int?)int.Parse(data["type"].ToString()) : null)
+                .WithUserIdentifier(data.Keys.Contains("userIdentifier") && data["userIdentifier"] != null ? data["userIdentifier"].ToString() : null)
+                .WithPassword(data.Keys.Contains("password") && data["password"] != null ? data["password"].ToString() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null);
         }
 	}
 }

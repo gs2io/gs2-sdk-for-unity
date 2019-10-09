@@ -74,8 +74,8 @@ namespace Gs2.Gs2Deploy.Model
         public static OutputField FromDict(JsonData data)
         {
             return new OutputField()
-                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
-                .WithFieldName(data.Keys.Contains("fieldName") && data["fieldName"] != null ? (string) data["fieldName"] : null);
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithFieldName(data.Keys.Contains("fieldName") && data["fieldName"] != null ? data["fieldName"].ToString() : null);
         }
 	}
 }

@@ -62,8 +62,8 @@ namespace Gs2.Gs2Project.Request
         public static DeleteProjectRequest FromDict(JsonData data)
         {
             return new DeleteProjectRequest {
-                accountToken = data.Keys.Contains("accountToken") && data["accountToken"] != null ? (string) data["accountToken"] : null,
-                projectName = data.Keys.Contains("projectName") && data["projectName"] != null ? (string) data["projectName"] : null,
+                accountToken = data.Keys.Contains("accountToken") && data["accountToken"] != null ? data["accountToken"].ToString(): null,
+                projectName = data.Keys.Contains("projectName") && data["projectName"] != null ? data["projectName"].ToString(): null,
             };
         }
 

@@ -152,14 +152,14 @@ namespace Gs2.Gs2Experience.Request
         public static CreateExperienceModelMasterRequest FromDict(JsonData data)
         {
             return new CreateExperienceModelMasterRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
-                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
-                defaultExperience = data.Keys.Contains("defaultExperience") && data["defaultExperience"] != null ? (long?) data["defaultExperience"] : null,
-                defaultRankCap = data.Keys.Contains("defaultRankCap") && data["defaultRankCap"] != null ? (long?) data["defaultRankCap"] : null,
-                maxRankCap = data.Keys.Contains("maxRankCap") && data["maxRankCap"] != null ? (long?) data["maxRankCap"] : null,
-                rankThresholdId = data.Keys.Contains("rankThresholdId") && data["rankThresholdId"] != null ? (string) data["rankThresholdId"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
+                defaultExperience = data.Keys.Contains("defaultExperience") && data["defaultExperience"] != null ? (long?)long.Parse(data["defaultExperience"].ToString()) : null,
+                defaultRankCap = data.Keys.Contains("defaultRankCap") && data["defaultRankCap"] != null ? (long?)long.Parse(data["defaultRankCap"].ToString()) : null,
+                maxRankCap = data.Keys.Contains("maxRankCap") && data["maxRankCap"] != null ? (long?)long.Parse(data["maxRankCap"].ToString()) : null,
+                rankThresholdId = data.Keys.Contains("rankThresholdId") && data["rankThresholdId"] != null ? data["rankThresholdId"].ToString(): null,
             };
         }
 

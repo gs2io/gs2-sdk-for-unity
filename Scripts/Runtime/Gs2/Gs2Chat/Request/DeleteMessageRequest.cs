@@ -77,9 +77,9 @@ namespace Gs2.Gs2Chat.Request
         public static DeleteMessageRequest FromDict(JsonData data)
         {
             return new DeleteMessageRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                roomName = data.Keys.Contains("roomName") && data["roomName"] != null ? (string) data["roomName"] : null,
-                messageName = data.Keys.Contains("messageName") && data["messageName"] != null ? (string) data["messageName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                roomName = data.Keys.Contains("roomName") && data["roomName"] != null ? data["roomName"].ToString(): null,
+                messageName = data.Keys.Contains("messageName") && data["messageName"] != null ? data["messageName"].ToString(): null,
             };
         }
 

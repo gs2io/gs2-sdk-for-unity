@@ -112,10 +112,10 @@ namespace Gs2.Gs2JobQueue.Model
         public static JobResultBody FromDict(JsonData data)
         {
             return new JobResultBody()
-                .WithTryNumber(data.Keys.Contains("tryNumber") && data["tryNumber"] != null ? (int?) data["tryNumber"] : null)
-                .WithStatusCode(data.Keys.Contains("statusCode") && data["statusCode"] != null ? (int?) data["statusCode"] : null)
-                .WithResult(data.Keys.Contains("result") && data["result"] != null ? (string) data["result"] : null)
-                .WithTryAt(data.Keys.Contains("tryAt") && data["tryAt"] != null ? (long?) data["tryAt"] : null);
+                .WithTryNumber(data.Keys.Contains("tryNumber") && data["tryNumber"] != null ? (int?)int.Parse(data["tryNumber"].ToString()) : null)
+                .WithStatusCode(data.Keys.Contains("statusCode") && data["statusCode"] != null ? (int?)int.Parse(data["statusCode"].ToString()) : null)
+                .WithResult(data.Keys.Contains("result") && data["result"] != null ? data["result"].ToString() : null)
+                .WithTryAt(data.Keys.Contains("tryAt") && data["tryAt"] != null ? (long?)long.Parse(data["tryAt"].ToString()) : null);
         }
 	}
 }

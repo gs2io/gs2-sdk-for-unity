@@ -47,7 +47,7 @@ namespace Gs2.Gs2Stamina.Request
         public static GetCurrentStaminaMasterRequest FromDict(JsonData data)
         {
             return new GetCurrentStaminaMasterRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
             };
         }
 

@@ -98,8 +98,8 @@ namespace Gs2.Gs2Showcase.Model
         public static SalesItemGroup FromDict(JsonData data)
         {
             return new SalesItemGroup()
-                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
                 .WithSalesItems(data.Keys.Contains("salesItems") && data["salesItems"] != null ? data["salesItems"].Cast<JsonData>().Select(value =>
                     {
                         return SalesItem.FromDict(value);

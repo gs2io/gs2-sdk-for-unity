@@ -62,7 +62,7 @@ namespace Gs2.Gs2Ranking.Request
         public static UpdateCurrentRankingMasterFromGitHubRequest FromDict(JsonData data)
         {
             return new UpdateCurrentRankingMasterFromGitHubRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
             };
         }

@@ -38,7 +38,7 @@ namespace Gs2.Gs2Inbox.Result
         {
             return new OpenByStampTaskResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? Message.FromDict(data["item"]) : null,
-                newContextStack = data.Keys.Contains("newContextStack") && data["newContextStack"] != null ? (string) data["newContextStack"] : null,
+                newContextStack = data.Keys.Contains("newContextStack") && data["newContextStack"] != null ? data["newContextStack"].ToString() : null,
             };
         }
 	}

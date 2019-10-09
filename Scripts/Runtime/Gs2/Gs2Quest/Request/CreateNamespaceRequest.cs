@@ -137,13 +137,13 @@ namespace Gs2.Gs2Quest.Request
         public static CreateNamespaceRequest FromDict(JsonData data)
         {
             return new CreateNamespaceRequest {
-                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
+                name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 startQuestScript = data.Keys.Contains("startQuestScript") && data["startQuestScript"] != null ? ScriptSetting.FromDict(data["startQuestScript"]) : null,
                 completeQuestScript = data.Keys.Contains("completeQuestScript") && data["completeQuestScript"] != null ? ScriptSetting.FromDict(data["completeQuestScript"]) : null,
                 failedQuestScript = data.Keys.Contains("failedQuestScript") && data["failedQuestScript"] != null ? ScriptSetting.FromDict(data["failedQuestScript"]) : null,
-                queueNamespaceId = data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? (string) data["queueNamespaceId"] : null,
-                keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? (string) data["keyId"] : null,
+                queueNamespaceId = data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? data["queueNamespaceId"].ToString(): null,
+                keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString(): null,
             };
         }
 

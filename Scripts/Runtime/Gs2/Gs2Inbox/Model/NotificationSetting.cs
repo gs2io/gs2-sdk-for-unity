@@ -93,9 +93,9 @@ namespace Gs2.Gs2Inbox.Model
         public static NotificationSetting FromDict(JsonData data)
         {
             return new NotificationSetting()
-                .WithGatewayNamespaceId(data.Keys.Contains("gatewayNamespaceId") && data["gatewayNamespaceId"] != null ? (string) data["gatewayNamespaceId"] : null)
-                .WithEnableTransferMobileNotification(data.Keys.Contains("enableTransferMobileNotification") && data["enableTransferMobileNotification"] != null ? (bool?) data["enableTransferMobileNotification"] : null)
-                .WithSound(data.Keys.Contains("sound") && data["sound"] != null ? (string) data["sound"] : null);
+                .WithGatewayNamespaceId(data.Keys.Contains("gatewayNamespaceId") && data["gatewayNamespaceId"] != null ? data["gatewayNamespaceId"].ToString() : null)
+                .WithEnableTransferMobileNotification(data.Keys.Contains("enableTransferMobileNotification") && data["enableTransferMobileNotification"] != null ? (bool?)bool.Parse(data["enableTransferMobileNotification"].ToString()) : null)
+                .WithSound(data.Keys.Contains("sound") && data["sound"] != null ? data["sound"].ToString() : null);
         }
 	}
 }

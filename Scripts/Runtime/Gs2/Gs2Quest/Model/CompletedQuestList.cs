@@ -155,16 +155,16 @@ namespace Gs2.Gs2Quest.Model
         public static CompletedQuestList FromDict(JsonData data)
         {
             return new CompletedQuestList()
-                .WithCompletedQuestListId(data.Keys.Contains("completedQuestListId") && data["completedQuestListId"] != null ? (string) data["completedQuestListId"] : null)
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
-                .WithQuestGroupName(data.Keys.Contains("questGroupName") && data["questGroupName"] != null ? (string) data["questGroupName"] : null)
+                .WithCompletedQuestListId(data.Keys.Contains("completedQuestListId") && data["completedQuestListId"] != null ? data["completedQuestListId"].ToString() : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
+                .WithQuestGroupName(data.Keys.Contains("questGroupName") && data["questGroupName"] != null ? data["questGroupName"].ToString() : null)
                 .WithCompleteQuestNames(data.Keys.Contains("completeQuestNames") && data["completeQuestNames"] != null ? data["completeQuestNames"].Cast<JsonData>().Select(value =>
                     {
-                        return (string) value;
+                        return value.ToString();
                     }
                 ).ToList() : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
 	}
 }

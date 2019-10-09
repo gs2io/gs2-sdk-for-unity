@@ -91,9 +91,9 @@ namespace Gs2.Gs2Friend.Request
         public static RejectRequestRequest FromDict(JsonData data)
         {
             return new RejectRequestRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                fromUserId = data.Keys.Contains("fromUserId") && data["fromUserId"] != null ? (string) data["fromUserId"] : null,
-                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                fromUserId = data.Keys.Contains("fromUserId") && data["fromUserId"] != null ? data["fromUserId"].ToString(): null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
 

@@ -47,7 +47,7 @@ namespace Gs2.Gs2Account.Request
         public static CreateAccountRequest FromDict(JsonData data)
         {
             return new CreateAccountRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
             };
         }
 

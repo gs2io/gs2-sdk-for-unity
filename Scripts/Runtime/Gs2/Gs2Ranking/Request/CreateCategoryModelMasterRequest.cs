@@ -182,16 +182,16 @@ namespace Gs2.Gs2Ranking.Request
         public static CreateCategoryModelMasterRequest FromDict(JsonData data)
         {
             return new CreateCategoryModelMasterRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                name = data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null,
-                description = data.Keys.Contains("description") && data["description"] != null ? (string) data["description"] : null,
-                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null,
-                minimumValue = data.Keys.Contains("minimumValue") && data["minimumValue"] != null ? (long?) data["minimumValue"] : null,
-                maximumValue = data.Keys.Contains("maximumValue") && data["maximumValue"] != null ? (long?) data["maximumValue"] : null,
-                orderDirection = data.Keys.Contains("orderDirection") && data["orderDirection"] != null ? (string) data["orderDirection"] : null,
-                scope = data.Keys.Contains("scope") && data["scope"] != null ? (string) data["scope"] : null,
-                uniqueByUserId = data.Keys.Contains("uniqueByUserId") && data["uniqueByUserId"] != null ? (bool?) data["uniqueByUserId"] : null,
-                calculateIntervalMinutes = data.Keys.Contains("calculateIntervalMinutes") && data["calculateIntervalMinutes"] != null ? (int?) data["calculateIntervalMinutes"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
+                minimumValue = data.Keys.Contains("minimumValue") && data["minimumValue"] != null ? (long?)long.Parse(data["minimumValue"].ToString()) : null,
+                maximumValue = data.Keys.Contains("maximumValue") && data["maximumValue"] != null ? (long?)long.Parse(data["maximumValue"].ToString()) : null,
+                orderDirection = data.Keys.Contains("orderDirection") && data["orderDirection"] != null ? data["orderDirection"].ToString(): null,
+                scope = data.Keys.Contains("scope") && data["scope"] != null ? data["scope"].ToString(): null,
+                uniqueByUserId = data.Keys.Contains("uniqueByUserId") && data["uniqueByUserId"] != null ? (bool?)bool.Parse(data["uniqueByUserId"].ToString()) : null,
+                calculateIntervalMinutes = data.Keys.Contains("calculateIntervalMinutes") && data["calculateIntervalMinutes"] != null ? (int?)int.Parse(data["calculateIntervalMinutes"].ToString()) : null,
             };
         }
 

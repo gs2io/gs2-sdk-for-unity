@@ -74,8 +74,8 @@ namespace Gs2.Gs2Ranking.Model
         public static CalculatedAt FromDict(JsonData data)
         {
             return new CalculatedAt()
-                .WithCategoryName(data.Keys.Contains("categoryName") && data["categoryName"] != null ? (string) data["categoryName"] : null)
-                .WithCalculatedAt(data.Keys.Contains("calculatedAt") && data["calculatedAt"] != null ? (long?) data["calculatedAt"] : null);
+                .WithCategoryName(data.Keys.Contains("categoryName") && data["categoryName"] != null ? data["categoryName"].ToString() : null)
+                .WithCalculatedAt(data.Keys.Contains("calculatedAt") && data["calculatedAt"] != null ? (long?)long.Parse(data["calculatedAt"].ToString()) : null);
         }
 	}
 }

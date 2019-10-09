@@ -47,7 +47,7 @@ namespace Gs2.Gs2Exchange.Request
         public static GetCurrentRateMasterRequest FromDict(JsonData data)
         {
             return new GetCurrentRateMasterRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
             };
         }
 

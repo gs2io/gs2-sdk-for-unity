@@ -34,7 +34,7 @@ namespace Gs2.Gs2Distributor.Result
         public static RunStampSheetResult FromDict(JsonData data)
         {
             return new RunStampSheetResult {
-                result = data.Keys.Contains("result") && data["result"] != null ? (string) data["result"] : null,
+                result = data.Keys.Contains("result") && data["result"] != null ? data["result"].ToString() : null,
             };
         }
 	}

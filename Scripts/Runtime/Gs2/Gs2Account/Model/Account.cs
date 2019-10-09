@@ -131,11 +131,11 @@ namespace Gs2.Gs2Account.Model
         public static Account FromDict(JsonData data)
         {
             return new Account()
-                .WithAccountId(data.Keys.Contains("accountId") && data["accountId"] != null ? (string) data["accountId"] : null)
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
-                .WithPassword(data.Keys.Contains("password") && data["password"] != null ? (string) data["password"] : null)
-                .WithTimeOffset(data.Keys.Contains("timeOffset") && data["timeOffset"] != null ? (int?) data["timeOffset"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null);
+                .WithAccountId(data.Keys.Contains("accountId") && data["accountId"] != null ? data["accountId"].ToString() : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
+                .WithPassword(data.Keys.Contains("password") && data["password"] != null ? data["password"].ToString() : null)
+                .WithTimeOffset(data.Keys.Contains("timeOffset") && data["timeOffset"] != null ? (int?)int.Parse(data["timeOffset"].ToString()) : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null);
         }
 	}
 }

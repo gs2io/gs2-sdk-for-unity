@@ -98,13 +98,13 @@ namespace Gs2.Gs2Identifier.Model
         public static AttachSecurityPolicy FromDict(JsonData data)
         {
             return new AttachSecurityPolicy()
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
                 .WithSecurityPolicyIds(data.Keys.Contains("securityPolicyIds") && data["securityPolicyIds"] != null ? data["securityPolicyIds"].Cast<JsonData>().Select(value =>
                     {
-                        return (string) value;
+                        return value.ToString();
                     }
                 ).ToList() : null)
-                .WithAttachedAt(data.Keys.Contains("attachedAt") && data["attachedAt"] != null ? (long?) data["attachedAt"] : null);
+                .WithAttachedAt(data.Keys.Contains("attachedAt") && data["attachedAt"] != null ? (long?)long.Parse(data["attachedAt"].ToString()) : null);
         }
 	}
 }

@@ -188,14 +188,14 @@ namespace Gs2.Gs2Ranking.Model
         public static Score FromDict(JsonData data)
         {
             return new Score()
-                .WithScoreId(data.Keys.Contains("scoreId") && data["scoreId"] != null ? (string) data["scoreId"] : null)
-                .WithCategoryName(data.Keys.Contains("categoryName") && data["categoryName"] != null ? (string) data["categoryName"] : null)
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
-                .WithUniqueId(data.Keys.Contains("uniqueId") && data["uniqueId"] != null ? (string) data["uniqueId"] : null)
-                .WithScorerUserId(data.Keys.Contains("scorerUserId") && data["scorerUserId"] != null ? (string) data["scorerUserId"] : null)
-                .WithScore(data.Keys.Contains("score") && data["score"] != null ? (long?) data["score"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null);
+                .WithScoreId(data.Keys.Contains("scoreId") && data["scoreId"] != null ? data["scoreId"].ToString() : null)
+                .WithCategoryName(data.Keys.Contains("categoryName") && data["categoryName"] != null ? data["categoryName"].ToString() : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
+                .WithUniqueId(data.Keys.Contains("uniqueId") && data["uniqueId"] != null ? data["uniqueId"].ToString() : null)
+                .WithScorerUserId(data.Keys.Contains("scorerUserId") && data["scorerUserId"] != null ? data["scorerUserId"].ToString() : null)
+                .WithScore(data.Keys.Contains("score") && data["score"] != null ? (long?)long.Parse(data["score"].ToString()) : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null);
         }
 	}
 }

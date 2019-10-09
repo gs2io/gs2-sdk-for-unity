@@ -47,7 +47,7 @@ namespace Gs2.Gs2Project.Request
         public static IssuePasswordRequest FromDict(JsonData data)
         {
             return new IssuePasswordRequest {
-                issuePasswordToken = data.Keys.Contains("issuePasswordToken") && data["issuePasswordToken"] != null ? (string) data["issuePasswordToken"] : null,
+                issuePasswordToken = data.Keys.Contains("issuePasswordToken") && data["issuePasswordToken"] != null ? data["issuePasswordToken"].ToString(): null,
             };
         }
 

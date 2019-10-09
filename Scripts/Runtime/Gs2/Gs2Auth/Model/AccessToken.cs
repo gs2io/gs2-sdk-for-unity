@@ -112,10 +112,10 @@ namespace Gs2.Gs2Auth.Model
         public static AccessToken FromDict(JsonData data)
         {
             return new AccessToken()
-                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? (string) data["ownerId"] : null)
-                .WithToken(data.Keys.Contains("token") && data["token"] != null ? (string) data["token"] : null)
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
-                .WithExpire(data.Keys.Contains("expire") && data["expire"] != null ? (long?) data["expire"] : null);
+                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
+                .WithToken(data.Keys.Contains("token") && data["token"] != null ? data["token"].ToString() : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
+                .WithExpire(data.Keys.Contains("expire") && data["expire"] != null ? (long?)long.Parse(data["expire"].ToString()) : null);
         }
 	}
 }

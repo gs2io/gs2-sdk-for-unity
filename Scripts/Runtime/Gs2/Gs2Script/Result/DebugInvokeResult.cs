@@ -46,13 +46,13 @@ namespace Gs2.Gs2Script.Result
         public static DebugInvokeResult FromDict(JsonData data)
         {
             return new DebugInvokeResult {
-                code = data.Keys.Contains("code") && data["code"] != null ? (int?) data["code"] : null,
-                result = data.Keys.Contains("result") && data["result"] != null ? (string) data["result"] : null,
-                executeTime = data.Keys.Contains("executeTime") && data["executeTime"] != null ? (int?) data["executeTime"] : null,
-                charged = data.Keys.Contains("charged") && data["charged"] != null ? (int?) data["charged"] : null,
+                code = data.Keys.Contains("code") && data["code"] != null ? (int?)int.Parse(data["code"].ToString()) : null,
+                result = data.Keys.Contains("result") && data["result"] != null ? data["result"].ToString() : null,
+                executeTime = data.Keys.Contains("executeTime") && data["executeTime"] != null ? (int?)int.Parse(data["executeTime"].ToString()) : null,
+                charged = data.Keys.Contains("charged") && data["charged"] != null ? (int?)int.Parse(data["charged"].ToString()) : null,
                 output = data.Keys.Contains("output") && data["output"] != null ? data["output"].Cast<JsonData>().Select(value =>
                     {
-                        return (string) value;
+                        return value.ToString();
                     }
                 ).ToList() : null,
             };

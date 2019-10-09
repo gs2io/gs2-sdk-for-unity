@@ -62,8 +62,8 @@ namespace Gs2.Gs2Experience.Request
         public static DeleteThresholdMasterRequest FromDict(JsonData data)
         {
             return new DeleteThresholdMasterRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                thresholdName = data.Keys.Contains("thresholdName") && data["thresholdName"] != null ? (string) data["thresholdName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                thresholdName = data.Keys.Contains("thresholdName") && data["thresholdName"] != null ? data["thresholdName"].ToString(): null,
             };
         }
 

@@ -50,7 +50,7 @@ namespace Gs2.Gs2Inventory.Result
                 ).ToList() : null,
                 itemModel = data.Keys.Contains("itemModel") && data["itemModel"] != null ? ItemModel.FromDict(data["itemModel"]) : null,
                 inventory = data.Keys.Contains("inventory") && data["inventory"] != null ? Inventory.FromDict(data["inventory"]) : null,
-                overflowCount = data.Keys.Contains("overflowCount") && data["overflowCount"] != null ? (long?) data["overflowCount"] : null,
+                overflowCount = data.Keys.Contains("overflowCount") && data["overflowCount"] != null ? (long?)long.Parse(data["overflowCount"].ToString()) : null,
             };
         }
 	}

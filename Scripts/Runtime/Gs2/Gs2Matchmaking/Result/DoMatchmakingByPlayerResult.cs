@@ -38,7 +38,7 @@ namespace Gs2.Gs2Matchmaking.Result
         {
             return new DoMatchmakingByPlayerResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? Gathering.FromDict(data["item"]) : null,
-                matchmakingContextToken = data.Keys.Contains("matchmakingContextToken") && data["matchmakingContextToken"] != null ? (string) data["matchmakingContextToken"] : null,
+                matchmakingContextToken = data.Keys.Contains("matchmakingContextToken") && data["matchmakingContextToken"] != null ? data["matchmakingContextToken"].ToString() : null,
             };
         }
 	}

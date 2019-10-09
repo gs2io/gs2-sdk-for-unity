@@ -121,11 +121,11 @@ namespace Gs2.Gs2Friend.Request
         public static UpdateProfileRequest FromDict(JsonData data)
         {
             return new UpdateProfileRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                publicProfile = data.Keys.Contains("publicProfile") && data["publicProfile"] != null ? (string) data["publicProfile"] : null,
-                followerProfile = data.Keys.Contains("followerProfile") && data["followerProfile"] != null ? (string) data["followerProfile"] : null,
-                friendProfile = data.Keys.Contains("friendProfile") && data["friendProfile"] != null ? (string) data["friendProfile"] : null,
-                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                publicProfile = data.Keys.Contains("publicProfile") && data["publicProfile"] != null ? data["publicProfile"].ToString(): null,
+                followerProfile = data.Keys.Contains("followerProfile") && data["followerProfile"] != null ? data["followerProfile"].ToString(): null,
+                friendProfile = data.Keys.Contains("friendProfile") && data["friendProfile"] != null ? data["friendProfile"].ToString(): null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
 

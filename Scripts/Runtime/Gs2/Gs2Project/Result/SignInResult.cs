@@ -38,7 +38,7 @@ namespace Gs2.Gs2Project.Result
         {
             return new SignInResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? Account.FromDict(data["item"]) : null,
-                accountToken = data.Keys.Contains("accountToken") && data["accountToken"] != null ? (string) data["accountToken"] : null,
+                accountToken = data.Keys.Contains("accountToken") && data["accountToken"] != null ? data["accountToken"].ToString() : null,
             };
         }
 	}

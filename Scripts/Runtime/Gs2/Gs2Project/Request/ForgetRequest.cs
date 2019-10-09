@@ -47,7 +47,7 @@ namespace Gs2.Gs2Project.Request
         public static ForgetRequest FromDict(JsonData data)
         {
             return new ForgetRequest {
-                email = data.Keys.Contains("email") && data["email"] != null ? (string) data["email"] : null,
+                email = data.Keys.Contains("email") && data["email"] != null ? data["email"].ToString(): null,
             };
         }
 

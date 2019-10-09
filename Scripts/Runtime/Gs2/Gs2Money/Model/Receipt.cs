@@ -245,17 +245,17 @@ namespace Gs2.Gs2Money.Model
         public static Receipt FromDict(JsonData data)
         {
             return new Receipt()
-                .WithReceiptId(data.Keys.Contains("receiptId") && data["receiptId"] != null ? (string) data["receiptId"] : null)
-                .WithTransactionId(data.Keys.Contains("transactionId") && data["transactionId"] != null ? (string) data["transactionId"] : null)
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
-                .WithType(data.Keys.Contains("type") && data["type"] != null ? (string) data["type"] : null)
-                .WithSlot(data.Keys.Contains("slot") && data["slot"] != null ? (int?) data["slot"] : null)
-                .WithPrice(data.Keys.Contains("price") && data["price"] != null ? (float?) data["price"] : null)
-                .WithPaid(data.Keys.Contains("paid") && data["paid"] != null ? (int?) data["paid"] : null)
-                .WithFree(data.Keys.Contains("free") && data["free"] != null ? (int?) data["free"] : null)
-                .WithTotal(data.Keys.Contains("total") && data["total"] != null ? (int?) data["total"] : null)
-                .WithContentsId(data.Keys.Contains("contentsId") && data["contentsId"] != null ? (string) data["contentsId"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null);
+                .WithReceiptId(data.Keys.Contains("receiptId") && data["receiptId"] != null ? data["receiptId"].ToString() : null)
+                .WithTransactionId(data.Keys.Contains("transactionId") && data["transactionId"] != null ? data["transactionId"].ToString() : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
+                .WithType(data.Keys.Contains("type") && data["type"] != null ? data["type"].ToString() : null)
+                .WithSlot(data.Keys.Contains("slot") && data["slot"] != null ? (int?)int.Parse(data["slot"].ToString()) : null)
+                .WithPrice(data.Keys.Contains("price") && data["price"] != null ? (float?)float.Parse(data["price"].ToString()) : null)
+                .WithPaid(data.Keys.Contains("paid") && data["paid"] != null ? (int?)int.Parse(data["paid"].ToString()) : null)
+                .WithFree(data.Keys.Contains("free") && data["free"] != null ? (int?)int.Parse(data["free"].ToString()) : null)
+                .WithTotal(data.Keys.Contains("total") && data["total"] != null ? (int?)int.Parse(data["total"].ToString()) : null)
+                .WithContentsId(data.Keys.Contains("contentsId") && data["contentsId"] != null ? data["contentsId"].ToString() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null);
         }
 	}
 }

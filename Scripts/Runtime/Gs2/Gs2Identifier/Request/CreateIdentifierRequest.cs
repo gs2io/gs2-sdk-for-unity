@@ -47,7 +47,7 @@ namespace Gs2.Gs2Identifier.Request
         public static CreateIdentifierRequest FromDict(JsonData data)
         {
             return new CreateIdentifierRequest {
-                userName = data.Keys.Contains("userName") && data["userName"] != null ? (string) data["userName"] : null,
+                userName = data.Keys.Contains("userName") && data["userName"] != null ? data["userName"].ToString(): null,
             };
         }
 

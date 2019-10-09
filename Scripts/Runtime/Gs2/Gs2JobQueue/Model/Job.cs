@@ -226,16 +226,16 @@ namespace Gs2.Gs2JobQueue.Model
         public static Job FromDict(JsonData data)
         {
             return new Job()
-                .WithJobId(data.Keys.Contains("jobId") && data["jobId"] != null ? (string) data["jobId"] : null)
-                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
-                .WithScriptId(data.Keys.Contains("scriptId") && data["scriptId"] != null ? (string) data["scriptId"] : null)
-                .WithArgs(data.Keys.Contains("args") && data["args"] != null ? (string) data["args"] : null)
-                .WithCurrentRetryCount(data.Keys.Contains("currentRetryCount") && data["currentRetryCount"] != null ? (int?) data["currentRetryCount"] : null)
-                .WithMaxTryCount(data.Keys.Contains("maxTryCount") && data["maxTryCount"] != null ? (int?) data["maxTryCount"] : null)
-                .WithIndex(data.Keys.Contains("index") && data["index"] != null ? (double?) data["index"] : null)
-                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?) data["createdAt"] : null)
-                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?) data["updatedAt"] : null);
+                .WithJobId(data.Keys.Contains("jobId") && data["jobId"] != null ? data["jobId"].ToString() : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
+                .WithScriptId(data.Keys.Contains("scriptId") && data["scriptId"] != null ? data["scriptId"].ToString() : null)
+                .WithArgs(data.Keys.Contains("args") && data["args"] != null ? data["args"].ToString() : null)
+                .WithCurrentRetryCount(data.Keys.Contains("currentRetryCount") && data["currentRetryCount"] != null ? (int?)int.Parse(data["currentRetryCount"].ToString()) : null)
+                .WithMaxTryCount(data.Keys.Contains("maxTryCount") && data["maxTryCount"] != null ? (int?)int.Parse(data["maxTryCount"].ToString()) : null)
+                .WithIndex(data.Keys.Contains("index") && data["index"] != null ? (double?)double.Parse(data["index"].ToString()) : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
 	}
 }

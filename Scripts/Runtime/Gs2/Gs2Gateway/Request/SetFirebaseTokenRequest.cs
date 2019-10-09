@@ -91,9 +91,9 @@ namespace Gs2.Gs2Gateway.Request
         public static SetFirebaseTokenRequest FromDict(JsonData data)
         {
             return new SetFirebaseTokenRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
-                token = data.Keys.Contains("token") && data["token"] != null ? (string) data["token"] : null,
-                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? (string) data["duplicationAvoider"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                token = data.Keys.Contains("token") && data["token"] != null ? data["token"].ToString(): null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
 

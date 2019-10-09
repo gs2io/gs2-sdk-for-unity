@@ -62,8 +62,8 @@ namespace Gs2.Gs2Project.Request
         public static SignInRequest FromDict(JsonData data)
         {
             return new SignInRequest {
-                email = data.Keys.Contains("email") && data["email"] != null ? (string) data["email"] : null,
-                password = data.Keys.Contains("password") && data["password"] != null ? (string) data["password"] : null,
+                email = data.Keys.Contains("email") && data["email"] != null ? data["email"].ToString(): null,
+                password = data.Keys.Contains("password") && data["password"] != null ? data["password"].ToString(): null,
             };
         }
 

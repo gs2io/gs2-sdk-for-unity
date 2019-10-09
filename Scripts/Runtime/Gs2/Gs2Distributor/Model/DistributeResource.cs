@@ -74,8 +74,8 @@ namespace Gs2.Gs2Distributor.Model
         public static DistributeResource FromDict(JsonData data)
         {
             return new DistributeResource()
-                .WithAction(data.Keys.Contains("action") && data["action"] != null ? (string) data["action"] : null)
-                .WithRequest(data.Keys.Contains("request") && data["request"] != null ? (string) data["request"] : null);
+                .WithAction(data.Keys.Contains("action") && data["action"] != null ? data["action"].ToString() : null)
+                .WithRequest(data.Keys.Contains("request") && data["request"] != null ? data["request"].ToString() : null);
         }
 	}
 }

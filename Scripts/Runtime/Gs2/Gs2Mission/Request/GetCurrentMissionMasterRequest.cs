@@ -47,7 +47,7 @@ namespace Gs2.Gs2Mission.Request
         public static GetCurrentMissionMasterRequest FromDict(JsonData data)
         {
             return new GetCurrentMissionMasterRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? (string) data["namespaceName"] : null,
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
             };
         }
 

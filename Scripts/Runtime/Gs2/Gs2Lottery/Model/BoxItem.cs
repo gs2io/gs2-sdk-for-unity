@@ -103,8 +103,8 @@ namespace Gs2.Gs2Lottery.Model
                         return AcquireAction.FromDict(value);
                     }
                 ).ToList() : null)
-                .WithRemaining(data.Keys.Contains("remaining") && data["remaining"] != null ? (int?) data["remaining"] : null)
-                .WithInitial(data.Keys.Contains("initial") && data["initial"] != null ? (int?) data["initial"] : null);
+                .WithRemaining(data.Keys.Contains("remaining") && data["remaining"] != null ? (int?)int.Parse(data["remaining"].ToString()) : null)
+                .WithInitial(data.Keys.Contains("initial") && data["initial"] != null ? (int?)int.Parse(data["initial"].ToString()) : null);
         }
 	}
 }

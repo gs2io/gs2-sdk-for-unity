@@ -93,9 +93,9 @@ namespace Gs2.Gs2Friend.Model
         public static FollowUser FromDict(JsonData data)
         {
             return new FollowUser()
-                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? (string) data["userId"] : null)
-                .WithPublicProfile(data.Keys.Contains("publicProfile") && data["publicProfile"] != null ? (string) data["publicProfile"] : null)
-                .WithFollowerProfile(data.Keys.Contains("followerProfile") && data["followerProfile"] != null ? (string) data["followerProfile"] : null);
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
+                .WithPublicProfile(data.Keys.Contains("publicProfile") && data["publicProfile"] != null ? data["publicProfile"].ToString() : null)
+                .WithFollowerProfile(data.Keys.Contains("followerProfile") && data["followerProfile"] != null ? data["followerProfile"].ToString() : null);
         }
 	}
 }

@@ -136,15 +136,15 @@ namespace Gs2.Gs2Mission.Model
         public static MissionGroupModel FromDict(JsonData data)
         {
             return new MissionGroupModel()
-                .WithMissionGroupId(data.Keys.Contains("missionGroupId") && data["missionGroupId"] != null ? (string) data["missionGroupId"] : null)
-                .WithName(data.Keys.Contains("name") && data["name"] != null ? (string) data["name"] : null)
-                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? (string) data["metadata"] : null)
+                .WithMissionGroupId(data.Keys.Contains("missionGroupId") && data["missionGroupId"] != null ? data["missionGroupId"].ToString() : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
                 .WithTasks(data.Keys.Contains("tasks") && data["tasks"] != null ? data["tasks"].Cast<JsonData>().Select(value =>
                     {
                         return MissionTaskModel.FromDict(value);
                     }
                 ).ToList() : null)
-                .WithCompleteNotificationNamespaceId(data.Keys.Contains("completeNotificationNamespaceId") && data["completeNotificationNamespaceId"] != null ? (string) data["completeNotificationNamespaceId"] : null);
+                .WithCompleteNotificationNamespaceId(data.Keys.Contains("completeNotificationNamespaceId") && data["completeNotificationNamespaceId"] != null ? data["completeNotificationNamespaceId"].ToString() : null);
         }
 	}
 }
