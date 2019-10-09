@@ -1501,13 +1501,16 @@ namespace Gs2.Gs2Money
                     .Replace("{region}", gs2Session.Region.DisplayName())
                     + "/stamp/receipt/record";
 
-                url = url.Replace("{stampTask}", !string.IsNullOrEmpty(_request.stampTask) ? _request.stampTask.ToString() : "null");
-
                 UnityWebRequest.url = url;
 
                 var stringBuilder = new StringBuilder();
                 var jsonWriter = new JsonWriter(stringBuilder);
                 jsonWriter.WriteObjectStart();
+                if (_request.stampTask != null)
+                {
+                    jsonWriter.WritePropertyName("stampTask");
+                    jsonWriter.Write(_request.stampTask.ToString());
+                }
                 if (_request.keyId != null)
                 {
                     jsonWriter.WritePropertyName("keyId");
