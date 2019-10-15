@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Formation.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Request
 {
+	[Preserve]
 	public class AcquireActionsToFormPropertiesRequest : Gs2Request<AcquireActionsToFormPropertiesRequest>
 	{
 
@@ -158,6 +162,26 @@ namespace Gs2.Gs2Formation.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static AcquireActionsToFormPropertiesRequest FromDict(JsonData data)
+        {
+            return new AcquireActionsToFormPropertiesRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
+                moldName = data.Keys.Contains("moldName") && data["moldName"] != null ? data["moldName"].ToString(): null,
+                index = data.Keys.Contains("index") && data["index"] != null ? (int?)int.Parse(data["index"].ToString()) : null,
+                acquireAction = data.Keys.Contains("acquireAction") && data["acquireAction"] != null ? AcquireAction.FromDict(data["acquireAction"]) : null,
+                queueNamespaceId = data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? data["queueNamespaceId"].ToString(): null,
+                keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString(): null,
+                config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
+                    {
+                        return AcquireActionConfig.FromDict(value);
+                    }
+                ).ToList() : null,
+                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
+            };
+        }
 
 	}
 }

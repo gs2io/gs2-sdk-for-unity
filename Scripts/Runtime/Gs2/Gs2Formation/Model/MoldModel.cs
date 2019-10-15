@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Model
 {
+	[Preserve]
 	public class MoldModel
 	{
 
@@ -141,6 +144,18 @@ namespace Gs2.Gs2Formation.Model
                 writer.Write(this.maxCapacity.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+    	[Preserve]
+        public static MoldModel FromDict(JsonData data)
+        {
+            return new MoldModel()
+                .WithMoldModelId(data.Keys.Contains("moldModelId") && data["moldModelId"] != null ? data["moldModelId"].ToString() : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
+                .WithFormModel(data.Keys.Contains("formModel") && data["formModel"] != null ? FormModel.FromDict(data["formModel"]) : null)
+                .WithInitialMaxCapacity(data.Keys.Contains("initialMaxCapacity") && data["initialMaxCapacity"] != null ? (int?)int.Parse(data["initialMaxCapacity"].ToString()) : null)
+                .WithMaxCapacity(data.Keys.Contains("maxCapacity") && data["maxCapacity"] != null ? (int?)int.Parse(data["maxCapacity"].ToString()) : null);
         }
 	}
 }

@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Model
 {
+	[Preserve]
 	public class FormModel
 	{
 
@@ -108,6 +111,20 @@ namespace Gs2.Gs2Formation.Model
                 writer.WriteArrayEnd();
             }
             writer.WriteObjectEnd();
+        }
+
+    	[Preserve]
+        public static FormModel FromDict(JsonData data)
+        {
+            return new FormModel()
+                .WithFormModelId(data.Keys.Contains("formModelId") && data["formModelId"] != null ? data["formModelId"].ToString() : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
+                .WithSlots(data.Keys.Contains("slots") && data["slots"] != null ? data["slots"].Cast<JsonData>().Select(value =>
+                    {
+                        return SlotModel.FromDict(value);
+                    }
+                ).ToList() : null);
         }
 	}
 }

@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Formation.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Request
 {
+	[Preserve]
 	public class CreateMoldModelMasterRequest : Gs2Request<CreateMoldModelMasterRequest>
 	{
 
@@ -128,6 +132,20 @@ namespace Gs2.Gs2Formation.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static CreateMoldModelMasterRequest FromDict(JsonData data)
+        {
+            return new CreateMoldModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
+                formModelId = data.Keys.Contains("formModelId") && data["formModelId"] != null ? data["formModelId"].ToString(): null,
+                initialMaxCapacity = data.Keys.Contains("initialMaxCapacity") && data["initialMaxCapacity"] != null ? (int?)int.Parse(data["initialMaxCapacity"].ToString()) : null,
+                maxCapacity = data.Keys.Contains("maxCapacity") && data["maxCapacity"] != null ? (int?)int.Parse(data["maxCapacity"].ToString()) : null,
+            };
+        }
 
 	}
 }

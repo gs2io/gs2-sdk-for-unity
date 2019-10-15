@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Model
 {
+	[Preserve]
 	public class SlotWithSignature
 	{
 
@@ -103,6 +106,16 @@ namespace Gs2.Gs2Formation.Model
                 writer.Write(this.signature);
             }
             writer.WriteObjectEnd();
+        }
+
+    	[Preserve]
+        public static SlotWithSignature FromDict(JsonData data)
+        {
+            return new SlotWithSignature()
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithPropertyType(data.Keys.Contains("propertyType") && data["propertyType"] != null ? data["propertyType"].ToString() : null)
+                .WithBody(data.Keys.Contains("body") && data["body"] != null ? data["body"].ToString() : null)
+                .WithSignature(data.Keys.Contains("signature") && data["signature"] != null ? data["signature"].ToString() : null);
         }
 	}
 }

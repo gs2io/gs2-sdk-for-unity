@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Model
 {
+	[Preserve]
 	public class Form
 	{
 
@@ -146,6 +149,22 @@ namespace Gs2.Gs2Formation.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+    	[Preserve]
+        public static Form FromDict(JsonData data)
+        {
+            return new Form()
+                .WithFormId(data.Keys.Contains("formId") && data["formId"] != null ? data["formId"].ToString() : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithIndex(data.Keys.Contains("index") && data["index"] != null ? (int?)int.Parse(data["index"].ToString()) : null)
+                .WithSlots(data.Keys.Contains("slots") && data["slots"] != null ? data["slots"].Cast<JsonData>().Select(value =>
+                    {
+                        return Slot.FromDict(value);
+                    }
+                ).ToList() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
 	}
 }

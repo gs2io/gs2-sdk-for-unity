@@ -15,15 +15,27 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Formation.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Result
 {
+	[Preserve]
 	public class GetFormModelMasterResult
 	{
         /** フォームマスター */
         public FormModelMaster item { set; get; }
 
+
+    	[Preserve]
+        public static GetFormModelMasterResult FromDict(JsonData data)
+        {
+            return new GetFormModelMasterResult {
+                item = data.Keys.Contains("item") && data["item"] != null ? FormModelMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

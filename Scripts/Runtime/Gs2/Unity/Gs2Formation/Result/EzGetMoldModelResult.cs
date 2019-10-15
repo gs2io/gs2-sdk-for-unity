@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2Formation.Model;
 using Gs2.Gs2Formation.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Formation.Result
 {
+	[Preserve]
 	public class EzGetMoldModelResult
 	{
         /** フォームの保存領域 */

@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Formation.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Result
 {
+	[Preserve]
 	public class AcquireActionsToFormPropertiesResult
 	{
         /** フォーム */
@@ -31,5 +35,15 @@ namespace Gs2.Gs2Formation.Result
         /** スタンプシート */
         public string stampSheet { set; get; }
 
+
+    	[Preserve]
+        public static AcquireActionsToFormPropertiesResult FromDict(JsonData data)
+        {
+            return new AcquireActionsToFormPropertiesResult {
+                item = data.Keys.Contains("item") && data["item"] != null ? Form.FromDict(data["item"]) : null,
+                mold = data.Keys.Contains("mold") && data["mold"] != null ? Mold.FromDict(data["mold"]) : null,
+                stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? data["stampSheet"].ToString() : null,
+            };
+        }
 	}
 }

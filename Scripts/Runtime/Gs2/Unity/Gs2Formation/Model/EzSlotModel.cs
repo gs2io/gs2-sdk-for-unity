@@ -16,10 +16,12 @@
 using Gs2.Gs2Formation.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Formation.Model
 {
+	[Preserve]
 	public class EzSlotModel
 	{
 		/** スロットモデル名 */

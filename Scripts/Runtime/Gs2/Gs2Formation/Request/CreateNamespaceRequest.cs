@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Formation.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Request
 {
+	[Preserve]
 	public class CreateNamespaceRequest : Gs2Request<CreateNamespaceRequest>
 	{
 
@@ -83,6 +87,17 @@ namespace Gs2.Gs2Formation.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static CreateNamespaceRequest FromDict(JsonData data)
+        {
+            return new CreateNamespaceRequest {
+                name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                updateMoldScript = data.Keys.Contains("updateMoldScript") && data["updateMoldScript"] != null ? ScriptSetting.FromDict(data["updateMoldScript"]) : null,
+                updateFormScript = data.Keys.Contains("updateFormScript") && data["updateFormScript"] != null ? ScriptSetting.FromDict(data["updateFormScript"]) : null,
+            };
+        }
 
 	}
 }

@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Model
 {
+	[Preserve]
 	public class ResponseCache
 	{
 
@@ -122,6 +125,17 @@ namespace Gs2.Gs2Formation.Model
                 writer.Write(this.result);
             }
             writer.WriteObjectEnd();
+        }
+
+    	[Preserve]
+        public static ResponseCache FromDict(JsonData data)
+        {
+            return new ResponseCache()
+                .WithRegion(data.Keys.Contains("region") && data["region"] != null ? data["region"].ToString() : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
+                .WithResponseCacheId(data.Keys.Contains("responseCacheId") && data["responseCacheId"] != null ? data["responseCacheId"].ToString() : null)
+                .WithRequestHash(data.Keys.Contains("requestHash") && data["requestHash"] != null ? data["requestHash"].ToString() : null)
+                .WithResult(data.Keys.Contains("result") && data["result"] != null ? data["result"].ToString() : null);
         }
 	}
 }

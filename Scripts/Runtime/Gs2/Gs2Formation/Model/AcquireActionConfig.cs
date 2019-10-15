@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Model
 {
+	[Preserve]
 	public class AcquireActionConfig
 	{
 
@@ -70,6 +73,18 @@ namespace Gs2.Gs2Formation.Model
                 writer.WriteArrayEnd();
             }
             writer.WriteObjectEnd();
+        }
+
+    	[Preserve]
+        public static AcquireActionConfig FromDict(JsonData data)
+        {
+            return new AcquireActionConfig()
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithConfig(data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
+                    {
+                        return Config.FromDict(value);
+                    }
+                ).ToList() : null);
         }
 	}
 }

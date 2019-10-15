@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Formation.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Result
 {
+	[Preserve]
 	public class DeleteFormResult
 	{
         /** フォーム */
@@ -34,5 +38,16 @@ namespace Gs2.Gs2Formation.Result
         /** フォームモデル */
         public FormModel formModel { set; get; }
 
+
+    	[Preserve]
+        public static DeleteFormResult FromDict(JsonData data)
+        {
+            return new DeleteFormResult {
+                item = data.Keys.Contains("item") && data["item"] != null ? Form.FromDict(data["item"]) : null,
+                mold = data.Keys.Contains("mold") && data["mold"] != null ? Mold.FromDict(data["mold"]) : null,
+                moldModel = data.Keys.Contains("moldModel") && data["moldModel"] != null ? MoldModel.FromDict(data["moldModel"]) : null,
+                formModel = data.Keys.Contains("formModel") && data["formModel"] != null ? FormModel.FromDict(data["formModel"]) : null,
+            };
+        }
 	}
 }

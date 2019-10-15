@@ -15,15 +15,27 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Formation.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Result
 {
+	[Preserve]
 	public class DeleteFormModelMasterResult
 	{
         /** 削除したフォームマスター */
         public FormModelMaster item { set; get; }
 
+
+    	[Preserve]
+        public static DeleteFormModelMasterResult FromDict(JsonData data)
+        {
+            return new DeleteFormModelMasterResult {
+                item = data.Keys.Contains("item") && data["item"] != null ? FormModelMaster.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

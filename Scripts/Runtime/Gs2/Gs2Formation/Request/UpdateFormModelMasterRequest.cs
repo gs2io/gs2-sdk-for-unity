@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Formation.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Request
 {
+	[Preserve]
 	public class UpdateFormModelMasterRequest : Gs2Request<UpdateFormModelMasterRequest>
 	{
 
@@ -98,6 +102,22 @@ namespace Gs2.Gs2Formation.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateFormModelMasterRequest FromDict(JsonData data)
+        {
+            return new UpdateFormModelMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                formName = data.Keys.Contains("formName") && data["formName"] != null ? data["formName"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
+                slots = data.Keys.Contains("slots") && data["slots"] != null ? data["slots"].Cast<JsonData>().Select(value =>
+                    {
+                        return SlotModel.FromDict(value);
+                    }
+                ).ToList() : null,
+            };
+        }
 
 	}
 }

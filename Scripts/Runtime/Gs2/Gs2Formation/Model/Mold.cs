@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Model
 {
+	[Preserve]
 	public class Mold
 	{
 
@@ -141,6 +144,18 @@ namespace Gs2.Gs2Formation.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+    	[Preserve]
+        public static Mold FromDict(JsonData data)
+        {
+            return new Mold()
+                .WithMoldId(data.Keys.Contains("moldId") && data["moldId"] != null ? data["moldId"].ToString() : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
+                .WithCapacity(data.Keys.Contains("capacity") && data["capacity"] != null ? (int?)int.Parse(data["capacity"].ToString()) : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
 	}
 }

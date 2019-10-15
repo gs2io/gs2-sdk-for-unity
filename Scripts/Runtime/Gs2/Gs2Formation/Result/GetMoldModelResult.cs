@@ -15,15 +15,27 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Formation.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Result
 {
+	[Preserve]
 	public class GetMoldModelResult
 	{
         /** フォームの保存領域 */
         public MoldModel item { set; get; }
 
+
+    	[Preserve]
+        public static GetMoldModelResult FromDict(JsonData data)
+        {
+            return new GetMoldModelResult {
+                item = data.Keys.Contains("item") && data["item"] != null ? MoldModel.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Model
 {
+	[Preserve]
 	public class Slot
 	{
 
@@ -65,6 +68,14 @@ namespace Gs2.Gs2Formation.Model
                 writer.Write(this.propertyId);
             }
             writer.WriteObjectEnd();
+        }
+
+    	[Preserve]
+        public static Slot FromDict(JsonData data)
+        {
+            return new Slot()
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithPropertyId(data.Keys.Contains("propertyId") && data["propertyId"] != null ? data["propertyId"].ToString() : null);
         }
 	}
 }

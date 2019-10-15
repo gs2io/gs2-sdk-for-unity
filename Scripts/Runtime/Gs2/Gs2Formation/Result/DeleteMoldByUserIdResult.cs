@@ -15,15 +15,27 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Formation.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Result
 {
+	[Preserve]
 	public class DeleteMoldByUserIdResult
 	{
         /** 保存したフォーム */
         public Mold item { set; get; }
 
+
+    	[Preserve]
+        public static DeleteMoldByUserIdResult FromDict(JsonData data)
+        {
+            return new DeleteMoldByUserIdResult {
+                item = data.Keys.Contains("item") && data["item"] != null ? Mold.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

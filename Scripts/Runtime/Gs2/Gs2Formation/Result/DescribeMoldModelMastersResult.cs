@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Formation.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Result
 {
+	[Preserve]
 	public class DescribeMoldModelMastersResult
 	{
         /** フォームの保存領域マスターのリスト */
@@ -28,5 +32,18 @@ namespace Gs2.Gs2Formation.Result
         /** リストの続きを取得するためのページトークン */
         public string nextPageToken { set; get; }
 
+
+    	[Preserve]
+        public static DescribeMoldModelMastersResult FromDict(JsonData data)
+        {
+            return new DescribeMoldModelMastersResult {
+                items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return MoldModelMaster.FromDict(value);
+                    }
+                ).ToList() : null,
+                nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,
+            };
+        }
 	}
 }

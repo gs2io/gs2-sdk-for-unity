@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Formation.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Request
 {
+	[Preserve]
 	public class UpdateCurrentFormMasterRequest : Gs2Request<UpdateCurrentFormMasterRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Formation.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static UpdateCurrentFormMasterRequest FromDict(JsonData data)
+        {
+            return new UpdateCurrentFormMasterRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                settings = data.Keys.Contains("settings") && data["settings"] != null ? data["settings"].ToString(): null,
+            };
+        }
 
 	}
 }

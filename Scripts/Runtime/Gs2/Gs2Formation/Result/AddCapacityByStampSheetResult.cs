@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Formation.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Result
 {
+	[Preserve]
 	public class AddCapacityByStampSheetResult
 	{
         /** キャパシティ加算後の保存したフォーム */
@@ -28,5 +32,14 @@ namespace Gs2.Gs2Formation.Result
         /** フォームの保存領域 */
         public MoldModel moldModel { set; get; }
 
+
+    	[Preserve]
+        public static AddCapacityByStampSheetResult FromDict(JsonData data)
+        {
+            return new AddCapacityByStampSheetResult {
+                item = data.Keys.Contains("item") && data["item"] != null ? Mold.FromDict(data["item"]) : null,
+                moldModel = data.Keys.Contains("moldModel") && data["moldModel"] != null ? MoldModel.FromDict(data["moldModel"]) : null,
+            };
+        }
 	}
 }

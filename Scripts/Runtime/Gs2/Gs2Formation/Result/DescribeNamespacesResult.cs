@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Formation.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Result
 {
+	[Preserve]
 	public class DescribeNamespacesResult
 	{
         /** ネームスペースのリスト */
@@ -28,5 +32,18 @@ namespace Gs2.Gs2Formation.Result
         /** リストの続きを取得するためのページトークン */
         public string nextPageToken { set; get; }
 
+
+    	[Preserve]
+        public static DescribeNamespacesResult FromDict(JsonData data)
+        {
+            return new DescribeNamespacesResult {
+                items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return Namespace.FromDict(value);
+                    }
+                ).ToList() : null,
+                nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,
+            };
+        }
 	}
 }

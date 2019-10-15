@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Model
 {
+	[Preserve]
 	public class Config
 	{
 
@@ -65,6 +68,14 @@ namespace Gs2.Gs2Formation.Model
                 writer.Write(this.value);
             }
             writer.WriteObjectEnd();
+        }
+
+    	[Preserve]
+        public static Config FromDict(JsonData data)
+        {
+            return new Config()
+                .WithKey(data.Keys.Contains("key") && data["key"] != null ? data["key"].ToString() : null)
+                .WithValue(data.Keys.Contains("value") && data["value"] != null ? data["value"].ToString() : null);
         }
 	}
 }

@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Model
 {
+	[Preserve]
 	public class CurrentFormMaster
 	{
 
@@ -65,6 +68,14 @@ namespace Gs2.Gs2Formation.Model
                 writer.Write(this.settings);
             }
             writer.WriteObjectEnd();
+        }
+
+    	[Preserve]
+        public static CurrentFormMaster FromDict(JsonData data)
+        {
+            return new CurrentFormMaster()
+                .WithNamespaceName(data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString() : null)
+                .WithSettings(data.Keys.Contains("settings") && data["settings"] != null ? data["settings"].ToString() : null);
         }
 	}
 }
