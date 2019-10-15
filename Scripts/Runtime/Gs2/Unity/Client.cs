@@ -28,6 +28,7 @@ namespace Gs2.Unity
         public readonly Gs2Schedule.Client Schedule;
         public readonly Gs2Showcase.Client Showcase;
         public readonly Gs2Stamina.Client Stamina;
+        public readonly Gs2Version.Client Version;
 
         public Client(
             Profile profile
@@ -57,6 +58,7 @@ namespace Gs2.Unity
             Schedule = new Gs2Schedule.Client(profile);
             Showcase = new Gs2Showcase.Client(profile);
             Stamina = new Gs2Stamina.Client(profile);
+            Version = new Gs2Version.Client(profile);
         }
     }
 }

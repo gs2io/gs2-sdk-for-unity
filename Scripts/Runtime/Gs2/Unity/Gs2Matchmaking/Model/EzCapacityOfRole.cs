@@ -71,7 +71,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Model
                                 userId = Value0.UserId,
                                 attributes = Value0.Attributes != null ? Value0.Attributes.Select(Value1 =>
                                         {
-                                            return new Attribute
+                                            return new Attribute_
                                             {
                                                 name = Value1.Name,
                                                 value = Value1.Value,

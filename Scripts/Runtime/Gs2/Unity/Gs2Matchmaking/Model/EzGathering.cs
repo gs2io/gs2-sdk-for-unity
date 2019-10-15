@@ -103,7 +103,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Model
                                                 userId = Value1.UserId,
                                                 attributes = Value1.Attributes != null ? Value1.Attributes.Select(Value2 =>
                                                         {
-                                                            return new Attribute
+                                                            return new Attribute_
                                                             {
                                                                 name = Value2.Name,
                                                                 value = Value2.Value,

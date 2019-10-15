@@ -23,7 +23,7 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Matchmaking.Model
 {
 	[Preserve]
-	public class Attribute
+	public class Attribute_
 	{
 
         /** 属性名 */
@@ -35,7 +35,7 @@ namespace Gs2.Gs2Matchmaking.Model
          * @param name 属性名
          * @return this
          */
-        public Attribute WithName(string name) {
+        public Attribute_ WithName(string name) {
             this.name = name;
             return this;
         }
@@ -49,7 +49,7 @@ namespace Gs2.Gs2Matchmaking.Model
          * @param value 属性値
          * @return this
          */
-        public Attribute WithValue(int? value) {
+        public Attribute_ WithValue(int? value) {
             this.value = value;
             return this;
         }
@@ -71,9 +71,9 @@ namespace Gs2.Gs2Matchmaking.Model
         }
 
     	[Preserve]
-        public static Attribute FromDict(JsonData data)
+        public static Attribute_ FromDict(JsonData data)
         {
-            return new Attribute()
+            return new Attribute_()
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithValue(data.Keys.Contains("value") && data["value"] != null ? (int?)int.Parse(data["value"].ToString()) : null);
         }

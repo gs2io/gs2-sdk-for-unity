@@ -13,38 +13,28 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using Gs2.Gs2Matchmaking.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Gs2.Core.Model;
+using Gs2.Gs2Version.Model;
+using LitJson;
 using UnityEngine.Scripting;
 
-
-namespace Gs2.Unity.Gs2Matchmaking.Model
+namespace Gs2.Gs2Version.Result
 {
 	[Preserve]
-	public class EzAttribute
+	public class AcceptByUserIdResult
 	{
-		/** 属性名 */
-		public string Name { get; set; }
-		/** 属性値 */
-		public int Value { get; set; }
+        /** 承認したバージョン */
+        public AcceptVersion item { set; get; }
 
-		public EzAttribute()
-		{
 
-		}
-
-		public EzAttribute(Gs2.Gs2Matchmaking.Model.Attribute_ @attribute)
-		{
-			Name = @attribute.name;
-			Value = @attribute.value.HasValue ? @attribute.value.Value : 0;
-		}
-
-        public Attribute_ ToModel()
+    	[Preserve]
+        public static AcceptByUserIdResult FromDict(JsonData data)
         {
-            return new Attribute_ {
-                name = Name,
-                value = Value,
+            return new AcceptByUserIdResult {
+                item = data.Keys.Contains("item") && data["item"] != null ? AcceptVersion.FromDict(data["item"]) : null,
             };
         }
 	}

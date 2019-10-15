@@ -96,6 +96,34 @@ namespace Gs2.Gs2Version.Model
             return this;
         }
 
+        /** バージョンを承認したときに実行するスクリプト */
+        public ScriptSetting acceptVersionScript { set; get; }
+
+        /**
+         * バージョンを承認したときに実行するスクリプトを設定
+         *
+         * @param acceptVersionScript バージョンを承認したときに実行するスクリプト
+         * @return this
+         */
+        public Namespace WithAcceptVersionScript(ScriptSetting acceptVersionScript) {
+            this.acceptVersionScript = acceptVersionScript;
+            return this;
+        }
+
+        /** バージョンチェック時 に実行されるスクリプト のGRN */
+        public string checkVersionTriggerScriptId { set; get; }
+
+        /**
+         * バージョンチェック時 に実行されるスクリプト のGRNを設定
+         *
+         * @param checkVersionTriggerScriptId バージョンチェック時 に実行されるスクリプト のGRN
+         * @return this
+         */
+        public Namespace WithCheckVersionTriggerScriptId(string checkVersionTriggerScriptId) {
+            this.checkVersionTriggerScriptId = checkVersionTriggerScriptId;
+            return this;
+        }
+
         /** 作成日時 */
         public long? createdAt { set; get; }
 
@@ -152,6 +180,16 @@ namespace Gs2.Gs2Version.Model
                 writer.WritePropertyName("assumeUserId");
                 writer.Write(this.assumeUserId);
             }
+            if(this.acceptVersionScript != null)
+            {
+                writer.WritePropertyName("acceptVersionScript");
+                this.acceptVersionScript.WriteJson(writer);
+            }
+            if(this.checkVersionTriggerScriptId != null)
+            {
+                writer.WritePropertyName("checkVersionTriggerScriptId");
+                writer.Write(this.checkVersionTriggerScriptId);
+            }
             if(this.createdAt.HasValue)
             {
                 writer.WritePropertyName("createdAt");
@@ -174,6 +212,8 @@ namespace Gs2.Gs2Version.Model
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
                 .WithAssumeUserId(data.Keys.Contains("assumeUserId") && data["assumeUserId"] != null ? data["assumeUserId"].ToString() : null)
+                .WithAcceptVersionScript(data.Keys.Contains("acceptVersionScript") && data["acceptVersionScript"] != null ? ScriptSetting.FromDict(data["acceptVersionScript"]) : null)
+                .WithCheckVersionTriggerScriptId(data.Keys.Contains("checkVersionTriggerScriptId") && data["checkVersionTriggerScriptId"] != null ? data["checkVersionTriggerScriptId"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }

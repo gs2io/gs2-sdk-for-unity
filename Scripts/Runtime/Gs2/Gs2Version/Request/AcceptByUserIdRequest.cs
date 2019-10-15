@@ -25,7 +25,7 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Version.Request
 {
 	[Preserve]
-	public class AcceptRequest : Gs2Request<AcceptRequest>
+	public class AcceptByUserIdRequest : Gs2Request<AcceptByUserIdRequest>
 	{
 
         /** ネームスペース名 */
@@ -37,7 +37,7 @@ namespace Gs2.Gs2Version.Request
          * @param namespaceName ネームスペース名
          * @return this
          */
-        public AcceptRequest WithNamespaceName(string namespaceName) {
+        public AcceptByUserIdRequest WithNamespaceName(string namespaceName) {
             this.namespaceName = namespaceName;
             return this;
         }
@@ -52,8 +52,23 @@ namespace Gs2.Gs2Version.Request
          * @param versionName 承認したバージョン名
          * @return this
          */
-        public AcceptRequest WithVersionName(string versionName) {
+        public AcceptByUserIdRequest WithVersionName(string versionName) {
             this.versionName = versionName;
+            return this;
+        }
+
+
+        /** ユーザーID */
+        public string userId { set; get; }
+
+        /**
+         * ユーザーIDを設定
+         *
+         * @param userId ユーザーID
+         * @return this
+         */
+        public AcceptByUserIdRequest WithUserId(string userId) {
+            this.userId = userId;
             return this;
         }
 
@@ -67,32 +82,19 @@ namespace Gs2.Gs2Version.Request
          * @param duplicationAvoider 重複実行回避機能に使用するID
          * @return this
          */
-        public AcceptRequest WithDuplicationAvoider(string duplicationAvoider) {
+        public AcceptByUserIdRequest WithDuplicationAvoider(string duplicationAvoider) {
             this.duplicationAvoider = duplicationAvoider;
             return this;
         }
 
 
-        /** アクセストークン */
-        public string accessToken { set; get; }
-
-        /**
-         * アクセストークンを設定
-         *
-         * @param accessToken アクセストークン
-         * @return this
-         */
-        public AcceptRequest WithAccessToken(string accessToken) {
-            this.accessToken = accessToken;
-            return this;
-        }
-
     	[Preserve]
-        public static AcceptRequest FromDict(JsonData data)
+        public static AcceptByUserIdRequest FromDict(JsonData data)
         {
-            return new AcceptRequest {
+            return new AcceptByUserIdRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 versionName = data.Keys.Contains("versionName") && data["versionName"] != null ? data["versionName"].ToString(): null,
+                userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
