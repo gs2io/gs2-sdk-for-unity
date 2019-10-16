@@ -23,14 +23,14 @@ using UnityEngine.Scripting;
 namespace Gs2.Unity.Gs2Quest.Result
 {
 	[Preserve]
-	public class EzDeleteResult
+	public class EzGetProgressResult
 	{
         /** クエスト挑戦 */
         public EzProgress Item { get; private set; }
 
 
-        public EzDeleteResult(
-            DeleteProgressResult result
+        public EzGetProgressResult(
+            GetProgressResult result
         )
         {
             if(result.item != null)
