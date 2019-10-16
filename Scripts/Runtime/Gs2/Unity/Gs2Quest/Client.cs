@@ -166,6 +166,48 @@ namespace Gs2.Unity.Gs2Quest
 		}
 
 		/// <summary>
+		///  クエストの進行情報を取得。<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">カテゴリ名</param>
+		public IEnumerator GetProgress(
+		        UnityAction<AsyncResult<EzGetProgressResult>> callback,
+		        GameSession session,
+                string namespaceName
+        )
+		{
+            yield return _client.GetProgress(
+                new GetProgressRequest()
+                    .WithNamespaceName(namespaceName)
+                    .WithAccessToken(session.AccessToken.token),
+				r =>
+				{
+				    if(r.Result == null)
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzGetProgressResult>(
+                                null,
+                                r.Error
+                            )
+                        );
+				    }
+				    else
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzGetProgressResult>(
+                                new EzGetProgressResult(r.Result),
+                                r.Error
+                            )
+                        );
+                    }
+				}
+            );
+		}
+
+		/// <summary>
 		///  クエストの進行情報を削除。<br />
 		///    <br />
 		///    クエストの開始時に `force` オプションを使うのではなく、明示的に進行情報を削除したい場合に使用してください。<br />
@@ -175,8 +217,8 @@ namespace Gs2.Unity.Gs2Quest
 		/// <param name="callback">コールバックハンドラ</param>
 		/// <param name="session">ゲームセッション</param>
 		/// <param name="namespaceName">カテゴリ名</param>
-		public IEnumerator Delete(
-		        UnityAction<AsyncResult<EzDeleteResult>> callback,
+		public IEnumerator DeleteProgress(
+		        UnityAction<AsyncResult<EzDeleteProgressResult>> callback,
 		        GameSession session,
                 string namespaceName
         )
@@ -190,7 +232,7 @@ namespace Gs2.Unity.Gs2Quest
 				    if(r.Result == null)
 				    {
                         callback.Invoke(
-                            new AsyncResult<EzDeleteResult>(
+                            new AsyncResult<EzDeleteProgressResult>(
                                 null,
                                 r.Error
                             )
@@ -199,8 +241,8 @@ namespace Gs2.Unity.Gs2Quest
 				    else
 				    {
                         callback.Invoke(
-                            new AsyncResult<EzDeleteResult>(
-                                new EzDeleteResult(r.Result),
+                            new AsyncResult<EzDeleteProgressResult>(
+                                new EzDeleteProgressResult(r.Result),
                                 r.Error
                             )
                         );
