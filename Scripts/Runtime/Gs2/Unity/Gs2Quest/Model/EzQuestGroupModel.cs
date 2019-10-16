@@ -59,6 +59,7 @@ namespace Gs2.Unity.Gs2Quest.Model
                         {
                             return new QuestModel
                             {
+                                questModelId = Value0.QuestModelId,
                                 name = Value0.Name,
                                 metadata = Value0.Metadata,
                                 contents = Value0.Contents != null ? Value0.Contents.Select(Value1 =>

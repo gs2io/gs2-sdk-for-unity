@@ -24,6 +24,8 @@ namespace Gs2.Unity.Gs2Quest.Model
 	[Preserve]
 	public class EzQuestModel
 	{
+		/** クエストモデル */
+		public string QuestModelId { get; set; }
 		/** クエストモデル名 */
 		public string Name { get; set; }
 		/** クエストモデルのメタデータ */
@@ -46,6 +48,7 @@ namespace Gs2.Unity.Gs2Quest.Model
 
 		public EzQuestModel(Gs2.Gs2Quest.Model.QuestModel @questModel)
 		{
+			QuestModelId = @questModel.questModelId;
 			Name = @questModel.name;
 			Metadata = @questModel.metadata;
 			Contents = @questModel.contents != null ? @questModel.contents.Select(value =>
@@ -74,6 +77,7 @@ namespace Gs2.Unity.Gs2Quest.Model
         public QuestModel ToModel()
         {
             return new QuestModel {
+                questModelId = QuestModelId,
                 name = Name,
                 metadata = Metadata,
                 contents = Contents != null ? Contents.Select(Value0 =>

@@ -26,6 +26,8 @@ namespace Gs2.Unity.Gs2Quest.Model
 	{
 		/** クエスト挑戦 */
 		public string ProgressId { get; set; }
+		/** トランザクションID */
+		public string TransactionId { get; set; }
 		/** クエストモデル */
 		public string QuestModelId { get; set; }
 		/** 乱数シード */
@@ -39,6 +41,7 @@ namespace Gs2.Unity.Gs2Quest.Model
 		public EzProgress(Gs2.Gs2Quest.Model.Progress @progress)
 		{
 			ProgressId = @progress.progressId;
+			TransactionId = @progress.transactionId;
 			QuestModelId = @progress.questModelId;
 			RandomSeed = @progress.randomSeed.HasValue ? @progress.randomSeed.Value : 0;
 		}
@@ -47,6 +50,7 @@ namespace Gs2.Unity.Gs2Quest.Model
         {
             return new Progress {
                 progressId = ProgressId,
+                transactionId = TransactionId,
                 questModelId = QuestModelId,
                 randomSeed = RandomSeed,
             };
