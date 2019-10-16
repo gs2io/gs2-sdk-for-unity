@@ -109,7 +109,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Model
                                                                 value = Value2.Value,
                                                             };
                                                         }
-                                                ).ToList() : new List<Attribute>(new Attribute[] {}),
+                                                ).ToList() : new List<Attribute_>(new Attribute_[] {}),
                                                 roleName = Value1.RoleName,
                                             };
                                         }

@@ -41,7 +41,7 @@ namespace Gs2.Gs2Matchmaking.Model
         }
 
         /** 属性値のリスト */
-        public List<Attribute> attributes { set; get; }
+        public List<Attribute_> attributes { set; get; }
 
         /**
          * 属性値のリストを設定
@@ -49,7 +49,7 @@ namespace Gs2.Gs2Matchmaking.Model
          * @param attributes 属性値のリスト
          * @return this
          */
-        public Player WithAttributes(List<Attribute> attributes) {
+        public Player WithAttributes(List<Attribute_> attributes) {
             this.attributes = attributes;
             return this;
         }
