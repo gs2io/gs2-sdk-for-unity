@@ -130,17 +130,20 @@ namespace Gs2.Unity.Gs2Exchange
 		/// <param name="session">ゲームセッション</param>
 		/// <param name="namespaceName">ネームスペース名</param>
 		/// <param name="rateName">交換レートの種類名</param>
+		/// <param name="count">交換するロット数</param>
 		public IEnumerator Exchange(
 		        UnityAction<AsyncResult<EzExchangeResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string rateName
+                string rateName,
+                int count
         )
 		{
             yield return _client.Exchange(
                 new ExchangeRequest()
                     .WithNamespaceName(namespaceName)
                     .WithRateName(rateName)
+                    .WithCount(count)
                     .WithAccessToken(session.AccessToken.token),
 				r =>
 				{
