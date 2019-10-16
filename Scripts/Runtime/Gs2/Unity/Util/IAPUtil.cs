@@ -1,3 +1,5 @@
+#if !UNITY_PURCHASING
+
 using System.Collections;
 using System.Collections.Generic;
 using Gs2.Core;
@@ -112,3 +114,5 @@ namespace Gs2.Unity.Util
         }
     }
 }
+
+#endif

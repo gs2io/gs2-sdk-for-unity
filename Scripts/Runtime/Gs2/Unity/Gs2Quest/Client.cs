@@ -63,13 +63,15 @@ namespace Gs2.Unity.Gs2Quest
 		/// <param name="questGroupName">クエストグループ名</param>
 		/// <param name="questName">クエストモデル名</param>
 		/// <param name="force">すでに開始しているクエストがある場合にそれを破棄して開始するか</param>
+		/// <param name="config">スタンプシートの変数に適用する設定値</param>
 		public IEnumerator Start(
 		        UnityAction<AsyncResult<EzStartResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string questGroupName,
                 string questName,
-                bool? force=null
+                bool? force=null,
+                List<EzConfig> config=null
         )
 		{
             yield return _client.Start(
@@ -78,6 +80,7 @@ namespace Gs2.Unity.Gs2Quest
                     .WithQuestGroupName(questGroupName)
                     .WithQuestName(questName)
                     .WithForce(force)
+                    .WithConfig(config != null ? config.Select(item => item.ToModel()).ToList() : new List<Config>(new Config[]{}))
                     .WithAccessToken(session.AccessToken.token),
 				r =>
 				{
@@ -119,13 +122,15 @@ namespace Gs2.Unity.Gs2Quest
 		/// <param name="rewards">実際にクエストで得た報酬</param>
 		/// <param name="transactionId">トランザクションID</param>
 		/// <param name="isComplete">クエストをクリアしたか</param>
+		/// <param name="config">スタンプシートの変数に適用する設定値</param>
 		public IEnumerator End(
 		        UnityAction<AsyncResult<EzEndResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string transactionId,
                 List<EzReward> rewards=null,
-                bool? isComplete=null
+                bool? isComplete=null,
+                List<EzConfig> config=null
         )
 		{
             yield return _client.End(
@@ -134,6 +139,7 @@ namespace Gs2.Unity.Gs2Quest
                     .WithRewards(rewards != null ? rewards.Select(item => item.ToModel()).ToList() : new List<Reward>(new Reward[]{}))
                     .WithTransactionId(transactionId)
                     .WithIsComplete(isComplete)
+                    .WithConfig(config != null ? config.Select(item => item.ToModel()).ToList() : new List<Config>(new Config[]{}))
                     .WithAccessToken(session.AccessToken.token),
 				r =>
 				{
