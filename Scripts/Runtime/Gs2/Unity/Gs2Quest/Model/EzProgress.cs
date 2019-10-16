@@ -32,6 +32,8 @@ namespace Gs2.Unity.Gs2Quest.Model
 		public string QuestModelId { get; set; }
 		/** 乱数シード */
 		public long RandomSeed { get; set; }
+		/** クエストで得られる報酬の上限 */
+		public List<EzReward> Rewards { get; set; }
 
 		public EzProgress()
 		{
@@ -44,6 +46,11 @@ namespace Gs2.Unity.Gs2Quest.Model
 			TransactionId = @progress.transactionId;
 			QuestModelId = @progress.questModelId;
 			RandomSeed = @progress.randomSeed.HasValue ? @progress.randomSeed.Value : 0;
+			Rewards = @progress.rewards != null ? @progress.rewards.Select(value =>
+                {
+                    return new EzReward(value);
+                }
+			).ToList() : new List<EzReward>(new EzReward[] {});
 		}
 
         public Progress ToModel()
@@ -53,6 +60,17 @@ namespace Gs2.Unity.Gs2Quest.Model
                 transactionId = TransactionId,
                 questModelId = QuestModelId,
                 randomSeed = RandomSeed,
+                rewards = Rewards != null ? Rewards.Select(Value0 =>
+                        {
+                            return new Reward
+                            {
+                                action = Value0.Action,
+                                request = Value0.Request,
+                                itemId = Value0.ItemId,
+                                value = Value0.Value,
+                            };
+                        }
+                ).ToList() : new List<Reward>(new Reward[] {}),
             };
         }
 	}
