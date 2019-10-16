@@ -131,12 +131,14 @@ namespace Gs2.Unity.Gs2Exchange
 		/// <param name="namespaceName">ネームスペース名</param>
 		/// <param name="rateName">交換レートの種類名</param>
 		/// <param name="count">交換するロット数</param>
+		/// <param name="config">設定値</param>
 		public IEnumerator Exchange(
 		        UnityAction<AsyncResult<EzExchangeResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string rateName,
-                int count
+                int count,
+                List<EzConfig> config=null
         )
 		{
             yield return _client.Exchange(
@@ -144,6 +146,7 @@ namespace Gs2.Unity.Gs2Exchange
                     .WithNamespaceName(namespaceName)
                     .WithRateName(rateName)
                     .WithCount(count)
+                    .WithConfig(config != null ? config.Select(item => item.ToModel()).ToList() : new List<Config>(new Config[]{}))
                     .WithAccessToken(session.AccessToken.token),
 				r =>
 				{
