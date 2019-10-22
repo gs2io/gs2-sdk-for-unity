@@ -58,21 +58,6 @@ namespace Gs2.Gs2Quest.Request
         }
 
 
-        /** スタンプシートの変数に適用する設定値 */
-        public List<Config> config { set; get; }
-
-        /**
-         * スタンプシートの変数に適用する設定値を設定
-         *
-         * @param config スタンプシートの変数に適用する設定値
-         * @return this
-         */
-        public CreateProgressByStampSheetRequest WithConfig(List<Config> config) {
-            this.config = config;
-            return this;
-        }
-
-
         /** 重複実行回避機能に使用するID */
         public string duplicationAvoider { set; get; }
 
@@ -94,11 +79,6 @@ namespace Gs2.Gs2Quest.Request
             return new CreateProgressByStampSheetRequest {
                 stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? data["stampSheet"].ToString(): null,
                 keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString(): null,
-                config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
-                    {
-                        return Config.FromDict(value);
-                    }
-                ).ToList() : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }

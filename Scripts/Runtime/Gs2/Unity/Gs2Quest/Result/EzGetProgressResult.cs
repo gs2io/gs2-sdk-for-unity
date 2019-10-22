@@ -28,6 +28,12 @@ namespace Gs2.Unity.Gs2Quest.Result
         /** クエスト挑戦 */
         public EzProgress Item { get; private set; }
 
+        /** クエストグループ */
+        public EzQuestGroupModel QuestGroup { get; private set; }
+
+        /** クエストモデル */
+        public EzQuestModel Quest { get; private set; }
+
 
         public EzGetProgressResult(
             GetProgressResult result
@@ -36,6 +42,14 @@ namespace Gs2.Unity.Gs2Quest.Result
             if(result.item != null)
             {
                 Item = new EzProgress(result.item);
+            }
+            if(result.questGroup != null)
+            {
+                QuestGroup = new EzQuestGroupModel(result.questGroup);
+            }
+            if(result.quest != null)
+            {
+                Quest = new EzQuestModel(result.quest);
             }
         }
 	}

@@ -2903,16 +2903,6 @@ namespace Gs2.Gs2Quest
                     jsonWriter.WritePropertyName("keyId");
                     jsonWriter.Write(_request.keyId.ToString());
                 }
-                if (_request.config != null)
-                {
-                    jsonWriter.WritePropertyName("config");
-                    jsonWriter.WriteArrayStart();
-                    foreach(var item in _request.config)
-                    {
-                        item.WriteJson(jsonWriter);
-                    }
-                    jsonWriter.WriteArrayEnd();
-                }
                 if (_request.contextStack != null)
                 {
                     jsonWriter.WritePropertyName("contextStack");

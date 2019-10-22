@@ -29,12 +29,20 @@ namespace Gs2.Gs2Quest.Result
         /** クエスト挑戦 */
         public Progress item { set; get; }
 
+        /** クエストグループ */
+        public QuestGroupModel questGroup { set; get; }
+
+        /** クエストモデル */
+        public QuestModel quest { set; get; }
+
 
     	[Preserve]
         public static GetProgressByUserIdResult FromDict(JsonData data)
         {
             return new GetProgressByUserIdResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? Progress.FromDict(data["item"]) : null,
+                questGroup = data.Keys.Contains("questGroup") && data["questGroup"] != null ? QuestGroupModel.FromDict(data["questGroup"]) : null,
+                quest = data.Keys.Contains("quest") && data["quest"] != null ? QuestModel.FromDict(data["quest"]) : null,
             };
         }
 	}
