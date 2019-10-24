@@ -114,6 +114,10 @@ namespace Gs2.Unity.Util
 					_stampSheetEncryptKeyId
 				);
 			}
+			if (error)
+			{
+				yield break;
+			}
 			
 			yield return _stampSheet.Execute(
 				r =>
