@@ -110,6 +110,20 @@ namespace Gs2.Gs2Stamina.Model
             return this;
         }
 
+        /** ログの出力設定 */
+        public LogSetting logSetting { set; get; }
+
+        /**
+         * ログの出力設定を設定
+         *
+         * @param logSetting ログの出力設定
+         * @return this
+         */
+        public Namespace WithLogSetting(LogSetting logSetting) {
+            this.logSetting = logSetting;
+            return this;
+        }
+
         /** 作成日時 */
         public long? createdAt { set; get; }
 
@@ -171,6 +185,11 @@ namespace Gs2.Gs2Stamina.Model
                 writer.WritePropertyName("overflowTriggerNamespaceId");
                 writer.Write(this.overflowTriggerNamespaceId);
             }
+            if(this.logSetting != null)
+            {
+                writer.WritePropertyName("logSetting");
+                this.logSetting.WriteJson(writer);
+            }
             if(this.createdAt.HasValue)
             {
                 writer.WritePropertyName("createdAt");
@@ -194,6 +213,7 @@ namespace Gs2.Gs2Stamina.Model
                 .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
                 .WithOverflowTriggerScriptId(data.Keys.Contains("overflowTriggerScriptId") && data["overflowTriggerScriptId"] != null ? data["overflowTriggerScriptId"].ToString() : null)
                 .WithOverflowTriggerNamespaceId(data.Keys.Contains("overflowTriggerNamespaceId") && data["overflowTriggerNamespaceId"] != null ? data["overflowTriggerNamespaceId"].ToString() : null)
+                .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }

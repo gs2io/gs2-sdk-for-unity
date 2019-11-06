@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Realtime.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Realtime.Request
 {
+	[Preserve]
 	public class DeleteRoomRequest : Gs2Request<DeleteRoomRequest>
 	{
 
@@ -53,6 +57,15 @@ namespace Gs2.Gs2Realtime.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static DeleteRoomRequest FromDict(JsonData data)
+        {
+            return new DeleteRoomRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                roomName = data.Keys.Contains("roomName") && data["roomName"] != null ? data["roomName"].ToString(): null,
+            };
+        }
 
 	}
 }

@@ -154,6 +154,11 @@ namespace Gs2.Gs2Version
                     jsonWriter.WritePropertyName("assumeUserId");
                     jsonWriter.Write(_request.assumeUserId.ToString());
                 }
+                if (_request.logSetting != null)
+                {
+                    jsonWriter.WritePropertyName("logSetting");
+                    _request.logSetting.WriteJson(jsonWriter);
+                }
                 if (_request.contextStack != null)
                 {
                     jsonWriter.WritePropertyName("contextStack");
@@ -388,6 +393,11 @@ namespace Gs2.Gs2Version
                 {
                     jsonWriter.WritePropertyName("assumeUserId");
                     jsonWriter.Write(_request.assumeUserId.ToString());
+                }
+                if (_request.logSetting != null)
+                {
+                    jsonWriter.WritePropertyName("logSetting");
+                    _request.logSetting.WriteJson(jsonWriter);
                 }
                 if (_request.contextStack != null)
                 {

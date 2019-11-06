@@ -180,6 +180,20 @@ namespace Gs2.Gs2Inbox.Model
             return this;
         }
 
+        /** ログの出力設定 */
+        public LogSetting logSetting { set; get; }
+
+        /**
+         * ログの出力設定を設定
+         *
+         * @param logSetting ログの出力設定
+         * @return this
+         */
+        public Namespace WithLogSetting(LogSetting logSetting) {
+            this.logSetting = logSetting;
+            return this;
+        }
+
         /** 作成日時 */
         public long? createdAt { set; get; }
 
@@ -266,6 +280,11 @@ namespace Gs2.Gs2Inbox.Model
                 writer.WritePropertyName("receiveNotification");
                 this.receiveNotification.WriteJson(writer);
             }
+            if(this.logSetting != null)
+            {
+                writer.WritePropertyName("logSetting");
+                this.logSetting.WriteJson(writer);
+            }
             if(this.createdAt.HasValue)
             {
                 writer.WritePropertyName("createdAt");
@@ -294,6 +313,7 @@ namespace Gs2.Gs2Inbox.Model
                 .WithQueueNamespaceId(data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? data["queueNamespaceId"].ToString() : null)
                 .WithKeyId(data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString() : null)
                 .WithReceiveNotification(data.Keys.Contains("receiveNotification") && data["receiveNotification"] != null ? NotificationSetting.FromDict(data["receiveNotification"]) : null)
+                .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }

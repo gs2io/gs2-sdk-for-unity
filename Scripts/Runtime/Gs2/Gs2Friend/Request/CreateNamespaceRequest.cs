@@ -223,6 +223,21 @@ namespace Gs2.Gs2Friend.Request
         }
 
 
+        /** ログの出力設定 */
+        public LogSetting logSetting { set; get; }
+
+        /**
+         * ログの出力設定を設定
+         *
+         * @param logSetting ログの出力設定
+         * @return this
+         */
+        public CreateNamespaceRequest WithLogSetting(LogSetting logSetting) {
+            this.logSetting = logSetting;
+            return this;
+        }
+
+
     	[Preserve]
         public static CreateNamespaceRequest FromDict(JsonData data)
         {
@@ -240,6 +255,7 @@ namespace Gs2.Gs2Friend.Request
                 followNotification = data.Keys.Contains("followNotification") && data["followNotification"] != null ? NotificationSetting.FromDict(data["followNotification"]) : null,
                 receiveRequestNotification = data.Keys.Contains("receiveRequestNotification") && data["receiveRequestNotification"] != null ? NotificationSetting.FromDict(data["receiveRequestNotification"]) : null,
                 acceptRequestNotification = data.Keys.Contains("acceptRequestNotification") && data["acceptRequestNotification"] != null ? NotificationSetting.FromDict(data["acceptRequestNotification"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 

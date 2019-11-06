@@ -68,6 +68,20 @@ namespace Gs2.Gs2Deploy.Model
             return this;
         }
 
+        /** 実行に対して割り振られる一意な ID */
+        public string workId { set; get; }
+
+        /**
+         * 実行に対して割り振られる一意な IDを設定
+         *
+         * @param workId 実行に対して割り振られる一意な ID
+         * @return this
+         */
+        public WorkingStack WithWorkId(string workId) {
+            this.workId = workId;
+            return this;
+        }
+
         /** 作成日時 */
         public long? createdAt { set; get; }
 
@@ -114,6 +128,11 @@ namespace Gs2.Gs2Deploy.Model
                 writer.WritePropertyName("name");
                 writer.Write(this.name);
             }
+            if(this.workId != null)
+            {
+                writer.WritePropertyName("workId");
+                writer.Write(this.workId);
+            }
             if(this.createdAt.HasValue)
             {
                 writer.WritePropertyName("createdAt");
@@ -134,6 +153,7 @@ namespace Gs2.Gs2Deploy.Model
                 .WithStackId(data.Keys.Contains("stackId") && data["stackId"] != null ? data["stackId"].ToString() : null)
                 .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithWorkId(data.Keys.Contains("workId") && data["workId"] != null ? data["workId"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }

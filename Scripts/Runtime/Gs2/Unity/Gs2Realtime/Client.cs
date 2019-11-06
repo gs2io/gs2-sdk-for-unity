@@ -33,10 +33,10 @@ namespace Gs2.Unity.Gs2Realtime
 {
 	public class Client
 	{
-		private readonly Profile _profile;
+		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2RealtimeWebSocketClient _client;
 
-		public Client(Profile profile)
+		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2RealtimeWebSocketClient(profile.Gs2Session);

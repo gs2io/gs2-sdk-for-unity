@@ -179,6 +179,11 @@ namespace Gs2.Gs2Money
                     jsonWriter.WritePropertyName("withdrawScript");
                     _request.withdrawScript.WriteJson(jsonWriter);
                 }
+                if (_request.logSetting != null)
+                {
+                    jsonWriter.WritePropertyName("logSetting");
+                    _request.logSetting.WriteJson(jsonWriter);
+                }
                 if (_request.contextStack != null)
                 {
                     jsonWriter.WritePropertyName("contextStack");
@@ -390,6 +395,11 @@ namespace Gs2.Gs2Money
                 {
                     jsonWriter.WritePropertyName("withdrawScript");
                     _request.withdrawScript.WriteJson(jsonWriter);
+                }
+                if (_request.logSetting != null)
+                {
+                    jsonWriter.WritePropertyName("logSetting");
+                    _request.logSetting.WriteJson(jsonWriter);
                 }
                 if (_request.contextStack != null)
                 {

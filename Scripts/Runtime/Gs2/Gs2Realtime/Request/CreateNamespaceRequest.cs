@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Realtime.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Realtime.Request
 {
+	[Preserve]
 	public class CreateNamespaceRequest : Gs2Request<CreateNamespaceRequest>
 	{
 
@@ -98,6 +102,34 @@ namespace Gs2.Gs2Realtime.Request
             return this;
         }
 
+
+        /** ログの出力設定 */
+        public LogSetting logSetting { set; get; }
+
+        /**
+         * ログの出力設定を設定
+         *
+         * @param logSetting ログの出力設定
+         * @return this
+         */
+        public CreateNamespaceRequest WithLogSetting(LogSetting logSetting) {
+            this.logSetting = logSetting;
+            return this;
+        }
+
+
+    	[Preserve]
+        public static CreateNamespaceRequest FromDict(JsonData data)
+        {
+            return new CreateNamespaceRequest {
+                name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
+                description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                serverType = data.Keys.Contains("serverType") && data["serverType"] != null ? data["serverType"].ToString(): null,
+                serverSpec = data.Keys.Contains("serverSpec") && data["serverSpec"] != null ? data["serverSpec"].ToString(): null,
+                createNotification = data.Keys.Contains("createNotification") && data["createNotification"] != null ? NotificationSetting.FromDict(data["createNotification"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null,
+            };
+        }
 
 	}
 }

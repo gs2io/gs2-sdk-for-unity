@@ -15,15 +15,27 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Realtime.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Realtime.Result
 {
+	[Preserve]
 	public class DeleteRoomResult
 	{
         /** ルーム */
         public Room item { set; get; }
 
+
+    	[Preserve]
+        public static DeleteRoomResult FromDict(JsonData data)
+        {
+            return new DeleteRoomResult {
+                item = data.Keys.Contains("item") && data["item"] != null ? Room.FromDict(data["item"]) : null,
+            };
+        }
 	}
 }

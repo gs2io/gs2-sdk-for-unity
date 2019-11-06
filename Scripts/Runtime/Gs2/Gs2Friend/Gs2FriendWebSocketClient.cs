@@ -204,6 +204,11 @@ namespace Gs2.Gs2Friend
                     jsonWriter.WritePropertyName("acceptRequestNotification");
                     _request.acceptRequestNotification.WriteJson(jsonWriter);
                 }
+                if (_request.logSetting != null)
+                {
+                    jsonWriter.WritePropertyName("logSetting");
+                    _request.logSetting.WriteJson(jsonWriter);
+                }
                 if (_request.contextStack != null)
                 {
                     jsonWriter.WritePropertyName("contextStack");
@@ -488,6 +493,11 @@ namespace Gs2.Gs2Friend
                 {
                     jsonWriter.WritePropertyName("acceptRequestNotification");
                     _request.acceptRequestNotification.WriteJson(jsonWriter);
+                }
+                if (_request.logSetting != null)
+                {
+                    jsonWriter.WritePropertyName("logSetting");
+                    _request.logSetting.WriteJson(jsonWriter);
                 }
                 if (_request.contextStack != null)
                 {

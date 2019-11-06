@@ -159,6 +159,11 @@ namespace Gs2.Gs2Exchange
                     jsonWriter.WritePropertyName("keyId");
                     jsonWriter.Write(_request.keyId.ToString());
                 }
+                if (_request.logSetting != null)
+                {
+                    jsonWriter.WritePropertyName("logSetting");
+                    _request.logSetting.WriteJson(jsonWriter);
+                }
                 if (_request.contextStack != null)
                 {
                     jsonWriter.WritePropertyName("contextStack");
@@ -398,6 +403,11 @@ namespace Gs2.Gs2Exchange
                 {
                     jsonWriter.WritePropertyName("keyId");
                     jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.logSetting != null)
+                {
+                    jsonWriter.WritePropertyName("logSetting");
+                    _request.logSetting.WriteJson(jsonWriter);
                 }
                 if (_request.contextStack != null)
                 {

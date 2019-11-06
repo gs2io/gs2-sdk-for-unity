@@ -163,6 +163,21 @@ namespace Gs2.Gs2Inbox.Request
         }
 
 
+        /** ログの出力設定 */
+        public LogSetting logSetting { set; get; }
+
+        /**
+         * ログの出力設定を設定
+         *
+         * @param logSetting ログの出力設定
+         * @return this
+         */
+        public UpdateNamespaceRequest WithLogSetting(LogSetting logSetting) {
+            this.logSetting = logSetting;
+            return this;
+        }
+
+
     	[Preserve]
         public static UpdateNamespaceRequest FromDict(JsonData data)
         {
@@ -176,6 +191,7 @@ namespace Gs2.Gs2Inbox.Request
                 queueNamespaceId = data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? data["queueNamespaceId"].ToString(): null,
                 keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString(): null,
                 receiveNotification = data.Keys.Contains("receiveNotification") && data["receiveNotification"] != null ? NotificationSetting.FromDict(data["receiveNotification"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 

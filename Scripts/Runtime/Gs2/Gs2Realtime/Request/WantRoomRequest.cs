@@ -15,12 +15,16 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Realtime.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Realtime.Request
 {
+	[Preserve]
 	public class WantRoomRequest : Gs2Request<WantRoomRequest>
 	{
 
@@ -68,6 +72,20 @@ namespace Gs2.Gs2Realtime.Request
             return this;
         }
 
+
+    	[Preserve]
+        public static WantRoomRequest FromDict(JsonData data)
+        {
+            return new WantRoomRequest {
+                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
+                notificationUserIds = data.Keys.Contains("notificationUserIds") && data["notificationUserIds"] != null ? data["notificationUserIds"].Cast<JsonData>().Select(value =>
+                    {
+                        return value.ToString();
+                    }
+                ).ToList() : null,
+            };
+        }
 
 	}
 }

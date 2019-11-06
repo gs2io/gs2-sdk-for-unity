@@ -88,6 +88,21 @@ namespace Gs2.Gs2Formation.Request
         }
 
 
+        /** ログの出力設定 */
+        public LogSetting logSetting { set; get; }
+
+        /**
+         * ログの出力設定を設定
+         *
+         * @param logSetting ログの出力設定
+         * @return this
+         */
+        public CreateNamespaceRequest WithLogSetting(LogSetting logSetting) {
+            this.logSetting = logSetting;
+            return this;
+        }
+
+
     	[Preserve]
         public static CreateNamespaceRequest FromDict(JsonData data)
         {
@@ -96,6 +111,7 @@ namespace Gs2.Gs2Formation.Request
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 updateMoldScript = data.Keys.Contains("updateMoldScript") && data["updateMoldScript"] != null ? ScriptSetting.FromDict(data["updateMoldScript"]) : null,
                 updateFormScript = data.Keys.Contains("updateFormScript") && data["updateFormScript"] != null ? ScriptSetting.FromDict(data["updateFormScript"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 

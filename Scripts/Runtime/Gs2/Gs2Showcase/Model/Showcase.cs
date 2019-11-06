@@ -26,6 +26,20 @@ namespace Gs2.Gs2Showcase.Model
 	public class Showcase
 	{
 
+        /** 陳列棚 */
+        public string showcaseId { set; get; }
+
+        /**
+         * 陳列棚を設定
+         *
+         * @param showcaseId 陳列棚
+         * @return this
+         */
+        public Showcase WithShowcaseId(string showcaseId) {
+            this.showcaseId = showcaseId;
+            return this;
+        }
+
         /** 商品名 */
         public string name { set; get; }
 
@@ -85,6 +99,11 @@ namespace Gs2.Gs2Showcase.Model
         public void WriteJson(JsonWriter writer)
         {
             writer.WriteObjectStart();
+            if(this.showcaseId != null)
+            {
+                writer.WritePropertyName("showcaseId");
+                writer.Write(this.showcaseId);
+            }
             if(this.name != null)
             {
                 writer.WritePropertyName("name");
@@ -117,6 +136,7 @@ namespace Gs2.Gs2Showcase.Model
         public static Showcase FromDict(JsonData data)
         {
             return new Showcase()
+                .WithShowcaseId(data.Keys.Contains("showcaseId") && data["showcaseId"] != null ? data["showcaseId"].ToString() : null)
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
                 .WithDisplayItems(data.Keys.Contains("displayItems") && data["displayItems"] != null ? data["displayItems"].Cast<JsonData>().Select(value =>

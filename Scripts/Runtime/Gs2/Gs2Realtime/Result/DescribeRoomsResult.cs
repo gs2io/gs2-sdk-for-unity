@@ -15,11 +15,15 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Realtime.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Realtime.Result
 {
+	[Preserve]
 	public class DescribeRoomsResult
 	{
         /** ルームのリスト */
@@ -28,5 +32,18 @@ namespace Gs2.Gs2Realtime.Result
         /** リストの続きを取得するためのページトークン */
         public string nextPageToken { set; get; }
 
+
+    	[Preserve]
+        public static DescribeRoomsResult FromDict(JsonData data)
+        {
+            return new DescribeRoomsResult {
+                items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
+                    {
+                        return Room.FromDict(value);
+                    }
+                ).ToList() : null,
+                nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,
+            };
+        }
 	}
 }

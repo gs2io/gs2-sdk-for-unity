@@ -15,11 +15,14 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Realtime.Model
 {
+	[Preserve]
 	public class Namespace
 	{
 
@@ -121,6 +124,20 @@ namespace Gs2.Gs2Realtime.Model
             return this;
         }
 
+        /** ログの出力設定 */
+        public LogSetting logSetting { set; get; }
+
+        /**
+         * ログの出力設定を設定
+         *
+         * @param logSetting ログの出力設定
+         * @return this
+         */
+        public Namespace WithLogSetting(LogSetting logSetting) {
+            this.logSetting = logSetting;
+            return this;
+        }
+
         /** 作成日時 */
         public long? createdAt { set; get; }
 
@@ -187,6 +204,11 @@ namespace Gs2.Gs2Realtime.Model
                 writer.WritePropertyName("createNotification");
                 this.createNotification.WriteJson(writer);
             }
+            if(this.logSetting != null)
+            {
+                writer.WritePropertyName("logSetting");
+                this.logSetting.WriteJson(writer);
+            }
             if(this.createdAt.HasValue)
             {
                 writer.WritePropertyName("createdAt");
@@ -198,6 +220,22 @@ namespace Gs2.Gs2Realtime.Model
                 writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
+        }
+
+    	[Preserve]
+        public static Namespace FromDict(JsonData data)
+        {
+            return new Namespace()
+                .WithNamespaceId(data.Keys.Contains("namespaceId") && data["namespaceId"] != null ? data["namespaceId"].ToString() : null)
+                .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
+                .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
+                .WithServerType(data.Keys.Contains("serverType") && data["serverType"] != null ? data["serverType"].ToString() : null)
+                .WithServerSpec(data.Keys.Contains("serverSpec") && data["serverSpec"] != null ? data["serverSpec"].ToString() : null)
+                .WithCreateNotification(data.Keys.Contains("createNotification") && data["createNotification"] != null ? NotificationSetting.FromDict(data["createNotification"]) : null)
+                .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
 	}
 }

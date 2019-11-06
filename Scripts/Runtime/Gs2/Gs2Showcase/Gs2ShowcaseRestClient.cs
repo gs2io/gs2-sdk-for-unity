@@ -144,6 +144,11 @@ namespace Gs2.Gs2Showcase
                     jsonWriter.WritePropertyName("keyId");
                     jsonWriter.Write(_request.keyId.ToString());
                 }
+                if (_request.logSetting != null)
+                {
+                    jsonWriter.WritePropertyName("logSetting");
+                    _request.logSetting.WriteJson(jsonWriter);
+                }
                 if (_request.contextStack != null)
                 {
                     jsonWriter.WritePropertyName("contextStack");
@@ -330,6 +335,11 @@ namespace Gs2.Gs2Showcase
                 {
                     jsonWriter.WritePropertyName("keyId");
                     jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.logSetting != null)
+                {
+                    jsonWriter.WritePropertyName("logSetting");
+                    _request.logSetting.WriteJson(jsonWriter);
                 }
                 if (_request.contextStack != null)
                 {
@@ -1992,7 +2002,7 @@ namespace Gs2.Gs2Showcase
                 var url = Gs2RestSession.EndpointHost
                     .Replace("{service}", "showcase")
                     .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/user/me/showcase/{showcaseName}";
+                    + "/{namespaceName}/user/me/showcase/{showcaseName}/{displayItemId}";
 
                 url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
                 url = url.Replace("{showcaseName}", !string.IsNullOrEmpty(_request.showcaseName) ? _request.showcaseName.ToString() : "null");
@@ -2076,7 +2086,7 @@ namespace Gs2.Gs2Showcase
                 var url = Gs2RestSession.EndpointHost
                     .Replace("{service}", "showcase")
                     .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/user/{userId}/showcase/{showcaseName}";
+                    + "/{namespaceName}/user/{userId}/showcase/{showcaseName}/{displayItemId}";
 
                 url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
                 url = url.Replace("{showcaseName}", !string.IsNullOrEmpty(_request.showcaseName) ? _request.showcaseName.ToString() : "null");

@@ -163,6 +163,21 @@ namespace Gs2.Gs2Chat.Request
         }
 
 
+        /** ログの出力設定 */
+        public LogSetting logSetting { set; get; }
+
+        /**
+         * ログの出力設定を設定
+         *
+         * @param logSetting ログの出力設定
+         * @return this
+         */
+        public CreateNamespaceRequest WithLogSetting(LogSetting logSetting) {
+            this.logSetting = logSetting;
+            return this;
+        }
+
+
     	[Preserve]
         public static CreateNamespaceRequest FromDict(JsonData data)
         {
@@ -176,6 +191,7 @@ namespace Gs2.Gs2Chat.Request
                 subscribeRoomScript = data.Keys.Contains("subscribeRoomScript") && data["subscribeRoomScript"] != null ? ScriptSetting.FromDict(data["subscribeRoomScript"]) : null,
                 unsubscribeRoomScript = data.Keys.Contains("unsubscribeRoomScript") && data["unsubscribeRoomScript"] != null ? ScriptSetting.FromDict(data["unsubscribeRoomScript"]) : null,
                 postNotification = data.Keys.Contains("postNotification") && data["postNotification"] != null ? NotificationSetting.FromDict(data["postNotification"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 

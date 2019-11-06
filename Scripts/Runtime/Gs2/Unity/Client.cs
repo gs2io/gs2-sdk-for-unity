@@ -7,6 +7,7 @@ namespace Gs2.Unity
         public readonly Gs2Account.Client Account;
         public readonly Gs2Auth.Client Auth;
         public readonly Gs2Chat.Client Chat;
+        public readonly Gs2Datastore.Client Datastore;
         public readonly Gs2Distributor.Client Distributor;
         public readonly Gs2Exchange.Client Exchange;
         public readonly Gs2Experience.Client Experience;
@@ -37,6 +38,7 @@ namespace Gs2.Unity
             Account = new Gs2Account.Client(profile);
             Auth = new Gs2Auth.Client(profile);
             Chat = new Gs2Chat.Client(profile);
+            Datastore = new Gs2Datastore.Client(profile);
             Distributor = new Gs2Distributor.Client(profile);
             Exchange = new Gs2Exchange.Client(profile);
             Experience = new Gs2Experience.Client(profile);

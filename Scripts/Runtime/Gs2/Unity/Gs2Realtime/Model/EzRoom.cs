@@ -16,10 +16,12 @@
 using Gs2.Gs2Realtime.Model;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Realtime.Model
 {
+	[Preserve]
 	public class EzRoom
 	{
 		/** ルーム名 */

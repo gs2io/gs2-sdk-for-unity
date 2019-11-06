@@ -138,17 +138,31 @@ namespace Gs2.Gs2Deploy.Model
             return this;
         }
 
-        /** このリソースに関連するアウトプットに記録したキー名 */
-        public List<string> outputKeys { set; get; }
+        /** リソースを作成したときに Output に記録するフィールド */
+        public List<OutputField> outputFields { set; get; }
 
         /**
-         * このリソースに関連するアウトプットに記録したキー名を設定
+         * リソースを作成したときに Output に記録するフィールドを設定
          *
-         * @param outputKeys このリソースに関連するアウトプットに記録したキー名
+         * @param outputFields リソースを作成したときに Output に記録するフィールド
          * @return this
          */
-        public Resource WithOutputKeys(List<string> outputKeys) {
-            this.outputKeys = outputKeys;
+        public Resource WithOutputFields(List<OutputField> outputFields) {
+            this.outputFields = outputFields;
+            return this;
+        }
+
+        /** このリソースが作成された時の実行 ID */
+        public string workId { set; get; }
+
+        /**
+         * このリソースが作成された時の実行 IDを設定
+         *
+         * @param workId このリソースが作成された時の実行 ID
+         * @return this
+         */
+        public Resource WithWorkId(string workId) {
+            this.workId = workId;
             return this;
         }
 
@@ -214,15 +228,20 @@ namespace Gs2.Gs2Deploy.Model
                 }
                 writer.WriteArrayEnd();
             }
-            if(this.outputKeys != null)
+            if(this.outputFields != null)
             {
-                writer.WritePropertyName("outputKeys");
+                writer.WritePropertyName("outputFields");
                 writer.WriteArrayStart();
-                foreach(var item in this.outputKeys)
+                foreach(var item in this.outputFields)
                 {
-                    writer.Write(item);
+                    item.WriteJson(writer);
                 }
                 writer.WriteArrayEnd();
+            }
+            if(this.workId != null)
+            {
+                writer.WritePropertyName("workId");
+                writer.Write(this.workId);
             }
             if(this.createdAt.HasValue)
             {
@@ -248,11 +267,12 @@ namespace Gs2.Gs2Deploy.Model
                         return value.ToString();
                     }
                 ).ToList() : null)
-                .WithOutputKeys(data.Keys.Contains("outputKeys") && data["outputKeys"] != null ? data["outputKeys"].Cast<JsonData>().Select(value =>
+                .WithOutputFields(data.Keys.Contains("outputFields") && data["outputFields"] != null ? data["outputFields"].Cast<JsonData>().Select(value =>
                     {
-                        return value.ToString();
+                        return OutputField.FromDict(value);
                     }
                 ).ToList() : null)
+                .WithWorkId(data.Keys.Contains("workId") && data["workId"] != null ? data["workId"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null);
         }
 	}

@@ -164,6 +164,11 @@ namespace Gs2.Gs2Inventory
                     jsonWriter.WritePropertyName("consumeScript");
                     _request.consumeScript.WriteJson(jsonWriter);
                 }
+                if (_request.logSetting != null)
+                {
+                    jsonWriter.WritePropertyName("logSetting");
+                    _request.logSetting.WriteJson(jsonWriter);
+                }
                 if (_request.contextStack != null)
                 {
                     jsonWriter.WritePropertyName("contextStack");
@@ -408,6 +413,11 @@ namespace Gs2.Gs2Inventory
                 {
                     jsonWriter.WritePropertyName("consumeScript");
                     _request.consumeScript.WriteJson(jsonWriter);
+                }
+                if (_request.logSetting != null)
+                {
+                    jsonWriter.WritePropertyName("logSetting");
+                    _request.logSetting.WriteJson(jsonWriter);
                 }
                 if (_request.contextStack != null)
                 {

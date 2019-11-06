@@ -18,9 +18,11 @@ using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Unity.Gs2Realtime.Model;
 using Gs2.Gs2Realtime.Result;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Realtime.Result
 {
+	[Preserve]
 	public class EzGetRoomResult
 	{
         /** ルーム */

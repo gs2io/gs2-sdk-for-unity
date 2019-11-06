@@ -15,15 +15,27 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Realtime.Model;
+using LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Realtime.Result
 {
+	[Preserve]
 	public class GetNamespaceStatusResult
 	{
         /** None */
         public string status { set; get; }
 
+
+    	[Preserve]
+        public static GetNamespaceStatusResult FromDict(JsonData data)
+        {
+            return new GetNamespaceStatusResult {
+                status = data.Keys.Contains("status") && data["status"] != null ? data["status"].ToString() : null,
+            };
+        }
 	}
 }

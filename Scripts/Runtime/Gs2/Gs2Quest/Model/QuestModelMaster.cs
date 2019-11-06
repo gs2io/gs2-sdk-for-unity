@@ -40,13 +40,13 @@ namespace Gs2.Gs2Quest.Model
             return this;
         }
 
-        /** クエストグループモデル名 */
+        /** クエストモデル名 */
         public string questGroupName { set; get; }
 
         /**
-         * クエストグループモデル名を設定
+         * クエストモデル名を設定
          *
-         * @param questGroupName クエストグループモデル名
+         * @param questGroupName クエストモデル名
          * @return this
          */
         public QuestModelMaster WithQuestGroupName(string questGroupName) {
