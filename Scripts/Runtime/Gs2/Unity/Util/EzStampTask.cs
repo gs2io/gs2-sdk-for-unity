@@ -39,7 +39,7 @@ namespace Gs2.Unity.Util
         
         public T ToRequest<T> () where T: IRequest 
         {
-            return (T)typeof(T).GetMethod("FromDict")?.Invoke(null, new object[] { Args });
+            return (T)typeof(T).GetMethod("FromDict")?.Invoke(null, new object[] { JsonMapper.ToObject(Args) });
         }
 
         public string TaskId => _stampTask.taskId;
@@ -58,7 +58,6 @@ namespace Gs2.Unity.Util
             string stampSheetEncryptKeyId
         )
         {
-            Debug.Log(_stampTaskStr);
             yield return client.Distributor.RunStampTask(
                 callback,
                 distributorNamespaceName,
