@@ -118,6 +118,36 @@ namespace Gs2.Gs2Inventory.Request
         }
 
 
+        /** 既存の ItemSet に空きがあったとしても、新しい ItemSet を作成するか */
+        public bool? createNewItemSet { set; get; }
+
+        /**
+         * 既存の ItemSet に空きがあったとしても、新しい ItemSet を作成するかを設定
+         *
+         * @param createNewItemSet 既存の ItemSet に空きがあったとしても、新しい ItemSet を作成するか
+         * @return this
+         */
+        public AcquireItemSetByUserIdRequest WithCreateNewItemSet(bool? createNewItemSet) {
+            this.createNewItemSet = createNewItemSet;
+            return this;
+        }
+
+
+        /** アイテムセットを識別する名前 */
+        public string itemSetName { set; get; }
+
+        /**
+         * アイテムセットを識別する名前を設定
+         *
+         * @param itemSetName アイテムセットを識別する名前
+         * @return this
+         */
+        public AcquireItemSetByUserIdRequest WithItemSetName(string itemSetName) {
+            this.itemSetName = itemSetName;
+            return this;
+        }
+
+
         /** 重複実行回避機能に使用するID */
         public string duplicationAvoider { set; get; }
 
@@ -143,6 +173,8 @@ namespace Gs2.Gs2Inventory.Request
                 userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
                 acquireCount = data.Keys.Contains("acquireCount") && data["acquireCount"] != null ? (long?)long.Parse(data["acquireCount"].ToString()) : null,
                 expiresAt = data.Keys.Contains("expiresAt") && data["expiresAt"] != null ? (long?)long.Parse(data["expiresAt"].ToString()) : null,
+                createNewItemSet = data.Keys.Contains("createNewItemSet") && data["createNewItemSet"] != null ? (bool?)bool.Parse(data["createNewItemSet"].ToString()) : null,
+                itemSetName = data.Keys.Contains("itemSetName") && data["itemSetName"] != null ? data["itemSetName"].ToString(): null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
