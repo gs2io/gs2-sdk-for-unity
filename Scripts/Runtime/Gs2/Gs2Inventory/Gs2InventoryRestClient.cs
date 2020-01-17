@@ -2393,8 +2393,8 @@ namespace Gs2.Gs2Inventory
                 {
                     queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
                 }
-                if (_request.expiresAt != null) {
-                    queryStrings.Add(string.Format("{0}={1}", "expiresAt", _request.expiresAt));
+                if (_request.itemSetName != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "itemSetName", UnityWebRequest.EscapeURL(_request.itemSetName)));
                 }
                 url += "?" + string.Join("&", queryStrings.ToArray());
 
@@ -2461,8 +2461,8 @@ namespace Gs2.Gs2Inventory
                 {
                     queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
                 }
-                if (_request.expiresAt != null) {
-                    queryStrings.Add(string.Format("{0}={1}", "expiresAt", _request.expiresAt));
+                if (_request.itemSetName != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "itemSetName", UnityWebRequest.EscapeURL(_request.itemSetName)));
                 }
                 url += "?" + string.Join("&", queryStrings.ToArray());
 
@@ -2524,8 +2524,8 @@ namespace Gs2.Gs2Inventory
                 {
                     queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
                 }
-                if (_request.expiresAt != null) {
-                    queryStrings.Add(string.Format("{0}={1}", "expiresAt", _request.expiresAt));
+                if (_request.itemSetName != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "itemSetName", UnityWebRequest.EscapeURL(_request.itemSetName)));
                 }
                 if (_request.keyId != null) {
                     queryStrings.Add(string.Format("{0}={1}", "keyId", UnityWebRequest.EscapeURL(_request.keyId)));
@@ -2595,8 +2595,8 @@ namespace Gs2.Gs2Inventory
                 {
                     queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
                 }
-                if (_request.expiresAt != null) {
-                    queryStrings.Add(string.Format("{0}={1}", "expiresAt", _request.expiresAt));
+                if (_request.itemSetName != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "itemSetName", UnityWebRequest.EscapeURL(_request.itemSetName)));
                 }
                 if (_request.keyId != null) {
                     queryStrings.Add(string.Format("{0}={1}", "keyId", UnityWebRequest.EscapeURL(_request.keyId)));
@@ -2671,6 +2671,16 @@ namespace Gs2.Gs2Inventory
                 {
                     jsonWriter.WritePropertyName("expiresAt");
                     jsonWriter.Write(_request.expiresAt.ToString());
+                }
+                if (_request.createNewItemSet != null)
+                {
+                    jsonWriter.WritePropertyName("createNewItemSet");
+                    jsonWriter.Write(_request.createNewItemSet.ToString());
+                }
+                if (_request.itemSetName != null)
+                {
+                    jsonWriter.WritePropertyName("itemSetName");
+                    jsonWriter.Write(_request.itemSetName.ToString());
                 }
                 if (_request.contextStack != null)
                 {
@@ -2747,10 +2757,10 @@ namespace Gs2.Gs2Inventory
                     jsonWriter.WritePropertyName("consumeCount");
                     jsonWriter.Write(_request.consumeCount.ToString());
                 }
-                if (_request.expiresAt != null)
+                if (_request.itemSetName != null)
                 {
-                    jsonWriter.WritePropertyName("expiresAt");
-                    jsonWriter.Write(_request.expiresAt.ToString());
+                    jsonWriter.WritePropertyName("itemSetName");
+                    jsonWriter.Write(_request.itemSetName.ToString());
                 }
                 if (_request.contextStack != null)
                 {
@@ -2832,10 +2842,10 @@ namespace Gs2.Gs2Inventory
                     jsonWriter.WritePropertyName("consumeCount");
                     jsonWriter.Write(_request.consumeCount.ToString());
                 }
-                if (_request.expiresAt != null)
+                if (_request.itemSetName != null)
                 {
-                    jsonWriter.WritePropertyName("expiresAt");
-                    jsonWriter.Write(_request.expiresAt.ToString());
+                    jsonWriter.WritePropertyName("itemSetName");
+                    jsonWriter.Write(_request.itemSetName.ToString());
                 }
                 if (_request.contextStack != null)
                 {
@@ -2908,8 +2918,8 @@ namespace Gs2.Gs2Inventory
                 {
                     queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
                 }
-                if (_request.expiresAt != null) {
-                    queryStrings.Add(string.Format("{0}={1}", "expiresAt", _request.expiresAt));
+                if (_request.itemSetName != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "itemSetName", UnityWebRequest.EscapeURL(_request.itemSetName)));
                 }
                 url += "?" + string.Join("&", queryStrings.ToArray());
 

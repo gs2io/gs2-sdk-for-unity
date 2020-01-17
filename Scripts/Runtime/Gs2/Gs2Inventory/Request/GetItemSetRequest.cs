@@ -73,17 +73,17 @@ namespace Gs2.Gs2Inventory.Request
         }
 
 
-        /** 有効期限 */
-        public long? expiresAt { set; get; }
+        /** アイテムセットを識別する名前 */
+        public string itemSetName { set; get; }
 
         /**
-         * 有効期限を設定
+         * アイテムセットを識別する名前を設定
          *
-         * @param expiresAt 有効期限
+         * @param itemSetName アイテムセットを識別する名前
          * @return this
          */
-        public GetItemSetRequest WithExpiresAt(long? expiresAt) {
-            this.expiresAt = expiresAt;
+        public GetItemSetRequest WithItemSetName(string itemSetName) {
+            this.itemSetName = itemSetName;
             return this;
         }
 
@@ -124,7 +124,7 @@ namespace Gs2.Gs2Inventory.Request
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 inventoryName = data.Keys.Contains("inventoryName") && data["inventoryName"] != null ? data["inventoryName"].ToString(): null,
                 itemName = data.Keys.Contains("itemName") && data["itemName"] != null ? data["itemName"].ToString(): null,
-                expiresAt = data.Keys.Contains("expiresAt") && data["expiresAt"] != null ? (long?)long.Parse(data["expiresAt"].ToString()) : null,
+                itemSetName = data.Keys.Contains("itemSetName") && data["itemSetName"] != null ? data["itemSetName"].ToString(): null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
