@@ -40,6 +40,20 @@ namespace Gs2.Gs2Inventory.Model
             return this;
         }
 
+        /** アイテムセットを識別する名前 */
+        public string name { set; get; }
+
+        /**
+         * アイテムセットを識別する名前を設定
+         *
+         * @param name アイテムセットを識別する名前
+         * @return this
+         */
+        public ItemSet WithName(string name) {
+            this.name = name;
+            return this;
+        }
+
         /** インベントリの名前 */
         public string inventoryName { set; get; }
 
@@ -160,6 +174,11 @@ namespace Gs2.Gs2Inventory.Model
                 writer.WritePropertyName("itemSetId");
                 writer.Write(this.itemSetId);
             }
+            if(this.name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.name);
+            }
             if(this.inventoryName != null)
             {
                 writer.WritePropertyName("inventoryName");
@@ -208,6 +227,7 @@ namespace Gs2.Gs2Inventory.Model
         {
             return new ItemSet()
                 .WithItemSetId(data.Keys.Contains("itemSetId") && data["itemSetId"] != null ? data["itemSetId"].ToString() : null)
+                .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithInventoryName(data.Keys.Contains("inventoryName") && data["inventoryName"] != null ? data["inventoryName"].ToString() : null)
                 .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
                 .WithItemName(data.Keys.Contains("itemName") && data["itemName"] != null ? data["itemName"].ToString() : null)
