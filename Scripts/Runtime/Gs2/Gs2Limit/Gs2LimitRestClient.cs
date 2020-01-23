@@ -678,6 +678,90 @@ namespace Gs2.Gs2Limit
 			return Gs2RestSession.Execute(task);
         }
 
+        private class CountUpTask : Gs2RestSessionTask<Result.CountUpResult>
+        {
+			private readonly Request.CountUpRequest _request;
+
+			public CountUpTask(Request.CountUpRequest request, UnityAction<AsyncResult<Result.CountUpResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "limit")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/me/counter/{limitName}/{counterName}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{limitName}", !string.IsNullOrEmpty(_request.limitName) ? _request.limitName.ToString() : "null");
+                url = url.Replace("{counterName}", !string.IsNullOrEmpty(_request.counterName) ? _request.counterName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.countUpValue != null)
+                {
+                    jsonWriter.WritePropertyName("countUpValue");
+                    jsonWriter.Write(_request.countUpValue.ToString());
+                }
+                if (_request.maxValue != null)
+                {
+                    jsonWriter.WritePropertyName("maxValue");
+                    jsonWriter.Write(_request.maxValue.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  カウントアップ<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator CountUp(
+                Request.CountUpRequest request,
+                UnityAction<AsyncResult<Result.CountUpResult>> callback
+        )
+		{
+			var task = new CountUpTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
         private class CountUpByUserIdTask : Gs2RestSessionTask<Result.CountUpByUserIdResult>
         {
 			private readonly Request.CountUpByUserIdRequest _request;

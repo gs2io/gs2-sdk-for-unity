@@ -138,6 +138,60 @@ namespace Gs2.Unity.Gs2Limit
 		}
 
 		/// <summary>
+		///  回数制限名とカウンター名を指定してゲームプレイヤーに紐づく回数制限カウンターをカウントアップ<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="limitName">回数制限の種類の名前</param>
+		/// <param name="counterName">カウンターの名前</param>
+		/// <param name="countUpValue">カウントアップする量</param>
+		/// <param name="maxValue">カウントアップを許容する最大値 を入力してください</param>
+		public IEnumerator CountUp(
+		        UnityAction<AsyncResult<EzCountUpResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string limitName,
+                string counterName,
+                int? countUpValue=null,
+                int? maxValue=null
+        )
+		{
+            yield return _client.CountUp(
+                new CountUpRequest()
+                    .WithNamespaceName(namespaceName)
+                    .WithLimitName(limitName)
+                    .WithCounterName(counterName)
+                    .WithCountUpValue(countUpValue)
+                    .WithMaxValue(maxValue)
+                    .WithAccessToken(session.AccessToken.token),
+				r =>
+				{
+				    if(r.Result == null)
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzCountUpResult>(
+                                null,
+                                r.Error
+                            )
+                        );
+				    }
+				    else
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzCountUpResult>(
+                                new EzCountUpResult(r.Result),
+                                r.Error
+                            )
+                        );
+                    }
+				}
+            );
+		}
+
+		/// <summary>
 		///  回数制限モデルの一覧を取得<br />
 		///    <br />
 		///    近日実施する予定のイベントに関する回数制限設定をしたことで、イベントの情報などが露呈する可能性があります。<br />

@@ -96,6 +96,34 @@ namespace Gs2.Gs2Limit.Model
             return this;
         }
 
+        /** 作成日時 */
+        public long? createdAt { set; get; }
+
+        /**
+         * 作成日時を設定
+         *
+         * @param createdAt 作成日時
+         * @return this
+         */
+        public ResponseCache WithCreatedAt(long? createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        /** None */
+        public long? expiredAt { set; get; }
+
+        /**
+         * Noneを設定
+         *
+         * @param expiredAt None
+         * @return this
+         */
+        public ResponseCache WithExpiredAt(long? expiredAt) {
+            this.expiredAt = expiredAt;
+            return this;
+        }
+
         public void WriteJson(JsonWriter writer)
         {
             writer.WriteObjectStart();
@@ -124,6 +152,16 @@ namespace Gs2.Gs2Limit.Model
                 writer.WritePropertyName("result");
                 writer.Write(this.result);
             }
+            if(this.createdAt.HasValue)
+            {
+                writer.WritePropertyName("createdAt");
+                writer.Write(this.createdAt.Value);
+            }
+            if(this.expiredAt.HasValue)
+            {
+                writer.WritePropertyName("expiredAt");
+                writer.Write(this.expiredAt.Value);
+            }
             writer.WriteObjectEnd();
         }
 
@@ -135,7 +173,9 @@ namespace Gs2.Gs2Limit.Model
                 .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
                 .WithResponseCacheId(data.Keys.Contains("responseCacheId") && data["responseCacheId"] != null ? data["responseCacheId"].ToString() : null)
                 .WithRequestHash(data.Keys.Contains("requestHash") && data["requestHash"] != null ? data["requestHash"].ToString() : null)
-                .WithResult(data.Keys.Contains("result") && data["result"] != null ? data["result"].ToString() : null);
+                .WithResult(data.Keys.Contains("result") && data["result"] != null ? data["result"].ToString() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
+                .WithExpiredAt(data.Keys.Contains("expiredAt") && data["expiredAt"] != null ? (long?)long.Parse(data["expiredAt"].ToString()) : null);
         }
 	}
 }
