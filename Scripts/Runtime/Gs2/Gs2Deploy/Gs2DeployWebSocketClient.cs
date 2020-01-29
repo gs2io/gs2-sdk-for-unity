@@ -675,9 +675,8 @@ namespace Gs2.Gs2Deploy
 		/// <summary>
 		///  スタックを削除<br />
 		///    <br />
-		///    スタックの削除は2段階で行われます。<br />
-		///    DELETE_COMPLETED ステータスではないスタックを削除すると、まずはスタックによって作成されたリソースの削除を行います。<br />
-		///    DELETE_COMPLETED ステータスのスタックを削除すると、完全にエンティティを削除します。<br />
+		///    スタックによって作成されたリソースの削除を行い、成功すればエンティティを削除します。<br />
+		///    何らかの理由でリソースの削除に失敗した場合はエンティティが残ります。<br />
 		/// </summary>
         ///
 		/// <returns>IEnumerator</returns>
@@ -752,7 +751,10 @@ namespace Gs2.Gs2Deploy
         }
 
 		/// <summary>
-		///  スタックを削除<br />
+		///  スタックを強制的に最終削除<br />
+		///    <br />
+		///    スタックのエンティティを強制的に削除します。<br />
+		///    スタックが作成したリソースが残っていても、それらは削除されません。<br />
 		/// </summary>
         ///
 		/// <returns>IEnumerator</returns>
@@ -764,6 +766,162 @@ namespace Gs2.Gs2Deploy
         )
 		{
 			var task = new ForceDeleteStackTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class DeleteStackResourcesTask : Gs2WebSocketSessionTask<Result.DeleteStackResourcesResult>
+        {
+			private readonly Request.DeleteStackResourcesRequest _request;
+
+			public DeleteStackResourcesTask(Request.DeleteStackResourcesRequest request, UnityAction<AsyncResult<Result.DeleteStackResourcesResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.stackName != null)
+                {
+                    jsonWriter.WritePropertyName("stackName");
+                    jsonWriter.Write(_request.stackName.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("deploy");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("stack");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("deleteStackResources");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  スタックのリソースを削除<br />
+		///    <br />
+		///    スタックによって作成されたリソースの削除を行います。<br />
+		///    空のテンプレートでスタックを更新するのとほぼ同様の挙動ですが、スタックに適用されていたテンプレートが残るため、誤操作時に、残ったテンプレートからリソースを復元することができます。<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DeleteStackResources(
+                Request.DeleteStackResourcesRequest request,
+                UnityAction<AsyncResult<Result.DeleteStackResourcesResult>> callback
+        )
+		{
+			var task = new DeleteStackResourcesTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class DeleteStackEntityTask : Gs2WebSocketSessionTask<Result.DeleteStackEntityResult>
+        {
+			private readonly Request.DeleteStackEntityRequest _request;
+
+			public DeleteStackEntityTask(Request.DeleteStackEntityRequest request, UnityAction<AsyncResult<Result.DeleteStackEntityResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.stackName != null)
+                {
+                    jsonWriter.WritePropertyName("stackName");
+                    jsonWriter.Write(_request.stackName.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("deploy");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("stack");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("deleteStackEntity");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  スタックを最終削除<br />
+		///    <br />
+		///    スタックのエンティティを削除します。<br />
+		///    リソースの残っているスタックを削除しようとするとエラーになります。<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DeleteStackEntity(
+                Request.DeleteStackEntityRequest request,
+                UnityAction<AsyncResult<Result.DeleteStackEntityResult>> callback
+        )
+		{
+			var task = new DeleteStackEntityTask(request, callback);
 			return Gs2WebSocketSession.Execute(task);
         }
 
