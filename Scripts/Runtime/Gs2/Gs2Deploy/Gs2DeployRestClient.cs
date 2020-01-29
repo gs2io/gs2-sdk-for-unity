@@ -552,9 +552,8 @@ namespace Gs2.Gs2Deploy
 		/// <summary>
 		///  スタックを削除<br />
 		///    <br />
-		///    スタックの削除は2段階で行われます。<br />
-		///    DELETE_COMPLETED ステータスではないスタックを削除すると、まずはスタックによって作成されたリソースの削除を行います。<br />
-		///    DELETE_COMPLETED ステータスのスタックを削除すると、完全にエンティティを削除します。<br />
+		///    スタックによって作成されたリソースの削除を行い、成功すればエンティティを削除します。<br />
+		///    何らかの理由でリソースの削除に失敗した場合はエンティティが残ります。<br />
 		/// </summary>
         ///
 		/// <returns>IEnumerator</returns>
@@ -608,7 +607,10 @@ namespace Gs2.Gs2Deploy
         }
 
 		/// <summary>
-		///  スタックを削除<br />
+		///  スタックを強制的に最終削除<br />
+		///    <br />
+		///    スタックのエンティティを強制的に削除します。<br />
+		///    スタックが作成したリソースが残っていても、それらは削除されません。<br />
 		/// </summary>
         ///
 		/// <returns>IEnumerator</returns>
@@ -620,6 +622,120 @@ namespace Gs2.Gs2Deploy
         )
 		{
 			var task = new ForceDeleteStackTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class DeleteStackResourcesTask : Gs2RestSessionTask<Result.DeleteStackResourcesResult>
+        {
+			private readonly Request.DeleteStackResourcesRequest _request;
+
+			public DeleteStackResourcesTask(Request.DeleteStackResourcesRequest request, UnityAction<AsyncResult<Result.DeleteStackResourcesResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbDELETE;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "deploy")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/stack/{stackName}/resources";
+
+                url = url.Replace("{stackName}", !string.IsNullOrEmpty(_request.stackName) ? _request.stackName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  スタックのリソースを削除<br />
+		///    <br />
+		///    スタックによって作成されたリソースの削除を行います。<br />
+		///    空のテンプレートでスタックを更新するのとほぼ同様の挙動ですが、スタックに適用されていたテンプレートが残るため、誤操作時に、残ったテンプレートからリソースを復元することができます。<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DeleteStackResources(
+                Request.DeleteStackResourcesRequest request,
+                UnityAction<AsyncResult<Result.DeleteStackResourcesResult>> callback
+        )
+		{
+			var task = new DeleteStackResourcesTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class DeleteStackEntityTask : Gs2RestSessionTask<Result.DeleteStackEntityResult>
+        {
+			private readonly Request.DeleteStackEntityRequest _request;
+
+			public DeleteStackEntityTask(Request.DeleteStackEntityRequest request, UnityAction<AsyncResult<Result.DeleteStackEntityResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbDELETE;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "deploy")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/stack/{stackName}/entity";
+
+                url = url.Replace("{stackName}", !string.IsNullOrEmpty(_request.stackName) ? _request.stackName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  スタックを最終削除<br />
+		///    <br />
+		///    スタックのエンティティを削除します。<br />
+		///    リソースの残っているスタックを削除しようとするとエラーになります。<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DeleteStackEntity(
+                Request.DeleteStackEntityRequest request,
+                UnityAction<AsyncResult<Result.DeleteStackEntityResult>> callback
+        )
+		{
+			var task = new DeleteStackEntityTask(request, callback);
 			return Gs2RestSession.Execute(task);
         }
 
