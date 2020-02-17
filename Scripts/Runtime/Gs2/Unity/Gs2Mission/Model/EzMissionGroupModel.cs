@@ -16,22 +16,28 @@
 using Gs2.Gs2Mission.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Mission.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzMissionGroupModel
 	{
 		/** グループ名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** メタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 		/** タスクリスト */
-		public List<EzMissionTaskModel> Tasks { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzMissionTaskModel> Tasks;
 		/** ミッションを達成したときの通知先ネームスペース のGRN */
-		public string CompleteNotificationNamespaceId { get; set; }
+		[UnityEngine.SerializeField]
+		public string CompleteNotificationNamespaceId;
 
 		public EzMissionGroupModel()
 		{
@@ -50,7 +56,7 @@ namespace Gs2.Unity.Gs2Mission.Model
 			CompleteNotificationNamespaceId = @missionGroupModel.completeNotificationNamespaceId;
 		}
 
-        public MissionGroupModel ToModel()
+        public virtual MissionGroupModel ToModel()
         {
             return new MissionGroupModel {
                 name = Name,
@@ -80,6 +86,37 @@ namespace Gs2.Unity.Gs2Mission.Model
                 ).ToList() : new List<MissionTaskModel>(new MissionTaskModel[] {}),
                 completeNotificationNamespaceId = CompleteNotificationNamespaceId,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            if(this.Tasks != null)
+            {
+                writer.WritePropertyName("tasks");
+                writer.WriteArrayStart();
+                foreach(var item in this.Tasks)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            if(this.CompleteNotificationNamespaceId != null)
+            {
+                writer.WritePropertyName("completeNotificationNamespaceId");
+                writer.Write(this.CompleteNotificationNamespaceId);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

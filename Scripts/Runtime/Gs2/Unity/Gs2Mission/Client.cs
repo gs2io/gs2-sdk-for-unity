@@ -43,6 +43,99 @@ namespace Gs2.Unity.Gs2Mission
 		}
 
 		/// <summary>
+		///  達成したミッションの一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
+		/// <param name="limit">データの取得件数</param>
+		public IEnumerator ListCounters(
+		        UnityAction<AsyncResult<EzListCountersResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string pageToken=null,
+                long? limit=null
+        )
+		{
+            yield return _client.DescribeCounters(
+                new DescribeCountersRequest()
+                    .WithNamespaceName(namespaceName)
+                    .WithPageToken(pageToken)
+                    .WithLimit(limit)
+                    .WithAccessToken(session.AccessToken.token),
+				r =>
+				{
+				    if(r.Result == null)
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzListCountersResult>(
+                                null,
+                                r.Error
+                            )
+                        );
+				    }
+				    else
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzListCountersResult>(
+                                new EzListCountersResult(r.Result),
+                                r.Error
+                            )
+                        );
+                    }
+				}
+            );
+		}
+
+		/// <summary>
+		///  ミッショングループを指定して達成したミッションを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="counterName">カウンター名</param>
+		public IEnumerator GetCounter(
+		        UnityAction<AsyncResult<EzGetCounterResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string counterName=null
+        )
+		{
+            yield return _client.GetCounter(
+                new GetCounterRequest()
+                    .WithNamespaceName(namespaceName)
+                    .WithCounterName(counterName)
+                    .WithAccessToken(session.AccessToken.token),
+				r =>
+				{
+				    if(r.Result == null)
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzGetCounterResult>(
+                                null,
+                                r.Error
+                            )
+                        );
+				    }
+				    else
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzGetCounterResult>(
+                                new EzGetCounterResult(r.Result),
+                                r.Error
+                            )
+                        );
+                    }
+				}
+            );
+		}
+
+		/// <summary>
 		///  ミッションタスクモデルの一覧を取得<br />
 		/// </summary>
         ///
@@ -128,25 +221,25 @@ namespace Gs2.Unity.Gs2Mission
 		}
 
 		/// <summary>
-		///  ミッショングループモデルの一覧を取得<br />
+		///  カウンターの種類を認証<br />
 		/// </summary>
         ///
 		/// <returns>IEnumerator</returns>
 		/// <param name="namespaceName">ネームスペース名</param>
-		public IEnumerator ListMissionGroupModels(
-		        UnityAction<AsyncResult<EzListMissionGroupModelsResult>> callback,
+		public IEnumerator ListCounterModels(
+		        UnityAction<AsyncResult<EzListCounterModelsResult>> callback,
                 string namespaceName
         )
 		{
-            yield return _client.DescribeMissionGroupModels(
-                new DescribeMissionGroupModelsRequest()
+            yield return _client.DescribeCounterModels(
+                new DescribeCounterModelsRequest()
                     .WithNamespaceName(namespaceName),
 				r =>
 				{
 				    if(r.Result == null)
 				    {
                         callback.Invoke(
-                            new AsyncResult<EzListMissionGroupModelsResult>(
+                            new AsyncResult<EzListCounterModelsResult>(
                                 null,
                                 r.Error
                             )
@@ -155,8 +248,8 @@ namespace Gs2.Unity.Gs2Mission
 				    else
 				    {
                         callback.Invoke(
-                            new AsyncResult<EzListMissionGroupModelsResult>(
-                                new EzListMissionGroupModelsResult(r.Result),
+                            new AsyncResult<EzListCounterModelsResult>(
+                                new EzListCounterModelsResult(r.Result),
                                 r.Error
                             )
                         );
@@ -166,28 +259,28 @@ namespace Gs2.Unity.Gs2Mission
 		}
 
 		/// <summary>
-		///  ミッショングループ名を指定してミッショングループモデルを取得<br />
+		///  カウンターの種類を認証<br />
 		/// </summary>
         ///
 		/// <returns>IEnumerator</returns>
 		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="missionGroupName">グループ名</param>
-		public IEnumerator GetMissionGroupModel(
-		        UnityAction<AsyncResult<EzGetMissionGroupModelResult>> callback,
+		/// <param name="counterName">カウンター名</param>
+		public IEnumerator GetCounterModel(
+		        UnityAction<AsyncResult<EzGetCounterModelResult>> callback,
                 string namespaceName,
-                string missionGroupName
+                string counterName
         )
 		{
-            yield return _client.GetMissionGroupModel(
-                new GetMissionGroupModelRequest()
+            yield return _client.GetCounterModel(
+                new GetCounterModelRequest()
                     .WithNamespaceName(namespaceName)
-                    .WithMissionGroupName(missionGroupName),
+                    .WithCounterName(counterName),
 				r =>
 				{
 				    if(r.Result == null)
 				    {
                         callback.Invoke(
-                            new AsyncResult<EzGetMissionGroupModelResult>(
+                            new AsyncResult<EzGetCounterModelResult>(
                                 null,
                                 r.Error
                             )
@@ -196,8 +289,8 @@ namespace Gs2.Unity.Gs2Mission
 				    else
 				    {
                         callback.Invoke(
-                            new AsyncResult<EzGetMissionGroupModelResult>(
-                                new EzGetMissionGroupModelResult(r.Result),
+                            new AsyncResult<EzGetCounterModelResult>(
+                                new EzGetCounterModelResult(r.Result),
                                 r.Error
                             )
                         );
@@ -348,25 +441,25 @@ namespace Gs2.Unity.Gs2Mission
 		}
 
 		/// <summary>
-		///  カウンターの種類を認証<br />
+		///  ミッショングループモデルの一覧を取得<br />
 		/// </summary>
         ///
 		/// <returns>IEnumerator</returns>
 		/// <param name="namespaceName">ネームスペース名</param>
-		public IEnumerator ListCounterModels(
-		        UnityAction<AsyncResult<EzListCounterModelsResult>> callback,
+		public IEnumerator ListMissionGroupModels(
+		        UnityAction<AsyncResult<EzListMissionGroupModelsResult>> callback,
                 string namespaceName
         )
 		{
-            yield return _client.DescribeCounterModels(
-                new DescribeCounterModelsRequest()
+            yield return _client.DescribeMissionGroupModels(
+                new DescribeMissionGroupModelsRequest()
                     .WithNamespaceName(namespaceName),
 				r =>
 				{
 				    if(r.Result == null)
 				    {
                         callback.Invoke(
-                            new AsyncResult<EzListCounterModelsResult>(
+                            new AsyncResult<EzListMissionGroupModelsResult>(
                                 null,
                                 r.Error
                             )
@@ -375,8 +468,8 @@ namespace Gs2.Unity.Gs2Mission
 				    else
 				    {
                         callback.Invoke(
-                            new AsyncResult<EzListCounterModelsResult>(
-                                new EzListCounterModelsResult(r.Result),
+                            new AsyncResult<EzListMissionGroupModelsResult>(
+                                new EzListMissionGroupModelsResult(r.Result),
                                 r.Error
                             )
                         );
@@ -386,28 +479,28 @@ namespace Gs2.Unity.Gs2Mission
 		}
 
 		/// <summary>
-		///  カウンターの種類を認証<br />
+		///  ミッショングループ名を指定してミッショングループモデルを取得<br />
 		/// </summary>
         ///
 		/// <returns>IEnumerator</returns>
 		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="counterName">カウンター名</param>
-		public IEnumerator GetCounterModel(
-		        UnityAction<AsyncResult<EzGetCounterModelResult>> callback,
+		/// <param name="missionGroupName">グループ名</param>
+		public IEnumerator GetMissionGroupModel(
+		        UnityAction<AsyncResult<EzGetMissionGroupModelResult>> callback,
                 string namespaceName,
-                string counterName
+                string missionGroupName
         )
 		{
-            yield return _client.GetCounterModel(
-                new GetCounterModelRequest()
+            yield return _client.GetMissionGroupModel(
+                new GetMissionGroupModelRequest()
                     .WithNamespaceName(namespaceName)
-                    .WithCounterName(counterName),
+                    .WithMissionGroupName(missionGroupName),
 				r =>
 				{
 				    if(r.Result == null)
 				    {
                         callback.Invoke(
-                            new AsyncResult<EzGetCounterModelResult>(
+                            new AsyncResult<EzGetMissionGroupModelResult>(
                                 null,
                                 r.Error
                             )
@@ -416,8 +509,8 @@ namespace Gs2.Unity.Gs2Mission
 				    else
 				    {
                         callback.Invoke(
-                            new AsyncResult<EzGetCounterModelResult>(
-                                new EzGetCounterModelResult(r.Result),
+                            new AsyncResult<EzGetMissionGroupModelResult>(
+                                new EzGetMissionGroupModelResult(r.Result),
                                 r.Error
                             )
                         );

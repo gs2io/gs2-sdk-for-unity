@@ -16,20 +16,25 @@
 using Gs2.Gs2Mission.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Mission.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzComplete
 	{
 		/** ミッショングループ名 */
-		public string MissionGroupName { get; set; }
+		[UnityEngine.SerializeField]
+		public string MissionGroupName;
 		/** 達成済みのタスク名リスト */
-		public List<string> CompletedMissionTaskNames { get; set; }
+		[UnityEngine.SerializeField]
+		public List<string> CompletedMissionTaskNames;
 		/** 報酬の受け取り済みのタスク名リスト */
-		public List<string> ReceivedMissionTaskNames { get; set; }
+		[UnityEngine.SerializeField]
+		public List<string> ReceivedMissionTaskNames;
 
 		public EzComplete()
 		{
@@ -51,7 +56,7 @@ namespace Gs2.Unity.Gs2Mission.Model
 			).ToList() : new List<string>(new string[] {});
 		}
 
-        public Complete ToModel()
+        public virtual Complete ToModel()
         {
             return new Complete {
                 missionGroupName = MissionGroupName,
@@ -66,6 +71,37 @@ namespace Gs2.Unity.Gs2Mission.Model
                         }
                 ).ToList() : new List<string>(new string[] {}),
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.MissionGroupName != null)
+            {
+                writer.WritePropertyName("missionGroupName");
+                writer.Write(this.MissionGroupName);
+            }
+            if(this.CompletedMissionTaskNames != null)
+            {
+                writer.WritePropertyName("completedMissionTaskNames");
+                writer.WriteArrayStart();
+                foreach(var item in this.CompletedMissionTaskNames)
+                {
+                    writer.Write(item);
+                }
+                writer.WriteArrayEnd();
+            }
+            if(this.ReceivedMissionTaskNames != null)
+            {
+                writer.WritePropertyName("receivedMissionTaskNames");
+                writer.WriteArrayStart();
+                foreach(var item in this.ReceivedMissionTaskNames)
+                {
+                    writer.Write(item);
+                }
+                writer.WriteArrayEnd();
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

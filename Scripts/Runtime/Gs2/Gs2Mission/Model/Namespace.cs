@@ -82,129 +82,45 @@ namespace Gs2.Gs2Mission.Model
             return this;
         }
 
-        /** ミッション達成時 に実行されるスクリプト のGRN */
-        public string missionCompleteTriggerScriptId { set; get; }
+        /** ミッションを達成したときに実行するスクリプト */
+        public ScriptSetting missionCompleteScript { set; get; }
 
         /**
-         * ミッション達成時 に実行されるスクリプト のGRNを設定
+         * ミッションを達成したときに実行するスクリプトを設定
          *
-         * @param missionCompleteTriggerScriptId ミッション達成時 に実行されるスクリプト のGRN
+         * @param missionCompleteScript ミッションを達成したときに実行するスクリプト
          * @return this
          */
-        public Namespace WithMissionCompleteTriggerScriptId(string missionCompleteTriggerScriptId) {
-            this.missionCompleteTriggerScriptId = missionCompleteTriggerScriptId;
+        public Namespace WithMissionCompleteScript(ScriptSetting missionCompleteScript) {
+            this.missionCompleteScript = missionCompleteScript;
             return this;
         }
 
-        /** ミッション達成完了時 に実行されるスクリプト のGRN */
-        public string missionCompleteDoneTriggerScriptId { set; get; }
+        /** カウンターを上昇したときに実行するスクリプト */
+        public ScriptSetting counterIncrementScript { set; get; }
 
         /**
-         * ミッション達成完了時 に実行されるスクリプト のGRNを設定
+         * カウンターを上昇したときに実行するスクリプトを設定
          *
-         * @param missionCompleteDoneTriggerScriptId ミッション達成完了時 に実行されるスクリプト のGRN
+         * @param counterIncrementScript カウンターを上昇したときに実行するスクリプト
          * @return this
          */
-        public Namespace WithMissionCompleteDoneTriggerScriptId(string missionCompleteDoneTriggerScriptId) {
-            this.missionCompleteDoneTriggerScriptId = missionCompleteDoneTriggerScriptId;
+        public Namespace WithCounterIncrementScript(ScriptSetting counterIncrementScript) {
+            this.counterIncrementScript = counterIncrementScript;
             return this;
         }
 
-        /** ミッション達成完了時 にジョブが登録されるネームスペース のGRN */
-        public string missionCompleteDoneTriggerQueueNamespaceId { set; get; }
+        /** 報酬を受け取ったときに実行するスクリプト */
+        public ScriptSetting receiveRewardsScript { set; get; }
 
         /**
-         * ミッション達成完了時 にジョブが登録されるネームスペース のGRNを設定
+         * 報酬を受け取ったときに実行するスクリプトを設定
          *
-         * @param missionCompleteDoneTriggerQueueNamespaceId ミッション達成完了時 にジョブが登録されるネームスペース のGRN
+         * @param receiveRewardsScript 報酬を受け取ったときに実行するスクリプト
          * @return this
          */
-        public Namespace WithMissionCompleteDoneTriggerQueueNamespaceId(string missionCompleteDoneTriggerQueueNamespaceId) {
-            this.missionCompleteDoneTriggerQueueNamespaceId = missionCompleteDoneTriggerQueueNamespaceId;
-            return this;
-        }
-
-        /** カウンター上昇時 に実行されるスクリプト のGRN */
-        public string counterIncrementTriggerScriptId { set; get; }
-
-        /**
-         * カウンター上昇時 に実行されるスクリプト のGRNを設定
-         *
-         * @param counterIncrementTriggerScriptId カウンター上昇時 に実行されるスクリプト のGRN
-         * @return this
-         */
-        public Namespace WithCounterIncrementTriggerScriptId(string counterIncrementTriggerScriptId) {
-            this.counterIncrementTriggerScriptId = counterIncrementTriggerScriptId;
-            return this;
-        }
-
-        /** カウンター上昇完了時 に実行されるスクリプト のGRN */
-        public string counterIncrementDoneTriggerScriptId { set; get; }
-
-        /**
-         * カウンター上昇完了時 に実行されるスクリプト のGRNを設定
-         *
-         * @param counterIncrementDoneTriggerScriptId カウンター上昇完了時 に実行されるスクリプト のGRN
-         * @return this
-         */
-        public Namespace WithCounterIncrementDoneTriggerScriptId(string counterIncrementDoneTriggerScriptId) {
-            this.counterIncrementDoneTriggerScriptId = counterIncrementDoneTriggerScriptId;
-            return this;
-        }
-
-        /** カウンター上昇完了時 にジョブが登録されるネームスペース のGRN */
-        public string counterIncrementDoneTriggerQueueNamespaceId { set; get; }
-
-        /**
-         * カウンター上昇完了時 にジョブが登録されるネームスペース のGRNを設定
-         *
-         * @param counterIncrementDoneTriggerQueueNamespaceId カウンター上昇完了時 にジョブが登録されるネームスペース のGRN
-         * @return this
-         */
-        public Namespace WithCounterIncrementDoneTriggerQueueNamespaceId(string counterIncrementDoneTriggerQueueNamespaceId) {
-            this.counterIncrementDoneTriggerQueueNamespaceId = counterIncrementDoneTriggerQueueNamespaceId;
-            return this;
-        }
-
-        /** 報酬受け取り時 に実行されるスクリプト のGRN */
-        public string receiveRewardsTriggerScriptId { set; get; }
-
-        /**
-         * 報酬受け取り時 に実行されるスクリプト のGRNを設定
-         *
-         * @param receiveRewardsTriggerScriptId 報酬受け取り時 に実行されるスクリプト のGRN
-         * @return this
-         */
-        public Namespace WithReceiveRewardsTriggerScriptId(string receiveRewardsTriggerScriptId) {
-            this.receiveRewardsTriggerScriptId = receiveRewardsTriggerScriptId;
-            return this;
-        }
-
-        /** 報酬受け取り完了時 に実行されるスクリプト のGRN */
-        public string receiveRewardsDoneTriggerScriptId { set; get; }
-
-        /**
-         * 報酬受け取り完了時 に実行されるスクリプト のGRNを設定
-         *
-         * @param receiveRewardsDoneTriggerScriptId 報酬受け取り完了時 に実行されるスクリプト のGRN
-         * @return this
-         */
-        public Namespace WithReceiveRewardsDoneTriggerScriptId(string receiveRewardsDoneTriggerScriptId) {
-            this.receiveRewardsDoneTriggerScriptId = receiveRewardsDoneTriggerScriptId;
-            return this;
-        }
-
-        /** 報酬受け取り完了時 にジョブが登録されるネームスペース のGRN */
-        public string receiveRewardsDoneTriggerQueueNamespaceId { set; get; }
-
-        /**
-         * 報酬受け取り完了時 にジョブが登録されるネームスペース のGRNを設定
-         *
-         * @param receiveRewardsDoneTriggerQueueNamespaceId 報酬受け取り完了時 にジョブが登録されるネームスペース のGRN
-         * @return this
-         */
-        public Namespace WithReceiveRewardsDoneTriggerQueueNamespaceId(string receiveRewardsDoneTriggerQueueNamespaceId) {
-            this.receiveRewardsDoneTriggerQueueNamespaceId = receiveRewardsDoneTriggerQueueNamespaceId;
+        public Namespace WithReceiveRewardsScript(ScriptSetting receiveRewardsScript) {
+            this.receiveRewardsScript = receiveRewardsScript;
             return this;
         }
 
@@ -315,50 +231,20 @@ namespace Gs2.Gs2Mission.Model
                 writer.WritePropertyName("description");
                 writer.Write(this.description);
             }
-            if(this.missionCompleteTriggerScriptId != null)
+            if(this.missionCompleteScript != null)
             {
-                writer.WritePropertyName("missionCompleteTriggerScriptId");
-                writer.Write(this.missionCompleteTriggerScriptId);
+                writer.WritePropertyName("missionCompleteScript");
+                this.missionCompleteScript.WriteJson(writer);
             }
-            if(this.missionCompleteDoneTriggerScriptId != null)
+            if(this.counterIncrementScript != null)
             {
-                writer.WritePropertyName("missionCompleteDoneTriggerScriptId");
-                writer.Write(this.missionCompleteDoneTriggerScriptId);
+                writer.WritePropertyName("counterIncrementScript");
+                this.counterIncrementScript.WriteJson(writer);
             }
-            if(this.missionCompleteDoneTriggerQueueNamespaceId != null)
+            if(this.receiveRewardsScript != null)
             {
-                writer.WritePropertyName("missionCompleteDoneTriggerQueueNamespaceId");
-                writer.Write(this.missionCompleteDoneTriggerQueueNamespaceId);
-            }
-            if(this.counterIncrementTriggerScriptId != null)
-            {
-                writer.WritePropertyName("counterIncrementTriggerScriptId");
-                writer.Write(this.counterIncrementTriggerScriptId);
-            }
-            if(this.counterIncrementDoneTriggerScriptId != null)
-            {
-                writer.WritePropertyName("counterIncrementDoneTriggerScriptId");
-                writer.Write(this.counterIncrementDoneTriggerScriptId);
-            }
-            if(this.counterIncrementDoneTriggerQueueNamespaceId != null)
-            {
-                writer.WritePropertyName("counterIncrementDoneTriggerQueueNamespaceId");
-                writer.Write(this.counterIncrementDoneTriggerQueueNamespaceId);
-            }
-            if(this.receiveRewardsTriggerScriptId != null)
-            {
-                writer.WritePropertyName("receiveRewardsTriggerScriptId");
-                writer.Write(this.receiveRewardsTriggerScriptId);
-            }
-            if(this.receiveRewardsDoneTriggerScriptId != null)
-            {
-                writer.WritePropertyName("receiveRewardsDoneTriggerScriptId");
-                writer.Write(this.receiveRewardsDoneTriggerScriptId);
-            }
-            if(this.receiveRewardsDoneTriggerQueueNamespaceId != null)
-            {
-                writer.WritePropertyName("receiveRewardsDoneTriggerQueueNamespaceId");
-                writer.Write(this.receiveRewardsDoneTriggerQueueNamespaceId);
+                writer.WritePropertyName("receiveRewardsScript");
+                this.receiveRewardsScript.WriteJson(writer);
             }
             if(this.queueNamespaceId != null)
             {
@@ -401,15 +287,9 @@ namespace Gs2.Gs2Mission.Model
                 .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
-                .WithMissionCompleteTriggerScriptId(data.Keys.Contains("missionCompleteTriggerScriptId") && data["missionCompleteTriggerScriptId"] != null ? data["missionCompleteTriggerScriptId"].ToString() : null)
-                .WithMissionCompleteDoneTriggerScriptId(data.Keys.Contains("missionCompleteDoneTriggerScriptId") && data["missionCompleteDoneTriggerScriptId"] != null ? data["missionCompleteDoneTriggerScriptId"].ToString() : null)
-                .WithMissionCompleteDoneTriggerQueueNamespaceId(data.Keys.Contains("missionCompleteDoneTriggerQueueNamespaceId") && data["missionCompleteDoneTriggerQueueNamespaceId"] != null ? data["missionCompleteDoneTriggerQueueNamespaceId"].ToString() : null)
-                .WithCounterIncrementTriggerScriptId(data.Keys.Contains("counterIncrementTriggerScriptId") && data["counterIncrementTriggerScriptId"] != null ? data["counterIncrementTriggerScriptId"].ToString() : null)
-                .WithCounterIncrementDoneTriggerScriptId(data.Keys.Contains("counterIncrementDoneTriggerScriptId") && data["counterIncrementDoneTriggerScriptId"] != null ? data["counterIncrementDoneTriggerScriptId"].ToString() : null)
-                .WithCounterIncrementDoneTriggerQueueNamespaceId(data.Keys.Contains("counterIncrementDoneTriggerQueueNamespaceId") && data["counterIncrementDoneTriggerQueueNamespaceId"] != null ? data["counterIncrementDoneTriggerQueueNamespaceId"].ToString() : null)
-                .WithReceiveRewardsTriggerScriptId(data.Keys.Contains("receiveRewardsTriggerScriptId") && data["receiveRewardsTriggerScriptId"] != null ? data["receiveRewardsTriggerScriptId"].ToString() : null)
-                .WithReceiveRewardsDoneTriggerScriptId(data.Keys.Contains("receiveRewardsDoneTriggerScriptId") && data["receiveRewardsDoneTriggerScriptId"] != null ? data["receiveRewardsDoneTriggerScriptId"].ToString() : null)
-                .WithReceiveRewardsDoneTriggerQueueNamespaceId(data.Keys.Contains("receiveRewardsDoneTriggerQueueNamespaceId") && data["receiveRewardsDoneTriggerQueueNamespaceId"] != null ? data["receiveRewardsDoneTriggerQueueNamespaceId"].ToString() : null)
+                .WithMissionCompleteScript(data.Keys.Contains("missionCompleteScript") && data["missionCompleteScript"] != null ? ScriptSetting.FromDict(data["missionCompleteScript"]) : null)
+                .WithCounterIncrementScript(data.Keys.Contains("counterIncrementScript") && data["counterIncrementScript"] != null ? ScriptSetting.FromDict(data["counterIncrementScript"]) : null)
+                .WithReceiveRewardsScript(data.Keys.Contains("receiveRewardsScript") && data["receiveRewardsScript"] != null ? ScriptSetting.FromDict(data["receiveRewardsScript"]) : null)
                 .WithQueueNamespaceId(data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? data["queueNamespaceId"].ToString() : null)
                 .WithKeyId(data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString() : null)
                 .WithCompleteNotification(data.Keys.Contains("completeNotification") && data["completeNotification"] != null ? NotificationSetting.FromDict(data["completeNotification"]) : null)
