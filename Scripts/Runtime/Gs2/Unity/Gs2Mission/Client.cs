@@ -43,184 +43,6 @@ namespace Gs2.Unity.Gs2Mission
 		}
 
 		/// <summary>
-		///  達成したミッションの一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
-		/// <param name="limit">データの取得件数</param>
-		public IEnumerator ListCounters(
-		        UnityAction<AsyncResult<EzListCountersResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string pageToken=null,
-                long? limit=null
-        )
-		{
-            yield return _client.DescribeCounters(
-                new DescribeCountersRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithPageToken(pageToken)
-                    .WithLimit(limit)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListCountersResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListCountersResult>(
-                                new EzListCountersResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
-            );
-		}
-
-		/// <summary>
-		///  ミッショングループを指定して達成したミッションを取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="counterName">カウンター名</param>
-		public IEnumerator GetCounter(
-		        UnityAction<AsyncResult<EzGetCounterResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string counterName=null
-        )
-		{
-            yield return _client.GetCounter(
-                new GetCounterRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithCounterName(counterName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetCounterResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetCounterResult>(
-                                new EzGetCounterResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
-            );
-		}
-
-		/// <summary>
-		///  ミッションタスクモデルの一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="missionGroupName">グループ名</param>
-		public IEnumerator ListMissionTaskModels(
-		        UnityAction<AsyncResult<EzListMissionTaskModelsResult>> callback,
-                string namespaceName,
-                string missionGroupName
-        )
-		{
-            yield return _client.DescribeMissionTaskModels(
-                new DescribeMissionTaskModelsRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithMissionGroupName(missionGroupName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListMissionTaskModelsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListMissionTaskModelsResult>(
-                                new EzListMissionTaskModelsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
-            );
-		}
-
-		/// <summary>
-		///  ミッションタスク名を指定してミッションタスクモデルを取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="missionGroupName">グループ名</param>
-		/// <param name="missionTaskName">タスク名</param>
-		public IEnumerator GetMissionTaskModel(
-		        UnityAction<AsyncResult<EzGetMissionTaskModelResult>> callback,
-                string namespaceName,
-                string missionGroupName,
-                string missionTaskName
-        )
-		{
-            yield return _client.GetMissionTaskModel(
-                new GetMissionTaskModelRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithMissionGroupName(missionGroupName)
-                    .WithMissionTaskName(missionTaskName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetMissionTaskModelResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetMissionTaskModelResult>(
-                                new EzGetMissionTaskModelResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
-            );
-		}
-
-		/// <summary>
 		///  カウンターの種類を認証<br />
 		/// </summary>
         ///
@@ -511,6 +333,184 @@ namespace Gs2.Unity.Gs2Mission
                         callback.Invoke(
                             new AsyncResult<EzGetMissionGroupModelResult>(
                                 new EzGetMissionGroupModelResult(r.Result),
+                                r.Error
+                            )
+                        );
+                    }
+				}
+            );
+		}
+
+		/// <summary>
+		///  達成したミッションの一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
+		/// <param name="limit">データの取得件数</param>
+		public IEnumerator ListCounters(
+		        UnityAction<AsyncResult<EzListCountersResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string pageToken=null,
+                long? limit=null
+        )
+		{
+            yield return _client.DescribeCounters(
+                new DescribeCountersRequest()
+                    .WithNamespaceName(namespaceName)
+                    .WithPageToken(pageToken)
+                    .WithLimit(limit)
+                    .WithAccessToken(session.AccessToken.token),
+				r =>
+				{
+				    if(r.Result == null)
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzListCountersResult>(
+                                null,
+                                r.Error
+                            )
+                        );
+				    }
+				    else
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzListCountersResult>(
+                                new EzListCountersResult(r.Result),
+                                r.Error
+                            )
+                        );
+                    }
+				}
+            );
+		}
+
+		/// <summary>
+		///  ミッショングループを指定して達成したミッションを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="counterName">カウンター名</param>
+		public IEnumerator GetCounter(
+		        UnityAction<AsyncResult<EzGetCounterResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string counterName=null
+        )
+		{
+            yield return _client.GetCounter(
+                new GetCounterRequest()
+                    .WithNamespaceName(namespaceName)
+                    .WithCounterName(counterName)
+                    .WithAccessToken(session.AccessToken.token),
+				r =>
+				{
+				    if(r.Result == null)
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzGetCounterResult>(
+                                null,
+                                r.Error
+                            )
+                        );
+				    }
+				    else
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzGetCounterResult>(
+                                new EzGetCounterResult(r.Result),
+                                r.Error
+                            )
+                        );
+                    }
+				}
+            );
+		}
+
+		/// <summary>
+		///  ミッションタスクモデルの一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="missionGroupName">グループ名</param>
+		public IEnumerator ListMissionTaskModels(
+		        UnityAction<AsyncResult<EzListMissionTaskModelsResult>> callback,
+                string namespaceName,
+                string missionGroupName
+        )
+		{
+            yield return _client.DescribeMissionTaskModels(
+                new DescribeMissionTaskModelsRequest()
+                    .WithNamespaceName(namespaceName)
+                    .WithMissionGroupName(missionGroupName),
+				r =>
+				{
+				    if(r.Result == null)
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzListMissionTaskModelsResult>(
+                                null,
+                                r.Error
+                            )
+                        );
+				    }
+				    else
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzListMissionTaskModelsResult>(
+                                new EzListMissionTaskModelsResult(r.Result),
+                                r.Error
+                            )
+                        );
+                    }
+				}
+            );
+		}
+
+		/// <summary>
+		///  ミッションタスク名を指定してミッションタスクモデルを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="missionGroupName">グループ名</param>
+		/// <param name="missionTaskName">タスク名</param>
+		public IEnumerator GetMissionTaskModel(
+		        UnityAction<AsyncResult<EzGetMissionTaskModelResult>> callback,
+                string namespaceName,
+                string missionGroupName,
+                string missionTaskName
+        )
+		{
+            yield return _client.GetMissionTaskModel(
+                new GetMissionTaskModelRequest()
+                    .WithNamespaceName(namespaceName)
+                    .WithMissionGroupName(missionGroupName)
+                    .WithMissionTaskName(missionTaskName),
+				r =>
+				{
+				    if(r.Result == null)
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzGetMissionTaskModelResult>(
+                                null,
+                                r.Error
+                            )
+                        );
+				    }
+				    else
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzGetMissionTaskModelResult>(
+                                new EzGetMissionTaskModelResult(r.Result),
                                 r.Error
                             )
                         );
