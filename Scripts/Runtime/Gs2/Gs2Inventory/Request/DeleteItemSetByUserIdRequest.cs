@@ -28,13 +28,13 @@ namespace Gs2.Gs2Inventory.Request
 	public class DeleteItemSetByUserIdRequest : Gs2Request<DeleteItemSetByUserIdRequest>
 	{
 
-        /** カテゴリー名 */
+        /** ネームスペース名 */
         public string namespaceName { set; get; }
 
         /**
-         * カテゴリー名を設定
+         * ネームスペース名を設定
          *
-         * @param namespaceName カテゴリー名
+         * @param namespaceName ネームスペース名
          * @return this
          */
         public DeleteItemSetByUserIdRequest WithNamespaceName(string namespaceName) {

@@ -28,13 +28,13 @@ namespace Gs2.Gs2Inventory.Request
 	public class UpdateNamespaceRequest : Gs2Request<UpdateNamespaceRequest>
 	{
 
-        /** カテゴリー名 */
+        /** ネームスペース名 */
         public string namespaceName { set; get; }
 
         /**
-         * カテゴリー名を設定
+         * ネームスペース名を設定
          *
-         * @param namespaceName カテゴリー名
+         * @param namespaceName ネームスペース名
          * @return this
          */
         public UpdateNamespaceRequest WithNamespaceName(string namespaceName) {
@@ -43,13 +43,13 @@ namespace Gs2.Gs2Inventory.Request
         }
 
 
-        /** ネームスペースの説明 */
+        /** テスト用の変更0 */
         public string description { set; get; }
 
         /**
-         * ネームスペースの説明を設定
+         * テスト用の変更0を設定
          *
-         * @param description ネームスペースの説明
+         * @param description テスト用の変更0
          * @return this
          */
         public UpdateNamespaceRequest WithDescription(string description) {

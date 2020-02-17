@@ -54,13 +54,13 @@ namespace Gs2.Gs2Inventory.Model
             return this;
         }
 
-        /** カテゴリー名 */
+        /** ネームスペース名 */
         public string name { set; get; }
 
         /**
-         * カテゴリー名を設定
+         * ネームスペース名を設定
          *
-         * @param name カテゴリー名
+         * @param name ネームスペース名
          * @return this
          */
         public Namespace WithName(string name) {
@@ -68,17 +68,31 @@ namespace Gs2.Gs2Inventory.Model
             return this;
         }
 
-        /** ネームスペースの説明 */
+        /** テスト用の変更0 */
         public string description { set; get; }
 
         /**
-         * ネームスペースの説明を設定
+         * テスト用の変更0を設定
          *
-         * @param description ネームスペースの説明
+         * @param description テスト用の変更0
          * @return this
          */
         public Namespace WithDescription(string description) {
             this.description = description;
+            return this;
+        }
+
+        /** テスト用の変更1 */
+        public string description1 { set; get; }
+
+        /**
+         * テスト用の変更1を設定
+         *
+         * @param description1 テスト用の変更1
+         * @return this
+         */
+        public Namespace WithDescription1(string description1) {
+            this.description1 = description1;
             return this;
         }
 
@@ -189,6 +203,11 @@ namespace Gs2.Gs2Inventory.Model
                 writer.WritePropertyName("description");
                 writer.Write(this.description);
             }
+            if(this.description1 != null)
+            {
+                writer.WritePropertyName("description1");
+                writer.Write(this.description1);
+            }
             if(this.acquireScript != null)
             {
                 writer.WritePropertyName("acquireScript");
@@ -230,6 +249,7 @@ namespace Gs2.Gs2Inventory.Model
                 .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
+                .WithDescription1(data.Keys.Contains("description1") && data["description1"] != null ? data["description1"].ToString() : null)
                 .WithAcquireScript(data.Keys.Contains("acquireScript") && data["acquireScript"] != null ? ScriptSetting.FromDict(data["acquireScript"]) : null)
                 .WithOverflowScript(data.Keys.Contains("overflowScript") && data["overflowScript"] != null ? ScriptSetting.FromDict(data["overflowScript"]) : null)
                 .WithConsumeScript(data.Keys.Contains("consumeScript") && data["consumeScript"] != null ? ScriptSetting.FromDict(data["consumeScript"]) : null)

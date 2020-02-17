@@ -28,13 +28,13 @@ namespace Gs2.Gs2Inventory.Request
 	public class AcquireItemSetByUserIdRequest : Gs2Request<AcquireItemSetByUserIdRequest>
 	{
 
-        /** カテゴリー名 */
+        /** ネームスペース名 */
         public string namespaceName { set; get; }
 
         /**
-         * カテゴリー名を設定
+         * ネームスペース名を設定
          *
-         * @param namespaceName カテゴリー名
+         * @param namespaceName ネームスペース名
          * @return this
          */
         public AcquireItemSetByUserIdRequest WithNamespaceName(string namespaceName) {
@@ -133,13 +133,13 @@ namespace Gs2.Gs2Inventory.Request
         }
 
 
-        /** アイテムセットを識別する名前 */
+        /** 追加先のアイテムセットの名前 */
         public string itemSetName { set; get; }
 
         /**
-         * アイテムセットを識別する名前を設定
+         * 追加先のアイテムセットの名前を設定
          *
-         * @param itemSetName アイテムセットを識別する名前
+         * @param itemSetName 追加先のアイテムセットの名前
          * @return this
          */
         public AcquireItemSetByUserIdRequest WithItemSetName(string itemSetName) {
