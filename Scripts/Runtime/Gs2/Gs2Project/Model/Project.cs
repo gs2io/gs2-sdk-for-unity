@@ -82,6 +82,76 @@ namespace Gs2.Gs2Project.Model
             return this;
         }
 
+        /** 契約プラン */
+        public string plan { set; get; }
+
+        /**
+         * 契約プランを設定
+         *
+         * @param plan 契約プラン
+         * @return this
+         */
+        public Project WithPlan(string plan) {
+            this.plan = plan;
+            return this;
+        }
+
+        /** 支払い方法名 */
+        public string billingMethodName { set; get; }
+
+        /**
+         * 支払い方法名を設定
+         *
+         * @param billingMethodName 支払い方法名
+         * @return this
+         */
+        public Project WithBillingMethodName(string billingMethodName) {
+            this.billingMethodName = billingMethodName;
+            return this;
+        }
+
+        /** AWS EventBridge の設定 */
+        public string enableEventBridge { set; get; }
+
+        /**
+         * AWS EventBridge の設定を設定
+         *
+         * @param enableEventBridge AWS EventBridge の設定
+         * @return this
+         */
+        public Project WithEnableEventBridge(string enableEventBridge) {
+            this.enableEventBridge = enableEventBridge;
+            return this;
+        }
+
+        /** 通知に使用するAWSアカウントのID */
+        public string eventBridgeAwsAccountId { set; get; }
+
+        /**
+         * 通知に使用するAWSアカウントのIDを設定
+         *
+         * @param eventBridgeAwsAccountId 通知に使用するAWSアカウントのID
+         * @return this
+         */
+        public Project WithEventBridgeAwsAccountId(string eventBridgeAwsAccountId) {
+            this.eventBridgeAwsAccountId = eventBridgeAwsAccountId;
+            return this;
+        }
+
+        /** 通知に使用するAWSリージョン */
+        public string eventBridgeAwsRegion { set; get; }
+
+        /**
+         * 通知に使用するAWSリージョンを設定
+         *
+         * @param eventBridgeAwsRegion 通知に使用するAWSリージョン
+         * @return this
+         */
+        public Project WithEventBridgeAwsRegion(string eventBridgeAwsRegion) {
+            this.eventBridgeAwsRegion = eventBridgeAwsRegion;
+            return this;
+        }
+
         /** 作成日時 */
         public long? createdAt { set; get; }
 
@@ -133,6 +203,31 @@ namespace Gs2.Gs2Project.Model
                 writer.WritePropertyName("description");
                 writer.Write(this.description);
             }
+            if(this.plan != null)
+            {
+                writer.WritePropertyName("plan");
+                writer.Write(this.plan);
+            }
+            if(this.billingMethodName != null)
+            {
+                writer.WritePropertyName("billingMethodName");
+                writer.Write(this.billingMethodName);
+            }
+            if(this.enableEventBridge != null)
+            {
+                writer.WritePropertyName("enableEventBridge");
+                writer.Write(this.enableEventBridge);
+            }
+            if(this.eventBridgeAwsAccountId != null)
+            {
+                writer.WritePropertyName("eventBridgeAwsAccountId");
+                writer.Write(this.eventBridgeAwsAccountId);
+            }
+            if(this.eventBridgeAwsRegion != null)
+            {
+                writer.WritePropertyName("eventBridgeAwsRegion");
+                writer.Write(this.eventBridgeAwsRegion);
+            }
             if(this.createdAt.HasValue)
             {
                 writer.WritePropertyName("createdAt");
@@ -154,6 +249,11 @@ namespace Gs2.Gs2Project.Model
                 .WithAccountName(data.Keys.Contains("accountName") && data["accountName"] != null ? data["accountName"].ToString() : null)
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
+                .WithPlan(data.Keys.Contains("plan") && data["plan"] != null ? data["plan"].ToString() : null)
+                .WithBillingMethodName(data.Keys.Contains("billingMethodName") && data["billingMethodName"] != null ? data["billingMethodName"].ToString() : null)
+                .WithEnableEventBridge(data.Keys.Contains("enableEventBridge") && data["enableEventBridge"] != null ? data["enableEventBridge"].ToString() : null)
+                .WithEventBridgeAwsAccountId(data.Keys.Contains("eventBridgeAwsAccountId") && data["eventBridgeAwsAccountId"] != null ? data["eventBridgeAwsAccountId"].ToString() : null)
+                .WithEventBridgeAwsRegion(data.Keys.Contains("eventBridgeAwsRegion") && data["eventBridgeAwsRegion"] != null ? data["eventBridgeAwsRegion"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }

@@ -794,6 +794,31 @@ namespace Gs2.Gs2Project
                     jsonWriter.WritePropertyName("description");
                     jsonWriter.Write(_request.description.ToString());
                 }
+                if (_request.plan != null)
+                {
+                    jsonWriter.WritePropertyName("plan");
+                    jsonWriter.Write(_request.plan.ToString());
+                }
+                if (_request.billingMethodName != null)
+                {
+                    jsonWriter.WritePropertyName("billingMethodName");
+                    jsonWriter.Write(_request.billingMethodName.ToString());
+                }
+                if (_request.enableEventBridge != null)
+                {
+                    jsonWriter.WritePropertyName("enableEventBridge");
+                    jsonWriter.Write(_request.enableEventBridge.ToString());
+                }
+                if (_request.eventBridgeAwsAccountId != null)
+                {
+                    jsonWriter.WritePropertyName("eventBridgeAwsAccountId");
+                    jsonWriter.Write(_request.eventBridgeAwsAccountId.ToString());
+                }
+                if (_request.eventBridgeAwsRegion != null)
+                {
+                    jsonWriter.WritePropertyName("eventBridgeAwsRegion");
+                    jsonWriter.Write(_request.eventBridgeAwsRegion.ToString());
+                }
                 if (_request.contextStack != null)
                 {
                     jsonWriter.WritePropertyName("contextStack");
@@ -1039,6 +1064,31 @@ namespace Gs2.Gs2Project
                     jsonWriter.WritePropertyName("description");
                     jsonWriter.Write(_request.description.ToString());
                 }
+                if (_request.plan != null)
+                {
+                    jsonWriter.WritePropertyName("plan");
+                    jsonWriter.Write(_request.plan.ToString());
+                }
+                if (_request.billingMethodName != null)
+                {
+                    jsonWriter.WritePropertyName("billingMethodName");
+                    jsonWriter.Write(_request.billingMethodName.ToString());
+                }
+                if (_request.enableEventBridge != null)
+                {
+                    jsonWriter.WritePropertyName("enableEventBridge");
+                    jsonWriter.Write(_request.enableEventBridge.ToString());
+                }
+                if (_request.eventBridgeAwsAccountId != null)
+                {
+                    jsonWriter.WritePropertyName("eventBridgeAwsAccountId");
+                    jsonWriter.Write(_request.eventBridgeAwsAccountId.ToString());
+                }
+                if (_request.eventBridgeAwsRegion != null)
+                {
+                    jsonWriter.WritePropertyName("eventBridgeAwsRegion");
+                    jsonWriter.Write(_request.eventBridgeAwsRegion.ToString());
+                }
                 if (_request.contextStack != null)
                 {
                     jsonWriter.WritePropertyName("contextStack");
@@ -1170,6 +1220,616 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new DeleteProjectTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class DescribeBillingMethodsTask : Gs2WebSocketSessionTask<Result.DescribeBillingMethodsResult>
+        {
+			private readonly Request.DescribeBillingMethodsRequest _request;
+
+			public DescribeBillingMethodsTask(Request.DescribeBillingMethodsRequest request, UnityAction<AsyncResult<Result.DescribeBillingMethodsResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.accountToken != null)
+                {
+                    jsonWriter.WritePropertyName("accountToken");
+                    jsonWriter.Write(_request.accountToken.ToString());
+                }
+                if (_request.pageToken != null)
+                {
+                    jsonWriter.WritePropertyName("pageToken");
+                    jsonWriter.Write(_request.pageToken.ToString());
+                }
+                if (_request.limit != null)
+                {
+                    jsonWriter.WritePropertyName("limit");
+                    jsonWriter.Write(_request.limit.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("project");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("billingMethod");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("describeBillingMethods");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  支払い方法の一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DescribeBillingMethods(
+                Request.DescribeBillingMethodsRequest request,
+                UnityAction<AsyncResult<Result.DescribeBillingMethodsResult>> callback
+        )
+		{
+			var task = new DescribeBillingMethodsTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class CreateBillingMethodTask : Gs2WebSocketSessionTask<Result.CreateBillingMethodResult>
+        {
+			private readonly Request.CreateBillingMethodRequest _request;
+
+			public CreateBillingMethodTask(Request.CreateBillingMethodRequest request, UnityAction<AsyncResult<Result.CreateBillingMethodResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.accountToken != null)
+                {
+                    jsonWriter.WritePropertyName("accountToken");
+                    jsonWriter.Write(_request.accountToken.ToString());
+                }
+                if (_request.description != null)
+                {
+                    jsonWriter.WritePropertyName("description");
+                    jsonWriter.Write(_request.description.ToString());
+                }
+                if (_request.methodType != null)
+                {
+                    jsonWriter.WritePropertyName("methodType");
+                    jsonWriter.Write(_request.methodType.ToString());
+                }
+                if (_request.cardCustomerId != null)
+                {
+                    jsonWriter.WritePropertyName("cardCustomerId");
+                    jsonWriter.Write(_request.cardCustomerId.ToString());
+                }
+                if (_request.partnerId != null)
+                {
+                    jsonWriter.WritePropertyName("partnerId");
+                    jsonWriter.Write(_request.partnerId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("project");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("billingMethod");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("createBillingMethod");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  支払い方法を新規作成<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator CreateBillingMethod(
+                Request.CreateBillingMethodRequest request,
+                UnityAction<AsyncResult<Result.CreateBillingMethodResult>> callback
+        )
+		{
+			var task = new CreateBillingMethodTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class GetBillingMethodTask : Gs2WebSocketSessionTask<Result.GetBillingMethodResult>
+        {
+			private readonly Request.GetBillingMethodRequest _request;
+
+			public GetBillingMethodTask(Request.GetBillingMethodRequest request, UnityAction<AsyncResult<Result.GetBillingMethodResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.accountToken != null)
+                {
+                    jsonWriter.WritePropertyName("accountToken");
+                    jsonWriter.Write(_request.accountToken.ToString());
+                }
+                if (_request.billingMethodName != null)
+                {
+                    jsonWriter.WritePropertyName("billingMethodName");
+                    jsonWriter.Write(_request.billingMethodName.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("project");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("billingMethod");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("getBillingMethod");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  支払い方法を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetBillingMethod(
+                Request.GetBillingMethodRequest request,
+                UnityAction<AsyncResult<Result.GetBillingMethodResult>> callback
+        )
+		{
+			var task = new GetBillingMethodTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class UpdateBillingMethodTask : Gs2WebSocketSessionTask<Result.UpdateBillingMethodResult>
+        {
+			private readonly Request.UpdateBillingMethodRequest _request;
+
+			public UpdateBillingMethodTask(Request.UpdateBillingMethodRequest request, UnityAction<AsyncResult<Result.UpdateBillingMethodResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.accountToken != null)
+                {
+                    jsonWriter.WritePropertyName("accountToken");
+                    jsonWriter.Write(_request.accountToken.ToString());
+                }
+                if (_request.billingMethodName != null)
+                {
+                    jsonWriter.WritePropertyName("billingMethodName");
+                    jsonWriter.Write(_request.billingMethodName.ToString());
+                }
+                if (_request.description != null)
+                {
+                    jsonWriter.WritePropertyName("description");
+                    jsonWriter.Write(_request.description.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("project");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("billingMethod");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("updateBillingMethod");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  支払い方法を更新<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator UpdateBillingMethod(
+                Request.UpdateBillingMethodRequest request,
+                UnityAction<AsyncResult<Result.UpdateBillingMethodResult>> callback
+        )
+		{
+			var task = new UpdateBillingMethodTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class DeleteBillingMethodTask : Gs2WebSocketSessionTask<Result.DeleteBillingMethodResult>
+        {
+			private readonly Request.DeleteBillingMethodRequest _request;
+
+			public DeleteBillingMethodTask(Request.DeleteBillingMethodRequest request, UnityAction<AsyncResult<Result.DeleteBillingMethodResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.accountToken != null)
+                {
+                    jsonWriter.WritePropertyName("accountToken");
+                    jsonWriter.Write(_request.accountToken.ToString());
+                }
+                if (_request.billingMethodName != null)
+                {
+                    jsonWriter.WritePropertyName("billingMethodName");
+                    jsonWriter.Write(_request.billingMethodName.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("project");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("billingMethod");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("deleteBillingMethod");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  支払い方法を削除<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DeleteBillingMethod(
+                Request.DeleteBillingMethodRequest request,
+                UnityAction<AsyncResult<Result.DeleteBillingMethodResult>> callback
+        )
+		{
+			var task = new DeleteBillingMethodTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class DescribeReceiptsTask : Gs2WebSocketSessionTask<Result.DescribeReceiptsResult>
+        {
+			private readonly Request.DescribeReceiptsRequest _request;
+
+			public DescribeReceiptsTask(Request.DescribeReceiptsRequest request, UnityAction<AsyncResult<Result.DescribeReceiptsResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.accountToken != null)
+                {
+                    jsonWriter.WritePropertyName("accountToken");
+                    jsonWriter.Write(_request.accountToken.ToString());
+                }
+                if (_request.pageToken != null)
+                {
+                    jsonWriter.WritePropertyName("pageToken");
+                    jsonWriter.Write(_request.pageToken.ToString());
+                }
+                if (_request.limit != null)
+                {
+                    jsonWriter.WritePropertyName("limit");
+                    jsonWriter.Write(_request.limit.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("project");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("receipt");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("describeReceipts");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  領収書の一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DescribeReceipts(
+                Request.DescribeReceiptsRequest request,
+                UnityAction<AsyncResult<Result.DescribeReceiptsResult>> callback
+        )
+		{
+			var task = new DescribeReceiptsTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class DescribeBillingsTask : Gs2WebSocketSessionTask<Result.DescribeBillingsResult>
+        {
+			private readonly Request.DescribeBillingsRequest _request;
+
+			public DescribeBillingsTask(Request.DescribeBillingsRequest request, UnityAction<AsyncResult<Result.DescribeBillingsResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.accountToken != null)
+                {
+                    jsonWriter.WritePropertyName("accountToken");
+                    jsonWriter.Write(_request.accountToken.ToString());
+                }
+                if (_request.projectName != null)
+                {
+                    jsonWriter.WritePropertyName("projectName");
+                    jsonWriter.Write(_request.projectName.ToString());
+                }
+                if (_request.year != null)
+                {
+                    jsonWriter.WritePropertyName("year");
+                    jsonWriter.Write(_request.year.ToString());
+                }
+                if (_request.month != null)
+                {
+                    jsonWriter.WritePropertyName("month");
+                    jsonWriter.Write(_request.month.ToString());
+                }
+                if (_request.region != null)
+                {
+                    jsonWriter.WritePropertyName("region");
+                    jsonWriter.Write(_request.region.ToString());
+                }
+                if (_request.service != null)
+                {
+                    jsonWriter.WritePropertyName("service");
+                    jsonWriter.Write(_request.service.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("project");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("billing");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("describeBillings");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  利用状況の一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DescribeBillings(
+                Request.DescribeBillingsRequest request,
+                UnityAction<AsyncResult<Result.DescribeBillingsResult>> callback
+        )
+		{
+			var task = new DescribeBillingsTask(request, callback);
 			return Gs2WebSocketSession.Execute(task);
         }
 	}
