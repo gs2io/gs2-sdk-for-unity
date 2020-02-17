@@ -16,16 +16,19 @@
 using Gs2.Gs2Friend.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Friend.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzFollowUser
 	{
 		/** ユーザーID */
-		public string UserId { get; set; }
+		[UnityEngine.SerializeField]
+		public string UserId;
 
 		public EzFollowUser()
 		{
@@ -37,11 +40,22 @@ namespace Gs2.Unity.Gs2Friend.Model
 			UserId = @followUser.userId;
 		}
 
-        public FollowUser ToModel()
+        public virtual FollowUser ToModel()
         {
             return new FollowUser {
                 userId = UserId,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.UserId != null)
+            {
+                writer.WritePropertyName("userId");
+                writer.Write(this.UserId);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

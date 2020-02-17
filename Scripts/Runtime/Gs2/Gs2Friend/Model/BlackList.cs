@@ -23,20 +23,20 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Friend.Model
 {
 	[Preserve]
-	public class SendBox
+	public class BlackList
 	{
 
-        /** フレンドリクエストの受信ボックス */
-        public string sendBoxId { set; get; }
+        /** ブラックリスト */
+        public string blackListId { set; get; }
 
         /**
-         * フレンドリクエストの受信ボックスを設定
+         * ブラックリストを設定
          *
-         * @param sendBoxId フレンドリクエストの受信ボックス
+         * @param blackListId ブラックリスト
          * @return this
          */
-        public SendBox WithSendBoxId(string sendBoxId) {
-            this.sendBoxId = sendBoxId;
+        public BlackList WithBlackListId(string blackListId) {
+            this.blackListId = blackListId;
             return this;
         }
 
@@ -49,21 +49,21 @@ namespace Gs2.Gs2Friend.Model
          * @param userId ユーザーID
          * @return this
          */
-        public SendBox WithUserId(string userId) {
+        public BlackList WithUserId(string userId) {
             this.userId = userId;
             return this;
         }
 
-        /** フレンドリクエストの宛先ユーザーIDリスト */
+        /** ブラックリストのユーザーIDリスト */
         public List<string> targetUserIds { set; get; }
 
         /**
-         * フレンドリクエストの宛先ユーザーIDリストを設定
+         * ブラックリストのユーザーIDリストを設定
          *
-         * @param targetUserIds フレンドリクエストの宛先ユーザーIDリスト
+         * @param targetUserIds ブラックリストのユーザーIDリスト
          * @return this
          */
-        public SendBox WithTargetUserIds(List<string> targetUserIds) {
+        public BlackList WithTargetUserIds(List<string> targetUserIds) {
             this.targetUserIds = targetUserIds;
             return this;
         }
@@ -77,7 +77,7 @@ namespace Gs2.Gs2Friend.Model
          * @param createdAt 作成日時
          * @return this
          */
-        public SendBox WithCreatedAt(long? createdAt) {
+        public BlackList WithCreatedAt(long? createdAt) {
             this.createdAt = createdAt;
             return this;
         }
@@ -91,7 +91,7 @@ namespace Gs2.Gs2Friend.Model
          * @param updatedAt 最終更新日時
          * @return this
          */
-        public SendBox WithUpdatedAt(long? updatedAt) {
+        public BlackList WithUpdatedAt(long? updatedAt) {
             this.updatedAt = updatedAt;
             return this;
         }
@@ -99,10 +99,10 @@ namespace Gs2.Gs2Friend.Model
         public void WriteJson(JsonWriter writer)
         {
             writer.WriteObjectStart();
-            if(this.sendBoxId != null)
+            if(this.blackListId != null)
             {
-                writer.WritePropertyName("sendBoxId");
-                writer.Write(this.sendBoxId);
+                writer.WritePropertyName("blackListId");
+                writer.Write(this.blackListId);
             }
             if(this.userId != null)
             {
@@ -133,10 +133,10 @@ namespace Gs2.Gs2Friend.Model
         }
 
     	[Preserve]
-        public static SendBox FromDict(JsonData data)
+        public static BlackList FromDict(JsonData data)
         {
-            return new SendBox()
-                .WithSendBoxId(data.Keys.Contains("sendBoxId") && data["sendBoxId"] != null ? data["sendBoxId"].ToString() : null)
+            return new BlackList()
+                .WithBlackListId(data.Keys.Contains("blackListId") && data["blackListId"] != null ? data["blackListId"].ToString() : null)
                 .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
                 .WithTargetUserIds(data.Keys.Contains("targetUserIds") && data["targetUserIds"] != null ? data["targetUserIds"].Cast<JsonData>().Select(value =>
                     {

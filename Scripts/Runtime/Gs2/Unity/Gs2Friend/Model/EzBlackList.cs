@@ -24,41 +24,39 @@ namespace Gs2.Unity.Gs2Friend.Model
 {
 	[Preserve]
 	[System.Serializable]
-	public class EzProfile
+	public class EzBlackList
 	{
 		/** ユーザーID */
 		[UnityEngine.SerializeField]
 		public string UserId;
-		/** 公開されるプロフィール */
+		/** ブラックリストのユーザーIDリスト */
 		[UnityEngine.SerializeField]
-		public string PublicProfile;
-		/** フォロワー向けに公開されるプロフィール */
-		[UnityEngine.SerializeField]
-		public string FollowerProfile;
-		/** フレンド向けに公開されるプロフィール */
-		[UnityEngine.SerializeField]
-		public string FriendProfile;
+		public List<string> TargetUserIds;
 
-		public EzProfile()
+		public EzBlackList()
 		{
 
 		}
 
-		public EzProfile(Gs2.Gs2Friend.Model.Profile @profile)
+		public EzBlackList(Gs2.Gs2Friend.Model.BlackList @blackList)
 		{
-			UserId = @profile.userId;
-			PublicProfile = @profile.publicProfile;
-			FollowerProfile = @profile.followerProfile;
-			FriendProfile = @profile.friendProfile;
+			UserId = @blackList.userId;
+			TargetUserIds = @blackList.targetUserIds != null ? @blackList.targetUserIds.Select(value =>
+                {
+                    return value;
+                }
+			).ToList() : new List<string>(new string[] {});
 		}
 
-        public virtual Profile ToModel()
+        public virtual BlackList ToModel()
         {
-            return new Profile {
+            return new BlackList {
                 userId = UserId,
-                publicProfile = PublicProfile,
-                followerProfile = FollowerProfile,
-                friendProfile = FriendProfile,
+                targetUserIds = TargetUserIds != null ? TargetUserIds.Select(Value0 =>
+                        {
+                            return Value0;
+                        }
+                ).ToList() : new List<string>(new string[] {}),
             };
         }
 
@@ -70,20 +68,15 @@ namespace Gs2.Unity.Gs2Friend.Model
                 writer.WritePropertyName("userId");
                 writer.Write(this.UserId);
             }
-            if(this.PublicProfile != null)
+            if(this.TargetUserIds != null)
             {
-                writer.WritePropertyName("publicProfile");
-                writer.Write(this.PublicProfile);
-            }
-            if(this.FollowerProfile != null)
-            {
-                writer.WritePropertyName("followerProfile");
-                writer.Write(this.FollowerProfile);
-            }
-            if(this.FriendProfile != null)
-            {
-                writer.WritePropertyName("friendProfile");
-                writer.Write(this.FriendProfile);
+                writer.WritePropertyName("targetUserIds");
+                writer.WriteArrayStart();
+                foreach(var item in this.TargetUserIds)
+                {
+                    writer.Write(item);
+                }
+                writer.WriteArrayEnd();
             }
             writer.WriteObjectEnd();
         }

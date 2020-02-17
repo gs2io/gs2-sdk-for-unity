@@ -25,7 +25,7 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Friend.Request
 {
 	[Preserve]
-	public class GetSendRequestByUserIdRequest : Gs2Request<GetSendRequestByUserIdRequest>
+	public class DescribeBlackListRequest : Gs2Request<DescribeBlackListRequest>
 	{
 
         /** ネームスペース名 */
@@ -37,38 +37,8 @@ namespace Gs2.Gs2Friend.Request
          * @param namespaceName ネームスペース名
          * @return this
          */
-        public GetSendRequestByUserIdRequest WithNamespaceName(string namespaceName) {
+        public DescribeBlackListRequest WithNamespaceName(string namespaceName) {
             this.namespaceName = namespaceName;
-            return this;
-        }
-
-
-        /** ユーザーID */
-        public string userId { set; get; }
-
-        /**
-         * ユーザーIDを設定
-         *
-         * @param userId ユーザーID
-         * @return this
-         */
-        public GetSendRequestByUserIdRequest WithUserId(string userId) {
-            this.userId = userId;
-            return this;
-        }
-
-
-        /** フレンドリクエストの宛先ユーザーID */
-        public string targetUserId { set; get; }
-
-        /**
-         * フレンドリクエストの宛先ユーザーIDを設定
-         *
-         * @param targetUserId フレンドリクエストの宛先ユーザーID
-         * @return this
-         */
-        public GetSendRequestByUserIdRequest WithTargetUserId(string targetUserId) {
-            this.targetUserId = targetUserId;
             return this;
         }
 
@@ -82,19 +52,31 @@ namespace Gs2.Gs2Friend.Request
          * @param duplicationAvoider 重複実行回避機能に使用するID
          * @return this
          */
-        public GetSendRequestByUserIdRequest WithDuplicationAvoider(string duplicationAvoider) {
+        public DescribeBlackListRequest WithDuplicationAvoider(string duplicationAvoider) {
             this.duplicationAvoider = duplicationAvoider;
             return this;
         }
 
 
+        /** アクセストークン */
+        public string accessToken { set; get; }
+
+        /**
+         * アクセストークンを設定
+         *
+         * @param accessToken アクセストークン
+         * @return this
+         */
+        public DescribeBlackListRequest WithAccessToken(string accessToken) {
+            this.accessToken = accessToken;
+            return this;
+        }
+
     	[Preserve]
-        public static GetSendRequestByUserIdRequest FromDict(JsonData data)
+        public static DescribeBlackListRequest FromDict(JsonData data)
         {
-            return new GetSendRequestByUserIdRequest {
+            return new DescribeBlackListRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
-                userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
-                targetUserId = data.Keys.Contains("targetUserId") && data["targetUserId"] != null ? data["targetUserId"].ToString(): null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }

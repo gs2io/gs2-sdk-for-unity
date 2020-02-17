@@ -724,5 +724,137 @@ namespace Gs2.Unity.Gs2Friend
 				}
             );
 		}
+
+		/// <summary>
+		///  ブラックリストを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		public IEnumerator GetBlackList(
+		        UnityAction<AsyncResult<EzGetBlackListResult>> callback,
+		        GameSession session,
+                string namespaceName
+        )
+		{
+            yield return _client.DescribeBlackList(
+                new DescribeBlackListRequest()
+                    .WithNamespaceName(namespaceName)
+                    .WithAccessToken(session.AccessToken.token),
+				r =>
+				{
+				    if(r.Result == null)
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzGetBlackListResult>(
+                                null,
+                                r.Error
+                            )
+                        );
+				    }
+				    else
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzGetBlackListResult>(
+                                new EzGetBlackListResult(r.Result),
+                                r.Error
+                            )
+                        );
+                    }
+				}
+            );
+		}
+
+		/// <summary>
+		///  ブラックリストにユーザを登録<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="targetUserId">None</param>
+		public IEnumerator RegisterBlackList(
+		        UnityAction<AsyncResult<EzRegisterBlackListResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string targetUserId
+        )
+		{
+            yield return _client.RegisterBlackList(
+                new RegisterBlackListRequest()
+                    .WithNamespaceName(namespaceName)
+                    .WithTargetUserId(targetUserId)
+                    .WithAccessToken(session.AccessToken.token),
+				r =>
+				{
+				    if(r.Result == null)
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzRegisterBlackListResult>(
+                                null,
+                                r.Error
+                            )
+                        );
+				    }
+				    else
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzRegisterBlackListResult>(
+                                new EzRegisterBlackListResult(r.Result),
+                                r.Error
+                            )
+                        );
+                    }
+				}
+            );
+		}
+
+		/// <summary>
+		///  ブラックリストからユーザを削除<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="targetUserId">None</param>
+		public IEnumerator UnregisterBlackList(
+		        UnityAction<AsyncResult<EzUnregisterBlackListResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string targetUserId
+        )
+		{
+            yield return _client.UnregisterBlackList(
+                new UnregisterBlackListRequest()
+                    .WithNamespaceName(namespaceName)
+                    .WithTargetUserId(targetUserId)
+                    .WithAccessToken(session.AccessToken.token),
+				r =>
+				{
+				    if(r.Result == null)
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzUnregisterBlackListResult>(
+                                null,
+                                r.Error
+                            )
+                        );
+				    }
+				    else
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzUnregisterBlackListResult>(
+                                new EzUnregisterBlackListResult(r.Result),
+                                r.Error
+                            )
+                        );
+                    }
+				}
+            );
+		}
 	}
 }

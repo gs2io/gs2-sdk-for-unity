@@ -25,7 +25,7 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Friend.Request
 {
 	[Preserve]
-	public class GetSendRequestByUserIdRequest : Gs2Request<GetSendRequestByUserIdRequest>
+	public class RegisterBlackListByUserIdRequest : Gs2Request<RegisterBlackListByUserIdRequest>
 	{
 
         /** ネームスペース名 */
@@ -37,7 +37,7 @@ namespace Gs2.Gs2Friend.Request
          * @param namespaceName ネームスペース名
          * @return this
          */
-        public GetSendRequestByUserIdRequest WithNamespaceName(string namespaceName) {
+        public RegisterBlackListByUserIdRequest WithNamespaceName(string namespaceName) {
             this.namespaceName = namespaceName;
             return this;
         }
@@ -52,22 +52,22 @@ namespace Gs2.Gs2Friend.Request
          * @param userId ユーザーID
          * @return this
          */
-        public GetSendRequestByUserIdRequest WithUserId(string userId) {
+        public RegisterBlackListByUserIdRequest WithUserId(string userId) {
             this.userId = userId;
             return this;
         }
 
 
-        /** フレンドリクエストの宛先ユーザーID */
+        /** None */
         public string targetUserId { set; get; }
 
         /**
-         * フレンドリクエストの宛先ユーザーIDを設定
+         * Noneを設定
          *
-         * @param targetUserId フレンドリクエストの宛先ユーザーID
+         * @param targetUserId None
          * @return this
          */
-        public GetSendRequestByUserIdRequest WithTargetUserId(string targetUserId) {
+        public RegisterBlackListByUserIdRequest WithTargetUserId(string targetUserId) {
             this.targetUserId = targetUserId;
             return this;
         }
@@ -82,16 +82,16 @@ namespace Gs2.Gs2Friend.Request
          * @param duplicationAvoider 重複実行回避機能に使用するID
          * @return this
          */
-        public GetSendRequestByUserIdRequest WithDuplicationAvoider(string duplicationAvoider) {
+        public RegisterBlackListByUserIdRequest WithDuplicationAvoider(string duplicationAvoider) {
             this.duplicationAvoider = duplicationAvoider;
             return this;
         }
 
 
     	[Preserve]
-        public static GetSendRequestByUserIdRequest FromDict(JsonData data)
+        public static RegisterBlackListByUserIdRequest FromDict(JsonData data)
         {
-            return new GetSendRequestByUserIdRequest {
+            return new RegisterBlackListByUserIdRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
                 targetUserId = data.Keys.Contains("targetUserId") && data["targetUserId"] != null ? data["targetUserId"].ToString(): null,
