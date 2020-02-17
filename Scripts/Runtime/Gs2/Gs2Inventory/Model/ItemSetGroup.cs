@@ -26,13 +26,13 @@ namespace Gs2.Gs2Inventory.Model
 	public class ItemSetGroup
 	{
 
-        /** 有効期限ごとのアイテム所持数量 */
+        /** 有効期限ごとのアイテム所持数量 (このモデルは SDK では使用されません) */
         public string itemSetGroupId { set; get; }
 
         /**
-         * 有効期限ごとのアイテム所持数量を設定
+         * 有効期限ごとのアイテム所持数量 (このモデルは SDK では使用されません)を設定
          *
-         * @param itemSetGroupId 有効期限ごとのアイテム所持数量
+         * @param itemSetGroupId 有効期限ごとのアイテム所持数量 (このモデルは SDK では使用されません)
          * @return this
          */
         public ItemSetGroup WithItemSetGroupId(string itemSetGroupId) {
