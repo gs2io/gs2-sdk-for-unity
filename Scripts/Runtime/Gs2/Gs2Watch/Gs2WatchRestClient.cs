@@ -225,5 +225,136 @@ namespace Gs2.Gs2Watch
 			var task = new GetCumulativeTask(request, callback);
 			return Gs2RestSession.Execute(task);
         }
+
+        private class DescribeBillingActivitiesTask : Gs2RestSessionTask<Result.DescribeBillingActivitiesResult>
+        {
+			private readonly Request.DescribeBillingActivitiesRequest _request;
+
+			public DescribeBillingActivitiesTask(Request.DescribeBillingActivitiesRequest request, UnityAction<AsyncResult<Result.DescribeBillingActivitiesResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "watch")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/billingActivity/{year}/{month}";
+
+                url = url.Replace("{year}",_request.year != null ? _request.year.ToString() : "null");
+                url = url.Replace("{month}",_request.month != null ? _request.month.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                if (_request.service != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "service", UnityWebRequest.EscapeURL(_request.service)));
+                }
+                if (_request.pageToken != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "pageToken", UnityWebRequest.EscapeURL(_request.pageToken)));
+                }
+                if (_request.limit != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "limit", _request.limit));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  請求にまつわるアクティビティの一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DescribeBillingActivities(
+                Request.DescribeBillingActivitiesRequest request,
+                UnityAction<AsyncResult<Result.DescribeBillingActivitiesResult>> callback
+        )
+		{
+			var task = new DescribeBillingActivitiesTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class GetBillingActivityTask : Gs2RestSessionTask<Result.GetBillingActivityResult>
+        {
+			private readonly Request.GetBillingActivityRequest _request;
+
+			public GetBillingActivityTask(Request.GetBillingActivityRequest request, UnityAction<AsyncResult<Result.GetBillingActivityResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "watch")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/billingActivity/{year}/{month}/{service}/{activityType}";
+
+                url = url.Replace("{year}",_request.year != null ? _request.year.ToString() : "null");
+                url = url.Replace("{month}",_request.month != null ? _request.month.ToString() : "null");
+                url = url.Replace("{service}", !string.IsNullOrEmpty(_request.service) ? _request.service.ToString() : "null");
+                url = url.Replace("{activityType}", !string.IsNullOrEmpty(_request.activityType) ? _request.activityType.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  請求にまつわるアクティビティを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetBillingActivity(
+                Request.GetBillingActivityRequest request,
+                UnityAction<AsyncResult<Result.GetBillingActivityResult>> callback
+        )
+		{
+			var task = new GetBillingActivityTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
 	}
 }
