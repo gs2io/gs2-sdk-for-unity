@@ -16,24 +16,31 @@
 using Gs2.Gs2Experience.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Experience.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzStatus
 	{
 		/** 経験値の種類の名前 */
-		public string ExperienceName { get; set; }
+		[UnityEngine.SerializeField]
+		public string ExperienceName;
 		/** プロパティID */
-		public string PropertyId { get; set; }
+		[UnityEngine.SerializeField]
+		public string PropertyId;
 		/** 累計獲得経験値 */
-		public long ExperienceValue { get; set; }
+		[UnityEngine.SerializeField]
+		public long ExperienceValue;
 		/** 現在のランク */
-		public long RankValue { get; set; }
+		[UnityEngine.SerializeField]
+		public long RankValue;
 		/** 現在のランクキャップ */
-		public long RankCapValue { get; set; }
+		[UnityEngine.SerializeField]
+		public long RankCapValue;
 
 		public EzStatus()
 		{
@@ -49,7 +56,7 @@ namespace Gs2.Unity.Gs2Experience.Model
 			RankCapValue = @status.rankCapValue.HasValue ? @status.rankCapValue.Value : 0;
 		}
 
-        public Status ToModel()
+        public virtual Status ToModel()
         {
             return new Status {
                 experienceName = ExperienceName,
@@ -58,6 +65,28 @@ namespace Gs2.Unity.Gs2Experience.Model
                 rankValue = RankValue,
                 rankCapValue = RankCapValue,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.ExperienceName != null)
+            {
+                writer.WritePropertyName("experienceName");
+                writer.Write(this.ExperienceName);
+            }
+            if(this.PropertyId != null)
+            {
+                writer.WritePropertyName("propertyId");
+                writer.Write(this.PropertyId);
+            }
+            writer.WritePropertyName("experienceValue");
+            writer.Write(this.ExperienceValue);
+            writer.WritePropertyName("rankValue");
+            writer.Write(this.RankValue);
+            writer.WritePropertyName("rankCapValue");
+            writer.Write(this.RankCapValue);
+            writer.WriteObjectEnd();
         }
 	}
 }

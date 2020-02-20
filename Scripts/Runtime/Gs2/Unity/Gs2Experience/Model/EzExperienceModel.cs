@@ -16,26 +16,34 @@
 using Gs2.Gs2Experience.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Experience.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzExperienceModel
 	{
 		/** 経験値の種類名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** 経験値の種類のメタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 		/** 経験値の初期値 */
-		public long DefaultExperience { get; set; }
+		[UnityEngine.SerializeField]
+		public long DefaultExperience;
 		/** ランクキャップの初期値 */
-		public long DefaultRankCap { get; set; }
+		[UnityEngine.SerializeField]
+		public long DefaultRankCap;
 		/** ランクキャップの最大値 */
-		public long MaxRankCap { get; set; }
+		[UnityEngine.SerializeField]
+		public long MaxRankCap;
 		/** ランクアップ閾値 */
-		public EzThreshold RankThreshold { get; set; }
+		[UnityEngine.SerializeField]
+		public EzThreshold RankThreshold;
 
 		public EzExperienceModel()
 		{
@@ -52,7 +60,7 @@ namespace Gs2.Unity.Gs2Experience.Model
 			RankThreshold = @experienceModel.rankThreshold != null ? new EzThreshold(@experienceModel.rankThreshold) : null;
 		}
 
-        public ExperienceModel ToModel()
+        public virtual ExperienceModel ToModel()
         {
             return new ExperienceModel {
                 name = Name,
@@ -69,6 +77,33 @@ namespace Gs2.Unity.Gs2Experience.Model
                     ).ToList() : new List<long?>(new long?[] {}),
                 },
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            writer.WritePropertyName("defaultExperience");
+            writer.Write(this.DefaultExperience);
+            writer.WritePropertyName("defaultRankCap");
+            writer.Write(this.DefaultRankCap);
+            writer.WritePropertyName("maxRankCap");
+            writer.Write(this.MaxRankCap);
+            if(this.RankThreshold != null)
+            {
+                writer.WritePropertyName("rankThreshold");
+                this.RankThreshold.WriteJson(writer);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }
