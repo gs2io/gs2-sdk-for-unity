@@ -16,22 +16,28 @@
 using Gs2.Gs2Quest.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Quest.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzReward
 	{
 		/** スタンプシートで実行するアクションの種類 */
-		public string Action { get; set; }
+		[UnityEngine.SerializeField]
+		public string Action;
 		/** リクエストモデル */
-		public string Request { get; set; }
+		[UnityEngine.SerializeField]
+		public string Request;
 		/** 入手するリソースGRN */
-		public string ItemId { get; set; }
+		[UnityEngine.SerializeField]
+		public string ItemId;
 		/** 入手する数量 */
-		public int Value { get; set; }
+		[UnityEngine.SerializeField]
+		public int Value;
 
 		public EzReward()
 		{
@@ -46,7 +52,7 @@ namespace Gs2.Unity.Gs2Quest.Model
 			Value = @reward.value.HasValue ? @reward.value.Value : 0;
 		}
 
-        public Reward ToModel()
+        public virtual Reward ToModel()
         {
             return new Reward {
                 action = Action,
@@ -54,6 +60,29 @@ namespace Gs2.Unity.Gs2Quest.Model
                 itemId = ItemId,
                 value = Value,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Action != null)
+            {
+                writer.WritePropertyName("action");
+                writer.Write(this.Action);
+            }
+            if(this.Request != null)
+            {
+                writer.WritePropertyName("request");
+                writer.Write(this.Request);
+            }
+            if(this.ItemId != null)
+            {
+                writer.WritePropertyName("itemId");
+                writer.Write(this.ItemId);
+            }
+            writer.WritePropertyName("value");
+            writer.Write(this.Value);
+            writer.WriteObjectEnd();
         }
 	}
 }

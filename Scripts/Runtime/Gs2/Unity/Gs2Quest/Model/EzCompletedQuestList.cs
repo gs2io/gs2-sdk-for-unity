@@ -16,18 +16,22 @@
 using Gs2.Gs2Quest.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Quest.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzCompletedQuestList
 	{
 		/** クエストグループ名 */
-		public string QuestGroupName { get; set; }
+		[UnityEngine.SerializeField]
+		public string QuestGroupName;
 		/** 攻略済みのクエスト名一覧のリスト */
-		public List<string> CompleteQuestNames { get; set; }
+		[UnityEngine.SerializeField]
+		public List<string> CompleteQuestNames;
 
 		public EzCompletedQuestList()
 		{
@@ -44,7 +48,7 @@ namespace Gs2.Unity.Gs2Quest.Model
 			).ToList() : new List<string>(new string[] {});
 		}
 
-        public CompletedQuestList ToModel()
+        public virtual CompletedQuestList ToModel()
         {
             return new CompletedQuestList {
                 questGroupName = QuestGroupName,
@@ -54,6 +58,27 @@ namespace Gs2.Unity.Gs2Quest.Model
                         }
                 ).ToList() : new List<string>(new string[] {}),
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.QuestGroupName != null)
+            {
+                writer.WritePropertyName("questGroupName");
+                writer.Write(this.QuestGroupName);
+            }
+            if(this.CompleteQuestNames != null)
+            {
+                writer.WritePropertyName("completeQuestNames");
+                writer.WriteArrayStart();
+                foreach(var item in this.CompleteQuestNames)
+                {
+                    writer.Write(item);
+                }
+                writer.WriteArrayEnd();
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }
