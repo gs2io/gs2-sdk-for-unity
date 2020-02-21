@@ -255,6 +255,76 @@ namespace Gs2.Gs2Deploy
 			return Gs2RestSession.Execute(task);
         }
 
+        private class ValidateTask : Gs2RestSessionTask<Result.ValidateResult>
+        {
+			private readonly Request.ValidateRequest _request;
+
+			public ValidateTask(Request.ValidateRequest request, UnityAction<AsyncResult<Result.ValidateResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "deploy")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/stack/validate";
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.template != null)
+                {
+                    jsonWriter.WritePropertyName("template");
+                    jsonWriter.Write(_request.template.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  テンプレートを検証<br />
+		///    <br />
+		///    このAPIの検証内容は簡易検証を行うに過ぎず、<br />
+		///    このAPIで検証をパスしたとしても、実行したらエラーが発生する場合もあります<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator Validate(
+                Request.ValidateRequest request,
+                UnityAction<AsyncResult<Result.ValidateResult>> callback
+        )
+		{
+			var task = new ValidateTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
         private class GetStackStatusTask : Gs2RestSessionTask<Result.GetStackStatusResult>
         {
 			private readonly Request.GetStackStatusRequest _request;
