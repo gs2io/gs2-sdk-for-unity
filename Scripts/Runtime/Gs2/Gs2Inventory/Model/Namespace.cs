@@ -54,13 +54,13 @@ namespace Gs2.Gs2Inventory.Model
             return this;
         }
 
-        /** カテゴリー名 */
+        /** ネームスペース名 */
         public string name { set; get; }
 
         /**
-         * カテゴリー名を設定
+         * ネームスペース名を設定
          *
-         * @param name カテゴリー名
+         * @param name ネームスペース名
          * @return this
          */
         public Namespace WithName(string name) {

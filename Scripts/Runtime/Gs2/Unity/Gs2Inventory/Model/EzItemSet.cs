@@ -16,24 +16,34 @@
 using Gs2.Gs2Inventory.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Inventory.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzItemSet
 	{
 		/** アイテムセットを識別する名前 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** インベントリの名前 */
-		public string InventoryName { get; set; }
+		[UnityEngine.SerializeField]
+		public string InventoryName;
 		/** アイテムマスターの名前 */
-		public string ItemName { get; set; }
+		[UnityEngine.SerializeField]
+		public string ItemName;
 		/** 所持数量 */
-		public long Count { get; set; }
+		[UnityEngine.SerializeField]
+		public long Count;
+		/** 表示順番 */
+		[UnityEngine.SerializeField]
+		public int SortValue;
 		/** 有効期限 */
-		public long ExpiresAt { get; set; }
+		[UnityEngine.SerializeField]
+		public long ExpiresAt;
 
 		public EzItemSet()
 		{
@@ -46,18 +56,47 @@ namespace Gs2.Unity.Gs2Inventory.Model
 			InventoryName = @itemSet.inventoryName;
 			ItemName = @itemSet.itemName;
 			Count = @itemSet.count.HasValue ? @itemSet.count.Value : 0;
+			SortValue = @itemSet.sortValue.HasValue ? @itemSet.sortValue.Value : 0;
 			ExpiresAt = @itemSet.expiresAt.HasValue ? @itemSet.expiresAt.Value : 0;
 		}
 
-        public ItemSet ToModel()
+        public virtual ItemSet ToModel()
         {
             return new ItemSet {
                 name = Name,
                 inventoryName = InventoryName,
                 itemName = ItemName,
                 count = Count,
+                sortValue = SortValue,
                 expiresAt = ExpiresAt,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.InventoryName != null)
+            {
+                writer.WritePropertyName("inventoryName");
+                writer.Write(this.InventoryName);
+            }
+            if(this.ItemName != null)
+            {
+                writer.WritePropertyName("itemName");
+                writer.Write(this.ItemName);
+            }
+            writer.WritePropertyName("count");
+            writer.Write(this.Count);
+            writer.WritePropertyName("sortValue");
+            writer.Write(this.SortValue);
+            writer.WritePropertyName("expiresAt");
+            writer.Write(this.ExpiresAt);
+            writer.WriteObjectEnd();
         }
 	}
 }
