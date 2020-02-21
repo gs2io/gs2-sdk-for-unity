@@ -16,22 +16,28 @@
 using Gs2.Gs2Exchange.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Exchange.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzRateModel
 	{
 		/** 交換レートの種類名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** 交換レートの種類のメタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 		/** 消費アクションリスト */
-		public List<EzConsumeAction> ConsumeActions { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzConsumeAction> ConsumeActions;
 		/** 入手アクションリスト */
-		public List<EzAcquireAction> AcquireActions { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzAcquireAction> AcquireActions;
 
 		public EzRateModel()
 		{
@@ -54,7 +60,7 @@ namespace Gs2.Unity.Gs2Exchange.Model
 			).ToList() : new List<EzAcquireAction>(new EzAcquireAction[] {});
 		}
 
-        public RateModel ToModel()
+        public virtual RateModel ToModel()
         {
             return new RateModel {
                 name = Name,
@@ -78,6 +84,42 @@ namespace Gs2.Unity.Gs2Exchange.Model
                         }
                 ).ToList() : new List<AcquireAction>(new AcquireAction[] {}),
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            if(this.ConsumeActions != null)
+            {
+                writer.WritePropertyName("consumeActions");
+                writer.WriteArrayStart();
+                foreach(var item in this.ConsumeActions)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            if(this.AcquireActions != null)
+            {
+                writer.WritePropertyName("acquireActions");
+                writer.WriteArrayStart();
+                foreach(var item in this.AcquireActions)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }
