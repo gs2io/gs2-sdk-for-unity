@@ -58,13 +58,13 @@ namespace Gs2.Gs2Distributor.Request
         }
 
 
-        /** 所持品の配布処理の権限判定に使用する ユーザ のGRN */
+        /** リソース溢れ処理に使用する ユーザ のGRN */
         public string assumeUserId { set; get; }
 
         /**
-         * 所持品の配布処理の権限判定に使用する ユーザ のGRNを設定
+         * リソース溢れ処理に使用する ユーザ のGRNを設定
          *
-         * @param assumeUserId 所持品の配布処理の権限判定に使用する ユーザ のGRN
+         * @param assumeUserId リソース溢れ処理に使用する ユーザ のGRN
          * @return this
          */
         public UpdateNamespaceRequest WithAssumeUserId(string assumeUserId) {

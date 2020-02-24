@@ -1211,6 +1211,81 @@ namespace Gs2.Gs2Distributor
 			return Gs2RestSession.Execute(task);
         }
 
+        private class DistributeWithoutOverflowProcessTask : Gs2RestSessionTask<Result.DistributeWithoutOverflowProcessResult>
+        {
+			private readonly Request.DistributeWithoutOverflowProcessRequest _request;
+
+			public DistributeWithoutOverflowProcessTask(Request.DistributeWithoutOverflowProcessRequest request, UnityAction<AsyncResult<Result.DistributeWithoutOverflowProcessResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "distributor")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/distribute";
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.distributeResource != null)
+                {
+                    jsonWriter.WritePropertyName("distributeResource");
+                    _request.distributeResource.WriteJson(jsonWriter);
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  所持品を配布する(溢れた際の救済処置無し)<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DistributeWithoutOverflowProcess(
+                Request.DistributeWithoutOverflowProcessRequest request,
+                UnityAction<AsyncResult<Result.DistributeWithoutOverflowProcessResult>> callback
+        )
+		{
+			var task = new DistributeWithoutOverflowProcessTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
         private class RunStampTaskTask : Gs2RestSessionTask<Result.RunStampTaskResult>
         {
 			private readonly Request.RunStampTaskRequest _request;
@@ -1364,6 +1439,164 @@ namespace Gs2.Gs2Distributor
         )
 		{
 			var task = new RunStampSheetTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class RunStampTaskWithoutNamespaceTask : Gs2RestSessionTask<Result.RunStampTaskWithoutNamespaceResult>
+        {
+			private readonly Request.RunStampTaskWithoutNamespaceRequest _request;
+
+			public RunStampTaskWithoutNamespaceTask(Request.RunStampTaskWithoutNamespaceRequest request, UnityAction<AsyncResult<Result.RunStampTaskWithoutNamespaceResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "distributor")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/stamp/task/run";
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.stampTask != null)
+                {
+                    jsonWriter.WritePropertyName("stampTask");
+                    jsonWriter.Write(_request.stampTask.ToString());
+                }
+                if (_request.keyId != null)
+                {
+                    jsonWriter.WritePropertyName("keyId");
+                    jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  スタンプシートのタスクを実行する<br />
+		///    <br />
+		///    ネームスペースの指定を省略することで、<br />
+		///    ログが記録できない・リソース溢れ処理が実行されないなどの副作用があります。<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator RunStampTaskWithoutNamespace(
+                Request.RunStampTaskWithoutNamespaceRequest request,
+                UnityAction<AsyncResult<Result.RunStampTaskWithoutNamespaceResult>> callback
+        )
+		{
+			var task = new RunStampTaskWithoutNamespaceTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class RunStampSheetWithoutNamespaceTask : Gs2RestSessionTask<Result.RunStampSheetWithoutNamespaceResult>
+        {
+			private readonly Request.RunStampSheetWithoutNamespaceRequest _request;
+
+			public RunStampSheetWithoutNamespaceTask(Request.RunStampSheetWithoutNamespaceRequest request, UnityAction<AsyncResult<Result.RunStampSheetWithoutNamespaceResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "distributor")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/distribute/stamp/sheet/run";
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.stampSheet != null)
+                {
+                    jsonWriter.WritePropertyName("stampSheet");
+                    jsonWriter.Write(_request.stampSheet.ToString());
+                }
+                if (_request.keyId != null)
+                {
+                    jsonWriter.WritePropertyName("keyId");
+                    jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  スタンプシートの完了を報告する<br />
+		///    <br />
+		///    ネームスペースの指定を省略することで、<br />
+		///    ログが記録できない・リソース溢れ処理が実行されないなどの副作用があります。<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator RunStampSheetWithoutNamespace(
+                Request.RunStampSheetWithoutNamespaceRequest request,
+                UnityAction<AsyncResult<Result.RunStampSheetWithoutNamespaceResult>> callback
+        )
+		{
+			var task = new RunStampSheetWithoutNamespaceTask(request, callback);
 			return Gs2RestSession.Execute(task);
         }
 	}

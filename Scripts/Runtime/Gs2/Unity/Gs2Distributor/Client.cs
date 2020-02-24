@@ -214,5 +214,99 @@ namespace Gs2.Unity.Gs2Distributor
 				}
             );
 		}
+
+		/// <summary>
+		///  スタンプタスクを実行<br />
+		///    <br />
+		///    ネームスペースの指定を省略することで、<br />
+		///    ログが記録できない・リソース溢れ処理が実行されないなどの副作用があります。<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="stampTask">実行するスタンプタスク</param>
+		/// <param name="keyId">スタンプシートの暗号化に使用した暗号鍵GRN</param>
+		/// <param name="contextStack">スタンプシートの実行状況を記録するスタックメモリ</param>
+		public IEnumerator RunStampTaskWithoutNamespace(
+		        UnityAction<AsyncResult<EzRunStampTaskWithoutNamespaceResult>> callback,
+                string stampTask,
+                string keyId,
+                string contextStack=null
+        )
+		{
+            yield return _client.RunStampTaskWithoutNamespace(
+                new RunStampTaskWithoutNamespaceRequest()
+                    .WithStampTask(stampTask)
+                    .WithKeyId(keyId)
+                    .WithContextStack(contextStack),
+				r =>
+				{
+				    if(r.Result == null)
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzRunStampTaskWithoutNamespaceResult>(
+                                null,
+                                r.Error
+                            )
+                        );
+				    }
+				    else
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzRunStampTaskWithoutNamespaceResult>(
+                                new EzRunStampTaskWithoutNamespaceResult(r.Result),
+                                r.Error
+                            )
+                        );
+                    }
+				}
+            );
+		}
+
+		/// <summary>
+		///  スタンプシートを実行<br />
+		///    <br />
+		///    ネームスペースの指定を省略することで、<br />
+		///    ログが記録できない・リソース溢れ処理が実行されないなどの副作用があります。<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="stampSheet">実行するスタンプタスク</param>
+		/// <param name="keyId">スタンプシートの暗号化に使用した暗号鍵GRN</param>
+		/// <param name="contextStack">スタンプシートの実行状況を記録するスタックメモリ</param>
+		public IEnumerator RunStampSheetWithoutNamespace(
+		        UnityAction<AsyncResult<EzRunStampSheetWithoutNamespaceResult>> callback,
+                string stampSheet,
+                string keyId,
+                string contextStack=null
+        )
+		{
+            yield return _client.RunStampSheetWithoutNamespace(
+                new RunStampSheetWithoutNamespaceRequest()
+                    .WithStampSheet(stampSheet)
+                    .WithKeyId(keyId)
+                    .WithContextStack(contextStack),
+				r =>
+				{
+				    if(r.Result == null)
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzRunStampSheetWithoutNamespaceResult>(
+                                null,
+                                r.Error
+                            )
+                        );
+				    }
+				    else
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzRunStampSheetWithoutNamespaceResult>(
+                                new EzRunStampSheetWithoutNamespaceResult(r.Result),
+                                r.Error
+                            )
+                        );
+                    }
+				}
+            );
+		}
 	}
 }

@@ -16,18 +16,22 @@
 using Gs2.Gs2Distributor.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Distributor.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzDistributeResource
 	{
 		/** スタンプシートで実行するアクションの種類 */
-		public string Action { get; set; }
+		[UnityEngine.SerializeField]
+		public string Action;
 		/** 加算リクエストのJSON */
-		public string Request { get; set; }
+		[UnityEngine.SerializeField]
+		public string Request;
 
 		public EzDistributeResource()
 		{
@@ -40,12 +44,28 @@ namespace Gs2.Unity.Gs2Distributor.Model
 			Request = @distributeResource.request;
 		}
 
-        public DistributeResource ToModel()
+        public virtual DistributeResource ToModel()
         {
             return new DistributeResource {
                 action = Action,
                 request = Request,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Action != null)
+            {
+                writer.WritePropertyName("action");
+                writer.Write(this.Action);
+            }
+            if(this.Request != null)
+            {
+                writer.WritePropertyName("request");
+                writer.Write(this.Request);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }
