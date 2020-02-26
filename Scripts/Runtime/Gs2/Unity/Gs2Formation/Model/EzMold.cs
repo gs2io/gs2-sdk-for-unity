@@ -16,20 +16,25 @@
 using Gs2.Gs2Formation.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Formation.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzMold
 	{
 		/** フォームの保存領域の名前 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** ユーザーID */
-		public string UserId { get; set; }
+		[UnityEngine.SerializeField]
+		public string UserId;
 		/** 現在のキャパシティ */
-		public int Capacity { get; set; }
+		[UnityEngine.SerializeField]
+		public int Capacity;
 
 		public EzMold()
 		{
@@ -43,13 +48,31 @@ namespace Gs2.Unity.Gs2Formation.Model
 			Capacity = @mold.capacity.HasValue ? @mold.capacity.Value : 0;
 		}
 
-        public Mold ToModel()
+        public virtual Mold ToModel()
         {
             return new Mold {
                 name = Name,
                 userId = UserId,
                 capacity = Capacity,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.UserId != null)
+            {
+                writer.WritePropertyName("userId");
+                writer.Write(this.UserId);
+            }
+            writer.WritePropertyName("capacity");
+            writer.Write(this.Capacity);
+            writer.WriteObjectEnd();
         }
 	}
 }

@@ -82,17 +82,17 @@ namespace Gs2.Gs2Formation.Model
             return this;
         }
 
-        /** フォームマスター */
-        public string formModelId { set; get; }
+        /** フォーム名 */
+        public string formModelName { set; get; }
 
         /**
-         * フォームマスターを設定
+         * フォーム名を設定
          *
-         * @param formModelId フォームマスター
+         * @param formModelName フォーム名
          * @return this
          */
-        public MoldModelMaster WithFormModelId(string formModelId) {
-            this.formModelId = formModelId;
+        public MoldModelMaster WithFormModelName(string formModelName) {
+            this.formModelName = formModelName;
             return this;
         }
 
@@ -175,10 +175,10 @@ namespace Gs2.Gs2Formation.Model
                 writer.WritePropertyName("metadata");
                 writer.Write(this.metadata);
             }
-            if(this.formModelId != null)
+            if(this.formModelName != null)
             {
-                writer.WritePropertyName("formModelId");
-                writer.Write(this.formModelId);
+                writer.WritePropertyName("formModelName");
+                writer.Write(this.formModelName);
             }
             if(this.initialMaxCapacity.HasValue)
             {
@@ -211,7 +211,7 @@ namespace Gs2.Gs2Formation.Model
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
-                .WithFormModelId(data.Keys.Contains("formModelId") && data["formModelId"] != null ? data["formModelId"].ToString() : null)
+                .WithFormModelName(data.Keys.Contains("formModelName") && data["formModelName"] != null ? data["formModelName"].ToString() : null)
                 .WithInitialMaxCapacity(data.Keys.Contains("initialMaxCapacity") && data["initialMaxCapacity"] != null ? (int?)int.Parse(data["initialMaxCapacity"].ToString()) : null)
                 .WithMaxCapacity(data.Keys.Contains("maxCapacity") && data["maxCapacity"] != null ? (int?)int.Parse(data["maxCapacity"].ToString()) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)

@@ -44,16 +44,16 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** フォーム名 */
-        public string formName { set; get; }
+        public string formModelName { set; get; }
 
         /**
          * フォーム名を設定
          *
-         * @param formName フォーム名
+         * @param formModelName フォーム名
          * @return this
          */
-        public DeleteFormModelMasterRequest WithFormName(string formName) {
-            this.formName = formName;
+        public DeleteFormModelMasterRequest WithFormModelName(string formModelName) {
+            this.formModelName = formModelName;
             return this;
         }
 
@@ -63,7 +63,7 @@ namespace Gs2.Gs2Formation.Request
         {
             return new DeleteFormModelMasterRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
-                formName = data.Keys.Contains("formName") && data["formName"] != null ? data["formName"].ToString(): null,
+                formModelName = data.Keys.Contains("formModelName") && data["formModelName"] != null ? data["formModelName"].ToString(): null,
             };
         }
 

@@ -68,13 +68,13 @@ namespace Gs2.Gs2Formation.Model
             return this;
         }
 
-        /** フォームモデル */
+        /** None */
         public FormModel formModel { set; get; }
 
         /**
-         * フォームモデルを設定
+         * Noneを設定
          *
-         * @param formModel フォームモデル
+         * @param formModel None
          * @return this
          */
         public MoldModel WithFormModel(FormModel formModel) {
