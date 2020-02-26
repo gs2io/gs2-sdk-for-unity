@@ -16,18 +16,22 @@
 using Gs2.Gs2Chat.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Chat.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzNotificationType
 	{
 		/** 新着メッセージ通知を受け取るカテゴリ */
-		public int Category { get; set; }
+		[UnityEngine.SerializeField]
+		public int Category;
 		/** オフラインだった時にモバイルプッシュ通知に転送するか */
-		public bool EnableTransferMobilePushNotification { get; set; }
+		[UnityEngine.SerializeField]
+		public bool EnableTransferMobilePushNotification;
 
 		public EzNotificationType()
 		{
@@ -40,12 +44,22 @@ namespace Gs2.Unity.Gs2Chat.Model
 			EnableTransferMobilePushNotification = @notificationType.enableTransferMobilePushNotification.HasValue ? @notificationType.enableTransferMobilePushNotification.Value : false;
 		}
 
-        public NotificationType ToModel()
+        public virtual NotificationType ToModel()
         {
             return new NotificationType {
                 category = Category,
                 enableTransferMobilePushNotification = EnableTransferMobilePushNotification,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            writer.WritePropertyName("category");
+            writer.Write(this.Category);
+            writer.WritePropertyName("enableTransferMobilePushNotification");
+            writer.Write(this.EnableTransferMobilePushNotification);
+            writer.WriteObjectEnd();
         }
 	}
 }

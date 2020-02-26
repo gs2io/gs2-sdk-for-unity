@@ -53,6 +53,7 @@ namespace Gs2.Unity.Gs2Chat
 		/// <param name="callback">コールバックハンドラ</param>
 		/// <param name="session">ゲームセッション</param>
 		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="name">ルーム名</param>
 		/// <param name="metadata">メタデータ</param>
 		/// <param name="password">メッセージを投稿するために必要となるパスワード</param>
 		/// <param name="whiteListUserIds">ルームに参加可能なユーザIDリスト</param>
@@ -60,6 +61,7 @@ namespace Gs2.Unity.Gs2Chat
 		        UnityAction<AsyncResult<EzCreateRoomResult>> callback,
 		        GameSession session,
                 string namespaceName,
+                string name=null,
                 string metadata=null,
                 string password=null,
                 List<string> whiteListUserIds=null
@@ -68,6 +70,7 @@ namespace Gs2.Unity.Gs2Chat
             yield return _client.CreateRoom(
                 new CreateRoomRequest()
                     .WithNamespaceName(namespaceName)
+                    .WithName(name)
                     .WithMetadata(metadata)
                     .WithPassword(password)
                     .WithWhiteListUserIds(whiteListUserIds)

@@ -16,24 +16,31 @@
 using Gs2.Gs2Chat.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Chat.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzMessage
 	{
 		/** ルーム名 */
-		public string RoomName { get; set; }
+		[UnityEngine.SerializeField]
+		public string RoomName;
 		/** 発言したユーザID */
-		public string UserId { get; set; }
+		[UnityEngine.SerializeField]
+		public string UserId;
 		/** メッセージの種類を分類したい時の種類番号 */
-		public int Category { get; set; }
+		[UnityEngine.SerializeField]
+		public int Category;
 		/** メタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 		/** 作成日時 */
-		public long CreatedAt { get; set; }
+		[UnityEngine.SerializeField]
+		public long CreatedAt;
 
 		public EzMessage()
 		{
@@ -49,7 +56,7 @@ namespace Gs2.Unity.Gs2Chat.Model
 			CreatedAt = @message.createdAt.HasValue ? @message.createdAt.Value : 0;
 		}
 
-        public Message ToModel()
+        public virtual Message ToModel()
         {
             return new Message {
                 roomName = RoomName,
@@ -58,6 +65,31 @@ namespace Gs2.Unity.Gs2Chat.Model
                 metadata = Metadata,
                 createdAt = CreatedAt,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.RoomName != null)
+            {
+                writer.WritePropertyName("roomName");
+                writer.Write(this.RoomName);
+            }
+            if(this.UserId != null)
+            {
+                writer.WritePropertyName("userId");
+                writer.Write(this.UserId);
+            }
+            writer.WritePropertyName("category");
+            writer.Write(this.Category);
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            writer.WritePropertyName("createdAt");
+            writer.Write(this.CreatedAt);
+            writer.WriteObjectEnd();
         }
 	}
 }
