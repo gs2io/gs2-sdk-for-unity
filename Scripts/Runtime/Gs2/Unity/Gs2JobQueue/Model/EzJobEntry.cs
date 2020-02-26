@@ -24,35 +24,35 @@ namespace Gs2.Unity.Gs2JobQueue.Model
 {
 	[Preserve]
 	[System.Serializable]
-	public class EzJob
+	public class EzJobEntry
 	{
-		/** ジョブ */
+		/** スクリプト のGRN */
 		[UnityEngine.SerializeField]
-		public string JobId;
-		/** 現在のリトライ回数 */
+		public string ScriptId;
+		/** 引数 */
 		[UnityEngine.SerializeField]
-		public int CurrentRetryCount;
+		public string Args;
 		/** 最大試行回数 */
 		[UnityEngine.SerializeField]
 		public int MaxTryCount;
 
-		public EzJob()
+		public EzJobEntry()
 		{
 
 		}
 
-		public EzJob(Gs2.Gs2JobQueue.Model.Job @job)
+		public EzJobEntry(Gs2.Gs2JobQueue.Model.JobEntry @jobEntry)
 		{
-			JobId = @job.jobId;
-			CurrentRetryCount = @job.currentRetryCount.HasValue ? @job.currentRetryCount.Value : 0;
-			MaxTryCount = @job.maxTryCount.HasValue ? @job.maxTryCount.Value : 0;
+			ScriptId = @jobEntry.scriptId;
+			Args = @jobEntry.args;
+			MaxTryCount = @jobEntry.maxTryCount.HasValue ? @jobEntry.maxTryCount.Value : 0;
 		}
 
-        public virtual Job ToModel()
+        public virtual JobEntry ToModel()
         {
-            return new Job {
-                jobId = JobId,
-                currentRetryCount = CurrentRetryCount,
+            return new JobEntry {
+                scriptId = ScriptId,
+                args = Args,
                 maxTryCount = MaxTryCount,
             };
         }
@@ -60,13 +60,16 @@ namespace Gs2.Unity.Gs2JobQueue.Model
         public virtual void WriteJson(JsonWriter writer)
         {
             writer.WriteObjectStart();
-            if(this.JobId != null)
+            if(this.ScriptId != null)
             {
-                writer.WritePropertyName("jobId");
-                writer.Write(this.JobId);
+                writer.WritePropertyName("scriptId");
+                writer.Write(this.ScriptId);
             }
-            writer.WritePropertyName("currentRetryCount");
-            writer.Write(this.CurrentRetryCount);
+            if(this.Args != null)
+            {
+                writer.WritePropertyName("args");
+                writer.Write(this.Args);
+            }
             writer.WritePropertyName("maxTryCount");
             writer.Write(this.MaxTryCount);
             writer.WriteObjectEnd();

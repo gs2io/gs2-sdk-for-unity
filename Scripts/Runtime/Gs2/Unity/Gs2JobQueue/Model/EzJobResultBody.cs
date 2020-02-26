@@ -16,22 +16,28 @@
 using Gs2.Gs2JobQueue.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2JobQueue.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzJobResultBody
 	{
 		/** 試行回数 */
-		public int TryNumber { get; set; }
+		[UnityEngine.SerializeField]
+		public int TryNumber;
 		/** ステータスコード */
-		public int StatusCode { get; set; }
+		[UnityEngine.SerializeField]
+		public int StatusCode;
 		/** レスポンスの内容 */
-		public string Result { get; set; }
+		[UnityEngine.SerializeField]
+		public string Result;
 		/** 実行日時 */
-		public long TryAt { get; set; }
+		[UnityEngine.SerializeField]
+		public long TryAt;
 
 		public EzJobResultBody()
 		{
@@ -46,7 +52,7 @@ namespace Gs2.Unity.Gs2JobQueue.Model
 			TryAt = @jobResultBody.tryAt.HasValue ? @jobResultBody.tryAt.Value : 0;
 		}
 
-        public JobResultBody ToModel()
+        public virtual JobResultBody ToModel()
         {
             return new JobResultBody {
                 tryNumber = TryNumber,
@@ -54,6 +60,23 @@ namespace Gs2.Unity.Gs2JobQueue.Model
                 result = Result,
                 tryAt = TryAt,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            writer.WritePropertyName("tryNumber");
+            writer.Write(this.TryNumber);
+            writer.WritePropertyName("statusCode");
+            writer.Write(this.StatusCode);
+            if(this.Result != null)
+            {
+                writer.WritePropertyName("result");
+                writer.Write(this.Result);
+            }
+            writer.WritePropertyName("tryAt");
+            writer.Write(this.TryAt);
+            writer.WriteObjectEnd();
         }
 	}
 }
