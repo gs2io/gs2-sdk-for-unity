@@ -16,18 +16,22 @@
 using Gs2.Gs2Formation.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Formation.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzSlot
 	{
 		/** スロットモデル名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** プロパティID */
-		public string PropertyId { get; set; }
+		[UnityEngine.SerializeField]
+		public string PropertyId;
 
 		public EzSlot()
 		{
@@ -40,12 +44,28 @@ namespace Gs2.Unity.Gs2Formation.Model
 			PropertyId = @slot.propertyId;
 		}
 
-        public Slot ToModel()
+        public virtual Slot ToModel()
         {
             return new Slot {
                 name = Name,
                 propertyId = PropertyId,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.PropertyId != null)
+            {
+                writer.WritePropertyName("propertyId");
+                writer.Write(this.PropertyId);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

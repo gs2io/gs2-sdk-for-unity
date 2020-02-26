@@ -88,17 +88,17 @@ namespace Gs2.Gs2Formation.Request
         }
 
 
-        /** フォームマスター */
-        public string formModelId { set; get; }
+        /** フォーム名 */
+        public string formModelName { set; get; }
 
         /**
-         * フォームマスターを設定
+         * フォーム名を設定
          *
-         * @param formModelId フォームマスター
+         * @param formModelName フォーム名
          * @return this
          */
-        public CreateMoldModelMasterRequest WithFormModelId(string formModelId) {
-            this.formModelId = formModelId;
+        public CreateMoldModelMasterRequest WithFormModelName(string formModelName) {
+            this.formModelName = formModelName;
             return this;
         }
 
@@ -141,7 +141,7 @@ namespace Gs2.Gs2Formation.Request
                 name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
-                formModelId = data.Keys.Contains("formModelId") && data["formModelId"] != null ? data["formModelId"].ToString(): null,
+                formModelName = data.Keys.Contains("formModelName") && data["formModelName"] != null ? data["formModelName"].ToString(): null,
                 initialMaxCapacity = data.Keys.Contains("initialMaxCapacity") && data["initialMaxCapacity"] != null ? (int?)int.Parse(data["initialMaxCapacity"].ToString()) : null,
                 maxCapacity = data.Keys.Contains("maxCapacity") && data["maxCapacity"] != null ? (int?)int.Parse(data["maxCapacity"].ToString()) : null,
             };

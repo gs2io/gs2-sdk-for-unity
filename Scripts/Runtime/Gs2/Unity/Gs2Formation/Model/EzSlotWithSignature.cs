@@ -16,22 +16,28 @@
 using Gs2.Gs2Formation.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Formation.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzSlotWithSignature
 	{
 		/** スロットモデル名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** プロパティの種類 */
-		public string PropertyType { get; set; }
+		[UnityEngine.SerializeField]
+		public string PropertyType;
 		/** ペイロード */
-		public string Body { get; set; }
+		[UnityEngine.SerializeField]
+		public string Body;
 		/** プロパティIDのリソースを所有していることを証明する署名 */
-		public string Signature { get; set; }
+		[UnityEngine.SerializeField]
+		public string Signature;
 
 		public EzSlotWithSignature()
 		{
@@ -46,7 +52,7 @@ namespace Gs2.Unity.Gs2Formation.Model
 			Signature = @slotWithSignature.signature;
 		}
 
-        public SlotWithSignature ToModel()
+        public virtual SlotWithSignature ToModel()
         {
             return new SlotWithSignature {
                 name = Name,
@@ -54,6 +60,32 @@ namespace Gs2.Unity.Gs2Formation.Model
                 body = Body,
                 signature = Signature,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.PropertyType != null)
+            {
+                writer.WritePropertyName("propertyType");
+                writer.Write(this.PropertyType);
+            }
+            if(this.Body != null)
+            {
+                writer.WritePropertyName("body");
+                writer.Write(this.Body);
+            }
+            if(this.Signature != null)
+            {
+                writer.WritePropertyName("signature");
+                writer.Write(this.Signature);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

@@ -16,20 +16,25 @@
 using Gs2.Gs2Formation.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Formation.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzForm
 	{
 		/** フォームの保存領域の名前 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** 保存領域のインデックス */
-		public int Index { get; set; }
+		[UnityEngine.SerializeField]
+		public int Index;
 		/** スロットリスト */
-		public List<EzSlot> Slots { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzSlot> Slots;
 
 		public EzForm()
 		{
@@ -47,7 +52,7 @@ namespace Gs2.Unity.Gs2Formation.Model
 			).ToList() : new List<EzSlot>(new EzSlot[] {});
 		}
 
-        public Form ToModel()
+        public virtual Form ToModel()
         {
             return new Form {
                 name = Name,
@@ -62,6 +67,29 @@ namespace Gs2.Unity.Gs2Formation.Model
                         }
                 ).ToList() : new List<Slot>(new Slot[] {}),
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            writer.WritePropertyName("index");
+            writer.Write(this.Index);
+            if(this.Slots != null)
+            {
+                writer.WritePropertyName("slots");
+                writer.WriteArrayStart();
+                foreach(var item in this.Slots)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

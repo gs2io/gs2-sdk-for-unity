@@ -744,10 +744,10 @@ namespace Gs2.Gs2Formation
                     jsonWriter.WritePropertyName("namespaceName");
                     jsonWriter.Write(_request.namespaceName.ToString());
                 }
-                if (_request.formName != null)
+                if (_request.formModelName != null)
                 {
-                    jsonWriter.WritePropertyName("formName");
-                    jsonWriter.Write(_request.formName.ToString());
+                    jsonWriter.WritePropertyName("formModelName");
+                    jsonWriter.Write(_request.formModelName.ToString());
                 }
                 if (_request.contextStack != null)
                 {
@@ -824,10 +824,10 @@ namespace Gs2.Gs2Formation
                     jsonWriter.WritePropertyName("namespaceName");
                     jsonWriter.Write(_request.namespaceName.ToString());
                 }
-                if (_request.formName != null)
+                if (_request.formModelName != null)
                 {
-                    jsonWriter.WritePropertyName("formName");
-                    jsonWriter.Write(_request.formName.ToString());
+                    jsonWriter.WritePropertyName("formModelName");
+                    jsonWriter.Write(_request.formModelName.ToString());
                 }
                 if (_request.description != null)
                 {
@@ -924,10 +924,10 @@ namespace Gs2.Gs2Formation
                     jsonWriter.WritePropertyName("namespaceName");
                     jsonWriter.Write(_request.namespaceName.ToString());
                 }
-                if (_request.formName != null)
+                if (_request.formModelName != null)
                 {
-                    jsonWriter.WritePropertyName("formName");
-                    jsonWriter.Write(_request.formName.ToString());
+                    jsonWriter.WritePropertyName("formModelName");
+                    jsonWriter.Write(_request.formModelName.ToString());
                 }
                 if (_request.contextStack != null)
                 {
@@ -1259,10 +1259,10 @@ namespace Gs2.Gs2Formation
                     jsonWriter.WritePropertyName("metadata");
                     jsonWriter.Write(_request.metadata.ToString());
                 }
-                if (_request.formModelId != null)
+                if (_request.formModelName != null)
                 {
-                    jsonWriter.WritePropertyName("formModelId");
-                    jsonWriter.Write(_request.formModelId.ToString());
+                    jsonWriter.WritePropertyName("formModelName");
+                    jsonWriter.Write(_request.formModelName.ToString());
                 }
                 if (_request.initialMaxCapacity != null)
                 {
@@ -1444,10 +1444,10 @@ namespace Gs2.Gs2Formation
                     jsonWriter.WritePropertyName("metadata");
                     jsonWriter.Write(_request.metadata.ToString());
                 }
-                if (_request.formModelId != null)
+                if (_request.formModelName != null)
                 {
-                    jsonWriter.WritePropertyName("formModelId");
-                    jsonWriter.Write(_request.formModelId.ToString());
+                    jsonWriter.WritePropertyName("formModelName");
+                    jsonWriter.Write(_request.formModelName.ToString());
                 }
                 if (_request.initialMaxCapacity != null)
                 {
