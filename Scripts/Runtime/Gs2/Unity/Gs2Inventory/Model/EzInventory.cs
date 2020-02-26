@@ -16,22 +16,28 @@
 using Gs2.Gs2Inventory.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Inventory.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzInventory
 	{
 		/** インベントリ */
-		public string InventoryId { get; set; }
+		[UnityEngine.SerializeField]
+		public string InventoryId;
 		/** インベントリモデル名 */
-		public string InventoryName { get; set; }
+		[UnityEngine.SerializeField]
+		public string InventoryName;
 		/** 現在のインベントリのキャパシティ使用量 */
-		public int CurrentInventoryCapacityUsage { get; set; }
+		[UnityEngine.SerializeField]
+		public int CurrentInventoryCapacityUsage;
 		/** 現在のインベントリの最大キャパシティ */
-		public int CurrentInventoryMaxCapacity { get; set; }
+		[UnityEngine.SerializeField]
+		public int CurrentInventoryMaxCapacity;
 
 		public EzInventory()
 		{
@@ -46,7 +52,7 @@ namespace Gs2.Unity.Gs2Inventory.Model
 			CurrentInventoryMaxCapacity = @inventory.currentInventoryMaxCapacity.HasValue ? @inventory.currentInventoryMaxCapacity.Value : 0;
 		}
 
-        public Inventory ToModel()
+        public virtual Inventory ToModel()
         {
             return new Inventory {
                 inventoryId = InventoryId,
@@ -54,6 +60,26 @@ namespace Gs2.Unity.Gs2Inventory.Model
                 currentInventoryCapacityUsage = CurrentInventoryCapacityUsage,
                 currentInventoryMaxCapacity = CurrentInventoryMaxCapacity,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.InventoryId != null)
+            {
+                writer.WritePropertyName("inventoryId");
+                writer.Write(this.InventoryId);
+            }
+            if(this.InventoryName != null)
+            {
+                writer.WritePropertyName("inventoryName");
+                writer.Write(this.InventoryName);
+            }
+            writer.WritePropertyName("currentInventoryCapacityUsage");
+            writer.Write(this.CurrentInventoryCapacityUsage);
+            writer.WritePropertyName("currentInventoryMaxCapacity");
+            writer.Write(this.CurrentInventoryMaxCapacity);
+            writer.WriteObjectEnd();
         }
 	}
 }

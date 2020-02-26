@@ -16,22 +16,28 @@
 using Gs2.Gs2Inventory.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Inventory.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzInventoryModel
 	{
 		/** インベントリの種類名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** インベントリの種類のメタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 		/** インベントリの初期サイズ */
-		public int InitialCapacity { get; set; }
+		[UnityEngine.SerializeField]
+		public int InitialCapacity;
 		/** インベントリの最大サイズ */
-		public int MaxCapacity { get; set; }
+		[UnityEngine.SerializeField]
+		public int MaxCapacity;
 
 		public EzInventoryModel()
 		{
@@ -46,7 +52,7 @@ namespace Gs2.Unity.Gs2Inventory.Model
 			MaxCapacity = @inventoryModel.maxCapacity.HasValue ? @inventoryModel.maxCapacity.Value : 0;
 		}
 
-        public InventoryModel ToModel()
+        public virtual InventoryModel ToModel()
         {
             return new InventoryModel {
                 name = Name,
@@ -54,6 +60,26 @@ namespace Gs2.Unity.Gs2Inventory.Model
                 initialCapacity = InitialCapacity,
                 maxCapacity = MaxCapacity,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            writer.WritePropertyName("initialCapacity");
+            writer.Write(this.InitialCapacity);
+            writer.WritePropertyName("maxCapacity");
+            writer.Write(this.MaxCapacity);
+            writer.WriteObjectEnd();
         }
 	}
 }

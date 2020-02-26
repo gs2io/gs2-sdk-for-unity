@@ -16,24 +16,31 @@
 using Gs2.Gs2Inventory.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Inventory.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzItemModel
 	{
 		/** アイテムモデルの種類名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** アイテムモデルの種類のメタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 		/** スタック可能な最大数量 */
-		public long StackingLimit { get; set; }
+		[UnityEngine.SerializeField]
+		public long StackingLimit;
 		/** スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すか */
-		public bool AllowMultipleStacks { get; set; }
+		[UnityEngine.SerializeField]
+		public bool AllowMultipleStacks;
 		/** 表示順番 */
-		public int SortValue { get; set; }
+		[UnityEngine.SerializeField]
+		public int SortValue;
 
 		public EzItemModel()
 		{
@@ -49,7 +56,7 @@ namespace Gs2.Unity.Gs2Inventory.Model
 			SortValue = @itemModel.sortValue.HasValue ? @itemModel.sortValue.Value : 0;
 		}
 
-        public ItemModel ToModel()
+        public virtual ItemModel ToModel()
         {
             return new ItemModel {
                 name = Name,
@@ -58,6 +65,28 @@ namespace Gs2.Unity.Gs2Inventory.Model
                 allowMultipleStacks = AllowMultipleStacks,
                 sortValue = SortValue,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            writer.WritePropertyName("stackingLimit");
+            writer.Write(this.StackingLimit);
+            writer.WritePropertyName("allowMultipleStacks");
+            writer.Write(this.AllowMultipleStacks);
+            writer.WritePropertyName("sortValue");
+            writer.Write(this.SortValue);
+            writer.WriteObjectEnd();
         }
 	}
 }
