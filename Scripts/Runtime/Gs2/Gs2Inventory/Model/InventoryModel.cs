@@ -26,13 +26,13 @@ namespace Gs2.Gs2Inventory.Model
 	public class InventoryModel
 	{
 
-        /** インベントリモデルマスター */
+        /** インベントリモデル */
         public string inventoryModelId { set; get; }
 
         /**
-         * インベントリモデルマスターを設定
+         * インベントリモデルを設定
          *
-         * @param inventoryModelId インベントリモデルマスター
+         * @param inventoryModelId インベントリモデル
          * @return this
          */
         public InventoryModel WithInventoryModelId(string inventoryModelId) {
