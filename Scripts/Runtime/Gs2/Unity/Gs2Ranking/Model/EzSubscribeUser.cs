@@ -16,18 +16,22 @@
 using Gs2.Gs2Ranking.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Ranking.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzSubscribeUser
 	{
 		/** 購読するユーザID */
-		public string UserId { get; set; }
+		[UnityEngine.SerializeField]
+		public string UserId;
 		/** 購読されるユーザID */
-		public string TargetUserId { get; set; }
+		[UnityEngine.SerializeField]
+		public string TargetUserId;
 
 		public EzSubscribeUser()
 		{
@@ -40,12 +44,28 @@ namespace Gs2.Unity.Gs2Ranking.Model
 			TargetUserId = @subscribeUser.targetUserId;
 		}
 
-        public SubscribeUser ToModel()
+        public virtual SubscribeUser ToModel()
         {
             return new SubscribeUser {
                 userId = UserId,
                 targetUserId = TargetUserId,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.UserId != null)
+            {
+                writer.WritePropertyName("userId");
+                writer.Write(this.UserId);
+            }
+            if(this.TargetUserId != null)
+            {
+                writer.WritePropertyName("targetUserId");
+                writer.Write(this.TargetUserId);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }
