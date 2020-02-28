@@ -24,41 +24,31 @@ namespace Gs2.Unity.Gs2Mission.Model
 {
 	[Preserve]
 	[System.Serializable]
-	public class EzCounterScopeModel
+	public class EzScopedValue
 	{
 		/** リセットタイミング */
 		[UnityEngine.SerializeField]
 		public string ResetType;
-		/** リセットをする日にち */
+		/** カウント */
 		[UnityEngine.SerializeField]
-		public int ResetDayOfMonth;
-		/** リセットする曜日 */
-		[UnityEngine.SerializeField]
-		public string ResetDayOfWeek;
-		/** リセット時刻 */
-		[UnityEngine.SerializeField]
-		public int ResetHour;
+		public long Value;
 
-		public EzCounterScopeModel()
+		public EzScopedValue()
 		{
 
 		}
 
-		public EzCounterScopeModel(Gs2.Gs2Mission.Model.CounterScopeModel @counterScopeModel)
+		public EzScopedValue(Gs2.Gs2Mission.Model.ScopedValue @scopedValue)
 		{
-			ResetType = @counterScopeModel.resetType;
-			ResetDayOfMonth = @counterScopeModel.resetDayOfMonth.HasValue ? @counterScopeModel.resetDayOfMonth.Value : 0;
-			ResetDayOfWeek = @counterScopeModel.resetDayOfWeek;
-			ResetHour = @counterScopeModel.resetHour.HasValue ? @counterScopeModel.resetHour.Value : 0;
+			ResetType = @scopedValue.resetType;
+			Value = @scopedValue.value.HasValue ? @scopedValue.value.Value : 0;
 		}
 
-        public virtual CounterScopeModel ToModel()
+        public virtual ScopedValue ToModel()
         {
-            return new CounterScopeModel {
+            return new ScopedValue {
                 resetType = ResetType,
-                resetDayOfMonth = ResetDayOfMonth,
-                resetDayOfWeek = ResetDayOfWeek,
-                resetHour = ResetHour,
+                value = Value,
             };
         }
 
@@ -70,15 +60,8 @@ namespace Gs2.Unity.Gs2Mission.Model
                 writer.WritePropertyName("resetType");
                 writer.Write(this.ResetType);
             }
-            writer.WritePropertyName("resetDayOfMonth");
-            writer.Write(this.ResetDayOfMonth);
-            if(this.ResetDayOfWeek != null)
-            {
-                writer.WritePropertyName("resetDayOfWeek");
-                writer.Write(this.ResetDayOfWeek);
-            }
-            writer.WritePropertyName("resetHour");
-            writer.Write(this.ResetHour);
+            writer.WritePropertyName("value");
+            writer.Write(this.Value);
             writer.WriteObjectEnd();
         }
 	}
