@@ -16,30 +16,40 @@
 using Gs2.Gs2Mission.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Mission.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzMissionTaskModel
 	{
 		/** タスク名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** メタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 		/** カウンター名 */
-		public string CounterName { get; set; }
+		[UnityEngine.SerializeField]
+		public string CounterName;
 		/** リセットタイミング */
-		public string ResetType { get; set; }
+		[UnityEngine.SerializeField]
+		public string ResetType;
 		/** 目標値 */
-		public long TargetValue { get; set; }
+		[UnityEngine.SerializeField]
+		public long TargetValue;
 		/** ミッション達成時の報酬 */
-		public List<EzAcquireAction> CompleteAcquireActions { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzAcquireAction> CompleteAcquireActions;
 		/** 達成報酬の受け取り可能な期間を指定するイベントマスター のGRN */
-		public string ChallengePeriodEventId { get; set; }
+		[UnityEngine.SerializeField]
+		public string ChallengePeriodEventId;
 		/** このタスクに挑戦するために達成しておく必要のあるタスクの名前 */
-		public string PremiseMissionTaskName { get; set; }
+		[UnityEngine.SerializeField]
+		public string PremiseMissionTaskName;
 
 		public EzMissionTaskModel()
 		{
@@ -62,7 +72,7 @@ namespace Gs2.Unity.Gs2Mission.Model
 			PremiseMissionTaskName = @missionTaskModel.premiseMissionTaskName;
 		}
 
-        public MissionTaskModel ToModel()
+        public virtual MissionTaskModel ToModel()
         {
             return new MissionTaskModel {
                 name = Name,
@@ -82,6 +92,54 @@ namespace Gs2.Unity.Gs2Mission.Model
                 challengePeriodEventId = ChallengePeriodEventId,
                 premiseMissionTaskName = PremiseMissionTaskName,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            if(this.CounterName != null)
+            {
+                writer.WritePropertyName("counterName");
+                writer.Write(this.CounterName);
+            }
+            if(this.ResetType != null)
+            {
+                writer.WritePropertyName("resetType");
+                writer.Write(this.ResetType);
+            }
+            writer.WritePropertyName("targetValue");
+            writer.Write(this.TargetValue);
+            if(this.CompleteAcquireActions != null)
+            {
+                writer.WritePropertyName("completeAcquireActions");
+                writer.WriteArrayStart();
+                foreach(var item in this.CompleteAcquireActions)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            if(this.ChallengePeriodEventId != null)
+            {
+                writer.WritePropertyName("challengePeriodEventId");
+                writer.Write(this.ChallengePeriodEventId);
+            }
+            if(this.PremiseMissionTaskName != null)
+            {
+                writer.WritePropertyName("premiseMissionTaskName");
+                writer.Write(this.PremiseMissionTaskName);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }
