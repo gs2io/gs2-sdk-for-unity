@@ -293,6 +293,84 @@ namespace Gs2.Gs2Deploy
 			return Gs2WebSocketSession.Execute(task);
         }
 
+        private class ValidateTask : Gs2WebSocketSessionTask<Result.ValidateResult>
+        {
+			private readonly Request.ValidateRequest _request;
+
+			public ValidateTask(Request.ValidateRequest request, UnityAction<AsyncResult<Result.ValidateResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.template != null)
+                {
+                    jsonWriter.WritePropertyName("template");
+                    jsonWriter.Write(_request.template.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("deploy");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("stack");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("validate");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  テンプレートを検証<br />
+		///    <br />
+		///    このAPIの検証内容は簡易検証を行うに過ぎず、<br />
+		///    このAPIで検証をパスしたとしても、実行したらエラーが発生する場合もあります<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator Validate(
+                Request.ValidateRequest request,
+                UnityAction<AsyncResult<Result.ValidateResult>> callback
+        )
+		{
+			var task = new ValidateTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
         private class GetStackStatusTask : Gs2WebSocketSessionTask<Result.GetStackStatusResult>
         {
 			private readonly Request.GetStackStatusRequest _request;
