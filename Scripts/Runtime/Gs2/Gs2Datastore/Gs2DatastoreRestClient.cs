@@ -578,6 +578,11 @@ namespace Gs2.Gs2Datastore
                 var stringBuilder = new StringBuilder();
                 var jsonWriter = new JsonWriter(stringBuilder);
                 jsonWriter.WriteObjectStart();
+                if (_request.name != null)
+                {
+                    jsonWriter.WritePropertyName("name");
+                    jsonWriter.Write(_request.name.ToString());
+                }
                 if (_request.contentType != null)
                 {
                     jsonWriter.WritePropertyName("contentType");
@@ -671,6 +676,11 @@ namespace Gs2.Gs2Datastore
                 var stringBuilder = new StringBuilder();
                 var jsonWriter = new JsonWriter(stringBuilder);
                 jsonWriter.WriteObjectStart();
+                if (_request.name != null)
+                {
+                    jsonWriter.WritePropertyName("name");
+                    jsonWriter.Write(_request.name.ToString());
+                }
                 if (_request.contentType != null)
                 {
                     jsonWriter.WritePropertyName("contentType");

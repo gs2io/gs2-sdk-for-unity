@@ -739,6 +739,11 @@ namespace Gs2.Gs2Datastore
                     jsonWriter.WritePropertyName("namespaceName");
                     jsonWriter.Write(_request.namespaceName.ToString());
                 }
+                if (_request.name != null)
+                {
+                    jsonWriter.WritePropertyName("name");
+                    jsonWriter.Write(_request.name.ToString());
+                }
                 if (_request.contentType != null)
                 {
                     jsonWriter.WritePropertyName("contentType");
@@ -848,6 +853,11 @@ namespace Gs2.Gs2Datastore
                 {
                     jsonWriter.WritePropertyName("userId");
                     jsonWriter.Write(_request.userId.ToString());
+                }
+                if (_request.name != null)
+                {
+                    jsonWriter.WritePropertyName("name");
+                    jsonWriter.Write(_request.name.ToString());
                 }
                 if (_request.contentType != null)
                 {
