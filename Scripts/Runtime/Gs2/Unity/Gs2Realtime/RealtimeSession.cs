@@ -203,6 +203,7 @@ namespace Gs2.Unity.Gs2Realtime
             var success = false;
             EventArgs args = null;
             Player[] players = null;
+            var messageArgsList = new List<MessageEventArgs>();
             
             void OnOpenHandler(object sender, EventArgs e)
             {
@@ -262,8 +263,15 @@ namespace Gs2.Unity.Gs2Realtime
                             );
                             return;
                         }
-                        helloResult = message as HelloResult;
-                        success = true;
+                        else if (message is HelloResult)
+                        {
+                            helloResult = message as HelloResult;
+                            success = true;
+                        }
+                        else
+                        {
+                            messageArgsList.Add(data);
+                        }
                     }
                     else
                     {
@@ -336,6 +344,11 @@ namespace Gs2.Unity.Gs2Realtime
                             new OnJoinPlayerEvent(player)
                         );
                     }
+                }
+
+                foreach (var e in messageArgsList)
+                {
+                    this.OnMessageHandler(null, e);
                 }
                 
                 _webSocket.OnMessage += this.OnMessageHandler;
