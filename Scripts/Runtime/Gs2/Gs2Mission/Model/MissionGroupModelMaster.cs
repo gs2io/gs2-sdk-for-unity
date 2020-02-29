@@ -82,6 +82,62 @@ namespace Gs2.Gs2Mission.Model
             return this;
         }
 
+        /** リセットタイミング */
+        public string resetType { set; get; }
+
+        /**
+         * リセットタイミングを設定
+         *
+         * @param resetType リセットタイミング
+         * @return this
+         */
+        public MissionGroupModelMaster WithResetType(string resetType) {
+            this.resetType = resetType;
+            return this;
+        }
+
+        /** リセットをする日にち */
+        public int? resetDayOfMonth { set; get; }
+
+        /**
+         * リセットをする日にちを設定
+         *
+         * @param resetDayOfMonth リセットをする日にち
+         * @return this
+         */
+        public MissionGroupModelMaster WithResetDayOfMonth(int? resetDayOfMonth) {
+            this.resetDayOfMonth = resetDayOfMonth;
+            return this;
+        }
+
+        /** リセットする曜日 */
+        public string resetDayOfWeek { set; get; }
+
+        /**
+         * リセットする曜日を設定
+         *
+         * @param resetDayOfWeek リセットする曜日
+         * @return this
+         */
+        public MissionGroupModelMaster WithResetDayOfWeek(string resetDayOfWeek) {
+            this.resetDayOfWeek = resetDayOfWeek;
+            return this;
+        }
+
+        /** リセット時刻 */
+        public int? resetHour { set; get; }
+
+        /**
+         * リセット時刻を設定
+         *
+         * @param resetHour リセット時刻
+         * @return this
+         */
+        public MissionGroupModelMaster WithResetHour(int? resetHour) {
+            this.resetHour = resetHour;
+            return this;
+        }
+
         /** ミッションを達成したときの通知先ネームスペース のGRN */
         public string completeNotificationNamespaceId { set; get; }
 
@@ -147,6 +203,26 @@ namespace Gs2.Gs2Mission.Model
                 writer.WritePropertyName("description");
                 writer.Write(this.description);
             }
+            if(this.resetType != null)
+            {
+                writer.WritePropertyName("resetType");
+                writer.Write(this.resetType);
+            }
+            if(this.resetDayOfMonth.HasValue)
+            {
+                writer.WritePropertyName("resetDayOfMonth");
+                writer.Write(this.resetDayOfMonth.Value);
+            }
+            if(this.resetDayOfWeek != null)
+            {
+                writer.WritePropertyName("resetDayOfWeek");
+                writer.Write(this.resetDayOfWeek);
+            }
+            if(this.resetHour.HasValue)
+            {
+                writer.WritePropertyName("resetHour");
+                writer.Write(this.resetHour.Value);
+            }
             if(this.completeNotificationNamespaceId != null)
             {
                 writer.WritePropertyName("completeNotificationNamespaceId");
@@ -173,6 +249,10 @@ namespace Gs2.Gs2Mission.Model
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
                 .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
+                .WithResetType(data.Keys.Contains("resetType") && data["resetType"] != null ? data["resetType"].ToString() : null)
+                .WithResetDayOfMonth(data.Keys.Contains("resetDayOfMonth") && data["resetDayOfMonth"] != null ? (int?)int.Parse(data["resetDayOfMonth"].ToString()) : null)
+                .WithResetDayOfWeek(data.Keys.Contains("resetDayOfWeek") && data["resetDayOfWeek"] != null ? data["resetDayOfWeek"].ToString() : null)
+                .WithResetHour(data.Keys.Contains("resetHour") && data["resetHour"] != null ? (int?)int.Parse(data["resetHour"].ToString()) : null)
                 .WithCompleteNotificationNamespaceId(data.Keys.Contains("completeNotificationNamespaceId") && data["completeNotificationNamespaceId"] != null ? data["completeNotificationNamespaceId"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
