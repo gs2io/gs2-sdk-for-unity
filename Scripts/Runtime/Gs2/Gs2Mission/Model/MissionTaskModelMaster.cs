@@ -96,20 +96,6 @@ namespace Gs2.Gs2Mission.Model
             return this;
         }
 
-        /** リセットタイミング */
-        public string resetType { set; get; }
-
-        /**
-         * リセットタイミングを設定
-         *
-         * @param resetType リセットタイミング
-         * @return this
-         */
-        public MissionTaskModelMaster WithResetType(string resetType) {
-            this.resetType = resetType;
-            return this;
-        }
-
         /** 目標値 */
         public long? targetValue { set; get; }
 
@@ -222,11 +208,6 @@ namespace Gs2.Gs2Mission.Model
                 writer.WritePropertyName("counterName");
                 writer.Write(this.counterName);
             }
-            if(this.resetType != null)
-            {
-                writer.WritePropertyName("resetType");
-                writer.Write(this.resetType);
-            }
             if(this.targetValue.HasValue)
             {
                 writer.WritePropertyName("targetValue");
@@ -274,7 +255,6 @@ namespace Gs2.Gs2Mission.Model
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
                 .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
                 .WithCounterName(data.Keys.Contains("counterName") && data["counterName"] != null ? data["counterName"].ToString() : null)
-                .WithResetType(data.Keys.Contains("resetType") && data["resetType"] != null ? data["resetType"].ToString() : null)
                 .WithTargetValue(data.Keys.Contains("targetValue") && data["targetValue"] != null ? (long?)long.Parse(data["targetValue"].ToString()) : null)
                 .WithCompleteAcquireActions(data.Keys.Contains("completeAcquireActions") && data["completeAcquireActions"] != null ? data["completeAcquireActions"].Cast<JsonData>().Select(value =>
                     {

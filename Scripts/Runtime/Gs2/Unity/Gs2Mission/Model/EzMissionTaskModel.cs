@@ -35,9 +35,6 @@ namespace Gs2.Unity.Gs2Mission.Model
 		/** カウンター名 */
 		[UnityEngine.SerializeField]
 		public string CounterName;
-		/** リセットタイミング */
-		[UnityEngine.SerializeField]
-		public string ResetType;
 		/** 目標値 */
 		[UnityEngine.SerializeField]
 		public long TargetValue;
@@ -61,7 +58,6 @@ namespace Gs2.Unity.Gs2Mission.Model
 			Name = @missionTaskModel.name;
 			Metadata = @missionTaskModel.metadata;
 			CounterName = @missionTaskModel.counterName;
-			ResetType = @missionTaskModel.resetType;
 			TargetValue = @missionTaskModel.targetValue.HasValue ? @missionTaskModel.targetValue.Value : 0;
 			CompleteAcquireActions = @missionTaskModel.completeAcquireActions != null ? @missionTaskModel.completeAcquireActions.Select(value =>
                 {
@@ -78,7 +74,6 @@ namespace Gs2.Unity.Gs2Mission.Model
                 name = Name,
                 metadata = Metadata,
                 counterName = CounterName,
-                resetType = ResetType,
                 targetValue = TargetValue,
                 completeAcquireActions = CompleteAcquireActions != null ? CompleteAcquireActions.Select(Value0 =>
                         {
@@ -111,11 +106,6 @@ namespace Gs2.Unity.Gs2Mission.Model
             {
                 writer.WritePropertyName("counterName");
                 writer.Write(this.CounterName);
-            }
-            if(this.ResetType != null)
-            {
-                writer.WritePropertyName("resetType");
-                writer.Write(this.ResetType);
             }
             writer.WritePropertyName("targetValue");
             writer.Write(this.TargetValue);

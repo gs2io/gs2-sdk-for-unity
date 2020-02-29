@@ -88,6 +88,66 @@ namespace Gs2.Gs2Mission.Request
         }
 
 
+        /** リセットタイミング */
+        public string resetType { set; get; }
+
+        /**
+         * リセットタイミングを設定
+         *
+         * @param resetType リセットタイミング
+         * @return this
+         */
+        public CreateMissionGroupModelMasterRequest WithResetType(string resetType) {
+            this.resetType = resetType;
+            return this;
+        }
+
+
+        /** リセットをする日にち */
+        public int? resetDayOfMonth { set; get; }
+
+        /**
+         * リセットをする日にちを設定
+         *
+         * @param resetDayOfMonth リセットをする日にち
+         * @return this
+         */
+        public CreateMissionGroupModelMasterRequest WithResetDayOfMonth(int? resetDayOfMonth) {
+            this.resetDayOfMonth = resetDayOfMonth;
+            return this;
+        }
+
+
+        /** リセットする曜日 */
+        public string resetDayOfWeek { set; get; }
+
+        /**
+         * リセットする曜日を設定
+         *
+         * @param resetDayOfWeek リセットする曜日
+         * @return this
+         */
+        public CreateMissionGroupModelMasterRequest WithResetDayOfWeek(string resetDayOfWeek) {
+            this.resetDayOfWeek = resetDayOfWeek;
+            return this;
+        }
+
+
+        /** リセット時刻 */
+        public int? resetHour { set; get; }
+
+        /**
+         * リセット時刻を設定
+         *
+         * @param resetHour リセット時刻
+         * @return this
+         */
+        public CreateMissionGroupModelMasterRequest WithResetHour(int? resetHour) {
+            this.resetHour = resetHour;
+            return this;
+        }
+
+
         /** ミッションを達成したときの通知先ネームスペース のGRN */
         public string completeNotificationNamespaceId { set; get; }
 
@@ -111,6 +171,10 @@ namespace Gs2.Gs2Mission.Request
                 name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
                 metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                resetType = data.Keys.Contains("resetType") && data["resetType"] != null ? data["resetType"].ToString(): null,
+                resetDayOfMonth = data.Keys.Contains("resetDayOfMonth") && data["resetDayOfMonth"] != null ? (int?)int.Parse(data["resetDayOfMonth"].ToString()) : null,
+                resetDayOfWeek = data.Keys.Contains("resetDayOfWeek") && data["resetDayOfWeek"] != null ? data["resetDayOfWeek"].ToString(): null,
+                resetHour = data.Keys.Contains("resetHour") && data["resetHour"] != null ? (int?)int.Parse(data["resetHour"].ToString()) : null,
                 completeNotificationNamespaceId = data.Keys.Contains("completeNotificationNamespaceId") && data["completeNotificationNamespaceId"] != null ? data["completeNotificationNamespaceId"].ToString(): null,
             };
         }
