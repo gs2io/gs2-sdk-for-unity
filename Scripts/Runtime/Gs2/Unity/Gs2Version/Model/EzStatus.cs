@@ -16,18 +16,22 @@
 using Gs2.Gs2Version.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Version.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzStatus
 	{
 		/** バージョン設定 */
-		public EzVersionModel VersionModel { get; set; }
+		[UnityEngine.SerializeField]
+		public EzVersionModel VersionModel;
 		/** 現在のバージョン */
-		public EzVersion CurrentVersion { get; set; }
+		[UnityEngine.SerializeField]
+		public EzVersion CurrentVersion;
 
 		public EzStatus()
 		{
@@ -40,7 +44,7 @@ namespace Gs2.Unity.Gs2Version.Model
 			CurrentVersion = @status.currentVersion != null ? new EzVersion(@status.currentVersion) : null;
 		}
 
-        public Status ToModel()
+        public virtual Status ToModel()
         {
             return new Status {
                 versionModel = new VersionModel {
@@ -70,6 +74,22 @@ namespace Gs2.Unity.Gs2Version.Model
                     micro = CurrentVersion.Micro,
                 },
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.VersionModel != null)
+            {
+                writer.WritePropertyName("versionModel");
+                this.VersionModel.WriteJson(writer);
+            }
+            if(this.CurrentVersion != null)
+            {
+                writer.WritePropertyName("currentVersion");
+                this.CurrentVersion.WriteJson(writer);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

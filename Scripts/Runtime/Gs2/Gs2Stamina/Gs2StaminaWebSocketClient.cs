@@ -684,20 +684,20 @@ namespace Gs2.Gs2Stamina
                     jsonWriter.WritePropertyName("maxCapacity");
                     jsonWriter.Write(_request.maxCapacity.ToString());
                 }
-                if (_request.maxStaminaTableId != null)
+                if (_request.maxStaminaTableName != null)
                 {
-                    jsonWriter.WritePropertyName("maxStaminaTableId");
-                    jsonWriter.Write(_request.maxStaminaTableId.ToString());
+                    jsonWriter.WritePropertyName("maxStaminaTableName");
+                    jsonWriter.Write(_request.maxStaminaTableName.ToString());
                 }
-                if (_request.recoverIntervalTableId != null)
+                if (_request.recoverIntervalTableName != null)
                 {
-                    jsonWriter.WritePropertyName("recoverIntervalTableId");
-                    jsonWriter.Write(_request.recoverIntervalTableId.ToString());
+                    jsonWriter.WritePropertyName("recoverIntervalTableName");
+                    jsonWriter.Write(_request.recoverIntervalTableName.ToString());
                 }
-                if (_request.recoverValueTableId != null)
+                if (_request.recoverValueTableName != null)
                 {
-                    jsonWriter.WritePropertyName("recoverValueTableId");
-                    jsonWriter.Write(_request.recoverValueTableId.ToString());
+                    jsonWriter.WritePropertyName("recoverValueTableName");
+                    jsonWriter.Write(_request.recoverValueTableName.ToString());
                 }
                 if (_request.contextStack != null)
                 {
@@ -894,20 +894,20 @@ namespace Gs2.Gs2Stamina
                     jsonWriter.WritePropertyName("maxCapacity");
                     jsonWriter.Write(_request.maxCapacity.ToString());
                 }
-                if (_request.maxStaminaTableId != null)
+                if (_request.maxStaminaTableName != null)
                 {
-                    jsonWriter.WritePropertyName("maxStaminaTableId");
-                    jsonWriter.Write(_request.maxStaminaTableId.ToString());
+                    jsonWriter.WritePropertyName("maxStaminaTableName");
+                    jsonWriter.Write(_request.maxStaminaTableName.ToString());
                 }
-                if (_request.recoverIntervalTableId != null)
+                if (_request.recoverIntervalTableName != null)
                 {
-                    jsonWriter.WritePropertyName("recoverIntervalTableId");
-                    jsonWriter.Write(_request.recoverIntervalTableId.ToString());
+                    jsonWriter.WritePropertyName("recoverIntervalTableName");
+                    jsonWriter.Write(_request.recoverIntervalTableName.ToString());
                 }
-                if (_request.recoverValueTableId != null)
+                if (_request.recoverValueTableName != null)
                 {
-                    jsonWriter.WritePropertyName("recoverValueTableId");
-                    jsonWriter.Write(_request.recoverValueTableId.ToString());
+                    jsonWriter.WritePropertyName("recoverValueTableName");
+                    jsonWriter.Write(_request.recoverValueTableName.ToString());
                 }
                 if (_request.contextStack != null)
                 {

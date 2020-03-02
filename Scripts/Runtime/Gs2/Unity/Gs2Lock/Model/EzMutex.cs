@@ -16,24 +16,31 @@
 using Gs2.Gs2Lock.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Lock.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzMutex
 	{
 		/** ミューテックス */
-		public string MutexId { get; set; }
+		[UnityEngine.SerializeField]
+		public string MutexId;
 		/** プロパティID */
-		public string PropertyId { get; set; }
+		[UnityEngine.SerializeField]
+		public string PropertyId;
 		/** ロックを取得したトランザクションID */
-		public string TransactionId { get; set; }
+		[UnityEngine.SerializeField]
+		public string TransactionId;
 		/** 参照回数 */
-		public int ReferenceCount { get; set; }
+		[UnityEngine.SerializeField]
+		public int ReferenceCount;
 		/** ロックの有効期限 */
-		public long TtlAt { get; set; }
+		[UnityEngine.SerializeField]
+		public long TtlAt;
 
 		public EzMutex()
 		{
@@ -49,7 +56,7 @@ namespace Gs2.Unity.Gs2Lock.Model
 			TtlAt = @mutex.ttlAt.HasValue ? @mutex.ttlAt.Value : 0;
 		}
 
-        public Mutex ToModel()
+        public virtual Mutex ToModel()
         {
             return new Mutex {
                 mutexId = MutexId,
@@ -58,6 +65,31 @@ namespace Gs2.Unity.Gs2Lock.Model
                 referenceCount = ReferenceCount,
                 ttlAt = TtlAt,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.MutexId != null)
+            {
+                writer.WritePropertyName("mutexId");
+                writer.Write(this.MutexId);
+            }
+            if(this.PropertyId != null)
+            {
+                writer.WritePropertyName("propertyId");
+                writer.Write(this.PropertyId);
+            }
+            if(this.TransactionId != null)
+            {
+                writer.WritePropertyName("transactionId");
+                writer.Write(this.TransactionId);
+            }
+            writer.WritePropertyName("referenceCount");
+            writer.Write(this.ReferenceCount);
+            writer.WritePropertyName("ttlAt");
+            writer.Write(this.TtlAt);
+            writer.WriteObjectEnd();
         }
 	}
 }

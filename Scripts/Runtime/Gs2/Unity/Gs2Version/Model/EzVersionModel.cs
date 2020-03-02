@@ -16,28 +16,37 @@
 using Gs2.Gs2Version.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Version.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzVersionModel
 	{
 		/** バージョンの種類名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** バージョンの種類のメタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 		/** バージョンアップを促すバージョン */
-		public EzVersion WarningVersion { get; set; }
+		[UnityEngine.SerializeField]
+		public EzVersion WarningVersion;
 		/** バージョンチェックを蹴るバージョン */
-		public EzVersion ErrorVersion { get; set; }
+		[UnityEngine.SerializeField]
+		public EzVersion ErrorVersion;
 		/** 判定に使用するバージョン値の種類 */
-		public string Scope { get; set; }
+		[UnityEngine.SerializeField]
+		public string Scope;
 		/** 現在のバージョン */
-		public EzVersion CurrentVersion { get; set; }
+		[UnityEngine.SerializeField]
+		public EzVersion CurrentVersion;
 		/** 判定するバージョン値に署名検証を必要とするか */
-		public bool NeedSignature { get; set; }
+		[UnityEngine.SerializeField]
+		public bool NeedSignature;
 
 		public EzVersionModel()
 		{
@@ -55,7 +64,7 @@ namespace Gs2.Unity.Gs2Version.Model
 			NeedSignature = @versionModel.needSignature.HasValue ? @versionModel.needSignature.Value : false;
 		}
 
-        public VersionModel ToModel()
+        public virtual VersionModel ToModel()
         {
             return new VersionModel {
                 name = Name,
@@ -78,6 +87,44 @@ namespace Gs2.Unity.Gs2Version.Model
                 },
                 needSignature = NeedSignature,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            if(this.WarningVersion != null)
+            {
+                writer.WritePropertyName("warningVersion");
+                this.WarningVersion.WriteJson(writer);
+            }
+            if(this.ErrorVersion != null)
+            {
+                writer.WritePropertyName("errorVersion");
+                this.ErrorVersion.WriteJson(writer);
+            }
+            if(this.Scope != null)
+            {
+                writer.WritePropertyName("scope");
+                writer.Write(this.Scope);
+            }
+            if(this.CurrentVersion != null)
+            {
+                writer.WritePropertyName("currentVersion");
+                this.CurrentVersion.WriteJson(writer);
+            }
+            writer.WritePropertyName("needSignature");
+            writer.Write(this.NeedSignature);
+            writer.WriteObjectEnd();
         }
 	}
 }

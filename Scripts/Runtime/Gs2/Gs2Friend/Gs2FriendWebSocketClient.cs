@@ -3992,5 +3992,535 @@ namespace Gs2.Gs2Friend
 			var task = new RejectRequestByUserIdTask(request, callback);
 			return Gs2WebSocketSession.Execute(task);
         }
+
+        private class DescribeBlackListTask : Gs2WebSocketSessionTask<Result.DescribeBlackListResult>
+        {
+			private readonly Request.DescribeBlackListRequest _request;
+
+			public DescribeBlackListTask(Request.DescribeBlackListRequest request, UnityAction<AsyncResult<Result.DescribeBlackListResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2AccessToken");
+                    jsonWriter.Write(_request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("friend");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("blackList");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("describeBlackList");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  ブラックリストを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DescribeBlackList(
+                Request.DescribeBlackListRequest request,
+                UnityAction<AsyncResult<Result.DescribeBlackListResult>> callback
+        )
+		{
+			var task = new DescribeBlackListTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class DescribeBlackListByUserIdTask : Gs2WebSocketSessionTask<Result.DescribeBlackListByUserIdResult>
+        {
+			private readonly Request.DescribeBlackListByUserIdRequest _request;
+
+			public DescribeBlackListByUserIdTask(Request.DescribeBlackListByUserIdRequest request, UnityAction<AsyncResult<Result.DescribeBlackListByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.userId != null)
+                {
+                    jsonWriter.WritePropertyName("userId");
+                    jsonWriter.Write(_request.userId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("friend");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("blackList");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("describeBlackListByUserId");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  ユーザーIDを指定してブラックリストを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DescribeBlackListByUserId(
+                Request.DescribeBlackListByUserIdRequest request,
+                UnityAction<AsyncResult<Result.DescribeBlackListByUserIdResult>> callback
+        )
+		{
+			var task = new DescribeBlackListByUserIdTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class RegisterBlackListTask : Gs2WebSocketSessionTask<Result.RegisterBlackListResult>
+        {
+			private readonly Request.RegisterBlackListRequest _request;
+
+			public RegisterBlackListTask(Request.RegisterBlackListRequest request, UnityAction<AsyncResult<Result.RegisterBlackListResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.targetUserId != null)
+                {
+                    jsonWriter.WritePropertyName("targetUserId");
+                    jsonWriter.Write(_request.targetUserId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2AccessToken");
+                    jsonWriter.Write(_request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("friend");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("blackList");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("registerBlackList");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  ブラックリストに登録<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator RegisterBlackList(
+                Request.RegisterBlackListRequest request,
+                UnityAction<AsyncResult<Result.RegisterBlackListResult>> callback
+        )
+		{
+			var task = new RegisterBlackListTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class RegisterBlackListByUserIdTask : Gs2WebSocketSessionTask<Result.RegisterBlackListByUserIdResult>
+        {
+			private readonly Request.RegisterBlackListByUserIdRequest _request;
+
+			public RegisterBlackListByUserIdTask(Request.RegisterBlackListByUserIdRequest request, UnityAction<AsyncResult<Result.RegisterBlackListByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.userId != null)
+                {
+                    jsonWriter.WritePropertyName("userId");
+                    jsonWriter.Write(_request.userId.ToString());
+                }
+                if (_request.targetUserId != null)
+                {
+                    jsonWriter.WritePropertyName("targetUserId");
+                    jsonWriter.Write(_request.targetUserId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("friend");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("blackList");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("registerBlackListByUserId");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  ユーザーIDを指定してブラックリストに登録<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator RegisterBlackListByUserId(
+                Request.RegisterBlackListByUserIdRequest request,
+                UnityAction<AsyncResult<Result.RegisterBlackListByUserIdResult>> callback
+        )
+		{
+			var task = new RegisterBlackListByUserIdTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class UnregisterBlackListTask : Gs2WebSocketSessionTask<Result.UnregisterBlackListResult>
+        {
+			private readonly Request.UnregisterBlackListRequest _request;
+
+			public UnregisterBlackListTask(Request.UnregisterBlackListRequest request, UnityAction<AsyncResult<Result.UnregisterBlackListResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.targetUserId != null)
+                {
+                    jsonWriter.WritePropertyName("targetUserId");
+                    jsonWriter.Write(_request.targetUserId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2AccessToken");
+                    jsonWriter.Write(_request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("friend");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("blackList");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("unregisterBlackList");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  ブラックリストからユーザを削除<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator UnregisterBlackList(
+                Request.UnregisterBlackListRequest request,
+                UnityAction<AsyncResult<Result.UnregisterBlackListResult>> callback
+        )
+		{
+			var task = new UnregisterBlackListTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class UnregisterBlackListByUserIdTask : Gs2WebSocketSessionTask<Result.UnregisterBlackListByUserIdResult>
+        {
+			private readonly Request.UnregisterBlackListByUserIdRequest _request;
+
+			public UnregisterBlackListByUserIdTask(Request.UnregisterBlackListByUserIdRequest request, UnityAction<AsyncResult<Result.UnregisterBlackListByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.userId != null)
+                {
+                    jsonWriter.WritePropertyName("userId");
+                    jsonWriter.Write(_request.userId.ToString());
+                }
+                if (_request.targetUserId != null)
+                {
+                    jsonWriter.WritePropertyName("targetUserId");
+                    jsonWriter.Write(_request.targetUserId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("friend");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("blackList");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("unregisterBlackListByUserId");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  ユーザーIDを指定してブラックリストからユーザを削除<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator UnregisterBlackListByUserId(
+                Request.UnregisterBlackListByUserIdRequest request,
+                UnityAction<AsyncResult<Result.UnregisterBlackListByUserIdResult>> callback
+        )
+		{
+			var task = new UnregisterBlackListByUserIdTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
 	}
 }

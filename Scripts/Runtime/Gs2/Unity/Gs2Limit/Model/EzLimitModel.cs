@@ -16,28 +16,37 @@
 using Gs2.Gs2Limit.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Limit.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzLimitModel
 	{
 		/** 回数制限の種類 */
-		public string LimitModelId { get; set; }
+		[UnityEngine.SerializeField]
+		public string LimitModelId;
 		/** 回数制限の種類名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** 回数制限の種類のメタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 		/** リセットタイミング */
-		public string ResetType { get; set; }
+		[UnityEngine.SerializeField]
+		public string ResetType;
 		/** リセットをする日にち */
-		public int ResetDayOfMonth { get; set; }
+		[UnityEngine.SerializeField]
+		public int ResetDayOfMonth;
 		/** リセットする曜日 */
-		public string ResetDayOfWeek { get; set; }
+		[UnityEngine.SerializeField]
+		public string ResetDayOfWeek;
 		/** リセット時刻 */
-		public int ResetHour { get; set; }
+		[UnityEngine.SerializeField]
+		public int ResetHour;
 
 		public EzLimitModel()
 		{
@@ -55,7 +64,7 @@ namespace Gs2.Unity.Gs2Limit.Model
 			ResetHour = @limitModel.resetHour.HasValue ? @limitModel.resetHour.Value : 0;
 		}
 
-        public LimitModel ToModel()
+        public virtual LimitModel ToModel()
         {
             return new LimitModel {
                 limitModelId = LimitModelId,
@@ -66,6 +75,41 @@ namespace Gs2.Unity.Gs2Limit.Model
                 resetDayOfWeek = ResetDayOfWeek,
                 resetHour = ResetHour,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.LimitModelId != null)
+            {
+                writer.WritePropertyName("limitModelId");
+                writer.Write(this.LimitModelId);
+            }
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            if(this.ResetType != null)
+            {
+                writer.WritePropertyName("resetType");
+                writer.Write(this.ResetType);
+            }
+            writer.WritePropertyName("resetDayOfMonth");
+            writer.Write(this.ResetDayOfMonth);
+            if(this.ResetDayOfWeek != null)
+            {
+                writer.WritePropertyName("resetDayOfWeek");
+                writer.Write(this.ResetDayOfWeek);
+            }
+            writer.WritePropertyName("resetHour");
+            writer.Write(this.ResetHour);
+            writer.WriteObjectEnd();
         }
 	}
 }

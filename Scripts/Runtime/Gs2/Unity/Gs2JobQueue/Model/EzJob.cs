@@ -16,20 +16,25 @@
 using Gs2.Gs2JobQueue.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2JobQueue.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzJob
 	{
 		/** ジョブ */
-		public string JobId { get; set; }
+		[UnityEngine.SerializeField]
+		public string JobId;
 		/** 現在のリトライ回数 */
-		public int CurrentRetryCount { get; set; }
+		[UnityEngine.SerializeField]
+		public int CurrentRetryCount;
 		/** 最大試行回数 */
-		public int MaxTryCount { get; set; }
+		[UnityEngine.SerializeField]
+		public int MaxTryCount;
 
 		public EzJob()
 		{
@@ -43,13 +48,28 @@ namespace Gs2.Unity.Gs2JobQueue.Model
 			MaxTryCount = @job.maxTryCount.HasValue ? @job.maxTryCount.Value : 0;
 		}
 
-        public Job ToModel()
+        public virtual Job ToModel()
         {
             return new Job {
                 jobId = JobId,
                 currentRetryCount = CurrentRetryCount,
                 maxTryCount = MaxTryCount,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.JobId != null)
+            {
+                writer.WritePropertyName("jobId");
+                writer.Write(this.JobId);
+            }
+            writer.WritePropertyName("currentRetryCount");
+            writer.Write(this.CurrentRetryCount);
+            writer.WritePropertyName("maxTryCount");
+            writer.Write(this.MaxTryCount);
+            writer.WriteObjectEnd();
         }
 	}
 }

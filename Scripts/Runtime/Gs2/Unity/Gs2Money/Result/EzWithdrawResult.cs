@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2Money.Result
 	public class EzWithdrawResult
 	{
         /** 消費後のウォレット */
-        public EzWalletDetail Item { get; private set; }
+        public EzWallet Item { get; private set; }
 
         /** 消費した通貨の価格 */
         public float Price { get; private set; }
@@ -38,7 +38,7 @@ namespace Gs2.Unity.Gs2Money.Result
         {
             if(result.item != null)
             {
-                Item = new EzWalletDetail(result.item);
+                Item = new EzWallet(result.item);
             }
             if(result.price.HasValue)
             {

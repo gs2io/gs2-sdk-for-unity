@@ -16,18 +16,22 @@
 using Gs2.Gs2Lottery.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Lottery.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzBox
 	{
 		/** 排出確率テーブル名 */
-		public string PrizeTableName { get; set; }
+		[UnityEngine.SerializeField]
+		public string PrizeTableName;
 		/** 排出済み景品のインデックスのリスト */
-		public List<int> DrawnIndexes { get; set; }
+		[UnityEngine.SerializeField]
+		public List<int> DrawnIndexes;
 
 		public EzBox()
 		{
@@ -48,7 +52,7 @@ namespace Gs2.Unity.Gs2Lottery.Model
 			).ToList() : new List<int>(new int[] {});
 		}
 
-        public Box ToModel()
+        public virtual Box ToModel()
         {
             return new Box {
                 prizeTableName = PrizeTableName,
@@ -58,6 +62,27 @@ namespace Gs2.Unity.Gs2Lottery.Model
                         }
                 ).ToList() : new List<int?>(new int?[] {}),
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.PrizeTableName != null)
+            {
+                writer.WritePropertyName("prizeTableName");
+                writer.Write(this.PrizeTableName);
+            }
+            if(this.DrawnIndexes != null)
+            {
+                writer.WritePropertyName("drawnIndexes");
+                writer.WriteArrayStart();
+                foreach(var item in this.DrawnIndexes)
+                {
+                    writer.Write(item);
+                }
+                writer.WriteArrayEnd();
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

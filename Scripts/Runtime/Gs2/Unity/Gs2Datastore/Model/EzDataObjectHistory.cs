@@ -16,22 +16,28 @@
 using Gs2.Gs2Datastore.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Datastore.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzDataObjectHistory
 	{
 		/** データオブジェクト履歴 */
-		public string DataObjectHistoryId { get; set; }
+		[UnityEngine.SerializeField]
+		public string DataObjectHistoryId;
 		/** 世代ID */
-		public string Generation { get; set; }
+		[UnityEngine.SerializeField]
+		public string Generation;
 		/** データサイズ */
-		public long ContentLength { get; set; }
+		[UnityEngine.SerializeField]
+		public long ContentLength;
 		/** 作成日時 */
-		public long CreatedAt { get; set; }
+		[UnityEngine.SerializeField]
+		public long CreatedAt;
 
 		public EzDataObjectHistory()
 		{
@@ -46,7 +52,7 @@ namespace Gs2.Unity.Gs2Datastore.Model
 			CreatedAt = @dataObjectHistory.createdAt.HasValue ? @dataObjectHistory.createdAt.Value : 0;
 		}
 
-        public DataObjectHistory ToModel()
+        public virtual DataObjectHistory ToModel()
         {
             return new DataObjectHistory {
                 dataObjectHistoryId = DataObjectHistoryId,
@@ -54,6 +60,26 @@ namespace Gs2.Unity.Gs2Datastore.Model
                 contentLength = ContentLength,
                 createdAt = CreatedAt,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.DataObjectHistoryId != null)
+            {
+                writer.WritePropertyName("dataObjectHistoryId");
+                writer.Write(this.DataObjectHistoryId);
+            }
+            if(this.Generation != null)
+            {
+                writer.WritePropertyName("generation");
+                writer.Write(this.Generation);
+            }
+            writer.WritePropertyName("contentLength");
+            writer.Write(this.ContentLength);
+            writer.WritePropertyName("createdAt");
+            writer.Write(this.CreatedAt);
+            writer.WriteObjectEnd();
         }
 	}
 }

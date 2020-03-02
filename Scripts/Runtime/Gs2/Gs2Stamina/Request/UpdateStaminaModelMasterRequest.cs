@@ -163,47 +163,47 @@ namespace Gs2.Gs2Stamina.Request
         }
 
 
-        /** GS2-Experience のランクによって最大スタミナ値を決定する */
-        public string maxStaminaTableId { set; get; }
+        /** GS2-Experience のランクによって最大スタミナ値を決定するスタミナ最大値テーブル名 */
+        public string maxStaminaTableName { set; get; }
 
         /**
-         * GS2-Experience のランクによって最大スタミナ値を決定するを設定
+         * GS2-Experience のランクによって最大スタミナ値を決定するスタミナ最大値テーブル名を設定
          *
-         * @param maxStaminaTableId GS2-Experience のランクによって最大スタミナ値を決定する
+         * @param maxStaminaTableName GS2-Experience のランクによって最大スタミナ値を決定するスタミナ最大値テーブル名
          * @return this
          */
-        public UpdateStaminaModelMasterRequest WithMaxStaminaTableId(string maxStaminaTableId) {
-            this.maxStaminaTableId = maxStaminaTableId;
+        public UpdateStaminaModelMasterRequest WithMaxStaminaTableName(string maxStaminaTableName) {
+            this.maxStaminaTableName = maxStaminaTableName;
             return this;
         }
 
 
-        /** GS2-Experience のランクによってスタミナの回復間隔を決定する */
-        public string recoverIntervalTableId { set; get; }
+        /** GS2-Experience のランクによってスタミナの回復間隔を決定する回復間隔テーブル名 */
+        public string recoverIntervalTableName { set; get; }
 
         /**
-         * GS2-Experience のランクによってスタミナの回復間隔を決定するを設定
+         * GS2-Experience のランクによってスタミナの回復間隔を決定する回復間隔テーブル名を設定
          *
-         * @param recoverIntervalTableId GS2-Experience のランクによってスタミナの回復間隔を決定する
+         * @param recoverIntervalTableName GS2-Experience のランクによってスタミナの回復間隔を決定する回復間隔テーブル名
          * @return this
          */
-        public UpdateStaminaModelMasterRequest WithRecoverIntervalTableId(string recoverIntervalTableId) {
-            this.recoverIntervalTableId = recoverIntervalTableId;
+        public UpdateStaminaModelMasterRequest WithRecoverIntervalTableName(string recoverIntervalTableName) {
+            this.recoverIntervalTableName = recoverIntervalTableName;
             return this;
         }
 
 
-        /** GS2-Experience のランクによってスタミナの回復量を決定する */
-        public string recoverValueTableId { set; get; }
+        /** GS2-Experience のランクによってスタミナの回復量を決定する回復量テーブル名 */
+        public string recoverValueTableName { set; get; }
 
         /**
-         * GS2-Experience のランクによってスタミナの回復量を決定するを設定
+         * GS2-Experience のランクによってスタミナの回復量を決定する回復量テーブル名を設定
          *
-         * @param recoverValueTableId GS2-Experience のランクによってスタミナの回復量を決定する
+         * @param recoverValueTableName GS2-Experience のランクによってスタミナの回復量を決定する回復量テーブル名
          * @return this
          */
-        public UpdateStaminaModelMasterRequest WithRecoverValueTableId(string recoverValueTableId) {
-            this.recoverValueTableId = recoverValueTableId;
+        public UpdateStaminaModelMasterRequest WithRecoverValueTableName(string recoverValueTableName) {
+            this.recoverValueTableName = recoverValueTableName;
             return this;
         }
 
@@ -221,9 +221,9 @@ namespace Gs2.Gs2Stamina.Request
                 initialCapacity = data.Keys.Contains("initialCapacity") && data["initialCapacity"] != null ? (int?)int.Parse(data["initialCapacity"].ToString()) : null,
                 isOverflow = data.Keys.Contains("isOverflow") && data["isOverflow"] != null ? (bool?)bool.Parse(data["isOverflow"].ToString()) : null,
                 maxCapacity = data.Keys.Contains("maxCapacity") && data["maxCapacity"] != null ? (int?)int.Parse(data["maxCapacity"].ToString()) : null,
-                maxStaminaTableId = data.Keys.Contains("maxStaminaTableId") && data["maxStaminaTableId"] != null ? data["maxStaminaTableId"].ToString(): null,
-                recoverIntervalTableId = data.Keys.Contains("recoverIntervalTableId") && data["recoverIntervalTableId"] != null ? data["recoverIntervalTableId"].ToString(): null,
-                recoverValueTableId = data.Keys.Contains("recoverValueTableId") && data["recoverValueTableId"] != null ? data["recoverValueTableId"].ToString(): null,
+                maxStaminaTableName = data.Keys.Contains("maxStaminaTableName") && data["maxStaminaTableName"] != null ? data["maxStaminaTableName"].ToString(): null,
+                recoverIntervalTableName = data.Keys.Contains("recoverIntervalTableName") && data["recoverIntervalTableName"] != null ? data["recoverIntervalTableName"].ToString(): null,
+                recoverValueTableName = data.Keys.Contains("recoverValueTableName") && data["recoverValueTableName"] != null ? data["recoverValueTableName"].ToString(): null,
             };
         }
 

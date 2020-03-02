@@ -54,13 +54,13 @@ namespace Gs2.Gs2Friend.Model
             return this;
         }
 
-        /** フレンドリクエストを出しているユーザーIDリスト */
+        /** フレンドリクエストの宛先ユーザーIDリスト */
         public List<string> targetUserIds { set; get; }
 
         /**
-         * フレンドリクエストを出しているユーザーIDリストを設定
+         * フレンドリクエストの宛先ユーザーIDリストを設定
          *
-         * @param targetUserIds フレンドリクエストを出しているユーザーIDリスト
+         * @param targetUserIds フレンドリクエストの宛先ユーザーIDリスト
          * @return this
          */
         public SendBox WithTargetUserIds(List<string> targetUserIds) {

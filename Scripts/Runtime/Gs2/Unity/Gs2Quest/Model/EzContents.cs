@@ -16,18 +16,22 @@
 using Gs2.Gs2Quest.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Quest.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzContents
 	{
 		/** クエストモデルのメタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 		/** クエストクリア時の報酬 */
-		public List<EzAcquireAction> CompleteAcquireActions { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzAcquireAction> CompleteAcquireActions;
 
 		public EzContents()
 		{
@@ -44,7 +48,7 @@ namespace Gs2.Unity.Gs2Quest.Model
 			).ToList() : new List<EzAcquireAction>(new EzAcquireAction[] {});
 		}
 
-        public Contents ToModel()
+        public virtual Contents ToModel()
         {
             return new Contents {
                 metadata = Metadata,
@@ -58,6 +62,27 @@ namespace Gs2.Unity.Gs2Quest.Model
                         }
                 ).ToList() : new List<AcquireAction>(new AcquireAction[] {}),
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            if(this.CompleteAcquireActions != null)
+            {
+                writer.WritePropertyName("completeAcquireActions");
+                writer.WriteArrayStart();
+                foreach(var item in this.CompleteAcquireActions)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

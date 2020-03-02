@@ -16,18 +16,22 @@
 using Gs2.Gs2Matchmaking.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Matchmaking.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzAttribute
 	{
 		/** 属性名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** 属性値 */
-		public int Value { get; set; }
+		[UnityEngine.SerializeField]
+		public int Value;
 
 		public EzAttribute()
 		{
@@ -40,12 +44,25 @@ namespace Gs2.Unity.Gs2Matchmaking.Model
 			Value = @attribute.value.HasValue ? @attribute.value.Value : 0;
 		}
 
-        public Attribute_ ToModel()
+        public virtual Attribute_ ToModel()
         {
             return new Attribute_ {
                 name = Name,
                 value = Value,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            writer.WritePropertyName("value");
+            writer.Write(this.Value);
+            writer.WriteObjectEnd();
         }
 	}
 }

@@ -16,20 +16,25 @@
 using Gs2.Gs2Matchmaking.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Matchmaking.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzPlayer
 	{
 		/** ユーザーID */
-		public string UserId { get; set; }
+		[UnityEngine.SerializeField]
+		public string UserId;
 		/** 属性値のリスト */
-		public List<EzAttribute> Attributes { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzAttribute> Attributes;
 		/** ロール名 */
-		public string RoleName { get; set; }
+		[UnityEngine.SerializeField]
+		public string RoleName;
 
 		public EzPlayer()
 		{
@@ -47,7 +52,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Model
 			RoleName = @player.roleName;
 		}
 
-        public Player ToModel()
+        public virtual Player ToModel()
         {
             return new Player {
                 userId = UserId,
@@ -62,6 +67,32 @@ namespace Gs2.Unity.Gs2Matchmaking.Model
                 ).ToList() : new List<Attribute_>(new Attribute_[] {}),
                 roleName = RoleName,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.UserId != null)
+            {
+                writer.WritePropertyName("userId");
+                writer.Write(this.UserId);
+            }
+            if(this.Attributes != null)
+            {
+                writer.WritePropertyName("attributes");
+                writer.WriteArrayStart();
+                foreach(var item in this.Attributes)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            if(this.RoleName != null)
+            {
+                writer.WritePropertyName("roleName");
+                writer.Write(this.RoleName);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

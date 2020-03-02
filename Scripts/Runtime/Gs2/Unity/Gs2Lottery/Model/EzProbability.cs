@@ -16,18 +16,22 @@
 using Gs2.Gs2Lottery.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Lottery.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzProbability
 	{
 		/** 景品の種類 */
-		public EzDrawnPrize Prize { get; set; }
+		[UnityEngine.SerializeField]
+		public EzDrawnPrize Prize;
 		/** 排出確率(0.0〜1.0) */
-		public float Rate { get; set; }
+		[UnityEngine.SerializeField]
+		public float Rate;
 
 		public EzProbability()
 		{
@@ -40,7 +44,7 @@ namespace Gs2.Unity.Gs2Lottery.Model
 			Rate = @probability.rate.HasValue ? @probability.rate.Value : 0;
 		}
 
-        public Probability ToModel()
+        public virtual Probability ToModel()
         {
             return new Probability {
                 prize = new DrawnPrize {
@@ -56,6 +60,19 @@ namespace Gs2.Unity.Gs2Lottery.Model
                 },
                 rate = Rate,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Prize != null)
+            {
+                writer.WritePropertyName("prize");
+                this.Prize.WriteJson(writer);
+            }
+            writer.WritePropertyName("rate");
+            writer.Write(this.Rate);
+            writer.WriteObjectEnd();
         }
 	}
 }

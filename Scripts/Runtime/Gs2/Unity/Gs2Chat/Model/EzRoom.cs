@@ -16,18 +16,22 @@
 using Gs2.Gs2Chat.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Chat.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzRoom
 	{
 		/** ルーム名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** メタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 
 		public EzRoom()
 		{
@@ -40,12 +44,28 @@ namespace Gs2.Unity.Gs2Chat.Model
 			Metadata = @room.metadata;
 		}
 
-        public Room ToModel()
+        public virtual Room ToModel()
         {
             return new Room {
                 name = Name,
                 metadata = Metadata,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

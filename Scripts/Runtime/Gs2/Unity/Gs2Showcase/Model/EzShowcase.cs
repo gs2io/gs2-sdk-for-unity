@@ -16,20 +16,25 @@
 using Gs2.Gs2Showcase.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Showcase.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzShowcase
 	{
 		/** 商品名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** 商品のメタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 		/** インベントリに格納可能なアイテムモデル一覧 */
-		public List<EzDisplayItem> DisplayItems { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzDisplayItem> DisplayItems;
 
 		public EzShowcase()
 		{
@@ -47,7 +52,7 @@ namespace Gs2.Unity.Gs2Showcase.Model
 			).ToList() : new List<EzDisplayItem>(new EzDisplayItem[] {});
 		}
 
-        public Showcase ToModel()
+        public virtual Showcase ToModel()
         {
             return new Showcase {
                 name = Name,
@@ -115,6 +120,32 @@ namespace Gs2.Unity.Gs2Showcase.Model
                         }
                 ).ToList() : new List<DisplayItem>(new DisplayItem[] {}),
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            if(this.DisplayItems != null)
+            {
+                writer.WritePropertyName("displayItems");
+                writer.WriteArrayStart();
+                foreach(var item in this.DisplayItems)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

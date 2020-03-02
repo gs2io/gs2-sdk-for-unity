@@ -16,30 +16,40 @@
 using Gs2.Gs2Quest.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Quest.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzQuestModel
 	{
 		/** クエストモデル */
-		public string QuestModelId { get; set; }
+		[UnityEngine.SerializeField]
+		public string QuestModelId;
 		/** クエストモデル名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** クエストモデルのメタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 		/** クエストの内容 */
-		public List<EzContents> Contents { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzContents> Contents;
 		/** 挑戦可能な期間を指定するイベントマスター のGRN */
-		public string ChallengePeriodEventId { get; set; }
+		[UnityEngine.SerializeField]
+		public string ChallengePeriodEventId;
 		/** クエストの参加料 */
-		public List<EzConsumeAction> ConsumeActions { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzConsumeAction> ConsumeActions;
 		/** クエスト失敗時の報酬 */
-		public List<EzAcquireAction> FailedAcquireActions { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzAcquireAction> FailedAcquireActions;
 		/** クエストに挑戦するためにクリアしておく必要のあるクエスト名 */
-		public List<string> PremiseQuestNames { get; set; }
+		[UnityEngine.SerializeField]
+		public List<string> PremiseQuestNames;
 
 		public EzQuestModel()
 		{
@@ -74,7 +84,7 @@ namespace Gs2.Unity.Gs2Quest.Model
 			).ToList() : new List<string>(new string[] {});
 		}
 
-        public QuestModel ToModel()
+        public virtual QuestModel ToModel()
         {
             return new QuestModel {
                 questModelId = QuestModelId,
@@ -122,6 +132,72 @@ namespace Gs2.Unity.Gs2Quest.Model
                         }
                 ).ToList() : new List<string>(new string[] {}),
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.QuestModelId != null)
+            {
+                writer.WritePropertyName("questModelId");
+                writer.Write(this.QuestModelId);
+            }
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            if(this.Contents != null)
+            {
+                writer.WritePropertyName("contents");
+                writer.WriteArrayStart();
+                foreach(var item in this.Contents)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            if(this.ChallengePeriodEventId != null)
+            {
+                writer.WritePropertyName("challengePeriodEventId");
+                writer.Write(this.ChallengePeriodEventId);
+            }
+            if(this.ConsumeActions != null)
+            {
+                writer.WritePropertyName("consumeActions");
+                writer.WriteArrayStart();
+                foreach(var item in this.ConsumeActions)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            if(this.FailedAcquireActions != null)
+            {
+                writer.WritePropertyName("failedAcquireActions");
+                writer.WriteArrayStart();
+                foreach(var item in this.FailedAcquireActions)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            if(this.PremiseQuestNames != null)
+            {
+                writer.WritePropertyName("premiseQuestNames");
+                writer.WriteArrayStart();
+                foreach(var item in this.PremiseQuestNames)
+                {
+                    writer.Write(item);
+                }
+                writer.WriteArrayEnd();
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

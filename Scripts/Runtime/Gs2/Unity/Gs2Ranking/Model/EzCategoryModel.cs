@@ -16,18 +16,22 @@
 using Gs2.Gs2Ranking.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Ranking.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzCategoryModel
 	{
 		/** カテゴリ名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** カテゴリのメタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 
 		public EzCategoryModel()
 		{
@@ -40,12 +44,28 @@ namespace Gs2.Unity.Gs2Ranking.Model
 			Metadata = @categoryModel.metadata;
 		}
 
-        public CategoryModel ToModel()
+        public virtual CategoryModel ToModel()
         {
             return new CategoryModel {
                 name = Name,
                 metadata = Metadata,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

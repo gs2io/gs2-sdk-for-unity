@@ -16,28 +16,40 @@
 using Gs2.Gs2Inbox.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Inbox.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzMessage
 	{
 		/** メッセージ */
-		public string MessageId { get; set; }
+		[UnityEngine.SerializeField]
+		public string MessageId;
 		/** メッセージID */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** メッセージの内容に相当するメタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 		/** 既読状態 */
-		public bool IsRead { get; set; }
+		[UnityEngine.SerializeField]
+		public bool IsRead;
 		/** 開封時に実行する入手アクション */
-		public List<EzAcquireAction> ReadAcquireActions { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzAcquireAction> ReadAcquireActions;
 		/** 作成日時 */
-		public long ReceivedAt { get; set; }
+		[UnityEngine.SerializeField]
+		public long ReceivedAt;
 		/** 最終更新日時 */
-		public long ReadAt { get; set; }
+		[UnityEngine.SerializeField]
+		public long ReadAt;
+		/** メッセージの有効期限 */
+		[UnityEngine.SerializeField]
+		public long ExpiresAt;
 
 		public EzMessage()
 		{
@@ -57,9 +69,10 @@ namespace Gs2.Unity.Gs2Inbox.Model
 			).ToList() : new List<EzAcquireAction>(new EzAcquireAction[] {});
 			ReceivedAt = @message.receivedAt.HasValue ? @message.receivedAt.Value : 0;
 			ReadAt = @message.readAt.HasValue ? @message.readAt.Value : 0;
+			ExpiresAt = @message.expiresAt.HasValue ? @message.expiresAt.Value : 0;
 		}
 
-        public Message ToModel()
+        public virtual Message ToModel()
         {
             return new Message {
                 messageId = MessageId,
@@ -77,7 +90,47 @@ namespace Gs2.Unity.Gs2Inbox.Model
                 ).ToList() : new List<AcquireAction>(new AcquireAction[] {}),
                 receivedAt = ReceivedAt,
                 readAt = ReadAt,
+                expiresAt = ExpiresAt,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.MessageId != null)
+            {
+                writer.WritePropertyName("messageId");
+                writer.Write(this.MessageId);
+            }
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            writer.WritePropertyName("isRead");
+            writer.Write(this.IsRead);
+            if(this.ReadAcquireActions != null)
+            {
+                writer.WritePropertyName("readAcquireActions");
+                writer.WriteArrayStart();
+                foreach(var item in this.ReadAcquireActions)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            writer.WritePropertyName("receivedAt");
+            writer.Write(this.ReceivedAt);
+            writer.WritePropertyName("readAt");
+            writer.Write(this.ReadAt);
+            writer.WritePropertyName("expiresAt");
+            writer.Write(this.ExpiresAt);
+            writer.WriteObjectEnd();
         }
 	}
 }

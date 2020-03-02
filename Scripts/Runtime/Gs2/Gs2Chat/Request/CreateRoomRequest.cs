@@ -43,6 +43,21 @@ namespace Gs2.Gs2Chat.Request
         }
 
 
+        /** ルーム名 */
+        public string name { set; get; }
+
+        /**
+         * ルーム名を設定
+         *
+         * @param name ルーム名
+         * @return this
+         */
+        public CreateRoomRequest WithName(string name) {
+            this.name = name;
+            return this;
+        }
+
+
         /** メタデータ */
         public string metadata { set; get; }
 
@@ -122,6 +137,7 @@ namespace Gs2.Gs2Chat.Request
         {
             return new CreateRoomRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
                 metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
                 password = data.Keys.Contains("password") && data["password"] != null ? data["password"].ToString(): null,
                 whiteListUserIds = data.Keys.Contains("whiteListUserIds") && data["whiteListUserIds"] != null ? data["whiteListUserIds"].Cast<JsonData>().Select(value =>

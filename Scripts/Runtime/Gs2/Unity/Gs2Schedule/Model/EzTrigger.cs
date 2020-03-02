@@ -16,22 +16,28 @@
 using Gs2.Gs2Schedule.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Schedule.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzTrigger
 	{
 		/** トリガー */
-		public string TriggerId { get; set; }
+		[UnityEngine.SerializeField]
+		public string TriggerId;
 		/** トリガーの名前 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** 作成日時 */
-		public long CreatedAt { get; set; }
+		[UnityEngine.SerializeField]
+		public long CreatedAt;
 		/** トリガーの有効期限 */
-		public long ExpiresAt { get; set; }
+		[UnityEngine.SerializeField]
+		public long ExpiresAt;
 
 		public EzTrigger()
 		{
@@ -46,7 +52,7 @@ namespace Gs2.Unity.Gs2Schedule.Model
 			ExpiresAt = @trigger.expiresAt.HasValue ? @trigger.expiresAt.Value : 0;
 		}
 
-        public Trigger ToModel()
+        public virtual Trigger ToModel()
         {
             return new Trigger {
                 triggerId = TriggerId,
@@ -54,6 +60,26 @@ namespace Gs2.Unity.Gs2Schedule.Model
                 createdAt = CreatedAt,
                 expiresAt = ExpiresAt,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.TriggerId != null)
+            {
+                writer.WritePropertyName("triggerId");
+                writer.Write(this.TriggerId);
+            }
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            writer.WritePropertyName("createdAt");
+            writer.Write(this.CreatedAt);
+            writer.WritePropertyName("expiresAt");
+            writer.Write(this.ExpiresAt);
+            writer.WriteObjectEnd();
         }
 	}
 }

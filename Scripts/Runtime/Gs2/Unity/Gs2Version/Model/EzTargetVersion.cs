@@ -16,22 +16,28 @@
 using Gs2.Gs2Version.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Version.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzTargetVersion
 	{
 		/** バージョンの名前 */
-		public string VersionName { get; set; }
+		[UnityEngine.SerializeField]
+		public string VersionName;
 		/** バージョン */
-		public EzVersion Version { get; set; }
+		[UnityEngine.SerializeField]
+		public EzVersion Version;
 		/** ボディ */
-		public string Body { get; set; }
+		[UnityEngine.SerializeField]
+		public string Body;
 		/** 署名 */
-		public string Signature { get; set; }
+		[UnityEngine.SerializeField]
+		public string Signature;
 
 		public EzTargetVersion()
 		{
@@ -46,7 +52,7 @@ namespace Gs2.Unity.Gs2Version.Model
 			Signature = @targetVersion.signature;
 		}
 
-        public TargetVersion ToModel()
+        public virtual TargetVersion ToModel()
         {
             return new TargetVersion {
                 versionName = VersionName,
@@ -58,6 +64,32 @@ namespace Gs2.Unity.Gs2Version.Model
                 body = Body,
                 signature = Signature,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.VersionName != null)
+            {
+                writer.WritePropertyName("versionName");
+                writer.Write(this.VersionName);
+            }
+            if(this.Version != null)
+            {
+                writer.WritePropertyName("version");
+                this.Version.WriteJson(writer);
+            }
+            if(this.Body != null)
+            {
+                writer.WritePropertyName("body");
+                writer.Write(this.Body);
+            }
+            if(this.Signature != null)
+            {
+                writer.WritePropertyName("signature");
+                writer.Write(this.Signature);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

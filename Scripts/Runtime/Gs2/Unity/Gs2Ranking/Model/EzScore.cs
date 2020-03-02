@@ -16,24 +16,31 @@
 using Gs2.Gs2Ranking.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Ranking.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzScore
 	{
 		/** カテゴリ名 */
-		public string CategoryName { get; set; }
+		[UnityEngine.SerializeField]
+		public string CategoryName;
 		/** ユーザID */
-		public string UserId { get; set; }
+		[UnityEngine.SerializeField]
+		public string UserId;
 		/** スコアを獲得したユーザID */
-		public string ScorerUserId { get; set; }
+		[UnityEngine.SerializeField]
+		public string ScorerUserId;
 		/** スコア */
-		public long Score { get; set; }
+		[UnityEngine.SerializeField]
+		public long Score;
 		/** メタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 
 		public EzScore()
 		{
@@ -49,7 +56,7 @@ namespace Gs2.Unity.Gs2Ranking.Model
 			Metadata = @score.metadata;
 		}
 
-        public Score ToModel()
+        public virtual Score ToModel()
         {
             return new Score {
                 categoryName = CategoryName,
@@ -58,6 +65,34 @@ namespace Gs2.Unity.Gs2Ranking.Model
                 score = Score,
                 metadata = Metadata,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.CategoryName != null)
+            {
+                writer.WritePropertyName("categoryName");
+                writer.Write(this.CategoryName);
+            }
+            if(this.UserId != null)
+            {
+                writer.WritePropertyName("userId");
+                writer.Write(this.UserId);
+            }
+            if(this.ScorerUserId != null)
+            {
+                writer.WritePropertyName("scorerUserId");
+                writer.Write(this.ScorerUserId);
+            }
+            writer.WritePropertyName("score");
+            writer.Write(this.Score);
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

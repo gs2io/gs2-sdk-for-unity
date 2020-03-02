@@ -44,16 +44,16 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** フォーム名 */
-        public string formName { set; get; }
+        public string formModelName { set; get; }
 
         /**
          * フォーム名を設定
          *
-         * @param formName フォーム名
+         * @param formModelName フォーム名
          * @return this
          */
-        public UpdateFormModelMasterRequest WithFormName(string formName) {
-            this.formName = formName;
+        public UpdateFormModelMasterRequest WithFormModelName(string formModelName) {
+            this.formModelName = formModelName;
             return this;
         }
 
@@ -108,7 +108,7 @@ namespace Gs2.Gs2Formation.Request
         {
             return new UpdateFormModelMasterRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
-                formName = data.Keys.Contains("formName") && data["formName"] != null ? data["formName"].ToString(): null,
+                formModelName = data.Keys.Contains("formModelName") && data["formModelName"] != null ? data["formModelName"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
                 slots = data.Keys.Contains("slots") && data["slots"] != null ? data["slots"].Cast<JsonData>().Select(value =>

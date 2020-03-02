@@ -98,18 +98,18 @@ namespace Gs2.Unity.Gs2Lottery
 		/// <param name="callback">コールバックハンドラ</param>
 		/// <param name="session">ゲームセッション</param>
 		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="lotteryName">抽選モデルの種類名</param>
+		/// <param name="prizeTableName">排出確率テーブル名</param>
 		public IEnumerator GetBox(
 		        UnityAction<AsyncResult<EzGetBoxResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string lotteryName
+                string prizeTableName
         )
 		{
             yield return _client.GetBox(
                 new GetBoxRequest()
                     .WithNamespaceName(namespaceName)
-                    .WithLotteryName(lotteryName)
+                    .WithPrizeTableName(prizeTableName)
                     .WithAccessToken(session.AccessToken.token),
 				r =>
 				{
@@ -143,18 +143,18 @@ namespace Gs2.Unity.Gs2Lottery
 		/// <param name="callback">コールバックハンドラ</param>
 		/// <param name="session">ゲームセッション</param>
 		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="lotteryName">抽選モデルの種類名</param>
+		/// <param name="prizeTableName">排出確率テーブル名</param>
 		public IEnumerator ResetBox(
 		        UnityAction<AsyncResult<EzResetBoxResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string lotteryName
+                string prizeTableName
         )
 		{
             yield return _client.ResetBox(
                 new ResetBoxRequest()
                     .WithNamespaceName(namespaceName)
-                    .WithLotteryName(lotteryName)
+                    .WithPrizeTableName(prizeTableName)
                     .WithAccessToken(session.AccessToken.token),
 				r =>
 				{

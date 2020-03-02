@@ -16,22 +16,28 @@
 using Gs2.Gs2Distributor.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Distributor.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzDistributorModel
 	{
 		/** ディストリビューターの種類名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** ディストリビューターの種類のメタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 		/** 所持品がキャパシティをオーバーしたときに転送するプレゼントボックスのネームスペース のGRN */
-		public string InboxNamespaceId { get; set; }
+		[UnityEngine.SerializeField]
+		public string InboxNamespaceId;
 		/** ディストリビューターを通して処理出来る対象のリソースGRNのホワイトリスト */
-		public List<string> WhiteListTargetIds { get; set; }
+		[UnityEngine.SerializeField]
+		public List<string> WhiteListTargetIds;
 
 		public EzDistributorModel()
 		{
@@ -50,7 +56,7 @@ namespace Gs2.Unity.Gs2Distributor.Model
 			).ToList() : new List<string>(new string[] {});
 		}
 
-        public DistributorModel ToModel()
+        public virtual DistributorModel ToModel()
         {
             return new DistributorModel {
                 name = Name,
@@ -62,6 +68,37 @@ namespace Gs2.Unity.Gs2Distributor.Model
                         }
                 ).ToList() : new List<string>(new string[] {}),
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            if(this.InboxNamespaceId != null)
+            {
+                writer.WritePropertyName("inboxNamespaceId");
+                writer.Write(this.InboxNamespaceId);
+            }
+            if(this.WhiteListTargetIds != null)
+            {
+                writer.WritePropertyName("whiteListTargetIds");
+                writer.WriteArrayStart();
+                foreach(var item in this.WhiteListTargetIds)
+                {
+                    writer.Write(item);
+                }
+                writer.WriteArrayEnd();
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

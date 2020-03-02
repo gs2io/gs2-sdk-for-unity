@@ -16,22 +16,28 @@
 using Gs2.Gs2Matchmaking.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Matchmaking.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzCapacityOfRole
 	{
 		/** ロール名 */
-		public string RoleName { get; set; }
+		[UnityEngine.SerializeField]
+		public string RoleName;
 		/** ロール名の別名リスト */
-		public List<string> RoleAliases { get; set; }
+		[UnityEngine.SerializeField]
+		public List<string> RoleAliases;
 		/** 募集人数 */
-		public int Capacity { get; set; }
+		[UnityEngine.SerializeField]
+		public int Capacity;
 		/** 参加者のプレイヤー情報リスト */
-		public List<EzPlayer> Participants { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzPlayer> Participants;
 
 		public EzCapacityOfRole()
 		{
@@ -54,7 +60,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Model
 			).ToList() : new List<EzPlayer>(new EzPlayer[] {});
 		}
 
-        public CapacityOfRole ToModel()
+        public virtual CapacityOfRole ToModel()
         {
             return new CapacityOfRole {
                 roleName = RoleName,
@@ -83,6 +89,39 @@ namespace Gs2.Unity.Gs2Matchmaking.Model
                         }
                 ).ToList() : new List<Player>(new Player[] {}),
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.RoleName != null)
+            {
+                writer.WritePropertyName("roleName");
+                writer.Write(this.RoleName);
+            }
+            if(this.RoleAliases != null)
+            {
+                writer.WritePropertyName("roleAliases");
+                writer.WriteArrayStart();
+                foreach(var item in this.RoleAliases)
+                {
+                    writer.Write(item);
+                }
+                writer.WriteArrayEnd();
+            }
+            writer.WritePropertyName("capacity");
+            writer.Write(this.Capacity);
+            if(this.Participants != null)
+            {
+                writer.WritePropertyName("participants");
+                writer.WriteArrayStart();
+                foreach(var item in this.Participants)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

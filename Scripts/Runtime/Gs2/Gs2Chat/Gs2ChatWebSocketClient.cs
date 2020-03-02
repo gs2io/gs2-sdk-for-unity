@@ -694,6 +694,11 @@ namespace Gs2.Gs2Chat
                     jsonWriter.WritePropertyName("namespaceName");
                     jsonWriter.Write(_request.namespaceName.ToString());
                 }
+                if (_request.name != null)
+                {
+                    jsonWriter.WritePropertyName("name");
+                    jsonWriter.Write(_request.name.ToString());
+                }
                 if (_request.metadata != null)
                 {
                     jsonWriter.WritePropertyName("metadata");
@@ -798,6 +803,11 @@ namespace Gs2.Gs2Chat
                 {
                     jsonWriter.WritePropertyName("namespaceName");
                     jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.name != null)
+                {
+                    jsonWriter.WritePropertyName("name");
+                    jsonWriter.Write(_request.name.ToString());
                 }
                 if (_request.userId != null)
                 {

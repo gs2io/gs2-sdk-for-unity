@@ -16,22 +16,28 @@
 using Gs2.Gs2Friend.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Friend.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzProfile
 	{
 		/** ユーザーID */
-		public string UserId { get; set; }
+		[UnityEngine.SerializeField]
+		public string UserId;
 		/** 公開されるプロフィール */
-		public string PublicProfile { get; set; }
+		[UnityEngine.SerializeField]
+		public string PublicProfile;
 		/** フォロワー向けに公開されるプロフィール */
-		public string FollowerProfile { get; set; }
+		[UnityEngine.SerializeField]
+		public string FollowerProfile;
 		/** フレンド向けに公開されるプロフィール */
-		public string FriendProfile { get; set; }
+		[UnityEngine.SerializeField]
+		public string FriendProfile;
 
 		public EzProfile()
 		{
@@ -46,7 +52,7 @@ namespace Gs2.Unity.Gs2Friend.Model
 			FriendProfile = @profile.friendProfile;
 		}
 
-        public Profile ToModel()
+        public virtual Profile ToModel()
         {
             return new Profile {
                 userId = UserId,
@@ -54,6 +60,32 @@ namespace Gs2.Unity.Gs2Friend.Model
                 followerProfile = FollowerProfile,
                 friendProfile = FriendProfile,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.UserId != null)
+            {
+                writer.WritePropertyName("userId");
+                writer.Write(this.UserId);
+            }
+            if(this.PublicProfile != null)
+            {
+                writer.WritePropertyName("publicProfile");
+                writer.Write(this.PublicProfile);
+            }
+            if(this.FollowerProfile != null)
+            {
+                writer.WritePropertyName("followerProfile");
+                writer.Write(this.FollowerProfile);
+            }
+            if(this.FriendProfile != null)
+            {
+                writer.WritePropertyName("friendProfile");
+                writer.Write(this.FriendProfile);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

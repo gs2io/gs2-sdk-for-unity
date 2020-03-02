@@ -599,10 +599,10 @@ namespace Gs2.Gs2Formation
                 var url = Gs2RestSession.EndpointHost
                     .Replace("{service}", "formation")
                     .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/master/model/form/{formName}";
+                    + "/{namespaceName}/master/model/form/{formModelName}";
 
                 url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
-                url = url.Replace("{formName}", !string.IsNullOrEmpty(_request.formName) ? _request.formName.ToString() : "null");
+                url = url.Replace("{formModelName}", !string.IsNullOrEmpty(_request.formModelName) ? _request.formModelName.ToString() : "null");
 
                 var queryStrings = new List<string> ();
                 if (_request.contextStack != null)
@@ -654,10 +654,10 @@ namespace Gs2.Gs2Formation
                 var url = Gs2RestSession.EndpointHost
                     .Replace("{service}", "formation")
                     .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/master/model/form/{formName}";
+                    + "/{namespaceName}/master/model/form/{formModelName}";
 
                 url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
-                url = url.Replace("{formName}", !string.IsNullOrEmpty(_request.formName) ? _request.formName.ToString() : "null");
+                url = url.Replace("{formModelName}", !string.IsNullOrEmpty(_request.formModelName) ? _request.formModelName.ToString() : "null");
 
                 UnityWebRequest.url = url;
 
@@ -739,10 +739,10 @@ namespace Gs2.Gs2Formation
                 var url = Gs2RestSession.EndpointHost
                     .Replace("{service}", "formation")
                     .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/master/model/form/{formName}";
+                    + "/{namespaceName}/master/model/form/{formModelName}";
 
                 url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
-                url = url.Replace("{formName}", !string.IsNullOrEmpty(_request.formName) ? _request.formName.ToString() : "null");
+                url = url.Replace("{formModelName}", !string.IsNullOrEmpty(_request.formModelName) ? _request.formModelName.ToString() : "null");
 
                 var queryStrings = new List<string> ();
                 if (_request.contextStack != null)
@@ -987,10 +987,10 @@ namespace Gs2.Gs2Formation
                     jsonWriter.WritePropertyName("metadata");
                     jsonWriter.Write(_request.metadata.ToString());
                 }
-                if (_request.formModelId != null)
+                if (_request.formModelName != null)
                 {
-                    jsonWriter.WritePropertyName("formModelId");
-                    jsonWriter.Write(_request.formModelId.ToString());
+                    jsonWriter.WritePropertyName("formModelName");
+                    jsonWriter.Write(_request.formModelName.ToString());
                 }
                 if (_request.initialMaxCapacity != null)
                 {
@@ -1132,10 +1132,10 @@ namespace Gs2.Gs2Formation
                     jsonWriter.WritePropertyName("metadata");
                     jsonWriter.Write(_request.metadata.ToString());
                 }
-                if (_request.formModelId != null)
+                if (_request.formModelName != null)
                 {
-                    jsonWriter.WritePropertyName("formModelId");
-                    jsonWriter.Write(_request.formModelId.ToString());
+                    jsonWriter.WritePropertyName("formModelName");
+                    jsonWriter.Write(_request.formModelName.ToString());
                 }
                 if (_request.initialMaxCapacity != null)
                 {

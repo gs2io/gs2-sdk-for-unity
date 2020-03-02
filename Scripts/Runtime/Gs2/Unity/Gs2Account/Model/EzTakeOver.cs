@@ -16,22 +16,28 @@
 using Gs2.Gs2Account.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Account.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzTakeOver
 	{
 		/** ユーザーID */
-		public string UserId { get; set; }
+		[UnityEngine.SerializeField]
+		public string UserId;
 		/** スロット番号 */
-		public int Type { get; set; }
+		[UnityEngine.SerializeField]
+		public int Type;
 		/** 引き継ぎ用ユーザーID */
-		public string UserIdentifier { get; set; }
+		[UnityEngine.SerializeField]
+		public string UserIdentifier;
 		/** 作成日時 */
-		public long CreatedAt { get; set; }
+		[UnityEngine.SerializeField]
+		public long CreatedAt;
 
 		public EzTakeOver()
 		{
@@ -46,7 +52,7 @@ namespace Gs2.Unity.Gs2Account.Model
 			CreatedAt = @takeOver.createdAt.HasValue ? @takeOver.createdAt.Value : 0;
 		}
 
-        public TakeOver ToModel()
+        public virtual TakeOver ToModel()
         {
             return new TakeOver {
                 userId = UserId,
@@ -54,6 +60,26 @@ namespace Gs2.Unity.Gs2Account.Model
                 userIdentifier = UserIdentifier,
                 createdAt = CreatedAt,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.UserId != null)
+            {
+                writer.WritePropertyName("userId");
+                writer.Write(this.UserId);
+            }
+            writer.WritePropertyName("type");
+            writer.Write(this.Type);
+            if(this.UserIdentifier != null)
+            {
+                writer.WritePropertyName("userIdentifier");
+                writer.Write(this.UserIdentifier);
+            }
+            writer.WritePropertyName("createdAt");
+            writer.Write(this.CreatedAt);
+            writer.WriteObjectEnd();
         }
 	}
 }

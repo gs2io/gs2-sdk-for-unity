@@ -58,13 +58,13 @@ namespace Gs2.Gs2Friend.Request
         }
 
 
-        /** ユーザーID */
+        /** フレンドリクエストの宛先ユーザーID */
         public string targetUserId { set; get; }
 
         /**
-         * ユーザーIDを設定
+         * フレンドリクエストの宛先ユーザーIDを設定
          *
-         * @param targetUserId ユーザーID
+         * @param targetUserId フレンドリクエストの宛先ユーザーID
          * @return this
          */
         public GetSendRequestByUserIdRequest WithTargetUserId(string targetUserId) {

@@ -16,20 +16,25 @@
 using Gs2.Gs2Matchmaking.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Matchmaking.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzAttributeRange
 	{
 		/** 属性名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** ギャザリング参加可能な属性値の最小値 */
-		public int Min { get; set; }
+		[UnityEngine.SerializeField]
+		public int Min;
 		/** ギャザリング参加可能な属性値の最大値 */
-		public int Max { get; set; }
+		[UnityEngine.SerializeField]
+		public int Max;
 
 		public EzAttributeRange()
 		{
@@ -43,13 +48,28 @@ namespace Gs2.Unity.Gs2Matchmaking.Model
 			Max = @attributeRange.max.HasValue ? @attributeRange.max.Value : 0;
 		}
 
-        public AttributeRange ToModel()
+        public virtual AttributeRange ToModel()
         {
             return new AttributeRange {
                 name = Name,
                 min = Min,
                 max = Max,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            writer.WritePropertyName("min");
+            writer.Write(this.Min);
+            writer.WritePropertyName("max");
+            writer.Write(this.Max);
+            writer.WriteObjectEnd();
         }
 	}
 }

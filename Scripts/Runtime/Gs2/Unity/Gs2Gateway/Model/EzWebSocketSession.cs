@@ -16,20 +16,25 @@
 using Gs2.Gs2Gateway.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Gateway.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzWebSocketSession
 	{
 		/** コネクションID */
-		public string ConnectionId { get; set; }
+		[UnityEngine.SerializeField]
+		public string ConnectionId;
 		/** ネームスペース名 */
-		public string NamespaceName { get; set; }
+		[UnityEngine.SerializeField]
+		public string NamespaceName;
 		/** ユーザーID */
-		public string UserId { get; set; }
+		[UnityEngine.SerializeField]
+		public string UserId;
 
 		public EzWebSocketSession()
 		{
@@ -43,13 +48,34 @@ namespace Gs2.Unity.Gs2Gateway.Model
 			UserId = @webSocketSession.userId;
 		}
 
-        public WebSocketSession ToModel()
+        public virtual WebSocketSession ToModel()
         {
             return new WebSocketSession {
                 connectionId = ConnectionId,
                 namespaceName = NamespaceName,
                 userId = UserId,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.ConnectionId != null)
+            {
+                writer.WritePropertyName("connectionId");
+                writer.Write(this.ConnectionId);
+            }
+            if(this.NamespaceName != null)
+            {
+                writer.WritePropertyName("namespaceName");
+                writer.Write(this.NamespaceName);
+            }
+            if(this.UserId != null)
+            {
+                writer.WritePropertyName("userId");
+                writer.Write(this.UserId);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

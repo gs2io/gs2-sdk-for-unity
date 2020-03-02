@@ -16,22 +16,28 @@
 using Gs2.Gs2Showcase.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Showcase.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzDisplayItem
 	{
 		/** 陳列商品ID */
-		public string DisplayItemId { get; set; }
+		[UnityEngine.SerializeField]
+		public string DisplayItemId;
 		/** 種類 */
-		public string Type { get; set; }
+		[UnityEngine.SerializeField]
+		public string Type;
 		/** 陳列する商品 */
-		public EzSalesItem SalesItem { get; set; }
+		[UnityEngine.SerializeField]
+		public EzSalesItem SalesItem;
 		/** 陳列する商品グループ */
-		public EzSalesItemGroup SalesItemGroup { get; set; }
+		[UnityEngine.SerializeField]
+		public EzSalesItemGroup SalesItemGroup;
 
 		public EzDisplayItem()
 		{
@@ -46,7 +52,7 @@ namespace Gs2.Unity.Gs2Showcase.Model
 			SalesItemGroup = @displayItem.salesItemGroup != null ? new EzSalesItemGroup(@displayItem.salesItemGroup) : null;
 		}
 
-        public DisplayItem ToModel()
+        public virtual DisplayItem ToModel()
         {
             return new DisplayItem {
                 displayItemId = DisplayItemId,
@@ -105,6 +111,32 @@ namespace Gs2.Unity.Gs2Showcase.Model
                     ).ToList() : new List<SalesItem>(new SalesItem[] {}),
                 },
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.DisplayItemId != null)
+            {
+                writer.WritePropertyName("displayItemId");
+                writer.Write(this.DisplayItemId);
+            }
+            if(this.Type != null)
+            {
+                writer.WritePropertyName("type");
+                writer.Write(this.Type);
+            }
+            if(this.SalesItem != null)
+            {
+                writer.WritePropertyName("salesItem");
+                this.SalesItem.WriteJson(writer);
+            }
+            if(this.SalesItemGroup != null)
+            {
+                writer.WritePropertyName("salesItemGroup");
+                this.SalesItemGroup.WriteJson(writer);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

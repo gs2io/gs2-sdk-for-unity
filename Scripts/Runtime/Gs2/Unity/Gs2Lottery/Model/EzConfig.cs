@@ -16,18 +16,22 @@
 using Gs2.Gs2Lottery.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Lottery.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzConfig
 	{
 		/** 名前 */
-		public string Key { get; set; }
+		[UnityEngine.SerializeField]
+		public string Key;
 		/** 値 */
-		public string Value { get; set; }
+		[UnityEngine.SerializeField]
+		public string Value;
 
 		public EzConfig()
 		{
@@ -40,12 +44,28 @@ namespace Gs2.Unity.Gs2Lottery.Model
 			Value = @config.value;
 		}
 
-        public Config ToModel()
+        public virtual Config ToModel()
         {
             return new Config {
                 key = Key,
                 value = Value,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Key != null)
+            {
+                writer.WritePropertyName("key");
+                writer.Write(this.Key);
+            }
+            if(this.Value != null)
+            {
+                writer.WritePropertyName("value");
+                writer.Write(this.Value);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

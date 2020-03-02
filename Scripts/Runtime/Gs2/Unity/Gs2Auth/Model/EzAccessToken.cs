@@ -16,20 +16,25 @@
 using Gs2.Gs2Auth.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Auth.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzAccessToken
 	{
 		/** アクセストークン */
-		public string Token { get; set; }
+		[UnityEngine.SerializeField]
+		public string Token;
 		/** ユーザーID */
-		public string UserId { get; set; }
+		[UnityEngine.SerializeField]
+		public string UserId;
 		/** 有効期限 */
-		public long Expire { get; set; }
+		[UnityEngine.SerializeField]
+		public long Expire;
 
 		public EzAccessToken()
 		{
@@ -43,13 +48,31 @@ namespace Gs2.Unity.Gs2Auth.Model
 			Expire = @accessToken.expire.HasValue ? @accessToken.expire.Value : 0;
 		}
 
-        public AccessToken ToModel()
+        public virtual AccessToken ToModel()
         {
             return new AccessToken {
                 token = Token,
                 userId = UserId,
                 expire = Expire,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Token != null)
+            {
+                writer.WritePropertyName("token");
+                writer.Write(this.Token);
+            }
+            if(this.UserId != null)
+            {
+                writer.WritePropertyName("userId");
+                writer.Write(this.UserId);
+            }
+            writer.WritePropertyName("expire");
+            writer.Write(this.Expire);
+            writer.WriteObjectEnd();
         }
 	}
 }

@@ -40,6 +40,20 @@ namespace Gs2.Gs2Account.Model
             return this;
         }
 
+        /** 完了通知の通知先 */
+        public string doneTriggerTargetType { set; get; }
+
+        /**
+         * 完了通知の通知先を設定
+         *
+         * @param doneTriggerTargetType 完了通知の通知先
+         * @return this
+         */
+        public ScriptSetting WithDoneTriggerTargetType(string doneTriggerTargetType) {
+            this.doneTriggerTargetType = doneTriggerTargetType;
+            return this;
+        }
+
         /** 完了時に使用する GS2-Script のスクリプト のGRN */
         public string doneTriggerScriptId { set; get; }
 
@@ -76,6 +90,11 @@ namespace Gs2.Gs2Account.Model
                 writer.WritePropertyName("triggerScriptId");
                 writer.Write(this.triggerScriptId);
             }
+            if(this.doneTriggerTargetType != null)
+            {
+                writer.WritePropertyName("doneTriggerTargetType");
+                writer.Write(this.doneTriggerTargetType);
+            }
             if(this.doneTriggerScriptId != null)
             {
                 writer.WritePropertyName("doneTriggerScriptId");
@@ -94,6 +113,7 @@ namespace Gs2.Gs2Account.Model
         {
             return new ScriptSetting()
                 .WithTriggerScriptId(data.Keys.Contains("triggerScriptId") && data["triggerScriptId"] != null ? data["triggerScriptId"].ToString() : null)
+                .WithDoneTriggerTargetType(data.Keys.Contains("doneTriggerTargetType") && data["doneTriggerTargetType"] != null ? data["doneTriggerTargetType"].ToString() : null)
                 .WithDoneTriggerScriptId(data.Keys.Contains("doneTriggerScriptId") && data["doneTriggerScriptId"] != null ? data["doneTriggerScriptId"].ToString() : null)
                 .WithDoneTriggerQueueNamespaceId(data.Keys.Contains("doneTriggerQueueNamespaceId") && data["doneTriggerQueueNamespaceId"] != null ? data["doneTriggerQueueNamespaceId"].ToString() : null);
         }

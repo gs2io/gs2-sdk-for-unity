@@ -16,18 +16,22 @@
 using Gs2.Gs2Inbox.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Inbox.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzAcquireAction
 	{
 		/** スタンプシートで実行するアクションの種類 */
-		public string Action { get; set; }
+		[UnityEngine.SerializeField]
+		public string Action;
 		/** 入手リクエストのJSON */
-		public string Request { get; set; }
+		[UnityEngine.SerializeField]
+		public string Request;
 
 		public EzAcquireAction()
 		{
@@ -40,12 +44,28 @@ namespace Gs2.Unity.Gs2Inbox.Model
 			Request = @acquireAction.request;
 		}
 
-        public AcquireAction ToModel()
+        public virtual AcquireAction ToModel()
         {
             return new AcquireAction {
                 action = Action,
                 request = Request,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Action != null)
+            {
+                writer.WritePropertyName("action");
+                writer.Write(this.Action);
+            }
+            if(this.Request != null)
+            {
+                writer.WritePropertyName("request");
+                writer.Write(this.Request);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

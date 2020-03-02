@@ -43,17 +43,17 @@ namespace Gs2.Gs2Lottery.Request
         }
 
 
-        /** 抽選モデルの種類名 */
-        public string lotteryName { set; get; }
+        /** 排出確率テーブル名 */
+        public string prizeTableName { set; get; }
 
         /**
-         * 抽選モデルの種類名を設定
+         * 排出確率テーブル名を設定
          *
-         * @param lotteryName 抽選モデルの種類名
+         * @param prizeTableName 排出確率テーブル名
          * @return this
          */
-        public GetBoxByUserIdRequest WithLotteryName(string lotteryName) {
-            this.lotteryName = lotteryName;
+        public GetBoxByUserIdRequest WithPrizeTableName(string prizeTableName) {
+            this.prizeTableName = prizeTableName;
             return this;
         }
 
@@ -93,7 +93,7 @@ namespace Gs2.Gs2Lottery.Request
         {
             return new GetBoxByUserIdRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
-                lotteryName = data.Keys.Contains("lotteryName") && data["lotteryName"] != null ? data["lotteryName"].ToString(): null,
+                prizeTableName = data.Keys.Contains("prizeTableName") && data["prizeTableName"] != null ? data["prizeTableName"].ToString(): null,
                 userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };

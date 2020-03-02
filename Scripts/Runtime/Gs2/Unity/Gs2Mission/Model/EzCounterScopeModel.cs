@@ -16,22 +16,28 @@
 using Gs2.Gs2Mission.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Mission.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzCounterScopeModel
 	{
 		/** リセットタイミング */
-		public string ResetType { get; set; }
+		[UnityEngine.SerializeField]
+		public string ResetType;
 		/** リセットをする日にち */
-		public int ResetDayOfMonth { get; set; }
+		[UnityEngine.SerializeField]
+		public int ResetDayOfMonth;
 		/** リセットする曜日 */
-		public string ResetDayOfWeek { get; set; }
+		[UnityEngine.SerializeField]
+		public string ResetDayOfWeek;
 		/** リセット時刻 */
-		public int ResetHour { get; set; }
+		[UnityEngine.SerializeField]
+		public int ResetHour;
 
 		public EzCounterScopeModel()
 		{
@@ -46,7 +52,7 @@ namespace Gs2.Unity.Gs2Mission.Model
 			ResetHour = @counterScopeModel.resetHour.HasValue ? @counterScopeModel.resetHour.Value : 0;
 		}
 
-        public CounterScopeModel ToModel()
+        public virtual CounterScopeModel ToModel()
         {
             return new CounterScopeModel {
                 resetType = ResetType,
@@ -54,6 +60,26 @@ namespace Gs2.Unity.Gs2Mission.Model
                 resetDayOfWeek = ResetDayOfWeek,
                 resetHour = ResetHour,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.ResetType != null)
+            {
+                writer.WritePropertyName("resetType");
+                writer.Write(this.ResetType);
+            }
+            writer.WritePropertyName("resetDayOfMonth");
+            writer.Write(this.ResetDayOfMonth);
+            if(this.ResetDayOfWeek != null)
+            {
+                writer.WritePropertyName("resetDayOfWeek");
+                writer.Write(this.ResetDayOfWeek);
+            }
+            writer.WritePropertyName("resetHour");
+            writer.Write(this.ResetHour);
+            writer.WriteObjectEnd();
         }
 	}
 }

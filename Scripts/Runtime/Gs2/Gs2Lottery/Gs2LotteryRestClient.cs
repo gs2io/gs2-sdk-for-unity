@@ -1311,10 +1311,10 @@ namespace Gs2.Gs2Lottery
                 var url = Gs2RestSession.EndpointHost
                     .Replace("{service}", "lottery")
                     .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/user/me/box/{lotteryName}";
+                    + "/{namespaceName}/user/me/box/{prizeTableName}";
 
                 url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
-                url = url.Replace("{lotteryName}", !string.IsNullOrEmpty(_request.lotteryName) ? _request.lotteryName.ToString() : "null");
+                url = url.Replace("{prizeTableName}", !string.IsNullOrEmpty(_request.prizeTableName) ? _request.prizeTableName.ToString() : "null");
 
                 var queryStrings = new List<string> ();
                 if (_request.contextStack != null)
@@ -1374,10 +1374,10 @@ namespace Gs2.Gs2Lottery
                 var url = Gs2RestSession.EndpointHost
                     .Replace("{service}", "lottery")
                     .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/user/{userId}/box/{lotteryName}";
+                    + "/{namespaceName}/user/{userId}/box/{prizeTableName}";
 
                 url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
-                url = url.Replace("{lotteryName}", !string.IsNullOrEmpty(_request.lotteryName) ? _request.lotteryName.ToString() : "null");
+                url = url.Replace("{prizeTableName}", !string.IsNullOrEmpty(_request.prizeTableName) ? _request.prizeTableName.ToString() : "null");
                 url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
 
                 var queryStrings = new List<string> ();
@@ -1418,6 +1418,66 @@ namespace Gs2.Gs2Lottery
 			return Gs2RestSession.Execute(task);
         }
 
+        private class GetRawBoxByUserIdTask : Gs2RestSessionTask<Result.GetRawBoxByUserIdResult>
+        {
+			private readonly Request.GetRawBoxByUserIdRequest _request;
+
+			public GetRawBoxByUserIdTask(Request.GetRawBoxByUserIdRequest request, UnityAction<AsyncResult<Result.GetRawBoxByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "lottery")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/box/{prizeTableName}/raw";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{prizeTableName}", !string.IsNullOrEmpty(_request.prizeTableName) ? _request.prizeTableName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  ユーザIDを指定してボックスを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetRawBoxByUserId(
+                Request.GetRawBoxByUserIdRequest request,
+                UnityAction<AsyncResult<Result.GetRawBoxByUserIdResult>> callback
+        )
+		{
+			var task = new GetRawBoxByUserIdTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
         private class ResetBoxTask : Gs2RestSessionTask<Result.ResetBoxResult>
         {
 			private readonly Request.ResetBoxRequest _request;
@@ -1434,10 +1494,10 @@ namespace Gs2.Gs2Lottery
                 var url = Gs2RestSession.EndpointHost
                     .Replace("{service}", "lottery")
                     .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/user/me/box/{lotteryName}";
+                    + "/{namespaceName}/user/me/box/{prizeTableName}";
 
                 url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
-                url = url.Replace("{lotteryName}", !string.IsNullOrEmpty(_request.lotteryName) ? _request.lotteryName.ToString() : "null");
+                url = url.Replace("{prizeTableName}", !string.IsNullOrEmpty(_request.prizeTableName) ? _request.prizeTableName.ToString() : "null");
 
                 var queryStrings = new List<string> ();
                 if (_request.contextStack != null)
@@ -1497,10 +1557,10 @@ namespace Gs2.Gs2Lottery
                 var url = Gs2RestSession.EndpointHost
                     .Replace("{service}", "lottery")
                     .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/user/{userId}/box/{lotteryName}";
+                    + "/{namespaceName}/user/{userId}/box/{prizeTableName}";
 
                 url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
-                url = url.Replace("{lotteryName}", !string.IsNullOrEmpty(_request.lotteryName) ? _request.lotteryName.ToString() : "null");
+                url = url.Replace("{prizeTableName}", !string.IsNullOrEmpty(_request.prizeTableName) ? _request.prizeTableName.ToString() : "null");
                 url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
 
                 var queryStrings = new List<string> ();
@@ -1780,13 +1840,17 @@ namespace Gs2.Gs2Lottery
                 url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
                 url = url.Replace("{lotteryName}", !string.IsNullOrEmpty(_request.lotteryName) ? _request.lotteryName.ToString() : "null");
                 url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
-                url = url.Replace("{count}",_request.count != null ? _request.count.ToString() : "null");
 
                 UnityWebRequest.url = url;
 
                 var stringBuilder = new StringBuilder();
                 var jsonWriter = new JsonWriter(stringBuilder);
                 jsonWriter.WriteObjectStart();
+                if (_request.count != null)
+                {
+                    jsonWriter.WritePropertyName("count");
+                    jsonWriter.Write(_request.count.ToString());
+                }
                 if (_request.config != null)
                 {
                     jsonWriter.WritePropertyName("config");

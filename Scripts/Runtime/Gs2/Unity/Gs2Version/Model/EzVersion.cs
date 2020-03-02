@@ -16,20 +16,25 @@
 using Gs2.Gs2Version.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Version.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzVersion
 	{
 		/** メジャーバージョン */
-		public int Major { get; set; }
+		[UnityEngine.SerializeField]
+		public int Major;
 		/** マイナーバージョン */
-		public int Minor { get; set; }
+		[UnityEngine.SerializeField]
+		public int Minor;
 		/** マイクロバージョン */
-		public int Micro { get; set; }
+		[UnityEngine.SerializeField]
+		public int Micro;
 
 		public EzVersion()
 		{
@@ -43,13 +48,25 @@ namespace Gs2.Unity.Gs2Version.Model
 			Micro = @version.micro.HasValue ? @version.micro.Value : 0;
 		}
 
-        public Version_ ToModel()
+        public virtual Version_ ToModel()
         {
             return new Version_ {
                 major = Major,
                 minor = Minor,
                 micro = Micro,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            writer.WritePropertyName("major");
+            writer.Write(this.Major);
+            writer.WritePropertyName("minor");
+            writer.Write(this.Minor);
+            writer.WritePropertyName("micro");
+            writer.Write(this.Micro);
+            writer.WriteObjectEnd();
         }
 	}
 }

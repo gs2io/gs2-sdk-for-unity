@@ -118,21 +118,6 @@ namespace Gs2.Gs2Mission.Request
         }
 
 
-        /** リセットタイミング */
-        public string resetType { set; get; }
-
-        /**
-         * リセットタイミングを設定
-         *
-         * @param resetType リセットタイミング
-         * @return this
-         */
-        public UpdateMissionTaskModelMasterRequest WithResetType(string resetType) {
-            this.resetType = resetType;
-            return this;
-        }
-
-
         /** 目標値 */
         public long? targetValue { set; get; }
 
@@ -203,7 +188,6 @@ namespace Gs2.Gs2Mission.Request
                 metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 counterName = data.Keys.Contains("counterName") && data["counterName"] != null ? data["counterName"].ToString(): null,
-                resetType = data.Keys.Contains("resetType") && data["resetType"] != null ? data["resetType"].ToString(): null,
                 targetValue = data.Keys.Contains("targetValue") && data["targetValue"] != null ? (long?)long.Parse(data["targetValue"].ToString()) : null,
                 completeAcquireActions = data.Keys.Contains("completeAcquireActions") && data["completeAcquireActions"] != null ? data["completeAcquireActions"].Cast<JsonData>().Select(value =>
                     {

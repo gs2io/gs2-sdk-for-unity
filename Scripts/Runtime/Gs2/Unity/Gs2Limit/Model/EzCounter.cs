@@ -16,24 +16,31 @@
 using Gs2.Gs2Limit.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Limit.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzCounter
 	{
 		/** カウンター */
-		public string CounterId { get; set; }
+		[UnityEngine.SerializeField]
+		public string CounterId;
 		/** カウンターの名前 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** カウント値 */
-		public int Count { get; set; }
+		[UnityEngine.SerializeField]
+		public int Count;
 		/** 作成日時 */
-		public long CreatedAt { get; set; }
+		[UnityEngine.SerializeField]
+		public long CreatedAt;
 		/** 最終更新日時 */
-		public long UpdatedAt { get; set; }
+		[UnityEngine.SerializeField]
+		public long UpdatedAt;
 
 		public EzCounter()
 		{
@@ -49,7 +56,7 @@ namespace Gs2.Unity.Gs2Limit.Model
 			UpdatedAt = @counter.updatedAt.HasValue ? @counter.updatedAt.Value : 0;
 		}
 
-        public Counter ToModel()
+        public virtual Counter ToModel()
         {
             return new Counter {
                 counterId = CounterId,
@@ -58,6 +65,28 @@ namespace Gs2.Unity.Gs2Limit.Model
                 createdAt = CreatedAt,
                 updatedAt = UpdatedAt,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.CounterId != null)
+            {
+                writer.WritePropertyName("counterId");
+                writer.Write(this.CounterId);
+            }
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            writer.WritePropertyName("count");
+            writer.Write(this.Count);
+            writer.WritePropertyName("createdAt");
+            writer.Write(this.CreatedAt);
+            writer.WritePropertyName("updatedAt");
+            writer.Write(this.UpdatedAt);
+            writer.WriteObjectEnd();
         }
 	}
 }

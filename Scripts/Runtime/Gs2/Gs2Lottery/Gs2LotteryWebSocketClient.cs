@@ -1679,10 +1679,10 @@ namespace Gs2.Gs2Lottery
                     jsonWriter.WritePropertyName("namespaceName");
                     jsonWriter.Write(_request.namespaceName.ToString());
                 }
-                if (_request.lotteryName != null)
+                if (_request.prizeTableName != null)
                 {
-                    jsonWriter.WritePropertyName("lotteryName");
-                    jsonWriter.Write(_request.lotteryName.ToString());
+                    jsonWriter.WritePropertyName("prizeTableName");
+                    jsonWriter.Write(_request.prizeTableName.ToString());
                 }
                 if (_request.contextStack != null)
                 {
@@ -1769,10 +1769,10 @@ namespace Gs2.Gs2Lottery
                     jsonWriter.WritePropertyName("namespaceName");
                     jsonWriter.Write(_request.namespaceName.ToString());
                 }
-                if (_request.lotteryName != null)
+                if (_request.prizeTableName != null)
                 {
-                    jsonWriter.WritePropertyName("lotteryName");
-                    jsonWriter.Write(_request.lotteryName.ToString());
+                    jsonWriter.WritePropertyName("prizeTableName");
+                    jsonWriter.Write(_request.prizeTableName.ToString());
                 }
                 if (_request.userId != null)
                 {
@@ -1838,6 +1838,96 @@ namespace Gs2.Gs2Lottery
 			return Gs2WebSocketSession.Execute(task);
         }
 
+        private class GetRawBoxByUserIdTask : Gs2WebSocketSessionTask<Result.GetRawBoxByUserIdResult>
+        {
+			private readonly Request.GetRawBoxByUserIdRequest _request;
+
+			public GetRawBoxByUserIdTask(Request.GetRawBoxByUserIdRequest request, UnityAction<AsyncResult<Result.GetRawBoxByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.prizeTableName != null)
+                {
+                    jsonWriter.WritePropertyName("prizeTableName");
+                    jsonWriter.Write(_request.prizeTableName.ToString());
+                }
+                if (_request.userId != null)
+                {
+                    jsonWriter.WritePropertyName("userId");
+                    jsonWriter.Write(_request.userId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("lottery");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("box");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("getRawBoxByUserId");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  ユーザIDを指定してボックスを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetRawBoxByUserId(
+                Request.GetRawBoxByUserIdRequest request,
+                UnityAction<AsyncResult<Result.GetRawBoxByUserIdResult>> callback
+        )
+		{
+			var task = new GetRawBoxByUserIdTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
         private class ResetBoxTask : Gs2WebSocketSessionTask<Result.ResetBoxResult>
         {
 			private readonly Request.ResetBoxRequest _request;
@@ -1859,10 +1949,10 @@ namespace Gs2.Gs2Lottery
                     jsonWriter.WritePropertyName("namespaceName");
                     jsonWriter.Write(_request.namespaceName.ToString());
                 }
-                if (_request.lotteryName != null)
+                if (_request.prizeTableName != null)
                 {
-                    jsonWriter.WritePropertyName("lotteryName");
-                    jsonWriter.Write(_request.lotteryName.ToString());
+                    jsonWriter.WritePropertyName("prizeTableName");
+                    jsonWriter.Write(_request.prizeTableName.ToString());
                 }
                 if (_request.contextStack != null)
                 {
@@ -1949,10 +2039,10 @@ namespace Gs2.Gs2Lottery
                     jsonWriter.WritePropertyName("namespaceName");
                     jsonWriter.Write(_request.namespaceName.ToString());
                 }
-                if (_request.lotteryName != null)
+                if (_request.prizeTableName != null)
                 {
-                    jsonWriter.WritePropertyName("lotteryName");
-                    jsonWriter.Write(_request.lotteryName.ToString());
+                    jsonWriter.WritePropertyName("prizeTableName");
+                    jsonWriter.Write(_request.prizeTableName.ToString());
                 }
                 if (_request.userId != null)
                 {

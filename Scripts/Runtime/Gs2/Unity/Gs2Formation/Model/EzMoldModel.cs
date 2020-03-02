@@ -16,24 +16,31 @@
 using Gs2.Gs2Formation.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Formation.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzMoldModel
 	{
 		/** フォームの保存領域名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** メタデータ */
-		public string Metadata { get; set; }
-		/** フォームモデル */
-		public EzFormModel FormModel { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
+		/** None */
+		[UnityEngine.SerializeField]
+		public EzFormModel FormModel;
 		/** フォームを保存できる初期キャパシティ */
-		public int InitialMaxCapacity { get; set; }
+		[UnityEngine.SerializeField]
+		public int InitialMaxCapacity;
 		/** フォームを保存できるキャパシティ */
-		public int MaxCapacity { get; set; }
+		[UnityEngine.SerializeField]
+		public int MaxCapacity;
 
 		public EzMoldModel()
 		{
@@ -49,7 +56,7 @@ namespace Gs2.Unity.Gs2Formation.Model
 			MaxCapacity = @moldModel.maxCapacity.HasValue ? @moldModel.maxCapacity.Value : 0;
 		}
 
-        public MoldModel ToModel()
+        public virtual MoldModel ToModel()
         {
             return new MoldModel {
                 name = Name,
@@ -71,6 +78,31 @@ namespace Gs2.Unity.Gs2Formation.Model
                 initialMaxCapacity = InitialMaxCapacity,
                 maxCapacity = MaxCapacity,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            if(this.FormModel != null)
+            {
+                writer.WritePropertyName("formModel");
+                this.FormModel.WriteJson(writer);
+            }
+            writer.WritePropertyName("initialMaxCapacity");
+            writer.Write(this.InitialMaxCapacity);
+            writer.WritePropertyName("maxCapacity");
+            writer.Write(this.MaxCapacity);
+            writer.WriteObjectEnd();
         }
 	}
 }

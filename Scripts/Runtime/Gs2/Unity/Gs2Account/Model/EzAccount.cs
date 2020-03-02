@@ -16,20 +16,25 @@
 using Gs2.Gs2Account.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Account.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzAccount
 	{
 		/** アカウントID */
-		public string UserId { get; set; }
+		[UnityEngine.SerializeField]
+		public string UserId;
 		/** パスワード */
-		public string Password { get; set; }
+		[UnityEngine.SerializeField]
+		public string Password;
 		/** 作成日時 */
-		public long CreatedAt { get; set; }
+		[UnityEngine.SerializeField]
+		public long CreatedAt;
 
 		public EzAccount()
 		{
@@ -43,13 +48,31 @@ namespace Gs2.Unity.Gs2Account.Model
 			CreatedAt = @account.createdAt.HasValue ? @account.createdAt.Value : 0;
 		}
 
-        public Account ToModel()
+        public virtual Account ToModel()
         {
             return new Account {
                 userId = UserId,
                 password = Password,
                 createdAt = CreatedAt,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.UserId != null)
+            {
+                writer.WritePropertyName("userId");
+                writer.Write(this.UserId);
+            }
+            if(this.Password != null)
+            {
+                writer.WritePropertyName("password");
+                writer.Write(this.Password);
+            }
+            writer.WritePropertyName("createdAt");
+            writer.Write(this.CreatedAt);
+            writer.WriteObjectEnd();
         }
 	}
 }

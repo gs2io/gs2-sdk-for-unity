@@ -16,26 +16,34 @@
 using Gs2.Gs2Stamina.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Stamina.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzStamina
 	{
 		/** スタミナモデルの名前 */
-		public string StaminaName { get; set; }
+		[UnityEngine.SerializeField]
+		public string StaminaName;
 		/** 最終更新時におけるスタミナ値 */
-		public int Value { get; set; }
+		[UnityEngine.SerializeField]
+		public int Value;
 		/** スタミナの最大値 */
-		public int MaxValue { get; set; }
+		[UnityEngine.SerializeField]
+		public int MaxValue;
 		/** スタミナの回復間隔(分) */
-		public int RecoverIntervalMinutes { get; set; }
+		[UnityEngine.SerializeField]
+		public int RecoverIntervalMinutes;
 		/** スタミナの回復量 */
-		public int RecoverValue { get; set; }
+		[UnityEngine.SerializeField]
+		public int RecoverValue;
 		/** 次回スタミナが回復する時間 */
-		public long NextRecoverAt { get; set; }
+		[UnityEngine.SerializeField]
+		public long NextRecoverAt;
 
 		public EzStamina()
 		{
@@ -52,7 +60,7 @@ namespace Gs2.Unity.Gs2Stamina.Model
 			NextRecoverAt = @stamina.nextRecoverAt.HasValue ? @stamina.nextRecoverAt.Value : 0;
 		}
 
-        public Stamina ToModel()
+        public virtual Stamina ToModel()
         {
             return new Stamina {
                 staminaName = StaminaName,
@@ -62,6 +70,27 @@ namespace Gs2.Unity.Gs2Stamina.Model
                 recoverValue = RecoverValue,
                 nextRecoverAt = NextRecoverAt,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.StaminaName != null)
+            {
+                writer.WritePropertyName("staminaName");
+                writer.Write(this.StaminaName);
+            }
+            writer.WritePropertyName("value");
+            writer.Write(this.Value);
+            writer.WritePropertyName("maxValue");
+            writer.Write(this.MaxValue);
+            writer.WritePropertyName("recoverIntervalMinutes");
+            writer.Write(this.RecoverIntervalMinutes);
+            writer.WritePropertyName("recoverValue");
+            writer.Write(this.RecoverValue);
+            writer.WritePropertyName("nextRecoverAt");
+            writer.Write(this.NextRecoverAt);
+            writer.WriteObjectEnd();
         }
 	}
 }

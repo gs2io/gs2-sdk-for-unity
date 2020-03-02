@@ -16,16 +16,19 @@
 using Gs2.Gs2Lottery.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Lottery.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzDrawnPrize
 	{
 		/** 入手アクションのリスト */
-		public List<EzAcquireAction> AcquireActions { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzAcquireAction> AcquireActions;
 
 		public EzDrawnPrize()
 		{
@@ -41,7 +44,7 @@ namespace Gs2.Unity.Gs2Lottery.Model
 			).ToList() : new List<EzAcquireAction>(new EzAcquireAction[] {});
 		}
 
-        public DrawnPrize ToModel()
+        public virtual DrawnPrize ToModel()
         {
             return new DrawnPrize {
                 acquireActions = AcquireActions != null ? AcquireActions.Select(Value0 =>
@@ -54,6 +57,22 @@ namespace Gs2.Unity.Gs2Lottery.Model
                         }
                 ).ToList() : new List<AcquireAction>(new AcquireAction[] {}),
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.AcquireActions != null)
+            {
+                writer.WritePropertyName("acquireActions");
+                writer.WriteArrayStart();
+                foreach(var item in this.AcquireActions)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

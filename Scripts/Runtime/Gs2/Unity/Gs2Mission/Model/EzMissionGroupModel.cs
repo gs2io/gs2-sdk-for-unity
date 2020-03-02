@@ -16,22 +16,40 @@
 using Gs2.Gs2Mission.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Mission.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzMissionGroupModel
 	{
 		/** グループ名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** メタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 		/** タスクリスト */
-		public List<EzMissionTaskModel> Tasks { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzMissionTaskModel> Tasks;
+		/** リセットタイミング */
+		[UnityEngine.SerializeField]
+		public string ResetType;
+		/** リセットをする日にち */
+		[UnityEngine.SerializeField]
+		public int ResetDayOfMonth;
+		/** リセットする曜日 */
+		[UnityEngine.SerializeField]
+		public string ResetDayOfWeek;
+		/** リセット時刻 */
+		[UnityEngine.SerializeField]
+		public int ResetHour;
 		/** ミッションを達成したときの通知先ネームスペース のGRN */
-		public string CompleteNotificationNamespaceId { get; set; }
+		[UnityEngine.SerializeField]
+		public string CompleteNotificationNamespaceId;
 
 		public EzMissionGroupModel()
 		{
@@ -47,10 +65,14 @@ namespace Gs2.Unity.Gs2Mission.Model
                     return new EzMissionTaskModel(value);
                 }
 			).ToList() : new List<EzMissionTaskModel>(new EzMissionTaskModel[] {});
+			ResetType = @missionGroupModel.resetType;
+			ResetDayOfMonth = @missionGroupModel.resetDayOfMonth.HasValue ? @missionGroupModel.resetDayOfMonth.Value : 0;
+			ResetDayOfWeek = @missionGroupModel.resetDayOfWeek;
+			ResetHour = @missionGroupModel.resetHour.HasValue ? @missionGroupModel.resetHour.Value : 0;
 			CompleteNotificationNamespaceId = @missionGroupModel.completeNotificationNamespaceId;
 		}
 
-        public MissionGroupModel ToModel()
+        public virtual MissionGroupModel ToModel()
         {
             return new MissionGroupModel {
                 name = Name,
@@ -62,7 +84,6 @@ namespace Gs2.Unity.Gs2Mission.Model
                                 name = Value0.Name,
                                 metadata = Value0.Metadata,
                                 counterName = Value0.CounterName,
-                                resetType = Value0.ResetType,
                                 targetValue = Value0.TargetValue,
                                 completeAcquireActions = Value0.CompleteAcquireActions != null ? Value0.CompleteAcquireActions.Select(Value1 =>
                                         {
@@ -78,8 +99,57 @@ namespace Gs2.Unity.Gs2Mission.Model
                             };
                         }
                 ).ToList() : new List<MissionTaskModel>(new MissionTaskModel[] {}),
+                resetType = ResetType,
+                resetDayOfMonth = ResetDayOfMonth,
+                resetDayOfWeek = ResetDayOfWeek,
+                resetHour = ResetHour,
                 completeNotificationNamespaceId = CompleteNotificationNamespaceId,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            if(this.Tasks != null)
+            {
+                writer.WritePropertyName("tasks");
+                writer.WriteArrayStart();
+                foreach(var item in this.Tasks)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            if(this.ResetType != null)
+            {
+                writer.WritePropertyName("resetType");
+                writer.Write(this.ResetType);
+            }
+            writer.WritePropertyName("resetDayOfMonth");
+            writer.Write(this.ResetDayOfMonth);
+            if(this.ResetDayOfWeek != null)
+            {
+                writer.WritePropertyName("resetDayOfWeek");
+                writer.Write(this.ResetDayOfWeek);
+            }
+            writer.WritePropertyName("resetHour");
+            writer.Write(this.ResetHour);
+            if(this.CompleteNotificationNamespaceId != null)
+            {
+                writer.WritePropertyName("completeNotificationNamespaceId");
+                writer.Write(this.CompleteNotificationNamespaceId);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

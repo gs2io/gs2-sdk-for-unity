@@ -16,20 +16,25 @@
 using Gs2.Gs2Version.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Version.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzAcceptVersion
 	{
 		/** 承認したバージョン名 */
-		public string VersionName { get; set; }
+		[UnityEngine.SerializeField]
+		public string VersionName;
 		/** ユーザーID */
-		public string UserId { get; set; }
+		[UnityEngine.SerializeField]
+		public string UserId;
 		/** 承認したバージョン */
-		public EzVersion Version { get; set; }
+		[UnityEngine.SerializeField]
+		public EzVersion Version;
 
 		public EzAcceptVersion()
 		{
@@ -43,7 +48,7 @@ namespace Gs2.Unity.Gs2Version.Model
 			Version = @acceptVersion.version != null ? new EzVersion(@acceptVersion.version) : null;
 		}
 
-        public AcceptVersion ToModel()
+        public virtual AcceptVersion ToModel()
         {
             return new AcceptVersion {
                 versionName = VersionName,
@@ -54,6 +59,27 @@ namespace Gs2.Unity.Gs2Version.Model
                     micro = Version.Micro,
                 },
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.VersionName != null)
+            {
+                writer.WritePropertyName("versionName");
+                writer.Write(this.VersionName);
+            }
+            if(this.UserId != null)
+            {
+                writer.WritePropertyName("userId");
+                writer.Write(this.UserId);
+            }
+            if(this.Version != null)
+            {
+                writer.WritePropertyName("version");
+                this.Version.WriteJson(writer);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

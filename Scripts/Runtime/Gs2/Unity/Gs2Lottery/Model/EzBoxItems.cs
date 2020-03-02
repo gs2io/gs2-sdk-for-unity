@@ -16,20 +16,25 @@
 using Gs2.Gs2Lottery.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Lottery.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzBoxItems
 	{
 		/** ボックス */
-		public string BoxId { get; set; }
+		[UnityEngine.SerializeField]
+		public string BoxId;
 		/** 排出確率テーブル名 */
-		public string PrizeTableName { get; set; }
+		[UnityEngine.SerializeField]
+		public string PrizeTableName;
 		/** ボックスから取り出したアイテムのリスト */
-		public List<EzBoxItem> Items { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzBoxItem> Items;
 
 		public EzBoxItems()
 		{
@@ -47,7 +52,7 @@ namespace Gs2.Unity.Gs2Lottery.Model
 			).ToList() : new List<EzBoxItem>(new EzBoxItem[] {});
 		}
 
-        public BoxItems ToModel()
+        public virtual BoxItems ToModel()
         {
             return new BoxItems {
                 boxId = BoxId,
@@ -71,6 +76,32 @@ namespace Gs2.Unity.Gs2Lottery.Model
                         }
                 ).ToList() : new List<BoxItem>(new BoxItem[] {}),
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.BoxId != null)
+            {
+                writer.WritePropertyName("boxId");
+                writer.Write(this.BoxId);
+            }
+            if(this.PrizeTableName != null)
+            {
+                writer.WritePropertyName("prizeTableName");
+                writer.Write(this.PrizeTableName);
+            }
+            if(this.Items != null)
+            {
+                writer.WritePropertyName("items");
+                writer.WriteArrayStart();
+                foreach(var item in this.Items)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

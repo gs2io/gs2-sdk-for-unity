@@ -16,20 +16,25 @@
 using Gs2.Gs2Chat.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Chat.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzSubscribe
 	{
 		/** 購読するユーザID */
-		public string UserId { get; set; }
+		[UnityEngine.SerializeField]
+		public string UserId;
 		/** 購読するルーム名 */
-		public string RoomName { get; set; }
+		[UnityEngine.SerializeField]
+		public string RoomName;
 		/** 新着メッセージ通知を受け取るカテゴリリスト */
-		public List<EzNotificationType> NotificationTypes { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzNotificationType> NotificationTypes;
 
 		public EzSubscribe()
 		{
@@ -47,7 +52,7 @@ namespace Gs2.Unity.Gs2Chat.Model
 			).ToList() : new List<EzNotificationType>(new EzNotificationType[] {});
 		}
 
-        public Subscribe ToModel()
+        public virtual Subscribe ToModel()
         {
             return new Subscribe {
                 userId = UserId,
@@ -62,6 +67,32 @@ namespace Gs2.Unity.Gs2Chat.Model
                         }
                 ).ToList() : new List<NotificationType>(new NotificationType[] {}),
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.UserId != null)
+            {
+                writer.WritePropertyName("userId");
+                writer.Write(this.UserId);
+            }
+            if(this.RoomName != null)
+            {
+                writer.WritePropertyName("roomName");
+                writer.Write(this.RoomName);
+            }
+            if(this.NotificationTypes != null)
+            {
+                writer.WritePropertyName("notificationTypes");
+                writer.WriteArrayStart();
+                foreach(var item in this.NotificationTypes)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

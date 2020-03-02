@@ -16,24 +16,31 @@
 using Gs2.Gs2Quest.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Quest.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzProgress
 	{
 		/** クエスト挑戦 */
-		public string ProgressId { get; set; }
+		[UnityEngine.SerializeField]
+		public string ProgressId;
 		/** トランザクションID */
-		public string TransactionId { get; set; }
+		[UnityEngine.SerializeField]
+		public string TransactionId;
 		/** クエストモデル */
-		public string QuestModelId { get; set; }
+		[UnityEngine.SerializeField]
+		public string QuestModelId;
 		/** 乱数シード */
-		public long RandomSeed { get; set; }
+		[UnityEngine.SerializeField]
+		public long RandomSeed;
 		/** クエストで得られる報酬の上限 */
-		public List<EzReward> Rewards { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzReward> Rewards;
 
 		public EzProgress()
 		{
@@ -53,7 +60,7 @@ namespace Gs2.Unity.Gs2Quest.Model
 			).ToList() : new List<EzReward>(new EzReward[] {});
 		}
 
-        public Progress ToModel()
+        public virtual Progress ToModel()
         {
             return new Progress {
                 progressId = ProgressId,
@@ -72,6 +79,39 @@ namespace Gs2.Unity.Gs2Quest.Model
                         }
                 ).ToList() : new List<Reward>(new Reward[] {}),
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.ProgressId != null)
+            {
+                writer.WritePropertyName("progressId");
+                writer.Write(this.ProgressId);
+            }
+            if(this.TransactionId != null)
+            {
+                writer.WritePropertyName("transactionId");
+                writer.Write(this.TransactionId);
+            }
+            if(this.QuestModelId != null)
+            {
+                writer.WritePropertyName("questModelId");
+                writer.Write(this.QuestModelId);
+            }
+            writer.WritePropertyName("randomSeed");
+            writer.Write(this.RandomSeed);
+            if(this.Rewards != null)
+            {
+                writer.WritePropertyName("rewards");
+                writer.WriteArrayStart();
+                foreach(var item in this.Rewards)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

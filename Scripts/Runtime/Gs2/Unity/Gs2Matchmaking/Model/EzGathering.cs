@@ -16,30 +16,40 @@
 using Gs2.Gs2Matchmaking.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Matchmaking.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzGathering
 	{
 		/** ギャザリング */
-		public string GatheringId { get; set; }
+		[UnityEngine.SerializeField]
+		public string GatheringId;
 		/** ギャザリング名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** 募集条件 */
-		public List<EzAttributeRange> AttributeRanges { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzAttributeRange> AttributeRanges;
 		/** 参加者 */
-		public List<EzCapacityOfRole> CapacityOfRoles { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzCapacityOfRole> CapacityOfRoles;
 		/** 参加を許可するユーザIDリスト */
-		public List<string> AllowUserIds { get; set; }
+		[UnityEngine.SerializeField]
+		public List<string> AllowUserIds;
 		/** メタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 		/** 作成日時 */
-		public long CreatedAt { get; set; }
+		[UnityEngine.SerializeField]
+		public long CreatedAt;
 		/** 最終更新日時 */
-		public long UpdatedAt { get; set; }
+		[UnityEngine.SerializeField]
+		public long UpdatedAt;
 
 		public EzGathering()
 		{
@@ -70,7 +80,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Model
 			UpdatedAt = @gathering.updatedAt.HasValue ? @gathering.updatedAt.Value : 0;
 		}
 
-        public Gathering ToModel()
+        public virtual Gathering ToModel()
         {
             return new Gathering {
                 gatheringId = GatheringId,
@@ -126,6 +136,61 @@ namespace Gs2.Unity.Gs2Matchmaking.Model
                 createdAt = CreatedAt,
                 updatedAt = UpdatedAt,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.GatheringId != null)
+            {
+                writer.WritePropertyName("gatheringId");
+                writer.Write(this.GatheringId);
+            }
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.AttributeRanges != null)
+            {
+                writer.WritePropertyName("attributeRanges");
+                writer.WriteArrayStart();
+                foreach(var item in this.AttributeRanges)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            if(this.CapacityOfRoles != null)
+            {
+                writer.WritePropertyName("capacityOfRoles");
+                writer.WriteArrayStart();
+                foreach(var item in this.CapacityOfRoles)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            if(this.AllowUserIds != null)
+            {
+                writer.WritePropertyName("allowUserIds");
+                writer.WriteArrayStart();
+                foreach(var item in this.AllowUserIds)
+                {
+                    writer.Write(item);
+                }
+                writer.WriteArrayEnd();
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            writer.WritePropertyName("createdAt");
+            writer.Write(this.CreatedAt);
+            writer.WritePropertyName("updatedAt");
+            writer.Write(this.UpdatedAt);
+            writer.WriteObjectEnd();
         }
 	}
 }

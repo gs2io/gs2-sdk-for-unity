@@ -16,42 +16,58 @@
 using Gs2.Gs2Schedule.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Schedule.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzEvent
 	{
 		/** イベントの種類名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** イベントの種類のメタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 		/** イベント期間の種類 */
-		public string ScheduleType { get; set; }
+		[UnityEngine.SerializeField]
+		public string ScheduleType;
 		/** 繰り返しの種類 */
-		public string RepeatType { get; set; }
+		[UnityEngine.SerializeField]
+		public string RepeatType;
 		/** イベントの開始日時 */
-		public long AbsoluteBegin { get; set; }
+		[UnityEngine.SerializeField]
+		public long AbsoluteBegin;
 		/** イベントの終了日時 */
-		public long AbsoluteEnd { get; set; }
+		[UnityEngine.SerializeField]
+		public long AbsoluteEnd;
 		/** イベントの繰り返し開始日 */
-		public int RepeatBeginDayOfMonth { get; set; }
+		[UnityEngine.SerializeField]
+		public int RepeatBeginDayOfMonth;
 		/** イベントの繰り返し終了日 */
-		public int RepeatEndDayOfMonth { get; set; }
+		[UnityEngine.SerializeField]
+		public int RepeatEndDayOfMonth;
 		/** イベントの繰り返し開始曜日 */
-		public string RepeatBeginDayOfWeek { get; set; }
+		[UnityEngine.SerializeField]
+		public string RepeatBeginDayOfWeek;
 		/** イベントの繰り返し終了曜日 */
-		public string RepeatEndDayOfWeek { get; set; }
+		[UnityEngine.SerializeField]
+		public string RepeatEndDayOfWeek;
 		/** イベントの繰り返し開始時間 */
-		public int RepeatBeginHour { get; set; }
+		[UnityEngine.SerializeField]
+		public int RepeatBeginHour;
 		/** イベントの繰り返し終了時間 */
-		public int RepeatEndHour { get; set; }
+		[UnityEngine.SerializeField]
+		public int RepeatEndHour;
 		/** イベントの開始トリガー */
-		public string RelativeTriggerName { get; set; }
+		[UnityEngine.SerializeField]
+		public string RelativeTriggerName;
 		/** イベントの開催期間(秒) */
-		public int RelativeDuration { get; set; }
+		[UnityEngine.SerializeField]
+		public int RelativeDuration;
 
 		public EzEvent()
 		{
@@ -76,7 +92,7 @@ namespace Gs2.Unity.Gs2Schedule.Model
 			RelativeDuration = @event.relativeDuration.HasValue ? @event.relativeDuration.Value : 0;
 		}
 
-        public Event ToModel()
+        public virtual Event ToModel()
         {
             return new Event {
                 name = Name,
@@ -94,6 +110,61 @@ namespace Gs2.Unity.Gs2Schedule.Model
                 relativeTriggerName = RelativeTriggerName,
                 relativeDuration = RelativeDuration,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            if(this.ScheduleType != null)
+            {
+                writer.WritePropertyName("scheduleType");
+                writer.Write(this.ScheduleType);
+            }
+            if(this.RepeatType != null)
+            {
+                writer.WritePropertyName("repeatType");
+                writer.Write(this.RepeatType);
+            }
+            writer.WritePropertyName("absoluteBegin");
+            writer.Write(this.AbsoluteBegin);
+            writer.WritePropertyName("absoluteEnd");
+            writer.Write(this.AbsoluteEnd);
+            writer.WritePropertyName("repeatBeginDayOfMonth");
+            writer.Write(this.RepeatBeginDayOfMonth);
+            writer.WritePropertyName("repeatEndDayOfMonth");
+            writer.Write(this.RepeatEndDayOfMonth);
+            if(this.RepeatBeginDayOfWeek != null)
+            {
+                writer.WritePropertyName("repeatBeginDayOfWeek");
+                writer.Write(this.RepeatBeginDayOfWeek);
+            }
+            if(this.RepeatEndDayOfWeek != null)
+            {
+                writer.WritePropertyName("repeatEndDayOfWeek");
+                writer.Write(this.RepeatEndDayOfWeek);
+            }
+            writer.WritePropertyName("repeatBeginHour");
+            writer.Write(this.RepeatBeginHour);
+            writer.WritePropertyName("repeatEndHour");
+            writer.Write(this.RepeatEndHour);
+            if(this.RelativeTriggerName != null)
+            {
+                writer.WritePropertyName("relativeTriggerName");
+                writer.Write(this.RelativeTriggerName);
+            }
+            writer.WritePropertyName("relativeDuration");
+            writer.Write(this.RelativeDuration);
+            writer.WriteObjectEnd();
         }
 	}
 }

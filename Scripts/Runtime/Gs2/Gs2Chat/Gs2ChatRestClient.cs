@@ -569,6 +569,11 @@ namespace Gs2.Gs2Chat
                 var stringBuilder = new StringBuilder();
                 var jsonWriter = new JsonWriter(stringBuilder);
                 jsonWriter.WriteObjectStart();
+                if (_request.name != null)
+                {
+                    jsonWriter.WritePropertyName("name");
+                    jsonWriter.Write(_request.name.ToString());
+                }
                 if (_request.metadata != null)
                 {
                     jsonWriter.WritePropertyName("metadata");
@@ -661,6 +666,11 @@ namespace Gs2.Gs2Chat
                 var stringBuilder = new StringBuilder();
                 var jsonWriter = new JsonWriter(stringBuilder);
                 jsonWriter.WriteObjectStart();
+                if (_request.name != null)
+                {
+                    jsonWriter.WritePropertyName("name");
+                    jsonWriter.Write(_request.name.ToString());
+                }
                 if (_request.userId != null)
                 {
                     jsonWriter.WritePropertyName("userId");

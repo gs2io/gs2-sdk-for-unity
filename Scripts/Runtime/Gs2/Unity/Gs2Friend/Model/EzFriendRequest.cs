@@ -16,18 +16,22 @@
 using Gs2.Gs2Friend.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Friend.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzFriendRequest
 	{
 		/** ユーザーID */
-		public string UserId { get; set; }
+		[UnityEngine.SerializeField]
+		public string UserId;
 		/** ユーザーID */
-		public string TargetUserId { get; set; }
+		[UnityEngine.SerializeField]
+		public string TargetUserId;
 
 		public EzFriendRequest()
 		{
@@ -40,12 +44,28 @@ namespace Gs2.Unity.Gs2Friend.Model
 			TargetUserId = @friendRequest.targetUserId;
 		}
 
-        public FriendRequest ToModel()
+        public virtual FriendRequest ToModel()
         {
             return new FriendRequest {
                 userId = UserId,
                 targetUserId = TargetUserId,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.UserId != null)
+            {
+                writer.WritePropertyName("userId");
+                writer.Write(this.UserId);
+            }
+            if(this.TargetUserId != null)
+            {
+                writer.WritePropertyName("targetUserId");
+                writer.Write(this.TargetUserId);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

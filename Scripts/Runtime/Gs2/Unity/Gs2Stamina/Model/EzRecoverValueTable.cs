@@ -16,22 +16,28 @@
 using Gs2.Gs2Stamina.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Stamina.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzRecoverValueTable
 	{
 		/** スタミナ回復量テーブル名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** スタミナ回復量テーブルのメタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 		/** 経験値の種類マスター のGRN */
-		public string ExperienceModelId { get; set; }
+		[UnityEngine.SerializeField]
+		public string ExperienceModelId;
 		/** ランク毎のスタミナ回復量テーブル */
-		public List<int> Values { get; set; }
+		[UnityEngine.SerializeField]
+		public List<int> Values;
 
 		public EzRecoverValueTable()
 		{
@@ -54,7 +60,7 @@ namespace Gs2.Unity.Gs2Stamina.Model
 			).ToList() : new List<int>(new int[] {});
 		}
 
-        public RecoverValueTable ToModel()
+        public virtual RecoverValueTable ToModel()
         {
             return new RecoverValueTable {
                 name = Name,
@@ -66,6 +72,37 @@ namespace Gs2.Unity.Gs2Stamina.Model
                         }
                 ).ToList() : new List<int?>(new int?[] {}),
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            if(this.ExperienceModelId != null)
+            {
+                writer.WritePropertyName("experienceModelId");
+                writer.Write(this.ExperienceModelId);
+            }
+            if(this.Values != null)
+            {
+                writer.WritePropertyName("values");
+                writer.WriteArrayStart();
+                foreach(var item in this.Values)
+                {
+                    writer.Write(item);
+                }
+                writer.WriteArrayEnd();
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

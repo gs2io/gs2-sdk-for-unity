@@ -16,18 +16,22 @@
 using Gs2.Gs2Friend.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Friend.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzPublicProfile
 	{
 		/** ユーザーID */
-		public string UserId { get; set; }
+		[UnityEngine.SerializeField]
+		public string UserId;
 		/** 公開されるプロフィール */
-		public string PublicProfile { get; set; }
+		[UnityEngine.SerializeField]
+		public string PublicProfile;
 
 		public EzPublicProfile()
 		{
@@ -40,12 +44,28 @@ namespace Gs2.Unity.Gs2Friend.Model
 			PublicProfile = @publicProfile.publicProfile;
 		}
 
-        public PublicProfile ToModel()
+        public virtual PublicProfile ToModel()
         {
             return new PublicProfile {
                 userId = UserId,
                 publicProfile = PublicProfile,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.UserId != null)
+            {
+                writer.WritePropertyName("userId");
+                writer.Write(this.UserId);
+            }
+            if(this.PublicProfile != null)
+            {
+                writer.WritePropertyName("publicProfile");
+                writer.Write(this.PublicProfile);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

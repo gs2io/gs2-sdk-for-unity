@@ -138,6 +138,20 @@ namespace Gs2.Gs2Inbox.Model
             return this;
         }
 
+        /** メッセージの有効期限 */
+        public long? expiresAt { set; get; }
+
+        /**
+         * メッセージの有効期限を設定
+         *
+         * @param expiresAt メッセージの有効期限
+         * @return this
+         */
+        public Message WithExpiresAt(long? expiresAt) {
+            this.expiresAt = expiresAt;
+            return this;
+        }
+
         public void WriteJson(JsonWriter writer)
         {
             writer.WriteObjectStart();
@@ -186,6 +200,11 @@ namespace Gs2.Gs2Inbox.Model
                 writer.WritePropertyName("readAt");
                 writer.Write(this.readAt.Value);
             }
+            if(this.expiresAt.HasValue)
+            {
+                writer.WritePropertyName("expiresAt");
+                writer.Write(this.expiresAt.Value);
+            }
             writer.WriteObjectEnd();
         }
 
@@ -204,7 +223,8 @@ namespace Gs2.Gs2Inbox.Model
                     }
                 ).ToList() : null)
                 .WithReceivedAt(data.Keys.Contains("receivedAt") && data["receivedAt"] != null ? (long?)long.Parse(data["receivedAt"].ToString()) : null)
-                .WithReadAt(data.Keys.Contains("readAt") && data["readAt"] != null ? (long?)long.Parse(data["readAt"].ToString()) : null);
+                .WithReadAt(data.Keys.Contains("readAt") && data["readAt"] != null ? (long?)long.Parse(data["readAt"].ToString()) : null)
+                .WithExpiresAt(data.Keys.Contains("expiresAt") && data["expiresAt"] != null ? (long?)long.Parse(data["expiresAt"].ToString()) : null);
         }
 	}
 }

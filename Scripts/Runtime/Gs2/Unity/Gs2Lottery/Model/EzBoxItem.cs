@@ -16,20 +16,25 @@
 using Gs2.Gs2Lottery.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Lottery.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzBoxItem
 	{
 		/** 入手アクションのリスト */
-		public List<EzAcquireAction> AcquireActions { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzAcquireAction> AcquireActions;
 		/** 残り数量 */
-		public int Remaining { get; set; }
+		[UnityEngine.SerializeField]
+		public int Remaining;
 		/** 初期数量 */
-		public int Initial { get; set; }
+		[UnityEngine.SerializeField]
+		public int Initial;
 
 		public EzBoxItem()
 		{
@@ -47,7 +52,7 @@ namespace Gs2.Unity.Gs2Lottery.Model
 			Initial = @boxItem.initial.HasValue ? @boxItem.initial.Value : 0;
 		}
 
-        public BoxItem ToModel()
+        public virtual BoxItem ToModel()
         {
             return new BoxItem {
                 acquireActions = AcquireActions != null ? AcquireActions.Select(Value0 =>
@@ -62,6 +67,26 @@ namespace Gs2.Unity.Gs2Lottery.Model
                 remaining = Remaining,
                 initial = Initial,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.AcquireActions != null)
+            {
+                writer.WritePropertyName("acquireActions");
+                writer.WriteArrayStart();
+                foreach(var item in this.AcquireActions)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            writer.WritePropertyName("remaining");
+            writer.Write(this.Remaining);
+            writer.WritePropertyName("initial");
+            writer.Write(this.Initial);
+            writer.WriteObjectEnd();
         }
 	}
 }

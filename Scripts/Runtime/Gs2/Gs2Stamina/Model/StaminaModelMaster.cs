@@ -152,45 +152,45 @@ namespace Gs2.Gs2Stamina.Model
             return this;
         }
 
-        /** GS2-Experience のランクによって最大スタミナ値を決定する */
-        public string maxStaminaTableId { set; get; }
+        /** GS2-Experience のランクによって最大スタミナ値を決定するスタミナ最大値テーブル名 */
+        public string maxStaminaTableName { set; get; }
 
         /**
-         * GS2-Experience のランクによって最大スタミナ値を決定するを設定
+         * GS2-Experience のランクによって最大スタミナ値を決定するスタミナ最大値テーブル名を設定
          *
-         * @param maxStaminaTableId GS2-Experience のランクによって最大スタミナ値を決定する
+         * @param maxStaminaTableName GS2-Experience のランクによって最大スタミナ値を決定するスタミナ最大値テーブル名
          * @return this
          */
-        public StaminaModelMaster WithMaxStaminaTableId(string maxStaminaTableId) {
-            this.maxStaminaTableId = maxStaminaTableId;
+        public StaminaModelMaster WithMaxStaminaTableName(string maxStaminaTableName) {
+            this.maxStaminaTableName = maxStaminaTableName;
             return this;
         }
 
-        /** GS2-Experience のランクによってスタミナの回復間隔を決定する */
-        public string recoverIntervalTableId { set; get; }
+        /** GS2-Experience のランクによってスタミナの回復間隔を決定する回復間隔テーブル名 */
+        public string recoverIntervalTableName { set; get; }
 
         /**
-         * GS2-Experience のランクによってスタミナの回復間隔を決定するを設定
+         * GS2-Experience のランクによってスタミナの回復間隔を決定する回復間隔テーブル名を設定
          *
-         * @param recoverIntervalTableId GS2-Experience のランクによってスタミナの回復間隔を決定する
+         * @param recoverIntervalTableName GS2-Experience のランクによってスタミナの回復間隔を決定する回復間隔テーブル名
          * @return this
          */
-        public StaminaModelMaster WithRecoverIntervalTableId(string recoverIntervalTableId) {
-            this.recoverIntervalTableId = recoverIntervalTableId;
+        public StaminaModelMaster WithRecoverIntervalTableName(string recoverIntervalTableName) {
+            this.recoverIntervalTableName = recoverIntervalTableName;
             return this;
         }
 
-        /** GS2-Experience のランクによってスタミナの回復量を決定する */
-        public string recoverValueTableId { set; get; }
+        /** GS2-Experience のランクによってスタミナの回復量を決定する回復量テーブル名 */
+        public string recoverValueTableName { set; get; }
 
         /**
-         * GS2-Experience のランクによってスタミナの回復量を決定するを設定
+         * GS2-Experience のランクによってスタミナの回復量を決定する回復量テーブル名を設定
          *
-         * @param recoverValueTableId GS2-Experience のランクによってスタミナの回復量を決定する
+         * @param recoverValueTableName GS2-Experience のランクによってスタミナの回復量を決定する回復量テーブル名
          * @return this
          */
-        public StaminaModelMaster WithRecoverValueTableId(string recoverValueTableId) {
-            this.recoverValueTableId = recoverValueTableId;
+        public StaminaModelMaster WithRecoverValueTableName(string recoverValueTableName) {
+            this.recoverValueTableName = recoverValueTableName;
             return this;
         }
 
@@ -270,20 +270,20 @@ namespace Gs2.Gs2Stamina.Model
                 writer.WritePropertyName("maxCapacity");
                 writer.Write(this.maxCapacity.Value);
             }
-            if(this.maxStaminaTableId != null)
+            if(this.maxStaminaTableName != null)
             {
-                writer.WritePropertyName("maxStaminaTableId");
-                writer.Write(this.maxStaminaTableId);
+                writer.WritePropertyName("maxStaminaTableName");
+                writer.Write(this.maxStaminaTableName);
             }
-            if(this.recoverIntervalTableId != null)
+            if(this.recoverIntervalTableName != null)
             {
-                writer.WritePropertyName("recoverIntervalTableId");
-                writer.Write(this.recoverIntervalTableId);
+                writer.WritePropertyName("recoverIntervalTableName");
+                writer.Write(this.recoverIntervalTableName);
             }
-            if(this.recoverValueTableId != null)
+            if(this.recoverValueTableName != null)
             {
-                writer.WritePropertyName("recoverValueTableId");
-                writer.Write(this.recoverValueTableId);
+                writer.WritePropertyName("recoverValueTableName");
+                writer.Write(this.recoverValueTableName);
             }
             if(this.createdAt.HasValue)
             {
@@ -311,9 +311,9 @@ namespace Gs2.Gs2Stamina.Model
                 .WithInitialCapacity(data.Keys.Contains("initialCapacity") && data["initialCapacity"] != null ? (int?)int.Parse(data["initialCapacity"].ToString()) : null)
                 .WithIsOverflow(data.Keys.Contains("isOverflow") && data["isOverflow"] != null ? (bool?)bool.Parse(data["isOverflow"].ToString()) : null)
                 .WithMaxCapacity(data.Keys.Contains("maxCapacity") && data["maxCapacity"] != null ? (int?)int.Parse(data["maxCapacity"].ToString()) : null)
-                .WithMaxStaminaTableId(data.Keys.Contains("maxStaminaTableId") && data["maxStaminaTableId"] != null ? data["maxStaminaTableId"].ToString() : null)
-                .WithRecoverIntervalTableId(data.Keys.Contains("recoverIntervalTableId") && data["recoverIntervalTableId"] != null ? data["recoverIntervalTableId"].ToString() : null)
-                .WithRecoverValueTableId(data.Keys.Contains("recoverValueTableId") && data["recoverValueTableId"] != null ? data["recoverValueTableId"].ToString() : null)
+                .WithMaxStaminaTableName(data.Keys.Contains("maxStaminaTableName") && data["maxStaminaTableName"] != null ? data["maxStaminaTableName"].ToString() : null)
+                .WithRecoverIntervalTableName(data.Keys.Contains("recoverIntervalTableName") && data["recoverIntervalTableName"] != null ? data["recoverIntervalTableName"].ToString() : null)
+                .WithRecoverValueTableName(data.Keys.Contains("recoverValueTableName") && data["recoverValueTableName"] != null ? data["recoverValueTableName"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }

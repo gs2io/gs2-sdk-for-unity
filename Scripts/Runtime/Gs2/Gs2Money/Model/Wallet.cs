@@ -96,6 +96,20 @@ namespace Gs2.Gs2Money.Model
             return this;
         }
 
+        /** 詳細 */
+        public List<WalletDetail> detail { set; get; }
+
+        /**
+         * 詳細を設定
+         *
+         * @param detail 詳細
+         * @return this
+         */
+        public Wallet WithDetail(List<WalletDetail> detail) {
+            this.detail = detail;
+            return this;
+        }
+
         /** 作成日時 */
         public long? createdAt { set; get; }
 
@@ -152,6 +166,16 @@ namespace Gs2.Gs2Money.Model
                 writer.WritePropertyName("free");
                 writer.Write(this.free.Value);
             }
+            if(this.detail != null)
+            {
+                writer.WritePropertyName("detail");
+                writer.WriteArrayStart();
+                foreach(var item in this.detail)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
             if(this.createdAt.HasValue)
             {
                 writer.WritePropertyName("createdAt");
@@ -174,6 +198,11 @@ namespace Gs2.Gs2Money.Model
                 .WithSlot(data.Keys.Contains("slot") && data["slot"] != null ? (int?)int.Parse(data["slot"].ToString()) : null)
                 .WithPaid(data.Keys.Contains("paid") && data["paid"] != null ? (int?)int.Parse(data["paid"].ToString()) : null)
                 .WithFree(data.Keys.Contains("free") && data["free"] != null ? (int?)int.Parse(data["free"].ToString()) : null)
+                .WithDetail(data.Keys.Contains("detail") && data["detail"] != null ? data["detail"].Cast<JsonData>().Select(value =>
+                    {
+                        return WalletDetail.FromDict(value);
+                    }
+                ).ToList() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }

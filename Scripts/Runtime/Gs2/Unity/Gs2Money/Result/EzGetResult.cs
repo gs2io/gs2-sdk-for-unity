@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2Money.Result
 	public class EzGetResult
 	{
         /** ウォレット */
-        public EzWalletDetail Item { get; private set; }
+        public EzWallet Item { get; private set; }
 
 
         public EzGetResult(
@@ -35,7 +35,7 @@ namespace Gs2.Unity.Gs2Money.Result
         {
             if(result.item != null)
             {
-                Item = new EzWalletDetail(result.item);
+                Item = new EzWallet(result.item);
             }
         }
 	}

@@ -88,6 +88,36 @@ namespace Gs2.Gs2Inbox.Request
         }
 
 
+        /** メッセージの有効期限 */
+        public long? expiresAt { set; get; }
+
+        /**
+         * メッセージの有効期限を設定
+         *
+         * @param expiresAt メッセージの有効期限
+         * @return this
+         */
+        public SendMessageByUserIdRequest WithExpiresAt(long? expiresAt) {
+            this.expiresAt = expiresAt;
+            return this;
+        }
+
+
+        /** メッセージの有効期限までの差分 */
+        public TimeSpan expiresTimeSpan { set; get; }
+
+        /**
+         * メッセージの有効期限までの差分を設定
+         *
+         * @param expiresTimeSpan メッセージの有効期限までの差分
+         * @return this
+         */
+        public SendMessageByUserIdRequest WithExpiresTimeSpan(TimeSpan expiresTimeSpan) {
+            this.expiresTimeSpan = expiresTimeSpan;
+            return this;
+        }
+
+
         /** 重複実行回避機能に使用するID */
         public string duplicationAvoider { set; get; }
 
@@ -115,6 +145,8 @@ namespace Gs2.Gs2Inbox.Request
                         return AcquireAction.FromDict(value);
                     }
                 ).ToList() : null,
+                expiresAt = data.Keys.Contains("expiresAt") && data["expiresAt"] != null ? (long?)long.Parse(data["expiresAt"].ToString()) : null,
+                expiresTimeSpan = data.Keys.Contains("expiresTimeSpan") && data["expiresTimeSpan"] != null ? TimeSpan.FromDict(data["expiresTimeSpan"]) : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }

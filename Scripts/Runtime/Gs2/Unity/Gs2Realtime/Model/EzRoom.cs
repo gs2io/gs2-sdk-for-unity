@@ -16,22 +16,28 @@
 using Gs2.Gs2Realtime.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Realtime.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzRoom
 	{
 		/** ルーム名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** IPアドレス */
-		public string IpAddress { get; set; }
+		[UnityEngine.SerializeField]
+		public string IpAddress;
 		/** 待受ポート */
-		public int Port { get; set; }
+		[UnityEngine.SerializeField]
+		public int Port;
 		/** 暗号鍵 */
-		public string EncryptionKey { get; set; }
+		[UnityEngine.SerializeField]
+		public string EncryptionKey;
 
 		public EzRoom()
 		{
@@ -46,7 +52,7 @@ namespace Gs2.Unity.Gs2Realtime.Model
 			EncryptionKey = @room.encryptionKey;
 		}
 
-        public Room ToModel()
+        public virtual Room ToModel()
         {
             return new Room {
                 name = Name,
@@ -54,6 +60,29 @@ namespace Gs2.Unity.Gs2Realtime.Model
                 port = Port,
                 encryptionKey = EncryptionKey,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.IpAddress != null)
+            {
+                writer.WritePropertyName("ipAddress");
+                writer.Write(this.IpAddress);
+            }
+            writer.WritePropertyName("port");
+            writer.Write(this.Port);
+            if(this.EncryptionKey != null)
+            {
+                writer.WritePropertyName("encryptionKey");
+                writer.Write(this.EncryptionKey);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }

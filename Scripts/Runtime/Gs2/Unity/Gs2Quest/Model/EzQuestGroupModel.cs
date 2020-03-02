@@ -16,22 +16,28 @@
 using Gs2.Gs2Quest.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Quest.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzQuestGroupModel
 	{
 		/** クエストグループ名 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** クエストグループのメタデータ */
-		public string Metadata { get; set; }
+		[UnityEngine.SerializeField]
+		public string Metadata;
 		/** グループに属するクエスト */
-		public List<EzQuestModel> Quests { get; set; }
+		[UnityEngine.SerializeField]
+		public List<EzQuestModel> Quests;
 		/** 挑戦可能な期間を指定するイベントマスター のGRN */
-		public string ChallengePeriodEventId { get; set; }
+		[UnityEngine.SerializeField]
+		public string ChallengePeriodEventId;
 
 		public EzQuestGroupModel()
 		{
@@ -50,7 +56,7 @@ namespace Gs2.Unity.Gs2Quest.Model
 			ChallengePeriodEventId = @questGroupModel.challengePeriodEventId;
 		}
 
-        public QuestGroupModel ToModel()
+        public virtual QuestGroupModel ToModel()
         {
             return new QuestGroupModel {
                 name = Name,
@@ -108,6 +114,37 @@ namespace Gs2.Unity.Gs2Quest.Model
                 ).ToList() : new List<QuestModel>(new QuestModel[] {}),
                 challengePeriodEventId = ChallengePeriodEventId,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
+            }
+            if(this.Quests != null)
+            {
+                writer.WritePropertyName("quests");
+                writer.WriteArrayStart();
+                foreach(var item in this.Quests)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            if(this.ChallengePeriodEventId != null)
+            {
+                writer.WritePropertyName("challengePeriodEventId");
+                writer.Write(this.ChallengePeriodEventId);
+            }
+            writer.WriteObjectEnd();
         }
 	}
 }
