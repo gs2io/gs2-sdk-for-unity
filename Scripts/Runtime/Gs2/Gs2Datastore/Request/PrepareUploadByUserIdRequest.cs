@@ -58,6 +58,21 @@ namespace Gs2.Gs2Datastore.Request
         }
 
 
+        /** データの名前 */
+        public string name { set; get; }
+
+        /**
+         * データの名前を設定
+         *
+         * @param name データの名前
+         * @return this
+         */
+        public PrepareUploadByUserIdRequest WithName(string name) {
+            this.name = name;
+            return this;
+        }
+
+
         /** アップロードするデータの MIME-Type */
         public string contentType { set; get; }
 
@@ -124,6 +139,7 @@ namespace Gs2.Gs2Datastore.Request
             return new PrepareUploadByUserIdRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
+                name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
                 contentType = data.Keys.Contains("contentType") && data["contentType"] != null ? data["contentType"].ToString(): null,
                 scope = data.Keys.Contains("scope") && data["scope"] != null ? data["scope"].ToString(): null,
                 allowUserIds = data.Keys.Contains("allowUserIds") && data["allowUserIds"] != null ? data["allowUserIds"].Cast<JsonData>().Select(value =>

@@ -16,32 +16,43 @@
 using Gs2.Gs2Datastore.Model;
 using System.Collections.Generic;
 using System.Linq;
+using LitJson;
 using UnityEngine.Scripting;
 
 
 namespace Gs2.Unity.Gs2Datastore.Model
 {
 	[Preserve]
+	[System.Serializable]
 	public class EzDataObject
 	{
 		/** データオブジェクト */
-		public string DataObjectId { get; set; }
+		[UnityEngine.SerializeField]
+		public string DataObjectId;
 		/** データの名前 */
-		public string Name { get; set; }
+		[UnityEngine.SerializeField]
+		public string Name;
 		/** ユーザーID */
-		public string UserId { get; set; }
+		[UnityEngine.SerializeField]
+		public string UserId;
 		/** ファイルのアクセス権 */
-		public string Scope { get; set; }
+		[UnityEngine.SerializeField]
+		public string Scope;
 		/** 公開するユーザIDリスト */
-		public List<string> AllowUserIds { get; set; }
+		[UnityEngine.SerializeField]
+		public List<string> AllowUserIds;
 		/** 状態 */
-		public string Status { get; set; }
+		[UnityEngine.SerializeField]
+		public string Status;
 		/** データの世代 */
-		public string Generation { get; set; }
+		[UnityEngine.SerializeField]
+		public string Generation;
 		/** 作成日時 */
-		public long CreatedAt { get; set; }
+		[UnityEngine.SerializeField]
+		public long CreatedAt;
 		/** 最終更新日時 */
-		public long UpdatedAt { get; set; }
+		[UnityEngine.SerializeField]
+		public long UpdatedAt;
 
 		public EzDataObject()
 		{
@@ -65,7 +76,7 @@ namespace Gs2.Unity.Gs2Datastore.Model
 			UpdatedAt = @dataObject.updatedAt.HasValue ? @dataObject.updatedAt.Value : 0;
 		}
 
-        public DataObject ToModel()
+        public virtual DataObject ToModel()
         {
             return new DataObject {
                 dataObjectId = DataObjectId,
@@ -82,6 +93,56 @@ namespace Gs2.Unity.Gs2Datastore.Model
                 createdAt = CreatedAt,
                 updatedAt = UpdatedAt,
             };
+        }
+
+        public virtual void WriteJson(JsonWriter writer)
+        {
+            writer.WriteObjectStart();
+            if(this.DataObjectId != null)
+            {
+                writer.WritePropertyName("dataObjectId");
+                writer.Write(this.DataObjectId);
+            }
+            if(this.Name != null)
+            {
+                writer.WritePropertyName("name");
+                writer.Write(this.Name);
+            }
+            if(this.UserId != null)
+            {
+                writer.WritePropertyName("userId");
+                writer.Write(this.UserId);
+            }
+            if(this.Scope != null)
+            {
+                writer.WritePropertyName("scope");
+                writer.Write(this.Scope);
+            }
+            if(this.AllowUserIds != null)
+            {
+                writer.WritePropertyName("allowUserIds");
+                writer.WriteArrayStart();
+                foreach(var item in this.AllowUserIds)
+                {
+                    writer.Write(item);
+                }
+                writer.WriteArrayEnd();
+            }
+            if(this.Status != null)
+            {
+                writer.WritePropertyName("status");
+                writer.Write(this.Status);
+            }
+            if(this.Generation != null)
+            {
+                writer.WritePropertyName("generation");
+                writer.Write(this.Generation);
+            }
+            writer.WritePropertyName("createdAt");
+            writer.Write(this.CreatedAt);
+            writer.WritePropertyName("updatedAt");
+            writer.Write(this.UpdatedAt);
+            writer.WriteObjectEnd();
         }
 	}
 }
