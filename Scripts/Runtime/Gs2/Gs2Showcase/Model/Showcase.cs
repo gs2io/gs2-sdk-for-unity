@@ -141,7 +141,7 @@ namespace Gs2.Gs2Showcase.Model
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
                 .WithDisplayItems(data.Keys.Contains("displayItems") && data["displayItems"] != null ? data["displayItems"].Cast<JsonData>().Select(value =>
                     {
-                        return DisplayItem.FromDict(value);
+                        return Gs2.Gs2Showcase.Model.DisplayItem.FromDict(value);
                     }
                 ).ToList() : null)
                 .WithSalesPeriodEventId(data.Keys.Contains("salesPeriodEventId") && data["salesPeriodEventId"] != null ? data["salesPeriodEventId"].ToString() : null);

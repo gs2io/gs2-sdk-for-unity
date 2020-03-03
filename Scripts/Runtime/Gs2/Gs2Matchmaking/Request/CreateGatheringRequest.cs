@@ -44,7 +44,7 @@ namespace Gs2.Gs2Matchmaking.Request
 
 
         /** 自身のプレイヤー情報 */
-        public Player player { set; get; }
+        public Gs2.Gs2Matchmaking.Model.Player player { set; get; }
 
         /**
          * 自身のプレイヤー情報を設定
@@ -52,7 +52,7 @@ namespace Gs2.Gs2Matchmaking.Request
          * @param player 自身のプレイヤー情報
          * @return this
          */
-        public CreateGatheringRequest WithPlayer(Player player) {
+        public CreateGatheringRequest WithPlayer(Gs2.Gs2Matchmaking.Model.Player player) {
             this.player = player;
             return this;
         }
@@ -137,15 +137,15 @@ namespace Gs2.Gs2Matchmaking.Request
         {
             return new CreateGatheringRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
-                player = data.Keys.Contains("player") && data["player"] != null ? Player.FromDict(data["player"]) : null,
+                player = data.Keys.Contains("player") && data["player"] != null ? Gs2.Gs2Matchmaking.Model.Player.FromDict(data["player"]) : null,
                 attributeRanges = data.Keys.Contains("attributeRanges") && data["attributeRanges"] != null ? data["attributeRanges"].Cast<JsonData>().Select(value =>
                     {
-                        return AttributeRange.FromDict(value);
+                        return Gs2.Gs2Matchmaking.Model.AttributeRange.FromDict(value);
                     }
                 ).ToList() : null,
                 capacityOfRoles = data.Keys.Contains("capacityOfRoles") && data["capacityOfRoles"] != null ? data["capacityOfRoles"].Cast<JsonData>().Select(value =>
                     {
-                        return CapacityOfRole.FromDict(value);
+                        return Gs2.Gs2Matchmaking.Model.CapacityOfRole.FromDict(value);
                     }
                 ).ToList() : null,
                 allowUserIds = data.Keys.Contains("allowUserIds") && data["allowUserIds"] != null ? data["allowUserIds"].Cast<JsonData>().Select(value =>

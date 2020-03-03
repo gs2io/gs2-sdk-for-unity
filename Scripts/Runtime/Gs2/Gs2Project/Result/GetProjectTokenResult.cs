@@ -40,7 +40,7 @@ namespace Gs2.Gs2Project.Result
         public static GetProjectTokenResult FromDict(JsonData data)
         {
             return new GetProjectTokenResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Project.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Project.Model.Project.FromDict(data["item"]) : null,
                 ownerId = data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null,
                 projectToken = data.Keys.Contains("projectToken") && data["projectToken"] != null ? data["projectToken"].ToString() : null,
             };

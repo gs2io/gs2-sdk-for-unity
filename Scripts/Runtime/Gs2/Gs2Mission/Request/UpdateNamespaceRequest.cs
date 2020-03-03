@@ -59,7 +59,7 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** ミッションを達成したときに実行するスクリプト */
-        public ScriptSetting missionCompleteScript { set; get; }
+        public Gs2.Gs2Mission.Model.ScriptSetting missionCompleteScript { set; get; }
 
         /**
          * ミッションを達成したときに実行するスクリプトを設定
@@ -67,14 +67,14 @@ namespace Gs2.Gs2Mission.Request
          * @param missionCompleteScript ミッションを達成したときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithMissionCompleteScript(ScriptSetting missionCompleteScript) {
+        public UpdateNamespaceRequest WithMissionCompleteScript(Gs2.Gs2Mission.Model.ScriptSetting missionCompleteScript) {
             this.missionCompleteScript = missionCompleteScript;
             return this;
         }
 
 
         /** カウンターを上昇したときに実行するスクリプト */
-        public ScriptSetting counterIncrementScript { set; get; }
+        public Gs2.Gs2Mission.Model.ScriptSetting counterIncrementScript { set; get; }
 
         /**
          * カウンターを上昇したときに実行するスクリプトを設定
@@ -82,14 +82,14 @@ namespace Gs2.Gs2Mission.Request
          * @param counterIncrementScript カウンターを上昇したときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithCounterIncrementScript(ScriptSetting counterIncrementScript) {
+        public UpdateNamespaceRequest WithCounterIncrementScript(Gs2.Gs2Mission.Model.ScriptSetting counterIncrementScript) {
             this.counterIncrementScript = counterIncrementScript;
             return this;
         }
 
 
         /** 報酬を受け取ったときに実行するスクリプト */
-        public ScriptSetting receiveRewardsScript { set; get; }
+        public Gs2.Gs2Mission.Model.ScriptSetting receiveRewardsScript { set; get; }
 
         /**
          * 報酬を受け取ったときに実行するスクリプトを設定
@@ -97,7 +97,7 @@ namespace Gs2.Gs2Mission.Request
          * @param receiveRewardsScript 報酬を受け取ったときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithReceiveRewardsScript(ScriptSetting receiveRewardsScript) {
+        public UpdateNamespaceRequest WithReceiveRewardsScript(Gs2.Gs2Mission.Model.ScriptSetting receiveRewardsScript) {
             this.receiveRewardsScript = receiveRewardsScript;
             return this;
         }
@@ -134,7 +134,7 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** ミッションのタスクを達成したときのプッシュ通知 */
-        public NotificationSetting completeNotification { set; get; }
+        public Gs2.Gs2Mission.Model.NotificationSetting completeNotification { set; get; }
 
         /**
          * ミッションのタスクを達成したときのプッシュ通知を設定
@@ -142,14 +142,14 @@ namespace Gs2.Gs2Mission.Request
          * @param completeNotification ミッションのタスクを達成したときのプッシュ通知
          * @return this
          */
-        public UpdateNamespaceRequest WithCompleteNotification(NotificationSetting completeNotification) {
+        public UpdateNamespaceRequest WithCompleteNotification(Gs2.Gs2Mission.Model.NotificationSetting completeNotification) {
             this.completeNotification = completeNotification;
             return this;
         }
 
 
         /** ログの出力設定 */
-        public LogSetting logSetting { set; get; }
+        public Gs2.Gs2Mission.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -157,7 +157,7 @@ namespace Gs2.Gs2Mission.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public UpdateNamespaceRequest WithLogSetting(LogSetting logSetting) {
+        public UpdateNamespaceRequest WithLogSetting(Gs2.Gs2Mission.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -169,13 +169,13 @@ namespace Gs2.Gs2Mission.Request
             return new UpdateNamespaceRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
-                missionCompleteScript = data.Keys.Contains("missionCompleteScript") && data["missionCompleteScript"] != null ? ScriptSetting.FromDict(data["missionCompleteScript"]) : null,
-                counterIncrementScript = data.Keys.Contains("counterIncrementScript") && data["counterIncrementScript"] != null ? ScriptSetting.FromDict(data["counterIncrementScript"]) : null,
-                receiveRewardsScript = data.Keys.Contains("receiveRewardsScript") && data["receiveRewardsScript"] != null ? ScriptSetting.FromDict(data["receiveRewardsScript"]) : null,
+                missionCompleteScript = data.Keys.Contains("missionCompleteScript") && data["missionCompleteScript"] != null ? Gs2.Gs2Mission.Model.ScriptSetting.FromDict(data["missionCompleteScript"]) : null,
+                counterIncrementScript = data.Keys.Contains("counterIncrementScript") && data["counterIncrementScript"] != null ? Gs2.Gs2Mission.Model.ScriptSetting.FromDict(data["counterIncrementScript"]) : null,
+                receiveRewardsScript = data.Keys.Contains("receiveRewardsScript") && data["receiveRewardsScript"] != null ? Gs2.Gs2Mission.Model.ScriptSetting.FromDict(data["receiveRewardsScript"]) : null,
                 queueNamespaceId = data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? data["queueNamespaceId"].ToString(): null,
                 keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString(): null,
-                completeNotification = data.Keys.Contains("completeNotification") && data["completeNotification"] != null ? NotificationSetting.FromDict(data["completeNotification"]) : null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null,
+                completeNotification = data.Keys.Contains("completeNotification") && data["completeNotification"] != null ? Gs2.Gs2Mission.Model.NotificationSetting.FromDict(data["completeNotification"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Mission.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 

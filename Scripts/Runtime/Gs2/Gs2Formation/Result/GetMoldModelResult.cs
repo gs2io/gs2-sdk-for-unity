@@ -34,7 +34,7 @@ namespace Gs2.Gs2Formation.Result
         public static GetMoldModelResult FromDict(JsonData data)
         {
             return new GetMoldModelResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? MoldModel.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Formation.Model.MoldModel.FromDict(data["item"]) : null,
             };
         }
 	}

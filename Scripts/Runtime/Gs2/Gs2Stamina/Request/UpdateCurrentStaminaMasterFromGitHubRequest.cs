@@ -44,7 +44,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** GitHubからマスターデータをチェックアウトしてくる設定 */
-        public GitHubCheckoutSetting checkoutSetting { set; get; }
+        public Gs2.Gs2Stamina.Model.GitHubCheckoutSetting checkoutSetting { set; get; }
 
         /**
          * GitHubからマスターデータをチェックアウトしてくる設定を設定
@@ -52,7 +52,7 @@ namespace Gs2.Gs2Stamina.Request
          * @param checkoutSetting GitHubからマスターデータをチェックアウトしてくる設定
          * @return this
          */
-        public UpdateCurrentStaminaMasterFromGitHubRequest WithCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
+        public UpdateCurrentStaminaMasterFromGitHubRequest WithCheckoutSetting(Gs2.Gs2Stamina.Model.GitHubCheckoutSetting checkoutSetting) {
             this.checkoutSetting = checkoutSetting;
             return this;
         }
@@ -63,7 +63,7 @@ namespace Gs2.Gs2Stamina.Request
         {
             return new UpdateCurrentStaminaMasterFromGitHubRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
-                checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
+                checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? Gs2.Gs2Stamina.Model.GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
             };
         }
 

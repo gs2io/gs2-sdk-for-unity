@@ -34,7 +34,7 @@ namespace Gs2.Gs2Distributor.Result
         public static GetCurrentDistributorMasterResult FromDict(JsonData data)
         {
             return new GetCurrentDistributorMasterResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? CurrentDistributorMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Distributor.Model.CurrentDistributorMaster.FromDict(data["item"]) : null,
             };
         }
 	}

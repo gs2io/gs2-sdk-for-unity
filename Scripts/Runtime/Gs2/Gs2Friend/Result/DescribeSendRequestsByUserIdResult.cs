@@ -36,7 +36,7 @@ namespace Gs2.Gs2Friend.Result
             return new DescribeSendRequestsByUserIdResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return FriendRequest.FromDict(value);
+                        return Gs2.Gs2Friend.Model.FriendRequest.FromDict(value);
                     }
                 ).ToList() : null,
             };

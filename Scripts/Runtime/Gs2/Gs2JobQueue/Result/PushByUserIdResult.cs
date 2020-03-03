@@ -36,7 +36,7 @@ namespace Gs2.Gs2JobQueue.Result
             return new PushByUserIdResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return Job.FromDict(value);
+                        return Gs2.Gs2JobQueue.Model.Job.FromDict(value);
                     }
                 ).ToList() : null,
             };

@@ -39,7 +39,7 @@ namespace Gs2.Gs2Version.Result
             return new DescribeVersionModelMastersResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return VersionModelMaster.FromDict(value);
+                        return Gs2.Gs2Version.Model.VersionModelMaster.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

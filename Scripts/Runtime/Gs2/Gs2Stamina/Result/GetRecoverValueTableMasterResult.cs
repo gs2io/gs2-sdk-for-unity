@@ -34,7 +34,7 @@ namespace Gs2.Gs2Stamina.Result
         public static GetRecoverValueTableMasterResult FromDict(JsonData data)
         {
             return new GetRecoverValueTableMasterResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? RecoverValueTableMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Stamina.Model.RecoverValueTableMaster.FromDict(data["item"]) : null,
             };
         }
 	}

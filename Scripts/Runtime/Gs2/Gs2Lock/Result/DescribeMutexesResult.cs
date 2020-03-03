@@ -39,7 +39,7 @@ namespace Gs2.Gs2Lock.Result
             return new DescribeMutexesResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return Mutex.FromDict(value);
+                        return Gs2.Gs2Lock.Model.Mutex.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

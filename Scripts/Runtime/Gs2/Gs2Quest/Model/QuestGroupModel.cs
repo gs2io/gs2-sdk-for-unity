@@ -141,7 +141,7 @@ namespace Gs2.Gs2Quest.Model
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
                 .WithQuests(data.Keys.Contains("quests") && data["quests"] != null ? data["quests"].Cast<JsonData>().Select(value =>
                     {
-                        return QuestModel.FromDict(value);
+                        return Gs2.Gs2Quest.Model.QuestModel.FromDict(value);
                     }
                 ).ToList() : null)
                 .WithChallengePeriodEventId(data.Keys.Contains("challengePeriodEventId") && data["challengePeriodEventId"] != null ? data["challengePeriodEventId"].ToString() : null);

@@ -44,7 +44,7 @@ namespace Gs2.Gs2Matchmaking.Request
 
 
         /** プレイヤー情報 */
-        public Player player { set; get; }
+        public Gs2.Gs2Matchmaking.Model.Player player { set; get; }
 
         /**
          * プレイヤー情報を設定
@@ -52,7 +52,7 @@ namespace Gs2.Gs2Matchmaking.Request
          * @param player プレイヤー情報
          * @return this
          */
-        public DoMatchmakingByPlayerRequest WithPlayer(Player player) {
+        public DoMatchmakingByPlayerRequest WithPlayer(Gs2.Gs2Matchmaking.Model.Player player) {
             this.player = player;
             return this;
         }
@@ -78,7 +78,7 @@ namespace Gs2.Gs2Matchmaking.Request
         {
             return new DoMatchmakingByPlayerRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
-                player = data.Keys.Contains("player") && data["player"] != null ? Player.FromDict(data["player"]) : null,
+                player = data.Keys.Contains("player") && data["player"] != null ? Gs2.Gs2Matchmaking.Model.Player.FromDict(data["player"]) : null,
                 matchmakingContextToken = data.Keys.Contains("matchmakingContextToken") && data["matchmakingContextToken"] != null ? data["matchmakingContextToken"].ToString(): null,
             };
         }

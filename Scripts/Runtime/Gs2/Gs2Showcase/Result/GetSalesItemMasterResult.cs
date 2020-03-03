@@ -34,7 +34,7 @@ namespace Gs2.Gs2Showcase.Result
         public static GetSalesItemMasterResult FromDict(JsonData data)
         {
             return new GetSalesItemMasterResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? SalesItemMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Showcase.Model.SalesItemMaster.FromDict(data["item"]) : null,
             };
         }
 	}

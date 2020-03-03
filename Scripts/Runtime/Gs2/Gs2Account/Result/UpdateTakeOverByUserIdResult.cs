@@ -34,7 +34,7 @@ namespace Gs2.Gs2Account.Result
         public static UpdateTakeOverByUserIdResult FromDict(JsonData data)
         {
             return new UpdateTakeOverByUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? TakeOver.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Account.Model.TakeOver.FromDict(data["item"]) : null,
             };
         }
 	}

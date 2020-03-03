@@ -34,7 +34,7 @@ namespace Gs2.Gs2Chat.Result
         public static UpdateNotificationTypeResult FromDict(JsonData data)
         {
             return new UpdateNotificationTypeResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Subscribe.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Chat.Model.Subscribe.FromDict(data["item"]) : null,
             };
         }
 	}

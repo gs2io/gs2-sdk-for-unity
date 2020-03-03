@@ -34,7 +34,7 @@ namespace Gs2.Gs2Inventory.Result
         public static SetCapacityByStampSheetResult FromDict(JsonData data)
         {
             return new SetCapacityByStampSheetResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Inventory.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Inventory.Model.Inventory.FromDict(data["item"]) : null,
             };
         }
 	}

@@ -42,7 +42,7 @@ namespace Gs2.Gs2News.Result
             return new DescribeNewsByUserIdResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return News.FromDict(value);
+                        return Gs2.Gs2News.Model.News.FromDict(value);
                     }
                 ).ToList() : null,
                 contentHash = data.Keys.Contains("contentHash") && data["contentHash"] != null ? data["contentHash"].ToString() : null,

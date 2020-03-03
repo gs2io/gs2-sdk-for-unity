@@ -34,7 +34,7 @@ namespace Gs2.Gs2Formation.Result
         public static CreateFormModelMasterResult FromDict(JsonData data)
         {
             return new CreateFormModelMasterResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? FormModelMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Formation.Model.FormModelMaster.FromDict(data["item"]) : null,
             };
         }
 	}

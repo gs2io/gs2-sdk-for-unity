@@ -111,7 +111,7 @@ namespace Gs2.Gs2Realtime.Model
         }
 
         /** ルームの作成が終わったときのプッシュ通知 */
-        public NotificationSetting createNotification { set; get; }
+        public Gs2.Gs2Realtime.Model.NotificationSetting createNotification { set; get; }
 
         /**
          * ルームの作成が終わったときのプッシュ通知を設定
@@ -119,13 +119,13 @@ namespace Gs2.Gs2Realtime.Model
          * @param createNotification ルームの作成が終わったときのプッシュ通知
          * @return this
          */
-        public Namespace WithCreateNotification(NotificationSetting createNotification) {
+        public Namespace WithCreateNotification(Gs2.Gs2Realtime.Model.NotificationSetting createNotification) {
             this.createNotification = createNotification;
             return this;
         }
 
         /** ログの出力設定 */
-        public LogSetting logSetting { set; get; }
+        public Gs2.Gs2Realtime.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -133,7 +133,7 @@ namespace Gs2.Gs2Realtime.Model
          * @param logSetting ログの出力設定
          * @return this
          */
-        public Namespace WithLogSetting(LogSetting logSetting) {
+        public Namespace WithLogSetting(Gs2.Gs2Realtime.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -232,8 +232,8 @@ namespace Gs2.Gs2Realtime.Model
                 .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
                 .WithServerType(data.Keys.Contains("serverType") && data["serverType"] != null ? data["serverType"].ToString() : null)
                 .WithServerSpec(data.Keys.Contains("serverSpec") && data["serverSpec"] != null ? data["serverSpec"].ToString() : null)
-                .WithCreateNotification(data.Keys.Contains("createNotification") && data["createNotification"] != null ? NotificationSetting.FromDict(data["createNotification"]) : null)
-                .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null)
+                .WithCreateNotification(data.Keys.Contains("createNotification") && data["createNotification"] != null ? Gs2.Gs2Realtime.Model.NotificationSetting.FromDict(data["createNotification"]) : null)
+                .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Realtime.Model.LogSetting.FromDict(data["logSetting"]) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }

@@ -74,7 +74,7 @@ namespace Gs2.Gs2Experience.Request
 
 
         /** 経験値変化したときに実行するスクリプト */
-        public ScriptSetting changeExperienceScript { set; get; }
+        public Gs2.Gs2Experience.Model.ScriptSetting changeExperienceScript { set; get; }
 
         /**
          * 経験値変化したときに実行するスクリプトを設定
@@ -82,14 +82,14 @@ namespace Gs2.Gs2Experience.Request
          * @param changeExperienceScript 経験値変化したときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithChangeExperienceScript(ScriptSetting changeExperienceScript) {
+        public CreateNamespaceRequest WithChangeExperienceScript(Gs2.Gs2Experience.Model.ScriptSetting changeExperienceScript) {
             this.changeExperienceScript = changeExperienceScript;
             return this;
         }
 
 
         /** ランク変化したときに実行するスクリプト */
-        public ScriptSetting changeRankScript { set; get; }
+        public Gs2.Gs2Experience.Model.ScriptSetting changeRankScript { set; get; }
 
         /**
          * ランク変化したときに実行するスクリプトを設定
@@ -97,14 +97,14 @@ namespace Gs2.Gs2Experience.Request
          * @param changeRankScript ランク変化したときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithChangeRankScript(ScriptSetting changeRankScript) {
+        public CreateNamespaceRequest WithChangeRankScript(Gs2.Gs2Experience.Model.ScriptSetting changeRankScript) {
             this.changeRankScript = changeRankScript;
             return this;
         }
 
 
         /** ランクキャップ変化したときに実行するスクリプト */
-        public ScriptSetting changeRankCapScript { set; get; }
+        public Gs2.Gs2Experience.Model.ScriptSetting changeRankCapScript { set; get; }
 
         /**
          * ランクキャップ変化したときに実行するスクリプトを設定
@@ -112,14 +112,14 @@ namespace Gs2.Gs2Experience.Request
          * @param changeRankCapScript ランクキャップ変化したときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithChangeRankCapScript(ScriptSetting changeRankCapScript) {
+        public CreateNamespaceRequest WithChangeRankCapScript(Gs2.Gs2Experience.Model.ScriptSetting changeRankCapScript) {
             this.changeRankCapScript = changeRankCapScript;
             return this;
         }
 
 
         /** ログの出力設定 */
-        public LogSetting logSetting { set; get; }
+        public Gs2.Gs2Experience.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -127,7 +127,7 @@ namespace Gs2.Gs2Experience.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public CreateNamespaceRequest WithLogSetting(LogSetting logSetting) {
+        public CreateNamespaceRequest WithLogSetting(Gs2.Gs2Experience.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -140,10 +140,10 @@ namespace Gs2.Gs2Experience.Request
                 name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 experienceCapScriptId = data.Keys.Contains("experienceCapScriptId") && data["experienceCapScriptId"] != null ? data["experienceCapScriptId"].ToString(): null,
-                changeExperienceScript = data.Keys.Contains("changeExperienceScript") && data["changeExperienceScript"] != null ? ScriptSetting.FromDict(data["changeExperienceScript"]) : null,
-                changeRankScript = data.Keys.Contains("changeRankScript") && data["changeRankScript"] != null ? ScriptSetting.FromDict(data["changeRankScript"]) : null,
-                changeRankCapScript = data.Keys.Contains("changeRankCapScript") && data["changeRankCapScript"] != null ? ScriptSetting.FromDict(data["changeRankCapScript"]) : null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null,
+                changeExperienceScript = data.Keys.Contains("changeExperienceScript") && data["changeExperienceScript"] != null ? Gs2.Gs2Experience.Model.ScriptSetting.FromDict(data["changeExperienceScript"]) : null,
+                changeRankScript = data.Keys.Contains("changeRankScript") && data["changeRankScript"] != null ? Gs2.Gs2Experience.Model.ScriptSetting.FromDict(data["changeRankScript"]) : null,
+                changeRankCapScript = data.Keys.Contains("changeRankCapScript") && data["changeRankCapScript"] != null ? Gs2.Gs2Experience.Model.ScriptSetting.FromDict(data["changeRankCapScript"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Experience.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 

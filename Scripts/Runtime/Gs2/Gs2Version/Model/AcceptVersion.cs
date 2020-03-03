@@ -69,7 +69,7 @@ namespace Gs2.Gs2Version.Model
         }
 
         /** 承認したバージョン */
-        public Version_ version { set; get; }
+        public Gs2.Gs2Version.Model.Version_ version { set; get; }
 
         /**
          * 承認したバージョンを設定
@@ -77,7 +77,7 @@ namespace Gs2.Gs2Version.Model
          * @param version 承認したバージョン
          * @return this
          */
-        public AcceptVersion WithVersion(Version_ version) {
+        public AcceptVersion WithVersion(Gs2.Gs2Version.Model.Version_ version) {
             this.version = version;
             return this;
         }
@@ -153,7 +153,7 @@ namespace Gs2.Gs2Version.Model
                 .WithAcceptVersionId(data.Keys.Contains("acceptVersionId") && data["acceptVersionId"] != null ? data["acceptVersionId"].ToString() : null)
                 .WithVersionName(data.Keys.Contains("versionName") && data["versionName"] != null ? data["versionName"].ToString() : null)
                 .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
-                .WithVersion(data.Keys.Contains("version") && data["version"] != null ? Version_.FromDict(data["version"]) : null)
+                .WithVersion(data.Keys.Contains("version") && data["version"] != null ? Gs2.Gs2Version.Model.Version_.FromDict(data["version"]) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }

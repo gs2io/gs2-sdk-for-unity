@@ -27,7 +27,7 @@ namespace Gs2.Gs2Lottery.Model
 	{
 
         /** 景品の種類 */
-        public DrawnPrize prize { set; get; }
+        public Gs2.Gs2Lottery.Model.DrawnPrize prize { set; get; }
 
         /**
          * 景品の種類を設定
@@ -35,7 +35,7 @@ namespace Gs2.Gs2Lottery.Model
          * @param prize 景品の種類
          * @return this
          */
-        public Probability WithPrize(DrawnPrize prize) {
+        public Probability WithPrize(Gs2.Gs2Lottery.Model.DrawnPrize prize) {
             this.prize = prize;
             return this;
         }
@@ -74,7 +74,7 @@ namespace Gs2.Gs2Lottery.Model
         public static Probability FromDict(JsonData data)
         {
             return new Probability()
-                .WithPrize(data.Keys.Contains("prize") && data["prize"] != null ? DrawnPrize.FromDict(data["prize"]) : null)
+                .WithPrize(data.Keys.Contains("prize") && data["prize"] != null ? Gs2.Gs2Lottery.Model.DrawnPrize.FromDict(data["prize"]) : null)
                 .WithRate(data.Keys.Contains("rate") && data["rate"] != null ? (float?)float.Parse(data["rate"].ToString()) : null);
         }
 	}

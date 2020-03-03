@@ -34,7 +34,7 @@ namespace Gs2.Gs2Schedule.Result
         public static GetEventResult FromDict(JsonData data)
         {
             return new GetEventResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Event.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Schedule.Model.Event.FromDict(data["item"]) : null,
             };
         }
 	}

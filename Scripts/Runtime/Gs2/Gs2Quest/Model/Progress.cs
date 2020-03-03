@@ -200,7 +200,7 @@ namespace Gs2.Gs2Quest.Model
                 .WithRandomSeed(data.Keys.Contains("randomSeed") && data["randomSeed"] != null ? (long?)long.Parse(data["randomSeed"].ToString()) : null)
                 .WithRewards(data.Keys.Contains("rewards") && data["rewards"] != null ? data["rewards"].Cast<JsonData>().Select(value =>
                     {
-                        return Reward.FromDict(value);
+                        return Gs2.Gs2Quest.Model.Reward.FromDict(value);
                     }
                 ).ToList() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)

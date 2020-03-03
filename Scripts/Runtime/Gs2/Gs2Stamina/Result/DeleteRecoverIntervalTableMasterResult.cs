@@ -34,7 +34,7 @@ namespace Gs2.Gs2Stamina.Result
         public static DeleteRecoverIntervalTableMasterResult FromDict(JsonData data)
         {
             return new DeleteRecoverIntervalTableMasterResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? RecoverIntervalTableMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Stamina.Model.RecoverIntervalTableMaster.FromDict(data["item"]) : null,
             };
         }
 	}

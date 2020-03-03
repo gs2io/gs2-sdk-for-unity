@@ -82,7 +82,7 @@ namespace Gs2.Gs2Formation.Model
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithConfig(data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
                     {
-                        return Config.FromDict(value);
+                        return Gs2.Gs2Formation.Model.Config.FromDict(value);
                     }
                 ).ToList() : null);
         }

@@ -74,7 +74,7 @@ namespace Gs2.Gs2Script.Request
 
 
         /** GitHubからソースコードをチェックアウトしてくる設定 */
-        public GitHubCheckoutSetting checkoutSetting { set; get; }
+        public Gs2.Gs2Script.Model.GitHubCheckoutSetting checkoutSetting { set; get; }
 
         /**
          * GitHubからソースコードをチェックアウトしてくる設定を設定
@@ -82,7 +82,7 @@ namespace Gs2.Gs2Script.Request
          * @param checkoutSetting GitHubからソースコードをチェックアウトしてくる設定
          * @return this
          */
-        public UpdateScriptFromGitHubRequest WithCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
+        public UpdateScriptFromGitHubRequest WithCheckoutSetting(Gs2.Gs2Script.Model.GitHubCheckoutSetting checkoutSetting) {
             this.checkoutSetting = checkoutSetting;
             return this;
         }
@@ -95,7 +95,7 @@ namespace Gs2.Gs2Script.Request
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 scriptName = data.Keys.Contains("scriptName") && data["scriptName"] != null ? data["scriptName"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
-                checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
+                checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? Gs2.Gs2Script.Model.GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
             };
         }
 

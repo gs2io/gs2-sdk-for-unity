@@ -34,7 +34,7 @@ namespace Gs2.Gs2Showcase.Result
         public static DeleteSalesItemGroupMasterResult FromDict(JsonData data)
         {
             return new DeleteSalesItemGroupMasterResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? SalesItemGroupMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Showcase.Model.SalesItemGroupMaster.FromDict(data["item"]) : null,
             };
         }
 	}

@@ -34,7 +34,7 @@ namespace Gs2.Gs2Quest.Result
         public static UpdateCurrentQuestMasterFromGitHubResult FromDict(JsonData data)
         {
             return new UpdateCurrentQuestMasterFromGitHubResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? CurrentQuestMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Quest.Model.CurrentQuestMaster.FromDict(data["item"]) : null,
             };
         }
 	}

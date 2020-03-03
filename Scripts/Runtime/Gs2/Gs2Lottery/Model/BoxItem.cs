@@ -100,7 +100,7 @@ namespace Gs2.Gs2Lottery.Model
             return new BoxItem()
                 .WithAcquireActions(data.Keys.Contains("acquireActions") && data["acquireActions"] != null ? data["acquireActions"].Cast<JsonData>().Select(value =>
                     {
-                        return AcquireAction.FromDict(value);
+                        return Gs2.Gs2Lottery.Model.AcquireAction.FromDict(value);
                     }
                 ).ToList() : null)
                 .WithRemaining(data.Keys.Contains("remaining") && data["remaining"] != null ? (int?)int.Parse(data["remaining"].ToString()) : null)

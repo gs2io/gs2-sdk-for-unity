@@ -42,7 +42,7 @@ namespace Gs2.Gs2News.Result
             return new WantGrantByUserIdResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return SetCookieRequestEntry.FromDict(value);
+                        return Gs2.Gs2News.Model.SetCookieRequestEntry.FromDict(value);
                     }
                 ).ToList() : null,
                 browserUrl = data.Keys.Contains("browserUrl") && data["browserUrl"] != null ? data["browserUrl"].ToString() : null,

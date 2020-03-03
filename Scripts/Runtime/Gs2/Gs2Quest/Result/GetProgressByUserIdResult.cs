@@ -40,9 +40,9 @@ namespace Gs2.Gs2Quest.Result
         public static GetProgressByUserIdResult FromDict(JsonData data)
         {
             return new GetProgressByUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Progress.FromDict(data["item"]) : null,
-                questGroup = data.Keys.Contains("questGroup") && data["questGroup"] != null ? QuestGroupModel.FromDict(data["questGroup"]) : null,
-                quest = data.Keys.Contains("quest") && data["quest"] != null ? QuestModel.FromDict(data["quest"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Quest.Model.Progress.FromDict(data["item"]) : null,
+                questGroup = data.Keys.Contains("questGroup") && data["questGroup"] != null ? Gs2.Gs2Quest.Model.QuestGroupModel.FromDict(data["questGroup"]) : null,
+                quest = data.Keys.Contains("quest") && data["quest"] != null ? Gs2.Gs2Quest.Model.QuestModel.FromDict(data["quest"]) : null,
             };
         }
 	}

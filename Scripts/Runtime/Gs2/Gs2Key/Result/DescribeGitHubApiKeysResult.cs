@@ -39,7 +39,7 @@ namespace Gs2.Gs2Key.Result
             return new DescribeGitHubApiKeysResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return GitHubApiKey.FromDict(value);
+                        return Gs2.Gs2Key.Model.GitHubApiKey.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

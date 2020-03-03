@@ -74,7 +74,7 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** メッセージ受信したときに実行するスクリプト */
-        public ScriptSetting receiveMessageScript { set; get; }
+        public Gs2.Gs2Inbox.Model.ScriptSetting receiveMessageScript { set; get; }
 
         /**
          * メッセージ受信したときに実行するスクリプトを設定
@@ -82,14 +82,14 @@ namespace Gs2.Gs2Inbox.Request
          * @param receiveMessageScript メッセージ受信したときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithReceiveMessageScript(ScriptSetting receiveMessageScript) {
+        public UpdateNamespaceRequest WithReceiveMessageScript(Gs2.Gs2Inbox.Model.ScriptSetting receiveMessageScript) {
             this.receiveMessageScript = receiveMessageScript;
             return this;
         }
 
 
         /** メッセージ開封したときに実行するスクリプト */
-        public ScriptSetting readMessageScript { set; get; }
+        public Gs2.Gs2Inbox.Model.ScriptSetting readMessageScript { set; get; }
 
         /**
          * メッセージ開封したときに実行するスクリプトを設定
@@ -97,14 +97,14 @@ namespace Gs2.Gs2Inbox.Request
          * @param readMessageScript メッセージ開封したときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithReadMessageScript(ScriptSetting readMessageScript) {
+        public UpdateNamespaceRequest WithReadMessageScript(Gs2.Gs2Inbox.Model.ScriptSetting readMessageScript) {
             this.readMessageScript = readMessageScript;
             return this;
         }
 
 
         /** メッセージ削除したときに実行するスクリプト */
-        public ScriptSetting deleteMessageScript { set; get; }
+        public Gs2.Gs2Inbox.Model.ScriptSetting deleteMessageScript { set; get; }
 
         /**
          * メッセージ削除したときに実行するスクリプトを設定
@@ -112,7 +112,7 @@ namespace Gs2.Gs2Inbox.Request
          * @param deleteMessageScript メッセージ削除したときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithDeleteMessageScript(ScriptSetting deleteMessageScript) {
+        public UpdateNamespaceRequest WithDeleteMessageScript(Gs2.Gs2Inbox.Model.ScriptSetting deleteMessageScript) {
             this.deleteMessageScript = deleteMessageScript;
             return this;
         }
@@ -149,7 +149,7 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** メッセージを受信したときのプッシュ通知 */
-        public NotificationSetting receiveNotification { set; get; }
+        public Gs2.Gs2Inbox.Model.NotificationSetting receiveNotification { set; get; }
 
         /**
          * メッセージを受信したときのプッシュ通知を設定
@@ -157,14 +157,14 @@ namespace Gs2.Gs2Inbox.Request
          * @param receiveNotification メッセージを受信したときのプッシュ通知
          * @return this
          */
-        public UpdateNamespaceRequest WithReceiveNotification(NotificationSetting receiveNotification) {
+        public UpdateNamespaceRequest WithReceiveNotification(Gs2.Gs2Inbox.Model.NotificationSetting receiveNotification) {
             this.receiveNotification = receiveNotification;
             return this;
         }
 
 
         /** ログの出力設定 */
-        public LogSetting logSetting { set; get; }
+        public Gs2.Gs2Inbox.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -172,7 +172,7 @@ namespace Gs2.Gs2Inbox.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public UpdateNamespaceRequest WithLogSetting(LogSetting logSetting) {
+        public UpdateNamespaceRequest WithLogSetting(Gs2.Gs2Inbox.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -185,13 +185,13 @@ namespace Gs2.Gs2Inbox.Request
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 isAutomaticDeletingEnabled = data.Keys.Contains("isAutomaticDeletingEnabled") && data["isAutomaticDeletingEnabled"] != null ? (bool?)bool.Parse(data["isAutomaticDeletingEnabled"].ToString()) : null,
-                receiveMessageScript = data.Keys.Contains("receiveMessageScript") && data["receiveMessageScript"] != null ? ScriptSetting.FromDict(data["receiveMessageScript"]) : null,
-                readMessageScript = data.Keys.Contains("readMessageScript") && data["readMessageScript"] != null ? ScriptSetting.FromDict(data["readMessageScript"]) : null,
-                deleteMessageScript = data.Keys.Contains("deleteMessageScript") && data["deleteMessageScript"] != null ? ScriptSetting.FromDict(data["deleteMessageScript"]) : null,
+                receiveMessageScript = data.Keys.Contains("receiveMessageScript") && data["receiveMessageScript"] != null ? Gs2.Gs2Inbox.Model.ScriptSetting.FromDict(data["receiveMessageScript"]) : null,
+                readMessageScript = data.Keys.Contains("readMessageScript") && data["readMessageScript"] != null ? Gs2.Gs2Inbox.Model.ScriptSetting.FromDict(data["readMessageScript"]) : null,
+                deleteMessageScript = data.Keys.Contains("deleteMessageScript") && data["deleteMessageScript"] != null ? Gs2.Gs2Inbox.Model.ScriptSetting.FromDict(data["deleteMessageScript"]) : null,
                 queueNamespaceId = data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? data["queueNamespaceId"].ToString(): null,
                 keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString(): null,
-                receiveNotification = data.Keys.Contains("receiveNotification") && data["receiveNotification"] != null ? NotificationSetting.FromDict(data["receiveNotification"]) : null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null,
+                receiveNotification = data.Keys.Contains("receiveNotification") && data["receiveNotification"] != null ? Gs2.Gs2Inbox.Model.NotificationSetting.FromDict(data["receiveNotification"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Inbox.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 

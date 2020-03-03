@@ -34,7 +34,7 @@ namespace Gs2.Gs2Ranking.Result
         public static GetSubscribeByUserIdResult FromDict(JsonData data)
         {
             return new GetSubscribeByUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? SubscribeUser.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Ranking.Model.SubscribeUser.FromDict(data["item"]) : null,
             };
         }
 	}

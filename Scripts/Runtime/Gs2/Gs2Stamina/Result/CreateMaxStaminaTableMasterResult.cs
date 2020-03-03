@@ -34,7 +34,7 @@ namespace Gs2.Gs2Stamina.Result
         public static CreateMaxStaminaTableMasterResult FromDict(JsonData data)
         {
             return new CreateMaxStaminaTableMasterResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? MaxStaminaTableMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Stamina.Model.MaxStaminaTableMaster.FromDict(data["item"]) : null,
             };
         }
 	}

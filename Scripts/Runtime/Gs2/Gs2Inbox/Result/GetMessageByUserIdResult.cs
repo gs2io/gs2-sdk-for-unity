@@ -34,7 +34,7 @@ namespace Gs2.Gs2Inbox.Result
         public static GetMessageByUserIdResult FromDict(JsonData data)
         {
             return new GetMessageByUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Message.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Inbox.Model.Message.FromDict(data["item"]) : null,
             };
         }
 	}

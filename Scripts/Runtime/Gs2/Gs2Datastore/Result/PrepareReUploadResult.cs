@@ -37,7 +37,7 @@ namespace Gs2.Gs2Datastore.Result
         public static PrepareReUploadResult FromDict(JsonData data)
         {
             return new PrepareReUploadResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? DataObject.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Datastore.Model.DataObject.FromDict(data["item"]) : null,
                 uploadUrl = data.Keys.Contains("uploadUrl") && data["uploadUrl"] != null ? data["uploadUrl"].ToString() : null,
             };
         }

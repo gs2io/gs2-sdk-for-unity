@@ -34,7 +34,7 @@ namespace Gs2.Gs2Friend.Result
         public static RejectRequestByUserIdResult FromDict(JsonData data)
         {
             return new RejectRequestByUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? FriendRequest.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Friend.Model.FriendRequest.FromDict(data["item"]) : null,
             };
         }
 	}

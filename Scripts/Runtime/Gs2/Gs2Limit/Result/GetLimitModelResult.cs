@@ -34,7 +34,7 @@ namespace Gs2.Gs2Limit.Result
         public static GetLimitModelResult FromDict(JsonData data)
         {
             return new GetLimitModelResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? LimitModel.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Limit.Model.LimitModel.FromDict(data["item"]) : null,
             };
         }
 	}

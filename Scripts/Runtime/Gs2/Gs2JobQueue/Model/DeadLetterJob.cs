@@ -200,7 +200,7 @@ namespace Gs2.Gs2JobQueue.Model
                 .WithArgs(data.Keys.Contains("args") && data["args"] != null ? data["args"].ToString() : null)
                 .WithResult(data.Keys.Contains("result") && data["result"] != null ? data["result"].Cast<JsonData>().Select(value =>
                     {
-                        return JobResultBody.FromDict(value);
+                        return Gs2.Gs2JobQueue.Model.JobResultBody.FromDict(value);
                     }
                 ).ToList() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)

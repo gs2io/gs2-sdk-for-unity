@@ -34,7 +34,7 @@ namespace Gs2.Gs2Distributor.Result
         public static GetDistributorModelResult FromDict(JsonData data)
         {
             return new GetDistributorModelResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? DistributorModel.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Distributor.Model.DistributorModel.FromDict(data["item"]) : null,
             };
         }
 	}

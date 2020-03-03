@@ -34,7 +34,7 @@ namespace Gs2.Gs2Lottery.Result
         public static UpdateLotteryModelMasterResult FromDict(JsonData data)
         {
             return new UpdateLotteryModelMasterResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? LotteryModelMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Lottery.Model.LotteryModelMaster.FromDict(data["item"]) : null,
             };
         }
 	}

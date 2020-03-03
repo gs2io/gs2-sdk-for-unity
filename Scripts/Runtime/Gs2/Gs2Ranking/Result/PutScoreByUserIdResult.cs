@@ -34,7 +34,7 @@ namespace Gs2.Gs2Ranking.Result
         public static PutScoreByUserIdResult FromDict(JsonData data)
         {
             return new PutScoreByUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Score.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Ranking.Model.Score.FromDict(data["item"]) : null,
             };
         }
 	}

@@ -39,7 +39,7 @@ namespace Gs2.Gs2Realtime.Result
             return new DescribeRoomsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return Room.FromDict(value);
+                        return Gs2.Gs2Realtime.Model.Room.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

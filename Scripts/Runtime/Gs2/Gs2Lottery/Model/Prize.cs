@@ -140,7 +140,7 @@ namespace Gs2.Gs2Lottery.Model
                 .WithType(data.Keys.Contains("type") && data["type"] != null ? data["type"].ToString() : null)
                 .WithAcquireActions(data.Keys.Contains("acquireActions") && data["acquireActions"] != null ? data["acquireActions"].Cast<JsonData>().Select(value =>
                     {
-                        return AcquireAction.FromDict(value);
+                        return Gs2.Gs2Lottery.Model.AcquireAction.FromDict(value);
                     }
                 ).ToList() : null)
                 .WithPrizeTableName(data.Keys.Contains("prizeTableName") && data["prizeTableName"] != null ? data["prizeTableName"].ToString() : null)

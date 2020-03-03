@@ -34,7 +34,7 @@ namespace Gs2.Gs2Schedule.Result
         public static CreateEventMasterResult FromDict(JsonData data)
         {
             return new CreateEventMasterResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? EventMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Schedule.Model.EventMaster.FromDict(data["item"]) : null,
             };
         }
 	}

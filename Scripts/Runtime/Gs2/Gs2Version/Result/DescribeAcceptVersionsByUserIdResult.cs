@@ -39,7 +39,7 @@ namespace Gs2.Gs2Version.Result
             return new DescribeAcceptVersionsByUserIdResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return AcceptVersion.FromDict(value);
+                        return Gs2.Gs2Version.Model.AcceptVersion.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

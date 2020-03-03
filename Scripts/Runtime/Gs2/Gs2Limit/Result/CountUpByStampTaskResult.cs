@@ -37,7 +37,7 @@ namespace Gs2.Gs2Limit.Result
         public static CountUpByStampTaskResult FromDict(JsonData data)
         {
             return new CountUpByStampTaskResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Counter.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Limit.Model.Counter.FromDict(data["item"]) : null,
                 newContextStack = data.Keys.Contains("newContextStack") && data["newContextStack"] != null ? data["newContextStack"].ToString() : null,
             };
         }

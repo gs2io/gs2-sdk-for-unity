@@ -34,7 +34,7 @@ namespace Gs2.Gs2Project.Result
         public static UpdateAccountResult FromDict(JsonData data)
         {
             return new UpdateAccountResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Account.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Project.Model.Account.FromDict(data["item"]) : null,
             };
         }
 	}

@@ -160,7 +160,7 @@ namespace Gs2.Gs2Formation.Model
                 .WithIndex(data.Keys.Contains("index") && data["index"] != null ? (int?)int.Parse(data["index"].ToString()) : null)
                 .WithSlots(data.Keys.Contains("slots") && data["slots"] != null ? data["slots"].Cast<JsonData>().Select(value =>
                     {
-                        return Slot.FromDict(value);
+                        return Gs2.Gs2Formation.Model.Slot.FromDict(value);
                     }
                 ).ToList() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)

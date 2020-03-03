@@ -39,7 +39,7 @@ namespace Gs2.Gs2Limit.Result
             return new DescribeCountersResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return Counter.FromDict(value);
+                        return Gs2.Gs2Limit.Model.Counter.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

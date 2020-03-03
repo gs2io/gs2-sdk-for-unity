@@ -36,7 +36,7 @@ namespace Gs2.Gs2Experience.Result
             return new DescribeExperienceModelsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return ExperienceModel.FromDict(value);
+                        return Gs2.Gs2Experience.Model.ExperienceModel.FromDict(value);
                     }
                 ).ToList() : null,
             };

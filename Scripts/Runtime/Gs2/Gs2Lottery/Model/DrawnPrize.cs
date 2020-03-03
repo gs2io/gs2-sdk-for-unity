@@ -62,7 +62,7 @@ namespace Gs2.Gs2Lottery.Model
             return new DrawnPrize()
                 .WithAcquireActions(data.Keys.Contains("acquireActions") && data["acquireActions"] != null ? data["acquireActions"].Cast<JsonData>().Select(value =>
                     {
-                        return AcquireAction.FromDict(value);
+                        return Gs2.Gs2Lottery.Model.AcquireAction.FromDict(value);
                     }
                 ).ToList() : null);
         }

@@ -34,7 +34,7 @@ namespace Gs2.Gs2Datastore.Result
         public static GetDataObjectHistoryByUserIdResult FromDict(JsonData data)
         {
             return new GetDataObjectHistoryByUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? DataObjectHistory.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Datastore.Model.DataObjectHistory.FromDict(data["item"]) : null,
             };
         }
 	}

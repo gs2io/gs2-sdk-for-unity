@@ -34,7 +34,7 @@ namespace Gs2.Gs2Exchange.Result
         public static UpdateCurrentRateMasterFromGitHubResult FromDict(JsonData data)
         {
             return new UpdateCurrentRateMasterFromGitHubResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? CurrentRateMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Exchange.Model.CurrentRateMaster.FromDict(data["item"]) : null,
             };
         }
 	}

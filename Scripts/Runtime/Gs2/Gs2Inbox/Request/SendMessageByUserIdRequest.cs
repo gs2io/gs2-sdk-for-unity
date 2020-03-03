@@ -104,7 +104,7 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** メッセージの有効期限までの差分 */
-        public TimeSpan expiresTimeSpan { set; get; }
+        public Gs2.Gs2Inbox.Model.TimeSpan expiresTimeSpan { set; get; }
 
         /**
          * メッセージの有効期限までの差分を設定
@@ -112,7 +112,7 @@ namespace Gs2.Gs2Inbox.Request
          * @param expiresTimeSpan メッセージの有効期限までの差分
          * @return this
          */
-        public SendMessageByUserIdRequest WithExpiresTimeSpan(TimeSpan expiresTimeSpan) {
+        public SendMessageByUserIdRequest WithExpiresTimeSpan(Gs2.Gs2Inbox.Model.TimeSpan expiresTimeSpan) {
             this.expiresTimeSpan = expiresTimeSpan;
             return this;
         }
@@ -142,11 +142,11 @@ namespace Gs2.Gs2Inbox.Request
                 metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
                 readAcquireActions = data.Keys.Contains("readAcquireActions") && data["readAcquireActions"] != null ? data["readAcquireActions"].Cast<JsonData>().Select(value =>
                     {
-                        return AcquireAction.FromDict(value);
+                        return Gs2.Gs2Inbox.Model.AcquireAction.FromDict(value);
                     }
                 ).ToList() : null,
                 expiresAt = data.Keys.Contains("expiresAt") && data["expiresAt"] != null ? (long?)long.Parse(data["expiresAt"].ToString()) : null,
-                expiresTimeSpan = data.Keys.Contains("expiresTimeSpan") && data["expiresTimeSpan"] != null ? TimeSpan.FromDict(data["expiresTimeSpan"]) : null,
+                expiresTimeSpan = data.Keys.Contains("expiresTimeSpan") && data["expiresTimeSpan"] != null ? Gs2.Gs2Inbox.Model.TimeSpan.FromDict(data["expiresTimeSpan"]) : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }

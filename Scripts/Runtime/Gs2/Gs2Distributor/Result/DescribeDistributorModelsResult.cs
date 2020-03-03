@@ -36,7 +36,7 @@ namespace Gs2.Gs2Distributor.Result
             return new DescribeDistributorModelsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return DistributorModel.FromDict(value);
+                        return Gs2.Gs2Distributor.Model.DistributorModel.FromDict(value);
                     }
                 ).ToList() : null,
             };

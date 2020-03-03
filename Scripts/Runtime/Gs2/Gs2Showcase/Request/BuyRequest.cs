@@ -126,7 +126,7 @@ namespace Gs2.Gs2Showcase.Request
                 displayItemId = data.Keys.Contains("displayItemId") && data["displayItemId"] != null ? data["displayItemId"].ToString(): null,
                 config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
                     {
-                        return Config.FromDict(value);
+                        return Gs2.Gs2Showcase.Model.Config.FromDict(value);
                     }
                 ).ToList() : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,

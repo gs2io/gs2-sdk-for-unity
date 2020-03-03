@@ -39,7 +39,7 @@ namespace Gs2.Gs2Showcase.Result
             return new DescribeSalesItemGroupMastersResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return SalesItemGroupMaster.FromDict(value);
+                        return Gs2.Gs2Showcase.Model.SalesItemGroupMaster.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

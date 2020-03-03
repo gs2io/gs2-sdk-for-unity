@@ -128,7 +128,7 @@ namespace Gs2.Gs2Mission.Request
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 scopes = data.Keys.Contains("scopes") && data["scopes"] != null ? data["scopes"].Cast<JsonData>().Select(value =>
                     {
-                        return CounterScopeModel.FromDict(value);
+                        return Gs2.Gs2Mission.Model.CounterScopeModel.FromDict(value);
                     }
                 ).ToList() : null,
                 challengePeriodEventId = data.Keys.Contains("challengePeriodEventId") && data["challengePeriodEventId"] != null ? data["challengePeriodEventId"].ToString(): null,

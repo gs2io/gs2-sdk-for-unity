@@ -34,7 +34,7 @@ namespace Gs2.Gs2Mission.Result
         public static DeleteCompleteByUserIdResult FromDict(JsonData data)
         {
             return new DeleteCompleteByUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Complete.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Mission.Model.Complete.FromDict(data["item"]) : null,
             };
         }
 	}

@@ -34,7 +34,7 @@ namespace Gs2.Gs2Lottery.Result
         public static GetRawBoxByUserIdResult FromDict(JsonData data)
         {
             return new GetRawBoxByUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Box.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Lottery.Model.Box.FromDict(data["item"]) : null,
             };
         }
 	}

@@ -39,7 +39,7 @@ namespace Gs2.Gs2Watch.Result
             return new DescribeBillingActivitiesResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return BillingActivity.FromDict(value);
+                        return Gs2.Gs2Watch.Model.BillingActivity.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

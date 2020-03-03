@@ -34,7 +34,7 @@ namespace Gs2.Gs2Project.Result
         public static DeleteBillingMethodResult FromDict(JsonData data)
         {
             return new DeleteBillingMethodResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? BillingMethod.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Project.Model.BillingMethod.FromDict(data["item"]) : null,
             };
         }
 	}

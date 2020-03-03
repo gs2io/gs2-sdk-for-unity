@@ -141,7 +141,7 @@ namespace Gs2.Gs2Formation.Request
                 index = data.Keys.Contains("index") && data["index"] != null ? (int?)int.Parse(data["index"].ToString()) : null,
                 slots = data.Keys.Contains("slots") && data["slots"] != null ? data["slots"].Cast<JsonData>().Select(value =>
                     {
-                        return SlotWithSignature.FromDict(value);
+                        return Gs2.Gs2Formation.Model.SlotWithSignature.FromDict(value);
                     }
                 ).ToList() : null,
                 keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString(): null,

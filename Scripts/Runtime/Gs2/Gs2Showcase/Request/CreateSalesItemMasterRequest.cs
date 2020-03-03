@@ -128,12 +128,12 @@ namespace Gs2.Gs2Showcase.Request
                 metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
                 consumeActions = data.Keys.Contains("consumeActions") && data["consumeActions"] != null ? data["consumeActions"].Cast<JsonData>().Select(value =>
                     {
-                        return ConsumeAction.FromDict(value);
+                        return Gs2.Gs2Showcase.Model.ConsumeAction.FromDict(value);
                     }
                 ).ToList() : null,
                 acquireActions = data.Keys.Contains("acquireActions") && data["acquireActions"] != null ? data["acquireActions"].Cast<JsonData>().Select(value =>
                     {
-                        return AcquireAction.FromDict(value);
+                        return Gs2.Gs2Showcase.Model.AcquireAction.FromDict(value);
                     }
                 ).ToList() : null,
             };

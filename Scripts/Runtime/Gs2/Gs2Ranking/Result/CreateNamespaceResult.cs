@@ -34,7 +34,7 @@ namespace Gs2.Gs2Ranking.Result
         public static CreateNamespaceResult FromDict(JsonData data)
         {
             return new CreateNamespaceResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Namespace.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Ranking.Model.Namespace.FromDict(data["item"]) : null,
             };
         }
 	}

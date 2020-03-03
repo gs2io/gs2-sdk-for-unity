@@ -34,7 +34,7 @@ namespace Gs2.Gs2Money.Result
         public static GetByUserIdAndTransactionIdResult FromDict(JsonData data)
         {
             return new GetByUserIdAndTransactionIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Receipt.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Money.Model.Receipt.FromDict(data["item"]) : null,
             };
         }
 	}

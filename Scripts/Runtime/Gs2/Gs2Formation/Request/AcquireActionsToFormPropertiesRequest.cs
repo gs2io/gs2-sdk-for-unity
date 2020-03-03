@@ -89,7 +89,7 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** フォームのプロパティに適用する入手アクション */
-        public AcquireAction acquireAction { set; get; }
+        public Gs2.Gs2Formation.Model.AcquireAction acquireAction { set; get; }
 
         /**
          * フォームのプロパティに適用する入手アクションを設定
@@ -97,7 +97,7 @@ namespace Gs2.Gs2Formation.Request
          * @param acquireAction フォームのプロパティに適用する入手アクション
          * @return this
          */
-        public AcquireActionsToFormPropertiesRequest WithAcquireAction(AcquireAction acquireAction) {
+        public AcquireActionsToFormPropertiesRequest WithAcquireAction(Gs2.Gs2Formation.Model.AcquireAction acquireAction) {
             this.acquireAction = acquireAction;
             return this;
         }
@@ -171,12 +171,12 @@ namespace Gs2.Gs2Formation.Request
                 userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
                 moldName = data.Keys.Contains("moldName") && data["moldName"] != null ? data["moldName"].ToString(): null,
                 index = data.Keys.Contains("index") && data["index"] != null ? (int?)int.Parse(data["index"].ToString()) : null,
-                acquireAction = data.Keys.Contains("acquireAction") && data["acquireAction"] != null ? AcquireAction.FromDict(data["acquireAction"]) : null,
+                acquireAction = data.Keys.Contains("acquireAction") && data["acquireAction"] != null ? Gs2.Gs2Formation.Model.AcquireAction.FromDict(data["acquireAction"]) : null,
                 queueNamespaceId = data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? data["queueNamespaceId"].ToString(): null,
                 keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString(): null,
                 config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
                     {
-                        return AcquireActionConfig.FromDict(value);
+                        return Gs2.Gs2Formation.Model.AcquireActionConfig.FromDict(value);
                     }
                 ).ToList() : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,

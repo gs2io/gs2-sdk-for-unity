@@ -39,7 +39,7 @@ namespace Gs2.Gs2Experience.Result
             return new DescribeThresholdMastersResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return ThresholdMaster.FromDict(value);
+                        return Gs2.Gs2Experience.Model.ThresholdMaster.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

@@ -36,7 +36,7 @@ namespace Gs2.Gs2Version.Result
             return new DescribeVersionModelsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return VersionModel.FromDict(value);
+                        return Gs2.Gs2Version.Model.VersionModel.FromDict(value);
                     }
                 ).ToList() : null,
             };

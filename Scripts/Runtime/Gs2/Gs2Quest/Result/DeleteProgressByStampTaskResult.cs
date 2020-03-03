@@ -37,7 +37,7 @@ namespace Gs2.Gs2Quest.Result
         public static DeleteProgressByStampTaskResult FromDict(JsonData data)
         {
             return new DeleteProgressByStampTaskResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Progress.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Quest.Model.Progress.FromDict(data["item"]) : null,
                 newContextStack = data.Keys.Contains("newContextStack") && data["newContextStack"] != null ? data["newContextStack"].ToString() : null,
             };
         }

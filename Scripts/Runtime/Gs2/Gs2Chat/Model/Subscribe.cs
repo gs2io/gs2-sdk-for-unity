@@ -141,7 +141,7 @@ namespace Gs2.Gs2Chat.Model
                 .WithRoomName(data.Keys.Contains("roomName") && data["roomName"] != null ? data["roomName"].ToString() : null)
                 .WithNotificationTypes(data.Keys.Contains("notificationTypes") && data["notificationTypes"] != null ? data["notificationTypes"].Cast<JsonData>().Select(value =>
                     {
-                        return NotificationType.FromDict(value);
+                        return Gs2.Gs2Chat.Model.NotificationType.FromDict(value);
                     }
                 ).ToList() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null);

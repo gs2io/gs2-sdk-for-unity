@@ -39,7 +39,7 @@ namespace Gs2.Gs2Project.Result
             return new DescribeBillingMethodsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return BillingMethod.FromDict(value);
+                        return Gs2.Gs2Project.Model.BillingMethod.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

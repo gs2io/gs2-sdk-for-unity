@@ -43,12 +43,12 @@ namespace Gs2.Gs2Version.Result
                 projectToken = data.Keys.Contains("projectToken") && data["projectToken"] != null ? data["projectToken"].ToString() : null,
                 warnings = data.Keys.Contains("warnings") && data["warnings"] != null ? data["warnings"].Cast<JsonData>().Select(value =>
                     {
-                        return Status.FromDict(value);
+                        return Gs2.Gs2Version.Model.Status.FromDict(value);
                     }
                 ).ToList() : null,
                 errors = data.Keys.Contains("errors") && data["errors"] != null ? data["errors"].Cast<JsonData>().Select(value =>
                     {
-                        return Status.FromDict(value);
+                        return Gs2.Gs2Version.Model.Status.FromDict(value);
                     }
                 ).ToList() : null,
             };

@@ -39,7 +39,7 @@ namespace Gs2.Gs2Mission.Result
             return new DescribeMissionTaskModelMastersResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return MissionTaskModelMaster.FromDict(value);
+                        return Gs2.Gs2Mission.Model.MissionTaskModelMaster.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

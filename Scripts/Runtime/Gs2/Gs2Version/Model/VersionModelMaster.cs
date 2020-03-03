@@ -83,7 +83,7 @@ namespace Gs2.Gs2Version.Model
         }
 
         /** バージョンアップを促すバージョン */
-        public Version_ warningVersion { set; get; }
+        public Gs2.Gs2Version.Model.Version_ warningVersion { set; get; }
 
         /**
          * バージョンアップを促すバージョンを設定
@@ -91,13 +91,13 @@ namespace Gs2.Gs2Version.Model
          * @param warningVersion バージョンアップを促すバージョン
          * @return this
          */
-        public VersionModelMaster WithWarningVersion(Version_ warningVersion) {
+        public VersionModelMaster WithWarningVersion(Gs2.Gs2Version.Model.Version_ warningVersion) {
             this.warningVersion = warningVersion;
             return this;
         }
 
         /** バージョンチェックを蹴るバージョン */
-        public Version_ errorVersion { set; get; }
+        public Gs2.Gs2Version.Model.Version_ errorVersion { set; get; }
 
         /**
          * バージョンチェックを蹴るバージョンを設定
@@ -105,7 +105,7 @@ namespace Gs2.Gs2Version.Model
          * @param errorVersion バージョンチェックを蹴るバージョン
          * @return this
          */
-        public VersionModelMaster WithErrorVersion(Version_ errorVersion) {
+        public VersionModelMaster WithErrorVersion(Gs2.Gs2Version.Model.Version_ errorVersion) {
             this.errorVersion = errorVersion;
             return this;
         }
@@ -125,7 +125,7 @@ namespace Gs2.Gs2Version.Model
         }
 
         /** 現在のバージョン */
-        public Version_ currentVersion { set; get; }
+        public Gs2.Gs2Version.Model.Version_ currentVersion { set; get; }
 
         /**
          * 現在のバージョンを設定
@@ -133,7 +133,7 @@ namespace Gs2.Gs2Version.Model
          * @param currentVersion 現在のバージョン
          * @return this
          */
-        public VersionModelMaster WithCurrentVersion(Version_ currentVersion) {
+        public VersionModelMaster WithCurrentVersion(Gs2.Gs2Version.Model.Version_ currentVersion) {
             this.currentVersion = currentVersion;
             return this;
         }
@@ -268,10 +268,10 @@ namespace Gs2.Gs2Version.Model
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
-                .WithWarningVersion(data.Keys.Contains("warningVersion") && data["warningVersion"] != null ? Version_.FromDict(data["warningVersion"]) : null)
-                .WithErrorVersion(data.Keys.Contains("errorVersion") && data["errorVersion"] != null ? Version_.FromDict(data["errorVersion"]) : null)
+                .WithWarningVersion(data.Keys.Contains("warningVersion") && data["warningVersion"] != null ? Gs2.Gs2Version.Model.Version_.FromDict(data["warningVersion"]) : null)
+                .WithErrorVersion(data.Keys.Contains("errorVersion") && data["errorVersion"] != null ? Gs2.Gs2Version.Model.Version_.FromDict(data["errorVersion"]) : null)
                 .WithScope(data.Keys.Contains("scope") && data["scope"] != null ? data["scope"].ToString() : null)
-                .WithCurrentVersion(data.Keys.Contains("currentVersion") && data["currentVersion"] != null ? Version_.FromDict(data["currentVersion"]) : null)
+                .WithCurrentVersion(data.Keys.Contains("currentVersion") && data["currentVersion"] != null ? Gs2.Gs2Version.Model.Version_.FromDict(data["currentVersion"]) : null)
                 .WithNeedSignature(data.Keys.Contains("needSignature") && data["needSignature"] != null ? (bool?)bool.Parse(data["needSignature"].ToString()) : null)
                 .WithSignatureKeyId(data.Keys.Contains("signatureKeyId") && data["signatureKeyId"] != null ? data["signatureKeyId"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)

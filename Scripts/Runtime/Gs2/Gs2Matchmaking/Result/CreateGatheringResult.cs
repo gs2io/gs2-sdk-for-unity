@@ -34,7 +34,7 @@ namespace Gs2.Gs2Matchmaking.Result
         public static CreateGatheringResult FromDict(JsonData data)
         {
             return new CreateGatheringResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Gathering.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Matchmaking.Model.Gathering.FromDict(data["item"]) : null,
             };
         }
 	}

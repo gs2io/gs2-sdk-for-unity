@@ -37,7 +37,7 @@ namespace Gs2.Gs2Stamina.Result
         public static ConsumeStaminaByStampTaskResult FromDict(JsonData data)
         {
             return new ConsumeStaminaByStampTaskResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Stamina.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Stamina.Model.Stamina.FromDict(data["item"]) : null,
                 newContextStack = data.Keys.Contains("newContextStack") && data["newContextStack"] != null ? data["newContextStack"].ToString() : null,
             };
         }

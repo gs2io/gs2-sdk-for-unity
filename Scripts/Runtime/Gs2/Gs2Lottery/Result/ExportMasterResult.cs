@@ -34,7 +34,7 @@ namespace Gs2.Gs2Lottery.Result
         public static ExportMasterResult FromDict(JsonData data)
         {
             return new ExportMasterResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? CurrentLotteryMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Lottery.Model.CurrentLotteryMaster.FromDict(data["item"]) : null,
             };
         }
 	}

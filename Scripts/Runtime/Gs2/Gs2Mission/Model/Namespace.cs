@@ -83,7 +83,7 @@ namespace Gs2.Gs2Mission.Model
         }
 
         /** ミッションを達成したときに実行するスクリプト */
-        public ScriptSetting missionCompleteScript { set; get; }
+        public Gs2.Gs2Mission.Model.ScriptSetting missionCompleteScript { set; get; }
 
         /**
          * ミッションを達成したときに実行するスクリプトを設定
@@ -91,13 +91,13 @@ namespace Gs2.Gs2Mission.Model
          * @param missionCompleteScript ミッションを達成したときに実行するスクリプト
          * @return this
          */
-        public Namespace WithMissionCompleteScript(ScriptSetting missionCompleteScript) {
+        public Namespace WithMissionCompleteScript(Gs2.Gs2Mission.Model.ScriptSetting missionCompleteScript) {
             this.missionCompleteScript = missionCompleteScript;
             return this;
         }
 
         /** カウンターを上昇したときに実行するスクリプト */
-        public ScriptSetting counterIncrementScript { set; get; }
+        public Gs2.Gs2Mission.Model.ScriptSetting counterIncrementScript { set; get; }
 
         /**
          * カウンターを上昇したときに実行するスクリプトを設定
@@ -105,13 +105,13 @@ namespace Gs2.Gs2Mission.Model
          * @param counterIncrementScript カウンターを上昇したときに実行するスクリプト
          * @return this
          */
-        public Namespace WithCounterIncrementScript(ScriptSetting counterIncrementScript) {
+        public Namespace WithCounterIncrementScript(Gs2.Gs2Mission.Model.ScriptSetting counterIncrementScript) {
             this.counterIncrementScript = counterIncrementScript;
             return this;
         }
 
         /** 報酬を受け取ったときに実行するスクリプト */
-        public ScriptSetting receiveRewardsScript { set; get; }
+        public Gs2.Gs2Mission.Model.ScriptSetting receiveRewardsScript { set; get; }
 
         /**
          * 報酬を受け取ったときに実行するスクリプトを設定
@@ -119,7 +119,7 @@ namespace Gs2.Gs2Mission.Model
          * @param receiveRewardsScript 報酬を受け取ったときに実行するスクリプト
          * @return this
          */
-        public Namespace WithReceiveRewardsScript(ScriptSetting receiveRewardsScript) {
+        public Namespace WithReceiveRewardsScript(Gs2.Gs2Mission.Model.ScriptSetting receiveRewardsScript) {
             this.receiveRewardsScript = receiveRewardsScript;
             return this;
         }
@@ -153,7 +153,7 @@ namespace Gs2.Gs2Mission.Model
         }
 
         /** ミッションのタスクを達成したときのプッシュ通知 */
-        public NotificationSetting completeNotification { set; get; }
+        public Gs2.Gs2Mission.Model.NotificationSetting completeNotification { set; get; }
 
         /**
          * ミッションのタスクを達成したときのプッシュ通知を設定
@@ -161,13 +161,13 @@ namespace Gs2.Gs2Mission.Model
          * @param completeNotification ミッションのタスクを達成したときのプッシュ通知
          * @return this
          */
-        public Namespace WithCompleteNotification(NotificationSetting completeNotification) {
+        public Namespace WithCompleteNotification(Gs2.Gs2Mission.Model.NotificationSetting completeNotification) {
             this.completeNotification = completeNotification;
             return this;
         }
 
         /** ログの出力設定 */
-        public LogSetting logSetting { set; get; }
+        public Gs2.Gs2Mission.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -175,7 +175,7 @@ namespace Gs2.Gs2Mission.Model
          * @param logSetting ログの出力設定
          * @return this
          */
-        public Namespace WithLogSetting(LogSetting logSetting) {
+        public Namespace WithLogSetting(Gs2.Gs2Mission.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -287,13 +287,13 @@ namespace Gs2.Gs2Mission.Model
                 .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
-                .WithMissionCompleteScript(data.Keys.Contains("missionCompleteScript") && data["missionCompleteScript"] != null ? ScriptSetting.FromDict(data["missionCompleteScript"]) : null)
-                .WithCounterIncrementScript(data.Keys.Contains("counterIncrementScript") && data["counterIncrementScript"] != null ? ScriptSetting.FromDict(data["counterIncrementScript"]) : null)
-                .WithReceiveRewardsScript(data.Keys.Contains("receiveRewardsScript") && data["receiveRewardsScript"] != null ? ScriptSetting.FromDict(data["receiveRewardsScript"]) : null)
+                .WithMissionCompleteScript(data.Keys.Contains("missionCompleteScript") && data["missionCompleteScript"] != null ? Gs2.Gs2Mission.Model.ScriptSetting.FromDict(data["missionCompleteScript"]) : null)
+                .WithCounterIncrementScript(data.Keys.Contains("counterIncrementScript") && data["counterIncrementScript"] != null ? Gs2.Gs2Mission.Model.ScriptSetting.FromDict(data["counterIncrementScript"]) : null)
+                .WithReceiveRewardsScript(data.Keys.Contains("receiveRewardsScript") && data["receiveRewardsScript"] != null ? Gs2.Gs2Mission.Model.ScriptSetting.FromDict(data["receiveRewardsScript"]) : null)
                 .WithQueueNamespaceId(data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? data["queueNamespaceId"].ToString() : null)
                 .WithKeyId(data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString() : null)
-                .WithCompleteNotification(data.Keys.Contains("completeNotification") && data["completeNotification"] != null ? NotificationSetting.FromDict(data["completeNotification"]) : null)
-                .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null)
+                .WithCompleteNotification(data.Keys.Contains("completeNotification") && data["completeNotification"] != null ? Gs2.Gs2Mission.Model.NotificationSetting.FromDict(data["completeNotification"]) : null)
+                .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Mission.Model.LogSetting.FromDict(data["logSetting"]) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }

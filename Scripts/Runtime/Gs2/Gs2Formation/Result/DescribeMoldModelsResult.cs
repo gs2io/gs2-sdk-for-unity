@@ -36,7 +36,7 @@ namespace Gs2.Gs2Formation.Result
             return new DescribeMoldModelsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return MoldModel.FromDict(value);
+                        return Gs2.Gs2Formation.Model.MoldModel.FromDict(value);
                     }
                 ).ToList() : null,
             };

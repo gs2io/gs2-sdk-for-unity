@@ -44,7 +44,7 @@ namespace Gs2.Gs2Exchange.Request
 
 
         /** GitHubからマスターデータをチェックアウトしてくる設定 */
-        public GitHubCheckoutSetting checkoutSetting { set; get; }
+        public Gs2.Gs2Exchange.Model.GitHubCheckoutSetting checkoutSetting { set; get; }
 
         /**
          * GitHubからマスターデータをチェックアウトしてくる設定を設定
@@ -52,7 +52,7 @@ namespace Gs2.Gs2Exchange.Request
          * @param checkoutSetting GitHubからマスターデータをチェックアウトしてくる設定
          * @return this
          */
-        public UpdateCurrentRateMasterFromGitHubRequest WithCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
+        public UpdateCurrentRateMasterFromGitHubRequest WithCheckoutSetting(Gs2.Gs2Exchange.Model.GitHubCheckoutSetting checkoutSetting) {
             this.checkoutSetting = checkoutSetting;
             return this;
         }
@@ -63,7 +63,7 @@ namespace Gs2.Gs2Exchange.Request
         {
             return new UpdateCurrentRateMasterFromGitHubRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
-                checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
+                checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? Gs2.Gs2Exchange.Model.GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
             };
         }
 

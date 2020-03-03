@@ -34,7 +34,7 @@ namespace Gs2.Gs2Friend.Result
         public static UnfollowResult FromDict(JsonData data)
         {
             return new UnfollowResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? FollowUser.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Friend.Model.FollowUser.FromDict(data["item"]) : null,
             };
         }
 	}

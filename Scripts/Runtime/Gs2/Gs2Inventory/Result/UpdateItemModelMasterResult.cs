@@ -34,7 +34,7 @@ namespace Gs2.Gs2Inventory.Result
         public static UpdateItemModelMasterResult FromDict(JsonData data)
         {
             return new UpdateItemModelMasterResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? ItemModelMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Inventory.Model.ItemModelMaster.FromDict(data["item"]) : null,
             };
         }
 	}

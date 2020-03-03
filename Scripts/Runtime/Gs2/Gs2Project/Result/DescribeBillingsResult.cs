@@ -36,7 +36,7 @@ namespace Gs2.Gs2Project.Result
             return new DescribeBillingsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return Billing.FromDict(value);
+                        return Gs2.Gs2Project.Model.Billing.FromDict(value);
                     }
                 ).ToList() : null,
             };

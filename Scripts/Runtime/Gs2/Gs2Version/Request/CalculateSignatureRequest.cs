@@ -59,7 +59,7 @@ namespace Gs2.Gs2Version.Request
 
 
         /** バージョン */
-        public Version_ version { set; get; }
+        public Gs2.Gs2Version.Model.Version_ version { set; get; }
 
         /**
          * バージョンを設定
@@ -67,7 +67,7 @@ namespace Gs2.Gs2Version.Request
          * @param version バージョン
          * @return this
          */
-        public CalculateSignatureRequest WithVersion(Version_ version) {
+        public CalculateSignatureRequest WithVersion(Gs2.Gs2Version.Model.Version_ version) {
             this.version = version;
             return this;
         }
@@ -79,7 +79,7 @@ namespace Gs2.Gs2Version.Request
             return new CalculateSignatureRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 versionName = data.Keys.Contains("versionName") && data["versionName"] != null ? data["versionName"].ToString(): null,
-                version = data.Keys.Contains("version") && data["version"] != null ? Version_.FromDict(data["version"]) : null,
+                version = data.Keys.Contains("version") && data["version"] != null ? Gs2.Gs2Version.Model.Version_.FromDict(data["version"]) : null,
             };
         }
 

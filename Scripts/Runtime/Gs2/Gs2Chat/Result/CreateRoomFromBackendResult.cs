@@ -34,7 +34,7 @@ namespace Gs2.Gs2Chat.Result
         public static CreateRoomFromBackendResult FromDict(JsonData data)
         {
             return new CreateRoomFromBackendResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Room.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Chat.Model.Room.FromDict(data["item"]) : null,
             };
         }
 	}

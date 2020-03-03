@@ -83,7 +83,7 @@ namespace Gs2.Gs2Version.Model
         }
 
         /** バージョン */
-        public Version_ version { set; get; }
+        public Gs2.Gs2Version.Model.Version_ version { set; get; }
 
         /**
          * バージョンを設定
@@ -91,7 +91,7 @@ namespace Gs2.Gs2Version.Model
          * @param version バージョン
          * @return this
          */
-        public SignTargetVersion WithVersion(Version_ version) {
+        public SignTargetVersion WithVersion(Gs2.Gs2Version.Model.Version_ version) {
             this.version = version;
             return this;
         }
@@ -135,7 +135,7 @@ namespace Gs2.Gs2Version.Model
                 .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
                 .WithNamespaceName(data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString() : null)
                 .WithVersionName(data.Keys.Contains("versionName") && data["versionName"] != null ? data["versionName"].ToString() : null)
-                .WithVersion(data.Keys.Contains("version") && data["version"] != null ? Version_.FromDict(data["version"]) : null);
+                .WithVersion(data.Keys.Contains("version") && data["version"] != null ? Gs2.Gs2Version.Model.Version_.FromDict(data["version"]) : null);
         }
 	}
 }

@@ -40,7 +40,7 @@ namespace Gs2.Gs2Distributor.Result
         public static DistributeResult FromDict(JsonData data)
         {
             return new DistributeResult {
-                distributeResource = data.Keys.Contains("distributeResource") && data["distributeResource"] != null ? DistributeResource.FromDict(data["distributeResource"]) : null,
+                distributeResource = data.Keys.Contains("distributeResource") && data["distributeResource"] != null ? Gs2.Gs2Distributor.Model.DistributeResource.FromDict(data["distributeResource"]) : null,
                 inboxNamespaceId = data.Keys.Contains("inboxNamespaceId") && data["inboxNamespaceId"] != null ? data["inboxNamespaceId"].ToString() : null,
                 result = data.Keys.Contains("result") && data["result"] != null ? data["result"].ToString() : null,
             };

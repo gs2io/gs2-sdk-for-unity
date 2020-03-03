@@ -34,7 +34,7 @@ namespace Gs2.Gs2Quest.Result
         public static DeleteCompletedQuestListByUserIdResult FromDict(JsonData data)
         {
             return new DeleteCompletedQuestListByUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? CompletedQuestList.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Quest.Model.CompletedQuestList.FromDict(data["item"]) : null,
             };
         }
 	}

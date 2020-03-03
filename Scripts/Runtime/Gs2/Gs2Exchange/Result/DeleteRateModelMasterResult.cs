@@ -34,7 +34,7 @@ namespace Gs2.Gs2Exchange.Result
         public static DeleteRateModelMasterResult FromDict(JsonData data)
         {
             return new DeleteRateModelMasterResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? RateModelMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Exchange.Model.RateModelMaster.FromDict(data["item"]) : null,
             };
         }
 	}

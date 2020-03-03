@@ -34,7 +34,7 @@ namespace Gs2.Gs2Deploy.Result
         public static GetResourceResult FromDict(JsonData data)
         {
             return new GetResourceResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Resource.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Deploy.Model.Resource.FromDict(data["item"]) : null,
             };
         }
 	}

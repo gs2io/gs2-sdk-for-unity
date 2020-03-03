@@ -34,7 +34,7 @@ namespace Gs2.Gs2Formation.Result
         public static DeleteMoldByUserIdResult FromDict(JsonData data)
         {
             return new DeleteMoldByUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Mold.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Formation.Model.Mold.FromDict(data["item"]) : null,
             };
         }
 	}

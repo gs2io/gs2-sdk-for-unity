@@ -207,12 +207,12 @@ namespace Gs2.Gs2Matchmaking.Model
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithAttributeRanges(data.Keys.Contains("attributeRanges") && data["attributeRanges"] != null ? data["attributeRanges"].Cast<JsonData>().Select(value =>
                     {
-                        return AttributeRange.FromDict(value);
+                        return Gs2.Gs2Matchmaking.Model.AttributeRange.FromDict(value);
                     }
                 ).ToList() : null)
                 .WithCapacityOfRoles(data.Keys.Contains("capacityOfRoles") && data["capacityOfRoles"] != null ? data["capacityOfRoles"].Cast<JsonData>().Select(value =>
                     {
-                        return CapacityOfRole.FromDict(value);
+                        return Gs2.Gs2Matchmaking.Model.CapacityOfRole.FromDict(value);
                     }
                 ).ToList() : null)
                 .WithAllowUserIds(data.Keys.Contains("allowUserIds") && data["allowUserIds"] != null ? data["allowUserIds"].Cast<JsonData>().Select(value =>

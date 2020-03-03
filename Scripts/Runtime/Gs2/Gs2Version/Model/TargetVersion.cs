@@ -41,7 +41,7 @@ namespace Gs2.Gs2Version.Model
         }
 
         /** バージョン */
-        public Version_ version { set; get; }
+        public Gs2.Gs2Version.Model.Version_ version { set; get; }
 
         /**
          * バージョンを設定
@@ -49,7 +49,7 @@ namespace Gs2.Gs2Version.Model
          * @param version バージョン
          * @return this
          */
-        public TargetVersion WithVersion(Version_ version) {
+        public TargetVersion WithVersion(Gs2.Gs2Version.Model.Version_ version) {
             this.version = version;
             return this;
         }
@@ -113,7 +113,7 @@ namespace Gs2.Gs2Version.Model
         {
             return new TargetVersion()
                 .WithVersionName(data.Keys.Contains("versionName") && data["versionName"] != null ? data["versionName"].ToString() : null)
-                .WithVersion(data.Keys.Contains("version") && data["version"] != null ? Version_.FromDict(data["version"]) : null)
+                .WithVersion(data.Keys.Contains("version") && data["version"] != null ? Gs2.Gs2Version.Model.Version_.FromDict(data["version"]) : null)
                 .WithBody(data.Keys.Contains("body") && data["body"] != null ? data["body"].ToString() : null)
                 .WithSignature(data.Keys.Contains("signature") && data["signature"] != null ? data["signature"].ToString() : null);
         }

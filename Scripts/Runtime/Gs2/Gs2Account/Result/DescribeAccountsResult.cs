@@ -39,7 +39,7 @@ namespace Gs2.Gs2Account.Result
             return new DescribeAccountsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return Account.FromDict(value);
+                        return Gs2.Gs2Account.Model.Account.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

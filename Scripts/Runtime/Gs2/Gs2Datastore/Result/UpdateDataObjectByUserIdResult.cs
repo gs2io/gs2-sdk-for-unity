@@ -34,7 +34,7 @@ namespace Gs2.Gs2Datastore.Result
         public static UpdateDataObjectByUserIdResult FromDict(JsonData data)
         {
             return new UpdateDataObjectByUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? DataObject.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Datastore.Model.DataObject.FromDict(data["item"]) : null,
             };
         }
 	}

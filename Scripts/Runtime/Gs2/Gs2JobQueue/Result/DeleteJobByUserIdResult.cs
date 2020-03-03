@@ -34,7 +34,7 @@ namespace Gs2.Gs2JobQueue.Result
         public static DeleteJobByUserIdResult FromDict(JsonData data)
         {
             return new DeleteJobByUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Job.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2JobQueue.Model.Job.FromDict(data["item"]) : null,
             };
         }
 	}

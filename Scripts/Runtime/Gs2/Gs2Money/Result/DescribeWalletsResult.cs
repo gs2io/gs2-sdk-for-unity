@@ -39,7 +39,7 @@ namespace Gs2.Gs2Money.Result
             return new DescribeWalletsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return Wallet.FromDict(value);
+                        return Gs2.Gs2Money.Model.Wallet.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

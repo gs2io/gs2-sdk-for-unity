@@ -45,11 +45,11 @@ namespace Gs2.Gs2Inventory.Result
             return new AcquireItemSetByStampSheetResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return ItemSet.FromDict(value);
+                        return Gs2.Gs2Inventory.Model.ItemSet.FromDict(value);
                     }
                 ).ToList() : null,
-                itemModel = data.Keys.Contains("itemModel") && data["itemModel"] != null ? ItemModel.FromDict(data["itemModel"]) : null,
-                inventory = data.Keys.Contains("inventory") && data["inventory"] != null ? Inventory.FromDict(data["inventory"]) : null,
+                itemModel = data.Keys.Contains("itemModel") && data["itemModel"] != null ? Gs2.Gs2Inventory.Model.ItemModel.FromDict(data["itemModel"]) : null,
+                inventory = data.Keys.Contains("inventory") && data["inventory"] != null ? Gs2.Gs2Inventory.Model.Inventory.FromDict(data["inventory"]) : null,
                 overflowCount = data.Keys.Contains("overflowCount") && data["overflowCount"] != null ? (long?)long.Parse(data["overflowCount"].ToString()) : null,
             };
         }

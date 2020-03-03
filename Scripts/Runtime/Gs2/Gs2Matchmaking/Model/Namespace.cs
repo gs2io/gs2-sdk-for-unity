@@ -167,7 +167,7 @@ namespace Gs2.Gs2Matchmaking.Model
         }
 
         /** ギャザリングに新規プレイヤーが参加したときのプッシュ通知 */
-        public NotificationSetting joinNotification { set; get; }
+        public Gs2.Gs2Matchmaking.Model.NotificationSetting joinNotification { set; get; }
 
         /**
          * ギャザリングに新規プレイヤーが参加したときのプッシュ通知を設定
@@ -175,13 +175,13 @@ namespace Gs2.Gs2Matchmaking.Model
          * @param joinNotification ギャザリングに新規プレイヤーが参加したときのプッシュ通知
          * @return this
          */
-        public Namespace WithJoinNotification(NotificationSetting joinNotification) {
+        public Namespace WithJoinNotification(Gs2.Gs2Matchmaking.Model.NotificationSetting joinNotification) {
             this.joinNotification = joinNotification;
             return this;
         }
 
         /** ギャザリングからプレイヤーが離脱したときのプッシュ通知 */
-        public NotificationSetting leaveNotification { set; get; }
+        public Gs2.Gs2Matchmaking.Model.NotificationSetting leaveNotification { set; get; }
 
         /**
          * ギャザリングからプレイヤーが離脱したときのプッシュ通知を設定
@@ -189,13 +189,13 @@ namespace Gs2.Gs2Matchmaking.Model
          * @param leaveNotification ギャザリングからプレイヤーが離脱したときのプッシュ通知
          * @return this
          */
-        public Namespace WithLeaveNotification(NotificationSetting leaveNotification) {
+        public Namespace WithLeaveNotification(Gs2.Gs2Matchmaking.Model.NotificationSetting leaveNotification) {
             this.leaveNotification = leaveNotification;
             return this;
         }
 
         /** マッチメイキングが完了したときのプッシュ通知 */
-        public NotificationSetting completeNotification { set; get; }
+        public Gs2.Gs2Matchmaking.Model.NotificationSetting completeNotification { set; get; }
 
         /**
          * マッチメイキングが完了したときのプッシュ通知を設定
@@ -203,13 +203,13 @@ namespace Gs2.Gs2Matchmaking.Model
          * @param completeNotification マッチメイキングが完了したときのプッシュ通知
          * @return this
          */
-        public Namespace WithCompleteNotification(NotificationSetting completeNotification) {
+        public Namespace WithCompleteNotification(Gs2.Gs2Matchmaking.Model.NotificationSetting completeNotification) {
             this.completeNotification = completeNotification;
             return this;
         }
 
         /** ログの出力設定 */
-        public LogSetting logSetting { set; get; }
+        public Gs2.Gs2Matchmaking.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -217,7 +217,7 @@ namespace Gs2.Gs2Matchmaking.Model
          * @param logSetting ログの出力設定
          * @return this
          */
-        public Namespace WithLogSetting(LogSetting logSetting) {
+        public Namespace WithLogSetting(Gs2.Gs2Matchmaking.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -350,10 +350,10 @@ namespace Gs2.Gs2Matchmaking.Model
                 .WithCompleteMatchmakingTriggerType(data.Keys.Contains("completeMatchmakingTriggerType") && data["completeMatchmakingTriggerType"] != null ? data["completeMatchmakingTriggerType"].ToString() : null)
                 .WithCompleteMatchmakingTriggerRealtimeNamespaceId(data.Keys.Contains("completeMatchmakingTriggerRealtimeNamespaceId") && data["completeMatchmakingTriggerRealtimeNamespaceId"] != null ? data["completeMatchmakingTriggerRealtimeNamespaceId"].ToString() : null)
                 .WithCompleteMatchmakingTriggerScriptId(data.Keys.Contains("completeMatchmakingTriggerScriptId") && data["completeMatchmakingTriggerScriptId"] != null ? data["completeMatchmakingTriggerScriptId"].ToString() : null)
-                .WithJoinNotification(data.Keys.Contains("joinNotification") && data["joinNotification"] != null ? NotificationSetting.FromDict(data["joinNotification"]) : null)
-                .WithLeaveNotification(data.Keys.Contains("leaveNotification") && data["leaveNotification"] != null ? NotificationSetting.FromDict(data["leaveNotification"]) : null)
-                .WithCompleteNotification(data.Keys.Contains("completeNotification") && data["completeNotification"] != null ? NotificationSetting.FromDict(data["completeNotification"]) : null)
-                .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null)
+                .WithJoinNotification(data.Keys.Contains("joinNotification") && data["joinNotification"] != null ? Gs2.Gs2Matchmaking.Model.NotificationSetting.FromDict(data["joinNotification"]) : null)
+                .WithLeaveNotification(data.Keys.Contains("leaveNotification") && data["leaveNotification"] != null ? Gs2.Gs2Matchmaking.Model.NotificationSetting.FromDict(data["leaveNotification"]) : null)
+                .WithCompleteNotification(data.Keys.Contains("completeNotification") && data["completeNotification"] != null ? Gs2.Gs2Matchmaking.Model.NotificationSetting.FromDict(data["completeNotification"]) : null)
+                .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Matchmaking.Model.LogSetting.FromDict(data["logSetting"]) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }

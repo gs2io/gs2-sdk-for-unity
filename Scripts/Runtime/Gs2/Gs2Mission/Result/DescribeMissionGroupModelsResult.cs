@@ -36,7 +36,7 @@ namespace Gs2.Gs2Mission.Result
             return new DescribeMissionGroupModelsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return MissionGroupModel.FromDict(value);
+                        return Gs2.Gs2Mission.Model.MissionGroupModel.FromDict(value);
                     }
                 ).ToList() : null,
             };

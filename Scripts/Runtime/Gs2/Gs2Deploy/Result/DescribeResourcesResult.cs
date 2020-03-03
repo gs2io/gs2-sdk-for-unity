@@ -39,7 +39,7 @@ namespace Gs2.Gs2Deploy.Result
             return new DescribeResourcesResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return Resource.FromDict(value);
+                        return Gs2.Gs2Deploy.Model.Resource.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

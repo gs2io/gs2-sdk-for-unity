@@ -34,7 +34,7 @@ namespace Gs2.Gs2Limit.Result
         public static UpdateCurrentLimitMasterFromGitHubResult FromDict(JsonData data)
         {
             return new UpdateCurrentLimitMasterFromGitHubResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? CurrentLimitMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Limit.Model.CurrentLimitMaster.FromDict(data["item"]) : null,
             };
         }
 	}

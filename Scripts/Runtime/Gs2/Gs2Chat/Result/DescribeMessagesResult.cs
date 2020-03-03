@@ -36,7 +36,7 @@ namespace Gs2.Gs2Chat.Result
             return new DescribeMessagesResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return Message.FromDict(value);
+                        return Gs2.Gs2Chat.Model.Message.FromDict(value);
                     }
                 ).ToList() : null,
             };

@@ -34,7 +34,7 @@ namespace Gs2.Gs2Stamina.Result
         public static GetStaminaModelResult FromDict(JsonData data)
         {
             return new GetStaminaModelResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? StaminaModel.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Stamina.Model.StaminaModel.FromDict(data["item"]) : null,
             };
         }
 	}

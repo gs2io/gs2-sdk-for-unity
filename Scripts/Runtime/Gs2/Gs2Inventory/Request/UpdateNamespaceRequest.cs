@@ -59,7 +59,7 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** アイテム入手したときに実行するスクリプト */
-        public ScriptSetting acquireScript { set; get; }
+        public Gs2.Gs2Inventory.Model.ScriptSetting acquireScript { set; get; }
 
         /**
          * アイテム入手したときに実行するスクリプトを設定
@@ -67,14 +67,14 @@ namespace Gs2.Gs2Inventory.Request
          * @param acquireScript アイテム入手したときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithAcquireScript(ScriptSetting acquireScript) {
+        public UpdateNamespaceRequest WithAcquireScript(Gs2.Gs2Inventory.Model.ScriptSetting acquireScript) {
             this.acquireScript = acquireScript;
             return this;
         }
 
 
         /** 入手上限に当たって入手できなかったときに実行するスクリプト */
-        public ScriptSetting overflowScript { set; get; }
+        public Gs2.Gs2Inventory.Model.ScriptSetting overflowScript { set; get; }
 
         /**
          * 入手上限に当たって入手できなかったときに実行するスクリプトを設定
@@ -82,14 +82,14 @@ namespace Gs2.Gs2Inventory.Request
          * @param overflowScript 入手上限に当たって入手できなかったときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithOverflowScript(ScriptSetting overflowScript) {
+        public UpdateNamespaceRequest WithOverflowScript(Gs2.Gs2Inventory.Model.ScriptSetting overflowScript) {
             this.overflowScript = overflowScript;
             return this;
         }
 
 
         /** アイテム消費するときに実行するスクリプト */
-        public ScriptSetting consumeScript { set; get; }
+        public Gs2.Gs2Inventory.Model.ScriptSetting consumeScript { set; get; }
 
         /**
          * アイテム消費するときに実行するスクリプトを設定
@@ -97,14 +97,14 @@ namespace Gs2.Gs2Inventory.Request
          * @param consumeScript アイテム消費するときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithConsumeScript(ScriptSetting consumeScript) {
+        public UpdateNamespaceRequest WithConsumeScript(Gs2.Gs2Inventory.Model.ScriptSetting consumeScript) {
             this.consumeScript = consumeScript;
             return this;
         }
 
 
         /** ログの出力設定 */
-        public LogSetting logSetting { set; get; }
+        public Gs2.Gs2Inventory.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -112,7 +112,7 @@ namespace Gs2.Gs2Inventory.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public UpdateNamespaceRequest WithLogSetting(LogSetting logSetting) {
+        public UpdateNamespaceRequest WithLogSetting(Gs2.Gs2Inventory.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -124,10 +124,10 @@ namespace Gs2.Gs2Inventory.Request
             return new UpdateNamespaceRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
-                acquireScript = data.Keys.Contains("acquireScript") && data["acquireScript"] != null ? ScriptSetting.FromDict(data["acquireScript"]) : null,
-                overflowScript = data.Keys.Contains("overflowScript") && data["overflowScript"] != null ? ScriptSetting.FromDict(data["overflowScript"]) : null,
-                consumeScript = data.Keys.Contains("consumeScript") && data["consumeScript"] != null ? ScriptSetting.FromDict(data["consumeScript"]) : null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null,
+                acquireScript = data.Keys.Contains("acquireScript") && data["acquireScript"] != null ? Gs2.Gs2Inventory.Model.ScriptSetting.FromDict(data["acquireScript"]) : null,
+                overflowScript = data.Keys.Contains("overflowScript") && data["overflowScript"] != null ? Gs2.Gs2Inventory.Model.ScriptSetting.FromDict(data["overflowScript"]) : null,
+                consumeScript = data.Keys.Contains("consumeScript") && data["consumeScript"] != null ? Gs2.Gs2Inventory.Model.ScriptSetting.FromDict(data["consumeScript"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Inventory.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 

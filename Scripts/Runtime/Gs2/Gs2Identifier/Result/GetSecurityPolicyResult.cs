@@ -34,7 +34,7 @@ namespace Gs2.Gs2Identifier.Result
         public static GetSecurityPolicyResult FromDict(JsonData data)
         {
             return new GetSecurityPolicyResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? SecurityPolicy.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Identifier.Model.SecurityPolicy.FromDict(data["item"]) : null,
             };
         }
 	}

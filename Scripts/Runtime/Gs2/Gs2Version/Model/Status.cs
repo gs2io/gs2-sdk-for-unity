@@ -27,7 +27,7 @@ namespace Gs2.Gs2Version.Model
 	{
 
         /** バージョン設定 */
-        public VersionModel versionModel { set; get; }
+        public Gs2.Gs2Version.Model.VersionModel versionModel { set; get; }
 
         /**
          * バージョン設定を設定
@@ -35,13 +35,13 @@ namespace Gs2.Gs2Version.Model
          * @param versionModel バージョン設定
          * @return this
          */
-        public Status WithVersionModel(VersionModel versionModel) {
+        public Status WithVersionModel(Gs2.Gs2Version.Model.VersionModel versionModel) {
             this.versionModel = versionModel;
             return this;
         }
 
         /** 現在のバージョン */
-        public Version_ currentVersion { set; get; }
+        public Gs2.Gs2Version.Model.Version_ currentVersion { set; get; }
 
         /**
          * 現在のバージョンを設定
@@ -49,7 +49,7 @@ namespace Gs2.Gs2Version.Model
          * @param currentVersion 現在のバージョン
          * @return this
          */
-        public Status WithCurrentVersion(Version_ currentVersion) {
+        public Status WithCurrentVersion(Gs2.Gs2Version.Model.Version_ currentVersion) {
             this.currentVersion = currentVersion;
             return this;
         }
@@ -74,8 +74,8 @@ namespace Gs2.Gs2Version.Model
         public static Status FromDict(JsonData data)
         {
             return new Status()
-                .WithVersionModel(data.Keys.Contains("versionModel") && data["versionModel"] != null ? VersionModel.FromDict(data["versionModel"]) : null)
-                .WithCurrentVersion(data.Keys.Contains("currentVersion") && data["currentVersion"] != null ? Version_.FromDict(data["currentVersion"]) : null);
+                .WithVersionModel(data.Keys.Contains("versionModel") && data["versionModel"] != null ? Gs2.Gs2Version.Model.VersionModel.FromDict(data["versionModel"]) : null)
+                .WithCurrentVersion(data.Keys.Contains("currentVersion") && data["currentVersion"] != null ? Gs2.Gs2Version.Model.Version_.FromDict(data["currentVersion"]) : null);
         }
 	}
 }

@@ -40,7 +40,7 @@ namespace Gs2.Gs2Datastore.Result
         public static PrepareDownloadResult FromDict(JsonData data)
         {
             return new PrepareDownloadResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? DataObject.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Datastore.Model.DataObject.FromDict(data["item"]) : null,
                 fileUrl = data.Keys.Contains("fileUrl") && data["fileUrl"] != null ? data["fileUrl"].ToString() : null,
                 contentLength = data.Keys.Contains("contentLength") && data["contentLength"] != null ? (long?)long.Parse(data["contentLength"].ToString()) : null,
             };

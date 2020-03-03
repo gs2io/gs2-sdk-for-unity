@@ -110,7 +110,7 @@ namespace Gs2.Gs2Chat.Request
                 roomName = data.Keys.Contains("roomName") && data["roomName"] != null ? data["roomName"].ToString(): null,
                 notificationTypes = data.Keys.Contains("notificationTypes") && data["notificationTypes"] != null ? data["notificationTypes"].Cast<JsonData>().Select(value =>
                     {
-                        return NotificationType.FromDict(value);
+                        return Gs2.Gs2Chat.Model.NotificationType.FromDict(value);
                     }
                 ).ToList() : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,

@@ -34,7 +34,7 @@ namespace Gs2.Gs2Mission.Result
         public static UpdateMissionGroupModelMasterResult FromDict(JsonData data)
         {
             return new UpdateMissionGroupModelMasterResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? MissionGroupModelMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Mission.Model.MissionGroupModelMaster.FromDict(data["item"]) : null,
             };
         }
 	}

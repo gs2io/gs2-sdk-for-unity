@@ -40,8 +40,8 @@ namespace Gs2.Gs2Formation.Result
         public static AcquireActionsToFormPropertiesResult FromDict(JsonData data)
         {
             return new AcquireActionsToFormPropertiesResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Form.FromDict(data["item"]) : null,
-                mold = data.Keys.Contains("mold") && data["mold"] != null ? Mold.FromDict(data["mold"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Formation.Model.Form.FromDict(data["item"]) : null,
+                mold = data.Keys.Contains("mold") && data["mold"] != null ? Gs2.Gs2Formation.Model.Mold.FromDict(data["mold"]) : null,
                 stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? data["stampSheet"].ToString() : null,
             };
         }

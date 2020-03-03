@@ -36,7 +36,7 @@ namespace Gs2.Gs2Quest.Result
             return new DescribeQuestGroupModelsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return QuestGroupModel.FromDict(value);
+                        return Gs2.Gs2Quest.Model.QuestGroupModel.FromDict(value);
                     }
                 ).ToList() : null,
             };

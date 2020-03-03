@@ -48,11 +48,11 @@ namespace Gs2.Gs2Inventory.Result
             return new GetItemWithSignatureByUserIdResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return ItemSet.FromDict(value);
+                        return Gs2.Gs2Inventory.Model.ItemSet.FromDict(value);
                     }
                 ).ToList() : null,
-                itemModel = data.Keys.Contains("itemModel") && data["itemModel"] != null ? ItemModel.FromDict(data["itemModel"]) : null,
-                inventory = data.Keys.Contains("inventory") && data["inventory"] != null ? Inventory.FromDict(data["inventory"]) : null,
+                itemModel = data.Keys.Contains("itemModel") && data["itemModel"] != null ? Gs2.Gs2Inventory.Model.ItemModel.FromDict(data["itemModel"]) : null,
+                inventory = data.Keys.Contains("inventory") && data["inventory"] != null ? Gs2.Gs2Inventory.Model.Inventory.FromDict(data["inventory"]) : null,
                 body = data.Keys.Contains("body") && data["body"] != null ? data["body"].ToString() : null,
                 signature = data.Keys.Contains("signature") && data["signature"] != null ? data["signature"].ToString() : null,
             };

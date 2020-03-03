@@ -83,7 +83,7 @@ namespace Gs2.Gs2Formation.Model
         }
 
         /** キャパシティを更新するときに実行するスクリプト */
-        public ScriptSetting updateMoldScript { set; get; }
+        public Gs2.Gs2Formation.Model.ScriptSetting updateMoldScript { set; get; }
 
         /**
          * キャパシティを更新するときに実行するスクリプトを設定
@@ -91,13 +91,13 @@ namespace Gs2.Gs2Formation.Model
          * @param updateMoldScript キャパシティを更新するときに実行するスクリプト
          * @return this
          */
-        public Namespace WithUpdateMoldScript(ScriptSetting updateMoldScript) {
+        public Namespace WithUpdateMoldScript(Gs2.Gs2Formation.Model.ScriptSetting updateMoldScript) {
             this.updateMoldScript = updateMoldScript;
             return this;
         }
 
         /** フォームを更新するときに実行するスクリプト */
-        public ScriptSetting updateFormScript { set; get; }
+        public Gs2.Gs2Formation.Model.ScriptSetting updateFormScript { set; get; }
 
         /**
          * フォームを更新するときに実行するスクリプトを設定
@@ -105,13 +105,13 @@ namespace Gs2.Gs2Formation.Model
          * @param updateFormScript フォームを更新するときに実行するスクリプト
          * @return this
          */
-        public Namespace WithUpdateFormScript(ScriptSetting updateFormScript) {
+        public Namespace WithUpdateFormScript(Gs2.Gs2Formation.Model.ScriptSetting updateFormScript) {
             this.updateFormScript = updateFormScript;
             return this;
         }
 
         /** ログの出力設定 */
-        public LogSetting logSetting { set; get; }
+        public Gs2.Gs2Formation.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -119,7 +119,7 @@ namespace Gs2.Gs2Formation.Model
          * @param logSetting ログの出力設定
          * @return this
          */
-        public Namespace WithLogSetting(LogSetting logSetting) {
+        public Namespace WithLogSetting(Gs2.Gs2Formation.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -211,9 +211,9 @@ namespace Gs2.Gs2Formation.Model
                 .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
-                .WithUpdateMoldScript(data.Keys.Contains("updateMoldScript") && data["updateMoldScript"] != null ? ScriptSetting.FromDict(data["updateMoldScript"]) : null)
-                .WithUpdateFormScript(data.Keys.Contains("updateFormScript") && data["updateFormScript"] != null ? ScriptSetting.FromDict(data["updateFormScript"]) : null)
-                .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null)
+                .WithUpdateMoldScript(data.Keys.Contains("updateMoldScript") && data["updateMoldScript"] != null ? Gs2.Gs2Formation.Model.ScriptSetting.FromDict(data["updateMoldScript"]) : null)
+                .WithUpdateFormScript(data.Keys.Contains("updateFormScript") && data["updateFormScript"] != null ? Gs2.Gs2Formation.Model.ScriptSetting.FromDict(data["updateFormScript"]) : null)
+                .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Formation.Model.LogSetting.FromDict(data["logSetting"]) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }

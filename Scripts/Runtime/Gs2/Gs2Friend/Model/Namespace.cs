@@ -83,7 +83,7 @@ namespace Gs2.Gs2Friend.Model
         }
 
         /** フォローされたときに実行するスクリプト */
-        public ScriptSetting followScript { set; get; }
+        public Gs2.Gs2Friend.Model.ScriptSetting followScript { set; get; }
 
         /**
          * フォローされたときに実行するスクリプトを設定
@@ -91,13 +91,13 @@ namespace Gs2.Gs2Friend.Model
          * @param followScript フォローされたときに実行するスクリプト
          * @return this
          */
-        public Namespace WithFollowScript(ScriptSetting followScript) {
+        public Namespace WithFollowScript(Gs2.Gs2Friend.Model.ScriptSetting followScript) {
             this.followScript = followScript;
             return this;
         }
 
         /** アンフォローされたときに実行するスクリプト */
-        public ScriptSetting unfollowScript { set; get; }
+        public Gs2.Gs2Friend.Model.ScriptSetting unfollowScript { set; get; }
 
         /**
          * アンフォローされたときに実行するスクリプトを設定
@@ -105,13 +105,13 @@ namespace Gs2.Gs2Friend.Model
          * @param unfollowScript アンフォローされたときに実行するスクリプト
          * @return this
          */
-        public Namespace WithUnfollowScript(ScriptSetting unfollowScript) {
+        public Namespace WithUnfollowScript(Gs2.Gs2Friend.Model.ScriptSetting unfollowScript) {
             this.unfollowScript = unfollowScript;
             return this;
         }
 
         /** フレンドリクエストを発行したときに実行するスクリプト */
-        public ScriptSetting sendRequestScript { set; get; }
+        public Gs2.Gs2Friend.Model.ScriptSetting sendRequestScript { set; get; }
 
         /**
          * フレンドリクエストを発行したときに実行するスクリプトを設定
@@ -119,13 +119,13 @@ namespace Gs2.Gs2Friend.Model
          * @param sendRequestScript フレンドリクエストを発行したときに実行するスクリプト
          * @return this
          */
-        public Namespace WithSendRequestScript(ScriptSetting sendRequestScript) {
+        public Namespace WithSendRequestScript(Gs2.Gs2Friend.Model.ScriptSetting sendRequestScript) {
             this.sendRequestScript = sendRequestScript;
             return this;
         }
 
         /** フレンドリクエストをキャンセルしたときに実行するスクリプト */
-        public ScriptSetting cancelRequestScript { set; get; }
+        public Gs2.Gs2Friend.Model.ScriptSetting cancelRequestScript { set; get; }
 
         /**
          * フレンドリクエストをキャンセルしたときに実行するスクリプトを設定
@@ -133,13 +133,13 @@ namespace Gs2.Gs2Friend.Model
          * @param cancelRequestScript フレンドリクエストをキャンセルしたときに実行するスクリプト
          * @return this
          */
-        public Namespace WithCancelRequestScript(ScriptSetting cancelRequestScript) {
+        public Namespace WithCancelRequestScript(Gs2.Gs2Friend.Model.ScriptSetting cancelRequestScript) {
             this.cancelRequestScript = cancelRequestScript;
             return this;
         }
 
         /** フレンドリクエストを承諾したときに実行するスクリプト */
-        public ScriptSetting acceptRequestScript { set; get; }
+        public Gs2.Gs2Friend.Model.ScriptSetting acceptRequestScript { set; get; }
 
         /**
          * フレンドリクエストを承諾したときに実行するスクリプトを設定
@@ -147,13 +147,13 @@ namespace Gs2.Gs2Friend.Model
          * @param acceptRequestScript フレンドリクエストを承諾したときに実行するスクリプト
          * @return this
          */
-        public Namespace WithAcceptRequestScript(ScriptSetting acceptRequestScript) {
+        public Namespace WithAcceptRequestScript(Gs2.Gs2Friend.Model.ScriptSetting acceptRequestScript) {
             this.acceptRequestScript = acceptRequestScript;
             return this;
         }
 
         /** フレンドリクエストを拒否したときに実行するスクリプト */
-        public ScriptSetting rejectRequestScript { set; get; }
+        public Gs2.Gs2Friend.Model.ScriptSetting rejectRequestScript { set; get; }
 
         /**
          * フレンドリクエストを拒否したときに実行するスクリプトを設定
@@ -161,13 +161,13 @@ namespace Gs2.Gs2Friend.Model
          * @param rejectRequestScript フレンドリクエストを拒否したときに実行するスクリプト
          * @return this
          */
-        public Namespace WithRejectRequestScript(ScriptSetting rejectRequestScript) {
+        public Namespace WithRejectRequestScript(Gs2.Gs2Friend.Model.ScriptSetting rejectRequestScript) {
             this.rejectRequestScript = rejectRequestScript;
             return this;
         }
 
         /** フレンドを削除したときに実行するスクリプト */
-        public ScriptSetting deleteFriendScript { set; get; }
+        public Gs2.Gs2Friend.Model.ScriptSetting deleteFriendScript { set; get; }
 
         /**
          * フレンドを削除したときに実行するスクリプトを設定
@@ -175,13 +175,13 @@ namespace Gs2.Gs2Friend.Model
          * @param deleteFriendScript フレンドを削除したときに実行するスクリプト
          * @return this
          */
-        public Namespace WithDeleteFriendScript(ScriptSetting deleteFriendScript) {
+        public Namespace WithDeleteFriendScript(Gs2.Gs2Friend.Model.ScriptSetting deleteFriendScript) {
             this.deleteFriendScript = deleteFriendScript;
             return this;
         }
 
         /** プロフィールを更新したときに実行するスクリプト */
-        public ScriptSetting updateProfileScript { set; get; }
+        public Gs2.Gs2Friend.Model.ScriptSetting updateProfileScript { set; get; }
 
         /**
          * プロフィールを更新したときに実行するスクリプトを設定
@@ -189,13 +189,13 @@ namespace Gs2.Gs2Friend.Model
          * @param updateProfileScript プロフィールを更新したときに実行するスクリプト
          * @return this
          */
-        public Namespace WithUpdateProfileScript(ScriptSetting updateProfileScript) {
+        public Namespace WithUpdateProfileScript(Gs2.Gs2Friend.Model.ScriptSetting updateProfileScript) {
             this.updateProfileScript = updateProfileScript;
             return this;
         }
 
         /** フォローされたときのプッシュ通知 */
-        public NotificationSetting followNotification { set; get; }
+        public Gs2.Gs2Friend.Model.NotificationSetting followNotification { set; get; }
 
         /**
          * フォローされたときのプッシュ通知を設定
@@ -203,13 +203,13 @@ namespace Gs2.Gs2Friend.Model
          * @param followNotification フォローされたときのプッシュ通知
          * @return this
          */
-        public Namespace WithFollowNotification(NotificationSetting followNotification) {
+        public Namespace WithFollowNotification(Gs2.Gs2Friend.Model.NotificationSetting followNotification) {
             this.followNotification = followNotification;
             return this;
         }
 
         /** フレンドリクエストが届いたときのプッシュ通知 */
-        public NotificationSetting receiveRequestNotification { set; get; }
+        public Gs2.Gs2Friend.Model.NotificationSetting receiveRequestNotification { set; get; }
 
         /**
          * フレンドリクエストが届いたときのプッシュ通知を設定
@@ -217,13 +217,13 @@ namespace Gs2.Gs2Friend.Model
          * @param receiveRequestNotification フレンドリクエストが届いたときのプッシュ通知
          * @return this
          */
-        public Namespace WithReceiveRequestNotification(NotificationSetting receiveRequestNotification) {
+        public Namespace WithReceiveRequestNotification(Gs2.Gs2Friend.Model.NotificationSetting receiveRequestNotification) {
             this.receiveRequestNotification = receiveRequestNotification;
             return this;
         }
 
         /** フレンドリクエストが承認されたときのプッシュ通知 */
-        public NotificationSetting acceptRequestNotification { set; get; }
+        public Gs2.Gs2Friend.Model.NotificationSetting acceptRequestNotification { set; get; }
 
         /**
          * フレンドリクエストが承認されたときのプッシュ通知を設定
@@ -231,13 +231,13 @@ namespace Gs2.Gs2Friend.Model
          * @param acceptRequestNotification フレンドリクエストが承認されたときのプッシュ通知
          * @return this
          */
-        public Namespace WithAcceptRequestNotification(NotificationSetting acceptRequestNotification) {
+        public Namespace WithAcceptRequestNotification(Gs2.Gs2Friend.Model.NotificationSetting acceptRequestNotification) {
             this.acceptRequestNotification = acceptRequestNotification;
             return this;
         }
 
         /** ログの出力設定 */
-        public LogSetting logSetting { set; get; }
+        public Gs2.Gs2Friend.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -245,7 +245,7 @@ namespace Gs2.Gs2Friend.Model
          * @param logSetting ログの出力設定
          * @return this
          */
-        public Namespace WithLogSetting(LogSetting logSetting) {
+        public Namespace WithLogSetting(Gs2.Gs2Friend.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -382,18 +382,18 @@ namespace Gs2.Gs2Friend.Model
                 .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
-                .WithFollowScript(data.Keys.Contains("followScript") && data["followScript"] != null ? ScriptSetting.FromDict(data["followScript"]) : null)
-                .WithUnfollowScript(data.Keys.Contains("unfollowScript") && data["unfollowScript"] != null ? ScriptSetting.FromDict(data["unfollowScript"]) : null)
-                .WithSendRequestScript(data.Keys.Contains("sendRequestScript") && data["sendRequestScript"] != null ? ScriptSetting.FromDict(data["sendRequestScript"]) : null)
-                .WithCancelRequestScript(data.Keys.Contains("cancelRequestScript") && data["cancelRequestScript"] != null ? ScriptSetting.FromDict(data["cancelRequestScript"]) : null)
-                .WithAcceptRequestScript(data.Keys.Contains("acceptRequestScript") && data["acceptRequestScript"] != null ? ScriptSetting.FromDict(data["acceptRequestScript"]) : null)
-                .WithRejectRequestScript(data.Keys.Contains("rejectRequestScript") && data["rejectRequestScript"] != null ? ScriptSetting.FromDict(data["rejectRequestScript"]) : null)
-                .WithDeleteFriendScript(data.Keys.Contains("deleteFriendScript") && data["deleteFriendScript"] != null ? ScriptSetting.FromDict(data["deleteFriendScript"]) : null)
-                .WithUpdateProfileScript(data.Keys.Contains("updateProfileScript") && data["updateProfileScript"] != null ? ScriptSetting.FromDict(data["updateProfileScript"]) : null)
-                .WithFollowNotification(data.Keys.Contains("followNotification") && data["followNotification"] != null ? NotificationSetting.FromDict(data["followNotification"]) : null)
-                .WithReceiveRequestNotification(data.Keys.Contains("receiveRequestNotification") && data["receiveRequestNotification"] != null ? NotificationSetting.FromDict(data["receiveRequestNotification"]) : null)
-                .WithAcceptRequestNotification(data.Keys.Contains("acceptRequestNotification") && data["acceptRequestNotification"] != null ? NotificationSetting.FromDict(data["acceptRequestNotification"]) : null)
-                .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null)
+                .WithFollowScript(data.Keys.Contains("followScript") && data["followScript"] != null ? Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["followScript"]) : null)
+                .WithUnfollowScript(data.Keys.Contains("unfollowScript") && data["unfollowScript"] != null ? Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["unfollowScript"]) : null)
+                .WithSendRequestScript(data.Keys.Contains("sendRequestScript") && data["sendRequestScript"] != null ? Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["sendRequestScript"]) : null)
+                .WithCancelRequestScript(data.Keys.Contains("cancelRequestScript") && data["cancelRequestScript"] != null ? Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["cancelRequestScript"]) : null)
+                .WithAcceptRequestScript(data.Keys.Contains("acceptRequestScript") && data["acceptRequestScript"] != null ? Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["acceptRequestScript"]) : null)
+                .WithRejectRequestScript(data.Keys.Contains("rejectRequestScript") && data["rejectRequestScript"] != null ? Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["rejectRequestScript"]) : null)
+                .WithDeleteFriendScript(data.Keys.Contains("deleteFriendScript") && data["deleteFriendScript"] != null ? Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["deleteFriendScript"]) : null)
+                .WithUpdateProfileScript(data.Keys.Contains("updateProfileScript") && data["updateProfileScript"] != null ? Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["updateProfileScript"]) : null)
+                .WithFollowNotification(data.Keys.Contains("followNotification") && data["followNotification"] != null ? Gs2.Gs2Friend.Model.NotificationSetting.FromDict(data["followNotification"]) : null)
+                .WithReceiveRequestNotification(data.Keys.Contains("receiveRequestNotification") && data["receiveRequestNotification"] != null ? Gs2.Gs2Friend.Model.NotificationSetting.FromDict(data["receiveRequestNotification"]) : null)
+                .WithAcceptRequestNotification(data.Keys.Contains("acceptRequestNotification") && data["acceptRequestNotification"] != null ? Gs2.Gs2Friend.Model.NotificationSetting.FromDict(data["acceptRequestNotification"]) : null)
+                .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Friend.Model.LogSetting.FromDict(data["logSetting"]) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }

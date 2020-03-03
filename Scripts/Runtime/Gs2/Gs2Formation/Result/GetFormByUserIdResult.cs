@@ -43,10 +43,10 @@ namespace Gs2.Gs2Formation.Result
         public static GetFormByUserIdResult FromDict(JsonData data)
         {
             return new GetFormByUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Form.FromDict(data["item"]) : null,
-                mold = data.Keys.Contains("mold") && data["mold"] != null ? Mold.FromDict(data["mold"]) : null,
-                moldModel = data.Keys.Contains("moldModel") && data["moldModel"] != null ? MoldModel.FromDict(data["moldModel"]) : null,
-                formModel = data.Keys.Contains("formModel") && data["formModel"] != null ? FormModel.FromDict(data["formModel"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Formation.Model.Form.FromDict(data["item"]) : null,
+                mold = data.Keys.Contains("mold") && data["mold"] != null ? Gs2.Gs2Formation.Model.Mold.FromDict(data["mold"]) : null,
+                moldModel = data.Keys.Contains("moldModel") && data["moldModel"] != null ? Gs2.Gs2Formation.Model.MoldModel.FromDict(data["moldModel"]) : null,
+                formModel = data.Keys.Contains("formModel") && data["formModel"] != null ? Gs2.Gs2Formation.Model.FormModel.FromDict(data["formModel"]) : null,
             };
         }
 	}

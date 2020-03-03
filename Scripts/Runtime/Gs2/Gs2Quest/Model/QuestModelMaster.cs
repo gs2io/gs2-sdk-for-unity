@@ -291,18 +291,18 @@ namespace Gs2.Gs2Quest.Model
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
                 .WithContents(data.Keys.Contains("contents") && data["contents"] != null ? data["contents"].Cast<JsonData>().Select(value =>
                     {
-                        return Contents.FromDict(value);
+                        return Gs2.Gs2Quest.Model.Contents.FromDict(value);
                     }
                 ).ToList() : null)
                 .WithChallengePeriodEventId(data.Keys.Contains("challengePeriodEventId") && data["challengePeriodEventId"] != null ? data["challengePeriodEventId"].ToString() : null)
                 .WithConsumeActions(data.Keys.Contains("consumeActions") && data["consumeActions"] != null ? data["consumeActions"].Cast<JsonData>().Select(value =>
                     {
-                        return ConsumeAction.FromDict(value);
+                        return Gs2.Gs2Quest.Model.ConsumeAction.FromDict(value);
                     }
                 ).ToList() : null)
                 .WithFailedAcquireActions(data.Keys.Contains("failedAcquireActions") && data["failedAcquireActions"] != null ? data["failedAcquireActions"].Cast<JsonData>().Select(value =>
                     {
-                        return AcquireAction.FromDict(value);
+                        return Gs2.Gs2Quest.Model.AcquireAction.FromDict(value);
                     }
                 ).ToList() : null)
                 .WithPremiseQuestNames(data.Keys.Contains("premiseQuestNames") && data["premiseQuestNames"] != null ? data["premiseQuestNames"].Cast<JsonData>().Select(value =>

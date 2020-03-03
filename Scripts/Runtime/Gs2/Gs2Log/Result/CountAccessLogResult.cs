@@ -45,7 +45,7 @@ namespace Gs2.Gs2Log.Result
             return new CountAccessLogResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return AccessLogCount.FromDict(value);
+                        return Gs2.Gs2Log.Model.AccessLogCount.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

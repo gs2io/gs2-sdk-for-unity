@@ -39,7 +39,7 @@ namespace Gs2.Gs2Lottery.Result
             return new DescribeBoxesByUserIdResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return Box.FromDict(value);
+                        return Gs2.Gs2Lottery.Model.Box.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

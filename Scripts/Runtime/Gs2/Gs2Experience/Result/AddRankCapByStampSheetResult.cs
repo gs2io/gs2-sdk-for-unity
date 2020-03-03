@@ -34,7 +34,7 @@ namespace Gs2.Gs2Experience.Result
         public static AddRankCapByStampSheetResult FromDict(JsonData data)
         {
             return new AddRankCapByStampSheetResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Status.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Experience.Model.Status.FromDict(data["item"]) : null,
             };
         }
 	}

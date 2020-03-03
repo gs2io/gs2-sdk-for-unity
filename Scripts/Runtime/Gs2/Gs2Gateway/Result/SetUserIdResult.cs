@@ -34,7 +34,7 @@ namespace Gs2.Gs2Gateway.Result
         public static SetUserIdResult FromDict(JsonData data)
         {
             return new SetUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? WebSocketSession.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Gateway.Model.WebSocketSession.FromDict(data["item"]) : null,
             };
         }
 	}

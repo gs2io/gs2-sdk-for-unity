@@ -217,7 +217,7 @@ namespace Gs2.Gs2Mission.Model
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
                 .WithTasks(data.Keys.Contains("tasks") && data["tasks"] != null ? data["tasks"].Cast<JsonData>().Select(value =>
                     {
-                        return MissionTaskModel.FromDict(value);
+                        return Gs2.Gs2Mission.Model.MissionTaskModel.FromDict(value);
                     }
                 ).ToList() : null)
                 .WithResetType(data.Keys.Contains("resetType") && data["resetType"] != null ? data["resetType"].ToString() : null)

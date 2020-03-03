@@ -39,7 +39,7 @@ namespace Gs2.Gs2Formation.Result
             return new DescribeMoldsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return Mold.FromDict(value);
+                        return Gs2.Gs2Formation.Model.Mold.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

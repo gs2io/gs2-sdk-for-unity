@@ -34,7 +34,7 @@ namespace Gs2.Gs2Realtime.Result
         public static UpdateNamespaceResult FromDict(JsonData data)
         {
             return new UpdateNamespaceResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Namespace.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Realtime.Model.Namespace.FromDict(data["item"]) : null,
             };
         }
 	}

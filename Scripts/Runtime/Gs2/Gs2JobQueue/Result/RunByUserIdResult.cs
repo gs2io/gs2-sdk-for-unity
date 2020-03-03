@@ -40,8 +40,8 @@ namespace Gs2.Gs2JobQueue.Result
         public static RunByUserIdResult FromDict(JsonData data)
         {
             return new RunByUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Job.FromDict(data["item"]) : null,
-                result = data.Keys.Contains("result") && data["result"] != null ? JobResultBody.FromDict(data["result"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2JobQueue.Model.Job.FromDict(data["item"]) : null,
+                result = data.Keys.Contains("result") && data["result"] != null ? Gs2.Gs2JobQueue.Model.JobResultBody.FromDict(data["result"]) : null,
                 isLastJob = data.Keys.Contains("isLastJob") && data["isLastJob"] != null ? (bool?)bool.Parse(data["isLastJob"].ToString()) : null,
             };
         }

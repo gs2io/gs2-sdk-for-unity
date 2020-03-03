@@ -34,7 +34,7 @@ namespace Gs2.Gs2Watch.Result
         public static GetBillingActivityResult FromDict(JsonData data)
         {
             return new GetBillingActivityResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? BillingActivity.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Watch.Model.BillingActivity.FromDict(data["item"]) : null,
             };
         }
 	}

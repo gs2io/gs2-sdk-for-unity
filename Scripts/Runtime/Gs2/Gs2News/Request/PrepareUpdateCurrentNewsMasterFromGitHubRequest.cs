@@ -44,7 +44,7 @@ namespace Gs2.Gs2News.Request
 
 
         /** GitHubからマスターデータをチェックアウトしてくる設定 */
-        public GitHubCheckoutSetting checkoutSetting { set; get; }
+        public Gs2.Gs2News.Model.GitHubCheckoutSetting checkoutSetting { set; get; }
 
         /**
          * GitHubからマスターデータをチェックアウトしてくる設定を設定
@@ -52,7 +52,7 @@ namespace Gs2.Gs2News.Request
          * @param checkoutSetting GitHubからマスターデータをチェックアウトしてくる設定
          * @return this
          */
-        public PrepareUpdateCurrentNewsMasterFromGitHubRequest WithCheckoutSetting(GitHubCheckoutSetting checkoutSetting) {
+        public PrepareUpdateCurrentNewsMasterFromGitHubRequest WithCheckoutSetting(Gs2.Gs2News.Model.GitHubCheckoutSetting checkoutSetting) {
             this.checkoutSetting = checkoutSetting;
             return this;
         }
@@ -63,7 +63,7 @@ namespace Gs2.Gs2News.Request
         {
             return new PrepareUpdateCurrentNewsMasterFromGitHubRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
-                checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
+                checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? Gs2.Gs2News.Model.GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
             };
         }
 

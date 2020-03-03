@@ -34,7 +34,7 @@ namespace Gs2.Gs2Chat.Result
         public static GetMessageResult FromDict(JsonData data)
         {
             return new GetMessageResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Message.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Chat.Model.Message.FromDict(data["item"]) : null,
             };
         }
 	}

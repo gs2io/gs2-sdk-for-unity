@@ -89,7 +89,7 @@ namespace Gs2.Gs2Exchange.Request
 
 
         /** ログの出力設定 */
-        public LogSetting logSetting { set; get; }
+        public Gs2.Gs2Exchange.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -97,7 +97,7 @@ namespace Gs2.Gs2Exchange.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public UpdateNamespaceRequest WithLogSetting(LogSetting logSetting) {
+        public UpdateNamespaceRequest WithLogSetting(Gs2.Gs2Exchange.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -111,7 +111,7 @@ namespace Gs2.Gs2Exchange.Request
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 queueNamespaceId = data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? data["queueNamespaceId"].ToString(): null,
                 keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString(): null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Exchange.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 

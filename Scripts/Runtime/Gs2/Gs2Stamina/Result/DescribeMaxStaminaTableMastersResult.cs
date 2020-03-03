@@ -39,7 +39,7 @@ namespace Gs2.Gs2Stamina.Result
             return new DescribeMaxStaminaTableMastersResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return MaxStaminaTableMaster.FromDict(value);
+                        return Gs2.Gs2Stamina.Model.MaxStaminaTableMaster.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

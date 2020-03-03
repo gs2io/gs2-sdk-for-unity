@@ -55,7 +55,7 @@ namespace Gs2.Gs2Showcase.Model
         }
 
         /** 陳列する商品 */
-        public SalesItem salesItem { set; get; }
+        public Gs2.Gs2Showcase.Model.SalesItem salesItem { set; get; }
 
         /**
          * 陳列する商品を設定
@@ -63,13 +63,13 @@ namespace Gs2.Gs2Showcase.Model
          * @param salesItem 陳列する商品
          * @return this
          */
-        public DisplayItem WithSalesItem(SalesItem salesItem) {
+        public DisplayItem WithSalesItem(Gs2.Gs2Showcase.Model.SalesItem salesItem) {
             this.salesItem = salesItem;
             return this;
         }
 
         /** 陳列する商品グループ */
-        public SalesItemGroup salesItemGroup { set; get; }
+        public Gs2.Gs2Showcase.Model.SalesItemGroup salesItemGroup { set; get; }
 
         /**
          * 陳列する商品グループを設定
@@ -77,7 +77,7 @@ namespace Gs2.Gs2Showcase.Model
          * @param salesItemGroup 陳列する商品グループ
          * @return this
          */
-        public DisplayItem WithSalesItemGroup(SalesItemGroup salesItemGroup) {
+        public DisplayItem WithSalesItemGroup(Gs2.Gs2Showcase.Model.SalesItemGroup salesItemGroup) {
             this.salesItemGroup = salesItemGroup;
             return this;
         }
@@ -133,8 +133,8 @@ namespace Gs2.Gs2Showcase.Model
             return new DisplayItem()
                 .WithDisplayItemId(data.Keys.Contains("displayItemId") && data["displayItemId"] != null ? data["displayItemId"].ToString() : null)
                 .WithType(data.Keys.Contains("type") && data["type"] != null ? data["type"].ToString() : null)
-                .WithSalesItem(data.Keys.Contains("salesItem") && data["salesItem"] != null ? SalesItem.FromDict(data["salesItem"]) : null)
-                .WithSalesItemGroup(data.Keys.Contains("salesItemGroup") && data["salesItemGroup"] != null ? SalesItemGroup.FromDict(data["salesItemGroup"]) : null)
+                .WithSalesItem(data.Keys.Contains("salesItem") && data["salesItem"] != null ? Gs2.Gs2Showcase.Model.SalesItem.FromDict(data["salesItem"]) : null)
+                .WithSalesItemGroup(data.Keys.Contains("salesItemGroup") && data["salesItemGroup"] != null ? Gs2.Gs2Showcase.Model.SalesItemGroup.FromDict(data["salesItemGroup"]) : null)
                 .WithSalesPeriodEventId(data.Keys.Contains("salesPeriodEventId") && data["salesPeriodEventId"] != null ? data["salesPeriodEventId"].ToString() : null);
         }
 	}

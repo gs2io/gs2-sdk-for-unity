@@ -162,7 +162,7 @@ namespace Gs2.Gs2Inventory.Model
                 .WithMaxCapacity(data.Keys.Contains("maxCapacity") && data["maxCapacity"] != null ? (int?)int.Parse(data["maxCapacity"].ToString()) : null)
                 .WithItemModels(data.Keys.Contains("itemModels") && data["itemModels"] != null ? data["itemModels"].Cast<JsonData>().Select(value =>
                     {
-                        return ItemModel.FromDict(value);
+                        return Gs2.Gs2Inventory.Model.ItemModel.FromDict(value);
                     }
                 ).ToList() : null);
         }

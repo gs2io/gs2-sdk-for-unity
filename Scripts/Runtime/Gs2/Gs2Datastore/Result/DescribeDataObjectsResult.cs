@@ -39,7 +39,7 @@ namespace Gs2.Gs2Datastore.Result
             return new DescribeDataObjectsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return DataObject.FromDict(value);
+                        return Gs2.Gs2Datastore.Model.DataObject.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

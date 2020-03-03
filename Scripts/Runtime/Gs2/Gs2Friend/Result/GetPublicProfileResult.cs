@@ -34,7 +34,7 @@ namespace Gs2.Gs2Friend.Result
         public static GetPublicProfileResult FromDict(JsonData data)
         {
             return new GetPublicProfileResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? PublicProfile.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Friend.Model.PublicProfile.FromDict(data["item"]) : null,
             };
         }
 	}

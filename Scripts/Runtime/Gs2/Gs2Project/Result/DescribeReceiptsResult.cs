@@ -39,7 +39,7 @@ namespace Gs2.Gs2Project.Result
             return new DescribeReceiptsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return Receipt.FromDict(value);
+                        return Gs2.Gs2Project.Model.Receipt.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

@@ -39,7 +39,7 @@ namespace Gs2.Gs2Ranking.Result
             return new DescribeCategoryModelMastersResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return CategoryModelMaster.FromDict(value);
+                        return Gs2.Gs2Ranking.Model.CategoryModelMaster.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

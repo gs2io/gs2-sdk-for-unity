@@ -34,7 +34,7 @@ namespace Gs2.Gs2Watch.Result
         public static GetCumulativeResult FromDict(JsonData data)
         {
             return new GetCumulativeResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Cumulative.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Watch.Model.Cumulative.FromDict(data["item"]) : null,
             };
         }
 	}

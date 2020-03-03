@@ -36,7 +36,7 @@ namespace Gs2.Gs2Lottery.Result
             return new DescribeLotteryModelsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return LotteryModel.FromDict(value);
+                        return Gs2.Gs2Lottery.Model.LotteryModel.FromDict(value);
                     }
                 ).ToList() : null,
             };

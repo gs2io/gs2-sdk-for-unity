@@ -36,7 +36,7 @@ namespace Gs2.Gs2Identifier.Result
             return new GetHasSecurityPolicyResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return SecurityPolicy.FromDict(value);
+                        return Gs2.Gs2Identifier.Model.SecurityPolicy.FromDict(value);
                     }
                 ).ToList() : null,
             };

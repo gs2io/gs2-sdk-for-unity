@@ -34,7 +34,7 @@ namespace Gs2.Gs2Limit.Result
         public static DeleteByStampSheetResult FromDict(JsonData data)
         {
             return new DeleteByStampSheetResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Counter.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Limit.Model.Counter.FromDict(data["item"]) : null,
             };
         }
 	}

@@ -40,7 +40,7 @@ namespace Gs2.Gs2Experience.Result
         public static GetStatusWithSignatureResult FromDict(JsonData data)
         {
             return new GetStatusWithSignatureResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Status.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Experience.Model.Status.FromDict(data["item"]) : null,
                 body = data.Keys.Contains("body") && data["body"] != null ? data["body"].ToString() : null,
                 signature = data.Keys.Contains("signature") && data["signature"] != null ? data["signature"].ToString() : null,
             };

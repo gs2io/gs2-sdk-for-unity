@@ -34,7 +34,7 @@ namespace Gs2.Gs2Experience.Result
         public static DeleteExperienceModelMasterResult FromDict(JsonData data)
         {
             return new DeleteExperienceModelMasterResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? ExperienceModelMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Experience.Model.ExperienceModelMaster.FromDict(data["item"]) : null,
             };
         }
 	}

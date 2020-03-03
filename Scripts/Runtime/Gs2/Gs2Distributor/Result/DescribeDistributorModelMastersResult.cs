@@ -39,7 +39,7 @@ namespace Gs2.Gs2Distributor.Result
             return new DescribeDistributorModelMastersResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return DistributorModelMaster.FromDict(value);
+                        return Gs2.Gs2Distributor.Model.DistributorModelMaster.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

@@ -34,7 +34,7 @@ namespace Gs2.Gs2Script.Result
         public static GetScriptResult FromDict(JsonData data)
         {
             return new GetScriptResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Script.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Script.Model.Script.FromDict(data["item"]) : null,
             };
         }
 	}

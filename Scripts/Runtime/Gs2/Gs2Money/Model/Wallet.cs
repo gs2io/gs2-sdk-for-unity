@@ -200,7 +200,7 @@ namespace Gs2.Gs2Money.Model
                 .WithFree(data.Keys.Contains("free") && data["free"] != null ? (int?)int.Parse(data["free"].ToString()) : null)
                 .WithDetail(data.Keys.Contains("detail") && data["detail"] != null ? data["detail"].Cast<JsonData>().Select(value =>
                     {
-                        return WalletDetail.FromDict(value);
+                        return Gs2.Gs2Money.Model.WalletDetail.FromDict(value);
                     }
                 ).ToList() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)

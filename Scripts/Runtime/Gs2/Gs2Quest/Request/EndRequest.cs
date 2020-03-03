@@ -140,13 +140,13 @@ namespace Gs2.Gs2Quest.Request
                 transactionId = data.Keys.Contains("transactionId") && data["transactionId"] != null ? data["transactionId"].ToString(): null,
                 rewards = data.Keys.Contains("rewards") && data["rewards"] != null ? data["rewards"].Cast<JsonData>().Select(value =>
                     {
-                        return Reward.FromDict(value);
+                        return Gs2.Gs2Quest.Model.Reward.FromDict(value);
                     }
                 ).ToList() : null,
                 isComplete = data.Keys.Contains("isComplete") && data["isComplete"] != null ? (bool?)bool.Parse(data["isComplete"].ToString()) : null,
                 config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
                     {
-                        return Config.FromDict(value);
+                        return Gs2.Gs2Quest.Model.Config.FromDict(value);
                     }
                 ).ToList() : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,

@@ -34,7 +34,7 @@ namespace Gs2.Gs2Exchange.Result
         public static DeleteNamespaceResult FromDict(JsonData data)
         {
             return new DeleteNamespaceResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Namespace.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Exchange.Model.Namespace.FromDict(data["item"]) : null,
             };
         }
 	}

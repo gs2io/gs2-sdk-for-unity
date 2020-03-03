@@ -59,7 +59,7 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** キャパシティを更新するときに実行するスクリプト */
-        public ScriptSetting updateMoldScript { set; get; }
+        public Gs2.Gs2Formation.Model.ScriptSetting updateMoldScript { set; get; }
 
         /**
          * キャパシティを更新するときに実行するスクリプトを設定
@@ -67,14 +67,14 @@ namespace Gs2.Gs2Formation.Request
          * @param updateMoldScript キャパシティを更新するときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithUpdateMoldScript(ScriptSetting updateMoldScript) {
+        public UpdateNamespaceRequest WithUpdateMoldScript(Gs2.Gs2Formation.Model.ScriptSetting updateMoldScript) {
             this.updateMoldScript = updateMoldScript;
             return this;
         }
 
 
         /** フォームを更新するときに実行するスクリプト */
-        public ScriptSetting updateFormScript { set; get; }
+        public Gs2.Gs2Formation.Model.ScriptSetting updateFormScript { set; get; }
 
         /**
          * フォームを更新するときに実行するスクリプトを設定
@@ -82,14 +82,14 @@ namespace Gs2.Gs2Formation.Request
          * @param updateFormScript フォームを更新するときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithUpdateFormScript(ScriptSetting updateFormScript) {
+        public UpdateNamespaceRequest WithUpdateFormScript(Gs2.Gs2Formation.Model.ScriptSetting updateFormScript) {
             this.updateFormScript = updateFormScript;
             return this;
         }
 
 
         /** ログの出力設定 */
-        public LogSetting logSetting { set; get; }
+        public Gs2.Gs2Formation.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -97,7 +97,7 @@ namespace Gs2.Gs2Formation.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public UpdateNamespaceRequest WithLogSetting(LogSetting logSetting) {
+        public UpdateNamespaceRequest WithLogSetting(Gs2.Gs2Formation.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -109,9 +109,9 @@ namespace Gs2.Gs2Formation.Request
             return new UpdateNamespaceRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
-                updateMoldScript = data.Keys.Contains("updateMoldScript") && data["updateMoldScript"] != null ? ScriptSetting.FromDict(data["updateMoldScript"]) : null,
-                updateFormScript = data.Keys.Contains("updateFormScript") && data["updateFormScript"] != null ? ScriptSetting.FromDict(data["updateFormScript"]) : null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null,
+                updateMoldScript = data.Keys.Contains("updateMoldScript") && data["updateMoldScript"] != null ? Gs2.Gs2Formation.Model.ScriptSetting.FromDict(data["updateMoldScript"]) : null,
+                updateFormScript = data.Keys.Contains("updateFormScript") && data["updateFormScript"] != null ? Gs2.Gs2Formation.Model.ScriptSetting.FromDict(data["updateFormScript"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Formation.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 

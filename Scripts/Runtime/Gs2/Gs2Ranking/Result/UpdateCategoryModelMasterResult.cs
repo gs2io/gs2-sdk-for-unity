@@ -34,7 +34,7 @@ namespace Gs2.Gs2Ranking.Result
         public static UpdateCategoryModelMasterResult FromDict(JsonData data)
         {
             return new UpdateCategoryModelMasterResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? CategoryModelMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Ranking.Model.CategoryModelMaster.FromDict(data["item"]) : null,
             };
         }
 	}

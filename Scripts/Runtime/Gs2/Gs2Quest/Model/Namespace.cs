@@ -83,7 +83,7 @@ namespace Gs2.Gs2Quest.Model
         }
 
         /** クエスト開始したときに実行するスクリプト */
-        public ScriptSetting startQuestScript { set; get; }
+        public Gs2.Gs2Quest.Model.ScriptSetting startQuestScript { set; get; }
 
         /**
          * クエスト開始したときに実行するスクリプトを設定
@@ -91,13 +91,13 @@ namespace Gs2.Gs2Quest.Model
          * @param startQuestScript クエスト開始したときに実行するスクリプト
          * @return this
          */
-        public Namespace WithStartQuestScript(ScriptSetting startQuestScript) {
+        public Namespace WithStartQuestScript(Gs2.Gs2Quest.Model.ScriptSetting startQuestScript) {
             this.startQuestScript = startQuestScript;
             return this;
         }
 
         /** クエストクリアしたときに実行するスクリプト */
-        public ScriptSetting completeQuestScript { set; get; }
+        public Gs2.Gs2Quest.Model.ScriptSetting completeQuestScript { set; get; }
 
         /**
          * クエストクリアしたときに実行するスクリプトを設定
@@ -105,13 +105,13 @@ namespace Gs2.Gs2Quest.Model
          * @param completeQuestScript クエストクリアしたときに実行するスクリプト
          * @return this
          */
-        public Namespace WithCompleteQuestScript(ScriptSetting completeQuestScript) {
+        public Namespace WithCompleteQuestScript(Gs2.Gs2Quest.Model.ScriptSetting completeQuestScript) {
             this.completeQuestScript = completeQuestScript;
             return this;
         }
 
         /** クエスト失敗したときに実行するスクリプト */
-        public ScriptSetting failedQuestScript { set; get; }
+        public Gs2.Gs2Quest.Model.ScriptSetting failedQuestScript { set; get; }
 
         /**
          * クエスト失敗したときに実行するスクリプトを設定
@@ -119,7 +119,7 @@ namespace Gs2.Gs2Quest.Model
          * @param failedQuestScript クエスト失敗したときに実行するスクリプト
          * @return this
          */
-        public Namespace WithFailedQuestScript(ScriptSetting failedQuestScript) {
+        public Namespace WithFailedQuestScript(Gs2.Gs2Quest.Model.ScriptSetting failedQuestScript) {
             this.failedQuestScript = failedQuestScript;
             return this;
         }
@@ -153,7 +153,7 @@ namespace Gs2.Gs2Quest.Model
         }
 
         /** ログの出力設定 */
-        public LogSetting logSetting { set; get; }
+        public Gs2.Gs2Quest.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -161,7 +161,7 @@ namespace Gs2.Gs2Quest.Model
          * @param logSetting ログの出力設定
          * @return this
          */
-        public Namespace WithLogSetting(LogSetting logSetting) {
+        public Namespace WithLogSetting(Gs2.Gs2Quest.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -268,12 +268,12 @@ namespace Gs2.Gs2Quest.Model
                 .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
-                .WithStartQuestScript(data.Keys.Contains("startQuestScript") && data["startQuestScript"] != null ? ScriptSetting.FromDict(data["startQuestScript"]) : null)
-                .WithCompleteQuestScript(data.Keys.Contains("completeQuestScript") && data["completeQuestScript"] != null ? ScriptSetting.FromDict(data["completeQuestScript"]) : null)
-                .WithFailedQuestScript(data.Keys.Contains("failedQuestScript") && data["failedQuestScript"] != null ? ScriptSetting.FromDict(data["failedQuestScript"]) : null)
+                .WithStartQuestScript(data.Keys.Contains("startQuestScript") && data["startQuestScript"] != null ? Gs2.Gs2Quest.Model.ScriptSetting.FromDict(data["startQuestScript"]) : null)
+                .WithCompleteQuestScript(data.Keys.Contains("completeQuestScript") && data["completeQuestScript"] != null ? Gs2.Gs2Quest.Model.ScriptSetting.FromDict(data["completeQuestScript"]) : null)
+                .WithFailedQuestScript(data.Keys.Contains("failedQuestScript") && data["failedQuestScript"] != null ? Gs2.Gs2Quest.Model.ScriptSetting.FromDict(data["failedQuestScript"]) : null)
                 .WithQueueNamespaceId(data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? data["queueNamespaceId"].ToString() : null)
                 .WithKeyId(data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString() : null)
-                .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null)
+                .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Quest.Model.LogSetting.FromDict(data["logSetting"]) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }

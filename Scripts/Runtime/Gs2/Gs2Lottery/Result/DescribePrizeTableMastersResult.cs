@@ -39,7 +39,7 @@ namespace Gs2.Gs2Lottery.Result
             return new DescribePrizeTableMastersResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return PrizeTableMaster.FromDict(value);
+                        return Gs2.Gs2Lottery.Model.PrizeTableMaster.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

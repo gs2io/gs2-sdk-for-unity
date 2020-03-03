@@ -149,7 +149,7 @@ namespace Gs2.Gs2Money.Request
 
 
         /** ウォレット新規作成したときに実行するスクリプト */
-        public ScriptSetting createWalletScript { set; get; }
+        public Gs2.Gs2Money.Model.ScriptSetting createWalletScript { set; get; }
 
         /**
          * ウォレット新規作成したときに実行するスクリプトを設定
@@ -157,14 +157,14 @@ namespace Gs2.Gs2Money.Request
          * @param createWalletScript ウォレット新規作成したときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithCreateWalletScript(ScriptSetting createWalletScript) {
+        public CreateNamespaceRequest WithCreateWalletScript(Gs2.Gs2Money.Model.ScriptSetting createWalletScript) {
             this.createWalletScript = createWalletScript;
             return this;
         }
 
 
         /** ウォレット残高加算したときに実行するスクリプト */
-        public ScriptSetting depositScript { set; get; }
+        public Gs2.Gs2Money.Model.ScriptSetting depositScript { set; get; }
 
         /**
          * ウォレット残高加算したときに実行するスクリプトを設定
@@ -172,14 +172,14 @@ namespace Gs2.Gs2Money.Request
          * @param depositScript ウォレット残高加算したときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithDepositScript(ScriptSetting depositScript) {
+        public CreateNamespaceRequest WithDepositScript(Gs2.Gs2Money.Model.ScriptSetting depositScript) {
             this.depositScript = depositScript;
             return this;
         }
 
 
         /** ウォレット残高消費したときに実行するスクリプト */
-        public ScriptSetting withdrawScript { set; get; }
+        public Gs2.Gs2Money.Model.ScriptSetting withdrawScript { set; get; }
 
         /**
          * ウォレット残高消費したときに実行するスクリプトを設定
@@ -187,14 +187,14 @@ namespace Gs2.Gs2Money.Request
          * @param withdrawScript ウォレット残高消費したときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithWithdrawScript(ScriptSetting withdrawScript) {
+        public CreateNamespaceRequest WithWithdrawScript(Gs2.Gs2Money.Model.ScriptSetting withdrawScript) {
             this.withdrawScript = withdrawScript;
             return this;
         }
 
 
         /** ログの出力設定 */
-        public LogSetting logSetting { set; get; }
+        public Gs2.Gs2Money.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -202,7 +202,7 @@ namespace Gs2.Gs2Money.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public CreateNamespaceRequest WithLogSetting(LogSetting logSetting) {
+        public CreateNamespaceRequest WithLogSetting(Gs2.Gs2Money.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -220,10 +220,10 @@ namespace Gs2.Gs2Money.Request
                 appleKey = data.Keys.Contains("appleKey") && data["appleKey"] != null ? data["appleKey"].ToString(): null,
                 googleKey = data.Keys.Contains("googleKey") && data["googleKey"] != null ? data["googleKey"].ToString(): null,
                 enableFakeReceipt = data.Keys.Contains("enableFakeReceipt") && data["enableFakeReceipt"] != null ? (bool?)bool.Parse(data["enableFakeReceipt"].ToString()) : null,
-                createWalletScript = data.Keys.Contains("createWalletScript") && data["createWalletScript"] != null ? ScriptSetting.FromDict(data["createWalletScript"]) : null,
-                depositScript = data.Keys.Contains("depositScript") && data["depositScript"] != null ? ScriptSetting.FromDict(data["depositScript"]) : null,
-                withdrawScript = data.Keys.Contains("withdrawScript") && data["withdrawScript"] != null ? ScriptSetting.FromDict(data["withdrawScript"]) : null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null,
+                createWalletScript = data.Keys.Contains("createWalletScript") && data["createWalletScript"] != null ? Gs2.Gs2Money.Model.ScriptSetting.FromDict(data["createWalletScript"]) : null,
+                depositScript = data.Keys.Contains("depositScript") && data["depositScript"] != null ? Gs2.Gs2Money.Model.ScriptSetting.FromDict(data["depositScript"]) : null,
+                withdrawScript = data.Keys.Contains("withdrawScript") && data["withdrawScript"] != null ? Gs2.Gs2Money.Model.ScriptSetting.FromDict(data["withdrawScript"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Money.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 

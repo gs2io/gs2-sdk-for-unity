@@ -34,7 +34,7 @@ namespace Gs2.Gs2Friend.Result
         public static UnregisterBlackListResult FromDict(JsonData data)
         {
             return new UnregisterBlackListResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? BlackList.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Friend.Model.BlackList.FromDict(data["item"]) : null,
             };
         }
 	}

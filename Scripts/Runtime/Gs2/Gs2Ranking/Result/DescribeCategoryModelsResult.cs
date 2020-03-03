@@ -36,7 +36,7 @@ namespace Gs2.Gs2Ranking.Result
             return new DescribeCategoryModelsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return CategoryModel.FromDict(value);
+                        return Gs2.Gs2Ranking.Model.CategoryModel.FromDict(value);
                     }
                 ).ToList() : null,
             };

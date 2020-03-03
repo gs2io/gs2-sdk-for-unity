@@ -34,7 +34,7 @@ namespace Gs2.Gs2Quest.Result
         public static DeleteProgressResult FromDict(JsonData data)
         {
             return new DeleteProgressResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Progress.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Quest.Model.Progress.FromDict(data["item"]) : null,
             };
         }
 	}

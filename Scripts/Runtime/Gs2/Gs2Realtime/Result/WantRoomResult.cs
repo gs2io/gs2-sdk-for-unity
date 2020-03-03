@@ -34,7 +34,7 @@ namespace Gs2.Gs2Realtime.Result
         public static WantRoomResult FromDict(JsonData data)
         {
             return new WantRoomResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Room.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Realtime.Model.Room.FromDict(data["item"]) : null,
             };
         }
 	}

@@ -219,7 +219,7 @@ namespace Gs2.Gs2Inbox.Model
                 .WithIsRead(data.Keys.Contains("isRead") && data["isRead"] != null ? (bool?)bool.Parse(data["isRead"].ToString()) : null)
                 .WithReadAcquireActions(data.Keys.Contains("readAcquireActions") && data["readAcquireActions"] != null ? data["readAcquireActions"].Cast<JsonData>().Select(value =>
                     {
-                        return AcquireAction.FromDict(value);
+                        return Gs2.Gs2Inbox.Model.AcquireAction.FromDict(value);
                     }
                 ).ToList() : null)
                 .WithReceivedAt(data.Keys.Contains("receivedAt") && data["receivedAt"] != null ? (long?)long.Parse(data["receivedAt"].ToString()) : null)

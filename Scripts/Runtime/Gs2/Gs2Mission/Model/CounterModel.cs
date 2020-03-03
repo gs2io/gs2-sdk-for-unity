@@ -141,7 +141,7 @@ namespace Gs2.Gs2Mission.Model
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
                 .WithScopes(data.Keys.Contains("scopes") && data["scopes"] != null ? data["scopes"].Cast<JsonData>().Select(value =>
                     {
-                        return CounterScopeModel.FromDict(value);
+                        return Gs2.Gs2Mission.Model.CounterScopeModel.FromDict(value);
                     }
                 ).ToList() : null)
                 .WithChallengePeriodEventId(data.Keys.Contains("challengePeriodEventId") && data["challengePeriodEventId"] != null ? data["challengePeriodEventId"].ToString() : null);

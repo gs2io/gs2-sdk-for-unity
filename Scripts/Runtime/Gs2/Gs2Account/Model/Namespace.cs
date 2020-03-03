@@ -97,7 +97,7 @@ namespace Gs2.Gs2Account.Model
         }
 
         /** アカウント新規作成したときに実行するスクリプト */
-        public ScriptSetting createAccountScript { set; get; }
+        public Gs2.Gs2Account.Model.ScriptSetting createAccountScript { set; get; }
 
         /**
          * アカウント新規作成したときに実行するスクリプトを設定
@@ -105,13 +105,13 @@ namespace Gs2.Gs2Account.Model
          * @param createAccountScript アカウント新規作成したときに実行するスクリプト
          * @return this
          */
-        public Namespace WithCreateAccountScript(ScriptSetting createAccountScript) {
+        public Namespace WithCreateAccountScript(Gs2.Gs2Account.Model.ScriptSetting createAccountScript) {
             this.createAccountScript = createAccountScript;
             return this;
         }
 
         /** 認証したときに実行するスクリプト */
-        public ScriptSetting authenticationScript { set; get; }
+        public Gs2.Gs2Account.Model.ScriptSetting authenticationScript { set; get; }
 
         /**
          * 認証したときに実行するスクリプトを設定
@@ -119,13 +119,13 @@ namespace Gs2.Gs2Account.Model
          * @param authenticationScript 認証したときに実行するスクリプト
          * @return this
          */
-        public Namespace WithAuthenticationScript(ScriptSetting authenticationScript) {
+        public Namespace WithAuthenticationScript(Gs2.Gs2Account.Model.ScriptSetting authenticationScript) {
             this.authenticationScript = authenticationScript;
             return this;
         }
 
         /** 引き継ぎ情報登録したときに実行するスクリプト */
-        public ScriptSetting createTakeOverScript { set; get; }
+        public Gs2.Gs2Account.Model.ScriptSetting createTakeOverScript { set; get; }
 
         /**
          * 引き継ぎ情報登録したときに実行するスクリプトを設定
@@ -133,13 +133,13 @@ namespace Gs2.Gs2Account.Model
          * @param createTakeOverScript 引き継ぎ情報登録したときに実行するスクリプト
          * @return this
          */
-        public Namespace WithCreateTakeOverScript(ScriptSetting createTakeOverScript) {
+        public Namespace WithCreateTakeOverScript(Gs2.Gs2Account.Model.ScriptSetting createTakeOverScript) {
             this.createTakeOverScript = createTakeOverScript;
             return this;
         }
 
         /** 引き継ぎ実行したときに実行するスクリプト */
-        public ScriptSetting doTakeOverScript { set; get; }
+        public Gs2.Gs2Account.Model.ScriptSetting doTakeOverScript { set; get; }
 
         /**
          * 引き継ぎ実行したときに実行するスクリプトを設定
@@ -147,13 +147,13 @@ namespace Gs2.Gs2Account.Model
          * @param doTakeOverScript 引き継ぎ実行したときに実行するスクリプト
          * @return this
          */
-        public Namespace WithDoTakeOverScript(ScriptSetting doTakeOverScript) {
+        public Namespace WithDoTakeOverScript(Gs2.Gs2Account.Model.ScriptSetting doTakeOverScript) {
             this.doTakeOverScript = doTakeOverScript;
             return this;
         }
 
         /** ログの出力設定 */
-        public LogSetting logSetting { set; get; }
+        public Gs2.Gs2Account.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -161,7 +161,7 @@ namespace Gs2.Gs2Account.Model
          * @param logSetting ログの出力設定
          * @return this
          */
-        public Namespace WithLogSetting(LogSetting logSetting) {
+        public Namespace WithLogSetting(Gs2.Gs2Account.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -269,11 +269,11 @@ namespace Gs2.Gs2Account.Model
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
                 .WithChangePasswordIfTakeOver(data.Keys.Contains("changePasswordIfTakeOver") && data["changePasswordIfTakeOver"] != null ? (bool?)bool.Parse(data["changePasswordIfTakeOver"].ToString()) : null)
-                .WithCreateAccountScript(data.Keys.Contains("createAccountScript") && data["createAccountScript"] != null ? ScriptSetting.FromDict(data["createAccountScript"]) : null)
-                .WithAuthenticationScript(data.Keys.Contains("authenticationScript") && data["authenticationScript"] != null ? ScriptSetting.FromDict(data["authenticationScript"]) : null)
-                .WithCreateTakeOverScript(data.Keys.Contains("createTakeOverScript") && data["createTakeOverScript"] != null ? ScriptSetting.FromDict(data["createTakeOverScript"]) : null)
-                .WithDoTakeOverScript(data.Keys.Contains("doTakeOverScript") && data["doTakeOverScript"] != null ? ScriptSetting.FromDict(data["doTakeOverScript"]) : null)
-                .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null)
+                .WithCreateAccountScript(data.Keys.Contains("createAccountScript") && data["createAccountScript"] != null ? Gs2.Gs2Account.Model.ScriptSetting.FromDict(data["createAccountScript"]) : null)
+                .WithAuthenticationScript(data.Keys.Contains("authenticationScript") && data["authenticationScript"] != null ? Gs2.Gs2Account.Model.ScriptSetting.FromDict(data["authenticationScript"]) : null)
+                .WithCreateTakeOverScript(data.Keys.Contains("createTakeOverScript") && data["createTakeOverScript"] != null ? Gs2.Gs2Account.Model.ScriptSetting.FromDict(data["createTakeOverScript"]) : null)
+                .WithDoTakeOverScript(data.Keys.Contains("doTakeOverScript") && data["doTakeOverScript"] != null ? Gs2.Gs2Account.Model.ScriptSetting.FromDict(data["doTakeOverScript"]) : null)
+                .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Account.Model.LogSetting.FromDict(data["logSetting"]) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }

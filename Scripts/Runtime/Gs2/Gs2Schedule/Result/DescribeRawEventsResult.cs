@@ -36,7 +36,7 @@ namespace Gs2.Gs2Schedule.Result
             return new DescribeRawEventsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return Event.FromDict(value);
+                        return Gs2.Gs2Schedule.Model.Event.FromDict(value);
                     }
                 ).ToList() : null,
             };

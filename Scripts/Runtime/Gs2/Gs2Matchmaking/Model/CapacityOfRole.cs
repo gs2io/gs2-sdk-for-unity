@@ -131,7 +131,7 @@ namespace Gs2.Gs2Matchmaking.Model
                 .WithCapacity(data.Keys.Contains("capacity") && data["capacity"] != null ? (int?)int.Parse(data["capacity"].ToString()) : null)
                 .WithParticipants(data.Keys.Contains("participants") && data["participants"] != null ? data["participants"].Cast<JsonData>().Select(value =>
                     {
-                        return Player.FromDict(value);
+                        return Gs2.Gs2Matchmaking.Model.Player.FromDict(value);
                     }
                 ).ToList() : null);
         }

@@ -34,7 +34,7 @@ namespace Gs2.Gs2Key.Result
         public static GetGitHubApiKeyResult FromDict(JsonData data)
         {
             return new GetGitHubApiKeyResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? GitHubApiKey.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Key.Model.GitHubApiKey.FromDict(data["item"]) : null,
             };
         }
 	}

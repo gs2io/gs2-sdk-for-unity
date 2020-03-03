@@ -34,7 +34,7 @@ namespace Gs2.Gs2Project.Result
         public static CreateProjectResult FromDict(JsonData data)
         {
             return new CreateProjectResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Project.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Project.Model.Project.FromDict(data["item"]) : null,
             };
         }
 	}

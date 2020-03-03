@@ -34,7 +34,7 @@ namespace Gs2.Gs2Version.Result
         public static UpdateVersionModelMasterResult FromDict(JsonData data)
         {
             return new UpdateVersionModelMasterResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? VersionModelMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Version.Model.VersionModelMaster.FromDict(data["item"]) : null,
             };
         }
 	}

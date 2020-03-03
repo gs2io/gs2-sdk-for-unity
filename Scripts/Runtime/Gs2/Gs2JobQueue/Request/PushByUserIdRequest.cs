@@ -96,7 +96,7 @@ namespace Gs2.Gs2JobQueue.Request
                 userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
                 jobs = data.Keys.Contains("jobs") && data["jobs"] != null ? data["jobs"].Cast<JsonData>().Select(value =>
                     {
-                        return JobEntry.FromDict(value);
+                        return Gs2.Gs2JobQueue.Model.JobEntry.FromDict(value);
                     }
                 ).ToList() : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,

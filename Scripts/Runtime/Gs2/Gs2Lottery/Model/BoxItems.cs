@@ -122,7 +122,7 @@ namespace Gs2.Gs2Lottery.Model
                 .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
                 .WithItems(data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return BoxItem.FromDict(value);
+                        return Gs2.Gs2Lottery.Model.BoxItem.FromDict(value);
                     }
                 ).ToList() : null);
         }

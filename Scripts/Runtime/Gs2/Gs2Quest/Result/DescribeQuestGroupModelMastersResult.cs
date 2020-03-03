@@ -39,7 +39,7 @@ namespace Gs2.Gs2Quest.Result
             return new DescribeQuestGroupModelMastersResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return QuestGroupModelMaster.FromDict(value);
+                        return Gs2.Gs2Quest.Model.QuestGroupModelMaster.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

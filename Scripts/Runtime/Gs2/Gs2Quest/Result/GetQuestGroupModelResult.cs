@@ -34,7 +34,7 @@ namespace Gs2.Gs2Quest.Result
         public static GetQuestGroupModelResult FromDict(JsonData data)
         {
             return new GetQuestGroupModelResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? QuestGroupModel.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Quest.Model.QuestGroupModel.FromDict(data["item"]) : null,
             };
         }
 	}

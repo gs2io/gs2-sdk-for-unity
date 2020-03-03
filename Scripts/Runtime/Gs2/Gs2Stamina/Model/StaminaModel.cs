@@ -139,7 +139,7 @@ namespace Gs2.Gs2Stamina.Model
         }
 
         /** GS2-Experience と連携する際に使用するスタミナ最大値テーブル */
-        public MaxStaminaTable maxStaminaTable { set; get; }
+        public Gs2.Gs2Stamina.Model.MaxStaminaTable maxStaminaTable { set; get; }
 
         /**
          * GS2-Experience と連携する際に使用するスタミナ最大値テーブルを設定
@@ -147,13 +147,13 @@ namespace Gs2.Gs2Stamina.Model
          * @param maxStaminaTable GS2-Experience と連携する際に使用するスタミナ最大値テーブル
          * @return this
          */
-        public StaminaModel WithMaxStaminaTable(MaxStaminaTable maxStaminaTable) {
+        public StaminaModel WithMaxStaminaTable(Gs2.Gs2Stamina.Model.MaxStaminaTable maxStaminaTable) {
             this.maxStaminaTable = maxStaminaTable;
             return this;
         }
 
         /** GS2-Experience と連携する際に使用する回復間隔テーブル */
-        public RecoverIntervalTable recoverIntervalTable { set; get; }
+        public Gs2.Gs2Stamina.Model.RecoverIntervalTable recoverIntervalTable { set; get; }
 
         /**
          * GS2-Experience と連携する際に使用する回復間隔テーブルを設定
@@ -161,13 +161,13 @@ namespace Gs2.Gs2Stamina.Model
          * @param recoverIntervalTable GS2-Experience と連携する際に使用する回復間隔テーブル
          * @return this
          */
-        public StaminaModel WithRecoverIntervalTable(RecoverIntervalTable recoverIntervalTable) {
+        public StaminaModel WithRecoverIntervalTable(Gs2.Gs2Stamina.Model.RecoverIntervalTable recoverIntervalTable) {
             this.recoverIntervalTable = recoverIntervalTable;
             return this;
         }
 
         /** GS2-Experience と連携する際に使用する回復量テーブル */
-        public RecoverValueTable recoverValueTable { set; get; }
+        public Gs2.Gs2Stamina.Model.RecoverValueTable recoverValueTable { set; get; }
 
         /**
          * GS2-Experience と連携する際に使用する回復量テーブルを設定
@@ -175,7 +175,7 @@ namespace Gs2.Gs2Stamina.Model
          * @param recoverValueTable GS2-Experience と連携する際に使用する回復量テーブル
          * @return this
          */
-        public StaminaModel WithRecoverValueTable(RecoverValueTable recoverValueTable) {
+        public StaminaModel WithRecoverValueTable(Gs2.Gs2Stamina.Model.RecoverValueTable recoverValueTable) {
             this.recoverValueTable = recoverValueTable;
             return this;
         }
@@ -253,9 +253,9 @@ namespace Gs2.Gs2Stamina.Model
                 .WithInitialCapacity(data.Keys.Contains("initialCapacity") && data["initialCapacity"] != null ? (int?)int.Parse(data["initialCapacity"].ToString()) : null)
                 .WithIsOverflow(data.Keys.Contains("isOverflow") && data["isOverflow"] != null ? (bool?)bool.Parse(data["isOverflow"].ToString()) : null)
                 .WithMaxCapacity(data.Keys.Contains("maxCapacity") && data["maxCapacity"] != null ? (int?)int.Parse(data["maxCapacity"].ToString()) : null)
-                .WithMaxStaminaTable(data.Keys.Contains("maxStaminaTable") && data["maxStaminaTable"] != null ? MaxStaminaTable.FromDict(data["maxStaminaTable"]) : null)
-                .WithRecoverIntervalTable(data.Keys.Contains("recoverIntervalTable") && data["recoverIntervalTable"] != null ? RecoverIntervalTable.FromDict(data["recoverIntervalTable"]) : null)
-                .WithRecoverValueTable(data.Keys.Contains("recoverValueTable") && data["recoverValueTable"] != null ? RecoverValueTable.FromDict(data["recoverValueTable"]) : null);
+                .WithMaxStaminaTable(data.Keys.Contains("maxStaminaTable") && data["maxStaminaTable"] != null ? Gs2.Gs2Stamina.Model.MaxStaminaTable.FromDict(data["maxStaminaTable"]) : null)
+                .WithRecoverIntervalTable(data.Keys.Contains("recoverIntervalTable") && data["recoverIntervalTable"] != null ? Gs2.Gs2Stamina.Model.RecoverIntervalTable.FromDict(data["recoverIntervalTable"]) : null)
+                .WithRecoverValueTable(data.Keys.Contains("recoverValueTable") && data["recoverValueTable"] != null ? Gs2.Gs2Stamina.Model.RecoverValueTable.FromDict(data["recoverValueTable"]) : null);
         }
 	}
 }

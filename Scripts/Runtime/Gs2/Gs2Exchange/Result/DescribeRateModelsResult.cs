@@ -36,7 +36,7 @@ namespace Gs2.Gs2Exchange.Result
             return new DescribeRateModelsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return RateModel.FromDict(value);
+                        return Gs2.Gs2Exchange.Model.RateModel.FromDict(value);
                     }
                 ).ToList() : null,
             };

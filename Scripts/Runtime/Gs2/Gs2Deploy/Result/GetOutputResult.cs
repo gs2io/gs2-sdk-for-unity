@@ -34,7 +34,7 @@ namespace Gs2.Gs2Deploy.Result
         public static GetOutputResult FromDict(JsonData data)
         {
             return new GetOutputResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Output.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Deploy.Model.Output.FromDict(data["item"]) : null,
             };
         }
 	}

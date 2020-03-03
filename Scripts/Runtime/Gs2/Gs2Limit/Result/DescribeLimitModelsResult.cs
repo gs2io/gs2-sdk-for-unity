@@ -36,7 +36,7 @@ namespace Gs2.Gs2Limit.Result
             return new DescribeLimitModelsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return LimitModel.FromDict(value);
+                        return Gs2.Gs2Limit.Model.LimitModel.FromDict(value);
                     }
                 ).ToList() : null,
             };

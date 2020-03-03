@@ -34,7 +34,7 @@ namespace Gs2.Gs2Gateway.Result
         public static DeleteFirebaseTokenByUserIdResult FromDict(JsonData data)
         {
             return new DeleteFirebaseTokenByUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? FirebaseToken.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Gateway.Model.FirebaseToken.FromDict(data["item"]) : null,
             };
         }
 	}

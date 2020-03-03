@@ -34,7 +34,7 @@ namespace Gs2.Gs2Money.Result
         public static GetWalletResult FromDict(JsonData data)
         {
             return new GetWalletResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Wallet.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Money.Model.Wallet.FromDict(data["item"]) : null,
             };
         }
 	}

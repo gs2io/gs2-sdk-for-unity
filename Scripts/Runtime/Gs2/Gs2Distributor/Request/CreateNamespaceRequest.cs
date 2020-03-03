@@ -74,7 +74,7 @@ namespace Gs2.Gs2Distributor.Request
 
 
         /** ログの出力設定 */
-        public LogSetting logSetting { set; get; }
+        public Gs2.Gs2Distributor.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -82,7 +82,7 @@ namespace Gs2.Gs2Distributor.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public CreateNamespaceRequest WithLogSetting(LogSetting logSetting) {
+        public CreateNamespaceRequest WithLogSetting(Gs2.Gs2Distributor.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -95,7 +95,7 @@ namespace Gs2.Gs2Distributor.Request
                 name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 assumeUserId = data.Keys.Contains("assumeUserId") && data["assumeUserId"] != null ? data["assumeUserId"].ToString(): null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Distributor.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 

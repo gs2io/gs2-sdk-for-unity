@@ -89,7 +89,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** ログの出力設定 */
-        public LogSetting logSetting { set; get; }
+        public Gs2.Gs2Stamina.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -97,7 +97,7 @@ namespace Gs2.Gs2Stamina.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public CreateNamespaceRequest WithLogSetting(LogSetting logSetting) {
+        public CreateNamespaceRequest WithLogSetting(Gs2.Gs2Stamina.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -111,7 +111,7 @@ namespace Gs2.Gs2Stamina.Request
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 overflowTriggerScriptId = data.Keys.Contains("overflowTriggerScriptId") && data["overflowTriggerScriptId"] != null ? data["overflowTriggerScriptId"].ToString(): null,
                 overflowTriggerNamespaceId = data.Keys.Contains("overflowTriggerNamespaceId") && data["overflowTriggerNamespaceId"] != null ? data["overflowTriggerNamespaceId"].ToString(): null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? LogSetting.FromDict(data["logSetting"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Stamina.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 

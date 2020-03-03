@@ -111,7 +111,7 @@ namespace Gs2.Gs2Experience.Model
         }
 
         /** ランクアップ閾値 */
-        public Threshold rankThreshold { set; get; }
+        public Gs2.Gs2Experience.Model.Threshold rankThreshold { set; get; }
 
         /**
          * ランクアップ閾値を設定
@@ -119,7 +119,7 @@ namespace Gs2.Gs2Experience.Model
          * @param rankThreshold ランクアップ閾値
          * @return this
          */
-        public ExperienceModel WithRankThreshold(Threshold rankThreshold) {
+        public ExperienceModel WithRankThreshold(Gs2.Gs2Experience.Model.Threshold rankThreshold) {
             this.rankThreshold = rankThreshold;
             return this;
         }
@@ -175,7 +175,7 @@ namespace Gs2.Gs2Experience.Model
                 .WithDefaultExperience(data.Keys.Contains("defaultExperience") && data["defaultExperience"] != null ? (long?)long.Parse(data["defaultExperience"].ToString()) : null)
                 .WithDefaultRankCap(data.Keys.Contains("defaultRankCap") && data["defaultRankCap"] != null ? (long?)long.Parse(data["defaultRankCap"].ToString()) : null)
                 .WithMaxRankCap(data.Keys.Contains("maxRankCap") && data["maxRankCap"] != null ? (long?)long.Parse(data["maxRankCap"].ToString()) : null)
-                .WithRankThreshold(data.Keys.Contains("rankThreshold") && data["rankThreshold"] != null ? Threshold.FromDict(data["rankThreshold"]) : null);
+                .WithRankThreshold(data.Keys.Contains("rankThreshold") && data["rankThreshold"] != null ? Gs2.Gs2Experience.Model.Threshold.FromDict(data["rankThreshold"]) : null);
         }
 	}
 }

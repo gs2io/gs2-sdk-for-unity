@@ -34,7 +34,7 @@ namespace Gs2.Gs2Friend.Result
         public static GetSendRequestResult FromDict(JsonData data)
         {
             return new GetSendRequestResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? FriendRequest.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Friend.Model.FriendRequest.FromDict(data["item"]) : null,
             };
         }
 	}

@@ -37,7 +37,7 @@ namespace Gs2.Gs2Mission.Result
         public static ReceiveByStampTaskResult FromDict(JsonData data)
         {
             return new ReceiveByStampTaskResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Complete.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Mission.Model.Complete.FromDict(data["item"]) : null,
                 newContextStack = data.Keys.Contains("newContextStack") && data["newContextStack"] != null ? data["newContextStack"].ToString() : null,
             };
         }

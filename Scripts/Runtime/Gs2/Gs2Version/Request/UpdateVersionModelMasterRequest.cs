@@ -89,7 +89,7 @@ namespace Gs2.Gs2Version.Request
 
 
         /** バージョンアップを促すバージョン */
-        public Version_ warningVersion { set; get; }
+        public Gs2.Gs2Version.Model.Version_ warningVersion { set; get; }
 
         /**
          * バージョンアップを促すバージョンを設定
@@ -97,14 +97,14 @@ namespace Gs2.Gs2Version.Request
          * @param warningVersion バージョンアップを促すバージョン
          * @return this
          */
-        public UpdateVersionModelMasterRequest WithWarningVersion(Version_ warningVersion) {
+        public UpdateVersionModelMasterRequest WithWarningVersion(Gs2.Gs2Version.Model.Version_ warningVersion) {
             this.warningVersion = warningVersion;
             return this;
         }
 
 
         /** バージョンチェックを蹴るバージョン */
-        public Version_ errorVersion { set; get; }
+        public Gs2.Gs2Version.Model.Version_ errorVersion { set; get; }
 
         /**
          * バージョンチェックを蹴るバージョンを設定
@@ -112,7 +112,7 @@ namespace Gs2.Gs2Version.Request
          * @param errorVersion バージョンチェックを蹴るバージョン
          * @return this
          */
-        public UpdateVersionModelMasterRequest WithErrorVersion(Version_ errorVersion) {
+        public UpdateVersionModelMasterRequest WithErrorVersion(Gs2.Gs2Version.Model.Version_ errorVersion) {
             this.errorVersion = errorVersion;
             return this;
         }
@@ -134,7 +134,7 @@ namespace Gs2.Gs2Version.Request
 
 
         /** 現在のバージョン */
-        public Version_ currentVersion { set; get; }
+        public Gs2.Gs2Version.Model.Version_ currentVersion { set; get; }
 
         /**
          * 現在のバージョンを設定
@@ -142,7 +142,7 @@ namespace Gs2.Gs2Version.Request
          * @param currentVersion 現在のバージョン
          * @return this
          */
-        public UpdateVersionModelMasterRequest WithCurrentVersion(Version_ currentVersion) {
+        public UpdateVersionModelMasterRequest WithCurrentVersion(Gs2.Gs2Version.Model.Version_ currentVersion) {
             this.currentVersion = currentVersion;
             return this;
         }
@@ -186,10 +186,10 @@ namespace Gs2.Gs2Version.Request
                 versionName = data.Keys.Contains("versionName") && data["versionName"] != null ? data["versionName"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
-                warningVersion = data.Keys.Contains("warningVersion") && data["warningVersion"] != null ? Version_.FromDict(data["warningVersion"]) : null,
-                errorVersion = data.Keys.Contains("errorVersion") && data["errorVersion"] != null ? Version_.FromDict(data["errorVersion"]) : null,
+                warningVersion = data.Keys.Contains("warningVersion") && data["warningVersion"] != null ? Gs2.Gs2Version.Model.Version_.FromDict(data["warningVersion"]) : null,
+                errorVersion = data.Keys.Contains("errorVersion") && data["errorVersion"] != null ? Gs2.Gs2Version.Model.Version_.FromDict(data["errorVersion"]) : null,
                 scope = data.Keys.Contains("scope") && data["scope"] != null ? data["scope"].ToString(): null,
-                currentVersion = data.Keys.Contains("currentVersion") && data["currentVersion"] != null ? Version_.FromDict(data["currentVersion"]) : null,
+                currentVersion = data.Keys.Contains("currentVersion") && data["currentVersion"] != null ? Gs2.Gs2Version.Model.Version_.FromDict(data["currentVersion"]) : null,
                 needSignature = data.Keys.Contains("needSignature") && data["needSignature"] != null ? (bool?)bool.Parse(data["needSignature"].ToString()) : null,
                 signatureKeyId = data.Keys.Contains("signatureKeyId") && data["signatureKeyId"] != null ? data["signatureKeyId"].ToString(): null,
             };

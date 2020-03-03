@@ -36,7 +36,7 @@ namespace Gs2.Gs2Inventory.Result
             return new DescribeItemModelsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return ItemModel.FromDict(value);
+                        return Gs2.Gs2Inventory.Model.ItemModel.FromDict(value);
                     }
                 ).ToList() : null,
             };

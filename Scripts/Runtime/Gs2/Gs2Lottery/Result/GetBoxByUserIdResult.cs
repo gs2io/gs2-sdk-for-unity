@@ -34,7 +34,7 @@ namespace Gs2.Gs2Lottery.Result
         public static GetBoxByUserIdResult FromDict(JsonData data)
         {
             return new GetBoxByUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? BoxItems.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Lottery.Model.BoxItems.FromDict(data["item"]) : null,
             };
         }
 	}

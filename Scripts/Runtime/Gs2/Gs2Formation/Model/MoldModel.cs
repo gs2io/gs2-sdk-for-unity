@@ -69,7 +69,7 @@ namespace Gs2.Gs2Formation.Model
         }
 
         /** None */
-        public FormModel formModel { set; get; }
+        public Gs2.Gs2Formation.Model.FormModel formModel { set; get; }
 
         /**
          * Noneを設定
@@ -77,7 +77,7 @@ namespace Gs2.Gs2Formation.Model
          * @param formModel None
          * @return this
          */
-        public MoldModel WithFormModel(FormModel formModel) {
+        public MoldModel WithFormModel(Gs2.Gs2Formation.Model.FormModel formModel) {
             this.formModel = formModel;
             return this;
         }
@@ -153,7 +153,7 @@ namespace Gs2.Gs2Formation.Model
                 .WithMoldModelId(data.Keys.Contains("moldModelId") && data["moldModelId"] != null ? data["moldModelId"].ToString() : null)
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
-                .WithFormModel(data.Keys.Contains("formModel") && data["formModel"] != null ? FormModel.FromDict(data["formModel"]) : null)
+                .WithFormModel(data.Keys.Contains("formModel") && data["formModel"] != null ? Gs2.Gs2Formation.Model.FormModel.FromDict(data["formModel"]) : null)
                 .WithInitialMaxCapacity(data.Keys.Contains("initialMaxCapacity") && data["initialMaxCapacity"] != null ? (int?)int.Parse(data["initialMaxCapacity"].ToString()) : null)
                 .WithMaxCapacity(data.Keys.Contains("maxCapacity") && data["maxCapacity"] != null ? (int?)int.Parse(data["maxCapacity"].ToString()) : null);
         }

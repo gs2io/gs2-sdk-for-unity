@@ -125,7 +125,7 @@ namespace Gs2.Gs2Matchmaking.Model
                 .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
                 .WithAttributes(data.Keys.Contains("attributes") && data["attributes"] != null ? data["attributes"].Cast<JsonData>().Select(value =>
                     {
-                        return Attribute_.FromDict(value);
+                        return Gs2.Gs2Matchmaking.Model.Attribute_.FromDict(value);
                     }
                 ).ToList() : null)
                 .WithRoleName(data.Keys.Contains("roleName") && data["roleName"] != null ? data["roleName"].ToString() : null)

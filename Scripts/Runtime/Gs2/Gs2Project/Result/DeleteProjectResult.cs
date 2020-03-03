@@ -34,7 +34,7 @@ namespace Gs2.Gs2Project.Result
         public static DeleteProjectResult FromDict(JsonData data)
         {
             return new DeleteProjectResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Project.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Project.Model.Project.FromDict(data["item"]) : null,
             };
         }
 	}

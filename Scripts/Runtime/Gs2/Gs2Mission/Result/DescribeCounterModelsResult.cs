@@ -36,7 +36,7 @@ namespace Gs2.Gs2Mission.Result
             return new DescribeCounterModelsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return CounterModel.FromDict(value);
+                        return Gs2.Gs2Mission.Model.CounterModel.FromDict(value);
                     }
                 ).ToList() : null,
             };

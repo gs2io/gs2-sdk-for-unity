@@ -102,7 +102,7 @@ namespace Gs2.Gs2Showcase.Model
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
                 .WithSalesItems(data.Keys.Contains("salesItems") && data["salesItems"] != null ? data["salesItems"].Cast<JsonData>().Select(value =>
                     {
-                        return SalesItem.FromDict(value);
+                        return Gs2.Gs2Showcase.Model.SalesItem.FromDict(value);
                     }
                 ).ToList() : null);
         }

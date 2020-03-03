@@ -34,7 +34,7 @@ namespace Gs2.Gs2Version.Result
         public static GetNamespaceResult FromDict(JsonData data)
         {
             return new GetNamespaceResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Namespace.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Version.Model.Namespace.FromDict(data["item"]) : null,
             };
         }
 	}

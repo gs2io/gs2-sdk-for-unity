@@ -122,7 +122,7 @@ namespace Gs2.Gs2Formation.Model
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
                 .WithSlots(data.Keys.Contains("slots") && data["slots"] != null ? data["slots"].Cast<JsonData>().Select(value =>
                     {
-                        return SlotModel.FromDict(value);
+                        return Gs2.Gs2Formation.Model.SlotModel.FromDict(value);
                     }
                 ).ToList() : null);
         }

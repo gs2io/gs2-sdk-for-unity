@@ -34,7 +34,7 @@ namespace Gs2.Gs2Lock.Result
         public static UnlockByUserIdResult FromDict(JsonData data)
         {
             return new UnlockByUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Mutex.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Lock.Model.Mutex.FromDict(data["item"]) : null,
             };
         }
 	}

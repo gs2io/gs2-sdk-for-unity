@@ -34,7 +34,7 @@ namespace Gs2.Gs2Mission.Result
         public static UpdateCounterModelMasterResult FromDict(JsonData data)
         {
             return new UpdateCounterModelMasterResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? CounterModelMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Mission.Model.CounterModelMaster.FromDict(data["item"]) : null,
             };
         }
 	}

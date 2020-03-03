@@ -39,7 +39,7 @@ namespace Gs2.Gs2Project.Result
             return new DescribeProjectsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return Project.FromDict(value);
+                        return Gs2.Gs2Project.Model.Project.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

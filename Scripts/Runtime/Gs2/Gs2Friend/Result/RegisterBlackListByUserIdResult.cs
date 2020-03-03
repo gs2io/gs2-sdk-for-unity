@@ -34,7 +34,7 @@ namespace Gs2.Gs2Friend.Result
         public static RegisterBlackListByUserIdResult FromDict(JsonData data)
         {
             return new RegisterBlackListByUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? BlackList.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Friend.Model.BlackList.FromDict(data["item"]) : null,
             };
         }
 	}

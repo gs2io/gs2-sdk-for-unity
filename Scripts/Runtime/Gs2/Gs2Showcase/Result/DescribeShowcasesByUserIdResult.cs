@@ -36,7 +36,7 @@ namespace Gs2.Gs2Showcase.Result
             return new DescribeShowcasesByUserIdResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return Showcase.FromDict(value);
+                        return Gs2.Gs2Showcase.Model.Showcase.FromDict(value);
                     }
                 ).ToList() : null,
             };

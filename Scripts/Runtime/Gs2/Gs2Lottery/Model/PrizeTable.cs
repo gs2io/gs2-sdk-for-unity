@@ -122,7 +122,7 @@ namespace Gs2.Gs2Lottery.Model
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
                 .WithPrizes(data.Keys.Contains("prizes") && data["prizes"] != null ? data["prizes"].Cast<JsonData>().Select(value =>
                     {
-                        return Prize.FromDict(value);
+                        return Gs2.Gs2Lottery.Model.Prize.FromDict(value);
                     }
                 ).ToList() : null);
         }

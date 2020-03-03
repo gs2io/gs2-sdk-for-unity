@@ -40,7 +40,7 @@ namespace Gs2.Gs2Account.Result
         public static AuthenticationResult FromDict(JsonData data)
         {
             return new AuthenticationResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Account.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Account.Model.Account.FromDict(data["item"]) : null,
                 body = data.Keys.Contains("body") && data["body"] != null ? data["body"].ToString() : null,
                 signature = data.Keys.Contains("signature") && data["signature"] != null ? data["signature"].ToString() : null,
             };

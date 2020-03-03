@@ -34,7 +34,7 @@ namespace Gs2.Gs2Mission.Result
         public static IncreaseByStampSheetResult FromDict(JsonData data)
         {
             return new IncreaseByStampSheetResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Counter.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Mission.Model.Counter.FromDict(data["item"]) : null,
             };
         }
 	}

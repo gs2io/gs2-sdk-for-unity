@@ -34,7 +34,7 @@ namespace Gs2.Gs2Stamina.Result
         public static RaiseMaxValueByUserIdResult FromDict(JsonData data)
         {
             return new RaiseMaxValueByUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Stamina.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Stamina.Model.Stamina.FromDict(data["item"]) : null,
             };
         }
 	}

@@ -59,7 +59,7 @@ namespace Gs2.Gs2Distributor.Request
 
 
         /** 加算するリソース */
-        public DistributeResource distributeResource { set; get; }
+        public Gs2.Gs2Distributor.Model.DistributeResource distributeResource { set; get; }
 
         /**
          * 加算するリソースを設定
@@ -67,7 +67,7 @@ namespace Gs2.Gs2Distributor.Request
          * @param distributeResource 加算するリソース
          * @return this
          */
-        public DistributeRequest WithDistributeResource(DistributeResource distributeResource) {
+        public DistributeRequest WithDistributeResource(Gs2.Gs2Distributor.Model.DistributeResource distributeResource) {
             this.distributeResource = distributeResource;
             return this;
         }
@@ -108,7 +108,7 @@ namespace Gs2.Gs2Distributor.Request
             return new DistributeRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 distributorName = data.Keys.Contains("distributorName") && data["distributorName"] != null ? data["distributorName"].ToString(): null,
-                distributeResource = data.Keys.Contains("distributeResource") && data["distributeResource"] != null ? DistributeResource.FromDict(data["distributeResource"]) : null,
+                distributeResource = data.Keys.Contains("distributeResource") && data["distributeResource"] != null ? Gs2.Gs2Distributor.Model.DistributeResource.FromDict(data["distributeResource"]) : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }

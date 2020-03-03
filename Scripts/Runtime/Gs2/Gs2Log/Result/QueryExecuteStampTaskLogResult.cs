@@ -45,7 +45,7 @@ namespace Gs2.Gs2Log.Result
             return new QueryExecuteStampTaskLogResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return ExecuteStampTaskLog.FromDict(value);
+                        return Gs2.Gs2Log.Model.ExecuteStampTaskLog.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

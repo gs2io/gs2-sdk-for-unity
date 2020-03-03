@@ -36,7 +36,7 @@ namespace Gs2.Gs2Stamina.Result
             return new DescribeStaminaModelsResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return StaminaModel.FromDict(value);
+                        return Gs2.Gs2Stamina.Model.StaminaModel.FromDict(value);
                     }
                 ).ToList() : null,
             };

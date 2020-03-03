@@ -34,7 +34,7 @@ namespace Gs2.Gs2Mission.Result
         public static DeleteMissionGroupModelMasterResult FromDict(JsonData data)
         {
             return new DeleteMissionGroupModelMasterResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? MissionGroupModelMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Mission.Model.MissionGroupModelMaster.FromDict(data["item"]) : null,
             };
         }
 	}

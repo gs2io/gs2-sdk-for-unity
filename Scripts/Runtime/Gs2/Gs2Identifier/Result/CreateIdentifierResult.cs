@@ -37,7 +37,7 @@ namespace Gs2.Gs2Identifier.Result
         public static CreateIdentifierResult FromDict(JsonData data)
         {
             return new CreateIdentifierResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Identifier.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Identifier.Model.Identifier.FromDict(data["item"]) : null,
                 clientSecret = data.Keys.Contains("clientSecret") && data["clientSecret"] != null ? data["clientSecret"].ToString() : null,
             };
         }

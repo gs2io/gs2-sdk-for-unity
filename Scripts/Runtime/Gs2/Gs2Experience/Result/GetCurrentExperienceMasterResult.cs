@@ -34,7 +34,7 @@ namespace Gs2.Gs2Experience.Result
         public static GetCurrentExperienceMasterResult FromDict(JsonData data)
         {
             return new GetCurrentExperienceMasterResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? CurrentExperienceMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Experience.Model.CurrentExperienceMaster.FromDict(data["item"]) : null,
             };
         }
 	}

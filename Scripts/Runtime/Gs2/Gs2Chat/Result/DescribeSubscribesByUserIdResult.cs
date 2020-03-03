@@ -39,7 +39,7 @@ namespace Gs2.Gs2Chat.Result
             return new DescribeSubscribesByUserIdResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return Subscribe.FromDict(value);
+                        return Gs2.Gs2Chat.Model.Subscribe.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

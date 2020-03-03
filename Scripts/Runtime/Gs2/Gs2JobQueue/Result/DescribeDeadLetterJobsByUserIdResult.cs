@@ -39,7 +39,7 @@ namespace Gs2.Gs2JobQueue.Result
             return new DescribeDeadLetterJobsByUserIdResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return DeadLetterJob.FromDict(value);
+                        return Gs2.Gs2JobQueue.Model.DeadLetterJob.FromDict(value);
                     }
                 ).ToList() : null,
                 nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,

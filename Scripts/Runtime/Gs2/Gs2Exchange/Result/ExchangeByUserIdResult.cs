@@ -37,7 +37,7 @@ namespace Gs2.Gs2Exchange.Result
         public static ExchangeByUserIdResult FromDict(JsonData data)
         {
             return new ExchangeByUserIdResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? RateModel.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Exchange.Model.RateModel.FromDict(data["item"]) : null,
                 stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? data["stampSheet"].ToString() : null,
             };
         }

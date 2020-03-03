@@ -34,7 +34,7 @@ namespace Gs2.Gs2Quest.Result
         public static DeleteQuestModelMasterResult FromDict(JsonData data)
         {
             return new DeleteQuestModelMasterResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? QuestModelMaster.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Quest.Model.QuestModelMaster.FromDict(data["item"]) : null,
             };
         }
 	}

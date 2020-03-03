@@ -42,11 +42,11 @@ namespace Gs2.Gs2Lottery.Result
             return new DrawByUserIdResult {
                 items = data.Keys.Contains("items") && data["items"] != null ? data["items"].Cast<JsonData>().Select(value =>
                     {
-                        return DrawnPrize.FromDict(value);
+                        return Gs2.Gs2Lottery.Model.DrawnPrize.FromDict(value);
                     }
                 ).ToList() : null,
                 stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? data["stampSheet"].ToString() : null,
-                boxItems = data.Keys.Contains("boxItems") && data["boxItems"] != null ? BoxItems.FromDict(data["boxItems"]) : null,
+                boxItems = data.Keys.Contains("boxItems") && data["boxItems"] != null ? Gs2.Gs2Lottery.Model.BoxItems.FromDict(data["boxItems"]) : null,
             };
         }
 	}

@@ -34,7 +34,7 @@ namespace Gs2.Gs2Watch.Result
         public static GetChartResult FromDict(JsonData data)
         {
             return new GetChartResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? Chart.FromDict(data["item"]) : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Watch.Model.Chart.FromDict(data["item"]) : null,
             };
         }
 	}

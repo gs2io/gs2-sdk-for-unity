@@ -317,7 +317,7 @@ namespace Gs2.Gs2Deploy.Model
                 ).ToList() : null)
                 .WithOutputFields(data.Keys.Contains("outputFields") && data["outputFields"] != null ? data["outputFields"].Cast<JsonData>().Select(value =>
                     {
-                        return OutputField.FromDict(value);
+                        return Gs2.Gs2Deploy.Model.OutputField.FromDict(value);
                     }
                 ).ToList() : null)
                 .WithWorkId(data.Keys.Contains("workId") && data["workId"] != null ? data["workId"].ToString() : null)
