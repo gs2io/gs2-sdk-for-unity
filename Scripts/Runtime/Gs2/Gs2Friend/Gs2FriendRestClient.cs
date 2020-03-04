@@ -3017,7 +3017,7 @@ namespace Gs2.Gs2Friend
                 var url = Gs2RestSession.EndpointHost
                     .Replace("{service}", "friend")
                     .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/user/{userId}/blackList/{targetUserId}";
+                    + "/{namespaceName}/user/{userId}/blackList";
 
                 url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
                 url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
