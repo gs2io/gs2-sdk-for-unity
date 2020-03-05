@@ -326,6 +326,7 @@ namespace Gs2.Unity.Gs2Ranking
 		/// <param name="session">ゲームセッション</param>
 		/// <param name="namespaceName">ネームスペース名</param>
 		/// <param name="categoryName">カテゴリ名</param>
+		/// <param name="startIndex">ランキングの取得を開始するインデックス</param>
 		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
 		/// <param name="limit">データの取得件数</param>
 		public IEnumerator GetRanking(
@@ -333,6 +334,7 @@ namespace Gs2.Unity.Gs2Ranking
 		        GameSession session,
                 string namespaceName,
                 string categoryName,
+                long? startIndex=null,
                 string pageToken=null,
                 long? limit=null
         )
@@ -341,6 +343,7 @@ namespace Gs2.Unity.Gs2Ranking
                 new DescribeRankingsRequest()
                     .WithNamespaceName(namespaceName)
                     .WithCategoryName(categoryName)
+                    .WithStartIndex(startIndex)
                     .WithPageToken(pageToken)
                     .WithLimit(limit)
                     .WithAccessToken(session.AccessToken.token),

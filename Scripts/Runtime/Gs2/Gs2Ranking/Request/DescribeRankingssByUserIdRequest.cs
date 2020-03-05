@@ -73,6 +73,21 @@ namespace Gs2.Gs2Ranking.Request
         }
 
 
+        /** ランキングの取得を開始するインデックス */
+        public long? startIndex { set; get; }
+
+        /**
+         * ランキングの取得を開始するインデックスを設定
+         *
+         * @param startIndex ランキングの取得を開始するインデックス
+         * @return this
+         */
+        public DescribeRankingssByUserIdRequest WithStartIndex(long? startIndex) {
+            this.startIndex = startIndex;
+            return this;
+        }
+
+
         /** データの取得を開始する位置を指定するトークン */
         public string pageToken { set; get; }
 
@@ -125,6 +140,7 @@ namespace Gs2.Gs2Ranking.Request
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 categoryName = data.Keys.Contains("categoryName") && data["categoryName"] != null ? data["categoryName"].ToString(): null,
                 userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
+                startIndex = data.Keys.Contains("startIndex") && data["startIndex"] != null ? (long?)long.Parse(data["startIndex"].ToString()) : null,
                 pageToken = data.Keys.Contains("pageToken") && data["pageToken"] != null ? data["pageToken"].ToString(): null,
                 limit = data.Keys.Contains("limit") && data["limit"] != null ? (long?)long.Parse(data["limit"].ToString()) : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
