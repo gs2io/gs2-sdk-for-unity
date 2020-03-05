@@ -1934,6 +1934,11 @@ namespace Gs2.Gs2Ranking
                     jsonWriter.WritePropertyName("categoryName");
                     jsonWriter.Write(_request.categoryName.ToString());
                 }
+                if (_request.startIndex != null)
+                {
+                    jsonWriter.WritePropertyName("startIndex");
+                    jsonWriter.Write(_request.startIndex.ToString());
+                }
                 if (_request.pageToken != null)
                 {
                     jsonWriter.WritePropertyName("pageToken");
@@ -2038,6 +2043,11 @@ namespace Gs2.Gs2Ranking
                 {
                     jsonWriter.WritePropertyName("userId");
                     jsonWriter.Write(_request.userId.ToString());
+                }
+                if (_request.startIndex != null)
+                {
+                    jsonWriter.WritePropertyName("startIndex");
+                    jsonWriter.Write(_request.startIndex.ToString());
                 }
                 if (_request.pageToken != null)
                 {
