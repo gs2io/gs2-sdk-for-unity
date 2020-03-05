@@ -152,6 +152,7 @@ namespace Gs2.Unity.Gs2Datastore
 		/// <param name="callback">コールバックハンドラ</param>
 		/// <param name="session">ゲームセッション</param>
 		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="name">データの名前</param>
 		/// <param name="scope">ファイルのアクセス権</param>
 		/// <param name="allowUserIds">公開するユーザIDリスト</param>
 		public IEnumerator PrepareUpload(
@@ -159,12 +160,14 @@ namespace Gs2.Unity.Gs2Datastore
 		        GameSession session,
                 string namespaceName,
                 string scope,
-                List<string> allowUserIds
+                List<string> allowUserIds,
+                string name=null
         )
 		{
             yield return _client.PrepareUpload(
                 new PrepareUploadRequest()
                     .WithNamespaceName(namespaceName)
+                    .WithName(name)
                     .WithScope(scope)
                     .WithAllowUserIds(allowUserIds)
                     .WithAccessToken(session.AccessToken.token),
@@ -373,7 +376,7 @@ namespace Gs2.Unity.Gs2Datastore
 		}
 
 		/// <summary>
-		///  データのアップロード準備<br />
+		///  データオブジェクト履歴の一覧を取得<br />
 		/// </summary>
         ///
 		/// <returns>IEnumerator</returns>
