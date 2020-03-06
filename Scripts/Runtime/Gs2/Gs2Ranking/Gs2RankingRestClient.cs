@@ -1451,6 +1451,9 @@ namespace Gs2.Gs2Ranking
                 {
                     queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
                 }
+                if (_request.startIndex != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "startIndex", _request.startIndex));
+                }
                 if (_request.pageToken != null) {
                     queryStrings.Add(string.Format("{0}={1}", "pageToken", UnityWebRequest.EscapeURL(_request.pageToken)));
                 }
@@ -1520,6 +1523,9 @@ namespace Gs2.Gs2Ranking
                 if (_request.contextStack != null)
                 {
                     queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                if (_request.startIndex != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "startIndex", _request.startIndex));
                 }
                 if (_request.pageToken != null) {
                     queryStrings.Add(string.Format("{0}={1}", "pageToken", UnityWebRequest.EscapeURL(_request.pageToken)));

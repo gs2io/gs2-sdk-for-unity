@@ -328,13 +328,15 @@ namespace Gs2.Unity.Gs2Ranking
 		/// <param name="categoryName">カテゴリ名</param>
 		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
 		/// <param name="limit">データの取得件数</param>
+		/// <param name="startIndex">ランキングの取得を開始するインデックス</param>
 		public IEnumerator GetRanking(
 		        UnityAction<AsyncResult<EzGetRankingResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string categoryName,
                 string pageToken=null,
-                long? limit=null
+                long? limit=null,
+                long? startIndex=null
         )
 		{
             yield return _client.DescribeRankings(
@@ -343,6 +345,7 @@ namespace Gs2.Unity.Gs2Ranking
                     .WithCategoryName(categoryName)
                     .WithPageToken(pageToken)
                     .WithLimit(limit)
+                    .WithStartIndex(startIndex)
                     .WithAccessToken(session.AccessToken.token),
 				r =>
 				{
