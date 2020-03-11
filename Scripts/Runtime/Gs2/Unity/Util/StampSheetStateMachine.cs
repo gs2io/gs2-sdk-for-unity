@@ -24,15 +24,28 @@ using UnityEngine.Events;
 
 namespace Gs2.Unity.Util
 {
+	[Serializable]
+	public class DoneStampTaskEvent : UnityEvent<EzStampTask, EzRunStampTaskResult>
+	{
+			
+	}
+
+	[Serializable]
+	public class CompleteStampSheetEvent : UnityEvent<EzStampSheet, EzRunStampSheetResult>
+	{
+			
+	}
+
+	[Serializable]
+	public class ErrorEvent : UnityEvent<Gs2Exception>
+	{
+			
+	}
+
 	public class StampSheetStateMachine
 	{
-		public delegate void ErrorHandler(Gs2Exception e);
-		public delegate void DoneStampTaskHandler(EzStampTask task, EzRunStampTaskResult result);
-		public delegate void CompleteStampSheetHandler(EzStampSheet sheet, EzRunStampSheetResult result);
-		
-		public event ErrorHandler OnError;
-		public event DoneStampTaskHandler OnDoneStampTask;
-		public event CompleteStampSheetHandler OnCompleteStampSheet;
+		public DoneStampTaskEvent OnDoneStampTask = new DoneStampTaskEvent();
+		public CompleteStampSheetEvent OnCompleteStampSheet = new CompleteStampSheetEvent();
 
 		private readonly EzStampSheet _stampSheet;
 		private readonly Gs2.Unity.Client _client;
@@ -41,6 +54,18 @@ namespace Gs2.Unity.Util
 
 		private bool _running;
 		
+		public StampSheetStateMachine(
+			string stampSheet,
+			Gs2.Unity.Client client,
+			string stampSheetEncryptKeyId
+		)
+		{
+			_stampSheet = new EzStampSheet(stampSheet);
+			_client = client;
+			_stampSheetEncryptKeyId = stampSheetEncryptKeyId;
+			_running = false;
+		}
+
 		public StampSheetStateMachine(
 			string stampSheet,
 			Gs2.Unity.Client client,
@@ -69,7 +94,9 @@ namespace Gs2.Unity.Util
 			_running = false;
 		}
 
-		public IEnumerator Execute()
+		public IEnumerator Execute(
+			UnityEvent<Gs2Exception> onError
+		)
 		{
 			if (_running)
 			{
@@ -91,9 +118,9 @@ namespace Gs2.Unity.Util
 					{
 						if (r.Error != null)
 						{
-							if (OnError != null)
+							if (onError != null)
 							{
-								OnError.Invoke(r.Error);
+								onError.Invoke(r.Error);
 							}
 
 							error = true;
@@ -124,9 +151,9 @@ namespace Gs2.Unity.Util
 				{
 					if (r.Error != null)
 					{
-						if (OnError != null)
+						if (onError != null)
 						{
-							OnError.Invoke(r.Error);
+							onError.Invoke(r.Error);
 						}
 					}
 					else

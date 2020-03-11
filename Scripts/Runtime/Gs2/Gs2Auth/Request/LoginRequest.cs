@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Auth.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class LoginRequest : Gs2Request<LoginRequest>
 	{
 
         /** ユーザーID */
-        public string userId { set; get; }
+		[UnityEngine.SerializeField]
+        public string userId;
 
         /**
          * ユーザーIDを設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Auth.Request
 
 
         /** 現在時刻に対する補正値（現在時刻を起点とした秒数） */
-        public int? timeOffset { set; get; }
+		[UnityEngine.SerializeField]
+        public int? timeOffset;
 
         /**
          * 現在時刻に対する補正値（現在時刻を起点とした秒数）を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Auth.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定

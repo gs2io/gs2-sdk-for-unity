@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inbox.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class ReadMessageByUserIdRequest : Gs2Request<ReadMessageByUserIdRequest>
 	{
 
         /** プレゼントボックス名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * プレゼントボックス名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** ユーザーID */
-        public string userId { set; get; }
+		[UnityEngine.SerializeField]
+        public string userId;
 
         /**
          * ユーザーIDを設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** メッセージID */
-        public string messageName { set; get; }
+		[UnityEngine.SerializeField]
+        public string messageName;
 
         /**
          * メッセージIDを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** スタンプシートの変数に適用する設定値 */
-        public List<Config> config { set; get; }
+		[UnityEngine.SerializeField]
+        public List<Config> config;
 
         /**
          * スタンプシートの変数に適用する設定値を設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定
@@ -112,7 +118,7 @@ namespace Gs2.Gs2Inbox.Request
                 messageName = data.Keys.Contains("messageName") && data["messageName"] != null ? data["messageName"].ToString(): null,
                 config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
                     {
-                        return Gs2.Gs2Inbox.Model.Config.FromDict(value);
+                        return Config.FromDict(value);
                     }
                 ).ToList() : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,

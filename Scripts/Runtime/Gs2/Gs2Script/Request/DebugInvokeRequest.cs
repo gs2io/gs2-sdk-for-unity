@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Script.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DebugInvokeRequest : Gs2Request<DebugInvokeRequest>
 	{
 
         /** スクリプト */
-        public string script { set; get; }
+		[UnityEngine.SerializeField]
+        public string script;
 
         /**
          * スクリプトを設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Script.Request
 
 
         /** None */
-        public string args { set; get; }
+		[UnityEngine.SerializeField]
+        public string args;
 
         /**
          * Noneを設定

@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inventory.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class CreateInventoryModelMasterRequest : Gs2Request<CreateInventoryModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** インベントリの種類名 */
-        public string name { set; get; }
+		[UnityEngine.SerializeField]
+        public string name;
 
         /**
          * インベントリの種類名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** インベントリモデルマスターの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * インベントリモデルマスターの説明を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** インベントリの種類のメタデータ */
-        public string metadata { set; get; }
+		[UnityEngine.SerializeField]
+        public string metadata;
 
         /**
          * インベントリの種類のメタデータを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** インベントリの初期サイズ */
-        public int? initialCapacity { set; get; }
+		[UnityEngine.SerializeField]
+        public int? initialCapacity;
 
         /**
          * インベントリの初期サイズを設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** インベントリの最大サイズ */
-        public int? maxCapacity { set; get; }
+		[UnityEngine.SerializeField]
+        public int? maxCapacity;
 
         /**
          * インベントリの最大サイズを設定

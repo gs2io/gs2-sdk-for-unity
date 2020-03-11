@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Mission.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class CreateCounterModelMasterRequest : Gs2Request<CreateCounterModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** カウンター名 */
-        public string name { set; get; }
+		[UnityEngine.SerializeField]
+        public string name;
 
         /**
          * カウンター名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** メタデータ */
-        public string metadata { set; get; }
+		[UnityEngine.SerializeField]
+        public string metadata;
 
         /**
          * メタデータを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** カウンターの種類マスターの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * カウンターの種類マスターの説明を設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** カウンターのリセットタイミング */
-        public List<CounterScopeModel> scopes { set; get; }
+		[UnityEngine.SerializeField]
+        public List<CounterScopeModel> scopes;
 
         /**
          * カウンターのリセットタイミングを設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** カウントアップ可能な期間を指定するイベントマスター のGRN */
-        public string challengePeriodEventId { set; get; }
+		[UnityEngine.SerializeField]
+        public string challengePeriodEventId;
 
         /**
          * カウントアップ可能な期間を指定するイベントマスター のGRNを設定
@@ -128,7 +135,7 @@ namespace Gs2.Gs2Mission.Request
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 scopes = data.Keys.Contains("scopes") && data["scopes"] != null ? data["scopes"].Cast<JsonData>().Select(value =>
                     {
-                        return Gs2.Gs2Mission.Model.CounterScopeModel.FromDict(value);
+                        return CounterScopeModel.FromDict(value);
                     }
                 ).ToList() : null,
                 challengePeriodEventId = data.Keys.Contains("challengePeriodEventId") && data["challengePeriodEventId"] != null ? data["challengePeriodEventId"].ToString(): null,

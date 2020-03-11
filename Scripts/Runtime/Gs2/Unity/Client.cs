@@ -23,6 +23,7 @@ namespace Gs2.Unity
         public readonly Gs2Matchmaking.Client Matchmaking;
         public readonly Gs2Mission.Client Mission;
         public readonly Gs2Money.Client Money;
+        public readonly Gs2News.Client News;
         public readonly Gs2Quest.Client Quest;
         public readonly Gs2Ranking.Client Ranking;
         public readonly Gs2Realtime.Client Realtime;
@@ -54,6 +55,7 @@ namespace Gs2.Unity
             Matchmaking = new Gs2Matchmaking.Client(profile);
             Mission = new Gs2Mission.Client(profile);
             Money = new Gs2Money.Client(profile);
+            News = new Gs2News.Client(profile);
             Quest = new Gs2Quest.Client(profile);
             Ranking = new Gs2Ranking.Client(profile);
             Realtime = new Gs2Realtime.Client(profile);

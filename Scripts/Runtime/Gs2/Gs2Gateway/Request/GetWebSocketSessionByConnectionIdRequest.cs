@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Gateway.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class GetWebSocketSessionByConnectionIdRequest : Gs2Request<GetWebSocketSessionByConnectionIdRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Gateway.Request
 
 
         /** コネクションID */
-        public string connectionId { set; get; }
+		[UnityEngine.SerializeField]
+        public string connectionId;
 
         /**
          * コネクションIDを設定

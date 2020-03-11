@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Mission.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DeleteMissionTaskModelMasterRequest : Gs2Request<DeleteMissionTaskModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** ミッショングループ名 */
-        public string missionGroupName { set; get; }
+		[UnityEngine.SerializeField]
+        public string missionGroupName;
 
         /**
          * ミッショングループ名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** タスク名 */
-        public string missionTaskName { set; get; }
+		[UnityEngine.SerializeField]
+        public string missionTaskName;
 
         /**
          * タスク名を設定

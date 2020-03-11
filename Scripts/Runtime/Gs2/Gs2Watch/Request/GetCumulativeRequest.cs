@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Watch.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class GetCumulativeRequest : Gs2Request<GetCumulativeRequest>
 	{
 
         /** 名前 */
-        public string name { set; get; }
+		[UnityEngine.SerializeField]
+        public string name;
 
         /**
          * 名前を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Watch.Request
 
 
         /** リソースのGRN */
-        public string resourceGrn { set; get; }
+		[UnityEngine.SerializeField]
+        public string resourceGrn;
 
         /**
          * リソースのGRNを設定

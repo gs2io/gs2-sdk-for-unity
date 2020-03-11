@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Script.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DeleteScriptRequest : Gs2Request<DeleteScriptRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Script.Request
 
 
         /** スクリプト名 */
-        public string scriptName { set; get; }
+		[UnityEngine.SerializeField]
+        public string scriptName;
 
         /**
          * スクリプト名を設定

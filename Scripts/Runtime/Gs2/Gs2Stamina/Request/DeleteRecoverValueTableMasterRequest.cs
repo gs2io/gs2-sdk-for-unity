@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Stamina.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DeleteRecoverValueTableMasterRequest : Gs2Request<DeleteRecoverValueTableMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナ回復量テーブル名 */
-        public string recoverValueTableName { set; get; }
+		[UnityEngine.SerializeField]
+        public string recoverValueTableName;
 
         /**
          * スタミナ回復量テーブル名を設定

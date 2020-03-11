@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inventory.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DeleteInventoryModelMasterRequest : Gs2Request<DeleteInventoryModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** インベントリの種類名 */
-        public string inventoryName { set; get; }
+		[UnityEngine.SerializeField]
+        public string inventoryName;
 
         /**
          * インベントリの種類名を設定

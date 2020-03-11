@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Version.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class CalculateSignatureRequest : Gs2Request<CalculateSignatureRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Version.Request
 
 
         /** バージョンの種類名 */
-        public string versionName { set; get; }
+		[UnityEngine.SerializeField]
+        public string versionName;
 
         /**
          * バージョンの種類名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Version.Request
 
 
         /** バージョン */
-        public Gs2.Gs2Version.Model.Version_ version { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Version.Model.Version_ version;
 
         /**
          * バージョンを設定
@@ -67,7 +71,7 @@ namespace Gs2.Gs2Version.Request
          * @param version バージョン
          * @return this
          */
-        public CalculateSignatureRequest WithVersion(Gs2.Gs2Version.Model.Version_ version) {
+        public CalculateSignatureRequest WithVersion(global::Gs2.Gs2Version.Model.Version_ version) {
             this.version = version;
             return this;
         }
@@ -79,7 +83,7 @@ namespace Gs2.Gs2Version.Request
             return new CalculateSignatureRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 versionName = data.Keys.Contains("versionName") && data["versionName"] != null ? data["versionName"].ToString(): null,
-                version = data.Keys.Contains("version") && data["version"] != null ? Gs2.Gs2Version.Model.Version_.FromDict(data["version"]) : null,
+                version = data.Keys.Contains("version") && data["version"] != null ? global::Gs2.Gs2Version.Model.Version_.FromDict(data["version"]) : null,
             };
         }
 

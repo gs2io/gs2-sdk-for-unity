@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Lottery.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DescribeLotteryModelsRequest : Gs2Request<DescribeLotteryModelsRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定

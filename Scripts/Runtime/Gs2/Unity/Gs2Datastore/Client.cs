@@ -518,6 +518,7 @@ namespace Gs2.Unity.Gs2Datastore
 		/// <param name="callback">コールバックハンドラ</param>
 		/// <param name="session">ゲームセッション</param>
 		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="name">データの名前</param>
 		/// <param name="scope">ファイルのアクセス権</param>
 		/// <param name="allowUserIds">公開するユーザIDリスト</param>
 		/// <param name="data">アップロードするデータ</param>
@@ -527,7 +528,8 @@ namespace Gs2.Unity.Gs2Datastore
 			string namespaceName,
 			string scope,
 			List<string> allowUserIds,
-			byte[] data
+			byte[] data,
+			string name=null
 		)
 		{
 			string uploadUrl;
@@ -554,7 +556,8 @@ namespace Gs2.Unity.Gs2Datastore
 					session,
 					namespaceName,
 					scope,
-					allowUserIds
+					allowUserIds,
+					name
 				);
 
 				if (result == null)

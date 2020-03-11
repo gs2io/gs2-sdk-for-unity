@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inventory.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class AcquireItemSetByUserIdRequest : Gs2Request<AcquireItemSetByUserIdRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** インベントリの種類名 */
-        public string inventoryName { set; get; }
+		[UnityEngine.SerializeField]
+        public string inventoryName;
 
         /**
          * インベントリの種類名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** アイテムマスターの名前 */
-        public string itemName { set; get; }
+		[UnityEngine.SerializeField]
+        public string itemName;
 
         /**
          * アイテムマスターの名前を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** ユーザーID */
-        public string userId { set; get; }
+		[UnityEngine.SerializeField]
+        public string userId;
 
         /**
          * ユーザーIDを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** 入手する量 */
-        public long? acquireCount { set; get; }
+		[UnityEngine.SerializeField]
+        public long? acquireCount;
 
         /**
          * 入手する量を設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** 有効期限 */
-        public long? expiresAt { set; get; }
+		[UnityEngine.SerializeField]
+        public long? expiresAt;
 
         /**
          * 有効期限を設定
@@ -119,7 +126,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** 既存の ItemSet に空きがあったとしても、新しい ItemSet を作成するか */
-        public bool? createNewItemSet { set; get; }
+		[UnityEngine.SerializeField]
+        public bool? createNewItemSet;
 
         /**
          * 既存の ItemSet に空きがあったとしても、新しい ItemSet を作成するかを設定
@@ -134,7 +142,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** 追加先のアイテムセットの名前 */
-        public string itemSetName { set; get; }
+		[UnityEngine.SerializeField]
+        public string itemSetName;
 
         /**
          * 追加先のアイテムセットの名前を設定
@@ -149,7 +158,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定

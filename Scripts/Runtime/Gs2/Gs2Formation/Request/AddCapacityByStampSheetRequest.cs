@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Formation.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class AddCapacityByStampSheetRequest : Gs2Request<AddCapacityByStampSheetRequest>
 	{
 
         /** スタンプシート */
-        public string stampSheet { set; get; }
+		[UnityEngine.SerializeField]
+        public string stampSheet;
 
         /**
          * スタンプシートを設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** スタンプシートの署名検証に使用する 暗号鍵 のGRN */
-        public string keyId { set; get; }
+		[UnityEngine.SerializeField]
+        public string keyId;
 
         /**
          * スタンプシートの署名検証に使用する 暗号鍵 のGRNを設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定

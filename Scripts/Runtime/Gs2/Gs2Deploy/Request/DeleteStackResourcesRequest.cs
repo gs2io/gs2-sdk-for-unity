@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Deploy.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DeleteStackResourcesRequest : Gs2Request<DeleteStackResourcesRequest>
 	{
 
         /** スタック名 */
-        public string stackName { set; get; }
+		[UnityEngine.SerializeField]
+        public string stackName;
 
         /**
          * スタック名を設定

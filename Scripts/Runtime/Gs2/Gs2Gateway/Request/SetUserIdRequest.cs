@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Gateway.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class SetUserIdRequest : Gs2Request<SetUserIdRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Gateway.Request
 
 
         /** 同時に異なるクライアントからの接続を許容するか */
-        public bool? allowConcurrentAccess { set; get; }
+		[UnityEngine.SerializeField]
+        public bool? allowConcurrentAccess;
 
         /**
          * 同時に異なるクライアントからの接続を許容するかを設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Gateway.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定

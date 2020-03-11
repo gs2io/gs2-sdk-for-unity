@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using LitJson;
 using UnityEngine.Scripting;
@@ -164,6 +165,78 @@ namespace Gs2.Gs2Watch.Model
             }
             writer.WriteObjectEnd();
         }
+
+    public static string GetYearFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):watch:billingActivity:(?<year>.*):(?<month>.*):(?<service>.*):(?<activityType>.*)");
+        if (!match.Groups["year"].Success)
+        {
+            return null;
+        }
+        return match.Groups["year"].Value;
+    }
+
+    public static string GetMonthFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):watch:billingActivity:(?<year>.*):(?<month>.*):(?<service>.*):(?<activityType>.*)");
+        if (!match.Groups["month"].Success)
+        {
+            return null;
+        }
+        return match.Groups["month"].Value;
+    }
+
+    public static string GetServiceFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):watch:billingActivity:(?<year>.*):(?<month>.*):(?<service>.*):(?<activityType>.*)");
+        if (!match.Groups["service"].Success)
+        {
+            return null;
+        }
+        return match.Groups["service"].Value;
+    }
+
+    public static string GetActivityTypeFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):watch:billingActivity:(?<year>.*):(?<month>.*):(?<service>.*):(?<activityType>.*)");
+        if (!match.Groups["activityType"].Success)
+        {
+            return null;
+        }
+        return match.Groups["activityType"].Value;
+    }
+
+    public static string GetOwnerIdFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):watch:billingActivity:(?<year>.*):(?<month>.*):(?<service>.*):(?<activityType>.*)");
+        if (!match.Groups["ownerId"].Success)
+        {
+            return null;
+        }
+        return match.Groups["ownerId"].Value;
+    }
+
+    public static string GetRegionFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):watch:billingActivity:(?<year>.*):(?<month>.*):(?<service>.*):(?<activityType>.*)");
+        if (!match.Groups["region"].Success)
+        {
+            return null;
+        }
+        return match.Groups["region"].Value;
+    }
 
     	[Preserve]
         public static BillingActivity FromDict(JsonData data)

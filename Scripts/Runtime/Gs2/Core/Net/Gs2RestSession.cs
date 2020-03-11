@@ -77,15 +77,15 @@ namespace Gs2.Core.Net
 
         private LoginTask _loginTask;
 
-        public Gs2RestSession(BasicGs2Credential basicGs2Credential) : base(basicGs2Credential)
+        public Gs2RestSession(IGs2Credential basicGs2Credential) : base(basicGs2Credential)
         {
         }
 
-        public Gs2RestSession(BasicGs2Credential basicGs2Credential, Region region) : base(basicGs2Credential, region)
+        public Gs2RestSession(IGs2Credential basicGs2Credential, Region region) : base(basicGs2Credential, region)
         {
         }
 
-        public Gs2RestSession(BasicGs2Credential basicGs2Credential, string region) : base(basicGs2Credential, region)
+        public Gs2RestSession(IGs2Credential basicGs2Credential, string region) : base(basicGs2Credential, region)
         {
         }
 

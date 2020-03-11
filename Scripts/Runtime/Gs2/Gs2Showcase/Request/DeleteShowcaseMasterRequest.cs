@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Showcase.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DeleteShowcaseMasterRequest : Gs2Request<DeleteShowcaseMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 陳列棚名 */
-        public string showcaseName { set; get; }
+		[UnityEngine.SerializeField]
+        public string showcaseName;
 
         /**
          * 陳列棚名を設定

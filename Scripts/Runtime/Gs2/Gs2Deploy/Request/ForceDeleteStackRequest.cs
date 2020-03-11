@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Deploy.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class ForceDeleteStackRequest : Gs2Request<ForceDeleteStackRequest>
 	{
 
         /** スタック名 */
-        public string stackName { set; get; }
+		[UnityEngine.SerializeField]
+        public string stackName;
 
         /**
          * スタック名を設定

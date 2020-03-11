@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Matchmaking.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class UpdateGatheringByUserIdRequest : Gs2Request<UpdateGatheringByUserIdRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Matchmaking.Request
 
 
         /** ギャザリング名 */
-        public string gatheringName { set; get; }
+		[UnityEngine.SerializeField]
+        public string gatheringName;
 
         /**
          * ギャザリング名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Matchmaking.Request
 
 
         /** ユーザーID */
-        public string userId { set; get; }
+		[UnityEngine.SerializeField]
+        public string userId;
 
         /**
          * ユーザーIDを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Matchmaking.Request
 
 
         /** 募集条件 */
-        public List<AttributeRange> attributeRanges { set; get; }
+		[UnityEngine.SerializeField]
+        public List<AttributeRange> attributeRanges;
 
         /**
          * 募集条件を設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Matchmaking.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定
@@ -112,7 +118,7 @@ namespace Gs2.Gs2Matchmaking.Request
                 userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
                 attributeRanges = data.Keys.Contains("attributeRanges") && data["attributeRanges"] != null ? data["attributeRanges"].Cast<JsonData>().Select(value =>
                     {
-                        return Gs2.Gs2Matchmaking.Model.AttributeRange.FromDict(value);
+                        return AttributeRange.FromDict(value);
                     }
                 ).ToList() : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,

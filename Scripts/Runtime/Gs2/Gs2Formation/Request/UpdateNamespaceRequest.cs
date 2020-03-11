@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Formation.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class UpdateNamespaceRequest : Gs2Request<UpdateNamespaceRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** ネームスペースの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * ネームスペースの説明を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** キャパシティを更新するときに実行するスクリプト */
-        public Gs2.Gs2Formation.Model.ScriptSetting updateMoldScript { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Formation.Model.ScriptSetting updateMoldScript;
 
         /**
          * キャパシティを更新するときに実行するスクリプトを設定
@@ -67,14 +71,15 @@ namespace Gs2.Gs2Formation.Request
          * @param updateMoldScript キャパシティを更新するときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithUpdateMoldScript(Gs2.Gs2Formation.Model.ScriptSetting updateMoldScript) {
+        public UpdateNamespaceRequest WithUpdateMoldScript(global::Gs2.Gs2Formation.Model.ScriptSetting updateMoldScript) {
             this.updateMoldScript = updateMoldScript;
             return this;
         }
 
 
         /** フォームを更新するときに実行するスクリプト */
-        public Gs2.Gs2Formation.Model.ScriptSetting updateFormScript { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Formation.Model.ScriptSetting updateFormScript;
 
         /**
          * フォームを更新するときに実行するスクリプトを設定
@@ -82,14 +87,15 @@ namespace Gs2.Gs2Formation.Request
          * @param updateFormScript フォームを更新するときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithUpdateFormScript(Gs2.Gs2Formation.Model.ScriptSetting updateFormScript) {
+        public UpdateNamespaceRequest WithUpdateFormScript(global::Gs2.Gs2Formation.Model.ScriptSetting updateFormScript) {
             this.updateFormScript = updateFormScript;
             return this;
         }
 
 
         /** ログの出力設定 */
-        public Gs2.Gs2Formation.Model.LogSetting logSetting { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Formation.Model.LogSetting logSetting;
 
         /**
          * ログの出力設定を設定
@@ -97,7 +103,7 @@ namespace Gs2.Gs2Formation.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public UpdateNamespaceRequest WithLogSetting(Gs2.Gs2Formation.Model.LogSetting logSetting) {
+        public UpdateNamespaceRequest WithLogSetting(global::Gs2.Gs2Formation.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -109,9 +115,9 @@ namespace Gs2.Gs2Formation.Request
             return new UpdateNamespaceRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
-                updateMoldScript = data.Keys.Contains("updateMoldScript") && data["updateMoldScript"] != null ? Gs2.Gs2Formation.Model.ScriptSetting.FromDict(data["updateMoldScript"]) : null,
-                updateFormScript = data.Keys.Contains("updateFormScript") && data["updateFormScript"] != null ? Gs2.Gs2Formation.Model.ScriptSetting.FromDict(data["updateFormScript"]) : null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Formation.Model.LogSetting.FromDict(data["logSetting"]) : null,
+                updateMoldScript = data.Keys.Contains("updateMoldScript") && data["updateMoldScript"] != null ? global::Gs2.Gs2Formation.Model.ScriptSetting.FromDict(data["updateMoldScript"]) : null,
+                updateFormScript = data.Keys.Contains("updateFormScript") && data["updateFormScript"] != null ? global::Gs2.Gs2Formation.Model.ScriptSetting.FromDict(data["updateFormScript"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? global::Gs2.Gs2Formation.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 

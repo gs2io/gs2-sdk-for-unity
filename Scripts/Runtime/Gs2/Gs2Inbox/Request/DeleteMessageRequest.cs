@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inbox.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DeleteMessageRequest : Gs2Request<DeleteMessageRequest>
 	{
 
         /** プレゼントボックス名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * プレゼントボックス名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** メッセージID */
-        public string messageName { set; get; }
+		[UnityEngine.SerializeField]
+        public string messageName;
 
         /**
          * メッセージIDを設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定

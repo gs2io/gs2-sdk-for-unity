@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Formation.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class GetMoldRequest : Gs2Request<GetMoldRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** フォームの保存領域の名前 */
-        public string moldName { set; get; }
+		[UnityEngine.SerializeField]
+        public string moldName;
 
         /**
          * フォームの保存領域の名前を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定

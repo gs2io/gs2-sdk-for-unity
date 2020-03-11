@@ -1,0 +1,14 @@
+{
+    "name": "Gs2",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [
+        "WindowsStandalone32"
+    ],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}

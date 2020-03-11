@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Project.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class ForgetRequest : Gs2Request<ForgetRequest>
 	{
 
         /** メールアドレス */
-        public string email { set; get; }
+		[UnityEngine.SerializeField]
+        public string email;
 
         /**
          * メールアドレスを設定

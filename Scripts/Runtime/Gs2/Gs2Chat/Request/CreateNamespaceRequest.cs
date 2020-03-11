@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Chat.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class CreateNamespaceRequest : Gs2Request<CreateNamespaceRequest>
 	{
 
         /** ネームスペース名 */
-        public string name { set; get; }
+		[UnityEngine.SerializeField]
+        public string name;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** ネームスペースの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * ネームスペースの説明を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** ゲームプレイヤーによるルームの作成を許可するか */
-        public bool? allowCreateRoom { set; get; }
+		[UnityEngine.SerializeField]
+        public bool? allowCreateRoom;
 
         /**
          * ゲームプレイヤーによるルームの作成を許可するかを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** メッセージを投稿したときに実行するスクリプト */
-        public Gs2.Gs2Chat.Model.ScriptSetting postMessageScript { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Chat.Model.ScriptSetting postMessageScript;
 
         /**
          * メッセージを投稿したときに実行するスクリプトを設定
@@ -82,14 +87,15 @@ namespace Gs2.Gs2Chat.Request
          * @param postMessageScript メッセージを投稿したときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithPostMessageScript(Gs2.Gs2Chat.Model.ScriptSetting postMessageScript) {
+        public CreateNamespaceRequest WithPostMessageScript(global::Gs2.Gs2Chat.Model.ScriptSetting postMessageScript) {
             this.postMessageScript = postMessageScript;
             return this;
         }
 
 
         /** ルームを作成したときに実行するスクリプト */
-        public Gs2.Gs2Chat.Model.ScriptSetting createRoomScript { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Chat.Model.ScriptSetting createRoomScript;
 
         /**
          * ルームを作成したときに実行するスクリプトを設定
@@ -97,14 +103,15 @@ namespace Gs2.Gs2Chat.Request
          * @param createRoomScript ルームを作成したときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithCreateRoomScript(Gs2.Gs2Chat.Model.ScriptSetting createRoomScript) {
+        public CreateNamespaceRequest WithCreateRoomScript(global::Gs2.Gs2Chat.Model.ScriptSetting createRoomScript) {
             this.createRoomScript = createRoomScript;
             return this;
         }
 
 
         /** ルームを削除したときに実行するスクリプト */
-        public Gs2.Gs2Chat.Model.ScriptSetting deleteRoomScript { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Chat.Model.ScriptSetting deleteRoomScript;
 
         /**
          * ルームを削除したときに実行するスクリプトを設定
@@ -112,14 +119,15 @@ namespace Gs2.Gs2Chat.Request
          * @param deleteRoomScript ルームを削除したときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithDeleteRoomScript(Gs2.Gs2Chat.Model.ScriptSetting deleteRoomScript) {
+        public CreateNamespaceRequest WithDeleteRoomScript(global::Gs2.Gs2Chat.Model.ScriptSetting deleteRoomScript) {
             this.deleteRoomScript = deleteRoomScript;
             return this;
         }
 
 
         /** ルームを購読したときに実行するスクリプト */
-        public Gs2.Gs2Chat.Model.ScriptSetting subscribeRoomScript { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Chat.Model.ScriptSetting subscribeRoomScript;
 
         /**
          * ルームを購読したときに実行するスクリプトを設定
@@ -127,14 +135,15 @@ namespace Gs2.Gs2Chat.Request
          * @param subscribeRoomScript ルームを購読したときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithSubscribeRoomScript(Gs2.Gs2Chat.Model.ScriptSetting subscribeRoomScript) {
+        public CreateNamespaceRequest WithSubscribeRoomScript(global::Gs2.Gs2Chat.Model.ScriptSetting subscribeRoomScript) {
             this.subscribeRoomScript = subscribeRoomScript;
             return this;
         }
 
 
         /** ルームの購読を解除したときに実行するスクリプト */
-        public Gs2.Gs2Chat.Model.ScriptSetting unsubscribeRoomScript { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Chat.Model.ScriptSetting unsubscribeRoomScript;
 
         /**
          * ルームの購読を解除したときに実行するスクリプトを設定
@@ -142,14 +151,15 @@ namespace Gs2.Gs2Chat.Request
          * @param unsubscribeRoomScript ルームの購読を解除したときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithUnsubscribeRoomScript(Gs2.Gs2Chat.Model.ScriptSetting unsubscribeRoomScript) {
+        public CreateNamespaceRequest WithUnsubscribeRoomScript(global::Gs2.Gs2Chat.Model.ScriptSetting unsubscribeRoomScript) {
             this.unsubscribeRoomScript = unsubscribeRoomScript;
             return this;
         }
 
 
         /** 購読しているルームに新しい投稿がきたときのプッシュ通知 */
-        public Gs2.Gs2Chat.Model.NotificationSetting postNotification { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Chat.Model.NotificationSetting postNotification;
 
         /**
          * 購読しているルームに新しい投稿がきたときのプッシュ通知を設定
@@ -157,14 +167,15 @@ namespace Gs2.Gs2Chat.Request
          * @param postNotification 購読しているルームに新しい投稿がきたときのプッシュ通知
          * @return this
          */
-        public CreateNamespaceRequest WithPostNotification(Gs2.Gs2Chat.Model.NotificationSetting postNotification) {
+        public CreateNamespaceRequest WithPostNotification(global::Gs2.Gs2Chat.Model.NotificationSetting postNotification) {
             this.postNotification = postNotification;
             return this;
         }
 
 
         /** ログの出力設定 */
-        public Gs2.Gs2Chat.Model.LogSetting logSetting { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Chat.Model.LogSetting logSetting;
 
         /**
          * ログの出力設定を設定
@@ -172,7 +183,7 @@ namespace Gs2.Gs2Chat.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public CreateNamespaceRequest WithLogSetting(Gs2.Gs2Chat.Model.LogSetting logSetting) {
+        public CreateNamespaceRequest WithLogSetting(global::Gs2.Gs2Chat.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -185,13 +196,13 @@ namespace Gs2.Gs2Chat.Request
                 name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 allowCreateRoom = data.Keys.Contains("allowCreateRoom") && data["allowCreateRoom"] != null ? (bool?)bool.Parse(data["allowCreateRoom"].ToString()) : null,
-                postMessageScript = data.Keys.Contains("postMessageScript") && data["postMessageScript"] != null ? Gs2.Gs2Chat.Model.ScriptSetting.FromDict(data["postMessageScript"]) : null,
-                createRoomScript = data.Keys.Contains("createRoomScript") && data["createRoomScript"] != null ? Gs2.Gs2Chat.Model.ScriptSetting.FromDict(data["createRoomScript"]) : null,
-                deleteRoomScript = data.Keys.Contains("deleteRoomScript") && data["deleteRoomScript"] != null ? Gs2.Gs2Chat.Model.ScriptSetting.FromDict(data["deleteRoomScript"]) : null,
-                subscribeRoomScript = data.Keys.Contains("subscribeRoomScript") && data["subscribeRoomScript"] != null ? Gs2.Gs2Chat.Model.ScriptSetting.FromDict(data["subscribeRoomScript"]) : null,
-                unsubscribeRoomScript = data.Keys.Contains("unsubscribeRoomScript") && data["unsubscribeRoomScript"] != null ? Gs2.Gs2Chat.Model.ScriptSetting.FromDict(data["unsubscribeRoomScript"]) : null,
-                postNotification = data.Keys.Contains("postNotification") && data["postNotification"] != null ? Gs2.Gs2Chat.Model.NotificationSetting.FromDict(data["postNotification"]) : null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Chat.Model.LogSetting.FromDict(data["logSetting"]) : null,
+                postMessageScript = data.Keys.Contains("postMessageScript") && data["postMessageScript"] != null ? global::Gs2.Gs2Chat.Model.ScriptSetting.FromDict(data["postMessageScript"]) : null,
+                createRoomScript = data.Keys.Contains("createRoomScript") && data["createRoomScript"] != null ? global::Gs2.Gs2Chat.Model.ScriptSetting.FromDict(data["createRoomScript"]) : null,
+                deleteRoomScript = data.Keys.Contains("deleteRoomScript") && data["deleteRoomScript"] != null ? global::Gs2.Gs2Chat.Model.ScriptSetting.FromDict(data["deleteRoomScript"]) : null,
+                subscribeRoomScript = data.Keys.Contains("subscribeRoomScript") && data["subscribeRoomScript"] != null ? global::Gs2.Gs2Chat.Model.ScriptSetting.FromDict(data["subscribeRoomScript"]) : null,
+                unsubscribeRoomScript = data.Keys.Contains("unsubscribeRoomScript") && data["unsubscribeRoomScript"] != null ? global::Gs2.Gs2Chat.Model.ScriptSetting.FromDict(data["unsubscribeRoomScript"]) : null,
+                postNotification = data.Keys.Contains("postNotification") && data["postNotification"] != null ? global::Gs2.Gs2Chat.Model.NotificationSetting.FromDict(data["postNotification"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? global::Gs2.Gs2Chat.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 

@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Gateway.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class SendNotificationRequest : Gs2Request<SendNotificationRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Gateway.Request
 
 
         /** ユーザーID */
-        public string userId { set; get; }
+		[UnityEngine.SerializeField]
+        public string userId;
 
         /**
          * ユーザーIDを設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Gateway.Request
 
 
         /** タイトル */
-        public string subject { set; get; }
+		[UnityEngine.SerializeField]
+        public string subject;
 
         /**
          * タイトルを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Gateway.Request
 
 
         /** ペイロード */
-        public string payload { set; get; }
+		[UnityEngine.SerializeField]
+        public string payload;
 
         /**
          * ペイロードを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Gateway.Request
 
 
         /** 通知先のユーザがオフラインだったときにモバイルプッシュ通知に転送するか */
-        public bool? enableTransferMobileNotification { set; get; }
+		[UnityEngine.SerializeField]
+        public bool? enableTransferMobileNotification;
 
         /**
          * 通知先のユーザがオフラインだったときにモバイルプッシュ通知に転送するかを設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Gateway.Request
 
 
         /** 再生する音声ファイル名 */
-        public string sound { set; get; }
+		[UnityEngine.SerializeField]
+        public string sound;
 
         /**
          * 再生する音声ファイル名を設定
@@ -119,7 +126,8 @@ namespace Gs2.Gs2Gateway.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定
