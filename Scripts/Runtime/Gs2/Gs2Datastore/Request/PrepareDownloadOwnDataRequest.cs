@@ -25,7 +25,7 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Datastore.Request
 {
 	[Preserve]
-	public class PrepareDownloadByGenerationRequest : Gs2Request<PrepareDownloadByGenerationRequest>
+	public class PrepareDownloadOwnDataRequest : Gs2Request<PrepareDownloadOwnDataRequest>
 	{
 
         /** ネームスペース名 */
@@ -37,38 +37,23 @@ namespace Gs2.Gs2Datastore.Request
          * @param namespaceName ネームスペース名
          * @return this
          */
-        public PrepareDownloadByGenerationRequest WithNamespaceName(string namespaceName) {
+        public PrepareDownloadOwnDataRequest WithNamespaceName(string namespaceName) {
             this.namespaceName = namespaceName;
             return this;
         }
 
 
-        /** データオブジェクト */
-        public string dataObjectId { set; get; }
+        /** データの名前 */
+        public string dataObjectName { set; get; }
 
         /**
-         * データオブジェクトを設定
+         * データの名前を設定
          *
-         * @param dataObjectId データオブジェクト
+         * @param dataObjectName データの名前
          * @return this
          */
-        public PrepareDownloadByGenerationRequest WithDataObjectId(string dataObjectId) {
-            this.dataObjectId = dataObjectId;
-            return this;
-        }
-
-
-        /** 世代 */
-        public string generation { set; get; }
-
-        /**
-         * 世代を設定
-         *
-         * @param generation 世代
-         * @return this
-         */
-        public PrepareDownloadByGenerationRequest WithGeneration(string generation) {
-            this.generation = generation;
+        public PrepareDownloadOwnDataRequest WithDataObjectName(string dataObjectName) {
+            this.dataObjectName = dataObjectName;
             return this;
         }
 
@@ -82,7 +67,7 @@ namespace Gs2.Gs2Datastore.Request
          * @param duplicationAvoider 重複実行回避機能に使用するID
          * @return this
          */
-        public PrepareDownloadByGenerationRequest WithDuplicationAvoider(string duplicationAvoider) {
+        public PrepareDownloadOwnDataRequest WithDuplicationAvoider(string duplicationAvoider) {
             this.duplicationAvoider = duplicationAvoider;
             return this;
         }
@@ -97,18 +82,17 @@ namespace Gs2.Gs2Datastore.Request
          * @param accessToken アクセストークン
          * @return this
          */
-        public PrepareDownloadByGenerationRequest WithAccessToken(string accessToken) {
+        public PrepareDownloadOwnDataRequest WithAccessToken(string accessToken) {
             this.accessToken = accessToken;
             return this;
         }
 
     	[Preserve]
-        public static PrepareDownloadByGenerationRequest FromDict(JsonData data)
+        public static PrepareDownloadOwnDataRequest FromDict(JsonData data)
         {
-            return new PrepareDownloadByGenerationRequest {
+            return new PrepareDownloadOwnDataRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
-                dataObjectId = data.Keys.Contains("dataObjectId") && data["dataObjectId"] != null ? data["dataObjectId"].ToString(): null,
-                generation = data.Keys.Contains("generation") && data["generation"] != null ? data["generation"].ToString(): null,
+                dataObjectName = data.Keys.Contains("dataObjectName") && data["dataObjectName"] != null ? data["dataObjectName"].ToString(): null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }

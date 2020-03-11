@@ -58,17 +58,17 @@ namespace Gs2.Gs2Datastore.Request
         }
 
 
-        /** データの名前 */
-        public string dataObjectName { set; get; }
+        /** データオブジェクト */
+        public string dataObjectId { set; get; }
 
         /**
-         * データの名前を設定
+         * データオブジェクトを設定
          *
-         * @param dataObjectName データの名前
+         * @param dataObjectId データオブジェクト
          * @return this
          */
-        public PrepareDownloadByGenerationAndUserIdRequest WithDataObjectName(string dataObjectName) {
-            this.dataObjectName = dataObjectName;
+        public PrepareDownloadByGenerationAndUserIdRequest WithDataObjectId(string dataObjectId) {
+            this.dataObjectId = dataObjectId;
             return this;
         }
 
@@ -109,7 +109,7 @@ namespace Gs2.Gs2Datastore.Request
             return new PrepareDownloadByGenerationAndUserIdRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
-                dataObjectName = data.Keys.Contains("dataObjectName") && data["dataObjectName"] != null ? data["dataObjectName"].ToString(): null,
+                dataObjectId = data.Keys.Contains("dataObjectId") && data["dataObjectId"] != null ? data["dataObjectId"].ToString(): null,
                 generation = data.Keys.Contains("generation") && data["generation"] != null ? data["generation"].ToString(): null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
