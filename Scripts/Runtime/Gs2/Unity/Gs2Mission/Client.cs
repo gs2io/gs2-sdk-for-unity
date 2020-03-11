@@ -43,6 +43,91 @@ namespace Gs2.Unity.Gs2Mission
 		}
 
 		/// <summary>
+		///  ミッションタスクモデルの一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="missionGroupName">グループ名</param>
+		public IEnumerator ListMissionTaskModels(
+		        UnityAction<AsyncResult<EzListMissionTaskModelsResult>> callback,
+                string namespaceName,
+                string missionGroupName
+        )
+		{
+            yield return _client.DescribeMissionTaskModels(
+                new DescribeMissionTaskModelsRequest()
+                    .WithNamespaceName(namespaceName)
+                    .WithMissionGroupName(missionGroupName),
+				r =>
+				{
+				    if(r.Result == null)
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzListMissionTaskModelsResult>(
+                                null,
+                                r.Error
+                            )
+                        );
+				    }
+				    else
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzListMissionTaskModelsResult>(
+                                new EzListMissionTaskModelsResult(r.Result),
+                                r.Error
+                            )
+                        );
+                    }
+				}
+            );
+		}
+
+		/// <summary>
+		///  ミッションタスク名を指定してミッションタスクモデルを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="missionGroupName">グループ名</param>
+		/// <param name="missionTaskName">タスク名</param>
+		public IEnumerator GetMissionTaskModel(
+		        UnityAction<AsyncResult<EzGetMissionTaskModelResult>> callback,
+                string namespaceName,
+                string missionGroupName,
+                string missionTaskName
+        )
+		{
+            yield return _client.GetMissionTaskModel(
+                new GetMissionTaskModelRequest()
+                    .WithNamespaceName(namespaceName)
+                    .WithMissionGroupName(missionGroupName)
+                    .WithMissionTaskName(missionTaskName),
+				r =>
+				{
+				    if(r.Result == null)
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzGetMissionTaskModelResult>(
+                                null,
+                                r.Error
+                            )
+                        );
+				    }
+				    else
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzGetMissionTaskModelResult>(
+                                new EzGetMissionTaskModelResult(r.Result),
+                                r.Error
+                            )
+                        );
+                    }
+				}
+            );
+		}
+
+		/// <summary>
 		///  カウンターの種類を認証<br />
 		/// </summary>
         ///
@@ -426,91 +511,6 @@ namespace Gs2.Unity.Gs2Mission
                         callback.Invoke(
                             new AsyncResult<EzGetMissionGroupModelResult>(
                                 new EzGetMissionGroupModelResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
-            );
-		}
-
-		/// <summary>
-		///  ミッションタスクモデルの一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="missionGroupName">グループ名</param>
-		public IEnumerator ListMissionTaskModels(
-		        UnityAction<AsyncResult<EzListMissionTaskModelsResult>> callback,
-                string namespaceName,
-                string missionGroupName
-        )
-		{
-            yield return _client.DescribeMissionTaskModels(
-                new DescribeMissionTaskModelsRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithMissionGroupName(missionGroupName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListMissionTaskModelsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListMissionTaskModelsResult>(
-                                new EzListMissionTaskModelsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
-            );
-		}
-
-		/// <summary>
-		///  ミッションタスク名を指定してミッションタスクモデルを取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="missionGroupName">グループ名</param>
-		/// <param name="missionTaskName">タスク名</param>
-		public IEnumerator GetMissionTaskModel(
-		        UnityAction<AsyncResult<EzGetMissionTaskModelResult>> callback,
-                string namespaceName,
-                string missionGroupName,
-                string missionTaskName
-        )
-		{
-            yield return _client.GetMissionTaskModel(
-                new GetMissionTaskModelRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithMissionGroupName(missionGroupName)
-                    .WithMissionTaskName(missionTaskName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetMissionTaskModelResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetMissionTaskModelResult>(
-                                new EzGetMissionTaskModelResult(r.Result),
                                 r.Error
                             )
                         );
