@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Datastore.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class PrepareDownloadOwnDataByGenerationRequest : Gs2Request<PrepareDownloadOwnDataByGenerationRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Datastore.Request
 
 
         /** データの名前 */
-		[UnityEngine.SerializeField]
-        public string dataObjectName;
+        public string dataObjectName { set; get; }
 
         /**
          * データの名前を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Datastore.Request
 
 
         /** 世代 */
-		[UnityEngine.SerializeField]
-        public string generation;
+        public string generation { set; get; }
 
         /**
          * 世代を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Datastore.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定

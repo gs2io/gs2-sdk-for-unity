@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Datastore.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class PrepareDownloadRequest : Gs2Request<PrepareDownloadRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Datastore.Request
 
 
         /** データオブジェクト */
-		[UnityEngine.SerializeField]
-        public string dataObjectId;
+        public string dataObjectId { set; get; }
 
         /**
          * データオブジェクトを設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Datastore.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定
