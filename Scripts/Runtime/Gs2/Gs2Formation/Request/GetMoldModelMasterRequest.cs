@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Formation.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class GetMoldModelMasterRequest : Gs2Request<GetMoldModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** フォームの保存領域名 */
-		[UnityEngine.SerializeField]
-        public string moldName;
+        public string moldName { set; get; }
 
         /**
          * フォームの保存領域名を設定
