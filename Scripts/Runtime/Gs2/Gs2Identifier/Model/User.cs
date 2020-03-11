@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using LitJson;
 using UnityEngine.Scripting;
@@ -146,30 +145,6 @@ namespace Gs2.Gs2Identifier.Model
             }
             writer.WriteObjectEnd();
         }
-
-    public static string GetUserNameFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2::(?<ownerId>.*):identifier:user:(?<userName>.*)");
-        if (!match.Groups["userName"].Success)
-        {
-            return null;
-        }
-        return match.Groups["userName"].Value;
-    }
-
-    public static string GetOwnerIdFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2::(?<ownerId>.*):identifier:user:(?<userName>.*)");
-        if (!match.Groups["ownerId"].Success)
-        {
-            return null;
-        }
-        return match.Groups["ownerId"].Value;
-    }
 
     	[Preserve]
         public static User FromDict(JsonData data)
