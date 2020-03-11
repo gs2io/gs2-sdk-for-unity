@@ -1503,10 +1503,9 @@ namespace Gs2.Gs2Datastore
                 var url = Gs2RestSession.EndpointHost
                     .Replace("{service}", "datastore")
                     .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/user/me/data/{dataObjectName}/generation/{generation}";
+                    + "/{namespaceName}/file/generation/{generation}";
 
                 url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
-                url = url.Replace("{dataObjectName}", !string.IsNullOrEmpty(_request.dataObjectName) ? _request.dataObjectName.ToString() : "null");
                 url = url.Replace("{generation}", !string.IsNullOrEmpty(_request.generation) ? _request.generation.ToString() : "null");
 
                 UnityWebRequest.url = url;
@@ -1514,6 +1513,11 @@ namespace Gs2.Gs2Datastore
                 var stringBuilder = new StringBuilder();
                 var jsonWriter = new JsonWriter(stringBuilder);
                 jsonWriter.WriteObjectStart();
+                if (_request.dataObjectId != null)
+                {
+                    jsonWriter.WritePropertyName("dataObjectId");
+                    jsonWriter.Write(_request.dataObjectId.ToString());
+                }
                 if (_request.contextStack != null)
                 {
                     jsonWriter.WritePropertyName("contextStack");
@@ -1577,6 +1581,228 @@ namespace Gs2.Gs2Datastore
                 var url = Gs2RestSession.EndpointHost
                     .Replace("{service}", "datastore")
                     .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/file/generation/{generation}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+                url = url.Replace("{generation}", !string.IsNullOrEmpty(_request.generation) ? _request.generation.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.dataObjectId != null)
+                {
+                    jsonWriter.WritePropertyName("dataObjectId");
+                    jsonWriter.Write(_request.dataObjectId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  ユーザIDを指定してデータオブジェクトを世代を指定してダウンロード準備する<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator PrepareDownloadByGenerationAndUserId(
+                Request.PrepareDownloadByGenerationAndUserIdRequest request,
+                UnityAction<AsyncResult<Result.PrepareDownloadByGenerationAndUserIdResult>> callback
+        )
+		{
+			var task = new PrepareDownloadByGenerationAndUserIdTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class PrepareDownloadOwnDataTask : Gs2RestSessionTask<Result.PrepareDownloadOwnDataResult>
+        {
+			private readonly Request.PrepareDownloadOwnDataRequest _request;
+
+			public PrepareDownloadOwnDataTask(Request.PrepareDownloadOwnDataRequest request, UnityAction<AsyncResult<Result.PrepareDownloadOwnDataResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "datastore")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/me/file";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{dataObjectName}", !string.IsNullOrEmpty(_request.dataObjectName) ? _request.dataObjectName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  データオブジェクトをダウンロード準備する<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator PrepareDownloadOwnData(
+                Request.PrepareDownloadOwnDataRequest request,
+                UnityAction<AsyncResult<Result.PrepareDownloadOwnDataResult>> callback
+        )
+		{
+			var task = new PrepareDownloadOwnDataTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class PrepareDownloadOwnDataByGenerationTask : Gs2RestSessionTask<Result.PrepareDownloadOwnDataByGenerationResult>
+        {
+			private readonly Request.PrepareDownloadOwnDataByGenerationRequest _request;
+
+			public PrepareDownloadOwnDataByGenerationTask(Request.PrepareDownloadOwnDataByGenerationRequest request, UnityAction<AsyncResult<Result.PrepareDownloadOwnDataByGenerationResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "datastore")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/me/data/{dataObjectName}/generation/{generation}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{dataObjectName}", !string.IsNullOrEmpty(_request.dataObjectName) ? _request.dataObjectName.ToString() : "null");
+                url = url.Replace("{generation}", !string.IsNullOrEmpty(_request.generation) ? _request.generation.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  データオブジェクトを世代を指定してダウンロード準備する<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator PrepareDownloadOwnDataByGeneration(
+                Request.PrepareDownloadOwnDataByGenerationRequest request,
+                UnityAction<AsyncResult<Result.PrepareDownloadOwnDataByGenerationResult>> callback
+        )
+		{
+			var task = new PrepareDownloadOwnDataByGenerationTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class PrepareDownloadOwnDataByGenerationAndUserIdTask : Gs2RestSessionTask<Result.PrepareDownloadOwnDataByGenerationAndUserIdResult>
+        {
+			private readonly Request.PrepareDownloadOwnDataByGenerationAndUserIdRequest _request;
+
+			public PrepareDownloadOwnDataByGenerationAndUserIdTask(Request.PrepareDownloadOwnDataByGenerationAndUserIdRequest request, UnityAction<AsyncResult<Result.PrepareDownloadOwnDataByGenerationAndUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "datastore")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
                     + "/{namespaceName}/user/{userId}/data/{dataObjectName}/generation/{generation}";
 
                 url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
@@ -1623,12 +1849,12 @@ namespace Gs2.Gs2Datastore
 		/// <returns>IEnumerator</returns>
 		/// <param name="callback">コールバックハンドラ</param>
 		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator PrepareDownloadByGenerationAndUserId(
-                Request.PrepareDownloadByGenerationAndUserIdRequest request,
-                UnityAction<AsyncResult<Result.PrepareDownloadByGenerationAndUserIdResult>> callback
+		public IEnumerator PrepareDownloadOwnDataByGenerationAndUserId(
+                Request.PrepareDownloadOwnDataByGenerationAndUserIdRequest request,
+                UnityAction<AsyncResult<Result.PrepareDownloadOwnDataByGenerationAndUserIdResult>> callback
         )
 		{
-			var task = new PrepareDownloadByGenerationAndUserIdTask(request, callback);
+			var task = new PrepareDownloadOwnDataByGenerationAndUserIdTask(request, callback);
 			return Gs2RestSession.Execute(task);
         }
 

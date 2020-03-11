@@ -331,6 +331,51 @@ namespace Gs2.Unity.Gs2Datastore
 		}
 
 		/// <summary>
+		///  自分のデータをダウンロード<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="dataObjectName">データの名前</param>
+		public IEnumerator PrepareDownloadOwnData(
+		        UnityAction<AsyncResult<EzPrepareDownloadOwnDataResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string dataObjectName
+        )
+		{
+            yield return _client.PrepareDownloadOwnData(
+                new PrepareDownloadOwnDataRequest()
+                    .WithNamespaceName(namespaceName)
+                    .WithDataObjectName(dataObjectName)
+                    .WithAccessToken(session.AccessToken.token),
+				r =>
+				{
+				    if(r.Result == null)
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzPrepareDownloadOwnDataResult>(
+                                null,
+                                r.Error
+                            )
+                        );
+				    }
+				    else
+				    {
+                        callback.Invoke(
+                            new AsyncResult<EzPrepareDownloadOwnDataResult>(
+                                new EzPrepareDownloadOwnDataResult(r.Result),
+                                r.Error
+                            )
+                        );
+                    }
+				}
+            );
+		}
+
+		/// <summary>
 		///  アップロードしたデータを削除<br />
 		/// </summary>
         ///
@@ -794,6 +839,90 @@ namespace Gs2.Unity.Gs2Datastore
 					session,
 					namespaceName,
 					dataObjectId
+				);
+				
+				if (result == null)
+				{
+					yield break;
+				}
+
+				downloadUrl = result.FileUrl;
+			}
+			{
+				EzDownloadImplResult result = null;
+				yield return DownloadImpl(
+					r =>
+					{
+						if (r.Error != null)
+						{
+							callback.Invoke(
+								new AsyncResult<EzDownloadResult>(
+									null,
+									r.Error
+								)
+							);
+						}
+						else
+						{
+							result = r.Result;
+						}
+					},
+					downloadUrl
+				);
+
+				if (result == null)
+				{
+					yield break;
+				}
+				
+				callback.Invoke(
+					new AsyncResult<EzDownloadResult>(
+						new EzDownloadResult(result.Data), 
+						null
+					)
+				);
+			}
+		}
+
+		/// <summary>
+		///  自分のデータのダウンロード<br />
+		/// </summary>
+		///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="dataObjectName">データの名前</param>
+		public IEnumerator DownloadOwnData(
+			UnityAction<AsyncResult<EzDownloadResult>> callback,
+			GameSession session,
+			string namespaceName,
+			string dataObjectName
+		)
+		{
+			string downloadUrl;
+			{
+				EzPrepareDownloadOwnDataResult result = null;
+				yield return PrepareDownloadOwnData(
+					r =>
+					{
+						if (r.Error != null)
+						{
+							callback.Invoke(
+								new AsyncResult<EzDownloadResult>(
+									null,
+									r.Error
+								)
+							);
+						}
+						else
+						{
+							result = r.Result;
+						}
+					},
+					session,
+					namespaceName,
+					dataObjectName
 				);
 				
 				if (result == null)

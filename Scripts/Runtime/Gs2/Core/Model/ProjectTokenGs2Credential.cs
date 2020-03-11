@@ -1,4 +1,4 @@
-using UnityEngine.Networking;
+﻿using UnityEngine.Networking;
 
 namespace Gs2.Core.Model
 {

@@ -26,7 +26,7 @@ namespace Gs2.Gs2Datastore.Request
 {
 	[Preserve]
 	[System.Serializable]
-	public class PrepareDownloadByGenerationAndUserIdRequest : Gs2Request<PrepareDownloadByGenerationAndUserIdRequest>
+	public class PrepareDownloadOwnDataByGenerationRequest : Gs2Request<PrepareDownloadOwnDataByGenerationRequest>
 	{
 
         /** ネームスペース名 */
@@ -39,40 +39,24 @@ namespace Gs2.Gs2Datastore.Request
          * @param namespaceName ネームスペース名
          * @return this
          */
-        public PrepareDownloadByGenerationAndUserIdRequest WithNamespaceName(string namespaceName) {
+        public PrepareDownloadOwnDataByGenerationRequest WithNamespaceName(string namespaceName) {
             this.namespaceName = namespaceName;
             return this;
         }
 
 
-        /** ユーザーID */
+        /** データの名前 */
 		[UnityEngine.SerializeField]
-        public string userId;
+        public string dataObjectName;
 
         /**
-         * ユーザーIDを設定
+         * データの名前を設定
          *
-         * @param userId ユーザーID
+         * @param dataObjectName データの名前
          * @return this
          */
-        public PrepareDownloadByGenerationAndUserIdRequest WithUserId(string userId) {
-            this.userId = userId;
-            return this;
-        }
-
-
-        /** データオブジェクト */
-		[UnityEngine.SerializeField]
-        public string dataObjectId;
-
-        /**
-         * データオブジェクトを設定
-         *
-         * @param dataObjectId データオブジェクト
-         * @return this
-         */
-        public PrepareDownloadByGenerationAndUserIdRequest WithDataObjectId(string dataObjectId) {
-            this.dataObjectId = dataObjectId;
+        public PrepareDownloadOwnDataByGenerationRequest WithDataObjectName(string dataObjectName) {
+            this.dataObjectName = dataObjectName;
             return this;
         }
 
@@ -87,7 +71,7 @@ namespace Gs2.Gs2Datastore.Request
          * @param generation 世代
          * @return this
          */
-        public PrepareDownloadByGenerationAndUserIdRequest WithGeneration(string generation) {
+        public PrepareDownloadOwnDataByGenerationRequest WithGeneration(string generation) {
             this.generation = generation;
             return this;
         }
@@ -103,19 +87,32 @@ namespace Gs2.Gs2Datastore.Request
          * @param duplicationAvoider 重複実行回避機能に使用するID
          * @return this
          */
-        public PrepareDownloadByGenerationAndUserIdRequest WithDuplicationAvoider(string duplicationAvoider) {
+        public PrepareDownloadOwnDataByGenerationRequest WithDuplicationAvoider(string duplicationAvoider) {
             this.duplicationAvoider = duplicationAvoider;
             return this;
         }
 
 
+        /** アクセストークン */
+        public string accessToken { set; get; }
+
+        /**
+         * アクセストークンを設定
+         *
+         * @param accessToken アクセストークン
+         * @return this
+         */
+        public PrepareDownloadOwnDataByGenerationRequest WithAccessToken(string accessToken) {
+            this.accessToken = accessToken;
+            return this;
+        }
+
     	[Preserve]
-        public static PrepareDownloadByGenerationAndUserIdRequest FromDict(JsonData data)
+        public static PrepareDownloadOwnDataByGenerationRequest FromDict(JsonData data)
         {
-            return new PrepareDownloadByGenerationAndUserIdRequest {
+            return new PrepareDownloadOwnDataByGenerationRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
-                userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
-                dataObjectId = data.Keys.Contains("dataObjectId") && data["dataObjectId"] != null ? data["dataObjectId"].ToString(): null,
+                dataObjectName = data.Keys.Contains("dataObjectName") && data["dataObjectName"] != null ? data["dataObjectName"].ToString(): null,
                 generation = data.Keys.Contains("generation") && data["generation"] != null ? data["generation"].ToString(): null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
