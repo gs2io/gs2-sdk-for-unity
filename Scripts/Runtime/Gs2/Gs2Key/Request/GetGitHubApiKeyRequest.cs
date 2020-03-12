@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Key.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class GetGitHubApiKeyRequest : Gs2Request<GetGitHubApiKeyRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Key.Request
 
 
         /** GitHub APIキー名 */
-		[UnityEngine.SerializeField]
-        public string apiKeyName;
+        public string apiKeyName { set; get; }
 
         /**
          * GitHub APIキー名を設定
