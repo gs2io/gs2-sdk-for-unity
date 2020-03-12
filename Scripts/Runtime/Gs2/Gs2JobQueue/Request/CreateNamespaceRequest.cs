@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2JobQueue.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class CreateNamespaceRequest : Gs2Request<CreateNamespaceRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string name;
+        public string name { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2JobQueue.Request
 
 
         /** ネームスペースの説明 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * ネームスペースの説明を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2JobQueue.Request
 
 
         /** ジョブキューにジョブが登録されたときののプッシュ通知 */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2JobQueue.Model.NotificationSetting pushNotification;
+        public Gs2.Gs2JobQueue.Model.NotificationSetting pushNotification { set; get; }
 
         /**
          * ジョブキューにジョブが登録されたときののプッシュ通知を設定
@@ -71,15 +67,14 @@ namespace Gs2.Gs2JobQueue.Request
          * @param pushNotification ジョブキューにジョブが登録されたときののプッシュ通知
          * @return this
          */
-        public CreateNamespaceRequest WithPushNotification(global::Gs2.Gs2JobQueue.Model.NotificationSetting pushNotification) {
+        public CreateNamespaceRequest WithPushNotification(Gs2.Gs2JobQueue.Model.NotificationSetting pushNotification) {
             this.pushNotification = pushNotification;
             return this;
         }
 
 
         /** ログの出力設定 */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2JobQueue.Model.LogSetting logSetting;
+        public Gs2.Gs2JobQueue.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -87,7 +82,7 @@ namespace Gs2.Gs2JobQueue.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public CreateNamespaceRequest WithLogSetting(global::Gs2.Gs2JobQueue.Model.LogSetting logSetting) {
+        public CreateNamespaceRequest WithLogSetting(Gs2.Gs2JobQueue.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -99,8 +94,8 @@ namespace Gs2.Gs2JobQueue.Request
             return new CreateNamespaceRequest {
                 name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
-                pushNotification = data.Keys.Contains("pushNotification") && data["pushNotification"] != null ? global::Gs2.Gs2JobQueue.Model.NotificationSetting.FromDict(data["pushNotification"]) : null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? global::Gs2.Gs2JobQueue.Model.LogSetting.FromDict(data["logSetting"]) : null,
+                pushNotification = data.Keys.Contains("pushNotification") && data["pushNotification"] != null ? Gs2.Gs2JobQueue.Model.NotificationSetting.FromDict(data["pushNotification"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2JobQueue.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 
