@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using LitJson;
 using UnityEngine.Scripting;
@@ -294,54 +293,6 @@ namespace Gs2.Gs2Deploy.Model
             }
             writer.WriteObjectEnd();
         }
-
-    public static string GetResourceNameFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):working:(?<stackName>.*):resource:(?<resourceName>.*)");
-        if (!match.Groups["resourceName"].Success)
-        {
-            return null;
-        }
-        return match.Groups["resourceName"].Value;
-    }
-
-    public static string GetStackNameFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):working:(?<stackName>.*):resource:(?<resourceName>.*)");
-        if (!match.Groups["stackName"].Success)
-        {
-            return null;
-        }
-        return match.Groups["stackName"].Value;
-    }
-
-    public static string GetOwnerIdFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):working:(?<stackName>.*):resource:(?<resourceName>.*)");
-        if (!match.Groups["ownerId"].Success)
-        {
-            return null;
-        }
-        return match.Groups["ownerId"].Value;
-    }
-
-    public static string GetRegionFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):working:(?<stackName>.*):resource:(?<resourceName>.*)");
-        if (!match.Groups["region"].Success)
-        {
-            return null;
-        }
-        return match.Groups["region"].Value;
-    }
 
     	[Preserve]
         public static WorkingResource FromDict(JsonData data)
