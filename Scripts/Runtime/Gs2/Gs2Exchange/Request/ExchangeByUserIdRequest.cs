@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Exchange.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class ExchangeByUserIdRequest : Gs2Request<ExchangeByUserIdRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Exchange.Request
 
 
         /** 交換レートの種類名 */
-        public string rateName { set; get; }
+		[UnityEngine.SerializeField]
+        public string rateName;
 
         /**
          * 交換レートの種類名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Exchange.Request
 
 
         /** ユーザーID */
-        public string userId { set; get; }
+		[UnityEngine.SerializeField]
+        public string userId;
 
         /**
          * ユーザーIDを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Exchange.Request
 
 
         /** 交換するロット数 */
-        public int? count { set; get; }
+		[UnityEngine.SerializeField]
+        public int? count;
 
         /**
          * 交換するロット数を設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Exchange.Request
 
 
         /** 設定値 */
-        public List<Config> config { set; get; }
+		[UnityEngine.SerializeField]
+        public List<Config> config;
 
         /**
          * 設定値を設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Exchange.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定
@@ -128,7 +135,7 @@ namespace Gs2.Gs2Exchange.Request
                 count = data.Keys.Contains("count") && data["count"] != null ? (int?)int.Parse(data["count"].ToString()) : null,
                 config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
                     {
-                        return Gs2.Gs2Exchange.Model.Config.FromDict(value);
+                        return Config.FromDict(value);
                     }
                 ).ToList() : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,

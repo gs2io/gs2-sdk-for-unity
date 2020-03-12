@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Distributor.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class GetDistributorModelMasterRequest : Gs2Request<GetDistributorModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Distributor.Request
 
 
         /** 配信設定名 */
-        public string distributorName { set; get; }
+		[UnityEngine.SerializeField]
+        public string distributorName;
 
         /**
          * 配信設定名を設定

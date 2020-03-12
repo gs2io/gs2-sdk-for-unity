@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Key.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class EncryptRequest : Gs2Request<EncryptRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Key.Request
 
 
         /** 暗号鍵名 */
-        public string keyName { set; get; }
+		[UnityEngine.SerializeField]
+        public string keyName;
 
         /**
          * 暗号鍵名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Key.Request
 
 
         /** None */
-        public string data { set; get; }
+		[UnityEngine.SerializeField]
+        public string data;
 
         /**
          * Noneを設定

@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Lottery.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DeletePrizeTableMasterRequest : Gs2Request<DeletePrizeTableMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Lottery.Request
 
 
         /** 排出確率テーブル名 */
-        public string prizeTableName { set; get; }
+		[UnityEngine.SerializeField]
+        public string prizeTableName;
 
         /**
          * 排出確率テーブル名を設定

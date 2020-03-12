@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Chat.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class CreateRoomFromBackendRequest : Gs2Request<CreateRoomFromBackendRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** ルーム名 */
-        public string name { set; get; }
+		[UnityEngine.SerializeField]
+        public string name;
 
         /**
          * ルーム名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** ユーザID */
-        public string userId { set; get; }
+		[UnityEngine.SerializeField]
+        public string userId;
 
         /**
          * ユーザIDを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** メタデータ */
-        public string metadata { set; get; }
+		[UnityEngine.SerializeField]
+        public string metadata;
 
         /**
          * メタデータを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** メッセージを投稿するために必要となるパスワード */
-        public string password { set; get; }
+		[UnityEngine.SerializeField]
+        public string password;
 
         /**
          * メッセージを投稿するために必要となるパスワードを設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** ルームに参加可能なユーザIDリスト */
-        public List<string> whiteListUserIds { set; get; }
+		[UnityEngine.SerializeField]
+        public List<string> whiteListUserIds;
 
         /**
          * ルームに参加可能なユーザIDリストを設定
@@ -119,7 +126,8 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定

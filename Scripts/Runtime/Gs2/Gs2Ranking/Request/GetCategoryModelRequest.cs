@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Ranking.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class GetCategoryModelRequest : Gs2Request<GetCategoryModelRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** カテゴリモデル名 */
-        public string categoryName { set; get; }
+		[UnityEngine.SerializeField]
+        public string categoryName;
 
         /**
          * カテゴリモデル名を設定

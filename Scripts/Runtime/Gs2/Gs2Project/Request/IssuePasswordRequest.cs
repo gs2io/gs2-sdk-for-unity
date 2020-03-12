@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Project.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class IssuePasswordRequest : Gs2Request<IssuePasswordRequest>
 	{
 
         /** パスワードを再発行するために必要なトークン */
-        public string issuePasswordToken { set; get; }
+		[UnityEngine.SerializeField]
+        public string issuePasswordToken;
 
         /**
          * パスワードを再発行するために必要なトークンを設定

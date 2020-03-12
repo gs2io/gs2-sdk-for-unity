@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Lottery.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class GetLotteryModelRequest : Gs2Request<GetLotteryModelRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Lottery.Request
 
 
         /** 抽選モデルの種類名 */
-        public string lotteryName { set; get; }
+		[UnityEngine.SerializeField]
+        public string lotteryName;
 
         /**
          * 抽選モデルの種類名を設定

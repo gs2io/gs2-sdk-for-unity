@@ -1899,10 +1899,10 @@ namespace Gs2.Gs2Datastore
                     jsonWriter.WritePropertyName("namespaceName");
                     jsonWriter.Write(_request.namespaceName.ToString());
                 }
-                if (_request.dataObjectName != null)
+                if (_request.dataObjectId != null)
                 {
-                    jsonWriter.WritePropertyName("dataObjectName");
-                    jsonWriter.Write(_request.dataObjectName.ToString());
+                    jsonWriter.WritePropertyName("dataObjectId");
+                    jsonWriter.Write(_request.dataObjectId.ToString());
                 }
                 if (_request.generation != null)
                 {
@@ -1999,10 +1999,10 @@ namespace Gs2.Gs2Datastore
                     jsonWriter.WritePropertyName("userId");
                     jsonWriter.Write(_request.userId.ToString());
                 }
-                if (_request.dataObjectName != null)
+                if (_request.dataObjectId != null)
                 {
-                    jsonWriter.WritePropertyName("dataObjectName");
-                    jsonWriter.Write(_request.dataObjectName.ToString());
+                    jsonWriter.WritePropertyName("dataObjectId");
+                    jsonWriter.Write(_request.dataObjectId.ToString());
                 }
                 if (_request.generation != null)
                 {
@@ -2065,6 +2065,286 @@ namespace Gs2.Gs2Datastore
         )
 		{
 			var task = new PrepareDownloadByGenerationAndUserIdTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class PrepareDownloadOwnDataTask : Gs2WebSocketSessionTask<Result.PrepareDownloadOwnDataResult>
+        {
+			private readonly Request.PrepareDownloadOwnDataRequest _request;
+
+			public PrepareDownloadOwnDataTask(Request.PrepareDownloadOwnDataRequest request, UnityAction<AsyncResult<Result.PrepareDownloadOwnDataResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.dataObjectName != null)
+                {
+                    jsonWriter.WritePropertyName("dataObjectName");
+                    jsonWriter.Write(_request.dataObjectName.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2AccessToken");
+                    jsonWriter.Write(_request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("datastore");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("dataObject");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("prepareDownloadOwnData");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  データオブジェクトをダウンロード準備する<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator PrepareDownloadOwnData(
+                Request.PrepareDownloadOwnDataRequest request,
+                UnityAction<AsyncResult<Result.PrepareDownloadOwnDataResult>> callback
+        )
+		{
+			var task = new PrepareDownloadOwnDataTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class PrepareDownloadOwnDataByGenerationTask : Gs2WebSocketSessionTask<Result.PrepareDownloadOwnDataByGenerationResult>
+        {
+			private readonly Request.PrepareDownloadOwnDataByGenerationRequest _request;
+
+			public PrepareDownloadOwnDataByGenerationTask(Request.PrepareDownloadOwnDataByGenerationRequest request, UnityAction<AsyncResult<Result.PrepareDownloadOwnDataByGenerationResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.dataObjectName != null)
+                {
+                    jsonWriter.WritePropertyName("dataObjectName");
+                    jsonWriter.Write(_request.dataObjectName.ToString());
+                }
+                if (_request.generation != null)
+                {
+                    jsonWriter.WritePropertyName("generation");
+                    jsonWriter.Write(_request.generation.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2AccessToken");
+                    jsonWriter.Write(_request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("datastore");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("dataObject");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("prepareDownloadOwnDataByGeneration");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  データオブジェクトを世代を指定してダウンロード準備する<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator PrepareDownloadOwnDataByGeneration(
+                Request.PrepareDownloadOwnDataByGenerationRequest request,
+                UnityAction<AsyncResult<Result.PrepareDownloadOwnDataByGenerationResult>> callback
+        )
+		{
+			var task = new PrepareDownloadOwnDataByGenerationTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class PrepareDownloadOwnDataByGenerationAndUserIdTask : Gs2WebSocketSessionTask<Result.PrepareDownloadOwnDataByGenerationAndUserIdResult>
+        {
+			private readonly Request.PrepareDownloadOwnDataByGenerationAndUserIdRequest _request;
+
+			public PrepareDownloadOwnDataByGenerationAndUserIdTask(Request.PrepareDownloadOwnDataByGenerationAndUserIdRequest request, UnityAction<AsyncResult<Result.PrepareDownloadOwnDataByGenerationAndUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.userId != null)
+                {
+                    jsonWriter.WritePropertyName("userId");
+                    jsonWriter.Write(_request.userId.ToString());
+                }
+                if (_request.dataObjectName != null)
+                {
+                    jsonWriter.WritePropertyName("dataObjectName");
+                    jsonWriter.Write(_request.dataObjectName.ToString());
+                }
+                if (_request.generation != null)
+                {
+                    jsonWriter.WritePropertyName("generation");
+                    jsonWriter.Write(_request.generation.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("datastore");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("dataObject");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("prepareDownloadOwnDataByGenerationAndUserId");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  ユーザIDを指定してデータオブジェクトを世代を指定してダウンロード準備する<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator PrepareDownloadOwnDataByGenerationAndUserId(
+                Request.PrepareDownloadOwnDataByGenerationAndUserIdRequest request,
+                UnityAction<AsyncResult<Result.PrepareDownloadOwnDataByGenerationAndUserIdResult>> callback
+        )
+		{
+			var task = new PrepareDownloadOwnDataByGenerationAndUserIdTask(request, callback);
 			return Gs2WebSocketSession.Execute(task);
         }
 

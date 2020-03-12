@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Friend.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class UpdateProfileByUserIdRequest : Gs2Request<UpdateProfileByUserIdRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Friend.Request
 
 
         /** ユーザーID */
-        public string userId { set; get; }
+		[UnityEngine.SerializeField]
+        public string userId;
 
         /**
          * ユーザーIDを設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Friend.Request
 
 
         /** 公開されるプロフィール */
-        public string publicProfile { set; get; }
+		[UnityEngine.SerializeField]
+        public string publicProfile;
 
         /**
          * 公開されるプロフィールを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Friend.Request
 
 
         /** フォロワー向けに公開されるプロフィール */
-        public string followerProfile { set; get; }
+		[UnityEngine.SerializeField]
+        public string followerProfile;
 
         /**
          * フォロワー向けに公開されるプロフィールを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Friend.Request
 
 
         /** フレンド向けに公開されるプロフィール */
-        public string friendProfile { set; get; }
+		[UnityEngine.SerializeField]
+        public string friendProfile;
 
         /**
          * フレンド向けに公開されるプロフィールを設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Friend.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定

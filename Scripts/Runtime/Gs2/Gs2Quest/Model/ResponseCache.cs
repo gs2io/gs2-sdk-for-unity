@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using LitJson;
 using UnityEngine.Scripting;
@@ -126,6 +127,42 @@ namespace Gs2.Gs2Quest.Model
             }
             writer.WriteObjectEnd();
         }
+
+    public static string GetRegionFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):hash:(?<requestHash>.*)");
+        if (!match.Groups["region"].Success)
+        {
+            return null;
+        }
+        return match.Groups["region"].Value;
+    }
+
+    public static string GetOwnerIdFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):hash:(?<requestHash>.*)");
+        if (!match.Groups["ownerId"].Success)
+        {
+            return null;
+        }
+        return match.Groups["ownerId"].Value;
+    }
+
+    public static string GetRequestHashFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):hash:(?<requestHash>.*)");
+        if (!match.Groups["requestHash"].Success)
+        {
+            return null;
+        }
+        return match.Groups["requestHash"].Value;
+    }
 
     	[Preserve]
         public static ResponseCache FromDict(JsonData data)

@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Identifier.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class GetHasSecurityPolicyRequest : Gs2Request<GetHasSecurityPolicyRequest>
 	{
 
         /** ユーザー名 */
-        public string userName { set; get; }
+		[UnityEngine.SerializeField]
+        public string userName;
 
         /**
          * ユーザー名を設定

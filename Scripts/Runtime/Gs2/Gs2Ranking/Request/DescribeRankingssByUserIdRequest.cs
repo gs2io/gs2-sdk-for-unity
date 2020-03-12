@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Ranking.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DescribeRankingssByUserIdRequest : Gs2Request<DescribeRankingssByUserIdRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** カテゴリ名 */
-        public string categoryName { set; get; }
+		[UnityEngine.SerializeField]
+        public string categoryName;
 
         /**
          * カテゴリ名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** ユーザID */
-        public string userId { set; get; }
+		[UnityEngine.SerializeField]
+        public string userId;
 
         /**
          * ユーザIDを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** ランキングの取得を開始するインデックス */
-        public long? startIndex { set; get; }
+		[UnityEngine.SerializeField]
+        public long? startIndex;
 
         /**
          * ランキングの取得を開始するインデックスを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** データの取得を開始する位置を指定するトークン */
-        public string pageToken { set; get; }
+		[UnityEngine.SerializeField]
+        public string pageToken;
 
         /**
          * データの取得を開始する位置を指定するトークンを設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** データの取得件数 */
-        public long? limit { set; get; }
+		[UnityEngine.SerializeField]
+        public long? limit;
 
         /**
          * データの取得件数を設定
@@ -119,7 +126,8 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定

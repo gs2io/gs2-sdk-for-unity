@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Experience.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class CreateThresholdMasterRequest : Gs2Request<CreateThresholdMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Experience.Request
 
 
         /** ランクアップ閾値名 */
-        public string name { set; get; }
+		[UnityEngine.SerializeField]
+        public string name;
 
         /**
          * ランクアップ閾値名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Experience.Request
 
 
         /** ランクアップ閾値マスターの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * ランクアップ閾値マスターの説明を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Experience.Request
 
 
         /** ランクアップ閾値のメタデータ */
-        public string metadata { set; get; }
+		[UnityEngine.SerializeField]
+        public string metadata;
 
         /**
          * ランクアップ閾値のメタデータを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Experience.Request
 
 
         /** ランクアップ経験値閾値リスト */
-        public List<long?> values { set; get; }
+		[UnityEngine.SerializeField]
+        public List<long?> values;
 
         /**
          * ランクアップ経験値閾値リストを設定

@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Ranking.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class CreateCategoryModelMasterRequest : Gs2Request<CreateCategoryModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** カテゴリモデル名 */
-        public string name { set; get; }
+		[UnityEngine.SerializeField]
+        public string name;
 
         /**
          * カテゴリモデル名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** カテゴリマスターの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * カテゴリマスターの説明を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** カテゴリマスターのメタデータ */
-        public string metadata { set; get; }
+		[UnityEngine.SerializeField]
+        public string metadata;
 
         /**
          * カテゴリマスターのメタデータを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** スコアの最小値 */
-        public long? minimumValue { set; get; }
+		[UnityEngine.SerializeField]
+        public long? minimumValue;
 
         /**
          * スコアの最小値を設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** スコアの最大値 */
-        public long? maximumValue { set; get; }
+		[UnityEngine.SerializeField]
+        public long? maximumValue;
 
         /**
          * スコアの最大値を設定
@@ -119,7 +126,8 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** スコアのソート方向 */
-        public string orderDirection { set; get; }
+		[UnityEngine.SerializeField]
+        public string orderDirection;
 
         /**
          * スコアのソート方向を設定
@@ -134,7 +142,8 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** ランキングの種類 */
-        public string scope { set; get; }
+		[UnityEngine.SerializeField]
+        public string scope;
 
         /**
          * ランキングの種類を設定
@@ -149,7 +158,8 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** ユーザID毎にスコアを1つしか登録されないようにする */
-        public bool? uniqueByUserId { set; get; }
+		[UnityEngine.SerializeField]
+        public bool? uniqueByUserId;
 
         /**
          * ユーザID毎にスコアを1つしか登録されないようにするを設定
@@ -164,7 +174,8 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** スコアの集計間隔(分) */
-        public int? calculateIntervalMinutes { set; get; }
+		[UnityEngine.SerializeField]
+        public int? calculateIntervalMinutes;
 
         /**
          * スコアの集計間隔(分)を設定

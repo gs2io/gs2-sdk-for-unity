@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Limit.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class UpdateCurrentLimitMasterFromGitHubRequest : Gs2Request<UpdateCurrentLimitMasterFromGitHubRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** GitHubからマスターデータをチェックアウトしてくる設定 */
-        public Gs2.Gs2Limit.Model.GitHubCheckoutSetting checkoutSetting { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Limit.Model.GitHubCheckoutSetting checkoutSetting;
 
         /**
          * GitHubからマスターデータをチェックアウトしてくる設定を設定
@@ -52,7 +55,7 @@ namespace Gs2.Gs2Limit.Request
          * @param checkoutSetting GitHubからマスターデータをチェックアウトしてくる設定
          * @return this
          */
-        public UpdateCurrentLimitMasterFromGitHubRequest WithCheckoutSetting(Gs2.Gs2Limit.Model.GitHubCheckoutSetting checkoutSetting) {
+        public UpdateCurrentLimitMasterFromGitHubRequest WithCheckoutSetting(global::Gs2.Gs2Limit.Model.GitHubCheckoutSetting checkoutSetting) {
             this.checkoutSetting = checkoutSetting;
             return this;
         }
@@ -63,7 +66,7 @@ namespace Gs2.Gs2Limit.Request
         {
             return new UpdateCurrentLimitMasterFromGitHubRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
-                checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? Gs2.Gs2Limit.Model.GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
+                checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? global::Gs2.Gs2Limit.Model.GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
             };
         }
 

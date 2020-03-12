@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Showcase.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class CreateShowcaseMasterRequest : Gs2Request<CreateShowcaseMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 陳列棚名 */
-        public string name { set; get; }
+		[UnityEngine.SerializeField]
+        public string name;
 
         /**
          * 陳列棚名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 陳列棚マスターの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * 陳列棚マスターの説明を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 商品のメタデータ */
-        public string metadata { set; get; }
+		[UnityEngine.SerializeField]
+        public string metadata;
 
         /**
          * 商品のメタデータを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 陳列する商品モデル一覧 */
-        public List<DisplayItemMaster> displayItems { set; get; }
+		[UnityEngine.SerializeField]
+        public List<DisplayItemMaster> displayItems;
 
         /**
          * 陳列する商品モデル一覧を設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 販売期間とするイベントマスター のGRN */
-        public string salesPeriodEventId { set; get; }
+		[UnityEngine.SerializeField]
+        public string salesPeriodEventId;
 
         /**
          * 販売期間とするイベントマスター のGRNを設定
@@ -128,7 +135,7 @@ namespace Gs2.Gs2Showcase.Request
                 metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
                 displayItems = data.Keys.Contains("displayItems") && data["displayItems"] != null ? data["displayItems"].Cast<JsonData>().Select(value =>
                     {
-                        return Gs2.Gs2Showcase.Model.DisplayItemMaster.FromDict(value);
+                        return DisplayItemMaster.FromDict(value);
                     }
                 ).ToList() : null,
                 salesPeriodEventId = data.Keys.Contains("salesPeriodEventId") && data["salesPeriodEventId"] != null ? data["salesPeriodEventId"].ToString(): null,

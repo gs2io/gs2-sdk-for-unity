@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inventory.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class UpdateItemModelMasterRequest : Gs2Request<UpdateItemModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** インベントリの種類名 */
-        public string inventoryName { set; get; }
+		[UnityEngine.SerializeField]
+        public string inventoryName;
 
         /**
          * インベントリの種類名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** アイテムモデルの種類名 */
-        public string itemName { set; get; }
+		[UnityEngine.SerializeField]
+        public string itemName;
 
         /**
          * アイテムモデルの種類名を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** アイテムモデルマスターの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * アイテムモデルマスターの説明を設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** アイテムモデルの種類のメタデータ */
-        public string metadata { set; get; }
+		[UnityEngine.SerializeField]
+        public string metadata;
 
         /**
          * アイテムモデルの種類のメタデータを設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** スタック可能な最大数量 */
-        public long? stackingLimit { set; get; }
+		[UnityEngine.SerializeField]
+        public long? stackingLimit;
 
         /**
          * スタック可能な最大数量を設定
@@ -119,7 +126,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すか */
-        public bool? allowMultipleStacks { set; get; }
+		[UnityEngine.SerializeField]
+        public bool? allowMultipleStacks;
 
         /**
          * スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すかを設定
@@ -134,7 +142,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** 表示順番 */
-        public int? sortValue { set; get; }
+		[UnityEngine.SerializeField]
+        public int? sortValue;
 
         /**
          * 表示順番を設定

@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Quest.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class CreateProgressByUserIdRequest : Gs2Request<CreateProgressByUserIdRequest>
 	{
 
         /** カテゴリ名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * カテゴリ名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** ユーザーID */
-        public string userId { set; get; }
+		[UnityEngine.SerializeField]
+        public string userId;
 
         /**
          * ユーザーIDを設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** クエストモデル */
-        public string questModelId { set; get; }
+		[UnityEngine.SerializeField]
+        public string questModelId;
 
         /**
          * クエストモデルを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** すでに開始しているクエストがある場合にそれを破棄して開始するか */
-        public bool? force { set; get; }
+		[UnityEngine.SerializeField]
+        public bool? force;
 
         /**
          * すでに開始しているクエストがある場合にそれを破棄して開始するかを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** スタンプシートの変数に適用する設定値 */
-        public List<Config> config { set; get; }
+		[UnityEngine.SerializeField]
+        public List<Config> config;
 
         /**
          * スタンプシートの変数に適用する設定値を設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定
@@ -128,7 +135,7 @@ namespace Gs2.Gs2Quest.Request
                 force = data.Keys.Contains("force") && data["force"] != null ? (bool?)bool.Parse(data["force"].ToString()) : null,
                 config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
                     {
-                        return Gs2.Gs2Quest.Model.Config.FromDict(value);
+                        return Config.FromDict(value);
                     }
                 ).ToList() : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,

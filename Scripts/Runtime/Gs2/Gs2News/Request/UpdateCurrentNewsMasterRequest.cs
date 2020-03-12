@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2News.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class UpdateCurrentNewsMasterRequest : Gs2Request<UpdateCurrentNewsMasterRequest>
 	{
 
         /** ネームスペースの名前 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペースの名前を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2News.Request
 
 
         /** アップロード準備で受け取ったトークン */
-        public string uploadToken { set; get; }
+		[UnityEngine.SerializeField]
+        public string uploadToken;
 
         /**
          * アップロード準備で受け取ったトークンを設定

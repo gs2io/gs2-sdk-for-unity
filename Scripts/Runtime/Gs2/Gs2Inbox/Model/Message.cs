@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using LitJson;
 using UnityEngine.Scripting;
@@ -207,6 +208,66 @@ namespace Gs2.Gs2Inbox.Model
             }
             writer.WriteObjectEnd();
         }
+
+    public static string GetMessageNameFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):inbox:(?<namespaceName>.*):user:(?<userId>.*):message:(?<messageName>.*)");
+        if (!match.Groups["messageName"].Success)
+        {
+            return null;
+        }
+        return match.Groups["messageName"].Value;
+    }
+
+    public static string GetUserIdFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):inbox:(?<namespaceName>.*):user:(?<userId>.*):message:(?<messageName>.*)");
+        if (!match.Groups["userId"].Success)
+        {
+            return null;
+        }
+        return match.Groups["userId"].Value;
+    }
+
+    public static string GetNamespaceNameFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):inbox:(?<namespaceName>.*):user:(?<userId>.*):message:(?<messageName>.*)");
+        if (!match.Groups["namespaceName"].Success)
+        {
+            return null;
+        }
+        return match.Groups["namespaceName"].Value;
+    }
+
+    public static string GetOwnerIdFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):inbox:(?<namespaceName>.*):user:(?<userId>.*):message:(?<messageName>.*)");
+        if (!match.Groups["ownerId"].Success)
+        {
+            return null;
+        }
+        return match.Groups["ownerId"].Value;
+    }
+
+    public static string GetRegionFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):inbox:(?<namespaceName>.*):user:(?<userId>.*):message:(?<messageName>.*)");
+        if (!match.Groups["region"].Success)
+        {
+            return null;
+        }
+        return match.Groups["region"].Value;
+    }
 
     	[Preserve]
         public static Message FromDict(JsonData data)

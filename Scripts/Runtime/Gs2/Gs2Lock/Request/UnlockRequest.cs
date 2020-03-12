@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Lock.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class UnlockRequest : Gs2Request<UnlockRequest>
 	{
 
         /** カテゴリー名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * カテゴリー名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Lock.Request
 
 
         /** プロパティID */
-        public string propertyId { set; get; }
+		[UnityEngine.SerializeField]
+        public string propertyId;
 
         /**
          * プロパティIDを設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Lock.Request
 
 
         /** ロックを取得したトランザクションID */
-        public string transactionId { set; get; }
+		[UnityEngine.SerializeField]
+        public string transactionId;
 
         /**
          * ロックを取得したトランザクションIDを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Lock.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定

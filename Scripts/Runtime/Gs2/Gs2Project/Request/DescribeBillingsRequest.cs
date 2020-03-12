@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Project.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DescribeBillingsRequest : Gs2Request<DescribeBillingsRequest>
 	{
 
         /** GS2アカウントトークン */
-        public string accountToken { set; get; }
+		[UnityEngine.SerializeField]
+        public string accountToken;
 
         /**
          * GS2アカウントトークンを設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Project.Request
 
 
         /** プロジェクト名 */
-        public string projectName { set; get; }
+		[UnityEngine.SerializeField]
+        public string projectName;
 
         /**
          * プロジェクト名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Project.Request
 
 
         /** イベントの発生年 */
-        public int? year { set; get; }
+		[UnityEngine.SerializeField]
+        public int? year;
 
         /**
          * イベントの発生年を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Project.Request
 
 
         /** イベントの発生月 */
-        public int? month { set; get; }
+		[UnityEngine.SerializeField]
+        public int? month;
 
         /**
          * イベントの発生月を設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Project.Request
 
 
         /** サービスの種類 */
-        public string region { set; get; }
+		[UnityEngine.SerializeField]
+        public string region;
 
         /**
          * サービスの種類を設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Project.Request
 
 
         /** サービスの種類 */
-        public string service { set; get; }
+		[UnityEngine.SerializeField]
+        public string service;
 
         /**
          * サービスの種類を設定

@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Datastore.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class PrepareDownloadByGenerationRequest : Gs2Request<PrepareDownloadByGenerationRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -43,23 +45,25 @@ namespace Gs2.Gs2Datastore.Request
         }
 
 
-        /** データの名前 */
-        public string dataObjectName { set; get; }
+        /** データオブジェクト */
+		[UnityEngine.SerializeField]
+        public string dataObjectId;
 
         /**
-         * データの名前を設定
+         * データオブジェクトを設定
          *
-         * @param dataObjectName データの名前
+         * @param dataObjectId データオブジェクト
          * @return this
          */
-        public PrepareDownloadByGenerationRequest WithDataObjectName(string dataObjectName) {
-            this.dataObjectName = dataObjectName;
+        public PrepareDownloadByGenerationRequest WithDataObjectId(string dataObjectId) {
+            this.dataObjectId = dataObjectId;
             return this;
         }
 
 
         /** 世代 */
-        public string generation { set; get; }
+		[UnityEngine.SerializeField]
+        public string generation;
 
         /**
          * 世代を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Datastore.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定
@@ -107,7 +112,7 @@ namespace Gs2.Gs2Datastore.Request
         {
             return new PrepareDownloadByGenerationRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
-                dataObjectName = data.Keys.Contains("dataObjectName") && data["dataObjectName"] != null ? data["dataObjectName"].ToString(): null,
+                dataObjectId = data.Keys.Contains("dataObjectId") && data["dataObjectId"] != null ? data["dataObjectId"].ToString(): null,
                 generation = data.Keys.Contains("generation") && data["generation"] != null ? data["generation"].ToString(): null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };

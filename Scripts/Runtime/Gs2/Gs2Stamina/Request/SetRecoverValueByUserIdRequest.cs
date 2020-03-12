@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Stamina.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class SetRecoverValueByUserIdRequest : Gs2Request<SetRecoverValueByUserIdRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナの種類名 */
-        public string staminaName { set; get; }
+		[UnityEngine.SerializeField]
+        public string staminaName;
 
         /**
          * スタミナの種類名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** ユーザーID */
-        public string userId { set; get; }
+		[UnityEngine.SerializeField]
+        public string userId;
 
         /**
          * ユーザーIDを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナの回復量 */
-        public int? recoverValue { set; get; }
+		[UnityEngine.SerializeField]
+        public int? recoverValue;
 
         /**
          * スタミナの回復量を設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定

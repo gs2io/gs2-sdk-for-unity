@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Deploy.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class UpdateStackFromGitHubRequest : Gs2Request<UpdateStackFromGitHubRequest>
 	{
 
         /** スタック名 */
-        public string stackName { set; get; }
+		[UnityEngine.SerializeField]
+        public string stackName;
 
         /**
          * スタック名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Deploy.Request
 
 
         /** スタックの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * スタックの説明を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Deploy.Request
 
 
         /** GitHubからソースコードをチェックアウトしてくる設定 */
-        public Gs2.Gs2Deploy.Model.GitHubCheckoutSetting checkoutSetting { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Deploy.Model.GitHubCheckoutSetting checkoutSetting;
 
         /**
          * GitHubからソースコードをチェックアウトしてくる設定を設定
@@ -67,7 +71,7 @@ namespace Gs2.Gs2Deploy.Request
          * @param checkoutSetting GitHubからソースコードをチェックアウトしてくる設定
          * @return this
          */
-        public UpdateStackFromGitHubRequest WithCheckoutSetting(Gs2.Gs2Deploy.Model.GitHubCheckoutSetting checkoutSetting) {
+        public UpdateStackFromGitHubRequest WithCheckoutSetting(global::Gs2.Gs2Deploy.Model.GitHubCheckoutSetting checkoutSetting) {
             this.checkoutSetting = checkoutSetting;
             return this;
         }
@@ -79,7 +83,7 @@ namespace Gs2.Gs2Deploy.Request
             return new UpdateStackFromGitHubRequest {
                 stackName = data.Keys.Contains("stackName") && data["stackName"] != null ? data["stackName"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
-                checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? Gs2.Gs2Deploy.Model.GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
+                checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? global::Gs2.Gs2Deploy.Model.GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
             };
         }
 

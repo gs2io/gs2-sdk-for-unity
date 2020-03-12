@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Quest.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class UpdateQuestGroupModelMasterRequest : Gs2Request<UpdateQuestGroupModelMasterRequest>
 	{
 
         /** カテゴリ名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * カテゴリ名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** クエストグループモデル名 */
-        public string questGroupName { set; get; }
+		[UnityEngine.SerializeField]
+        public string questGroupName;
 
         /**
          * クエストグループモデル名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** クエストグループマスターの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * クエストグループマスターの説明を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** クエストグループのメタデータ */
-        public string metadata { set; get; }
+		[UnityEngine.SerializeField]
+        public string metadata;
 
         /**
          * クエストグループのメタデータを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** 挑戦可能な期間を指定するイベントマスター のGRN */
-        public string challengePeriodEventId { set; get; }
+		[UnityEngine.SerializeField]
+        public string challengePeriodEventId;
 
         /**
          * 挑戦可能な期間を指定するイベントマスター のGRNを設定

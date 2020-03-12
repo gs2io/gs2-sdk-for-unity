@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Watch.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class GetChartRequest : Gs2Request<GetChartRequest>
 	{
 
         /** 指標 */
-        public string metrics { set; get; }
+		[UnityEngine.SerializeField]
+        public string metrics;
 
         /**
          * 指標を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Watch.Request
 
 
         /** リソースのGRN */
-        public string grn { set; get; }
+		[UnityEngine.SerializeField]
+        public string grn;
 
         /**
          * リソースのGRNを設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Watch.Request
 
 
         /** クエリリスト */
-        public List<string> queries { set; get; }
+		[UnityEngine.SerializeField]
+        public List<string> queries;
 
         /**
          * クエリリストを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Watch.Request
 
 
         /** グルーピング対象 */
-        public string by { set; get; }
+		[UnityEngine.SerializeField]
+        public string by;
 
         /**
          * グルーピング対象を設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Watch.Request
 
 
         /** データの取得期間 */
-        public string timeframe { set; get; }
+		[UnityEngine.SerializeField]
+        public string timeframe;
 
         /**
          * データの取得期間を設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Watch.Request
 
 
         /** グラフのサイズ */
-        public string size { set; get; }
+		[UnityEngine.SerializeField]
+        public string size;
 
         /**
          * グラフのサイズを設定
@@ -119,7 +126,8 @@ namespace Gs2.Gs2Watch.Request
 
 
         /** フォーマット */
-        public string format { set; get; }
+		[UnityEngine.SerializeField]
+        public string format;
 
         /**
          * フォーマットを設定
@@ -134,7 +142,8 @@ namespace Gs2.Gs2Watch.Request
 
 
         /** 集計方針 */
-        public string aggregator { set; get; }
+		[UnityEngine.SerializeField]
+        public string aggregator;
 
         /**
          * 集計方針を設定
@@ -149,7 +158,8 @@ namespace Gs2.Gs2Watch.Request
 
 
         /** スタイル */
-        public string style { set; get; }
+		[UnityEngine.SerializeField]
+        public string style;
 
         /**
          * スタイルを設定
@@ -164,7 +174,8 @@ namespace Gs2.Gs2Watch.Request
 
 
         /** タイトル */
-        public string title { set; get; }
+		[UnityEngine.SerializeField]
+        public string title;
 
         /**
          * タイトルを設定

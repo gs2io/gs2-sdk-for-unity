@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Money.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class WithdrawByUserIdRequest : Gs2Request<WithdrawByUserIdRequest>
 	{
 
         /** ネームスペースの名前 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペースの名前を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Money.Request
 
 
         /** ユーザーID */
-        public string userId { set; get; }
+		[UnityEngine.SerializeField]
+        public string userId;
 
         /**
          * ユーザーIDを設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Money.Request
 
 
         /** スロット番号 */
-        public int? slot { set; get; }
+		[UnityEngine.SerializeField]
+        public int? slot;
 
         /**
          * スロット番号を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Money.Request
 
 
         /** 消費する課金通貨の数量 */
-        public int? count { set; get; }
+		[UnityEngine.SerializeField]
+        public int? count;
 
         /**
          * 消費する課金通貨の数量を設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Money.Request
 
 
         /** 有償課金通貨のみを対象とするか */
-        public bool? paidOnly { set; get; }
+		[UnityEngine.SerializeField]
+        public bool? paidOnly;
 
         /**
          * 有償課金通貨のみを対象とするかを設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Money.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定

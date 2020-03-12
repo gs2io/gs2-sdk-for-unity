@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Showcase.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DeleteSalesItemGroupMasterRequest : Gs2Request<DeleteSalesItemGroupMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 商品名 */
-        public string salesItemGroupName { set; get; }
+		[UnityEngine.SerializeField]
+        public string salesItemGroupName;
 
         /**
          * 商品名を設定

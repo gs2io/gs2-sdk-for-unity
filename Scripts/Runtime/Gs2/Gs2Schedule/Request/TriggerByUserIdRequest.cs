@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Schedule.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class TriggerByUserIdRequest : Gs2Request<TriggerByUserIdRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** トリガーの名前 */
-        public string triggerName { set; get; }
+		[UnityEngine.SerializeField]
+        public string triggerName;
 
         /**
          * トリガーの名前を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** ユーザーID */
-        public string userId { set; get; }
+		[UnityEngine.SerializeField]
+        public string userId;
 
         /**
          * ユーザーIDを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** トリガーの引き方の方針 */
-        public string triggerStrategy { set; get; }
+		[UnityEngine.SerializeField]
+        public string triggerStrategy;
 
         /**
          * トリガーの引き方の方針を設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** トリガーの有効期限(秒) */
-        public int? ttl { set; get; }
+		[UnityEngine.SerializeField]
+        public int? ttl;
 
         /**
          * トリガーの有効期限(秒)を設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定

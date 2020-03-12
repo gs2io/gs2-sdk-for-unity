@@ -106,21 +106,21 @@ namespace Gs2.Core.Net
         /// </summary>
         public CloseCallbackType OnClose { private get; set; }
         
-        public BasicGs2Credential Credential { get; }
+        public IGs2Credential Credential { get; }
         public Region Region { get; }
         
-        public Gs2Session(BasicGs2Credential basicGs2Credential)
+        public Gs2Session(IGs2Credential basicGs2Credential)
         {
             Credential = basicGs2Credential;
             Region = Region.ApNortheast1;
         }
 
-        public Gs2Session(BasicGs2Credential basicGs2Credential, Region region) : this(basicGs2Credential)
+        public Gs2Session(IGs2Credential basicGs2Credential, Region region) : this(basicGs2Credential)
         {
             Region = region;
         }
 
-        public Gs2Session(BasicGs2Credential basicGs2Credential, string region) : this(basicGs2Credential)
+        public Gs2Session(IGs2Credential basicGs2Credential, string region) : this(basicGs2Credential)
         {
             Region = RegionExt.ValueOf(region);
         }
@@ -195,7 +195,17 @@ namespace Gs2.Core.Net
                         if (_state == State.Idle)
                         {
                             _state = State.Opening;
-                            current = OpenImpl();
+                            if (Credential is BasicGs2Credential)
+                            {
+                                current = OpenImpl();
+                            }
+                            else if (Credential is ProjectTokenGs2Credential)
+                            {
+                                using (var scopedUnlock = new NonreentrantLock.ScopedUnlock(_lock))
+                                {
+                                    OpenCallback(Credential.ProjectToken, null);
+                                }
+                            }
                         }
 
                         using (var scopedUnlock = new NonreentrantLock.ScopedUnlock(_lock))

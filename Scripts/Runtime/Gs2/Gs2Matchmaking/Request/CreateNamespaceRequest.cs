@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Matchmaking.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class CreateNamespaceRequest : Gs2Request<CreateNamespaceRequest>
 	{
 
         /** ネームスペース名 */
-        public string name { set; get; }
+		[UnityEngine.SerializeField]
+        public string name;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Matchmaking.Request
 
 
         /** ネームスペースの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * ネームスペースの説明を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Matchmaking.Request
 
 
         /** ギャザリング新規作成時のアクション */
-        public string createGatheringTriggerType { set; get; }
+		[UnityEngine.SerializeField]
+        public string createGatheringTriggerType;
 
         /**
          * ギャザリング新規作成時のアクションを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Matchmaking.Request
 
 
         /** ギャザリング新規作成時 にルームを作成するネームスペース のGRN */
-        public string createGatheringTriggerRealtimeNamespaceId { set; get; }
+		[UnityEngine.SerializeField]
+        public string createGatheringTriggerRealtimeNamespaceId;
 
         /**
          * ギャザリング新規作成時 にルームを作成するネームスペース のGRNを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Matchmaking.Request
 
 
         /** ギャザリング新規作成時 に実行されるスクリプト のGRN */
-        public string createGatheringTriggerScriptId { set; get; }
+		[UnityEngine.SerializeField]
+        public string createGatheringTriggerScriptId;
 
         /**
          * ギャザリング新規作成時 に実行されるスクリプト のGRNを設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Matchmaking.Request
 
 
         /** マッチメイキング完了時のアクション */
-        public string completeMatchmakingTriggerType { set; get; }
+		[UnityEngine.SerializeField]
+        public string completeMatchmakingTriggerType;
 
         /**
          * マッチメイキング完了時のアクションを設定
@@ -119,7 +126,8 @@ namespace Gs2.Gs2Matchmaking.Request
 
 
         /** マッチメイキング完了時 にルームを作成するネームスペース のGRN */
-        public string completeMatchmakingTriggerRealtimeNamespaceId { set; get; }
+		[UnityEngine.SerializeField]
+        public string completeMatchmakingTriggerRealtimeNamespaceId;
 
         /**
          * マッチメイキング完了時 にルームを作成するネームスペース のGRNを設定
@@ -134,7 +142,8 @@ namespace Gs2.Gs2Matchmaking.Request
 
 
         /** マッチメイキング完了時 に実行されるスクリプト のGRN */
-        public string completeMatchmakingTriggerScriptId { set; get; }
+		[UnityEngine.SerializeField]
+        public string completeMatchmakingTriggerScriptId;
 
         /**
          * マッチメイキング完了時 に実行されるスクリプト のGRNを設定
@@ -149,7 +158,8 @@ namespace Gs2.Gs2Matchmaking.Request
 
 
         /** ギャザリングに新規プレイヤーが参加したときのプッシュ通知 */
-        public Gs2.Gs2Matchmaking.Model.NotificationSetting joinNotification { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Matchmaking.Model.NotificationSetting joinNotification;
 
         /**
          * ギャザリングに新規プレイヤーが参加したときのプッシュ通知を設定
@@ -157,14 +167,15 @@ namespace Gs2.Gs2Matchmaking.Request
          * @param joinNotification ギャザリングに新規プレイヤーが参加したときのプッシュ通知
          * @return this
          */
-        public CreateNamespaceRequest WithJoinNotification(Gs2.Gs2Matchmaking.Model.NotificationSetting joinNotification) {
+        public CreateNamespaceRequest WithJoinNotification(global::Gs2.Gs2Matchmaking.Model.NotificationSetting joinNotification) {
             this.joinNotification = joinNotification;
             return this;
         }
 
 
         /** ギャザリングからプレイヤーが離脱したときのプッシュ通知 */
-        public Gs2.Gs2Matchmaking.Model.NotificationSetting leaveNotification { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Matchmaking.Model.NotificationSetting leaveNotification;
 
         /**
          * ギャザリングからプレイヤーが離脱したときのプッシュ通知を設定
@@ -172,14 +183,15 @@ namespace Gs2.Gs2Matchmaking.Request
          * @param leaveNotification ギャザリングからプレイヤーが離脱したときのプッシュ通知
          * @return this
          */
-        public CreateNamespaceRequest WithLeaveNotification(Gs2.Gs2Matchmaking.Model.NotificationSetting leaveNotification) {
+        public CreateNamespaceRequest WithLeaveNotification(global::Gs2.Gs2Matchmaking.Model.NotificationSetting leaveNotification) {
             this.leaveNotification = leaveNotification;
             return this;
         }
 
 
         /** マッチメイキングが完了したときのプッシュ通知 */
-        public Gs2.Gs2Matchmaking.Model.NotificationSetting completeNotification { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Matchmaking.Model.NotificationSetting completeNotification;
 
         /**
          * マッチメイキングが完了したときのプッシュ通知を設定
@@ -187,14 +199,15 @@ namespace Gs2.Gs2Matchmaking.Request
          * @param completeNotification マッチメイキングが完了したときのプッシュ通知
          * @return this
          */
-        public CreateNamespaceRequest WithCompleteNotification(Gs2.Gs2Matchmaking.Model.NotificationSetting completeNotification) {
+        public CreateNamespaceRequest WithCompleteNotification(global::Gs2.Gs2Matchmaking.Model.NotificationSetting completeNotification) {
             this.completeNotification = completeNotification;
             return this;
         }
 
 
         /** ログの出力設定 */
-        public Gs2.Gs2Matchmaking.Model.LogSetting logSetting { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Matchmaking.Model.LogSetting logSetting;
 
         /**
          * ログの出力設定を設定
@@ -202,7 +215,7 @@ namespace Gs2.Gs2Matchmaking.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public CreateNamespaceRequest WithLogSetting(Gs2.Gs2Matchmaking.Model.LogSetting logSetting) {
+        public CreateNamespaceRequest WithLogSetting(global::Gs2.Gs2Matchmaking.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -220,10 +233,10 @@ namespace Gs2.Gs2Matchmaking.Request
                 completeMatchmakingTriggerType = data.Keys.Contains("completeMatchmakingTriggerType") && data["completeMatchmakingTriggerType"] != null ? data["completeMatchmakingTriggerType"].ToString(): null,
                 completeMatchmakingTriggerRealtimeNamespaceId = data.Keys.Contains("completeMatchmakingTriggerRealtimeNamespaceId") && data["completeMatchmakingTriggerRealtimeNamespaceId"] != null ? data["completeMatchmakingTriggerRealtimeNamespaceId"].ToString(): null,
                 completeMatchmakingTriggerScriptId = data.Keys.Contains("completeMatchmakingTriggerScriptId") && data["completeMatchmakingTriggerScriptId"] != null ? data["completeMatchmakingTriggerScriptId"].ToString(): null,
-                joinNotification = data.Keys.Contains("joinNotification") && data["joinNotification"] != null ? Gs2.Gs2Matchmaking.Model.NotificationSetting.FromDict(data["joinNotification"]) : null,
-                leaveNotification = data.Keys.Contains("leaveNotification") && data["leaveNotification"] != null ? Gs2.Gs2Matchmaking.Model.NotificationSetting.FromDict(data["leaveNotification"]) : null,
-                completeNotification = data.Keys.Contains("completeNotification") && data["completeNotification"] != null ? Gs2.Gs2Matchmaking.Model.NotificationSetting.FromDict(data["completeNotification"]) : null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Matchmaking.Model.LogSetting.FromDict(data["logSetting"]) : null,
+                joinNotification = data.Keys.Contains("joinNotification") && data["joinNotification"] != null ? global::Gs2.Gs2Matchmaking.Model.NotificationSetting.FromDict(data["joinNotification"]) : null,
+                leaveNotification = data.Keys.Contains("leaveNotification") && data["leaveNotification"] != null ? global::Gs2.Gs2Matchmaking.Model.NotificationSetting.FromDict(data["leaveNotification"]) : null,
+                completeNotification = data.Keys.Contains("completeNotification") && data["completeNotification"] != null ? global::Gs2.Gs2Matchmaking.Model.NotificationSetting.FromDict(data["completeNotification"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? global::Gs2.Gs2Matchmaking.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 

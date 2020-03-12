@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Experience.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class GetExperienceModelMasterRequest : Gs2Request<GetExperienceModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Experience.Request
 
 
         /** 経験値の種類名 */
-        public string experienceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string experienceName;
 
         /**
          * 経験値の種類名を設定
