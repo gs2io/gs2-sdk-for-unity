@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Identifier.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class LoginRequest : Gs2Request<LoginRequest>
 	{
 
         /** クライアントID */
-		[UnityEngine.SerializeField]
-        public string clientId;
+        public string clientId { set; get; }
 
         /**
          * クライアントIDを設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Identifier.Request
 
 
         /** クライアントシークレット */
-		[UnityEngine.SerializeField]
-        public string clientSecret;
+        public string clientSecret { set; get; }
 
         /**
          * クライアントシークレットを設定

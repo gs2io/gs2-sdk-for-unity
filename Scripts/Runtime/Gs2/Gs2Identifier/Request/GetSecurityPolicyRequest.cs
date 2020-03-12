@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Identifier.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class GetSecurityPolicyRequest : Gs2Request<GetSecurityPolicyRequest>
 	{
 
         /** セキュリティポリシー名 */
-		[UnityEngine.SerializeField]
-        public string securityPolicyName;
+        public string securityPolicyName { set; get; }
 
         /**
          * セキュリティポリシー名を設定
