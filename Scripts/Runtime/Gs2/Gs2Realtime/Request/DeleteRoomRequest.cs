@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Realtime.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class DeleteRoomRequest : Gs2Request<DeleteRoomRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Realtime.Request
 
 
         /** ルーム名 */
-		[UnityEngine.SerializeField]
-        public string roomName;
+        public string roomName { set; get; }
 
         /**
          * ルーム名を設定
