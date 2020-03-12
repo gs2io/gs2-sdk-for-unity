@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Chat.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateRoomRequest : Gs2Request<UpdateRoomRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** ルーム名 */
-		[UnityEngine.SerializeField]
-        public string roomName;
+        public string roomName { set; get; }
 
         /**
          * ルーム名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** メタデータ */
-		[UnityEngine.SerializeField]
-        public string metadata;
+        public string metadata { set; get; }
 
         /**
          * メタデータを設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** メッセージを投稿するために必要となるパスワード */
-		[UnityEngine.SerializeField]
-        public string password;
+        public string password { set; get; }
 
         /**
          * メッセージを投稿するために必要となるパスワードを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** ルームに参加可能なユーザIDリスト */
-		[UnityEngine.SerializeField]
-        public List<string> whiteListUserIds;
+        public List<string> whiteListUserIds { set; get; }
 
         /**
          * ルームに参加可能なユーザIDリストを設定
