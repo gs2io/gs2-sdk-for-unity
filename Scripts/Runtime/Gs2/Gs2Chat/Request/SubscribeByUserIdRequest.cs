@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Chat.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class SubscribeByUserIdRequest : Gs2Request<SubscribeByUserIdRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** ルーム名 */
-		[UnityEngine.SerializeField]
-        public string roomName;
+        public string roomName { set; get; }
 
         /**
          * ルーム名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** 購読するユーザID */
-		[UnityEngine.SerializeField]
-        public string userId;
+        public string userId { set; get; }
 
         /**
          * 購読するユーザIDを設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** 新着メッセージ通知を受け取るカテゴリリスト */
-		[UnityEngine.SerializeField]
-        public List<NotificationType> notificationTypes;
+        public List<NotificationType> notificationTypes { set; get; }
 
         /**
          * 新着メッセージ通知を受け取るカテゴリリストを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定
@@ -118,7 +112,7 @@ namespace Gs2.Gs2Chat.Request
                 userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
                 notificationTypes = data.Keys.Contains("notificationTypes") && data["notificationTypes"] != null ? data["notificationTypes"].Cast<JsonData>().Select(value =>
                     {
-                        return NotificationType.FromDict(value);
+                        return Gs2.Gs2Chat.Model.NotificationType.FromDict(value);
                     }
                 ).ToList() : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,

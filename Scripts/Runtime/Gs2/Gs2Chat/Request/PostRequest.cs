@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Chat.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class PostRequest : Gs2Request<PostRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** ルーム名 */
-		[UnityEngine.SerializeField]
-        public string roomName;
+        public string roomName { set; get; }
 
         /**
          * ルーム名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** メッセージの種類を分類したい時の種類番号 */
-		[UnityEngine.SerializeField]
-        public int? category;
+        public int? category { set; get; }
 
         /**
          * メッセージの種類を分類したい時の種類番号を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** メタデータ */
-		[UnityEngine.SerializeField]
-        public string metadata;
+        public string metadata { set; get; }
 
         /**
          * メタデータを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** メッセージを投稿するために必要となるパスワード */
-		[UnityEngine.SerializeField]
-        public string password;
+        public string password { set; get; }
 
         /**
          * メッセージを投稿するために必要となるパスワードを設定
@@ -110,8 +104,7 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定
