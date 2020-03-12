@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Account.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class DeleteTakeOverRequest : Gs2Request<DeleteTakeOverRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Account.Request
 
 
         /** スロット番号 */
-		[UnityEngine.SerializeField]
-        public int? type;
+        public int? type { set; get; }
 
         /**
          * スロット番号を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Account.Request
 
 
         /** 引き継ぎ用ユーザーID */
-		[UnityEngine.SerializeField]
-        public string userIdentifier;
+        public string userIdentifier { set; get; }
 
         /**
          * 引き継ぎ用ユーザーIDを設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Account.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定

@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Account.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateNamespaceRequest : Gs2Request<UpdateNamespaceRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Account.Request
 
 
         /** 説明文 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * 説明文を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Account.Request
 
 
         /** アカウント引き継ぎ時にパスワードを変更するか */
-		[UnityEngine.SerializeField]
-        public bool? changePasswordIfTakeOver;
+        public bool? changePasswordIfTakeOver { set; get; }
 
         /**
          * アカウント引き継ぎ時にパスワードを変更するかを設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Account.Request
 
 
         /** アカウント新規作成したときに実行するスクリプト */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Account.Model.ScriptSetting createAccountScript;
+        public Gs2.Gs2Account.Model.ScriptSetting createAccountScript { set; get; }
 
         /**
          * アカウント新規作成したときに実行するスクリプトを設定
@@ -87,15 +82,14 @@ namespace Gs2.Gs2Account.Request
          * @param createAccountScript アカウント新規作成したときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithCreateAccountScript(global::Gs2.Gs2Account.Model.ScriptSetting createAccountScript) {
+        public UpdateNamespaceRequest WithCreateAccountScript(Gs2.Gs2Account.Model.ScriptSetting createAccountScript) {
             this.createAccountScript = createAccountScript;
             return this;
         }
 
 
         /** 認証したときに実行するスクリプト */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Account.Model.ScriptSetting authenticationScript;
+        public Gs2.Gs2Account.Model.ScriptSetting authenticationScript { set; get; }
 
         /**
          * 認証したときに実行するスクリプトを設定
@@ -103,15 +97,14 @@ namespace Gs2.Gs2Account.Request
          * @param authenticationScript 認証したときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithAuthenticationScript(global::Gs2.Gs2Account.Model.ScriptSetting authenticationScript) {
+        public UpdateNamespaceRequest WithAuthenticationScript(Gs2.Gs2Account.Model.ScriptSetting authenticationScript) {
             this.authenticationScript = authenticationScript;
             return this;
         }
 
 
         /** 引き継ぎ情報登録したときに実行するスクリプト */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Account.Model.ScriptSetting createTakeOverScript;
+        public Gs2.Gs2Account.Model.ScriptSetting createTakeOverScript { set; get; }
 
         /**
          * 引き継ぎ情報登録したときに実行するスクリプトを設定
@@ -119,15 +112,14 @@ namespace Gs2.Gs2Account.Request
          * @param createTakeOverScript 引き継ぎ情報登録したときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithCreateTakeOverScript(global::Gs2.Gs2Account.Model.ScriptSetting createTakeOverScript) {
+        public UpdateNamespaceRequest WithCreateTakeOverScript(Gs2.Gs2Account.Model.ScriptSetting createTakeOverScript) {
             this.createTakeOverScript = createTakeOverScript;
             return this;
         }
 
 
         /** 引き継ぎ実行したときに実行するスクリプト */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Account.Model.ScriptSetting doTakeOverScript;
+        public Gs2.Gs2Account.Model.ScriptSetting doTakeOverScript { set; get; }
 
         /**
          * 引き継ぎ実行したときに実行するスクリプトを設定
@@ -135,15 +127,14 @@ namespace Gs2.Gs2Account.Request
          * @param doTakeOverScript 引き継ぎ実行したときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithDoTakeOverScript(global::Gs2.Gs2Account.Model.ScriptSetting doTakeOverScript) {
+        public UpdateNamespaceRequest WithDoTakeOverScript(Gs2.Gs2Account.Model.ScriptSetting doTakeOverScript) {
             this.doTakeOverScript = doTakeOverScript;
             return this;
         }
 
 
         /** ログの出力設定 */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Account.Model.LogSetting logSetting;
+        public Gs2.Gs2Account.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -151,7 +142,7 @@ namespace Gs2.Gs2Account.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public UpdateNamespaceRequest WithLogSetting(global::Gs2.Gs2Account.Model.LogSetting logSetting) {
+        public UpdateNamespaceRequest WithLogSetting(Gs2.Gs2Account.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -164,11 +155,11 @@ namespace Gs2.Gs2Account.Request
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 changePasswordIfTakeOver = data.Keys.Contains("changePasswordIfTakeOver") && data["changePasswordIfTakeOver"] != null ? (bool?)bool.Parse(data["changePasswordIfTakeOver"].ToString()) : null,
-                createAccountScript = data.Keys.Contains("createAccountScript") && data["createAccountScript"] != null ? global::Gs2.Gs2Account.Model.ScriptSetting.FromDict(data["createAccountScript"]) : null,
-                authenticationScript = data.Keys.Contains("authenticationScript") && data["authenticationScript"] != null ? global::Gs2.Gs2Account.Model.ScriptSetting.FromDict(data["authenticationScript"]) : null,
-                createTakeOverScript = data.Keys.Contains("createTakeOverScript") && data["createTakeOverScript"] != null ? global::Gs2.Gs2Account.Model.ScriptSetting.FromDict(data["createTakeOverScript"]) : null,
-                doTakeOverScript = data.Keys.Contains("doTakeOverScript") && data["doTakeOverScript"] != null ? global::Gs2.Gs2Account.Model.ScriptSetting.FromDict(data["doTakeOverScript"]) : null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? global::Gs2.Gs2Account.Model.LogSetting.FromDict(data["logSetting"]) : null,
+                createAccountScript = data.Keys.Contains("createAccountScript") && data["createAccountScript"] != null ? Gs2.Gs2Account.Model.ScriptSetting.FromDict(data["createAccountScript"]) : null,
+                authenticationScript = data.Keys.Contains("authenticationScript") && data["authenticationScript"] != null ? Gs2.Gs2Account.Model.ScriptSetting.FromDict(data["authenticationScript"]) : null,
+                createTakeOverScript = data.Keys.Contains("createTakeOverScript") && data["createTakeOverScript"] != null ? Gs2.Gs2Account.Model.ScriptSetting.FromDict(data["createTakeOverScript"]) : null,
+                doTakeOverScript = data.Keys.Contains("doTakeOverScript") && data["doTakeOverScript"] != null ? Gs2.Gs2Account.Model.ScriptSetting.FromDict(data["doTakeOverScript"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Account.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 

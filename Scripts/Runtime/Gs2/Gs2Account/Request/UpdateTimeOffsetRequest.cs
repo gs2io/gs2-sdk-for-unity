@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Account.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateTimeOffsetRequest : Gs2Request<UpdateTimeOffsetRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Account.Request
 
 
         /** アカウントID */
-		[UnityEngine.SerializeField]
-        public string userId;
+        public string userId { set; get; }
 
         /**
          * アカウントIDを設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Account.Request
 
 
         /** 現在時刻に対する補正値（現在時刻を起点とした秒数） */
-		[UnityEngine.SerializeField]
-        public int? timeOffset;
+        public int? timeOffset { set; get; }
 
         /**
          * 現在時刻に対する補正値（現在時刻を起点とした秒数）を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Account.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定

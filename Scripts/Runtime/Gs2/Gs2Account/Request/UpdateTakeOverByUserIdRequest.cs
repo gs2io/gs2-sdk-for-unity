@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Account.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateTakeOverByUserIdRequest : Gs2Request<UpdateTakeOverByUserIdRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Account.Request
 
 
         /** ユーザーID */
-		[UnityEngine.SerializeField]
-        public string userId;
+        public string userId { set; get; }
 
         /**
          * ユーザーIDを設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Account.Request
 
 
         /** スロット番号 */
-		[UnityEngine.SerializeField]
-        public int? type;
+        public int? type { set; get; }
 
         /**
          * スロット番号を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Account.Request
 
 
         /** 古いパスワード */
-		[UnityEngine.SerializeField]
-        public string oldPassword;
+        public string oldPassword { set; get; }
 
         /**
          * 古いパスワードを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Account.Request
 
 
         /** 新しいパスワード */
-		[UnityEngine.SerializeField]
-        public string password;
+        public string password { set; get; }
 
         /**
          * 新しいパスワードを設定
@@ -110,8 +104,7 @@ namespace Gs2.Gs2Account.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定
