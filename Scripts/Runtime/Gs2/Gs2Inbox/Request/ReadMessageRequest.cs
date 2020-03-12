@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inbox.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class ReadMessageRequest : Gs2Request<ReadMessageRequest>
 	{
 
         /** プレゼントボックス名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * プレゼントボックス名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** メッセージID */
-		[UnityEngine.SerializeField]
-        public string messageName;
+        public string messageName { set; get; }
 
         /**
          * メッセージIDを設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** スタンプシートの変数に適用する設定値 */
-		[UnityEngine.SerializeField]
-        public List<Config> config;
+        public List<Config> config { set; get; }
 
         /**
          * スタンプシートの変数に適用する設定値を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定
@@ -115,7 +110,7 @@ namespace Gs2.Gs2Inbox.Request
                 messageName = data.Keys.Contains("messageName") && data["messageName"] != null ? data["messageName"].ToString(): null,
                 config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
                     {
-                        return Config.FromDict(value);
+                        return Gs2.Gs2Inbox.Model.Config.FromDict(value);
                     }
                 ).ToList() : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
