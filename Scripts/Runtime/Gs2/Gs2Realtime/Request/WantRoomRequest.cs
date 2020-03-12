@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Realtime.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class WantRoomRequest : Gs2Request<WantRoomRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Realtime.Request
 
 
         /** ルーム名 */
-		[UnityEngine.SerializeField]
-        public string name;
+        public string name { set; get; }
 
         /**
          * ルーム名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Realtime.Request
 
 
         /** ルームの作成が終わったときに通知を受けるユーザIDリスト */
-		[UnityEngine.SerializeField]
-        public List<string> notificationUserIds;
+        public List<string> notificationUserIds { set; get; }
 
         /**
          * ルームの作成が終わったときに通知を受けるユーザIDリストを設定

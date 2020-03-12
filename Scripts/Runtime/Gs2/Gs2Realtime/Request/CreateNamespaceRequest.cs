@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Realtime.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class CreateNamespaceRequest : Gs2Request<CreateNamespaceRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string name;
+        public string name { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Realtime.Request
 
 
         /** ネームスペースの説明 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * ネームスペースの説明を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Realtime.Request
 
 
         /** サーバの種類 */
-		[UnityEngine.SerializeField]
-        public string serverType;
+        public string serverType { set; get; }
 
         /**
          * サーバの種類を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Realtime.Request
 
 
         /** サーバのスペック */
-		[UnityEngine.SerializeField]
-        public string serverSpec;
+        public string serverSpec { set; get; }
 
         /**
          * サーバのスペックを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Realtime.Request
 
 
         /** ルームの作成が終わったときのプッシュ通知 */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Realtime.Model.NotificationSetting createNotification;
+        public Gs2.Gs2Realtime.Model.NotificationSetting createNotification { set; get; }
 
         /**
          * ルームの作成が終わったときのプッシュ通知を設定
@@ -103,15 +97,14 @@ namespace Gs2.Gs2Realtime.Request
          * @param createNotification ルームの作成が終わったときのプッシュ通知
          * @return this
          */
-        public CreateNamespaceRequest WithCreateNotification(global::Gs2.Gs2Realtime.Model.NotificationSetting createNotification) {
+        public CreateNamespaceRequest WithCreateNotification(Gs2.Gs2Realtime.Model.NotificationSetting createNotification) {
             this.createNotification = createNotification;
             return this;
         }
 
 
         /** ログの出力設定 */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Realtime.Model.LogSetting logSetting;
+        public Gs2.Gs2Realtime.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -119,7 +112,7 @@ namespace Gs2.Gs2Realtime.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public CreateNamespaceRequest WithLogSetting(global::Gs2.Gs2Realtime.Model.LogSetting logSetting) {
+        public CreateNamespaceRequest WithLogSetting(Gs2.Gs2Realtime.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -133,8 +126,8 @@ namespace Gs2.Gs2Realtime.Request
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 serverType = data.Keys.Contains("serverType") && data["serverType"] != null ? data["serverType"].ToString(): null,
                 serverSpec = data.Keys.Contains("serverSpec") && data["serverSpec"] != null ? data["serverSpec"].ToString(): null,
-                createNotification = data.Keys.Contains("createNotification") && data["createNotification"] != null ? global::Gs2.Gs2Realtime.Model.NotificationSetting.FromDict(data["createNotification"]) : null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? global::Gs2.Gs2Realtime.Model.LogSetting.FromDict(data["logSetting"]) : null,
+                createNotification = data.Keys.Contains("createNotification") && data["createNotification"] != null ? Gs2.Gs2Realtime.Model.NotificationSetting.FromDict(data["createNotification"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Realtime.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 
