@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Watch.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class DescribeBillingActivitiesRequest : Gs2Request<DescribeBillingActivitiesRequest>
 	{
 
         /** イベントの発生年 */
-		[UnityEngine.SerializeField]
-        public int? year;
+        public int? year { set; get; }
 
         /**
          * イベントの発生年を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Watch.Request
 
 
         /** イベントの発生月 */
-		[UnityEngine.SerializeField]
-        public int? month;
+        public int? month { set; get; }
 
         /**
          * イベントの発生月を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Watch.Request
 
 
         /** サービスの種類 */
-		[UnityEngine.SerializeField]
-        public string service;
+        public string service { set; get; }
 
         /**
          * サービスの種類を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Watch.Request
 
 
         /** データの取得を開始する位置を指定するトークン */
-		[UnityEngine.SerializeField]
-        public string pageToken;
+        public string pageToken { set; get; }
 
         /**
          * データの取得を開始する位置を指定するトークンを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Watch.Request
 
 
         /** データの取得件数 */
-		[UnityEngine.SerializeField]
-        public long? limit;
+        public long? limit { set; get; }
 
         /**
          * データの取得件数を設定

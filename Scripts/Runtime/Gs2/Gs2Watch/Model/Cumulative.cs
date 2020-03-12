@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using LitJson;
 using UnityEngine.Scripting;
@@ -146,54 +145,6 @@ namespace Gs2.Gs2Watch.Model
             }
             writer.WriteObjectEnd();
         }
-
-    public static string GetResourceGrnFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):watch:cumulative:(?<resourceGrn>.*):(?<name>.*)");
-        if (!match.Groups["resourceGrn"].Success)
-        {
-            return null;
-        }
-        return match.Groups["resourceGrn"].Value;
-    }
-
-    public static string GetNameFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):watch:cumulative:(?<resourceGrn>.*):(?<name>.*)");
-        if (!match.Groups["name"].Success)
-        {
-            return null;
-        }
-        return match.Groups["name"].Value;
-    }
-
-    public static string GetOwnerIdFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):watch:cumulative:(?<resourceGrn>.*):(?<name>.*)");
-        if (!match.Groups["ownerId"].Success)
-        {
-            return null;
-        }
-        return match.Groups["ownerId"].Value;
-    }
-
-    public static string GetRegionFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):watch:cumulative:(?<resourceGrn>.*):(?<name>.*)");
-        if (!match.Groups["region"].Success)
-        {
-            return null;
-        }
-        return match.Groups["region"].Value;
-    }
 
     	[Preserve]
         public static Cumulative FromDict(JsonData data)
