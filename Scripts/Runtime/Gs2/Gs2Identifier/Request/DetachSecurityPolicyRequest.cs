@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Identifier.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class DetachSecurityPolicyRequest : Gs2Request<DetachSecurityPolicyRequest>
 	{
 
         /** ユーザー名 */
-		[UnityEngine.SerializeField]
-        public string userName;
+        public string userName { set; get; }
 
         /**
          * ユーザー名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Identifier.Request
 
 
         /** 剥奪するセキュリティポリシーのGRN */
-		[UnityEngine.SerializeField]
-        public string securityPolicyId;
+        public string securityPolicyId { set; get; }
 
         /**
          * 剥奪するセキュリティポリシーのGRNを設定
