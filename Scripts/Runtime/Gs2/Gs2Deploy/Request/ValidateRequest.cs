@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Deploy.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class ValidateRequest : Gs2Request<ValidateRequest>
 	{
 
         /** テンプレートデータ */
-		[UnityEngine.SerializeField]
-        public string template;
+        public string template { set; get; }
 
         /**
          * テンプレートデータを設定
