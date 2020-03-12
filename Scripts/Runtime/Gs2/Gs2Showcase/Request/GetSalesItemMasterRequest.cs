@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Showcase.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class GetSalesItemMasterRequest : Gs2Request<GetSalesItemMasterRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 商品名 */
-		[UnityEngine.SerializeField]
-        public string salesItemName;
+        public string salesItemName { set; get; }
 
         /**
          * 商品名を設定
