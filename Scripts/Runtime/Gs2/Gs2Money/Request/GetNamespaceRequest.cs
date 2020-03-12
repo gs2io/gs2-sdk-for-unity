@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Money.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class GetNamespaceRequest : Gs2Request<GetNamespaceRequest>
 	{
 
         /** ネームスペースの名前 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペースの名前を設定

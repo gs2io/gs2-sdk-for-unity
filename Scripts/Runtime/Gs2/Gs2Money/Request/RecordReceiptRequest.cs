@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Money.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class RecordReceiptRequest : Gs2Request<RecordReceiptRequest>
 	{
 
         /** ネームスペースの名前 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペースの名前を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Money.Request
 
 
         /** ユーザーID */
-		[UnityEngine.SerializeField]
-        public string userId;
+        public string userId { set; get; }
 
         /**
          * ユーザーIDを設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Money.Request
 
 
         /** プラットフォームストアのコンテンツID */
-		[UnityEngine.SerializeField]
-        public string contentsId;
+        public string contentsId { set; get; }
 
         /**
          * プラットフォームストアのコンテンツIDを設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Money.Request
 
 
         /** レシート */
-		[UnityEngine.SerializeField]
-        public string receipt;
+        public string receipt { set; get; }
 
         /**
          * レシートを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Money.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定
