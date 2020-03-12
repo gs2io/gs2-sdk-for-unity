@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Log.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class CreateNamespaceRequest : Gs2Request<CreateNamespaceRequest>
 	{
 
         /** カテゴリー名 */
-		[UnityEngine.SerializeField]
-        public string name;
+        public string name { set; get; }
 
         /**
          * カテゴリー名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Log.Request
 
 
         /** ネームスペースの説明 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * ネームスペースの説明を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Log.Request
 
 
         /** ログの書き出し方法 */
-		[UnityEngine.SerializeField]
-        public string type;
+        public string type { set; get; }
 
         /**
          * ログの書き出し方法を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Log.Request
 
 
         /** GCPのクレデンシャル */
-		[UnityEngine.SerializeField]
-        public string gcpCredentialJson;
+        public string gcpCredentialJson { set; get; }
 
         /**
          * GCPのクレデンシャルを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Log.Request
 
 
         /** BigQueryのデータセット名 */
-		[UnityEngine.SerializeField]
-        public string bigQueryDatasetName;
+        public string bigQueryDatasetName { set; get; }
 
         /**
          * BigQueryのデータセット名を設定
@@ -110,8 +104,7 @@ namespace Gs2.Gs2Log.Request
 
 
         /** ログの保存期間(日) */
-		[UnityEngine.SerializeField]
-        public int? logExpireDays;
+        public int? logExpireDays { set; get; }
 
         /**
          * ログの保存期間(日)を設定
@@ -126,8 +119,7 @@ namespace Gs2.Gs2Log.Request
 
 
         /** AWSのリージョン */
-		[UnityEngine.SerializeField]
-        public string awsRegion;
+        public string awsRegion { set; get; }
 
         /**
          * AWSのリージョンを設定
@@ -142,8 +134,7 @@ namespace Gs2.Gs2Log.Request
 
 
         /** AWSのアクセスキーID */
-		[UnityEngine.SerializeField]
-        public string awsAccessKeyId;
+        public string awsAccessKeyId { set; get; }
 
         /**
          * AWSのアクセスキーIDを設定
@@ -158,8 +149,7 @@ namespace Gs2.Gs2Log.Request
 
 
         /** AWSのシークレットアクセスキー */
-		[UnityEngine.SerializeField]
-        public string awsSecretAccessKey;
+        public string awsSecretAccessKey { set; get; }
 
         /**
          * AWSのシークレットアクセスキーを設定
@@ -174,8 +164,7 @@ namespace Gs2.Gs2Log.Request
 
 
         /** Kinesis Firehose のストリーム名 */
-		[UnityEngine.SerializeField]
-        public string firehoseStreamName;
+        public string firehoseStreamName { set; get; }
 
         /**
          * Kinesis Firehose のストリーム名を設定

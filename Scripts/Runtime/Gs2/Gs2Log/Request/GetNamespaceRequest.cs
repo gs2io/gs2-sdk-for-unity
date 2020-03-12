@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Log.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class GetNamespaceRequest : Gs2Request<GetNamespaceRequest>
 	{
 
         /** カテゴリー名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * カテゴリー名を設定
