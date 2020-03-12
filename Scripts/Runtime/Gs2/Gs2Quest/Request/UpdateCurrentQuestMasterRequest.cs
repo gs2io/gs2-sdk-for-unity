@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Quest.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateCurrentQuestMasterRequest : Gs2Request<UpdateCurrentQuestMasterRequest>
 	{
 
         /** カテゴリ名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * カテゴリ名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** マスターデータ */
-		[UnityEngine.SerializeField]
-        public string settings;
+        public string settings { set; get; }
 
         /**
          * マスターデータを設定

@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Quest.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class DescribeQuestModelMastersRequest : Gs2Request<DescribeQuestModelMastersRequest>
 	{
 
         /** カテゴリ名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * カテゴリ名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** クエストグループモデル名 */
-		[UnityEngine.SerializeField]
-        public string questGroupName;
+        public string questGroupName { set; get; }
 
         /**
          * クエストグループモデル名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** データの取得を開始する位置を指定するトークン */
-		[UnityEngine.SerializeField]
-        public string pageToken;
+        public string pageToken { set; get; }
 
         /**
          * データの取得を開始する位置を指定するトークンを設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** データの取得件数 */
-		[UnityEngine.SerializeField]
-        public long? limit;
+        public long? limit { set; get; }
 
         /**
          * データの取得件数を設定
