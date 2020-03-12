@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Formation.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateFormModelMasterRequest : Gs2Request<UpdateFormModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** フォーム名 */
-		[UnityEngine.SerializeField]
-        public string formModelName;
+        public string formModelName { set; get; }
 
         /**
          * フォーム名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** フォームマスターの説明 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * フォームマスターの説明を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** フォームのメタデータ */
-		[UnityEngine.SerializeField]
-        public string metadata;
+        public string metadata { set; get; }
 
         /**
          * フォームのメタデータを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** スロットリスト */
-		[UnityEngine.SerializeField]
-        public List<SlotModel> slots;
+        public List<SlotModel> slots { set; get; }
 
         /**
          * スロットリストを設定
@@ -119,7 +113,7 @@ namespace Gs2.Gs2Formation.Request
                 metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
                 slots = data.Keys.Contains("slots") && data["slots"] != null ? data["slots"].Cast<JsonData>().Select(value =>
                     {
-                        return SlotModel.FromDict(value);
+                        return Gs2.Gs2Formation.Model.SlotModel.FromDict(value);
                     }
                 ).ToList() : null,
             };

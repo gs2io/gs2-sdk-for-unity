@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Formation.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateMoldModelMasterRequest : Gs2Request<UpdateMoldModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** フォームの保存領域名 */
-		[UnityEngine.SerializeField]
-        public string moldName;
+        public string moldName { set; get; }
 
         /**
          * フォームの保存領域名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** フォームの保存領域マスターの説明 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * フォームの保存領域マスターの説明を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** フォームの保存領域のメタデータ */
-		[UnityEngine.SerializeField]
-        public string metadata;
+        public string metadata { set; get; }
 
         /**
          * フォームの保存領域のメタデータを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** フォーム名 */
-		[UnityEngine.SerializeField]
-        public string formModelName;
+        public string formModelName { set; get; }
 
         /**
          * フォーム名を設定
@@ -110,8 +104,7 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** フォームを保存できる初期キャパシティ */
-		[UnityEngine.SerializeField]
-        public int? initialMaxCapacity;
+        public int? initialMaxCapacity { set; get; }
 
         /**
          * フォームを保存できる初期キャパシティを設定
@@ -126,8 +119,7 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** フォームを保存できるキャパシティ */
-		[UnityEngine.SerializeField]
-        public int? maxCapacity;
+        public int? maxCapacity { set; get; }
 
         /**
          * フォームを保存できるキャパシティを設定
