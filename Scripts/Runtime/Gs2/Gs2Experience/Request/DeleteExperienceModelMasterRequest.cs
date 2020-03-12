@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Experience.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class DeleteExperienceModelMasterRequest : Gs2Request<DeleteExperienceModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Experience.Request
 
 
         /** 経験値の種類名 */
-		[UnityEngine.SerializeField]
-        public string experienceName;
+        public string experienceName { set; get; }
 
         /**
          * 経験値の種類名を設定

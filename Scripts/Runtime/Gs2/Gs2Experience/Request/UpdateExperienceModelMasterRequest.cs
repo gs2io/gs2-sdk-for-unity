@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Experience.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateExperienceModelMasterRequest : Gs2Request<UpdateExperienceModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Experience.Request
 
 
         /** 経験値の種類名 */
-		[UnityEngine.SerializeField]
-        public string experienceName;
+        public string experienceName { set; get; }
 
         /**
          * 経験値の種類名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Experience.Request
 
 
         /** 経験値の種類マスターの説明 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * 経験値の種類マスターの説明を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Experience.Request
 
 
         /** 経験値の種類のメタデータ */
-		[UnityEngine.SerializeField]
-        public string metadata;
+        public string metadata { set; get; }
 
         /**
          * 経験値の種類のメタデータを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Experience.Request
 
 
         /** 経験値の初期値 */
-		[UnityEngine.SerializeField]
-        public long? defaultExperience;
+        public long? defaultExperience { set; get; }
 
         /**
          * 経験値の初期値を設定
@@ -110,8 +104,7 @@ namespace Gs2.Gs2Experience.Request
 
 
         /** ランクキャップの初期値 */
-		[UnityEngine.SerializeField]
-        public long? defaultRankCap;
+        public long? defaultRankCap { set; get; }
 
         /**
          * ランクキャップの初期値を設定
@@ -126,8 +119,7 @@ namespace Gs2.Gs2Experience.Request
 
 
         /** ランクキャップの最大値 */
-		[UnityEngine.SerializeField]
-        public long? maxRankCap;
+        public long? maxRankCap { set; get; }
 
         /**
          * ランクキャップの最大値を設定
@@ -142,8 +134,7 @@ namespace Gs2.Gs2Experience.Request
 
 
         /** ランク計算に用いる */
-		[UnityEngine.SerializeField]
-        public string rankThresholdId;
+        public string rankThresholdId { set; get; }
 
         /**
          * ランク計算に用いるを設定
