@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Project.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class GetProjectRequest : Gs2Request<GetProjectRequest>
 	{
 
         /** GS2アカウントトークン */
-		[UnityEngine.SerializeField]
-        public string accountToken;
+        public string accountToken { set; get; }
 
         /**
          * GS2アカウントトークンを設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Project.Request
 
 
         /** プロジェクト名 */
-		[UnityEngine.SerializeField]
-        public string projectName;
+        public string projectName { set; get; }
 
         /**
          * プロジェクト名を設定

@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Project.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class VerifyRequest : Gs2Request<VerifyRequest>
 	{
 
         /** 有効化に使用するトークン */
-		[UnityEngine.SerializeField]
-        public string verifyToken;
+        public string verifyToken { set; get; }
 
         /**
          * 有効化に使用するトークンを設定

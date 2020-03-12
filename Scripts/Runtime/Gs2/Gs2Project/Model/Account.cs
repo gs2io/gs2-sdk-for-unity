@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using LitJson;
 using UnityEngine.Scripting;
@@ -222,18 +221,6 @@ namespace Gs2.Gs2Project.Model
             }
             writer.WriteObjectEnd();
         }
-
-    public static string GetAccountNameFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2:::gs2:account:(?<accountName>.*)");
-        if (!match.Groups["accountName"].Success)
-        {
-            return null;
-        }
-        return match.Groups["accountName"].Value;
-    }
 
     	[Preserve]
         public static Account FromDict(JsonData data)
