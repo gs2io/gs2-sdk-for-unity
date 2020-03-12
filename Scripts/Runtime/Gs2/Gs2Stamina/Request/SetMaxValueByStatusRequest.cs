@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Stamina.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class SetMaxValueByStatusRequest : Gs2Request<SetMaxValueByStatusRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナの種類名 */
-		[UnityEngine.SerializeField]
-        public string staminaName;
+        public string staminaName { set; get; }
 
         /**
          * スタミナの種類名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** 署名をつけるのに使用した暗号鍵 のGRN */
-		[UnityEngine.SerializeField]
-        public string keyId;
+        public string keyId { set; get; }
 
         /**
          * 署名をつけるのに使用した暗号鍵 のGRNを設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** 署名対象のステータスボディ */
-		[UnityEngine.SerializeField]
-        public string signedStatusBody;
+        public string signedStatusBody { set; get; }
 
         /**
          * 署名対象のステータスボディを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** ステータスの署名 */
-		[UnityEngine.SerializeField]
-        public string signedStatusSignature;
+        public string signedStatusSignature { set; get; }
 
         /**
          * ステータスの署名を設定
@@ -110,8 +104,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定
