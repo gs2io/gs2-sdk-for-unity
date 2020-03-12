@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Stamina.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class SetMaxValueByStampSheetRequest : Gs2Request<SetMaxValueByStampSheetRequest>
 	{
 
         /** スタンプシート */
-		[UnityEngine.SerializeField]
-        public string stampSheet;
+        public string stampSheet { set; get; }
 
         /**
          * スタンプシートを設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタンプシートの署名検証に使用する 暗号鍵 のGRN */
-		[UnityEngine.SerializeField]
-        public string keyId;
+        public string keyId { set; get; }
 
         /**
          * スタンプシートの署名検証に使用する 暗号鍵 のGRNを設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定

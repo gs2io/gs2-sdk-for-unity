@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Stamina.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class GetRecoverIntervalTableMasterRequest : Gs2Request<GetRecoverIntervalTableMasterRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナ回復間隔テーブル名 */
-		[UnityEngine.SerializeField]
-        public string recoverIntervalTableName;
+        public string recoverIntervalTableName { set; get; }
 
         /**
          * スタミナ回復間隔テーブル名を設定

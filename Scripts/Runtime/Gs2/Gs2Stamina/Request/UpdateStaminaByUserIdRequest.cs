@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Stamina.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateStaminaByUserIdRequest : Gs2Request<UpdateStaminaByUserIdRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナの種類名 */
-		[UnityEngine.SerializeField]
-        public string staminaName;
+        public string staminaName { set; get; }
 
         /**
          * スタミナの種類名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** ユーザーID */
-		[UnityEngine.SerializeField]
-        public string userId;
+        public string userId { set; get; }
 
         /**
          * ユーザーIDを設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** 最終更新時におけるスタミナ値 */
-		[UnityEngine.SerializeField]
-        public int? value;
+        public int? value { set; get; }
 
         /**
          * 最終更新時におけるスタミナ値を設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナの最大値 */
-		[UnityEngine.SerializeField]
-        public int? maxValue;
+        public int? maxValue { set; get; }
 
         /**
          * スタミナの最大値を設定
@@ -110,8 +104,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナの回復間隔(分) */
-		[UnityEngine.SerializeField]
-        public int? recoverIntervalMinutes;
+        public int? recoverIntervalMinutes { set; get; }
 
         /**
          * スタミナの回復間隔(分)を設定
@@ -126,8 +119,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナの回復量 */
-		[UnityEngine.SerializeField]
-        public int? recoverValue;
+        public int? recoverValue { set; get; }
 
         /**
          * スタミナの回復量を設定
@@ -142,8 +134,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定

@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Stamina.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateNamespaceRequest : Gs2Request<UpdateNamespaceRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** 説明文 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * 説明文を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナオーバーフロー上限に当たって回復できなかったスタミナを通知する スクリプト のGRN */
-		[UnityEngine.SerializeField]
-        public string overflowTriggerScriptId;
+        public string overflowTriggerScriptId { set; get; }
 
         /**
          * スタミナオーバーフロー上限に当たって回復できなかったスタミナを通知する スクリプト のGRNを設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRN */
-		[UnityEngine.SerializeField]
-        public string overflowTriggerNamespaceId;
+        public string overflowTriggerNamespaceId { set; get; }
 
         /**
          * スタミナオーバーフロー上限に当たって回復できなかったスタミナを追加する ネームスペース のGRNを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** ログの出力設定 */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Stamina.Model.LogSetting logSetting;
+        public Gs2.Gs2Stamina.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -103,7 +97,7 @@ namespace Gs2.Gs2Stamina.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public UpdateNamespaceRequest WithLogSetting(global::Gs2.Gs2Stamina.Model.LogSetting logSetting) {
+        public UpdateNamespaceRequest WithLogSetting(Gs2.Gs2Stamina.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -117,7 +111,7 @@ namespace Gs2.Gs2Stamina.Request
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 overflowTriggerScriptId = data.Keys.Contains("overflowTriggerScriptId") && data["overflowTriggerScriptId"] != null ? data["overflowTriggerScriptId"].ToString(): null,
                 overflowTriggerNamespaceId = data.Keys.Contains("overflowTriggerNamespaceId") && data["overflowTriggerNamespaceId"] != null ? data["overflowTriggerNamespaceId"].ToString(): null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? global::Gs2.Gs2Stamina.Model.LogSetting.FromDict(data["logSetting"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Stamina.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 

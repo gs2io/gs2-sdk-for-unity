@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Stamina.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateRecoverValueTableMasterRequest : Gs2Request<UpdateRecoverValueTableMasterRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナ回復量テーブル名 */
-		[UnityEngine.SerializeField]
-        public string recoverValueTableName;
+        public string recoverValueTableName { set; get; }
 
         /**
          * スタミナ回復量テーブル名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナ回復量テーブルマスターの説明 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * スタミナ回復量テーブルマスターの説明を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナ回復量テーブルのメタデータ */
-		[UnityEngine.SerializeField]
-        public string metadata;
+        public string metadata { set; get; }
 
         /**
          * スタミナ回復量テーブルのメタデータを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** 経験値の種類マスター のGRN */
-		[UnityEngine.SerializeField]
-        public string experienceModelId;
+        public string experienceModelId { set; get; }
 
         /**
          * 経験値の種類マスター のGRNを設定
@@ -110,8 +104,7 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** ランク毎のスタミナ回復量テーブル */
-		[UnityEngine.SerializeField]
-        public List<int?> values;
+        public List<int?> values { set; get; }
 
         /**
          * ランク毎のスタミナ回復量テーブルを設定
