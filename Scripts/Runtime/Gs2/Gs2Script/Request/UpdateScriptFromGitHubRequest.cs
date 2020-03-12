@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Script.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateScriptFromGitHubRequest : Gs2Request<UpdateScriptFromGitHubRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Script.Request
 
 
         /** スクリプト名 */
-		[UnityEngine.SerializeField]
-        public string scriptName;
+        public string scriptName { set; get; }
 
         /**
          * スクリプト名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Script.Request
 
 
         /** 説明文 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * 説明文を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Script.Request
 
 
         /** GitHubからソースコードをチェックアウトしてくる設定 */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Script.Model.GitHubCheckoutSetting checkoutSetting;
+        public Gs2.Gs2Script.Model.GitHubCheckoutSetting checkoutSetting { set; get; }
 
         /**
          * GitHubからソースコードをチェックアウトしてくる設定を設定
@@ -87,7 +82,7 @@ namespace Gs2.Gs2Script.Request
          * @param checkoutSetting GitHubからソースコードをチェックアウトしてくる設定
          * @return this
          */
-        public UpdateScriptFromGitHubRequest WithCheckoutSetting(global::Gs2.Gs2Script.Model.GitHubCheckoutSetting checkoutSetting) {
+        public UpdateScriptFromGitHubRequest WithCheckoutSetting(Gs2.Gs2Script.Model.GitHubCheckoutSetting checkoutSetting) {
             this.checkoutSetting = checkoutSetting;
             return this;
         }
@@ -100,7 +95,7 @@ namespace Gs2.Gs2Script.Request
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 scriptName = data.Keys.Contains("scriptName") && data["scriptName"] != null ? data["scriptName"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
-                checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? global::Gs2.Gs2Script.Model.GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
+                checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? Gs2.Gs2Script.Model.GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
             };
         }
 
