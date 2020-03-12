@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Deploy.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class GetEventRequest : Gs2Request<GetEventRequest>
 	{
 
         /** スタック名 */
-		[UnityEngine.SerializeField]
-        public string stackName;
+        public string stackName { set; get; }
 
         /**
          * スタック名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Deploy.Request
 
 
         /** イベント名 */
-		[UnityEngine.SerializeField]
-        public string eventName;
+        public string eventName { set; get; }
 
         /**
          * イベント名を設定
