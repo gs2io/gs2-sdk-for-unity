@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Mission.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class ReceiveByUserIdRequest : Gs2Request<ReceiveByUserIdRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** ミッショングループ名 */
-		[UnityEngine.SerializeField]
-        public string missionGroupName;
+        public string missionGroupName { set; get; }
 
         /**
          * ミッショングループ名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** タスク名 */
-		[UnityEngine.SerializeField]
-        public string missionTaskName;
+        public string missionTaskName { set; get; }
 
         /**
          * タスク名を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** ユーザーID */
-		[UnityEngine.SerializeField]
-        public string userId;
+        public string userId { set; get; }
 
         /**
          * ユーザーIDを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定

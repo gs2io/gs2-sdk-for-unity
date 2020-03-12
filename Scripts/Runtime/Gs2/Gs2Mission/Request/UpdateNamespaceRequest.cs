@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Mission.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateNamespaceRequest : Gs2Request<UpdateNamespaceRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** ネームスペースの説明 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * ネームスペースの説明を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** ミッションを達成したときに実行するスクリプト */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Mission.Model.ScriptSetting missionCompleteScript;
+        public Gs2.Gs2Mission.Model.ScriptSetting missionCompleteScript { set; get; }
 
         /**
          * ミッションを達成したときに実行するスクリプトを設定
@@ -71,15 +67,14 @@ namespace Gs2.Gs2Mission.Request
          * @param missionCompleteScript ミッションを達成したときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithMissionCompleteScript(global::Gs2.Gs2Mission.Model.ScriptSetting missionCompleteScript) {
+        public UpdateNamespaceRequest WithMissionCompleteScript(Gs2.Gs2Mission.Model.ScriptSetting missionCompleteScript) {
             this.missionCompleteScript = missionCompleteScript;
             return this;
         }
 
 
         /** カウンターを上昇したときに実行するスクリプト */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Mission.Model.ScriptSetting counterIncrementScript;
+        public Gs2.Gs2Mission.Model.ScriptSetting counterIncrementScript { set; get; }
 
         /**
          * カウンターを上昇したときに実行するスクリプトを設定
@@ -87,15 +82,14 @@ namespace Gs2.Gs2Mission.Request
          * @param counterIncrementScript カウンターを上昇したときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithCounterIncrementScript(global::Gs2.Gs2Mission.Model.ScriptSetting counterIncrementScript) {
+        public UpdateNamespaceRequest WithCounterIncrementScript(Gs2.Gs2Mission.Model.ScriptSetting counterIncrementScript) {
             this.counterIncrementScript = counterIncrementScript;
             return this;
         }
 
 
         /** 報酬を受け取ったときに実行するスクリプト */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Mission.Model.ScriptSetting receiveRewardsScript;
+        public Gs2.Gs2Mission.Model.ScriptSetting receiveRewardsScript { set; get; }
 
         /**
          * 報酬を受け取ったときに実行するスクリプトを設定
@@ -103,15 +97,14 @@ namespace Gs2.Gs2Mission.Request
          * @param receiveRewardsScript 報酬を受け取ったときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithReceiveRewardsScript(global::Gs2.Gs2Mission.Model.ScriptSetting receiveRewardsScript) {
+        public UpdateNamespaceRequest WithReceiveRewardsScript(Gs2.Gs2Mission.Model.ScriptSetting receiveRewardsScript) {
             this.receiveRewardsScript = receiveRewardsScript;
             return this;
         }
 
 
         /** 報酬付与処理をジョブとして追加するキューネームスペース のGRN */
-		[UnityEngine.SerializeField]
-        public string queueNamespaceId;
+        public string queueNamespaceId { set; get; }
 
         /**
          * 報酬付与処理をジョブとして追加するキューネームスペース のGRNを設定
@@ -126,8 +119,7 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** 報酬付与処理のスタンプシートで使用する暗号鍵GRN */
-		[UnityEngine.SerializeField]
-        public string keyId;
+        public string keyId { set; get; }
 
         /**
          * 報酬付与処理のスタンプシートで使用する暗号鍵GRNを設定
@@ -142,8 +134,7 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** ミッションのタスクを達成したときのプッシュ通知 */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Mission.Model.NotificationSetting completeNotification;
+        public Gs2.Gs2Mission.Model.NotificationSetting completeNotification { set; get; }
 
         /**
          * ミッションのタスクを達成したときのプッシュ通知を設定
@@ -151,15 +142,14 @@ namespace Gs2.Gs2Mission.Request
          * @param completeNotification ミッションのタスクを達成したときのプッシュ通知
          * @return this
          */
-        public UpdateNamespaceRequest WithCompleteNotification(global::Gs2.Gs2Mission.Model.NotificationSetting completeNotification) {
+        public UpdateNamespaceRequest WithCompleteNotification(Gs2.Gs2Mission.Model.NotificationSetting completeNotification) {
             this.completeNotification = completeNotification;
             return this;
         }
 
 
         /** ログの出力設定 */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Mission.Model.LogSetting logSetting;
+        public Gs2.Gs2Mission.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -167,7 +157,7 @@ namespace Gs2.Gs2Mission.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public UpdateNamespaceRequest WithLogSetting(global::Gs2.Gs2Mission.Model.LogSetting logSetting) {
+        public UpdateNamespaceRequest WithLogSetting(Gs2.Gs2Mission.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -179,13 +169,13 @@ namespace Gs2.Gs2Mission.Request
             return new UpdateNamespaceRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
-                missionCompleteScript = data.Keys.Contains("missionCompleteScript") && data["missionCompleteScript"] != null ? global::Gs2.Gs2Mission.Model.ScriptSetting.FromDict(data["missionCompleteScript"]) : null,
-                counterIncrementScript = data.Keys.Contains("counterIncrementScript") && data["counterIncrementScript"] != null ? global::Gs2.Gs2Mission.Model.ScriptSetting.FromDict(data["counterIncrementScript"]) : null,
-                receiveRewardsScript = data.Keys.Contains("receiveRewardsScript") && data["receiveRewardsScript"] != null ? global::Gs2.Gs2Mission.Model.ScriptSetting.FromDict(data["receiveRewardsScript"]) : null,
+                missionCompleteScript = data.Keys.Contains("missionCompleteScript") && data["missionCompleteScript"] != null ? Gs2.Gs2Mission.Model.ScriptSetting.FromDict(data["missionCompleteScript"]) : null,
+                counterIncrementScript = data.Keys.Contains("counterIncrementScript") && data["counterIncrementScript"] != null ? Gs2.Gs2Mission.Model.ScriptSetting.FromDict(data["counterIncrementScript"]) : null,
+                receiveRewardsScript = data.Keys.Contains("receiveRewardsScript") && data["receiveRewardsScript"] != null ? Gs2.Gs2Mission.Model.ScriptSetting.FromDict(data["receiveRewardsScript"]) : null,
                 queueNamespaceId = data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? data["queueNamespaceId"].ToString(): null,
                 keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString(): null,
-                completeNotification = data.Keys.Contains("completeNotification") && data["completeNotification"] != null ? global::Gs2.Gs2Mission.Model.NotificationSetting.FromDict(data["completeNotification"]) : null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? global::Gs2.Gs2Mission.Model.LogSetting.FromDict(data["logSetting"]) : null,
+                completeNotification = data.Keys.Contains("completeNotification") && data["completeNotification"] != null ? Gs2.Gs2Mission.Model.NotificationSetting.FromDict(data["completeNotification"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Mission.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 
