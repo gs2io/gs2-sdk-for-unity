@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Version.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class GetVersionModelMasterRequest : Gs2Request<GetVersionModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Version.Request
 
 
         /** バージョン名 */
-		[UnityEngine.SerializeField]
-        public string versionName;
+        public string versionName { set; get; }
 
         /**
          * バージョン名を設定

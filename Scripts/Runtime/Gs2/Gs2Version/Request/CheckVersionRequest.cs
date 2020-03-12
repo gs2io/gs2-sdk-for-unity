@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Version.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class CheckVersionRequest : Gs2Request<CheckVersionRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Version.Request
 
 
         /** 加算するリソース */
-		[UnityEngine.SerializeField]
-        public List<TargetVersion> targetVersions;
+        public List<TargetVersion> targetVersions { set; get; }
 
         /**
          * 加算するリソースを設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Version.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定
@@ -98,7 +94,7 @@ namespace Gs2.Gs2Version.Request
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 targetVersions = data.Keys.Contains("targetVersions") && data["targetVersions"] != null ? data["targetVersions"].Cast<JsonData>().Select(value =>
                     {
-                        return TargetVersion.FromDict(value);
+                        return Gs2.Gs2Version.Model.TargetVersion.FromDict(value);
                     }
                 ).ToList() : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
