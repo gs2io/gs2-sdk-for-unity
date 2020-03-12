@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Ranking.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class DeleteCategoryModelMasterRequest : Gs2Request<DeleteCategoryModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** カテゴリモデル名 */
-		[UnityEngine.SerializeField]
-        public string categoryName;
+        public string categoryName { set; get; }
 
         /**
          * カテゴリモデル名を設定
