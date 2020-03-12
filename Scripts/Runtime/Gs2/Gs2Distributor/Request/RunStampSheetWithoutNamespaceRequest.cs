@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Distributor.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class RunStampSheetWithoutNamespaceRequest : Gs2Request<RunStampSheetWithoutNamespaceRequest>
 	{
 
         /** 実行するスタンプタスク */
-		[UnityEngine.SerializeField]
-        public string stampSheet;
+        public string stampSheet { set; get; }
 
         /**
          * 実行するスタンプタスクを設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Distributor.Request
 
 
         /** スタンプシートの暗号化に使用した暗号鍵GRN */
-		[UnityEngine.SerializeField]
-        public string keyId;
+        public string keyId { set; get; }
 
         /**
          * スタンプシートの暗号化に使用した暗号鍵GRNを設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Distributor.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定

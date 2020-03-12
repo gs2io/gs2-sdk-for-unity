@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Distributor.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateNamespaceRequest : Gs2Request<UpdateNamespaceRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Distributor.Request
 
 
         /** ネームスペースの説明 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * ネームスペースの説明を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Distributor.Request
 
 
         /** リソース溢れ処理に使用する ユーザ のGRN */
-		[UnityEngine.SerializeField]
-        public string assumeUserId;
+        public string assumeUserId { set; get; }
 
         /**
          * リソース溢れ処理に使用する ユーザ のGRNを設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Distributor.Request
 
 
         /** ログの出力設定 */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Distributor.Model.LogSetting logSetting;
+        public Gs2.Gs2Distributor.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -87,7 +82,7 @@ namespace Gs2.Gs2Distributor.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public UpdateNamespaceRequest WithLogSetting(global::Gs2.Gs2Distributor.Model.LogSetting logSetting) {
+        public UpdateNamespaceRequest WithLogSetting(Gs2.Gs2Distributor.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -100,7 +95,7 @@ namespace Gs2.Gs2Distributor.Request
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 assumeUserId = data.Keys.Contains("assumeUserId") && data["assumeUserId"] != null ? data["assumeUserId"].ToString(): null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? global::Gs2.Gs2Distributor.Model.LogSetting.FromDict(data["logSetting"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Distributor.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 

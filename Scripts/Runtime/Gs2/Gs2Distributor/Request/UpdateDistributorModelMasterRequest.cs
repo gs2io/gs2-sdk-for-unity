@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Distributor.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateDistributorModelMasterRequest : Gs2Request<UpdateDistributorModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Distributor.Request
 
 
         /** 配信設定名 */
-		[UnityEngine.SerializeField]
-        public string distributorName;
+        public string distributorName { set; get; }
 
         /**
          * 配信設定名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Distributor.Request
 
 
         /** 配信設定マスターの説明 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * 配信設定マスターの説明を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Distributor.Request
 
 
         /** 配信設定のメタデータ */
-		[UnityEngine.SerializeField]
-        public string metadata;
+        public string metadata { set; get; }
 
         /**
          * 配信設定のメタデータを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Distributor.Request
 
 
         /** 所持品がキャパシティをオーバーしたときに転送するプレゼントボックスのネームスペース のGRN */
-		[UnityEngine.SerializeField]
-        public string inboxNamespaceId;
+        public string inboxNamespaceId { set; get; }
 
         /**
          * 所持品がキャパシティをオーバーしたときに転送するプレゼントボックスのネームスペース のGRNを設定
@@ -110,8 +104,7 @@ namespace Gs2.Gs2Distributor.Request
 
 
         /** ディストリビューターを通して処理出来る対象のリソースGRNのホワイトリスト */
-		[UnityEngine.SerializeField]
-        public List<string> whiteListTargetIds;
+        public List<string> whiteListTargetIds { set; get; }
 
         /**
          * ディストリビューターを通して処理出来る対象のリソースGRNのホワイトリストを設定
