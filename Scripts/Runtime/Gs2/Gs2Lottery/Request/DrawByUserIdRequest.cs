@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Lottery.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class DrawByUserIdRequest : Gs2Request<DrawByUserIdRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Lottery.Request
 
 
         /** 抽選モデルの種類名 */
-		[UnityEngine.SerializeField]
-        public string lotteryName;
+        public string lotteryName { set; get; }
 
         /**
          * 抽選モデルの種類名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Lottery.Request
 
 
         /** ユーザーID */
-		[UnityEngine.SerializeField]
-        public string userId;
+        public string userId { set; get; }
 
         /**
          * ユーザーIDを設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Lottery.Request
 
 
         /** 抽選回数 */
-		[UnityEngine.SerializeField]
-        public int? count;
+        public int? count { set; get; }
 
         /**
          * 抽選回数を設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Lottery.Request
 
 
         /** スタンプシートのプレースホルダの適用する設定値 */
-		[UnityEngine.SerializeField]
-        public List<Config> config;
+        public List<Config> config { set; get; }
 
         /**
          * スタンプシートのプレースホルダの適用する設定値を設定
@@ -110,8 +104,7 @@ namespace Gs2.Gs2Lottery.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定
@@ -135,7 +128,7 @@ namespace Gs2.Gs2Lottery.Request
                 count = data.Keys.Contains("count") && data["count"] != null ? (int?)int.Parse(data["count"].ToString()) : null,
                 config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
                     {
-                        return Config.FromDict(value);
+                        return Gs2.Gs2Lottery.Model.Config.FromDict(value);
                     }
                 ).ToList() : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
