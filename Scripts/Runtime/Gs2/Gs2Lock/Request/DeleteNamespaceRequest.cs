@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Lock.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class DeleteNamespaceRequest : Gs2Request<DeleteNamespaceRequest>
 	{
 
         /** カテゴリー名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * カテゴリー名を設定

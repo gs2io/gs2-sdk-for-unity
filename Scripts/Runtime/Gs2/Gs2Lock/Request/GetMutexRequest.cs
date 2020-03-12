@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Lock.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class GetMutexRequest : Gs2Request<GetMutexRequest>
 	{
 
         /** カテゴリー名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * カテゴリー名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Lock.Request
 
 
         /** プロパティID */
-		[UnityEngine.SerializeField]
-        public string propertyId;
+        public string propertyId { set; get; }
 
         /**
          * プロパティIDを設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Lock.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定
