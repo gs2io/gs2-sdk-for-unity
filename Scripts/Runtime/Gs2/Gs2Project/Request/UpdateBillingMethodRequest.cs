@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Project.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateBillingMethodRequest : Gs2Request<UpdateBillingMethodRequest>
 	{
 
         /** GS2アカウントトークン */
-		[UnityEngine.SerializeField]
-        public string accountToken;
+        public string accountToken { set; get; }
 
         /**
          * GS2アカウントトークンを設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Project.Request
 
 
         /** 名前 */
-		[UnityEngine.SerializeField]
-        public string billingMethodName;
+        public string billingMethodName { set; get; }
 
         /**
          * 名前を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Project.Request
 
 
         /** 名前 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * 名前を設定

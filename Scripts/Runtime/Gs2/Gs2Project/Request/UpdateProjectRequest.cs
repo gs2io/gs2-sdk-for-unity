@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Project.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateProjectRequest : Gs2Request<UpdateProjectRequest>
 	{
 
         /** GS2アカウントトークン */
-		[UnityEngine.SerializeField]
-        public string accountToken;
+        public string accountToken { set; get; }
 
         /**
          * GS2アカウントトークンを設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Project.Request
 
 
         /** プロジェクト名 */
-		[UnityEngine.SerializeField]
-        public string projectName;
+        public string projectName { set; get; }
 
         /**
          * プロジェクト名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Project.Request
 
 
         /** プロジェクトの説明 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * プロジェクトの説明を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Project.Request
 
 
         /** 契約プラン */
-		[UnityEngine.SerializeField]
-        public string plan;
+        public string plan { set; get; }
 
         /**
          * 契約プランを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Project.Request
 
 
         /** 支払い方法名 */
-		[UnityEngine.SerializeField]
-        public string billingMethodName;
+        public string billingMethodName { set; get; }
 
         /**
          * 支払い方法名を設定
@@ -110,8 +104,7 @@ namespace Gs2.Gs2Project.Request
 
 
         /** AWS EventBridge の設定 */
-		[UnityEngine.SerializeField]
-        public string enableEventBridge;
+        public string enableEventBridge { set; get; }
 
         /**
          * AWS EventBridge の設定を設定
@@ -126,8 +119,7 @@ namespace Gs2.Gs2Project.Request
 
 
         /** 通知に使用するAWSアカウントのID */
-		[UnityEngine.SerializeField]
-        public string eventBridgeAwsAccountId;
+        public string eventBridgeAwsAccountId { set; get; }
 
         /**
          * 通知に使用するAWSアカウントのIDを設定
@@ -142,8 +134,7 @@ namespace Gs2.Gs2Project.Request
 
 
         /** 通知に使用するAWSリージョン */
-		[UnityEngine.SerializeField]
-        public string eventBridgeAwsRegion;
+        public string eventBridgeAwsRegion { set; get; }
 
         /**
          * 通知に使用するAWSリージョンを設定

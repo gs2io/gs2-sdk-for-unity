@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Project.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class DescribeReceiptsRequest : Gs2Request<DescribeReceiptsRequest>
 	{
 
         /** GS2アカウントトークン */
-		[UnityEngine.SerializeField]
-        public string accountToken;
+        public string accountToken { set; get; }
 
         /**
          * GS2アカウントトークンを設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Project.Request
 
 
         /** データの取得を開始する位置を指定するトークン */
-		[UnityEngine.SerializeField]
-        public string pageToken;
+        public string pageToken { set; get; }
 
         /**
          * データの取得を開始する位置を指定するトークンを設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Project.Request
 
 
         /** データの取得件数 */
-		[UnityEngine.SerializeField]
-        public long? limit;
+        public long? limit { set; get; }
 
         /**
          * データの取得件数を設定

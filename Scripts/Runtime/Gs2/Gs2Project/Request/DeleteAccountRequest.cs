@@ -25,7 +25,6 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Project.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class DeleteAccountRequest : Gs2Request<DeleteAccountRequest>
 	{
 
