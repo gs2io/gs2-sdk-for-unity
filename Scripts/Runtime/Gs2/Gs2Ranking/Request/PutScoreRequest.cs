@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Ranking.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class PutScoreRequest : Gs2Request<PutScoreRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** カテゴリ名 */
-		[UnityEngine.SerializeField]
-        public string categoryName;
+        public string categoryName { set; get; }
 
         /**
          * カテゴリ名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** スコア */
-		[UnityEngine.SerializeField]
-        public long? score;
+        public long? score { set; get; }
 
         /**
          * スコアを設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** メタデータ */
-		[UnityEngine.SerializeField]
-        public string metadata;
+        public string metadata { set; get; }
 
         /**
          * メタデータを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定
