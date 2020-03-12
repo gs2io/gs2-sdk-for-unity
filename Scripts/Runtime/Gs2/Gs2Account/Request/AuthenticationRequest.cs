@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Account.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class AuthenticationRequest : Gs2Request<AuthenticationRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Account.Request
 
 
         /** アカウントID */
-		[UnityEngine.SerializeField]
-        public string userId;
+        public string userId { set; get; }
 
         /**
          * アカウントIDを設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Account.Request
 
 
         /** 認証トークンの暗号化に使用する暗号鍵 のGRN */
-		[UnityEngine.SerializeField]
-        public string keyId;
+        public string keyId { set; get; }
 
         /**
          * 認証トークンの暗号化に使用する暗号鍵 のGRNを設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Account.Request
 
 
         /** パスワード */
-		[UnityEngine.SerializeField]
-        public string password;
+        public string password { set; get; }
 
         /**
          * パスワードを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Account.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定
