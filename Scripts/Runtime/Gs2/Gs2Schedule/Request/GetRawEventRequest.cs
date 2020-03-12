@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Schedule.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class GetRawEventRequest : Gs2Request<GetRawEventRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** イベントの種類名 */
-		[UnityEngine.SerializeField]
-        public string eventName;
+        public string eventName { set; get; }
 
         /**
          * イベントの種類名を設定
