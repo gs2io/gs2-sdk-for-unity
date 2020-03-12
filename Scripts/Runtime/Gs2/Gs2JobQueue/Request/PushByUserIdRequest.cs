@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2JobQueue.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class PushByUserIdRequest : Gs2Request<PushByUserIdRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2JobQueue.Request
 
 
         /** ユーザーID */
-		[UnityEngine.SerializeField]
-        public string userId;
+        public string userId { set; get; }
 
         /**
          * ユーザーIDを設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2JobQueue.Request
 
 
         /** 追加するジョブの一覧 */
-		[UnityEngine.SerializeField]
-        public List<JobEntry> jobs;
+        public List<JobEntry> jobs { set; get; }
 
         /**
          * 追加するジョブの一覧を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2JobQueue.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定
@@ -101,7 +96,7 @@ namespace Gs2.Gs2JobQueue.Request
                 userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
                 jobs = data.Keys.Contains("jobs") && data["jobs"] != null ? data["jobs"].Cast<JsonData>().Select(value =>
                     {
-                        return JobEntry.FromDict(value);
+                        return Gs2.Gs2JobQueue.Model.JobEntry.FromDict(value);
                     }
                 ).ToList() : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
