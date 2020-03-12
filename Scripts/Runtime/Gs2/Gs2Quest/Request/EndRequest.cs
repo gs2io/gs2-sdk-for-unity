@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Quest.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class EndRequest : Gs2Request<EndRequest>
 	{
 
         /** カテゴリ名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * カテゴリ名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** トランザクションID */
-		[UnityEngine.SerializeField]
-        public string transactionId;
+        public string transactionId { set; get; }
 
         /**
          * トランザクションIDを設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** 実際にクエストで得た報酬 */
-		[UnityEngine.SerializeField]
-        public List<Reward> rewards;
+        public List<Reward> rewards { set; get; }
 
         /**
          * 実際にクエストで得た報酬を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** クエストをクリアしたか */
-		[UnityEngine.SerializeField]
-        public bool? isComplete;
+        public bool? isComplete { set; get; }
 
         /**
          * クエストをクリアしたかを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** スタンプシートの変数に適用する設定値 */
-		[UnityEngine.SerializeField]
-        public List<Config> config;
+        public List<Config> config { set; get; }
 
         /**
          * スタンプシートの変数に適用する設定値を設定
@@ -110,8 +104,7 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定
@@ -147,13 +140,13 @@ namespace Gs2.Gs2Quest.Request
                 transactionId = data.Keys.Contains("transactionId") && data["transactionId"] != null ? data["transactionId"].ToString(): null,
                 rewards = data.Keys.Contains("rewards") && data["rewards"] != null ? data["rewards"].Cast<JsonData>().Select(value =>
                     {
-                        return Reward.FromDict(value);
+                        return Gs2.Gs2Quest.Model.Reward.FromDict(value);
                     }
                 ).ToList() : null,
                 isComplete = data.Keys.Contains("isComplete") && data["isComplete"] != null ? (bool?)bool.Parse(data["isComplete"].ToString()) : null,
                 config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
                     {
-                        return Config.FromDict(value);
+                        return Gs2.Gs2Quest.Model.Config.FromDict(value);
                     }
                 ).ToList() : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,

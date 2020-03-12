@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Quest.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class DeleteQuestGroupModelMasterRequest : Gs2Request<DeleteQuestGroupModelMasterRequest>
 	{
 
         /** カテゴリ名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * カテゴリ名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** クエストグループモデル名 */
-		[UnityEngine.SerializeField]
-        public string questGroupName;
+        public string questGroupName { set; get; }
 
         /**
          * クエストグループモデル名を設定

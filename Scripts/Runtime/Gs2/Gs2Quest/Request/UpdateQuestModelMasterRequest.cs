@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Quest.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateQuestModelMasterRequest : Gs2Request<UpdateQuestModelMasterRequest>
 	{
 
         /** カテゴリ名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * カテゴリ名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** クエストグループモデル名 */
-		[UnityEngine.SerializeField]
-        public string questGroupName;
+        public string questGroupName { set; get; }
 
         /**
          * クエストグループモデル名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** クエスト名 */
-		[UnityEngine.SerializeField]
-        public string questName;
+        public string questName { set; get; }
 
         /**
          * クエスト名を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** クエストモデルの説明 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * クエストモデルの説明を設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** クエストのメタデータ */
-		[UnityEngine.SerializeField]
-        public string metadata;
+        public string metadata { set; get; }
 
         /**
          * クエストのメタデータを設定
@@ -110,8 +104,7 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** クエストの内容 */
-		[UnityEngine.SerializeField]
-        public List<Contents> contents;
+        public List<Contents> contents { set; get; }
 
         /**
          * クエストの内容を設定
@@ -126,8 +119,7 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** 挑戦可能な期間を指定するイベントマスター のGRN */
-		[UnityEngine.SerializeField]
-        public string challengePeriodEventId;
+        public string challengePeriodEventId { set; get; }
 
         /**
          * 挑戦可能な期間を指定するイベントマスター のGRNを設定
@@ -142,8 +134,7 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** クエストの参加料 */
-		[UnityEngine.SerializeField]
-        public List<ConsumeAction> consumeActions;
+        public List<ConsumeAction> consumeActions { set; get; }
 
         /**
          * クエストの参加料を設定
@@ -158,8 +149,7 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** クエスト失敗時の報酬 */
-		[UnityEngine.SerializeField]
-        public List<AcquireAction> failedAcquireActions;
+        public List<AcquireAction> failedAcquireActions { set; get; }
 
         /**
          * クエスト失敗時の報酬を設定
@@ -174,8 +164,7 @@ namespace Gs2.Gs2Quest.Request
 
 
         /** クエストに挑戦するためにクリアしておく必要のあるクエスト名 */
-		[UnityEngine.SerializeField]
-        public List<string> premiseQuestNames;
+        public List<string> premiseQuestNames { set; get; }
 
         /**
          * クエストに挑戦するためにクリアしておく必要のあるクエスト名を設定
@@ -200,18 +189,18 @@ namespace Gs2.Gs2Quest.Request
                 metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
                 contents = data.Keys.Contains("contents") && data["contents"] != null ? data["contents"].Cast<JsonData>().Select(value =>
                     {
-                        return Contents.FromDict(value);
+                        return Gs2.Gs2Quest.Model.Contents.FromDict(value);
                     }
                 ).ToList() : null,
                 challengePeriodEventId = data.Keys.Contains("challengePeriodEventId") && data["challengePeriodEventId"] != null ? data["challengePeriodEventId"].ToString(): null,
                 consumeActions = data.Keys.Contains("consumeActions") && data["consumeActions"] != null ? data["consumeActions"].Cast<JsonData>().Select(value =>
                     {
-                        return ConsumeAction.FromDict(value);
+                        return Gs2.Gs2Quest.Model.ConsumeAction.FromDict(value);
                     }
                 ).ToList() : null,
                 failedAcquireActions = data.Keys.Contains("failedAcquireActions") && data["failedAcquireActions"] != null ? data["failedAcquireActions"].Cast<JsonData>().Select(value =>
                     {
-                        return AcquireAction.FromDict(value);
+                        return Gs2.Gs2Quest.Model.AcquireAction.FromDict(value);
                     }
                 ).ToList() : null,
                 premiseQuestNames = data.Keys.Contains("premiseQuestNames") && data["premiseQuestNames"] != null ? data["premiseQuestNames"].Cast<JsonData>().Select(value =>
