@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Gateway.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class CreateNamespaceRequest : Gs2Request<CreateNamespaceRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string name;
+        public string name { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Gateway.Request
 
 
         /** 説明文 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * 説明文を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Gateway.Request
 
 
         /** Firebase の通知送信に使用するシークレットトークン */
-		[UnityEngine.SerializeField]
-        public string firebaseSecret;
+        public string firebaseSecret { set; get; }
 
         /**
          * Firebase の通知送信に使用するシークレットトークンを設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Gateway.Request
 
 
         /** ログの出力設定 */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Gateway.Model.LogSetting logSetting;
+        public Gs2.Gs2Gateway.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -87,7 +82,7 @@ namespace Gs2.Gs2Gateway.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public CreateNamespaceRequest WithLogSetting(global::Gs2.Gs2Gateway.Model.LogSetting logSetting) {
+        public CreateNamespaceRequest WithLogSetting(Gs2.Gs2Gateway.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -100,7 +95,7 @@ namespace Gs2.Gs2Gateway.Request
                 name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 firebaseSecret = data.Keys.Contains("firebaseSecret") && data["firebaseSecret"] != null ? data["firebaseSecret"].ToString(): null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? global::Gs2.Gs2Gateway.Model.LogSetting.FromDict(data["logSetting"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Gateway.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 
