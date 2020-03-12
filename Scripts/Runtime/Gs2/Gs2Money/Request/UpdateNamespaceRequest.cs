@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Money.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class UpdateNamespaceRequest : Gs2Request<UpdateNamespaceRequest>
 	{
 
         /** ネームスペースの名前 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペースの名前を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Money.Request
 
 
         /** ネームスペースの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * ネームスペースの説明を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Money.Request
 
 
         /** 消費優先度 */
-        public string priority { set; get; }
+		[UnityEngine.SerializeField]
+        public string priority;
 
         /**
          * 消費優先度を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Money.Request
 
 
         /** Apple AppStore のバンドルID */
-        public string appleKey { set; get; }
+		[UnityEngine.SerializeField]
+        public string appleKey;
 
         /**
          * Apple AppStore のバンドルIDを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Money.Request
 
 
         /** Google PlayStore の秘密鍵 */
-        public string googleKey { set; get; }
+		[UnityEngine.SerializeField]
+        public string googleKey;
 
         /**
          * Google PlayStore の秘密鍵を設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Money.Request
 
 
         /** UnityEditorが出力する偽のレシートで決済できるようにするか */
-        public bool? enableFakeReceipt { set; get; }
+		[UnityEngine.SerializeField]
+        public bool? enableFakeReceipt;
 
         /**
          * UnityEditorが出力する偽のレシートで決済できるようにするかを設定
@@ -119,7 +126,8 @@ namespace Gs2.Gs2Money.Request
 
 
         /** ウォレット新規作成したときに実行するスクリプト */
-        public Gs2.Gs2Money.Model.ScriptSetting createWalletScript { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Money.Model.ScriptSetting createWalletScript;
 
         /**
          * ウォレット新規作成したときに実行するスクリプトを設定
@@ -127,14 +135,15 @@ namespace Gs2.Gs2Money.Request
          * @param createWalletScript ウォレット新規作成したときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithCreateWalletScript(Gs2.Gs2Money.Model.ScriptSetting createWalletScript) {
+        public UpdateNamespaceRequest WithCreateWalletScript(global::Gs2.Gs2Money.Model.ScriptSetting createWalletScript) {
             this.createWalletScript = createWalletScript;
             return this;
         }
 
 
         /** ウォレット残高加算したときに実行するスクリプト */
-        public Gs2.Gs2Money.Model.ScriptSetting depositScript { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Money.Model.ScriptSetting depositScript;
 
         /**
          * ウォレット残高加算したときに実行するスクリプトを設定
@@ -142,14 +151,15 @@ namespace Gs2.Gs2Money.Request
          * @param depositScript ウォレット残高加算したときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithDepositScript(Gs2.Gs2Money.Model.ScriptSetting depositScript) {
+        public UpdateNamespaceRequest WithDepositScript(global::Gs2.Gs2Money.Model.ScriptSetting depositScript) {
             this.depositScript = depositScript;
             return this;
         }
 
 
         /** ウォレット残高消費したときに実行するスクリプト */
-        public Gs2.Gs2Money.Model.ScriptSetting withdrawScript { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Money.Model.ScriptSetting withdrawScript;
 
         /**
          * ウォレット残高消費したときに実行するスクリプトを設定
@@ -157,14 +167,15 @@ namespace Gs2.Gs2Money.Request
          * @param withdrawScript ウォレット残高消費したときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithWithdrawScript(Gs2.Gs2Money.Model.ScriptSetting withdrawScript) {
+        public UpdateNamespaceRequest WithWithdrawScript(global::Gs2.Gs2Money.Model.ScriptSetting withdrawScript) {
             this.withdrawScript = withdrawScript;
             return this;
         }
 
 
         /** ログの出力設定 */
-        public Gs2.Gs2Money.Model.LogSetting logSetting { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Money.Model.LogSetting logSetting;
 
         /**
          * ログの出力設定を設定
@@ -172,7 +183,7 @@ namespace Gs2.Gs2Money.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public UpdateNamespaceRequest WithLogSetting(Gs2.Gs2Money.Model.LogSetting logSetting) {
+        public UpdateNamespaceRequest WithLogSetting(global::Gs2.Gs2Money.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -188,10 +199,10 @@ namespace Gs2.Gs2Money.Request
                 appleKey = data.Keys.Contains("appleKey") && data["appleKey"] != null ? data["appleKey"].ToString(): null,
                 googleKey = data.Keys.Contains("googleKey") && data["googleKey"] != null ? data["googleKey"].ToString(): null,
                 enableFakeReceipt = data.Keys.Contains("enableFakeReceipt") && data["enableFakeReceipt"] != null ? (bool?)bool.Parse(data["enableFakeReceipt"].ToString()) : null,
-                createWalletScript = data.Keys.Contains("createWalletScript") && data["createWalletScript"] != null ? Gs2.Gs2Money.Model.ScriptSetting.FromDict(data["createWalletScript"]) : null,
-                depositScript = data.Keys.Contains("depositScript") && data["depositScript"] != null ? Gs2.Gs2Money.Model.ScriptSetting.FromDict(data["depositScript"]) : null,
-                withdrawScript = data.Keys.Contains("withdrawScript") && data["withdrawScript"] != null ? Gs2.Gs2Money.Model.ScriptSetting.FromDict(data["withdrawScript"]) : null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Money.Model.LogSetting.FromDict(data["logSetting"]) : null,
+                createWalletScript = data.Keys.Contains("createWalletScript") && data["createWalletScript"] != null ? global::Gs2.Gs2Money.Model.ScriptSetting.FromDict(data["createWalletScript"]) : null,
+                depositScript = data.Keys.Contains("depositScript") && data["depositScript"] != null ? global::Gs2.Gs2Money.Model.ScriptSetting.FromDict(data["depositScript"]) : null,
+                withdrawScript = data.Keys.Contains("withdrawScript") && data["withdrawScript"] != null ? global::Gs2.Gs2Money.Model.ScriptSetting.FromDict(data["withdrawScript"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? global::Gs2.Gs2Money.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 

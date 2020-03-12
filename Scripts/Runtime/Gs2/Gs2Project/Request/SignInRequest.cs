@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Project.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class SignInRequest : Gs2Request<SignInRequest>
 	{
 
         /** メールアドレス */
-        public string email { set; get; }
+		[UnityEngine.SerializeField]
+        public string email;
 
         /**
          * メールアドレスを設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Project.Request
 
 
         /** パスワード */
-        public string password { set; get; }
+		[UnityEngine.SerializeField]
+        public string password;
 
         /**
          * パスワードを設定

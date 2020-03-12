@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Limit.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class CountUpRequest : Gs2Request<CountUpRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** 回数制限の種類の名前 */
-        public string limitName { set; get; }
+		[UnityEngine.SerializeField]
+        public string limitName;
 
         /**
          * 回数制限の種類の名前を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** カウンターの名前 */
-        public string counterName { set; get; }
+		[UnityEngine.SerializeField]
+        public string counterName;
 
         /**
          * カウンターの名前を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** カウントアップする量 */
-        public int? countUpValue { set; get; }
+		[UnityEngine.SerializeField]
+        public int? countUpValue;
 
         /**
          * カウントアップする量を設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** カウントアップを許容する最大値 を入力してください */
-        public int? maxValue { set; get; }
+		[UnityEngine.SerializeField]
+        public int? maxValue;
 
         /**
          * カウントアップを許容する最大値 を入力してくださいを設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定

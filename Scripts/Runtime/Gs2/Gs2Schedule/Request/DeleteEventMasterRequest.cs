@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Schedule.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DeleteEventMasterRequest : Gs2Request<DeleteEventMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** イベントの種類名 */
-        public string eventName { set; get; }
+		[UnityEngine.SerializeField]
+        public string eventName;
 
         /**
          * イベントの種類名を設定

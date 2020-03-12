@@ -18,6 +18,7 @@
 using System.Collections;
 using Gs2.Core;
 using Gs2.Core.Model;
+using Gs2.Gs2Distributor.Result;
 using Gs2.Unity.Gs2Distributor.Result;
 using LitJson;
 using UnityEngine;
@@ -58,13 +59,39 @@ namespace Gs2.Unity.Util
             string stampSheetEncryptKeyId
         )
         {
-            yield return client.Distributor.RunStampTask(
-                callback,
-                distributorNamespaceName,
-                _stampTaskStr,
-                stampSheetEncryptKeyId,
-                stackContext
-            );
+            if (distributorNamespaceName == null)
+            {
+                yield return client.Distributor.RunStampTaskWithoutNamespace(
+                    r =>
+                    {
+                        callback.Invoke(
+                            new AsyncResult<EzRunStampTaskResult>(
+                                r.Result != null ? new EzRunStampTaskResult(
+                                    new RunStampTaskResult
+                                    {
+                                        result = r.Result.Result,
+                                        contextStack = r.Result.ContextStack,
+                                    }
+                                ) : null, 
+                                r.Error
+                            )
+                        );
+                    },
+                    _stampTaskStr,
+                    stampSheetEncryptKeyId,
+                    stackContext
+                );
+            }
+            else
+            {
+                yield return client.Distributor.RunStampTask(
+                    callback,
+                    distributorNamespaceName,
+                    _stampTaskStr,
+                    stampSheetEncryptKeyId,
+                    stackContext
+                );
+            }
         }
     }
 }

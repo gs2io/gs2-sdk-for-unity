@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Schedule.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class UpdateEventMasterRequest : Gs2Request<UpdateEventMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** イベントの種類名 */
-        public string eventName { set; get; }
+		[UnityEngine.SerializeField]
+        public string eventName;
 
         /**
          * イベントの種類名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** イベントマスターの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * イベントマスターの説明を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** イベントの種類のメタデータ */
-        public string metadata { set; get; }
+		[UnityEngine.SerializeField]
+        public string metadata;
 
         /**
          * イベントの種類のメタデータを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** イベント期間の種類 */
-        public string scheduleType { set; get; }
+		[UnityEngine.SerializeField]
+        public string scheduleType;
 
         /**
          * イベント期間の種類を設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** イベントの開始日時 */
-        public long? absoluteBegin { set; get; }
+		[UnityEngine.SerializeField]
+        public long? absoluteBegin;
 
         /**
          * イベントの開始日時を設定
@@ -119,7 +126,8 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** イベントの終了日時 */
-        public long? absoluteEnd { set; get; }
+		[UnityEngine.SerializeField]
+        public long? absoluteEnd;
 
         /**
          * イベントの終了日時を設定
@@ -134,7 +142,8 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** 繰り返しの種類 */
-        public string repeatType { set; get; }
+		[UnityEngine.SerializeField]
+        public string repeatType;
 
         /**
          * 繰り返しの種類を設定
@@ -149,7 +158,8 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** イベントの繰り返し開始日 */
-        public int? repeatBeginDayOfMonth { set; get; }
+		[UnityEngine.SerializeField]
+        public int? repeatBeginDayOfMonth;
 
         /**
          * イベントの繰り返し開始日を設定
@@ -164,7 +174,8 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** イベントの繰り返し終了日 */
-        public int? repeatEndDayOfMonth { set; get; }
+		[UnityEngine.SerializeField]
+        public int? repeatEndDayOfMonth;
 
         /**
          * イベントの繰り返し終了日を設定
@@ -179,7 +190,8 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** イベントの繰り返し開始曜日 */
-        public string repeatBeginDayOfWeek { set; get; }
+		[UnityEngine.SerializeField]
+        public string repeatBeginDayOfWeek;
 
         /**
          * イベントの繰り返し開始曜日を設定
@@ -194,7 +206,8 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** イベントの繰り返し終了曜日 */
-        public string repeatEndDayOfWeek { set; get; }
+		[UnityEngine.SerializeField]
+        public string repeatEndDayOfWeek;
 
         /**
          * イベントの繰り返し終了曜日を設定
@@ -209,7 +222,8 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** イベントの繰り返し開始時間 */
-        public int? repeatBeginHour { set; get; }
+		[UnityEngine.SerializeField]
+        public int? repeatBeginHour;
 
         /**
          * イベントの繰り返し開始時間を設定
@@ -224,7 +238,8 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** イベントの繰り返し終了時間 */
-        public int? repeatEndHour { set; get; }
+		[UnityEngine.SerializeField]
+        public int? repeatEndHour;
 
         /**
          * イベントの繰り返し終了時間を設定
@@ -239,7 +254,8 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** イベントの開始トリガー名 */
-        public string relativeTriggerName { set; get; }
+		[UnityEngine.SerializeField]
+        public string relativeTriggerName;
 
         /**
          * イベントの開始トリガー名を設定
@@ -254,7 +270,8 @@ namespace Gs2.Gs2Schedule.Request
 
 
         /** イベントの開催期間(秒) */
-        public int? relativeDuration { set; get; }
+		[UnityEngine.SerializeField]
+        public int? relativeDuration;
 
         /**
          * イベントの開催期間(秒)を設定

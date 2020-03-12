@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Matchmaking.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DeleteGatheringRequest : Gs2Request<DeleteGatheringRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Matchmaking.Request
 
 
         /** ギャザリング名 */
-        public string gatheringName { set; get; }
+		[UnityEngine.SerializeField]
+        public string gatheringName;
 
         /**
          * ギャザリング名を設定

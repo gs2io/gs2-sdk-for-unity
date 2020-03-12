@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Deploy.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class UpdateStackRequest : Gs2Request<UpdateStackRequest>
 	{
 
         /** スタック名 */
-        public string stackName { set; get; }
+		[UnityEngine.SerializeField]
+        public string stackName;
 
         /**
          * スタック名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Deploy.Request
 
 
         /** スタックの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * スタックの説明を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Deploy.Request
 
 
         /** テンプレートデータ */
-        public string template { set; get; }
+		[UnityEngine.SerializeField]
+        public string template;
 
         /**
          * テンプレートデータを設定

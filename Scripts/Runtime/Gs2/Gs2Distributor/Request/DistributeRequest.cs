@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Distributor.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DistributeRequest : Gs2Request<DistributeRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Distributor.Request
 
 
         /** ディストリビューターの種類名 */
-        public string distributorName { set; get; }
+		[UnityEngine.SerializeField]
+        public string distributorName;
 
         /**
          * ディストリビューターの種類名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Distributor.Request
 
 
         /** 加算するリソース */
-        public Gs2.Gs2Distributor.Model.DistributeResource distributeResource { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Distributor.Model.DistributeResource distributeResource;
 
         /**
          * 加算するリソースを設定
@@ -67,14 +71,15 @@ namespace Gs2.Gs2Distributor.Request
          * @param distributeResource 加算するリソース
          * @return this
          */
-        public DistributeRequest WithDistributeResource(Gs2.Gs2Distributor.Model.DistributeResource distributeResource) {
+        public DistributeRequest WithDistributeResource(global::Gs2.Gs2Distributor.Model.DistributeResource distributeResource) {
             this.distributeResource = distributeResource;
             return this;
         }
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定
@@ -108,7 +113,7 @@ namespace Gs2.Gs2Distributor.Request
             return new DistributeRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 distributorName = data.Keys.Contains("distributorName") && data["distributorName"] != null ? data["distributorName"].ToString(): null,
-                distributeResource = data.Keys.Contains("distributeResource") && data["distributeResource"] != null ? Gs2.Gs2Distributor.Model.DistributeResource.FromDict(data["distributeResource"]) : null,
+                distributeResource = data.Keys.Contains("distributeResource") && data["distributeResource"] != null ? global::Gs2.Gs2Distributor.Model.DistributeResource.FromDict(data["distributeResource"]) : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }

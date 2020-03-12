@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Showcase.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class CreateNamespaceRequest : Gs2Request<CreateNamespaceRequest>
 	{
 
         /** ネームスペース名 */
-        public string name { set; get; }
+		[UnityEngine.SerializeField]
+        public string name;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** ネームスペースの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * ネームスペースの説明を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 購入処理をジョブとして追加するキューのネームスペース のGRN */
-        public string queueNamespaceId { set; get; }
+		[UnityEngine.SerializeField]
+        public string queueNamespaceId;
 
         /**
          * 購入処理をジョブとして追加するキューのネームスペース のGRNを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 購入処理のスタンプシートで使用する暗号鍵GRN */
-        public string keyId { set; get; }
+		[UnityEngine.SerializeField]
+        public string keyId;
 
         /**
          * 購入処理のスタンプシートで使用する暗号鍵GRNを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** ログの出力設定 */
-        public Gs2.Gs2Showcase.Model.LogSetting logSetting { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Showcase.Model.LogSetting logSetting;
 
         /**
          * ログの出力設定を設定
@@ -97,7 +103,7 @@ namespace Gs2.Gs2Showcase.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public CreateNamespaceRequest WithLogSetting(Gs2.Gs2Showcase.Model.LogSetting logSetting) {
+        public CreateNamespaceRequest WithLogSetting(global::Gs2.Gs2Showcase.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -111,7 +117,7 @@ namespace Gs2.Gs2Showcase.Request
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 queueNamespaceId = data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? data["queueNamespaceId"].ToString(): null,
                 keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString(): null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Showcase.Model.LogSetting.FromDict(data["logSetting"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? global::Gs2.Gs2Showcase.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 

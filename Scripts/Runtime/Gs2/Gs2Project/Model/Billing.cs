@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using LitJson;
 using UnityEngine.Scripting;
@@ -278,6 +279,42 @@ namespace Gs2.Gs2Project.Model
             }
             writer.WriteObjectEnd();
         }
+
+    public static string GetBillingNameFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:::gs2:account:(?<accountName>.*):project:(?<projectName>.*):billing:(?<year>.*):(?<month>.*):(?<region>.*):(?<service>.*):(?<activityType>.*)");
+        if (!match.Groups["billingName"].Success)
+        {
+            return null;
+        }
+        return match.Groups["billingName"].Value;
+    }
+
+    public static string GetProjectNameFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:::gs2:account:(?<accountName>.*):project:(?<projectName>.*):billing:(?<year>.*):(?<month>.*):(?<region>.*):(?<service>.*):(?<activityType>.*)");
+        if (!match.Groups["projectName"].Success)
+        {
+            return null;
+        }
+        return match.Groups["projectName"].Value;
+    }
+
+    public static string GetAccountNameFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:::gs2:account:(?<accountName>.*):project:(?<projectName>.*):billing:(?<year>.*):(?<month>.*):(?<region>.*):(?<service>.*):(?<activityType>.*)");
+        if (!match.Groups["accountName"].Success)
+        {
+            return null;
+        }
+        return match.Groups["accountName"].Value;
+    }
 
     	[Preserve]
         public static Billing FromDict(JsonData data)

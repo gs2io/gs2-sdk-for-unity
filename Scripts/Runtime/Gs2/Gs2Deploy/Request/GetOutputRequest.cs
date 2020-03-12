@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Deploy.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class GetOutputRequest : Gs2Request<GetOutputRequest>
 	{
 
         /** スタック名 */
-        public string stackName { set; get; }
+		[UnityEngine.SerializeField]
+        public string stackName;
 
         /**
          * スタック名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Deploy.Request
 
 
         /** アウトプット名 */
-        public string outputName { set; get; }
+		[UnityEngine.SerializeField]
+        public string outputName;
 
         /**
          * アウトプット名を設定

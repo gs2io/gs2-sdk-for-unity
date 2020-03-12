@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using LitJson;
 using UnityEngine.Scripting;
@@ -23,7 +24,7 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inbox.Model
 {
 	[Preserve]
-	public class TimeSpan
+	public class TimeSpan_
 	{
 
         /** 現在時刻からの日数 */
@@ -35,7 +36,7 @@ namespace Gs2.Gs2Inbox.Model
          * @param days 現在時刻からの日数
          * @return this
          */
-        public TimeSpan WithDays(int? days) {
+        public TimeSpan_ WithDays(int? days) {
             this.days = days;
             return this;
         }
@@ -49,7 +50,7 @@ namespace Gs2.Gs2Inbox.Model
          * @param hours 現在時刻からの時間
          * @return this
          */
-        public TimeSpan WithHours(int? hours) {
+        public TimeSpan_ WithHours(int? hours) {
             this.hours = hours;
             return this;
         }
@@ -63,7 +64,7 @@ namespace Gs2.Gs2Inbox.Model
          * @param minutes 現在時刻からの分
          * @return this
          */
-        public TimeSpan WithMinutes(int? minutes) {
+        public TimeSpan_ WithMinutes(int? minutes) {
             this.minutes = minutes;
             return this;
         }
@@ -90,9 +91,9 @@ namespace Gs2.Gs2Inbox.Model
         }
 
     	[Preserve]
-        public static TimeSpan FromDict(JsonData data)
+        public static TimeSpan_ FromDict(JsonData data)
         {
-            return new TimeSpan()
+            return new TimeSpan_()
                 .WithDays(data.Keys.Contains("days") && data["days"] != null ? (int?)int.Parse(data["days"].ToString()) : null)
                 .WithHours(data.Keys.Contains("hours") && data["hours"] != null ? (int?)int.Parse(data["hours"].ToString()) : null)
                 .WithMinutes(data.Keys.Contains("minutes") && data["minutes"] != null ? (int?)int.Parse(data["minutes"].ToString()) : null);

@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Version.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class UpdateVersionModelMasterRequest : Gs2Request<UpdateVersionModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Version.Request
 
 
         /** バージョン名 */
-        public string versionName { set; get; }
+		[UnityEngine.SerializeField]
+        public string versionName;
 
         /**
          * バージョン名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Version.Request
 
 
         /** バージョンマスターの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * バージョンマスターの説明を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Version.Request
 
 
         /** バージョンのメタデータ */
-        public string metadata { set; get; }
+		[UnityEngine.SerializeField]
+        public string metadata;
 
         /**
          * バージョンのメタデータを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Version.Request
 
 
         /** バージョンアップを促すバージョン */
-        public Gs2.Gs2Version.Model.Version_ warningVersion { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Version.Model.Version_ warningVersion;
 
         /**
          * バージョンアップを促すバージョンを設定
@@ -97,14 +103,15 @@ namespace Gs2.Gs2Version.Request
          * @param warningVersion バージョンアップを促すバージョン
          * @return this
          */
-        public UpdateVersionModelMasterRequest WithWarningVersion(Gs2.Gs2Version.Model.Version_ warningVersion) {
+        public UpdateVersionModelMasterRequest WithWarningVersion(global::Gs2.Gs2Version.Model.Version_ warningVersion) {
             this.warningVersion = warningVersion;
             return this;
         }
 
 
         /** バージョンチェックを蹴るバージョン */
-        public Gs2.Gs2Version.Model.Version_ errorVersion { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Version.Model.Version_ errorVersion;
 
         /**
          * バージョンチェックを蹴るバージョンを設定
@@ -112,14 +119,15 @@ namespace Gs2.Gs2Version.Request
          * @param errorVersion バージョンチェックを蹴るバージョン
          * @return this
          */
-        public UpdateVersionModelMasterRequest WithErrorVersion(Gs2.Gs2Version.Model.Version_ errorVersion) {
+        public UpdateVersionModelMasterRequest WithErrorVersion(global::Gs2.Gs2Version.Model.Version_ errorVersion) {
             this.errorVersion = errorVersion;
             return this;
         }
 
 
         /** 判定に使用するバージョン値の種類 */
-        public string scope { set; get; }
+		[UnityEngine.SerializeField]
+        public string scope;
 
         /**
          * 判定に使用するバージョン値の種類を設定
@@ -134,7 +142,8 @@ namespace Gs2.Gs2Version.Request
 
 
         /** 現在のバージョン */
-        public Gs2.Gs2Version.Model.Version_ currentVersion { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Version.Model.Version_ currentVersion;
 
         /**
          * 現在のバージョンを設定
@@ -142,14 +151,15 @@ namespace Gs2.Gs2Version.Request
          * @param currentVersion 現在のバージョン
          * @return this
          */
-        public UpdateVersionModelMasterRequest WithCurrentVersion(Gs2.Gs2Version.Model.Version_ currentVersion) {
+        public UpdateVersionModelMasterRequest WithCurrentVersion(global::Gs2.Gs2Version.Model.Version_ currentVersion) {
             this.currentVersion = currentVersion;
             return this;
         }
 
 
         /** 判定するバージョン値に署名検証を必要とするか */
-        public bool? needSignature { set; get; }
+		[UnityEngine.SerializeField]
+        public bool? needSignature;
 
         /**
          * 判定するバージョン値に署名検証を必要とするかを設定
@@ -164,7 +174,8 @@ namespace Gs2.Gs2Version.Request
 
 
         /** 署名検証に使用する暗号鍵 のGRN */
-        public string signatureKeyId { set; get; }
+		[UnityEngine.SerializeField]
+        public string signatureKeyId;
 
         /**
          * 署名検証に使用する暗号鍵 のGRNを設定
@@ -186,10 +197,10 @@ namespace Gs2.Gs2Version.Request
                 versionName = data.Keys.Contains("versionName") && data["versionName"] != null ? data["versionName"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
-                warningVersion = data.Keys.Contains("warningVersion") && data["warningVersion"] != null ? Gs2.Gs2Version.Model.Version_.FromDict(data["warningVersion"]) : null,
-                errorVersion = data.Keys.Contains("errorVersion") && data["errorVersion"] != null ? Gs2.Gs2Version.Model.Version_.FromDict(data["errorVersion"]) : null,
+                warningVersion = data.Keys.Contains("warningVersion") && data["warningVersion"] != null ? global::Gs2.Gs2Version.Model.Version_.FromDict(data["warningVersion"]) : null,
+                errorVersion = data.Keys.Contains("errorVersion") && data["errorVersion"] != null ? global::Gs2.Gs2Version.Model.Version_.FromDict(data["errorVersion"]) : null,
                 scope = data.Keys.Contains("scope") && data["scope"] != null ? data["scope"].ToString(): null,
-                currentVersion = data.Keys.Contains("currentVersion") && data["currentVersion"] != null ? Gs2.Gs2Version.Model.Version_.FromDict(data["currentVersion"]) : null,
+                currentVersion = data.Keys.Contains("currentVersion") && data["currentVersion"] != null ? global::Gs2.Gs2Version.Model.Version_.FromDict(data["currentVersion"]) : null,
                 needSignature = data.Keys.Contains("needSignature") && data["needSignature"] != null ? (bool?)bool.Parse(data["needSignature"].ToString()) : null,
                 signatureKeyId = data.Keys.Contains("signatureKeyId") && data["signatureKeyId"] != null ? data["signatureKeyId"].ToString(): null,
             };

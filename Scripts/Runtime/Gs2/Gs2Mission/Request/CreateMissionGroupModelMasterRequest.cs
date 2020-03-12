@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Mission.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class CreateMissionGroupModelMasterRequest : Gs2Request<CreateMissionGroupModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** ミッショングループ名 */
-        public string name { set; get; }
+		[UnityEngine.SerializeField]
+        public string name;
 
         /**
          * ミッショングループ名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** メタデータ */
-        public string metadata { set; get; }
+		[UnityEngine.SerializeField]
+        public string metadata;
 
         /**
          * メタデータを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** ミッショングループの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * ミッショングループの説明を設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** リセットタイミング */
-        public string resetType { set; get; }
+		[UnityEngine.SerializeField]
+        public string resetType;
 
         /**
          * リセットタイミングを設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** リセットをする日にち */
-        public int? resetDayOfMonth { set; get; }
+		[UnityEngine.SerializeField]
+        public int? resetDayOfMonth;
 
         /**
          * リセットをする日にちを設定
@@ -119,7 +126,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** リセットする曜日 */
-        public string resetDayOfWeek { set; get; }
+		[UnityEngine.SerializeField]
+        public string resetDayOfWeek;
 
         /**
          * リセットする曜日を設定
@@ -134,7 +142,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** リセット時刻 */
-        public int? resetHour { set; get; }
+		[UnityEngine.SerializeField]
+        public int? resetHour;
 
         /**
          * リセット時刻を設定
@@ -149,7 +158,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** ミッションを達成したときの通知先ネームスペース のGRN */
-        public string completeNotificationNamespaceId { set; get; }
+		[UnityEngine.SerializeField]
+        public string completeNotificationNamespaceId;
 
         /**
          * ミッションを達成したときの通知先ネームスペース のGRNを設定

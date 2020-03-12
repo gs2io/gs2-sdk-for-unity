@@ -29,6 +29,12 @@ namespace Gs2.Unity.Gs2JobQueue.Model
 		/** ジョブ */
 		[UnityEngine.SerializeField]
 		public string JobId;
+		/** ジョブの実行に使用するスクリプト のGRN */
+		[UnityEngine.SerializeField]
+		public string ScriptId;
+		/** 引数 */
+		[UnityEngine.SerializeField]
+		public string Args;
 		/** 現在のリトライ回数 */
 		[UnityEngine.SerializeField]
 		public int CurrentRetryCount;
@@ -44,6 +50,8 @@ namespace Gs2.Unity.Gs2JobQueue.Model
 		public EzJob(Gs2.Gs2JobQueue.Model.Job @job)
 		{
 			JobId = @job.jobId;
+			ScriptId = @job.scriptId;
+			Args = @job.args;
 			CurrentRetryCount = @job.currentRetryCount.HasValue ? @job.currentRetryCount.Value : 0;
 			MaxTryCount = @job.maxTryCount.HasValue ? @job.maxTryCount.Value : 0;
 		}
@@ -52,6 +60,8 @@ namespace Gs2.Unity.Gs2JobQueue.Model
         {
             return new Job {
                 jobId = JobId,
+                scriptId = ScriptId,
+                args = Args,
                 currentRetryCount = CurrentRetryCount,
                 maxTryCount = MaxTryCount,
             };
@@ -64,6 +74,16 @@ namespace Gs2.Unity.Gs2JobQueue.Model
             {
                 writer.WritePropertyName("jobId");
                 writer.Write(this.JobId);
+            }
+            if(this.ScriptId != null)
+            {
+                writer.WritePropertyName("scriptId");
+                writer.Write(this.ScriptId);
+            }
+            if(this.Args != null)
+            {
+                writer.WritePropertyName("args");
+                writer.Write(this.Args);
             }
             writer.WritePropertyName("currentRetryCount");
             writer.Write(this.CurrentRetryCount);

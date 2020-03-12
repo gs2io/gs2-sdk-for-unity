@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Project.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class UpdateAccountRequest : Gs2Request<UpdateAccountRequest>
 	{
 
         /** メールアドレス */
-        public string email { set; get; }
+		[UnityEngine.SerializeField]
+        public string email;
 
         /**
          * メールアドレスを設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Project.Request
 
 
         /** フルネーム */
-        public string fullName { set; get; }
+		[UnityEngine.SerializeField]
+        public string fullName;
 
         /**
          * フルネームを設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Project.Request
 
 
         /** 会社名 */
-        public string companyName { set; get; }
+		[UnityEngine.SerializeField]
+        public string companyName;
 
         /**
          * 会社名を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Project.Request
 
 
         /** パスワード */
-        public string password { set; get; }
+		[UnityEngine.SerializeField]
+        public string password;
 
         /**
          * パスワードを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Project.Request
 
 
         /** GS2アカウントトークン */
-        public string accountToken { set; get; }
+		[UnityEngine.SerializeField]
+        public string accountToken;
 
         /**
          * GS2アカウントトークンを設定

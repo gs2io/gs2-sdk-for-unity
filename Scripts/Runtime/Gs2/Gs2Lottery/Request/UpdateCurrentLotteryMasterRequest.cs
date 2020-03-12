@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Lottery.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class UpdateCurrentLotteryMasterRequest : Gs2Request<UpdateCurrentLotteryMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Lottery.Request
 
 
         /** マスターデータ */
-        public string settings { set; get; }
+		[UnityEngine.SerializeField]
+        public string settings;
 
         /**
          * マスターデータを設定

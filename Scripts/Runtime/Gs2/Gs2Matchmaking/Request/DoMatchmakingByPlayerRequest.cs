@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Matchmaking.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DoMatchmakingByPlayerRequest : Gs2Request<DoMatchmakingByPlayerRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Matchmaking.Request
 
 
         /** プレイヤー情報 */
-        public Gs2.Gs2Matchmaking.Model.Player player { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Matchmaking.Model.Player player;
 
         /**
          * プレイヤー情報を設定
@@ -52,14 +55,15 @@ namespace Gs2.Gs2Matchmaking.Request
          * @param player プレイヤー情報
          * @return this
          */
-        public DoMatchmakingByPlayerRequest WithPlayer(Gs2.Gs2Matchmaking.Model.Player player) {
+        public DoMatchmakingByPlayerRequest WithPlayer(global::Gs2.Gs2Matchmaking.Model.Player player) {
             this.player = player;
             return this;
         }
 
 
         /** 検索の再開に使用する マッチメイキングの状態を保持するトークン */
-        public string matchmakingContextToken { set; get; }
+		[UnityEngine.SerializeField]
+        public string matchmakingContextToken;
 
         /**
          * 検索の再開に使用する マッチメイキングの状態を保持するトークンを設定
@@ -78,7 +82,7 @@ namespace Gs2.Gs2Matchmaking.Request
         {
             return new DoMatchmakingByPlayerRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
-                player = data.Keys.Contains("player") && data["player"] != null ? Gs2.Gs2Matchmaking.Model.Player.FromDict(data["player"]) : null,
+                player = data.Keys.Contains("player") && data["player"] != null ? global::Gs2.Gs2Matchmaking.Model.Player.FromDict(data["player"]) : null,
                 matchmakingContextToken = data.Keys.Contains("matchmakingContextToken") && data["matchmakingContextToken"] != null ? data["matchmakingContextToken"].ToString(): null,
             };
         }

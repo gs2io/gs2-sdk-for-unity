@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inventory.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class ConsumeItemSetByUserIdRequest : Gs2Request<ConsumeItemSetByUserIdRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** インベントリの名前 */
-        public string inventoryName { set; get; }
+		[UnityEngine.SerializeField]
+        public string inventoryName;
 
         /**
          * インベントリの名前を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** ユーザーID */
-        public string userId { set; get; }
+		[UnityEngine.SerializeField]
+        public string userId;
 
         /**
          * ユーザーIDを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** アイテムマスターの名前 */
-        public string itemName { set; get; }
+		[UnityEngine.SerializeField]
+        public string itemName;
 
         /**
          * アイテムマスターの名前を設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** 消費する量 */
-        public long? consumeCount { set; get; }
+		[UnityEngine.SerializeField]
+        public long? consumeCount;
 
         /**
          * 消費する量を設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** アイテムセットを識別する名前 */
-        public string itemSetName { set; get; }
+		[UnityEngine.SerializeField]
+        public string itemSetName;
 
         /**
          * アイテムセットを識別する名前を設定
@@ -119,7 +126,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定

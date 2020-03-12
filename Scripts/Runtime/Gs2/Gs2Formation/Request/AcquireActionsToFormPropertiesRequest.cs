@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Formation.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class AcquireActionsToFormPropertiesRequest : Gs2Request<AcquireActionsToFormPropertiesRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** ユーザーID */
-        public string userId { set; get; }
+		[UnityEngine.SerializeField]
+        public string userId;
 
         /**
          * ユーザーIDを設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** フォームの保存領域の名前 */
-        public string moldName { set; get; }
+		[UnityEngine.SerializeField]
+        public string moldName;
 
         /**
          * フォームの保存領域の名前を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** 保存領域のインデックス */
-        public int? index { set; get; }
+		[UnityEngine.SerializeField]
+        public int? index;
 
         /**
          * 保存領域のインデックスを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** フォームのプロパティに適用する入手アクション */
-        public Gs2.Gs2Formation.Model.AcquireAction acquireAction { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Formation.Model.AcquireAction acquireAction;
 
         /**
          * フォームのプロパティに適用する入手アクションを設定
@@ -97,14 +103,15 @@ namespace Gs2.Gs2Formation.Request
          * @param acquireAction フォームのプロパティに適用する入手アクション
          * @return this
          */
-        public AcquireActionsToFormPropertiesRequest WithAcquireAction(Gs2.Gs2Formation.Model.AcquireAction acquireAction) {
+        public AcquireActionsToFormPropertiesRequest WithAcquireAction(global::Gs2.Gs2Formation.Model.AcquireAction acquireAction) {
             this.acquireAction = acquireAction;
             return this;
         }
 
 
         /** 入手処理を登録する GS2-JobQueue のネームスペース のGRN */
-        public string queueNamespaceId { set; get; }
+		[UnityEngine.SerializeField]
+        public string queueNamespaceId;
 
         /**
          * 入手処理を登録する GS2-JobQueue のネームスペース のGRNを設定
@@ -119,7 +126,8 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** スタンプシートの発行に使用する GS2-Key の暗号鍵 のGRN */
-        public string keyId { set; get; }
+		[UnityEngine.SerializeField]
+        public string keyId;
 
         /**
          * スタンプシートの発行に使用する GS2-Key の暗号鍵 のGRNを設定
@@ -134,7 +142,8 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** 入手アクションに適用するコンフィグ */
-        public List<AcquireActionConfig> config { set; get; }
+		[UnityEngine.SerializeField]
+        public List<AcquireActionConfig> config;
 
         /**
          * 入手アクションに適用するコンフィグを設定
@@ -149,7 +158,8 @@ namespace Gs2.Gs2Formation.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定
@@ -171,12 +181,12 @@ namespace Gs2.Gs2Formation.Request
                 userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
                 moldName = data.Keys.Contains("moldName") && data["moldName"] != null ? data["moldName"].ToString(): null,
                 index = data.Keys.Contains("index") && data["index"] != null ? (int?)int.Parse(data["index"].ToString()) : null,
-                acquireAction = data.Keys.Contains("acquireAction") && data["acquireAction"] != null ? Gs2.Gs2Formation.Model.AcquireAction.FromDict(data["acquireAction"]) : null,
+                acquireAction = data.Keys.Contains("acquireAction") && data["acquireAction"] != null ? global::Gs2.Gs2Formation.Model.AcquireAction.FromDict(data["acquireAction"]) : null,
                 queueNamespaceId = data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? data["queueNamespaceId"].ToString(): null,
                 keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString(): null,
                 config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
                     {
-                        return Gs2.Gs2Formation.Model.AcquireActionConfig.FromDict(value);
+                        return AcquireActionConfig.FromDict(value);
                     }
                 ).ToList() : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,

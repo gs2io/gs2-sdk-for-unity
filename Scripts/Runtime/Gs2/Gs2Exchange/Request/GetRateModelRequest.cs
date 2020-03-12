@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Exchange.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class GetRateModelRequest : Gs2Request<GetRateModelRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Exchange.Request
 
 
         /** 交換レート名 */
-        public string rateName { set; get; }
+		[UnityEngine.SerializeField]
+        public string rateName;
 
         /**
          * 交換レート名を設定

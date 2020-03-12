@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Chat.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DeleteMessageRequest : Gs2Request<DeleteMessageRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** ルーム名 */
-        public string roomName { set; get; }
+		[UnityEngine.SerializeField]
+        public string roomName;
 
         /**
          * ルーム名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Chat.Request
 
 
         /** メッセージ名 */
-        public string messageName { set; get; }
+		[UnityEngine.SerializeField]
+        public string messageName;
 
         /**
          * メッセージ名を設定

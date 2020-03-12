@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inventory.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class SetCapacityByUserIdRequest : Gs2Request<SetCapacityByUserIdRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** インベントリモデル名 */
-        public string inventoryName { set; get; }
+		[UnityEngine.SerializeField]
+        public string inventoryName;
 
         /**
          * インベントリモデル名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** ユーザーID */
-        public string userId { set; get; }
+		[UnityEngine.SerializeField]
+        public string userId;
 
         /**
          * ユーザーIDを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** 現在のインベントリの最大キャパシティ */
-        public int? newCapacityValue { set; get; }
+		[UnityEngine.SerializeField]
+        public int? newCapacityValue;
 
         /**
          * 現在のインベントリの最大キャパシティを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定

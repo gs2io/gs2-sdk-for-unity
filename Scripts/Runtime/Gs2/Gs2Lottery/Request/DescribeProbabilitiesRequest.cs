@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Lottery.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DescribeProbabilitiesRequest : Gs2Request<DescribeProbabilitiesRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Lottery.Request
 
 
         /** 抽選モデルの種類名 */
-        public string lotteryName { set; get; }
+		[UnityEngine.SerializeField]
+        public string lotteryName;
 
         /**
          * 抽選モデルの種類名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Lottery.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定

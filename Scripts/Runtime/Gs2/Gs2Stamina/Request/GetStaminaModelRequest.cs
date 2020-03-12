@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Stamina.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class GetStaminaModelRequest : Gs2Request<GetStaminaModelRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナの種類名 */
-        public string staminaName { set; get; }
+		[UnityEngine.SerializeField]
+        public string staminaName;
 
         /**
          * スタミナの種類名を設定

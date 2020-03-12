@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Limit.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class CreateLimitModelMasterRequest : Gs2Request<CreateLimitModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** 回数制限の種類名 */
-        public string name { set; get; }
+		[UnityEngine.SerializeField]
+        public string name;
 
         /**
          * 回数制限の種類名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** 回数制限の種類マスターの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * 回数制限の種類マスターの説明を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** 回数制限の種類のメタデータ */
-        public string metadata { set; get; }
+		[UnityEngine.SerializeField]
+        public string metadata;
 
         /**
          * 回数制限の種類のメタデータを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** リセットタイミング */
-        public string resetType { set; get; }
+		[UnityEngine.SerializeField]
+        public string resetType;
 
         /**
          * リセットタイミングを設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** リセットをする日にち */
-        public int? resetDayOfMonth { set; get; }
+		[UnityEngine.SerializeField]
+        public int? resetDayOfMonth;
 
         /**
          * リセットをする日にちを設定
@@ -119,7 +126,8 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** リセットする曜日 */
-        public string resetDayOfWeek { set; get; }
+		[UnityEngine.SerializeField]
+        public string resetDayOfWeek;
 
         /**
          * リセットする曜日を設定
@@ -134,7 +142,8 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** リセット時刻 */
-        public int? resetHour { set; get; }
+		[UnityEngine.SerializeField]
+        public int? resetHour;
 
         /**
          * リセット時刻を設定

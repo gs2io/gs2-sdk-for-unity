@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Ranking.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DescribeNearRankingsRequest : Gs2Request<DescribeNearRankingsRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** カテゴリ名 */
-        public string categoryName { set; get; }
+		[UnityEngine.SerializeField]
+        public string categoryName;
 
         /**
          * カテゴリ名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Ranking.Request
 
 
         /** スコア */
-        public long? score { set; get; }
+		[UnityEngine.SerializeField]
+        public long? score;
 
         /**
          * スコアを設定

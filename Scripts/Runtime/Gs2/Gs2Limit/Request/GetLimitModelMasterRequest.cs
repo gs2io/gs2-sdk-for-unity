@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Limit.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class GetLimitModelMasterRequest : Gs2Request<GetLimitModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** 回数制限の種類名 */
-        public string limitName { set; get; }
+		[UnityEngine.SerializeField]
+        public string limitName;
 
         /**
          * 回数制限の種類名を設定

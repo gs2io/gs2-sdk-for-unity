@@ -42,7 +42,7 @@ namespace Gs2.Core.Model
 			request.SetRequestHeader("X-GS2-CLIENT-ID", ClientId);
 			if (ProjectToken != null)
 			{
-				request.SetRequestHeader("X-GS2-PROJECT-TOKEN", ProjectToken);
+				request.SetRequestHeader("Authorization", "Bearer " + ProjectToken);
 			}
 		}
 	}

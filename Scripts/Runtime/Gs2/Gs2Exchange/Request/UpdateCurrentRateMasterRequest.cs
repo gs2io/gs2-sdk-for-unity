@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Exchange.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class UpdateCurrentRateMasterRequest : Gs2Request<UpdateCurrentRateMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Exchange.Request
 
 
         /** マスターデータ */
-        public string settings { set; get; }
+		[UnityEngine.SerializeField]
+        public string settings;
 
         /**
          * マスターデータを設定

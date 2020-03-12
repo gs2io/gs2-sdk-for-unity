@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Stamina.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class CreateMaxStaminaTableMasterRequest : Gs2Request<CreateMaxStaminaTableMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** 最大スタミナ値テーブル名 */
-        public string name { set; get; }
+		[UnityEngine.SerializeField]
+        public string name;
 
         /**
          * 最大スタミナ値テーブル名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナの最大値テーブルマスターの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * スタミナの最大値テーブルマスターの説明を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** 最大スタミナ値テーブルのメタデータ */
-        public string metadata { set; get; }
+		[UnityEngine.SerializeField]
+        public string metadata;
 
         /**
          * 最大スタミナ値テーブルのメタデータを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** 経験値の種類マスター のGRN */
-        public string experienceModelId { set; get; }
+		[UnityEngine.SerializeField]
+        public string experienceModelId;
 
         /**
          * 経験値の種類マスター のGRNを設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** ランク毎のスタミナの最大値テーブル */
-        public List<int?> values { set; get; }
+		[UnityEngine.SerializeField]
+        public List<int?> values;
 
         /**
          * ランク毎のスタミナの最大値テーブルを設定

@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Matchmaking.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class CreateGatheringByUserIdRequest : Gs2Request<CreateGatheringByUserIdRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Matchmaking.Request
 
 
         /** ユーザーID */
-        public string userId { set; get; }
+		[UnityEngine.SerializeField]
+        public string userId;
 
         /**
          * ユーザーIDを設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Matchmaking.Request
 
 
         /** 自身のプレイヤー情報 */
-        public Gs2.Gs2Matchmaking.Model.Player player { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Matchmaking.Model.Player player;
 
         /**
          * 自身のプレイヤー情報を設定
@@ -67,14 +71,15 @@ namespace Gs2.Gs2Matchmaking.Request
          * @param player 自身のプレイヤー情報
          * @return this
          */
-        public CreateGatheringByUserIdRequest WithPlayer(Gs2.Gs2Matchmaking.Model.Player player) {
+        public CreateGatheringByUserIdRequest WithPlayer(global::Gs2.Gs2Matchmaking.Model.Player player) {
             this.player = player;
             return this;
         }
 
 
         /** 募集条件 */
-        public List<AttributeRange> attributeRanges { set; get; }
+		[UnityEngine.SerializeField]
+        public List<AttributeRange> attributeRanges;
 
         /**
          * 募集条件を設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Matchmaking.Request
 
 
         /** 参加者 */
-        public List<CapacityOfRole> capacityOfRoles { set; get; }
+		[UnityEngine.SerializeField]
+        public List<CapacityOfRole> capacityOfRoles;
 
         /**
          * 参加者を設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Matchmaking.Request
 
 
         /** 参加を許可するユーザIDリスト */
-        public List<string> allowUserIds { set; get; }
+		[UnityEngine.SerializeField]
+        public List<string> allowUserIds;
 
         /**
          * 参加を許可するユーザIDリストを設定
@@ -119,7 +126,8 @@ namespace Gs2.Gs2Matchmaking.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定
@@ -139,15 +147,15 @@ namespace Gs2.Gs2Matchmaking.Request
             return new CreateGatheringByUserIdRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
-                player = data.Keys.Contains("player") && data["player"] != null ? Gs2.Gs2Matchmaking.Model.Player.FromDict(data["player"]) : null,
+                player = data.Keys.Contains("player") && data["player"] != null ? global::Gs2.Gs2Matchmaking.Model.Player.FromDict(data["player"]) : null,
                 attributeRanges = data.Keys.Contains("attributeRanges") && data["attributeRanges"] != null ? data["attributeRanges"].Cast<JsonData>().Select(value =>
                     {
-                        return Gs2.Gs2Matchmaking.Model.AttributeRange.FromDict(value);
+                        return AttributeRange.FromDict(value);
                     }
                 ).ToList() : null,
                 capacityOfRoles = data.Keys.Contains("capacityOfRoles") && data["capacityOfRoles"] != null ? data["capacityOfRoles"].Cast<JsonData>().Select(value =>
                     {
-                        return Gs2.Gs2Matchmaking.Model.CapacityOfRole.FromDict(value);
+                        return CapacityOfRole.FromDict(value);
                     }
                 ).ToList() : null,
                 allowUserIds = data.Keys.Contains("allowUserIds") && data["allowUserIds"] != null ? data["allowUserIds"].Cast<JsonData>().Select(value =>
