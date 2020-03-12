@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Lottery.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class CreatePrizeTableMasterRequest : Gs2Request<CreatePrizeTableMasterRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Lottery.Request
 
 
         /** 排出確率テーブル名 */
-		[UnityEngine.SerializeField]
-        public string name;
+        public string name { set; get; }
 
         /**
          * 排出確率テーブル名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Lottery.Request
 
 
         /** 排出確率テーブルマスターの説明 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * 排出確率テーブルマスターの説明を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Lottery.Request
 
 
         /** 排出確率テーブルのメタデータ */
-		[UnityEngine.SerializeField]
-        public string metadata;
+        public string metadata { set; get; }
 
         /**
          * 排出確率テーブルのメタデータを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Lottery.Request
 
 
         /** 景品リスト */
-		[UnityEngine.SerializeField]
-        public List<Prize> prizes;
+        public List<Prize> prizes { set; get; }
 
         /**
          * 景品リストを設定
@@ -119,7 +113,7 @@ namespace Gs2.Gs2Lottery.Request
                 metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
                 prizes = data.Keys.Contains("prizes") && data["prizes"] != null ? data["prizes"].Cast<JsonData>().Select(value =>
                     {
-                        return Prize.FromDict(value);
+                        return Gs2.Gs2Lottery.Model.Prize.FromDict(value);
                     }
                 ).ToList() : null,
             };

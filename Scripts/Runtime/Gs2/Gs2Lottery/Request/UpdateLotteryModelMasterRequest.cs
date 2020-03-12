@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Lottery.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateLotteryModelMasterRequest : Gs2Request<UpdateLotteryModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Lottery.Request
 
 
         /** 抽選モデルの種類名 */
-		[UnityEngine.SerializeField]
-        public string lotteryName;
+        public string lotteryName { set; get; }
 
         /**
          * 抽選モデルの種類名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Lottery.Request
 
 
         /** 抽選の種類マスターの説明 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * 抽選の種類マスターの説明を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Lottery.Request
 
 
         /** 抽選モデルの種類のメタデータ */
-		[UnityEngine.SerializeField]
-        public string metadata;
+        public string metadata { set; get; }
 
         /**
          * 抽選モデルの種類のメタデータを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Lottery.Request
 
 
         /** 抽選モード */
-		[UnityEngine.SerializeField]
-        public string mode;
+        public string mode { set; get; }
 
         /**
          * 抽選モードを設定
@@ -110,8 +104,7 @@ namespace Gs2.Gs2Lottery.Request
 
 
         /** 抽選方法 */
-		[UnityEngine.SerializeField]
-        public string method;
+        public string method { set; get; }
 
         /**
          * 抽選方法を設定
@@ -126,8 +119,7 @@ namespace Gs2.Gs2Lottery.Request
 
 
         /** 景品テーブルの名前 */
-		[UnityEngine.SerializeField]
-        public string prizeTableName;
+        public string prizeTableName { set; get; }
 
         /**
          * 景品テーブルの名前を設定
@@ -142,8 +134,7 @@ namespace Gs2.Gs2Lottery.Request
 
 
         /** 抽選テーブルを確定するスクリプト のGRN */
-		[UnityEngine.SerializeField]
-        public string choicePrizeTableScriptId;
+        public string choicePrizeTableScriptId { set; get; }
 
         /**
          * 抽選テーブルを確定するスクリプト のGRNを設定
