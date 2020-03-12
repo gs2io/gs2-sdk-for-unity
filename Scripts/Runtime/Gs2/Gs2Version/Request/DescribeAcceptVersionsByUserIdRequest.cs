@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Version.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class DescribeAcceptVersionsByUserIdRequest : Gs2Request<DescribeAcceptVersionsByUserIdRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Version.Request
 
 
         /** ユーザーID */
-		[UnityEngine.SerializeField]
-        public string userId;
+        public string userId { set; get; }
 
         /**
          * ユーザーIDを設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Version.Request
 
 
         /** データの取得を開始する位置を指定するトークン */
-		[UnityEngine.SerializeField]
-        public string pageToken;
+        public string pageToken { set; get; }
 
         /**
          * データの取得を開始する位置を指定するトークンを設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Version.Request
 
 
         /** データの取得件数 */
-		[UnityEngine.SerializeField]
-        public long? limit;
+        public long? limit { set; get; }
 
         /**
          * データの取得件数を設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Version.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定
