@@ -25,7 +25,7 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inbox.Request
 {
 	[Preserve]
-	public class GetMessageByUserIdRequest : Gs2Request<GetMessageByUserIdRequest>
+	public class UpdateReceivedByUserIdRequest : Gs2Request<UpdateReceivedByUserIdRequest>
 	{
 
         /** ネームスペース名 */
@@ -37,7 +37,7 @@ namespace Gs2.Gs2Inbox.Request
          * @param namespaceName ネームスペース名
          * @return this
          */
-        public GetMessageByUserIdRequest WithNamespaceName(string namespaceName) {
+        public UpdateReceivedByUserIdRequest WithNamespaceName(string namespaceName) {
             this.namespaceName = namespaceName;
             return this;
         }
@@ -52,23 +52,23 @@ namespace Gs2.Gs2Inbox.Request
          * @param userId ユーザーID
          * @return this
          */
-        public GetMessageByUserIdRequest WithUserId(string userId) {
+        public UpdateReceivedByUserIdRequest WithUserId(string userId) {
             this.userId = userId;
             return this;
         }
 
 
-        /** メッセージID */
-        public string messageName { set; get; }
+        /** 受信したグローバルメッセージ名 */
+        public List<string> receivedGlobalMessageNames { set; get; }
 
         /**
-         * メッセージIDを設定
+         * 受信したグローバルメッセージ名を設定
          *
-         * @param messageName メッセージID
+         * @param receivedGlobalMessageNames 受信したグローバルメッセージ名
          * @return this
          */
-        public GetMessageByUserIdRequest WithMessageName(string messageName) {
-            this.messageName = messageName;
+        public UpdateReceivedByUserIdRequest WithReceivedGlobalMessageNames(List<string> receivedGlobalMessageNames) {
+            this.receivedGlobalMessageNames = receivedGlobalMessageNames;
             return this;
         }
 
@@ -82,19 +82,23 @@ namespace Gs2.Gs2Inbox.Request
          * @param duplicationAvoider 重複実行回避機能に使用するID
          * @return this
          */
-        public GetMessageByUserIdRequest WithDuplicationAvoider(string duplicationAvoider) {
+        public UpdateReceivedByUserIdRequest WithDuplicationAvoider(string duplicationAvoider) {
             this.duplicationAvoider = duplicationAvoider;
             return this;
         }
 
 
     	[Preserve]
-        public static GetMessageByUserIdRequest FromDict(JsonData data)
+        public static UpdateReceivedByUserIdRequest FromDict(JsonData data)
         {
-            return new GetMessageByUserIdRequest {
+            return new UpdateReceivedByUserIdRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
-                messageName = data.Keys.Contains("messageName") && data["messageName"] != null ? data["messageName"].ToString(): null,
+                receivedGlobalMessageNames = data.Keys.Contains("receivedGlobalMessageNames") && data["receivedGlobalMessageNames"] != null ? data["receivedGlobalMessageNames"].Cast<JsonData>().Select(value =>
+                    {
+                        return value.ToString();
+                    }
+                ).ToList() : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }

@@ -51,7 +51,7 @@ namespace Gs2.Unity.Gs2Inbox
 		/// <returns>IEnumerator</returns>
 		/// <param name="callback">コールバックハンドラ</param>
 		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">プレゼントボックス名</param>
+		/// <param name="namespaceName">ネームスペース名</param>
 		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
 		/// <param name="limit">データの取得件数</param>
 		public IEnumerator List(
@@ -99,7 +99,7 @@ namespace Gs2.Unity.Gs2Inbox
 		/// <returns>IEnumerator</returns>
 		/// <param name="callback">コールバックハンドラ</param>
 		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">プレゼントボックス名</param>
+		/// <param name="namespaceName">ネームスペース名</param>
 		/// <param name="messageName">メッセージID</param>
 		public IEnumerator Read(
 		        UnityAction<AsyncResult<EzReadResult>> callback,
@@ -146,7 +146,7 @@ namespace Gs2.Unity.Gs2Inbox
 		/// <returns>IEnumerator</returns>
 		/// <param name="callback">コールバックハンドラ</param>
 		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">プレゼントボックス名</param>
+		/// <param name="namespaceName">ネームスペース名</param>
 		/// <param name="messageName">メッセージID</param>
 		public IEnumerator Delete(
 		        UnityAction<AsyncResult<EzDeleteResult>> callback,

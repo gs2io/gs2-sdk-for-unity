@@ -25,7 +25,7 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inbox.Request
 {
 	[Preserve]
-	public class GetNamespaceStatusRequest : Gs2Request<GetNamespaceStatusRequest>
+	public class UpdateCurrentMessageMasterFromGitHubRequest : Gs2Request<UpdateCurrentMessageMasterFromGitHubRequest>
 	{
 
         /** ネームスペース名 */
@@ -37,17 +37,33 @@ namespace Gs2.Gs2Inbox.Request
          * @param namespaceName ネームスペース名
          * @return this
          */
-        public GetNamespaceStatusRequest WithNamespaceName(string namespaceName) {
+        public UpdateCurrentMessageMasterFromGitHubRequest WithNamespaceName(string namespaceName) {
             this.namespaceName = namespaceName;
             return this;
         }
 
 
+        /** GitHubからマスターデータをチェックアウトしてくる設定 */
+        public Gs2.Gs2Inbox.Model.GitHubCheckoutSetting checkoutSetting { set; get; }
+
+        /**
+         * GitHubからマスターデータをチェックアウトしてくる設定を設定
+         *
+         * @param checkoutSetting GitHubからマスターデータをチェックアウトしてくる設定
+         * @return this
+         */
+        public UpdateCurrentMessageMasterFromGitHubRequest WithCheckoutSetting(Gs2.Gs2Inbox.Model.GitHubCheckoutSetting checkoutSetting) {
+            this.checkoutSetting = checkoutSetting;
+            return this;
+        }
+
+
     	[Preserve]
-        public static GetNamespaceStatusRequest FromDict(JsonData data)
+        public static UpdateCurrentMessageMasterFromGitHubRequest FromDict(JsonData data)
         {
-            return new GetNamespaceStatusRequest {
+            return new UpdateCurrentMessageMasterFromGitHubRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                checkoutSetting = data.Keys.Contains("checkoutSetting") && data["checkoutSetting"] != null ? Gs2.Gs2Inbox.Model.GitHubCheckoutSetting.FromDict(data["checkoutSetting"]) : null,
             };
         }
 

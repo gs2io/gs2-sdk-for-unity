@@ -25,7 +25,7 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inbox.Request
 {
 	[Preserve]
-	public class GetNamespaceStatusRequest : Gs2Request<GetNamespaceStatusRequest>
+	public class UpdateCurrentMessageMasterRequest : Gs2Request<UpdateCurrentMessageMasterRequest>
 	{
 
         /** ネームスペース名 */
@@ -37,17 +37,33 @@ namespace Gs2.Gs2Inbox.Request
          * @param namespaceName ネームスペース名
          * @return this
          */
-        public GetNamespaceStatusRequest WithNamespaceName(string namespaceName) {
+        public UpdateCurrentMessageMasterRequest WithNamespaceName(string namespaceName) {
             this.namespaceName = namespaceName;
             return this;
         }
 
 
+        /** マスターデータ */
+        public string settings { set; get; }
+
+        /**
+         * マスターデータを設定
+         *
+         * @param settings マスターデータ
+         * @return this
+         */
+        public UpdateCurrentMessageMasterRequest WithSettings(string settings) {
+            this.settings = settings;
+            return this;
+        }
+
+
     	[Preserve]
-        public static GetNamespaceStatusRequest FromDict(JsonData data)
+        public static UpdateCurrentMessageMasterRequest FromDict(JsonData data)
         {
-            return new GetNamespaceStatusRequest {
+            return new UpdateCurrentMessageMasterRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                settings = data.Keys.Contains("settings") && data["settings"] != null ? data["settings"].ToString(): null,
             };
         }
 

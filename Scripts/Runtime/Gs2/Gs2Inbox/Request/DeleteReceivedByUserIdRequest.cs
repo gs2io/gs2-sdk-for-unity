@@ -25,7 +25,7 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inbox.Request
 {
 	[Preserve]
-	public class GetMessageByUserIdRequest : Gs2Request<GetMessageByUserIdRequest>
+	public class DeleteReceivedByUserIdRequest : Gs2Request<DeleteReceivedByUserIdRequest>
 	{
 
         /** ネームスペース名 */
@@ -37,7 +37,7 @@ namespace Gs2.Gs2Inbox.Request
          * @param namespaceName ネームスペース名
          * @return this
          */
-        public GetMessageByUserIdRequest WithNamespaceName(string namespaceName) {
+        public DeleteReceivedByUserIdRequest WithNamespaceName(string namespaceName) {
             this.namespaceName = namespaceName;
             return this;
         }
@@ -52,23 +52,8 @@ namespace Gs2.Gs2Inbox.Request
          * @param userId ユーザーID
          * @return this
          */
-        public GetMessageByUserIdRequest WithUserId(string userId) {
+        public DeleteReceivedByUserIdRequest WithUserId(string userId) {
             this.userId = userId;
-            return this;
-        }
-
-
-        /** メッセージID */
-        public string messageName { set; get; }
-
-        /**
-         * メッセージIDを設定
-         *
-         * @param messageName メッセージID
-         * @return this
-         */
-        public GetMessageByUserIdRequest WithMessageName(string messageName) {
-            this.messageName = messageName;
             return this;
         }
 
@@ -82,19 +67,18 @@ namespace Gs2.Gs2Inbox.Request
          * @param duplicationAvoider 重複実行回避機能に使用するID
          * @return this
          */
-        public GetMessageByUserIdRequest WithDuplicationAvoider(string duplicationAvoider) {
+        public DeleteReceivedByUserIdRequest WithDuplicationAvoider(string duplicationAvoider) {
             this.duplicationAvoider = duplicationAvoider;
             return this;
         }
 
 
     	[Preserve]
-        public static GetMessageByUserIdRequest FromDict(JsonData data)
+        public static DeleteReceivedByUserIdRequest FromDict(JsonData data)
         {
-            return new GetMessageByUserIdRequest {
+            return new DeleteReceivedByUserIdRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 userId = data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString(): null,
-                messageName = data.Keys.Contains("messageName") && data["messageName"] != null ? data["messageName"].ToString(): null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }

@@ -25,7 +25,7 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inbox.Request
 {
 	[Preserve]
-	public class GetNamespaceStatusRequest : Gs2Request<GetNamespaceStatusRequest>
+	public class DeleteGlobalMessageMasterRequest : Gs2Request<DeleteGlobalMessageMasterRequest>
 	{
 
         /** ネームスペース名 */
@@ -37,17 +37,33 @@ namespace Gs2.Gs2Inbox.Request
          * @param namespaceName ネームスペース名
          * @return this
          */
-        public GetNamespaceStatusRequest WithNamespaceName(string namespaceName) {
+        public DeleteGlobalMessageMasterRequest WithNamespaceName(string namespaceName) {
             this.namespaceName = namespaceName;
             return this;
         }
 
 
+        /** 全ユーザに向けたメッセージ名 */
+        public string globalMessageName { set; get; }
+
+        /**
+         * 全ユーザに向けたメッセージ名を設定
+         *
+         * @param globalMessageName 全ユーザに向けたメッセージ名
+         * @return this
+         */
+        public DeleteGlobalMessageMasterRequest WithGlobalMessageName(string globalMessageName) {
+            this.globalMessageName = globalMessageName;
+            return this;
+        }
+
+
     	[Preserve]
-        public static GetNamespaceStatusRequest FromDict(JsonData data)
+        public static DeleteGlobalMessageMasterRequest FromDict(JsonData data)
         {
-            return new GetNamespaceStatusRequest {
+            return new DeleteGlobalMessageMasterRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                globalMessageName = data.Keys.Contains("globalMessageName") && data["globalMessageName"] != null ? data["globalMessageName"].ToString(): null,
             };
         }
 

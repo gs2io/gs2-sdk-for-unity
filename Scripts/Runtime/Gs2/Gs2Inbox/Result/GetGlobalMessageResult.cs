@@ -16,40 +16,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Inbox.Model;
 using LitJson;
 using UnityEngine.Scripting;
 
-namespace Gs2.Gs2Inbox.Request
+namespace Gs2.Gs2Inbox.Result
 {
 	[Preserve]
-	public class GetNamespaceStatusRequest : Gs2Request<GetNamespaceStatusRequest>
+	public class GetGlobalMessageResult
 	{
-
-        /** ネームスペース名 */
-        public string namespaceName { set; get; }
-
-        /**
-         * ネームスペース名を設定
-         *
-         * @param namespaceName ネームスペース名
-         * @return this
-         */
-        public GetNamespaceStatusRequest WithNamespaceName(string namespaceName) {
-            this.namespaceName = namespaceName;
-            return this;
-        }
+        /** 全ユーザに向けたメッセージ */
+        public GlobalMessage item { set; get; }
 
 
     	[Preserve]
-        public static GetNamespaceStatusRequest FromDict(JsonData data)
+        public static GetGlobalMessageResult FromDict(JsonData data)
         {
-            return new GetNamespaceStatusRequest {
-                namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+            return new GetGlobalMessageResult {
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Inbox.Model.GlobalMessage.FromDict(data["item"]) : null,
             };
         }
-
 	}
 }
