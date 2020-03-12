@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inventory.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class CreateItemModelMasterRequest : Gs2Request<CreateItemModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** アイテムの種類名 */
-		[UnityEngine.SerializeField]
-        public string inventoryName;
+        public string inventoryName { set; get; }
 
         /**
          * アイテムの種類名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** アイテムモデルの種類名 */
-		[UnityEngine.SerializeField]
-        public string name;
+        public string name { set; get; }
 
         /**
          * アイテムモデルの種類名を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** アイテムモデルマスターの説明 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * アイテムモデルマスターの説明を設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** アイテムモデルの種類のメタデータ */
-		[UnityEngine.SerializeField]
-        public string metadata;
+        public string metadata { set; get; }
 
         /**
          * アイテムモデルの種類のメタデータを設定
@@ -110,8 +104,7 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** スタック可能な最大数量 */
-		[UnityEngine.SerializeField]
-        public long? stackingLimit;
+        public long? stackingLimit { set; get; }
 
         /**
          * スタック可能な最大数量を設定
@@ -126,8 +119,7 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すか */
-		[UnityEngine.SerializeField]
-        public bool? allowMultipleStacks;
+        public bool? allowMultipleStacks { set; get; }
 
         /**
          * スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すかを設定
@@ -142,8 +134,7 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** 表示順番 */
-		[UnityEngine.SerializeField]
-        public int? sortValue;
+        public int? sortValue { set; get; }
 
         /**
          * 表示順番を設定

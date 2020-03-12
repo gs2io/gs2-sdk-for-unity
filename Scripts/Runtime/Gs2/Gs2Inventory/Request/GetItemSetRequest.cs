@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inventory.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class GetItemSetRequest : Gs2Request<GetItemSetRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** インベントリの名前 */
-		[UnityEngine.SerializeField]
-        public string inventoryName;
+        public string inventoryName { set; get; }
 
         /**
          * インベントリの名前を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** アイテムマスターの名前 */
-		[UnityEngine.SerializeField]
-        public string itemName;
+        public string itemName { set; get; }
 
         /**
          * アイテムマスターの名前を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** アイテムセットを識別する名前 */
-		[UnityEngine.SerializeField]
-        public string itemSetName;
+        public string itemSetName { set; get; }
 
         /**
          * アイテムセットを識別する名前を設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定
