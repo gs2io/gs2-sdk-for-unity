@@ -28,13 +28,13 @@ namespace Gs2.Gs2Inbox.Request
 	public class GetNamespaceRequest : Gs2Request<GetNamespaceRequest>
 	{
 
-        /** プレゼントボックス名 */
+        /** ネームスペース名 */
         public string namespaceName { set; get; }
 
         /**
-         * プレゼントボックス名を設定
+         * ネームスペース名を設定
          *
-         * @param namespaceName プレゼントボックス名
+         * @param namespaceName ネームスペース名
          * @return this
          */
         public GetNamespaceRequest WithNamespaceName(string namespaceName) {
