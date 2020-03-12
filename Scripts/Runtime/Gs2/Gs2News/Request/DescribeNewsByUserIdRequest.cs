@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2News.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class DescribeNewsByUserIdRequest : Gs2Request<DescribeNewsByUserIdRequest>
 	{
 
         /** ネームスペースの名前 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペースの名前を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2News.Request
 
 
         /** ユーザーID */
-		[UnityEngine.SerializeField]
-        public string userId;
+        public string userId { set; get; }
 
         /**
          * ユーザーIDを設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2News.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定

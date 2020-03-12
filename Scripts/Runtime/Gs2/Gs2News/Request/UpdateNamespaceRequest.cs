@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2News.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateNamespaceRequest : Gs2Request<UpdateNamespaceRequest>
 	{
 
         /** ネームスペースの名前 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペースの名前を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2News.Request
 
 
         /** ネームスペースの説明 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * ネームスペースの説明を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2News.Request
 
 
         /** ログの出力設定 */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2News.Model.LogSetting logSetting;
+        public Gs2.Gs2News.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -71,7 +67,7 @@ namespace Gs2.Gs2News.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public UpdateNamespaceRequest WithLogSetting(global::Gs2.Gs2News.Model.LogSetting logSetting) {
+        public UpdateNamespaceRequest WithLogSetting(Gs2.Gs2News.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -83,7 +79,7 @@ namespace Gs2.Gs2News.Request
             return new UpdateNamespaceRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? global::Gs2.Gs2News.Model.LogSetting.FromDict(data["logSetting"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2News.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 
