@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using LitJson;
 using UnityEngine.Scripting;
@@ -203,78 +202,6 @@ namespace Gs2.Gs2Experience.Model
             }
             writer.WriteObjectEnd();
         }
-
-    public static string GetExperienceNameFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):experience:(?<namespaceName>.*):user:(?<userId>.*):experienceModel:(?<experienceName>.*):property:(?<propertyId>.*)");
-        if (!match.Groups["experienceName"].Success)
-        {
-            return null;
-        }
-        return match.Groups["experienceName"].Value;
-    }
-
-    public static string GetPropertyIdFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):experience:(?<namespaceName>.*):user:(?<userId>.*):experienceModel:(?<experienceName>.*):property:(?<propertyId>.*)");
-        if (!match.Groups["propertyId"].Success)
-        {
-            return null;
-        }
-        return match.Groups["propertyId"].Value;
-    }
-
-    public static string GetUserIdFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):experience:(?<namespaceName>.*):user:(?<userId>.*):experienceModel:(?<experienceName>.*):property:(?<propertyId>.*)");
-        if (!match.Groups["userId"].Success)
-        {
-            return null;
-        }
-        return match.Groups["userId"].Value;
-    }
-
-    public static string GetNamespaceNameFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):experience:(?<namespaceName>.*):user:(?<userId>.*):experienceModel:(?<experienceName>.*):property:(?<propertyId>.*)");
-        if (!match.Groups["namespaceName"].Success)
-        {
-            return null;
-        }
-        return match.Groups["namespaceName"].Value;
-    }
-
-    public static string GetOwnerIdFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):experience:(?<namespaceName>.*):user:(?<userId>.*):experienceModel:(?<experienceName>.*):property:(?<propertyId>.*)");
-        if (!match.Groups["ownerId"].Success)
-        {
-            return null;
-        }
-        return match.Groups["ownerId"].Value;
-    }
-
-    public static string GetRegionFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):experience:(?<namespaceName>.*):user:(?<userId>.*):experienceModel:(?<experienceName>.*):property:(?<propertyId>.*)");
-        if (!match.Groups["region"].Success)
-        {
-            return null;
-        }
-        return match.Groups["region"].Value;
-    }
 
     	[Preserve]
         public static Status FromDict(JsonData data)

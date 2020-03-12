@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Experience.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class DeleteStatusByUserIdRequest : Gs2Request<DeleteStatusByUserIdRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Experience.Request
 
 
         /** ユーザーID */
-		[UnityEngine.SerializeField]
-        public string userId;
+        public string userId { set; get; }
 
         /**
          * ユーザーIDを設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Experience.Request
 
 
         /** 経験値の種類の名前 */
-		[UnityEngine.SerializeField]
-        public string experienceName;
+        public string experienceName { set; get; }
 
         /**
          * 経験値の種類の名前を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Experience.Request
 
 
         /** プロパティID */
-		[UnityEngine.SerializeField]
-        public string propertyId;
+        public string propertyId { set; get; }
 
         /**
          * プロパティIDを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Experience.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定
