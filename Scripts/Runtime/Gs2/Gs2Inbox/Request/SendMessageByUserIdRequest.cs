@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inbox.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class SendMessageByUserIdRequest : Gs2Request<SendMessageByUserIdRequest>
 	{
 
         /** プレゼントボックス名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * プレゼントボックス名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** ユーザーID */
-		[UnityEngine.SerializeField]
-        public string userId;
+        public string userId { set; get; }
 
         /**
          * ユーザーIDを設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** メッセージの内容に相当するメタデータ */
-		[UnityEngine.SerializeField]
-        public string metadata;
+        public string metadata { set; get; }
 
         /**
          * メッセージの内容に相当するメタデータを設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** 開封時に実行する入手アクション */
-		[UnityEngine.SerializeField]
-        public List<AcquireAction> readAcquireActions;
+        public List<AcquireAction> readAcquireActions { set; get; }
 
         /**
          * 開封時に実行する入手アクションを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** メッセージの有効期限 */
-		[UnityEngine.SerializeField]
-        public long? expiresAt;
+        public long? expiresAt { set; get; }
 
         /**
          * メッセージの有効期限を設定
@@ -110,8 +104,7 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** メッセージの有効期限までの差分 */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Inbox.Model.TimeSpan_ expiresTimeSpan;
+        public Gs2.Gs2Inbox.Model.TimeSpan expiresTimeSpan { set; get; }
 
         /**
          * メッセージの有効期限までの差分を設定
@@ -119,15 +112,14 @@ namespace Gs2.Gs2Inbox.Request
          * @param expiresTimeSpan メッセージの有効期限までの差分
          * @return this
          */
-        public SendMessageByUserIdRequest WithExpiresTimeSpan(global::Gs2.Gs2Inbox.Model.TimeSpan_ expiresTimeSpan) {
+        public SendMessageByUserIdRequest WithExpiresTimeSpan(Gs2.Gs2Inbox.Model.TimeSpan expiresTimeSpan) {
             this.expiresTimeSpan = expiresTimeSpan;
             return this;
         }
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定
@@ -150,11 +142,11 @@ namespace Gs2.Gs2Inbox.Request
                 metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
                 readAcquireActions = data.Keys.Contains("readAcquireActions") && data["readAcquireActions"] != null ? data["readAcquireActions"].Cast<JsonData>().Select(value =>
                     {
-                        return AcquireAction.FromDict(value);
+                        return Gs2.Gs2Inbox.Model.AcquireAction.FromDict(value);
                     }
                 ).ToList() : null,
                 expiresAt = data.Keys.Contains("expiresAt") && data["expiresAt"] != null ? (long?)long.Parse(data["expiresAt"].ToString()) : null,
-                expiresTimeSpan = data.Keys.Contains("expiresTimeSpan") && data["expiresTimeSpan"] != null ? global::Gs2.Gs2Inbox.Model.TimeSpan_.FromDict(data["expiresTimeSpan"]) : null,
+                expiresTimeSpan = data.Keys.Contains("expiresTimeSpan") && data["expiresTimeSpan"] != null ? Gs2.Gs2Inbox.Model.TimeSpan.FromDict(data["expiresTimeSpan"]) : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
