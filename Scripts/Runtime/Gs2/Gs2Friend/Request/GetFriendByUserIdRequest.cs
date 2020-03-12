@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Friend.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class GetFriendByUserIdRequest : Gs2Request<GetFriendByUserIdRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Friend.Request
 
 
         /** ユーザーID */
-		[UnityEngine.SerializeField]
-        public string userId;
+        public string userId { set; get; }
 
         /**
          * ユーザーIDを設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Friend.Request
 
 
         /** ユーザーID */
-		[UnityEngine.SerializeField]
-        public string targetUserId;
+        public string targetUserId { set; get; }
 
         /**
          * ユーザーIDを設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Friend.Request
 
 
         /** プロフィールも一緒に取得するか */
-		[UnityEngine.SerializeField]
-        public bool? withProfile;
+        public bool? withProfile { set; get; }
 
         /**
          * プロフィールも一緒に取得するかを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Friend.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定
