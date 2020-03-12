@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Showcase.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class BuyRequest : Gs2Request<BuyRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 商品名 */
-		[UnityEngine.SerializeField]
-        public string showcaseName;
+        public string showcaseName { set; get; }
 
         /**
          * 商品名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 陳列商品ID */
-		[UnityEngine.SerializeField]
-        public string displayItemId;
+        public string displayItemId { set; get; }
 
         /**
          * 陳列商品IDを設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 設定値 */
-		[UnityEngine.SerializeField]
-        public List<Config> config;
+        public List<Config> config { set; get; }
 
         /**
          * 設定値を設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定
@@ -132,7 +126,7 @@ namespace Gs2.Gs2Showcase.Request
                 displayItemId = data.Keys.Contains("displayItemId") && data["displayItemId"] != null ? data["displayItemId"].ToString(): null,
                 config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
                     {
-                        return Config.FromDict(value);
+                        return Gs2.Gs2Showcase.Model.Config.FromDict(value);
                     }
                 ).ToList() : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
