@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Friend.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class CreateNamespaceRequest : Gs2Request<CreateNamespaceRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string name;
+        public string name { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Friend.Request
 
 
         /** ネームスペースの説明 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * ネームスペースの説明を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Friend.Request
 
 
         /** フォローされたときに実行するスクリプト */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Friend.Model.ScriptSetting followScript;
+        public Gs2.Gs2Friend.Model.ScriptSetting followScript { set; get; }
 
         /**
          * フォローされたときに実行するスクリプトを設定
@@ -71,15 +67,14 @@ namespace Gs2.Gs2Friend.Request
          * @param followScript フォローされたときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithFollowScript(global::Gs2.Gs2Friend.Model.ScriptSetting followScript) {
+        public CreateNamespaceRequest WithFollowScript(Gs2.Gs2Friend.Model.ScriptSetting followScript) {
             this.followScript = followScript;
             return this;
         }
 
 
         /** アンフォローされたときに実行するスクリプト */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Friend.Model.ScriptSetting unfollowScript;
+        public Gs2.Gs2Friend.Model.ScriptSetting unfollowScript { set; get; }
 
         /**
          * アンフォローされたときに実行するスクリプトを設定
@@ -87,15 +82,14 @@ namespace Gs2.Gs2Friend.Request
          * @param unfollowScript アンフォローされたときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithUnfollowScript(global::Gs2.Gs2Friend.Model.ScriptSetting unfollowScript) {
+        public CreateNamespaceRequest WithUnfollowScript(Gs2.Gs2Friend.Model.ScriptSetting unfollowScript) {
             this.unfollowScript = unfollowScript;
             return this;
         }
 
 
         /** フレンドリクエストを発行したときに実行するスクリプト */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Friend.Model.ScriptSetting sendRequestScript;
+        public Gs2.Gs2Friend.Model.ScriptSetting sendRequestScript { set; get; }
 
         /**
          * フレンドリクエストを発行したときに実行するスクリプトを設定
@@ -103,15 +97,14 @@ namespace Gs2.Gs2Friend.Request
          * @param sendRequestScript フレンドリクエストを発行したときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithSendRequestScript(global::Gs2.Gs2Friend.Model.ScriptSetting sendRequestScript) {
+        public CreateNamespaceRequest WithSendRequestScript(Gs2.Gs2Friend.Model.ScriptSetting sendRequestScript) {
             this.sendRequestScript = sendRequestScript;
             return this;
         }
 
 
         /** フレンドリクエストをキャンセルしたときに実行するスクリプト */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Friend.Model.ScriptSetting cancelRequestScript;
+        public Gs2.Gs2Friend.Model.ScriptSetting cancelRequestScript { set; get; }
 
         /**
          * フレンドリクエストをキャンセルしたときに実行するスクリプトを設定
@@ -119,15 +112,14 @@ namespace Gs2.Gs2Friend.Request
          * @param cancelRequestScript フレンドリクエストをキャンセルしたときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithCancelRequestScript(global::Gs2.Gs2Friend.Model.ScriptSetting cancelRequestScript) {
+        public CreateNamespaceRequest WithCancelRequestScript(Gs2.Gs2Friend.Model.ScriptSetting cancelRequestScript) {
             this.cancelRequestScript = cancelRequestScript;
             return this;
         }
 
 
         /** フレンドリクエストを承諾したときに実行するスクリプト */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Friend.Model.ScriptSetting acceptRequestScript;
+        public Gs2.Gs2Friend.Model.ScriptSetting acceptRequestScript { set; get; }
 
         /**
          * フレンドリクエストを承諾したときに実行するスクリプトを設定
@@ -135,15 +127,14 @@ namespace Gs2.Gs2Friend.Request
          * @param acceptRequestScript フレンドリクエストを承諾したときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithAcceptRequestScript(global::Gs2.Gs2Friend.Model.ScriptSetting acceptRequestScript) {
+        public CreateNamespaceRequest WithAcceptRequestScript(Gs2.Gs2Friend.Model.ScriptSetting acceptRequestScript) {
             this.acceptRequestScript = acceptRequestScript;
             return this;
         }
 
 
         /** フレンドリクエストを拒否したときに実行するスクリプト */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Friend.Model.ScriptSetting rejectRequestScript;
+        public Gs2.Gs2Friend.Model.ScriptSetting rejectRequestScript { set; get; }
 
         /**
          * フレンドリクエストを拒否したときに実行するスクリプトを設定
@@ -151,15 +142,14 @@ namespace Gs2.Gs2Friend.Request
          * @param rejectRequestScript フレンドリクエストを拒否したときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithRejectRequestScript(global::Gs2.Gs2Friend.Model.ScriptSetting rejectRequestScript) {
+        public CreateNamespaceRequest WithRejectRequestScript(Gs2.Gs2Friend.Model.ScriptSetting rejectRequestScript) {
             this.rejectRequestScript = rejectRequestScript;
             return this;
         }
 
 
         /** フレンドを削除したときに実行するスクリプト */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Friend.Model.ScriptSetting deleteFriendScript;
+        public Gs2.Gs2Friend.Model.ScriptSetting deleteFriendScript { set; get; }
 
         /**
          * フレンドを削除したときに実行するスクリプトを設定
@@ -167,15 +157,14 @@ namespace Gs2.Gs2Friend.Request
          * @param deleteFriendScript フレンドを削除したときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithDeleteFriendScript(global::Gs2.Gs2Friend.Model.ScriptSetting deleteFriendScript) {
+        public CreateNamespaceRequest WithDeleteFriendScript(Gs2.Gs2Friend.Model.ScriptSetting deleteFriendScript) {
             this.deleteFriendScript = deleteFriendScript;
             return this;
         }
 
 
         /** プロフィールを更新したときに実行するスクリプト */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Friend.Model.ScriptSetting updateProfileScript;
+        public Gs2.Gs2Friend.Model.ScriptSetting updateProfileScript { set; get; }
 
         /**
          * プロフィールを更新したときに実行するスクリプトを設定
@@ -183,15 +172,14 @@ namespace Gs2.Gs2Friend.Request
          * @param updateProfileScript プロフィールを更新したときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithUpdateProfileScript(global::Gs2.Gs2Friend.Model.ScriptSetting updateProfileScript) {
+        public CreateNamespaceRequest WithUpdateProfileScript(Gs2.Gs2Friend.Model.ScriptSetting updateProfileScript) {
             this.updateProfileScript = updateProfileScript;
             return this;
         }
 
 
         /** フォローされたときのプッシュ通知 */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Friend.Model.NotificationSetting followNotification;
+        public Gs2.Gs2Friend.Model.NotificationSetting followNotification { set; get; }
 
         /**
          * フォローされたときのプッシュ通知を設定
@@ -199,15 +187,14 @@ namespace Gs2.Gs2Friend.Request
          * @param followNotification フォローされたときのプッシュ通知
          * @return this
          */
-        public CreateNamespaceRequest WithFollowNotification(global::Gs2.Gs2Friend.Model.NotificationSetting followNotification) {
+        public CreateNamespaceRequest WithFollowNotification(Gs2.Gs2Friend.Model.NotificationSetting followNotification) {
             this.followNotification = followNotification;
             return this;
         }
 
 
         /** フレンドリクエストが届いたときのプッシュ通知 */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Friend.Model.NotificationSetting receiveRequestNotification;
+        public Gs2.Gs2Friend.Model.NotificationSetting receiveRequestNotification { set; get; }
 
         /**
          * フレンドリクエストが届いたときのプッシュ通知を設定
@@ -215,15 +202,14 @@ namespace Gs2.Gs2Friend.Request
          * @param receiveRequestNotification フレンドリクエストが届いたときのプッシュ通知
          * @return this
          */
-        public CreateNamespaceRequest WithReceiveRequestNotification(global::Gs2.Gs2Friend.Model.NotificationSetting receiveRequestNotification) {
+        public CreateNamespaceRequest WithReceiveRequestNotification(Gs2.Gs2Friend.Model.NotificationSetting receiveRequestNotification) {
             this.receiveRequestNotification = receiveRequestNotification;
             return this;
         }
 
 
         /** フレンドリクエストが承認されたときのプッシュ通知 */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Friend.Model.NotificationSetting acceptRequestNotification;
+        public Gs2.Gs2Friend.Model.NotificationSetting acceptRequestNotification { set; get; }
 
         /**
          * フレンドリクエストが承認されたときのプッシュ通知を設定
@@ -231,15 +217,14 @@ namespace Gs2.Gs2Friend.Request
          * @param acceptRequestNotification フレンドリクエストが承認されたときのプッシュ通知
          * @return this
          */
-        public CreateNamespaceRequest WithAcceptRequestNotification(global::Gs2.Gs2Friend.Model.NotificationSetting acceptRequestNotification) {
+        public CreateNamespaceRequest WithAcceptRequestNotification(Gs2.Gs2Friend.Model.NotificationSetting acceptRequestNotification) {
             this.acceptRequestNotification = acceptRequestNotification;
             return this;
         }
 
 
         /** ログの出力設定 */
-		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Friend.Model.LogSetting logSetting;
+        public Gs2.Gs2Friend.Model.LogSetting logSetting { set; get; }
 
         /**
          * ログの出力設定を設定
@@ -247,7 +232,7 @@ namespace Gs2.Gs2Friend.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public CreateNamespaceRequest WithLogSetting(global::Gs2.Gs2Friend.Model.LogSetting logSetting) {
+        public CreateNamespaceRequest WithLogSetting(Gs2.Gs2Friend.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -259,18 +244,18 @@ namespace Gs2.Gs2Friend.Request
             return new CreateNamespaceRequest {
                 name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
-                followScript = data.Keys.Contains("followScript") && data["followScript"] != null ? global::Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["followScript"]) : null,
-                unfollowScript = data.Keys.Contains("unfollowScript") && data["unfollowScript"] != null ? global::Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["unfollowScript"]) : null,
-                sendRequestScript = data.Keys.Contains("sendRequestScript") && data["sendRequestScript"] != null ? global::Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["sendRequestScript"]) : null,
-                cancelRequestScript = data.Keys.Contains("cancelRequestScript") && data["cancelRequestScript"] != null ? global::Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["cancelRequestScript"]) : null,
-                acceptRequestScript = data.Keys.Contains("acceptRequestScript") && data["acceptRequestScript"] != null ? global::Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["acceptRequestScript"]) : null,
-                rejectRequestScript = data.Keys.Contains("rejectRequestScript") && data["rejectRequestScript"] != null ? global::Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["rejectRequestScript"]) : null,
-                deleteFriendScript = data.Keys.Contains("deleteFriendScript") && data["deleteFriendScript"] != null ? global::Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["deleteFriendScript"]) : null,
-                updateProfileScript = data.Keys.Contains("updateProfileScript") && data["updateProfileScript"] != null ? global::Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["updateProfileScript"]) : null,
-                followNotification = data.Keys.Contains("followNotification") && data["followNotification"] != null ? global::Gs2.Gs2Friend.Model.NotificationSetting.FromDict(data["followNotification"]) : null,
-                receiveRequestNotification = data.Keys.Contains("receiveRequestNotification") && data["receiveRequestNotification"] != null ? global::Gs2.Gs2Friend.Model.NotificationSetting.FromDict(data["receiveRequestNotification"]) : null,
-                acceptRequestNotification = data.Keys.Contains("acceptRequestNotification") && data["acceptRequestNotification"] != null ? global::Gs2.Gs2Friend.Model.NotificationSetting.FromDict(data["acceptRequestNotification"]) : null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? global::Gs2.Gs2Friend.Model.LogSetting.FromDict(data["logSetting"]) : null,
+                followScript = data.Keys.Contains("followScript") && data["followScript"] != null ? Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["followScript"]) : null,
+                unfollowScript = data.Keys.Contains("unfollowScript") && data["unfollowScript"] != null ? Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["unfollowScript"]) : null,
+                sendRequestScript = data.Keys.Contains("sendRequestScript") && data["sendRequestScript"] != null ? Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["sendRequestScript"]) : null,
+                cancelRequestScript = data.Keys.Contains("cancelRequestScript") && data["cancelRequestScript"] != null ? Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["cancelRequestScript"]) : null,
+                acceptRequestScript = data.Keys.Contains("acceptRequestScript") && data["acceptRequestScript"] != null ? Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["acceptRequestScript"]) : null,
+                rejectRequestScript = data.Keys.Contains("rejectRequestScript") && data["rejectRequestScript"] != null ? Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["rejectRequestScript"]) : null,
+                deleteFriendScript = data.Keys.Contains("deleteFriendScript") && data["deleteFriendScript"] != null ? Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["deleteFriendScript"]) : null,
+                updateProfileScript = data.Keys.Contains("updateProfileScript") && data["updateProfileScript"] != null ? Gs2.Gs2Friend.Model.ScriptSetting.FromDict(data["updateProfileScript"]) : null,
+                followNotification = data.Keys.Contains("followNotification") && data["followNotification"] != null ? Gs2.Gs2Friend.Model.NotificationSetting.FromDict(data["followNotification"]) : null,
+                receiveRequestNotification = data.Keys.Contains("receiveRequestNotification") && data["receiveRequestNotification"] != null ? Gs2.Gs2Friend.Model.NotificationSetting.FromDict(data["receiveRequestNotification"]) : null,
+                acceptRequestNotification = data.Keys.Contains("acceptRequestNotification") && data["acceptRequestNotification"] != null ? Gs2.Gs2Friend.Model.NotificationSetting.FromDict(data["acceptRequestNotification"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Friend.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 
