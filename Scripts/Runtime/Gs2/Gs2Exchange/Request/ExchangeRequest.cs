@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Exchange.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class ExchangeRequest : Gs2Request<ExchangeRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Exchange.Request
 
 
         /** 交換レートの種類名 */
-		[UnityEngine.SerializeField]
-        public string rateName;
+        public string rateName { set; get; }
 
         /**
          * 交換レートの種類名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Exchange.Request
 
 
         /** 交換するロット数 */
-		[UnityEngine.SerializeField]
-        public int? count;
+        public int? count { set; get; }
 
         /**
          * 交換するロット数を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Exchange.Request
 
 
         /** 設定値 */
-		[UnityEngine.SerializeField]
-        public List<Config> config;
+        public List<Config> config { set; get; }
 
         /**
          * 設定値を設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Exchange.Request
 
 
         /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
+        public string duplicationAvoider { set; get; }
 
         /**
          * 重複実行回避機能に使用するIDを設定
@@ -132,7 +126,7 @@ namespace Gs2.Gs2Exchange.Request
                 count = data.Keys.Contains("count") && data["count"] != null ? (int?)int.Parse(data["count"].ToString()) : null,
                 config = data.Keys.Contains("config") && data["config"] != null ? data["config"].Cast<JsonData>().Select(value =>
                     {
-                        return Config.FromDict(value);
+                        return Gs2.Gs2Exchange.Model.Config.FromDict(value);
                     }
                 ).ToList() : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,

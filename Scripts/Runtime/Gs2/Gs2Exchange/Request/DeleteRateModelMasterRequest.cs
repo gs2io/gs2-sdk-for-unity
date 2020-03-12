@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Exchange.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class DeleteRateModelMasterRequest : Gs2Request<DeleteRateModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Exchange.Request
 
 
         /** 交換レート名 */
-		[UnityEngine.SerializeField]
-        public string rateName;
+        public string rateName { set; get; }
 
         /**
          * 交換レート名を設定
