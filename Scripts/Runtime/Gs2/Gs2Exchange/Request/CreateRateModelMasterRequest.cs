@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Exchange.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class CreateRateModelMasterRequest : Gs2Request<CreateRateModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Exchange.Request
 
 
         /** 交換レート名 */
-		[UnityEngine.SerializeField]
-        public string name;
+        public string name { set; get; }
 
         /**
          * 交換レート名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Exchange.Request
 
 
         /** 交換レートマスターの説明 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * 交換レートマスターの説明を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Exchange.Request
 
 
         /** 交換レートのメタデータ */
-		[UnityEngine.SerializeField]
-        public string metadata;
+        public string metadata { set; get; }
 
         /**
          * 交換レートのメタデータを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Exchange.Request
 
 
         /** 入手アクションリスト */
-		[UnityEngine.SerializeField]
-        public List<AcquireAction> acquireActions;
+        public List<AcquireAction> acquireActions { set; get; }
 
         /**
          * 入手アクションリストを設定
@@ -110,8 +104,7 @@ namespace Gs2.Gs2Exchange.Request
 
 
         /** 消費アクションリスト */
-		[UnityEngine.SerializeField]
-        public List<ConsumeAction> consumeActions;
+        public List<ConsumeAction> consumeActions { set; get; }
 
         /**
          * 消費アクションリストを設定
@@ -135,12 +128,12 @@ namespace Gs2.Gs2Exchange.Request
                 metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
                 acquireActions = data.Keys.Contains("acquireActions") && data["acquireActions"] != null ? data["acquireActions"].Cast<JsonData>().Select(value =>
                     {
-                        return AcquireAction.FromDict(value);
+                        return Gs2.Gs2Exchange.Model.AcquireAction.FromDict(value);
                     }
                 ).ToList() : null,
                 consumeActions = data.Keys.Contains("consumeActions") && data["consumeActions"] != null ? data["consumeActions"].Cast<JsonData>().Select(value =>
                     {
-                        return ConsumeAction.FromDict(value);
+                        return Gs2.Gs2Exchange.Model.ConsumeAction.FromDict(value);
                     }
                 ).ToList() : null,
             };
