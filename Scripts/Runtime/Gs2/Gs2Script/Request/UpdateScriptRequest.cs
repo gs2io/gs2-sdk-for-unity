@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Script.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateScriptRequest : Gs2Request<UpdateScriptRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Script.Request
 
 
         /** スクリプト名 */
-		[UnityEngine.SerializeField]
-        public string scriptName;
+        public string scriptName { set; get; }
 
         /**
          * スクリプト名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Script.Request
 
 
         /** 説明文 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * 説明文を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Script.Request
 
 
         /** Luaスクリプト */
-		[UnityEngine.SerializeField]
-        public string script;
+        public string script { set; get; }
 
         /**
          * Luaスクリプトを設定
