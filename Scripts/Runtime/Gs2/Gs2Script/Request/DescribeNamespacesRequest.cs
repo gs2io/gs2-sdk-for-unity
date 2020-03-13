@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Script.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DescribeNamespacesRequest : Gs2Request<DescribeNamespacesRequest>
 	{
 
         /** データの取得を開始する位置を指定するトークン */
-        public string pageToken { set; get; }
+		[UnityEngine.SerializeField]
+        public string pageToken;
 
         /**
          * データの取得を開始する位置を指定するトークンを設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Script.Request
 
 
         /** データの取得件数 */
-        public long? limit { set; get; }
+		[UnityEngine.SerializeField]
+        public long? limit;
 
         /**
          * データの取得件数を設定
