@@ -95,7 +95,7 @@ namespace Gs2.Gs2Inbox.Request
 
         /** メッセージを受信したあとメッセージが削除されるまでの期間 */
 		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Inbox.Model.TimeSpan_ expiresTimeSpan;
+        public global::Gs2.Gs2Inbox.Model.TimeSpan expiresTimeSpan;
 
         /**
          * メッセージを受信したあとメッセージが削除されるまでの期間を設定
@@ -103,7 +103,7 @@ namespace Gs2.Gs2Inbox.Request
          * @param expiresTimeSpan メッセージを受信したあとメッセージが削除されるまでの期間
          * @return this
          */
-        public CreateGlobalMessageMasterRequest WithExpiresTimeSpan(global::Gs2.Gs2Inbox.Model.TimeSpan_ expiresTimeSpan) {
+        public CreateGlobalMessageMasterRequest WithExpiresTimeSpan(global::Gs2.Gs2Inbox.Model.TimeSpan expiresTimeSpan) {
             this.expiresTimeSpan = expiresTimeSpan;
             return this;
         }
@@ -137,7 +137,7 @@ namespace Gs2.Gs2Inbox.Request
                         return AcquireAction.FromDict(value);
                     }
                 ).ToList() : null,
-                expiresTimeSpan = data.Keys.Contains("expiresTimeSpan") && data["expiresTimeSpan"] != null ? global::Gs2.Gs2Inbox.Model.TimeSpan_.FromDict(data["expiresTimeSpan"]) : null,
+                expiresTimeSpan = data.Keys.Contains("expiresTimeSpan") && data["expiresTimeSpan"] != null ? global::Gs2.Gs2Inbox.Model.TimeSpan.FromDict(data["expiresTimeSpan"]) : null,
                 expiresAt = data.Keys.Contains("expiresAt") && data["expiresAt"] != null ? (long?)long.Parse(data["expiresAt"].ToString()) : null,
             };
         }

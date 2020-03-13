@@ -111,7 +111,7 @@ namespace Gs2.Gs2Inbox.Request
 
         /** メッセージの有効期限までの差分 */
 		[UnityEngine.SerializeField]
-        public global::Gs2.Gs2Inbox.Model.TimeSpan_ expiresTimeSpan;
+        public global::Gs2.Gs2Inbox.Model.TimeSpan expiresTimeSpan;
 
         /**
          * メッセージの有効期限までの差分を設定
@@ -119,7 +119,7 @@ namespace Gs2.Gs2Inbox.Request
          * @param expiresTimeSpan メッセージの有効期限までの差分
          * @return this
          */
-        public SendMessageByUserIdRequest WithExpiresTimeSpan(global::Gs2.Gs2Inbox.Model.TimeSpan_ expiresTimeSpan) {
+        public SendMessageByUserIdRequest WithExpiresTimeSpan(global::Gs2.Gs2Inbox.Model.TimeSpan expiresTimeSpan) {
             this.expiresTimeSpan = expiresTimeSpan;
             return this;
         }
@@ -154,7 +154,7 @@ namespace Gs2.Gs2Inbox.Request
                     }
                 ).ToList() : null,
                 expiresAt = data.Keys.Contains("expiresAt") && data["expiresAt"] != null ? (long?)long.Parse(data["expiresAt"].ToString()) : null,
-                expiresTimeSpan = data.Keys.Contains("expiresTimeSpan") && data["expiresTimeSpan"] != null ? global::Gs2.Gs2Inbox.Model.TimeSpan_.FromDict(data["expiresTimeSpan"]) : null,
+                expiresTimeSpan = data.Keys.Contains("expiresTimeSpan") && data["expiresTimeSpan"] != null ? global::Gs2.Gs2Inbox.Model.TimeSpan.FromDict(data["expiresTimeSpan"]) : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
