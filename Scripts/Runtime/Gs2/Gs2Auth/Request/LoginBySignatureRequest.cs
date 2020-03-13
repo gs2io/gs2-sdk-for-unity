@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Auth.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class LoginBySignatureRequest : Gs2Request<LoginBySignatureRequest>
 	{
 
         /** ユーザーID */
-        public string userId { set; get; }
+		[UnityEngine.SerializeField]
+        public string userId;
 
         /**
          * ユーザーIDを設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Auth.Request
 
 
         /** 署名の作成に使用した暗号鍵 のGRN */
-        public string keyId { set; get; }
+		[UnityEngine.SerializeField]
+        public string keyId;
 
         /**
          * 署名の作成に使用した暗号鍵 のGRNを設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Auth.Request
 
 
         /** アカウント認証情報の署名対象 */
-        public string body { set; get; }
+		[UnityEngine.SerializeField]
+        public string body;
 
         /**
          * アカウント認証情報の署名対象を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Auth.Request
 
 
         /** 署名 */
-        public string signature { set; get; }
+		[UnityEngine.SerializeField]
+        public string signature;
 
         /**
          * 署名を設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Auth.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定
