@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Distributor.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class RunStampTaskRequest : Gs2Request<RunStampTaskRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Distributor.Request
 
 
         /** 実行するスタンプタスク */
-        public string stampTask { set; get; }
+		[UnityEngine.SerializeField]
+        public string stampTask;
 
         /**
          * 実行するスタンプタスクを設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Distributor.Request
 
 
         /** スタンプシートの暗号化に使用した暗号鍵GRN */
-        public string keyId { set; get; }
+		[UnityEngine.SerializeField]
+        public string keyId;
 
         /**
          * スタンプシートの暗号化に使用した暗号鍵GRNを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Distributor.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定

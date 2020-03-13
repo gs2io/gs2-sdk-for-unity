@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Distributor.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DistributeWithoutOverflowProcessRequest : Gs2Request<DistributeWithoutOverflowProcessRequest>
 	{
 
         /** 加算するリソース */
-        public Gs2.Gs2Distributor.Model.DistributeResource distributeResource { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Distributor.Model.DistributeResource distributeResource;
 
         /**
          * 加算するリソースを設定
@@ -37,14 +39,15 @@ namespace Gs2.Gs2Distributor.Request
          * @param distributeResource 加算するリソース
          * @return this
          */
-        public DistributeWithoutOverflowProcessRequest WithDistributeResource(Gs2.Gs2Distributor.Model.DistributeResource distributeResource) {
+        public DistributeWithoutOverflowProcessRequest WithDistributeResource(global::Gs2.Gs2Distributor.Model.DistributeResource distributeResource) {
             this.distributeResource = distributeResource;
             return this;
         }
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定
@@ -76,7 +79,7 @@ namespace Gs2.Gs2Distributor.Request
         public static DistributeWithoutOverflowProcessRequest FromDict(JsonData data)
         {
             return new DistributeWithoutOverflowProcessRequest {
-                distributeResource = data.Keys.Contains("distributeResource") && data["distributeResource"] != null ? Gs2.Gs2Distributor.Model.DistributeResource.FromDict(data["distributeResource"]) : null,
+                distributeResource = data.Keys.Contains("distributeResource") && data["distributeResource"] != null ? global::Gs2.Gs2Distributor.Model.DistributeResource.FromDict(data["distributeResource"]) : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
