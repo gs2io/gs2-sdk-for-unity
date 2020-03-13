@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Limit.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateCurrentLimitMasterRequest : Gs2Request<UpdateCurrentLimitMasterRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** マスターデータ */
-		[UnityEngine.SerializeField]
-        public string settings;
+        public string settings { set; get; }
 
         /**
          * マスターデータを設定

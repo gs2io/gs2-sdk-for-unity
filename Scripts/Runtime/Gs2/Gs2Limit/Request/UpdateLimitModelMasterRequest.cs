@@ -25,13 +25,11 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Limit.Request
 {
 	[Preserve]
-	[System.Serializable]
 	public class UpdateLimitModelMasterRequest : Gs2Request<UpdateLimitModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-		[UnityEngine.SerializeField]
-        public string namespaceName;
+        public string namespaceName { set; get; }
 
         /**
          * ネームスペース名を設定
@@ -46,8 +44,7 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** 回数制限の種類名 */
-		[UnityEngine.SerializeField]
-        public string limitName;
+        public string limitName { set; get; }
 
         /**
          * 回数制限の種類名を設定
@@ -62,8 +59,7 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** 回数制限の種類マスターの説明 */
-		[UnityEngine.SerializeField]
-        public string description;
+        public string description { set; get; }
 
         /**
          * 回数制限の種類マスターの説明を設定
@@ -78,8 +74,7 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** 回数制限の種類のメタデータ */
-		[UnityEngine.SerializeField]
-        public string metadata;
+        public string metadata { set; get; }
 
         /**
          * 回数制限の種類のメタデータを設定
@@ -94,8 +89,7 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** リセットタイミング */
-		[UnityEngine.SerializeField]
-        public string resetType;
+        public string resetType { set; get; }
 
         /**
          * リセットタイミングを設定
@@ -110,8 +104,7 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** リセットをする日にち */
-		[UnityEngine.SerializeField]
-        public int? resetDayOfMonth;
+        public int? resetDayOfMonth { set; get; }
 
         /**
          * リセットをする日にちを設定
@@ -126,8 +119,7 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** リセットする曜日 */
-		[UnityEngine.SerializeField]
-        public string resetDayOfWeek;
+        public string resetDayOfWeek { set; get; }
 
         /**
          * リセットする曜日を設定
@@ -142,8 +134,7 @@ namespace Gs2.Gs2Limit.Request
 
 
         /** リセット時刻 */
-		[UnityEngine.SerializeField]
-        public int? resetHour;
+        public int? resetHour { set; get; }
 
         /**
          * リセット時刻を設定
