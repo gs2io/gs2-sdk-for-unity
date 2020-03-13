@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inventory.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DescribeItemModelMastersRequest : Gs2Request<DescribeItemModelMastersRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** アイテムの種類名 */
-        public string inventoryName { set; get; }
+		[UnityEngine.SerializeField]
+        public string inventoryName;
 
         /**
          * アイテムの種類名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** データの取得を開始する位置を指定するトークン */
-        public string pageToken { set; get; }
+		[UnityEngine.SerializeField]
+        public string pageToken;
 
         /**
          * データの取得を開始する位置を指定するトークンを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Inventory.Request
 
 
         /** データの取得件数 */
-        public long? limit { set; get; }
+		[UnityEngine.SerializeField]
+        public long? limit;
 
         /**
          * データの取得件数を設定
