@@ -125,6 +125,22 @@ namespace Gs2.Gs2Matchmaking.Request
         }
 
 
+        /** ギャザリングの有効期限 */
+		[UnityEngine.SerializeField]
+        public long? expiresAt;
+
+        /**
+         * ギャザリングの有効期限を設定
+         *
+         * @param expiresAt ギャザリングの有効期限
+         * @return this
+         */
+        public CreateGatheringByUserIdRequest WithExpiresAt(long? expiresAt) {
+            this.expiresAt = expiresAt;
+            return this;
+        }
+
+
         /** 重複実行回避機能に使用するID */
 		[UnityEngine.SerializeField]
         public string duplicationAvoider;
@@ -163,6 +179,7 @@ namespace Gs2.Gs2Matchmaking.Request
                         return value.ToString();
                     }
                 ).ToList() : null,
+                expiresAt = data.Keys.Contains("expiresAt") && data["expiresAt"] != null ? (long?)long.Parse(data["expiresAt"].ToString()) : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
