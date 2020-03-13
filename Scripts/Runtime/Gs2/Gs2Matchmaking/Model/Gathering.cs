@@ -111,6 +111,20 @@ namespace Gs2.Gs2Matchmaking.Model
             return this;
         }
 
+        /** ギャザリングの有効期限 */
+        public long? expiresAt { set; get; }
+
+        /**
+         * ギャザリングの有効期限を設定
+         *
+         * @param expiresAt ギャザリングの有効期限
+         * @return this
+         */
+        public Gathering WithExpiresAt(long? expiresAt) {
+            this.expiresAt = expiresAt;
+            return this;
+        }
+
         /** 作成日時 */
         public long? createdAt { set; get; }
 
@@ -186,6 +200,11 @@ namespace Gs2.Gs2Matchmaking.Model
             {
                 writer.WritePropertyName("metadata");
                 writer.Write(this.metadata);
+            }
+            if(this.expiresAt.HasValue)
+            {
+                writer.WritePropertyName("expiresAt");
+                writer.Write(this.expiresAt.Value);
             }
             if(this.createdAt.HasValue)
             {
@@ -270,6 +289,7 @@ namespace Gs2.Gs2Matchmaking.Model
                     }
                 ).ToList() : null)
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
+                .WithExpiresAt(data.Keys.Contains("expiresAt") && data["expiresAt"] != null ? (long?)long.Parse(data["expiresAt"].ToString()) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
