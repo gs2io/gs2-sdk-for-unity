@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Stamina.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class CreateStaminaModelMasterRequest : Gs2Request<CreateStaminaModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナの種類名 */
-        public string name { set; get; }
+		[UnityEngine.SerializeField]
+        public string name;
 
         /**
          * スタミナの種類名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナモデルマスターの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * スタミナモデルマスターの説明を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナの種類のメタデータ */
-        public string metadata { set; get; }
+		[UnityEngine.SerializeField]
+        public string metadata;
 
         /**
          * スタミナの種類のメタデータを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナを回復する速度(分) */
-        public int? recoverIntervalMinutes { set; get; }
+		[UnityEngine.SerializeField]
+        public int? recoverIntervalMinutes;
 
         /**
          * スタミナを回復する速度(分)を設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** 時間経過後に回復する量 */
-        public int? recoverValue { set; get; }
+		[UnityEngine.SerializeField]
+        public int? recoverValue;
 
         /**
          * 時間経過後に回復する量を設定
@@ -119,7 +126,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナの最大値の初期値 */
-        public int? initialCapacity { set; get; }
+		[UnityEngine.SerializeField]
+        public int? initialCapacity;
 
         /**
          * スタミナの最大値の初期値を設定
@@ -134,7 +142,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** 最大値を超えて回復するか */
-        public bool? isOverflow { set; get; }
+		[UnityEngine.SerializeField]
+        public bool? isOverflow;
 
         /**
          * 最大値を超えて回復するかを設定
@@ -149,7 +158,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** 溢れた状況での最大値 */
-        public int? maxCapacity { set; get; }
+		[UnityEngine.SerializeField]
+        public int? maxCapacity;
 
         /**
          * 溢れた状況での最大値を設定
@@ -164,7 +174,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** GS2-Experience のランクによって最大スタミナ値を決定するスタミナ最大値テーブル名 */
-        public string maxStaminaTableName { set; get; }
+		[UnityEngine.SerializeField]
+        public string maxStaminaTableName;
 
         /**
          * GS2-Experience のランクによって最大スタミナ値を決定するスタミナ最大値テーブル名を設定
@@ -179,7 +190,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** GS2-Experience のランクによってスタミナの回復間隔を決定する回復間隔テーブル名 */
-        public string recoverIntervalTableName { set; get; }
+		[UnityEngine.SerializeField]
+        public string recoverIntervalTableName;
 
         /**
          * GS2-Experience のランクによってスタミナの回復間隔を決定する回復間隔テーブル名を設定
@@ -194,7 +206,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** GS2-Experience のランクによってスタミナの回復量を決定する回復量テーブル名 */
-        public string recoverValueTableName { set; get; }
+		[UnityEngine.SerializeField]
+        public string recoverValueTableName;
 
         /**
          * GS2-Experience のランクによってスタミナの回復量を決定する回復量テーブル名を設定

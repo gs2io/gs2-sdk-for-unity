@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Stamina.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class CreateRecoverIntervalTableMasterRequest : Gs2Request<CreateRecoverIntervalTableMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナ回復間隔テーブル名 */
-        public string name { set; get; }
+		[UnityEngine.SerializeField]
+        public string name;
 
         /**
          * スタミナ回復間隔テーブル名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナ回復間隔テーブルマスターの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * スタミナ回復間隔テーブルマスターの説明を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** スタミナ回復間隔テーブルのメタデータ */
-        public string metadata { set; get; }
+		[UnityEngine.SerializeField]
+        public string metadata;
 
         /**
          * スタミナ回復間隔テーブルのメタデータを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** 経験値の種類マスター のGRN */
-        public string experienceModelId { set; get; }
+		[UnityEngine.SerializeField]
+        public string experienceModelId;
 
         /**
          * 経験値の種類マスター のGRNを設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** ランク毎のスタミナ回復間隔テーブル */
-        public List<int?> values { set; get; }
+		[UnityEngine.SerializeField]
+        public List<int?> values;
 
         /**
          * ランク毎のスタミナ回復間隔テーブルを設定

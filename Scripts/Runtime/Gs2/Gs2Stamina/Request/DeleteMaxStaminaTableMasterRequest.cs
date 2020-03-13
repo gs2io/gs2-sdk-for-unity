@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Stamina.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DeleteMaxStaminaTableMasterRequest : Gs2Request<DeleteMaxStaminaTableMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Stamina.Request
 
 
         /** 最大スタミナ値テーブル名 */
-        public string maxStaminaTableName { set; get; }
+		[UnityEngine.SerializeField]
+        public string maxStaminaTableName;
 
         /**
          * 最大スタミナ値テーブル名を設定
