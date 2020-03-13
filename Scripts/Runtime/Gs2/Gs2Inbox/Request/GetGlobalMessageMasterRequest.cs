@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inbox.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class GetGlobalMessageMasterRequest : Gs2Request<GetGlobalMessageMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** 全ユーザに向けたメッセージ名 */
-        public string globalMessageName { set; get; }
+		[UnityEngine.SerializeField]
+        public string globalMessageName;
 
         /**
          * 全ユーザに向けたメッセージ名を設定

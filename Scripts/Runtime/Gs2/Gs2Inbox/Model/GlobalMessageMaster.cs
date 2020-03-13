@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using LitJson;
 using UnityEngine.Scripting;
@@ -83,7 +84,7 @@ namespace Gs2.Gs2Inbox.Model
         }
 
         /** メッセージを受信したあとメッセージが削除されるまでの期間 */
-        public Gs2.Gs2Inbox.Model.TimeSpan expiresTimeSpan { set; get; }
+        public Gs2.Gs2Inbox.Model.TimeSpan_ expiresTimeSpan { set; get; }
 
         /**
          * メッセージを受信したあとメッセージが削除されるまでの期間を設定
@@ -91,7 +92,7 @@ namespace Gs2.Gs2Inbox.Model
          * @param expiresTimeSpan メッセージを受信したあとメッセージが削除されるまでの期間
          * @return this
          */
-        public GlobalMessageMaster WithExpiresTimeSpan(Gs2.Gs2Inbox.Model.TimeSpan expiresTimeSpan) {
+        public GlobalMessageMaster WithExpiresTimeSpan(Gs2.Gs2Inbox.Model.TimeSpan_ expiresTimeSpan) {
             this.expiresTimeSpan = expiresTimeSpan;
             return this;
         }
@@ -170,6 +171,54 @@ namespace Gs2.Gs2Inbox.Model
             writer.WriteObjectEnd();
         }
 
+    public static string GetGlobalMessageNameFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):inbox:(?<namespaceName>.*):master:globalMessage:(?<globalMessageName>.*)");
+        if (!match.Groups["globalMessageName"].Success)
+        {
+            return null;
+        }
+        return match.Groups["globalMessageName"].Value;
+    }
+
+    public static string GetNamespaceNameFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):inbox:(?<namespaceName>.*):master:globalMessage:(?<globalMessageName>.*)");
+        if (!match.Groups["namespaceName"].Success)
+        {
+            return null;
+        }
+        return match.Groups["namespaceName"].Value;
+    }
+
+    public static string GetOwnerIdFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):inbox:(?<namespaceName>.*):master:globalMessage:(?<globalMessageName>.*)");
+        if (!match.Groups["ownerId"].Success)
+        {
+            return null;
+        }
+        return match.Groups["ownerId"].Value;
+    }
+
+    public static string GetRegionFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):inbox:(?<namespaceName>.*):master:globalMessage:(?<globalMessageName>.*)");
+        if (!match.Groups["region"].Success)
+        {
+            return null;
+        }
+        return match.Groups["region"].Value;
+    }
+
     	[Preserve]
         public static GlobalMessageMaster FromDict(JsonData data)
         {
@@ -182,7 +231,7 @@ namespace Gs2.Gs2Inbox.Model
                         return Gs2.Gs2Inbox.Model.AcquireAction.FromDict(value);
                     }
                 ).ToList() : null)
-                .WithExpiresTimeSpan(data.Keys.Contains("expiresTimeSpan") && data["expiresTimeSpan"] != null ? Gs2.Gs2Inbox.Model.TimeSpan.FromDict(data["expiresTimeSpan"]) : null)
+                .WithExpiresTimeSpan(data.Keys.Contains("expiresTimeSpan") && data["expiresTimeSpan"] != null ? Gs2.Gs2Inbox.Model.TimeSpan_.FromDict(data["expiresTimeSpan"]) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithExpiresAt(data.Keys.Contains("expiresAt") && data["expiresAt"] != null ? (long?)long.Parse(data["expiresAt"].ToString()) : null);
         }

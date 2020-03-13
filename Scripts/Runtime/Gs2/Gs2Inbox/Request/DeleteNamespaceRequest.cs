@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inbox.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DeleteNamespaceRequest : Gs2Request<DeleteNamespaceRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定

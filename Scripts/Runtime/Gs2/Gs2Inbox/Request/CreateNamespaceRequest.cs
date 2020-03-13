@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Inbox.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class CreateNamespaceRequest : Gs2Request<CreateNamespaceRequest>
 	{
 
         /** ネームスペース名 */
-        public string name { set; get; }
+		[UnityEngine.SerializeField]
+        public string name;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** 説明文 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * 説明文を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** 開封したメッセージを自動的に削除するか */
-        public bool? isAutomaticDeletingEnabled { set; get; }
+		[UnityEngine.SerializeField]
+        public bool? isAutomaticDeletingEnabled;
 
         /**
          * 開封したメッセージを自動的に削除するかを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** メッセージ受信したときに実行するスクリプト */
-        public Gs2.Gs2Inbox.Model.ScriptSetting receiveMessageScript { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Inbox.Model.ScriptSetting receiveMessageScript;
 
         /**
          * メッセージ受信したときに実行するスクリプトを設定
@@ -82,14 +87,15 @@ namespace Gs2.Gs2Inbox.Request
          * @param receiveMessageScript メッセージ受信したときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithReceiveMessageScript(Gs2.Gs2Inbox.Model.ScriptSetting receiveMessageScript) {
+        public CreateNamespaceRequest WithReceiveMessageScript(global::Gs2.Gs2Inbox.Model.ScriptSetting receiveMessageScript) {
             this.receiveMessageScript = receiveMessageScript;
             return this;
         }
 
 
         /** メッセージ開封したときに実行するスクリプト */
-        public Gs2.Gs2Inbox.Model.ScriptSetting readMessageScript { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Inbox.Model.ScriptSetting readMessageScript;
 
         /**
          * メッセージ開封したときに実行するスクリプトを設定
@@ -97,14 +103,15 @@ namespace Gs2.Gs2Inbox.Request
          * @param readMessageScript メッセージ開封したときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithReadMessageScript(Gs2.Gs2Inbox.Model.ScriptSetting readMessageScript) {
+        public CreateNamespaceRequest WithReadMessageScript(global::Gs2.Gs2Inbox.Model.ScriptSetting readMessageScript) {
             this.readMessageScript = readMessageScript;
             return this;
         }
 
 
         /** メッセージ削除したときに実行するスクリプト */
-        public Gs2.Gs2Inbox.Model.ScriptSetting deleteMessageScript { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Inbox.Model.ScriptSetting deleteMessageScript;
 
         /**
          * メッセージ削除したときに実行するスクリプトを設定
@@ -112,14 +119,15 @@ namespace Gs2.Gs2Inbox.Request
          * @param deleteMessageScript メッセージ削除したときに実行するスクリプト
          * @return this
          */
-        public CreateNamespaceRequest WithDeleteMessageScript(Gs2.Gs2Inbox.Model.ScriptSetting deleteMessageScript) {
+        public CreateNamespaceRequest WithDeleteMessageScript(global::Gs2.Gs2Inbox.Model.ScriptSetting deleteMessageScript) {
             this.deleteMessageScript = deleteMessageScript;
             return this;
         }
 
 
         /** 報酬付与処理をジョブとして追加するキューネームスペース のGRN */
-        public string queueNamespaceId { set; get; }
+		[UnityEngine.SerializeField]
+        public string queueNamespaceId;
 
         /**
          * 報酬付与処理をジョブとして追加するキューネームスペース のGRNを設定
@@ -134,7 +142,8 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** 報酬付与処理のスタンプシートで使用する暗号鍵GRN */
-        public string keyId { set; get; }
+		[UnityEngine.SerializeField]
+        public string keyId;
 
         /**
          * 報酬付与処理のスタンプシートで使用する暗号鍵GRNを設定
@@ -149,7 +158,8 @@ namespace Gs2.Gs2Inbox.Request
 
 
         /** メッセージを受信したときのプッシュ通知 */
-        public Gs2.Gs2Inbox.Model.NotificationSetting receiveNotification { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Inbox.Model.NotificationSetting receiveNotification;
 
         /**
          * メッセージを受信したときのプッシュ通知を設定
@@ -157,14 +167,15 @@ namespace Gs2.Gs2Inbox.Request
          * @param receiveNotification メッセージを受信したときのプッシュ通知
          * @return this
          */
-        public CreateNamespaceRequest WithReceiveNotification(Gs2.Gs2Inbox.Model.NotificationSetting receiveNotification) {
+        public CreateNamespaceRequest WithReceiveNotification(global::Gs2.Gs2Inbox.Model.NotificationSetting receiveNotification) {
             this.receiveNotification = receiveNotification;
             return this;
         }
 
 
         /** ログの出力設定 */
-        public Gs2.Gs2Inbox.Model.LogSetting logSetting { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Inbox.Model.LogSetting logSetting;
 
         /**
          * ログの出力設定を設定
@@ -172,7 +183,7 @@ namespace Gs2.Gs2Inbox.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public CreateNamespaceRequest WithLogSetting(Gs2.Gs2Inbox.Model.LogSetting logSetting) {
+        public CreateNamespaceRequest WithLogSetting(global::Gs2.Gs2Inbox.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -185,13 +196,13 @@ namespace Gs2.Gs2Inbox.Request
                 name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 isAutomaticDeletingEnabled = data.Keys.Contains("isAutomaticDeletingEnabled") && data["isAutomaticDeletingEnabled"] != null ? (bool?)bool.Parse(data["isAutomaticDeletingEnabled"].ToString()) : null,
-                receiveMessageScript = data.Keys.Contains("receiveMessageScript") && data["receiveMessageScript"] != null ? Gs2.Gs2Inbox.Model.ScriptSetting.FromDict(data["receiveMessageScript"]) : null,
-                readMessageScript = data.Keys.Contains("readMessageScript") && data["readMessageScript"] != null ? Gs2.Gs2Inbox.Model.ScriptSetting.FromDict(data["readMessageScript"]) : null,
-                deleteMessageScript = data.Keys.Contains("deleteMessageScript") && data["deleteMessageScript"] != null ? Gs2.Gs2Inbox.Model.ScriptSetting.FromDict(data["deleteMessageScript"]) : null,
+                receiveMessageScript = data.Keys.Contains("receiveMessageScript") && data["receiveMessageScript"] != null ? global::Gs2.Gs2Inbox.Model.ScriptSetting.FromDict(data["receiveMessageScript"]) : null,
+                readMessageScript = data.Keys.Contains("readMessageScript") && data["readMessageScript"] != null ? global::Gs2.Gs2Inbox.Model.ScriptSetting.FromDict(data["readMessageScript"]) : null,
+                deleteMessageScript = data.Keys.Contains("deleteMessageScript") && data["deleteMessageScript"] != null ? global::Gs2.Gs2Inbox.Model.ScriptSetting.FromDict(data["deleteMessageScript"]) : null,
                 queueNamespaceId = data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? data["queueNamespaceId"].ToString(): null,
                 keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString(): null,
-                receiveNotification = data.Keys.Contains("receiveNotification") && data["receiveNotification"] != null ? Gs2.Gs2Inbox.Model.NotificationSetting.FromDict(data["receiveNotification"]) : null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Inbox.Model.LogSetting.FromDict(data["logSetting"]) : null,
+                receiveNotification = data.Keys.Contains("receiveNotification") && data["receiveNotification"] != null ? global::Gs2.Gs2Inbox.Model.NotificationSetting.FromDict(data["receiveNotification"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? global::Gs2.Gs2Inbox.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 
