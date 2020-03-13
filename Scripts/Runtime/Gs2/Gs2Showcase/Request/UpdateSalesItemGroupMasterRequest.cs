@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Showcase.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class UpdateSalesItemGroupMasterRequest : Gs2Request<UpdateSalesItemGroupMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 商品名 */
-        public string salesItemGroupName { set; get; }
+		[UnityEngine.SerializeField]
+        public string salesItemGroupName;
 
         /**
          * 商品名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 商品グループマスターの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * 商品グループマスターの説明を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 商品のメタデータ */
-        public string metadata { set; get; }
+		[UnityEngine.SerializeField]
+        public string metadata;
 
         /**
          * 商品のメタデータを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 商品グループに含める商品リスト */
-        public List<string> salesItemNames { set; get; }
+		[UnityEngine.SerializeField]
+        public List<string> salesItemNames;
 
         /**
          * 商品グループに含める商品リストを設定

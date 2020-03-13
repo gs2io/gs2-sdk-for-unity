@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Showcase.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class UpdateSalesItemMasterRequest : Gs2Request<UpdateSalesItemMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 商品名 */
-        public string salesItemName { set; get; }
+		[UnityEngine.SerializeField]
+        public string salesItemName;
 
         /**
          * 商品名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 商品マスターの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * 商品マスターの説明を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 商品のメタデータ */
-        public string metadata { set; get; }
+		[UnityEngine.SerializeField]
+        public string metadata;
 
         /**
          * 商品のメタデータを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 消費アクションリスト */
-        public List<ConsumeAction> consumeActions { set; get; }
+		[UnityEngine.SerializeField]
+        public List<ConsumeAction> consumeActions;
 
         /**
          * 消費アクションリストを設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Showcase.Request
 
 
         /** 入手アクションリスト */
-        public List<AcquireAction> acquireActions { set; get; }
+		[UnityEngine.SerializeField]
+        public List<AcquireAction> acquireActions;
 
         /**
          * 入手アクションリストを設定
@@ -128,12 +135,12 @@ namespace Gs2.Gs2Showcase.Request
                 metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
                 consumeActions = data.Keys.Contains("consumeActions") && data["consumeActions"] != null ? data["consumeActions"].Cast<JsonData>().Select(value =>
                     {
-                        return Gs2.Gs2Showcase.Model.ConsumeAction.FromDict(value);
+                        return ConsumeAction.FromDict(value);
                     }
                 ).ToList() : null,
                 acquireActions = data.Keys.Contains("acquireActions") && data["acquireActions"] != null ? data["acquireActions"].Cast<JsonData>().Select(value =>
                     {
-                        return Gs2.Gs2Showcase.Model.AcquireAction.FromDict(value);
+                        return AcquireAction.FromDict(value);
                     }
                 ).ToList() : null,
             };
