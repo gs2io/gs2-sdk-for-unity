@@ -55,13 +55,13 @@ namespace Gs2.Gs2Inbox.Model
             return this;
         }
 
-        /** プレゼントボックス名 */
+        /** ネームスペース名 */
         public string name { set; get; }
 
         /**
-         * プレゼントボックス名を設定
+         * ネームスペース名を設定
          *
-         * @param name プレゼントボックス名
+         * @param name ネームスペース名
          * @return this
          */
         public Namespace WithName(string name) {
