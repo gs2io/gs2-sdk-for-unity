@@ -56,6 +56,7 @@ namespace Gs2.Unity.Gs2Matchmaking
 		/// <param name="attributeRanges">募集条件</param>
 		/// <param name="capacityOfRoles">参加者</param>
 		/// <param name="allowUserIds">参加を許可するユーザIDリスト</param>
+		/// <param name="expiresAt">ギャザリングの有効期限</param>
 		public IEnumerator CreateGathering(
 		        UnityAction<AsyncResult<EzCreateGatheringResult>> callback,
 		        GameSession session,
@@ -63,7 +64,8 @@ namespace Gs2.Unity.Gs2Matchmaking
                 EzPlayer player,
                 List<EzCapacityOfRole> capacityOfRoles,
                 List<string> allowUserIds,
-                List<EzAttributeRange> attributeRanges=null
+                List<EzAttributeRange> attributeRanges=null,
+                long? expiresAt=null
         )
 		{
             yield return _client.CreateGathering(
@@ -73,6 +75,7 @@ namespace Gs2.Unity.Gs2Matchmaking
                     .WithAttributeRanges(attributeRanges != null ? attributeRanges.Select(item => item.ToModel()).ToList() : new List<AttributeRange>(new AttributeRange[]{}))
                     .WithCapacityOfRoles(capacityOfRoles != null ? capacityOfRoles.Select(item => item.ToModel()).ToList() : new List<CapacityOfRole>(new CapacityOfRole[]{}))
                     .WithAllowUserIds(allowUserIds)
+                    .WithExpiresAt(expiresAt)
                     .WithAccessToken(session.AccessToken.token),
 				r =>
 				{
