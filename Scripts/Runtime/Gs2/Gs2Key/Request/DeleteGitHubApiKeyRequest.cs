@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Key.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DeleteGitHubApiKeyRequest : Gs2Request<DeleteGitHubApiKeyRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Key.Request
 
 
         /** GitHub APIキー名 */
-        public string apiKeyName { set; get; }
+		[UnityEngine.SerializeField]
+        public string apiKeyName;
 
         /**
          * GitHub APIキー名を設定
