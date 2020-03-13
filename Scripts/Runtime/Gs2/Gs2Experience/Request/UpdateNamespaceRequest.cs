@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Experience.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class UpdateNamespaceRequest : Gs2Request<UpdateNamespaceRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Experience.Request
 
 
         /** ネームスペースの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * ネームスペースの説明を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Experience.Request
 
 
         /** ランクキャップ取得時 に実行されるスクリプト のGRN */
-        public string experienceCapScriptId { set; get; }
+		[UnityEngine.SerializeField]
+        public string experienceCapScriptId;
 
         /**
          * ランクキャップ取得時 に実行されるスクリプト のGRNを設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Experience.Request
 
 
         /** 経験値変化したときに実行するスクリプト */
-        public Gs2.Gs2Experience.Model.ScriptSetting changeExperienceScript { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Experience.Model.ScriptSetting changeExperienceScript;
 
         /**
          * 経験値変化したときに実行するスクリプトを設定
@@ -82,14 +87,15 @@ namespace Gs2.Gs2Experience.Request
          * @param changeExperienceScript 経験値変化したときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithChangeExperienceScript(Gs2.Gs2Experience.Model.ScriptSetting changeExperienceScript) {
+        public UpdateNamespaceRequest WithChangeExperienceScript(global::Gs2.Gs2Experience.Model.ScriptSetting changeExperienceScript) {
             this.changeExperienceScript = changeExperienceScript;
             return this;
         }
 
 
         /** ランク変化したときに実行するスクリプト */
-        public Gs2.Gs2Experience.Model.ScriptSetting changeRankScript { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Experience.Model.ScriptSetting changeRankScript;
 
         /**
          * ランク変化したときに実行するスクリプトを設定
@@ -97,14 +103,15 @@ namespace Gs2.Gs2Experience.Request
          * @param changeRankScript ランク変化したときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithChangeRankScript(Gs2.Gs2Experience.Model.ScriptSetting changeRankScript) {
+        public UpdateNamespaceRequest WithChangeRankScript(global::Gs2.Gs2Experience.Model.ScriptSetting changeRankScript) {
             this.changeRankScript = changeRankScript;
             return this;
         }
 
 
         /** ランクキャップ変化したときに実行するスクリプト */
-        public Gs2.Gs2Experience.Model.ScriptSetting changeRankCapScript { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Experience.Model.ScriptSetting changeRankCapScript;
 
         /**
          * ランクキャップ変化したときに実行するスクリプトを設定
@@ -112,14 +119,15 @@ namespace Gs2.Gs2Experience.Request
          * @param changeRankCapScript ランクキャップ変化したときに実行するスクリプト
          * @return this
          */
-        public UpdateNamespaceRequest WithChangeRankCapScript(Gs2.Gs2Experience.Model.ScriptSetting changeRankCapScript) {
+        public UpdateNamespaceRequest WithChangeRankCapScript(global::Gs2.Gs2Experience.Model.ScriptSetting changeRankCapScript) {
             this.changeRankCapScript = changeRankCapScript;
             return this;
         }
 
 
         /** ログの出力設定 */
-        public Gs2.Gs2Experience.Model.LogSetting logSetting { set; get; }
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Experience.Model.LogSetting logSetting;
 
         /**
          * ログの出力設定を設定
@@ -127,7 +135,7 @@ namespace Gs2.Gs2Experience.Request
          * @param logSetting ログの出力設定
          * @return this
          */
-        public UpdateNamespaceRequest WithLogSetting(Gs2.Gs2Experience.Model.LogSetting logSetting) {
+        public UpdateNamespaceRequest WithLogSetting(global::Gs2.Gs2Experience.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
             return this;
         }
@@ -140,10 +148,10 @@ namespace Gs2.Gs2Experience.Request
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 experienceCapScriptId = data.Keys.Contains("experienceCapScriptId") && data["experienceCapScriptId"] != null ? data["experienceCapScriptId"].ToString(): null,
-                changeExperienceScript = data.Keys.Contains("changeExperienceScript") && data["changeExperienceScript"] != null ? Gs2.Gs2Experience.Model.ScriptSetting.FromDict(data["changeExperienceScript"]) : null,
-                changeRankScript = data.Keys.Contains("changeRankScript") && data["changeRankScript"] != null ? Gs2.Gs2Experience.Model.ScriptSetting.FromDict(data["changeRankScript"]) : null,
-                changeRankCapScript = data.Keys.Contains("changeRankCapScript") && data["changeRankCapScript"] != null ? Gs2.Gs2Experience.Model.ScriptSetting.FromDict(data["changeRankCapScript"]) : null,
-                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Experience.Model.LogSetting.FromDict(data["logSetting"]) : null,
+                changeExperienceScript = data.Keys.Contains("changeExperienceScript") && data["changeExperienceScript"] != null ? global::Gs2.Gs2Experience.Model.ScriptSetting.FromDict(data["changeExperienceScript"]) : null,
+                changeRankScript = data.Keys.Contains("changeRankScript") && data["changeRankScript"] != null ? global::Gs2.Gs2Experience.Model.ScriptSetting.FromDict(data["changeRankScript"]) : null,
+                changeRankCapScript = data.Keys.Contains("changeRankCapScript") && data["changeRankCapScript"] != null ? global::Gs2.Gs2Experience.Model.ScriptSetting.FromDict(data["changeRankCapScript"]) : null,
+                logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? global::Gs2.Gs2Experience.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }
 
