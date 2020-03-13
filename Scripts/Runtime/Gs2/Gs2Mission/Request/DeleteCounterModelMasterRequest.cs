@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Mission.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class DeleteCounterModelMasterRequest : Gs2Request<DeleteCounterModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** カウンター名 */
-        public string counterName { set; get; }
+		[UnityEngine.SerializeField]
+        public string counterName;
 
         /**
          * カウンター名を設定

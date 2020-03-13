@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using LitJson;
 using UnityEngine.Scripting;
@@ -150,6 +151,66 @@ namespace Gs2.Gs2Mission.Model
             }
             writer.WriteObjectEnd();
         }
+
+    public static string GetCounterNameFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):mission:(?<namespaceName>.*):user:(?<userId>.*):counter:(?<counterName>.*)");
+        if (!match.Groups["counterName"].Success)
+        {
+            return null;
+        }
+        return match.Groups["counterName"].Value;
+    }
+
+    public static string GetUserIdFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):mission:(?<namespaceName>.*):user:(?<userId>.*):counter:(?<counterName>.*)");
+        if (!match.Groups["userId"].Success)
+        {
+            return null;
+        }
+        return match.Groups["userId"].Value;
+    }
+
+    public static string GetNamespaceNameFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):mission:(?<namespaceName>.*):user:(?<userId>.*):counter:(?<counterName>.*)");
+        if (!match.Groups["namespaceName"].Success)
+        {
+            return null;
+        }
+        return match.Groups["namespaceName"].Value;
+    }
+
+    public static string GetOwnerIdFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):mission:(?<namespaceName>.*):user:(?<userId>.*):counter:(?<counterName>.*)");
+        if (!match.Groups["ownerId"].Success)
+        {
+            return null;
+        }
+        return match.Groups["ownerId"].Value;
+    }
+
+    public static string GetRegionFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):mission:(?<namespaceName>.*):user:(?<userId>.*):counter:(?<counterName>.*)");
+        if (!match.Groups["region"].Success)
+        {
+            return null;
+        }
+        return match.Groups["region"].Value;
+    }
 
     	[Preserve]
         public static Counter FromDict(JsonData data)

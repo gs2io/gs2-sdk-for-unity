@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Mission.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class UpdateMissionTaskModelMasterRequest : Gs2Request<UpdateMissionTaskModelMasterRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** ミッショングループ名 */
-        public string missionGroupName { set; get; }
+		[UnityEngine.SerializeField]
+        public string missionGroupName;
 
         /**
          * ミッショングループ名を設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** タスク名 */
-        public string missionTaskName { set; get; }
+		[UnityEngine.SerializeField]
+        public string missionTaskName;
 
         /**
          * タスク名を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** メタデータ */
-        public string metadata { set; get; }
+		[UnityEngine.SerializeField]
+        public string metadata;
 
         /**
          * メタデータを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** ミッションタスクの説明 */
-        public string description { set; get; }
+		[UnityEngine.SerializeField]
+        public string description;
 
         /**
          * ミッションタスクの説明を設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** カウンター名 */
-        public string counterName { set; get; }
+		[UnityEngine.SerializeField]
+        public string counterName;
 
         /**
          * カウンター名を設定
@@ -119,7 +126,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** 目標値 */
-        public long? targetValue { set; get; }
+		[UnityEngine.SerializeField]
+        public long? targetValue;
 
         /**
          * 目標値を設定
@@ -134,7 +142,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** ミッション達成時の報酬 */
-        public List<AcquireAction> completeAcquireActions { set; get; }
+		[UnityEngine.SerializeField]
+        public List<AcquireAction> completeAcquireActions;
 
         /**
          * ミッション達成時の報酬を設定
@@ -149,7 +158,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** 達成報酬の受け取り可能な期間を指定するイベントマスター のGRN */
-        public string challengePeriodEventId { set; get; }
+		[UnityEngine.SerializeField]
+        public string challengePeriodEventId;
 
         /**
          * 達成報酬の受け取り可能な期間を指定するイベントマスター のGRNを設定
@@ -164,7 +174,8 @@ namespace Gs2.Gs2Mission.Request
 
 
         /** このタスクに挑戦するために達成しておく必要のあるタスクの名前 */
-        public string premiseMissionTaskName { set; get; }
+		[UnityEngine.SerializeField]
+        public string premiseMissionTaskName;
 
         /**
          * このタスクに挑戦するために達成しておく必要のあるタスクの名前を設定
@@ -191,7 +202,7 @@ namespace Gs2.Gs2Mission.Request
                 targetValue = data.Keys.Contains("targetValue") && data["targetValue"] != null ? (long?)long.Parse(data["targetValue"].ToString()) : null,
                 completeAcquireActions = data.Keys.Contains("completeAcquireActions") && data["completeAcquireActions"] != null ? data["completeAcquireActions"].Cast<JsonData>().Select(value =>
                     {
-                        return Gs2.Gs2Mission.Model.AcquireAction.FromDict(value);
+                        return AcquireAction.FromDict(value);
                     }
                 ).ToList() : null,
                 challengePeriodEventId = data.Keys.Contains("challengePeriodEventId") && data["challengePeriodEventId"] != null ? data["challengePeriodEventId"].ToString(): null,
