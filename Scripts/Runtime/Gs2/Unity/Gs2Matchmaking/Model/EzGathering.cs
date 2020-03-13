@@ -44,6 +44,9 @@ namespace Gs2.Unity.Gs2Matchmaking.Model
 		/** メタデータ */
 		[UnityEngine.SerializeField]
 		public string Metadata;
+		/** ギャザリングの有効期限 */
+		[UnityEngine.SerializeField]
+		public long ExpiresAt;
 		/** 作成日時 */
 		[UnityEngine.SerializeField]
 		public long CreatedAt;
@@ -76,6 +79,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Model
                 }
 			).ToList() : new List<string>(new string[] {});
 			Metadata = @gathering.metadata;
+			ExpiresAt = @gathering.expiresAt.HasValue ? @gathering.expiresAt.Value : 0;
 			CreatedAt = @gathering.createdAt.HasValue ? @gathering.createdAt.Value : 0;
 			UpdatedAt = @gathering.updatedAt.HasValue ? @gathering.updatedAt.Value : 0;
 		}
@@ -133,6 +137,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Model
                         }
                 ).ToList() : new List<string>(new string[] {}),
                 metadata = Metadata,
+                expiresAt = ExpiresAt,
                 createdAt = CreatedAt,
                 updatedAt = UpdatedAt,
             };
@@ -186,6 +191,8 @@ namespace Gs2.Unity.Gs2Matchmaking.Model
                 writer.WritePropertyName("metadata");
                 writer.Write(this.Metadata);
             }
+            writer.WritePropertyName("expiresAt");
+            writer.Write(this.ExpiresAt);
             writer.WritePropertyName("createdAt");
             writer.Write(this.CreatedAt);
             writer.WritePropertyName("updatedAt");
