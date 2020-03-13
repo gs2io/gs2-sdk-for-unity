@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using LitJson;
 using UnityEngine.Scripting;
@@ -145,6 +146,78 @@ namespace Gs2.Gs2JobQueue.Model
             }
             writer.WriteObjectEnd();
         }
+
+    public static string GetTryNumberFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):queue:(?<namespaceName>.*):user:(?<userId>.*):job:(?<jobName>.*):jobResult:(?<tryNumber>.*)");
+        if (!match.Groups["tryNumber"].Success)
+        {
+            return null;
+        }
+        return match.Groups["tryNumber"].Value;
+    }
+
+    public static string GetJobNameFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):queue:(?<namespaceName>.*):user:(?<userId>.*):job:(?<jobName>.*):jobResult:(?<tryNumber>.*)");
+        if (!match.Groups["jobName"].Success)
+        {
+            return null;
+        }
+        return match.Groups["jobName"].Value;
+    }
+
+    public static string GetUserIdFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):queue:(?<namespaceName>.*):user:(?<userId>.*):job:(?<jobName>.*):jobResult:(?<tryNumber>.*)");
+        if (!match.Groups["userId"].Success)
+        {
+            return null;
+        }
+        return match.Groups["userId"].Value;
+    }
+
+    public static string GetNamespaceNameFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):queue:(?<namespaceName>.*):user:(?<userId>.*):job:(?<jobName>.*):jobResult:(?<tryNumber>.*)");
+        if (!match.Groups["namespaceName"].Success)
+        {
+            return null;
+        }
+        return match.Groups["namespaceName"].Value;
+    }
+
+    public static string GetOwnerIdFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):queue:(?<namespaceName>.*):user:(?<userId>.*):job:(?<jobName>.*):jobResult:(?<tryNumber>.*)");
+        if (!match.Groups["ownerId"].Success)
+        {
+            return null;
+        }
+        return match.Groups["ownerId"].Value;
+    }
+
+    public static string GetRegionFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):queue:(?<namespaceName>.*):user:(?<userId>.*):job:(?<jobName>.*):jobResult:(?<tryNumber>.*)");
+        if (!match.Groups["region"].Success)
+        {
+            return null;
+        }
+        return match.Groups["region"].Value;
+    }
 
     	[Preserve]
         public static JobResult FromDict(JsonData data)
