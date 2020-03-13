@@ -624,6 +624,11 @@ namespace Gs2.Gs2Matchmaking
                     }
                     jsonWriter.WriteArrayEnd();
                 }
+                if (_request.expiresAt != null)
+                {
+                    jsonWriter.WritePropertyName("expiresAt");
+                    jsonWriter.Write(_request.expiresAt.ToString());
+                }
                 if (_request.contextStack != null)
                 {
                     jsonWriter.WritePropertyName("contextStack");
@@ -755,6 +760,11 @@ namespace Gs2.Gs2Matchmaking
                         jsonWriter.Write(item);
                     }
                     jsonWriter.WriteArrayEnd();
+                }
+                if (_request.expiresAt != null)
+                {
+                    jsonWriter.WritePropertyName("expiresAt");
+                    jsonWriter.Write(_request.expiresAt.ToString());
                 }
                 if (_request.contextStack != null)
                 {
