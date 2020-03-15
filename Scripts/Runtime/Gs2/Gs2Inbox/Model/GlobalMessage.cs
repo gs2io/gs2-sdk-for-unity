@@ -84,7 +84,7 @@ namespace Gs2.Gs2Inbox.Model
         }
 
         /** メッセージを受信したあとメッセージが削除されるまでの期間 */
-        public Gs2.Gs2Inbox.Model.TimeSpan_ expiresTimeSpan { set; get; }
+        public Gs2.Gs2Inbox.Model.TimeSpan expiresTimeSpan { set; get; }
 
         /**
          * メッセージを受信したあとメッセージが削除されるまでの期間を設定
@@ -92,7 +92,7 @@ namespace Gs2.Gs2Inbox.Model
          * @param expiresTimeSpan メッセージを受信したあとメッセージが削除されるまでの期間
          * @return this
          */
-        public GlobalMessage WithExpiresTimeSpan(Gs2.Gs2Inbox.Model.TimeSpan_ expiresTimeSpan) {
+        public GlobalMessage WithExpiresTimeSpan(Gs2.Gs2Inbox.Model.TimeSpan expiresTimeSpan) {
             this.expiresTimeSpan = expiresTimeSpan;
             return this;
         }
@@ -212,7 +212,7 @@ namespace Gs2.Gs2Inbox.Model
                         return Gs2.Gs2Inbox.Model.AcquireAction.FromDict(value);
                     }
                 ).ToList() : null)
-                .WithExpiresTimeSpan(data.Keys.Contains("expiresTimeSpan") && data["expiresTimeSpan"] != null ? Gs2.Gs2Inbox.Model.TimeSpan_.FromDict(data["expiresTimeSpan"]) : null)
+                .WithExpiresTimeSpan(data.Keys.Contains("expiresTimeSpan") && data["expiresTimeSpan"] != null ? Gs2.Gs2Inbox.Model.TimeSpan.FromDict(data["expiresTimeSpan"]) : null)
                 .WithExpiresAt(data.Keys.Contains("expiresAt") && data["expiresAt"] != null ? (long?)long.Parse(data["expiresAt"].ToString()) : null);
         }
 	}
