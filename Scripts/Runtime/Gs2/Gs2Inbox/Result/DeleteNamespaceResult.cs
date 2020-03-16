@@ -26,11 +26,15 @@ namespace Gs2.Gs2Inbox.Result
 	[Preserve]
 	public class DeleteNamespaceResult
 	{
+        /** 削除したネームスペース */
+        public Namespace item { set; get; }
+
 
     	[Preserve]
         public static DeleteNamespaceResult FromDict(JsonData data)
         {
             return new DeleteNamespaceResult {
+                item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Inbox.Model.Namespace.FromDict(data["item"]) : null,
             };
         }
 	}
