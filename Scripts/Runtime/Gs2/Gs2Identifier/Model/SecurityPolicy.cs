@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using LitJson;
 using UnityEngine.Scripting;
@@ -164,6 +165,30 @@ namespace Gs2.Gs2Identifier.Model
             }
             writer.WriteObjectEnd();
         }
+
+    public static string GetSecurityPolicyNameFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2::(?<ownerId>.*):identifier:securityPolicy:(?<securityPolicyName>.*)");
+        if (!match.Groups["securityPolicyName"].Success)
+        {
+            return null;
+        }
+        return match.Groups["securityPolicyName"].Value;
+    }
+
+    public static string GetOwnerIdFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2::(?<ownerId>.*):identifier:securityPolicy:(?<securityPolicyName>.*)");
+        if (!match.Groups["ownerId"].Success)
+        {
+            return null;
+        }
+        return match.Groups["ownerId"].Value;
+    }
 
     	[Preserve]
         public static SecurityPolicy FromDict(JsonData data)
