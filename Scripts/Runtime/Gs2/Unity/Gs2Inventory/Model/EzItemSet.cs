@@ -26,9 +26,6 @@ namespace Gs2.Unity.Gs2Inventory.Model
 	[System.Serializable]
 	public class EzItemSet
 	{
-		/** 有効期限ごとのアイテム所持数量 */
-		[UnityEngine.SerializeField]
-		public string ItemSetId;
 		/** アイテムセットを識別する名前 */
 		[UnityEngine.SerializeField]
 		public string Name;
@@ -55,7 +52,6 @@ namespace Gs2.Unity.Gs2Inventory.Model
 
 		public EzItemSet(Gs2.Gs2Inventory.Model.ItemSet @itemSet)
 		{
-			ItemSetId = @itemSet.itemSetId;
 			Name = @itemSet.name;
 			InventoryName = @itemSet.inventoryName;
 			ItemName = @itemSet.itemName;
@@ -67,7 +63,6 @@ namespace Gs2.Unity.Gs2Inventory.Model
         public virtual ItemSet ToModel()
         {
             return new ItemSet {
-                itemSetId = ItemSetId,
                 name = Name,
                 inventoryName = InventoryName,
                 itemName = ItemName,
@@ -80,11 +75,6 @@ namespace Gs2.Unity.Gs2Inventory.Model
         public virtual void WriteJson(JsonWriter writer)
         {
             writer.WriteObjectStart();
-            if(this.ItemSetId != null)
-            {
-                writer.WritePropertyName("itemSetId");
-                writer.Write(this.ItemSetId);
-            }
             if(this.Name != null)
             {
                 writer.WritePropertyName("name");
