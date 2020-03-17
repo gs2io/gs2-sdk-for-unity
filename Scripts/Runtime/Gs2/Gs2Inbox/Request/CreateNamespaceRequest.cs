@@ -29,14 +29,14 @@ namespace Gs2.Gs2Inbox.Request
 	public class CreateNamespaceRequest : Gs2Request<CreateNamespaceRequest>
 	{
 
-        /** プレゼントボックス名 */
+        /** ネームスペース名 */
 		[UnityEngine.SerializeField]
         public string name;
 
         /**
-         * プレゼントボックス名を設定
+         * ネームスペース名を設定
          *
-         * @param name プレゼントボックス名
+         * @param name ネームスペース名
          * @return this
          */
         public CreateNamespaceRequest WithName(string name) {
