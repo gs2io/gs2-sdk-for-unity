@@ -25,11 +25,13 @@ using UnityEngine.Scripting;
 namespace Gs2.Gs2Datastore.Request
 {
 	[Preserve]
+	[System.Serializable]
 	public class PrepareUploadByUserIdRequest : Gs2Request<PrepareUploadByUserIdRequest>
 	{
 
         /** ネームスペース名 */
-        public string namespaceName { set; get; }
+		[UnityEngine.SerializeField]
+        public string namespaceName;
 
         /**
          * ネームスペース名を設定
@@ -44,7 +46,8 @@ namespace Gs2.Gs2Datastore.Request
 
 
         /** ユーザーID */
-        public string userId { set; get; }
+		[UnityEngine.SerializeField]
+        public string userId;
 
         /**
          * ユーザーIDを設定
@@ -59,7 +62,8 @@ namespace Gs2.Gs2Datastore.Request
 
 
         /** データの名前 */
-        public string name { set; get; }
+		[UnityEngine.SerializeField]
+        public string name;
 
         /**
          * データの名前を設定
@@ -74,7 +78,8 @@ namespace Gs2.Gs2Datastore.Request
 
 
         /** アップロードするデータの MIME-Type */
-        public string contentType { set; get; }
+		[UnityEngine.SerializeField]
+        public string contentType;
 
         /**
          * アップロードするデータの MIME-Typeを設定
@@ -89,7 +94,8 @@ namespace Gs2.Gs2Datastore.Request
 
 
         /** ファイルのアクセス権 */
-        public string scope { set; get; }
+		[UnityEngine.SerializeField]
+        public string scope;
 
         /**
          * ファイルのアクセス権を設定
@@ -104,7 +110,8 @@ namespace Gs2.Gs2Datastore.Request
 
 
         /** 公開するユーザIDリスト */
-        public List<string> allowUserIds { set; get; }
+		[UnityEngine.SerializeField]
+        public List<string> allowUserIds;
 
         /**
          * 公開するユーザIDリストを設定
@@ -119,7 +126,8 @@ namespace Gs2.Gs2Datastore.Request
 
 
         /** 重複実行回避機能に使用するID */
-        public string duplicationAvoider { set; get; }
+		[UnityEngine.SerializeField]
+        public string duplicationAvoider;
 
         /**
          * 重複実行回避機能に使用するIDを設定
