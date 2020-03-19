@@ -1,0 +1,17 @@
+﻿{
+    "name": "Gs2.Editor",
+    "references": [
+        "Gs2",
+        "Unity.EditorCoroutines.Editor"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [
+        "WindowsStandalone32"
+    ],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
