@@ -40,6 +40,7 @@ namespace Gs2.CloudWeave
         private List<Package> _packages;
         private List<Package> _filteredPackages;
         private string _keyword;
+        private Vector2 _scrollPosition = Vector2.zero;
 
         [MenuItem ("Game Server Services/CloudWeave")]
         public static void Open ()
@@ -68,39 +69,44 @@ namespace Gs2.CloudWeave
                 return;
             }
 
-            if (_packages != null)
+            using (var scrollScope = new EditorGUILayout.ScrollViewScope(_scrollPosition))
             {
-                using (new GUILayout.HorizontalScope())
+                _scrollPosition = scrollScope.scrollPosition;
+                
+                if (_packages != null)
                 {
-                    GUI.SetNextControlName("filterField");
-                    _keyword = GUILayout.TextField(_keyword, "SearchTextField");
-                    if (GUI.changed)
+                    using (new GUILayout.HorizontalScope())
                     {
-                        _filteredPackages = _packages.Where(package => package.IsIncludeKeyWord(_keyword)).ToList();
-                    }
-                    GUI.FocusControl("filterField");
-                    GUI.enabled = !string.IsNullOrEmpty(_keyword);
-                    if (GUILayout.Button("Clear", "SearchCancelButton"))
-                    {
-                        _keyword = string.Empty;
-                    }
+                        GUI.SetNextControlName("filterField");
+                        _keyword = GUILayout.TextField(_keyword, "SearchTextField");
+                        if (GUI.changed)
+                        {
+                            _filteredPackages = _packages.Where(package => package.IsIncludeKeyWord(_keyword)).ToList();
+                        }
+                        GUI.FocusControl("filterField");
+                        GUI.enabled = !string.IsNullOrEmpty(_keyword);
+                        if (GUILayout.Button("Clear", "SearchCancelButton"))
+                        {
+                            _keyword = string.Empty;
+                        }
 
-                    GUI.enabled = true;
-                }
-
-                var style = new GUIStyle(GUI.skin.label) {wordWrap = true};
-                foreach (var package in _filteredPackages)
-                {
-                    using (new GUILayout.VerticalScope(GUI.skin.box))
-                    {
-                        GUILayout.Label(package.displayName, style);
-                        GUILayout.Label(package.description, style);
-                        var author = package.author != null ? package.author.name : "unknown";
-                        GUILayout.Label($"Author: {author}", style);
-                        DrawInstaller(package.name, package.sampleScene, package.tutorialWindowClassPath);
+                        GUI.enabled = true;
                     }
 
-                    GUILayout.Label("");
+                    var style = new GUIStyle(GUI.skin.label) {wordWrap = true};
+                    foreach (var package in _filteredPackages)
+                    {
+                        using (new GUILayout.VerticalScope(GUI.skin.box))
+                        {
+                            GUILayout.Label(package.displayName, style);
+                            GUILayout.Label(package.description, style);
+                            var author = package.author != null ? package.author.name : "unknown";
+                            GUILayout.Label($"Author: {author}", style);
+                            DrawInstaller(package.name, package.sampleScene, package.tutorialWindowClassPath);
+                        }
+
+                        GUILayout.Label("");
+                    }
                 }
             }
         }

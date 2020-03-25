@@ -14,8 +14,7 @@
  * permissions and limitations under the License.
  */
 
-using System;
-using Gs2.Editor.Core;
+using Gs2.CloudWeave;
 using UnityEditor;
 using UnityEngine;
 
