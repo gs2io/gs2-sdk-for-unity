@@ -15,6 +15,7 @@
  */
 
 using System;
+using Gs2.Editor.Core;
 using UnityEditor;
 using UnityEngine;
 
@@ -635,7 +636,11 @@ namespace Gs2.Tutorial
 
                     if (GUILayout.Button("CloudWeave メニューを開く"))
                     {
-                        Repaint();
+                        PlayerPrefs.SetString("io.gs2.tutorial.credential", true.ToString());
+                        PlayerPrefs.Save();
+
+                        CloudWeaveWindow.Open();
+                        Close();
                     }
 
                     break;

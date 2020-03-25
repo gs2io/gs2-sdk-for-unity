@@ -1,6 +1,8 @@
 {
     "name": "Gs2",
-    "references": [],
+    "references": [
+        "Unity.EditorCoroutines.Editor"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [
         "WindowsStandalone32"
