@@ -155,13 +155,15 @@ namespace Gs2.Unity.Gs2Datastore
 		/// <param name="name">データの名前</param>
 		/// <param name="scope">ファイルのアクセス権</param>
 		/// <param name="allowUserIds">公開するユーザIDリスト</param>
+		/// <param name="updateIfExists">既にデータが存在する場合にエラーとするか、データを更新するか</param>
 		public IEnumerator PrepareUpload(
 		        UnityAction<AsyncResult<EzPrepareUploadResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string scope,
                 List<string> allowUserIds,
-                string name=null
+                string name=null,
+                bool? updateIfExists=null
         )
 		{
             yield return _client.PrepareUpload(
@@ -170,6 +172,7 @@ namespace Gs2.Unity.Gs2Datastore
                     .WithName(name)
                     .WithScope(scope)
                     .WithAllowUserIds(allowUserIds)
+                    .WithUpdateIfExists(updateIfExists)
                     .WithAccessToken(session.AccessToken.token),
 				r =>
 				{
@@ -567,6 +570,7 @@ namespace Gs2.Unity.Gs2Datastore
 		/// <param name="scope">ファイルのアクセス権</param>
 		/// <param name="allowUserIds">公開するユーザIDリスト</param>
 		/// <param name="data">アップロードするデータ</param>
+		/// <param name="updateIfExists">既にデータが存在する場合にエラーとするか、データを更新するか</param>
 		public IEnumerator Upload(
 			UnityAction<AsyncResult<EzUploadResult>> callback,
 			GameSession session,
@@ -574,7 +578,8 @@ namespace Gs2.Unity.Gs2Datastore
 			string scope,
 			List<string> allowUserIds,
 			byte[] data,
-			string name=null
+			string name=null,
+			bool? updateIfExists=null
 		)
 		{
 			string uploadUrl;
@@ -602,7 +607,8 @@ namespace Gs2.Unity.Gs2Datastore
 					namespaceName,
 					scope,
 					allowUserIds,
-					name
+					name,
+					updateIfExists
 				);
 
 				if (result == null)

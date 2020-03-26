@@ -1,6 +1,7 @@
 {
     "name": "Gs2",
-    "references": [],
+    "references": [
+    ],
     "includePlatforms": [],
     "excludePlatforms": [
         "WindowsStandalone32"
