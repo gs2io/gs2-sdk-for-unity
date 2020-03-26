@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-using Gs2.CloudWeave;
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -638,7 +638,8 @@ namespace Gs2.Tutorial
                         PlayerPrefs.SetString("io.gs2.tutorial.credential", true.ToString());
                         PlayerPrefs.Save();
 
-                        CloudWeaveWindow.Open();
+                        var signinWindowType = Type.GetType("Gs2.Weave.EditorExtension.Editor.CloudWeaveWindow, Gs2.Weave.EditorExtension");
+                        GetWindow(signinWindowType, false, "CloudWeave");
                         Close();
                     }
 
