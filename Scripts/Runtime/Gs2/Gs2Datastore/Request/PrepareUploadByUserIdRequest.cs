@@ -125,6 +125,22 @@ namespace Gs2.Gs2Datastore.Request
         }
 
 
+        /** 既にデータが存在する場合にエラーとするか、データを更新するか */
+		[UnityEngine.SerializeField]
+        public bool? updateIfExists;
+
+        /**
+         * 既にデータが存在する場合にエラーとするか、データを更新するかを設定
+         *
+         * @param updateIfExists 既にデータが存在する場合にエラーとするか、データを更新するか
+         * @return this
+         */
+        public PrepareUploadByUserIdRequest WithUpdateIfExists(bool? updateIfExists) {
+            this.updateIfExists = updateIfExists;
+            return this;
+        }
+
+
         /** 重複実行回避機能に使用するID */
 		[UnityEngine.SerializeField]
         public string duplicationAvoider;
@@ -155,6 +171,7 @@ namespace Gs2.Gs2Datastore.Request
                         return value.ToString();
                     }
                 ).ToList() : null,
+                updateIfExists = data.Keys.Contains("updateIfExists") && data["updateIfExists"] != null ? (bool?)bool.Parse(data["updateIfExists"].ToString()) : null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
             };
         }
