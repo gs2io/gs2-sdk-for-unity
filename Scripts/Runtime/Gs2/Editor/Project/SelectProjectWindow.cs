@@ -92,8 +92,10 @@ namespace Gs2.Editor.Project
                                         Context.ProjectToken = r.Result.projectToken;
                                         Context.OwnerId = r.Result.ownerId;
 
-                                        if (bool.Parse(PlayerPrefs.GetString("io.gs2.tutorial", false.ToString())))
+                                        if (bool.Parse(PlayerPrefs.GetString("io.gs2.tutorial", true.ToString())))
                                         {
+                                            PlayerPrefs.SetString("io.gs2.tutorial", false.ToString());
+                                            PlayerPrefs.Save();
                                             TutorialWindow.Open();
                                         }
 

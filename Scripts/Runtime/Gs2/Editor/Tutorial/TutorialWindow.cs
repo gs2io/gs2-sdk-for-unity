@@ -635,7 +635,12 @@ namespace Gs2.Tutorial
 
                     if (GUILayout.Button("CloudWeave メニューを開く"))
                     {
-                        Repaint();
+                        PlayerPrefs.SetString("io.gs2.tutorial.credential", true.ToString());
+                        PlayerPrefs.Save();
+
+                        var signinWindowType = Type.GetType("Gs2.Weave.EditorExtension.Editor.CloudWeaveWindow, Gs2.Weave.EditorExtension");
+                        GetWindow(signinWindowType, false, "CloudWeave");
+                        Close();
                     }
 
                     break;
