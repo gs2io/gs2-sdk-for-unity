@@ -824,6 +824,16 @@ namespace Gs2.Gs2Ranking
                     jsonWriter.WritePropertyName("calculateIntervalMinutes");
                     jsonWriter.Write(_request.calculateIntervalMinutes.ToString());
                 }
+                if (_request.entryPeriodEventId != null)
+                {
+                    jsonWriter.WritePropertyName("entryPeriodEventId");
+                    jsonWriter.Write(_request.entryPeriodEventId.ToString());
+                }
+                if (_request.accessPeriodEventId != null)
+                {
+                    jsonWriter.WritePropertyName("accessPeriodEventId");
+                    jsonWriter.Write(_request.accessPeriodEventId.ToString());
+                }
                 if (_request.contextStack != null)
                 {
                     jsonWriter.WritePropertyName("contextStack");
@@ -1023,6 +1033,16 @@ namespace Gs2.Gs2Ranking
                 {
                     jsonWriter.WritePropertyName("calculateIntervalMinutes");
                     jsonWriter.Write(_request.calculateIntervalMinutes.ToString());
+                }
+                if (_request.entryPeriodEventId != null)
+                {
+                    jsonWriter.WritePropertyName("entryPeriodEventId");
+                    jsonWriter.Write(_request.entryPeriodEventId.ToString());
+                }
+                if (_request.accessPeriodEventId != null)
+                {
+                    jsonWriter.WritePropertyName("accessPeriodEventId");
+                    jsonWriter.Write(_request.accessPeriodEventId.ToString());
                 }
                 if (_request.contextStack != null)
                 {
