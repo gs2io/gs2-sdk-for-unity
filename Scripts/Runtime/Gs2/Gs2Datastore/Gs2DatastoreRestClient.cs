@@ -603,6 +603,11 @@ namespace Gs2.Gs2Datastore
                     }
                     jsonWriter.WriteArrayEnd();
                 }
+                if (_request.updateIfExists != null)
+                {
+                    jsonWriter.WritePropertyName("updateIfExists");
+                    jsonWriter.Write(_request.updateIfExists.ToString());
+                }
                 if (_request.contextStack != null)
                 {
                     jsonWriter.WritePropertyName("contextStack");
@@ -700,6 +705,11 @@ namespace Gs2.Gs2Datastore
                         jsonWriter.Write(item);
                     }
                     jsonWriter.WriteArrayEnd();
+                }
+                if (_request.updateIfExists != null)
+                {
+                    jsonWriter.WritePropertyName("updateIfExists");
+                    jsonWriter.Write(_request.updateIfExists.ToString());
                 }
                 if (_request.contextStack != null)
                 {
