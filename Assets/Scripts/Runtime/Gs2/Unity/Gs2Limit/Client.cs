@@ -53,17 +53,23 @@ namespace Gs2.Unity.Gs2Limit
 		/// <param name="session">ゲームセッション</param>
 		/// <param name="namespaceName">ネームスペース名</param>
 		/// <param name="limitName">回数制限の種類の名前</param>
+		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
+		/// <param name="limit">データの取得件数</param>
 		public IEnumerator ListCounters(
 		        UnityAction<AsyncResult<EzListCountersResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string limitName=null
+                string limitName=null,
+                string pageToken=null,
+                long? limit=null
         )
 		{
             yield return _client.DescribeCounters(
                 new DescribeCountersRequest()
                     .WithNamespaceName(namespaceName)
                     .WithLimitName(limitName)
+                    .WithPageToken(pageToken)
+                    .WithLimit(limit)
                     .WithAccessToken(session.AccessToken.token),
 				r =>
 				{
