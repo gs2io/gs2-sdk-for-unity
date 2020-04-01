@@ -189,6 +189,38 @@ namespace Gs2.Gs2Ranking.Request
         }
 
 
+        /** スコアの登録可能期間とするイベントマスター のGRN */
+		[UnityEngine.SerializeField]
+        public string entryPeriodEventId;
+
+        /**
+         * スコアの登録可能期間とするイベントマスター のGRNを設定
+         *
+         * @param entryPeriodEventId スコアの登録可能期間とするイベントマスター のGRN
+         * @return this
+         */
+        public UpdateCategoryModelMasterRequest WithEntryPeriodEventId(string entryPeriodEventId) {
+            this.entryPeriodEventId = entryPeriodEventId;
+            return this;
+        }
+
+
+        /** アクセス可能期間とするイベントマスター のGRN */
+		[UnityEngine.SerializeField]
+        public string accessPeriodEventId;
+
+        /**
+         * アクセス可能期間とするイベントマスター のGRNを設定
+         *
+         * @param accessPeriodEventId アクセス可能期間とするイベントマスター のGRN
+         * @return this
+         */
+        public UpdateCategoryModelMasterRequest WithAccessPeriodEventId(string accessPeriodEventId) {
+            this.accessPeriodEventId = accessPeriodEventId;
+            return this;
+        }
+
+
     	[Preserve]
         public static UpdateCategoryModelMasterRequest FromDict(JsonData data)
         {
@@ -203,6 +235,8 @@ namespace Gs2.Gs2Ranking.Request
                 scope = data.Keys.Contains("scope") && data["scope"] != null ? data["scope"].ToString(): null,
                 uniqueByUserId = data.Keys.Contains("uniqueByUserId") && data["uniqueByUserId"] != null ? (bool?)bool.Parse(data["uniqueByUserId"].ToString()) : null,
                 calculateIntervalMinutes = data.Keys.Contains("calculateIntervalMinutes") && data["calculateIntervalMinutes"] != null ? (int?)int.Parse(data["calculateIntervalMinutes"].ToString()) : null,
+                entryPeriodEventId = data.Keys.Contains("entryPeriodEventId") && data["entryPeriodEventId"] != null ? data["entryPeriodEventId"].ToString(): null,
+                accessPeriodEventId = data.Keys.Contains("accessPeriodEventId") && data["accessPeriodEventId"] != null ? data["accessPeriodEventId"].ToString(): null,
             };
         }
 

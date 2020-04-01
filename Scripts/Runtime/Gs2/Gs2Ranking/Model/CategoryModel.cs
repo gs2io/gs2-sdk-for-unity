@@ -153,6 +153,34 @@ namespace Gs2.Gs2Ranking.Model
             return this;
         }
 
+        /** スコアの登録可能期間とするイベントマスター のGRN */
+        public string entryPeriodEventId { set; get; }
+
+        /**
+         * スコアの登録可能期間とするイベントマスター のGRNを設定
+         *
+         * @param entryPeriodEventId スコアの登録可能期間とするイベントマスター のGRN
+         * @return this
+         */
+        public CategoryModel WithEntryPeriodEventId(string entryPeriodEventId) {
+            this.entryPeriodEventId = entryPeriodEventId;
+            return this;
+        }
+
+        /** アクセス可能期間とするイベントマスター のGRN */
+        public string accessPeriodEventId { set; get; }
+
+        /**
+         * アクセス可能期間とするイベントマスター のGRNを設定
+         *
+         * @param accessPeriodEventId アクセス可能期間とするイベントマスター のGRN
+         * @return this
+         */
+        public CategoryModel WithAccessPeriodEventId(string accessPeriodEventId) {
+            this.accessPeriodEventId = accessPeriodEventId;
+            return this;
+        }
+
         public void WriteJson(JsonWriter writer)
         {
             writer.WriteObjectStart();
@@ -200,6 +228,16 @@ namespace Gs2.Gs2Ranking.Model
             {
                 writer.WritePropertyName("calculateIntervalMinutes");
                 writer.Write(this.calculateIntervalMinutes.Value);
+            }
+            if(this.entryPeriodEventId != null)
+            {
+                writer.WritePropertyName("entryPeriodEventId");
+                writer.Write(this.entryPeriodEventId);
+            }
+            if(this.accessPeriodEventId != null)
+            {
+                writer.WritePropertyName("accessPeriodEventId");
+                writer.Write(this.accessPeriodEventId);
             }
             writer.WriteObjectEnd();
         }
@@ -264,7 +302,9 @@ namespace Gs2.Gs2Ranking.Model
                 .WithOrderDirection(data.Keys.Contains("orderDirection") && data["orderDirection"] != null ? data["orderDirection"].ToString() : null)
                 .WithScope(data.Keys.Contains("scope") && data["scope"] != null ? data["scope"].ToString() : null)
                 .WithUniqueByUserId(data.Keys.Contains("uniqueByUserId") && data["uniqueByUserId"] != null ? (bool?)bool.Parse(data["uniqueByUserId"].ToString()) : null)
-                .WithCalculateIntervalMinutes(data.Keys.Contains("calculateIntervalMinutes") && data["calculateIntervalMinutes"] != null ? (int?)int.Parse(data["calculateIntervalMinutes"].ToString()) : null);
+                .WithCalculateIntervalMinutes(data.Keys.Contains("calculateIntervalMinutes") && data["calculateIntervalMinutes"] != null ? (int?)int.Parse(data["calculateIntervalMinutes"].ToString()) : null)
+                .WithEntryPeriodEventId(data.Keys.Contains("entryPeriodEventId") && data["entryPeriodEventId"] != null ? data["entryPeriodEventId"].ToString() : null)
+                .WithAccessPeriodEventId(data.Keys.Contains("accessPeriodEventId") && data["accessPeriodEventId"] != null ? data["accessPeriodEventId"].ToString() : null);
         }
 	}
 }

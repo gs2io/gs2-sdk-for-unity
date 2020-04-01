@@ -32,6 +32,12 @@ namespace Gs2.Unity.Gs2Ranking.Model
 		/** カテゴリのメタデータ */
 		[UnityEngine.SerializeField]
 		public string Metadata;
+		/** スコアの登録可能期間とするイベントマスター のGRN */
+		[UnityEngine.SerializeField]
+		public string EntryPeriodEventId;
+		/** アクセス可能期間とするイベントマスター のGRN */
+		[UnityEngine.SerializeField]
+		public string AccessPeriodEventId;
 
 		public EzCategoryModel()
 		{
@@ -42,6 +48,8 @@ namespace Gs2.Unity.Gs2Ranking.Model
 		{
 			Name = @categoryModel.name;
 			Metadata = @categoryModel.metadata;
+			EntryPeriodEventId = @categoryModel.entryPeriodEventId;
+			AccessPeriodEventId = @categoryModel.accessPeriodEventId;
 		}
 
         public virtual CategoryModel ToModel()
@@ -49,6 +57,8 @@ namespace Gs2.Unity.Gs2Ranking.Model
             return new CategoryModel {
                 name = Name,
                 metadata = Metadata,
+                entryPeriodEventId = EntryPeriodEventId,
+                accessPeriodEventId = AccessPeriodEventId,
             };
         }
 
@@ -64,6 +74,16 @@ namespace Gs2.Unity.Gs2Ranking.Model
             {
                 writer.WritePropertyName("metadata");
                 writer.Write(this.Metadata);
+            }
+            if(this.EntryPeriodEventId != null)
+            {
+                writer.WritePropertyName("entryPeriodEventId");
+                writer.Write(this.EntryPeriodEventId);
+            }
+            if(this.AccessPeriodEventId != null)
+            {
+                writer.WritePropertyName("accessPeriodEventId");
+                writer.Write(this.AccessPeriodEventId);
             }
             writer.WriteObjectEnd();
         }
