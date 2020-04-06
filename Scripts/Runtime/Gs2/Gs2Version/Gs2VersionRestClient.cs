@@ -1484,7 +1484,11 @@ namespace Gs2.Gs2Version
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.targetVersions)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -1567,7 +1571,11 @@ namespace Gs2.Gs2Version
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.targetVersions)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }

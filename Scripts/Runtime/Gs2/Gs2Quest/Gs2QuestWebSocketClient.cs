@@ -1140,7 +1140,11 @@ namespace Gs2.Gs2Quest
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.contents)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -1155,7 +1159,11 @@ namespace Gs2.Gs2Quest
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.consumeActions)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -1165,7 +1173,11 @@ namespace Gs2.Gs2Quest
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.failedAcquireActions)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -1365,7 +1377,11 @@ namespace Gs2.Gs2Quest
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.contents)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -1380,7 +1396,11 @@ namespace Gs2.Gs2Quest
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.consumeActions)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -1390,7 +1410,11 @@ namespace Gs2.Gs2Quest
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.failedAcquireActions)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -1990,7 +2014,11 @@ namespace Gs2.Gs2Quest
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.config)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -2265,7 +2293,11 @@ namespace Gs2.Gs2Quest
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.config)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -2399,7 +2431,11 @@ namespace Gs2.Gs2Quest
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.config)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -2513,7 +2549,11 @@ namespace Gs2.Gs2Quest
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.rewards)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -2528,7 +2568,11 @@ namespace Gs2.Gs2Quest
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.config)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -2636,7 +2680,11 @@ namespace Gs2.Gs2Quest
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.rewards)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -2651,7 +2699,11 @@ namespace Gs2.Gs2Quest
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.config)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }

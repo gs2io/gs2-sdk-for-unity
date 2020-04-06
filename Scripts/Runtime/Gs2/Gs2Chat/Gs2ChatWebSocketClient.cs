@@ -2040,7 +2040,11 @@ namespace Gs2.Gs2Chat
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.notificationTypes)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -2145,7 +2149,11 @@ namespace Gs2.Gs2Chat
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.notificationTypes)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -2420,7 +2428,11 @@ namespace Gs2.Gs2Chat
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.notificationTypes)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -2525,7 +2537,11 @@ namespace Gs2.Gs2Chat
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.notificationTypes)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }

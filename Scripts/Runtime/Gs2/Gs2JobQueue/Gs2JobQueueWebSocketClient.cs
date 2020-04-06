@@ -745,7 +745,11 @@ namespace Gs2.Gs2JobQueue
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.jobs)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }

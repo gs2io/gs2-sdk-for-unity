@@ -342,7 +342,7 @@ namespace Gs2.Unity.Gs2Formation
                     .WithNamespaceName(namespaceName)
                     .WithMoldName(moldName)
                     .WithIndex(index)
-                    .WithSlots(slots != null ? slots.Select(item => item.ToModel()).ToList() : new List<SlotWithSignature>(new SlotWithSignature[]{}))
+                    .WithSlots(slots != null ? slots.Select(item => item?.ToModel()).ToList() : new List<SlotWithSignature>(new SlotWithSignature[]{}))
                     .WithKeyId(keyId)
                     .WithAccessToken(session.AccessToken.token),
 				r =>

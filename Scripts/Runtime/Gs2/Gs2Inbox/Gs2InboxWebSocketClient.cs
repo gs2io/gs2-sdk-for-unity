@@ -815,7 +815,11 @@ namespace Gs2.Gs2Inbox
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.readAcquireActions)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -1450,7 +1454,11 @@ namespace Gs2.Gs2Inbox
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.config)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -1555,7 +1563,11 @@ namespace Gs2.Gs2Inbox
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.config)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -2315,7 +2327,11 @@ namespace Gs2.Gs2Inbox
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.readAcquireActions)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -2500,7 +2516,11 @@ namespace Gs2.Gs2Inbox
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.readAcquireActions)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }

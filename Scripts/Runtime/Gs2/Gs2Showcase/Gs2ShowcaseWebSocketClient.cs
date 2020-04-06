@@ -665,7 +665,11 @@ namespace Gs2.Gs2Showcase
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.consumeActions)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -675,7 +679,11 @@ namespace Gs2.Gs2Showcase
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.acquireActions)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -855,7 +863,11 @@ namespace Gs2.Gs2Showcase
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.consumeActions)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -865,7 +877,11 @@ namespace Gs2.Gs2Showcase
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.acquireActions)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -1575,7 +1591,11 @@ namespace Gs2.Gs2Showcase
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.displayItems)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -1760,7 +1780,11 @@ namespace Gs2.Gs2Showcase
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.displayItems)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -2600,7 +2624,11 @@ namespace Gs2.Gs2Showcase
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.config)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
@@ -2710,7 +2738,11 @@ namespace Gs2.Gs2Showcase
                     jsonWriter.WriteArrayStart();
                     foreach(var item in _request.config)
                     {
-                        item.WriteJson(jsonWriter);
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
                     }
                     jsonWriter.WriteArrayEnd();
                 }
