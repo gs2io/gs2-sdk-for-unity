@@ -112,7 +112,7 @@ namespace Gs2.Unity.Gs2Showcase
                     .WithNamespaceName(namespaceName)
                     .WithShowcaseName(showcaseName)
                     .WithDisplayItemId(displayItemId)
-                    .WithConfig(config != null ? config.Select(item => item.ToModel()).ToList() : new List<Config>(new Config[]{}))
+                    .WithConfig(config != null ? config.Select(item => item?.ToModel()).ToList() : new List<Config>(new Config[]{}))
                     .WithAccessToken(session.AccessToken.token),
 				r =>
 				{

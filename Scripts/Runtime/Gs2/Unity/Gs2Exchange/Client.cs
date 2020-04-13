@@ -146,7 +146,7 @@ namespace Gs2.Unity.Gs2Exchange
                     .WithNamespaceName(namespaceName)
                     .WithRateName(rateName)
                     .WithCount(count)
-                    .WithConfig(config != null ? config.Select(item => item.ToModel()).ToList() : new List<Config>(new Config[]{}))
+                    .WithConfig(config != null ? config.Select(item => item?.ToModel()).ToList() : new List<Config>(new Config[]{}))
                     .WithAccessToken(session.AccessToken.token),
 				r =>
 				{

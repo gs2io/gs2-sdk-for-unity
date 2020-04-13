@@ -233,7 +233,7 @@ namespace Gs2.Unity.Gs2Version
             yield return _client.CheckVersion(
                 new CheckVersionRequest()
                     .WithNamespaceName(namespaceName)
-                    .WithTargetVersions(targetVersions != null ? targetVersions.Select(item => item.ToModel()).ToList() : new List<TargetVersion>(new TargetVersion[]{}))
+                    .WithTargetVersions(targetVersions != null ? targetVersions.Select(item => item?.ToModel()).ToList() : new List<TargetVersion>(new TargetVersion[]{}))
                     .WithAccessToken(session.AccessToken.token),
 				r =>
 				{

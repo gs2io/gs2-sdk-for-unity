@@ -369,7 +369,7 @@ namespace Gs2.Unity.Gs2Chat
                 new SubscribeRequest()
                     .WithNamespaceName(namespaceName)
                     .WithRoomName(roomName)
-                    .WithNotificationTypes(notificationTypes != null ? notificationTypes.Select(item => item.ToModel()).ToList() : new List<NotificationType>(new NotificationType[]{}))
+                    .WithNotificationTypes(notificationTypes != null ? notificationTypes.Select(item => item?.ToModel()).ToList() : new List<NotificationType>(new NotificationType[]{}))
                     .WithAccessToken(session.AccessToken.token),
 				r =>
 				{
@@ -417,7 +417,7 @@ namespace Gs2.Unity.Gs2Chat
                 new UpdateNotificationTypeRequest()
                     .WithNamespaceName(namespaceName)
                     .WithRoomName(roomName)
-                    .WithNotificationTypes(notificationTypes != null ? notificationTypes.Select(item => item.ToModel()).ToList() : new List<NotificationType>(new NotificationType[]{}))
+                    .WithNotificationTypes(notificationTypes != null ? notificationTypes.Select(item => item?.ToModel()).ToList() : new List<NotificationType>(new NotificationType[]{}))
                     .WithAccessToken(session.AccessToken.token),
 				r =>
 				{

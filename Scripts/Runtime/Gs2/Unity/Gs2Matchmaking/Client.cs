@@ -72,8 +72,8 @@ namespace Gs2.Unity.Gs2Matchmaking
                 new CreateGatheringRequest()
                     .WithNamespaceName(namespaceName)
                     .WithPlayer(player.ToModel())
-                    .WithAttributeRanges(attributeRanges != null ? attributeRanges.Select(item => item.ToModel()).ToList() : new List<AttributeRange>(new AttributeRange[]{}))
-                    .WithCapacityOfRoles(capacityOfRoles != null ? capacityOfRoles.Select(item => item.ToModel()).ToList() : new List<CapacityOfRole>(new CapacityOfRole[]{}))
+                    .WithAttributeRanges(attributeRanges != null ? attributeRanges.Select(item => item?.ToModel()).ToList() : new List<AttributeRange>(new AttributeRange[]{}))
+                    .WithCapacityOfRoles(capacityOfRoles != null ? capacityOfRoles.Select(item => item?.ToModel()).ToList() : new List<CapacityOfRole>(new CapacityOfRole[]{}))
                     .WithAllowUserIds(allowUserIds)
                     .WithExpiresAt(expiresAt)
                     .WithAccessToken(session.AccessToken.token),
@@ -123,7 +123,7 @@ namespace Gs2.Unity.Gs2Matchmaking
                 new UpdateGatheringRequest()
                     .WithNamespaceName(namespaceName)
                     .WithGatheringName(gatheringName)
-                    .WithAttributeRanges(attributeRanges != null ? attributeRanges.Select(item => item.ToModel()).ToList() : new List<AttributeRange>(new AttributeRange[]{}))
+                    .WithAttributeRanges(attributeRanges != null ? attributeRanges.Select(item => item?.ToModel()).ToList() : new List<AttributeRange>(new AttributeRange[]{}))
                     .WithAccessToken(session.AccessToken.token),
 				r =>
 				{

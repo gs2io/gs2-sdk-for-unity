@@ -80,7 +80,7 @@ namespace Gs2.Unity.Gs2Quest
                     .WithQuestGroupName(questGroupName)
                     .WithQuestName(questName)
                     .WithForce(force)
-                    .WithConfig(config != null ? config.Select(item => item.ToModel()).ToList() : new List<Config>(new Config[]{}))
+                    .WithConfig(config != null ? config.Select(item => item?.ToModel()).ToList() : new List<Config>(new Config[]{}))
                     .WithAccessToken(session.AccessToken.token),
 				r =>
 				{
@@ -136,10 +136,10 @@ namespace Gs2.Unity.Gs2Quest
             yield return _client.End(
                 new EndRequest()
                     .WithNamespaceName(namespaceName)
-                    .WithRewards(rewards != null ? rewards.Select(item => item.ToModel()).ToList() : new List<Reward>(new Reward[]{}))
+                    .WithRewards(rewards != null ? rewards.Select(item => item?.ToModel()).ToList() : new List<Reward>(new Reward[]{}))
                     .WithTransactionId(transactionId)
                     .WithIsComplete(isComplete)
-                    .WithConfig(config != null ? config.Select(item => item.ToModel()).ToList() : new List<Config>(new Config[]{}))
+                    .WithConfig(config != null ? config.Select(item => item?.ToModel()).ToList() : new List<Config>(new Config[]{}))
                     .WithAccessToken(session.AccessToken.token),
 				r =>
 				{
