@@ -16,15 +16,21 @@
 
 using System.Collections;
 using Gs2.Core;
+using Gs2.Core.Exception;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
+using Gs2.Core.Result;
+using Gs2.Gs2Auth.Model;
+using JetBrains.Annotations;
 using UnityEngine.Events;
+using UnityEngine;
 
 namespace Gs2.Unity.Util
 {
     public class Profile
     {
         private readonly IReopener _reopener;
+        private IAuthenticator _authenticator;
         
         public Profile(
             string clientId,
@@ -40,6 +46,7 @@ namespace Gs2.Unity.Util
                 credential
             );
             _reopener = reopener;
+            _authenticator = null;
         }
 
         public IEnumerator Initialize(
@@ -81,6 +88,8 @@ namespace Gs2.Unity.Util
             UnityAction<AsyncResult<GameSession>> callback
         )
         {
+            _authenticator = authenticator;
+
             yield return authenticator.Authentication(
                 r =>
                 {
@@ -109,5 +118,66 @@ namespace Gs2.Unity.Util
         }
 
         public Gs2WebSocketSession Gs2Session { get; }
+
+        
+        public delegate IEnumerator RequestAction<T>(UnityAction<AsyncResult<T>> callback);
+        
+        public IEnumerator Run<T>(
+            UnityAction<AsyncResult<T>> callback,
+            [CanBeNull] GameSession gameSession,
+            RequestAction<T> requestAction)
+        {
+            bool isReopenTried = false;
+            bool isAuthenticationTried = false;
+
+            AsyncResult<T> asyncResult = null;
+
+            while (true)
+            {
+                yield return requestAction.Invoke(ar => asyncResult = ar);
+
+                if (asyncResult.Error is SessionNotOpenException && !isReopenTried)
+                {
+                    isReopenTried = true;
+
+                    AsyncResult<OpenResult> asyncOpenResult = null;
+
+                    yield return _reopener.ReOpen(Gs2Session, aor => asyncOpenResult = aor);
+
+                    _reopener.Callback?.Invoke(asyncOpenResult);
+
+                    if (asyncOpenResult.Error == null)
+                    {
+                        continue;
+                    }
+                }
+
+                var authenticator = _authenticator;
+                if (gameSession != null && authenticator != null && asyncResult.Error is UnauthorizedException && !isAuthenticationTried)
+                {
+                    isAuthenticationTried = true;
+
+                    AsyncResult<AccessToken> asyncAuthenticationResult = null;
+
+                    yield return authenticator.Authentication(aar => asyncAuthenticationResult = aar);
+
+                    if (asyncAuthenticationResult.Error == null)
+                    {
+                        gameSession.AccessToken = asyncAuthenticationResult.Result;
+                    }
+
+                    authenticator.Callback?.Invoke(asyncAuthenticationResult);
+
+                    if (asyncAuthenticationResult.Error == null)
+                    {
+                        continue;
+                    }
+                }
+
+                break;
+            }
+            
+            callback.Invoke(asyncResult);
+        }
     }
 }

@@ -56,31 +56,20 @@ namespace Gs2.Unity.Gs2Schedule
                 string namespaceName
         )
 		{
-            yield return _client.DescribeTriggers(
-                new DescribeTriggersRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListTriggersResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListTriggersResult>(
-                                new EzListTriggersResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeTriggers(
+                    new DescribeTriggersRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListTriggersResult>(
+                            r.Result == null ? null : new EzListTriggersResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -100,32 +89,21 @@ namespace Gs2.Unity.Gs2Schedule
                 string triggerName
         )
 		{
-            yield return _client.GetTrigger(
-                new GetTriggerRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithTriggerName(triggerName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetTriggerResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetTriggerResult>(
-                                new EzGetTriggerResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetTrigger(
+                    new GetTriggerRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithTriggerName(triggerName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetTriggerResult>(
+                            r.Result == null ? null : new EzGetTriggerResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -143,31 +121,20 @@ namespace Gs2.Unity.Gs2Schedule
                 string namespaceName
         )
 		{
-            yield return _client.DescribeEvents(
-                new DescribeEventsRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListEventsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListEventsResult>(
-                                new EzListEventsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeEvents(
+                    new DescribeEventsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListEventsResult>(
+                            r.Result == null ? null : new EzListEventsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -187,32 +154,21 @@ namespace Gs2.Unity.Gs2Schedule
                 string eventName
         )
 		{
-            yield return _client.GetEvent(
-                new GetEventRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithEventName(eventName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetEventResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetEventResult>(
-                                new EzGetEventResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetEvent(
+                    new GetEventRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithEventName(eventName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetEventResult>(
+                            r.Result == null ? null : new EzGetEventResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

@@ -62,33 +62,22 @@ namespace Gs2.Unity.Gs2Inbox
                 long? limit=null
         )
 		{
-            yield return _client.DescribeMessages(
-                new DescribeMessagesRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithPageToken(pageToken)
-                    .WithLimit(limit)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListResult>(
-                                new EzListResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeMessages(
+                    new DescribeMessagesRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListResult>(
+                            r.Result == null ? null : new EzListResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -106,31 +95,20 @@ namespace Gs2.Unity.Gs2Inbox
                 string namespaceName
         )
 		{
-            yield return _client.ReceiveGlobalMessage(
-                new ReceiveGlobalMessageRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzReceiveGlobalMessageResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzReceiveGlobalMessageResult>(
-                                new EzReceiveGlobalMessageResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.ReceiveGlobalMessage(
+                    new ReceiveGlobalMessageRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzReceiveGlobalMessageResult>(
+                            r.Result == null ? null : new EzReceiveGlobalMessageResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -150,32 +128,21 @@ namespace Gs2.Unity.Gs2Inbox
                 string messageName=null
         )
 		{
-            yield return _client.ReadMessage(
-                new ReadMessageRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithMessageName(messageName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzReadResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzReadResult>(
-                                new EzReadResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.ReadMessage(
+                    new ReadMessageRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithMessageName(messageName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzReadResult>(
+                            r.Result == null ? null : new EzReadResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -197,32 +164,21 @@ namespace Gs2.Unity.Gs2Inbox
                 string messageName
         )
 		{
-            yield return _client.DeleteMessage(
-                new DeleteMessageRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithMessageName(messageName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDeleteResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDeleteResult>(
-                                new EzDeleteResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DeleteMessage(
+                    new DeleteMessageRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithMessageName(messageName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzDeleteResult>(
+                            r.Result == null ? null : new EzDeleteResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

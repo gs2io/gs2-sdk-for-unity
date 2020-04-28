@@ -56,31 +56,20 @@ namespace Gs2.Unity.Gs2Friend
                 string namespaceName
         )
 		{
-            yield return _client.GetProfile(
-                new GetProfileRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetProfileResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetProfileResult>(
-                                new EzGetProfileResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetProfile(
+                    new GetProfileRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetProfileResult>(
+                            r.Result == null ? null : new EzGetProfileResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -104,34 +93,23 @@ namespace Gs2.Unity.Gs2Friend
                 string friendProfile=null
         )
 		{
-            yield return _client.UpdateProfile(
-                new UpdateProfileRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithPublicProfile(publicProfile)
-                    .WithFollowerProfile(followerProfile)
-                    .WithFriendProfile(friendProfile)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzUpdateProfileResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzUpdateProfileResult>(
-                                new EzUpdateProfileResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.UpdateProfile(
+                    new UpdateProfileRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithPublicProfile(publicProfile)
+                        .WithFollowerProfile(followerProfile)
+                        .WithFriendProfile(friendProfile)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzUpdateProfileResult>(
+                            r.Result == null ? null : new EzUpdateProfileResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -148,31 +126,20 @@ namespace Gs2.Unity.Gs2Friend
                 string userId
         )
 		{
-            yield return _client.GetPublicProfile(
-                new GetPublicProfileRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithUserId(userId),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetPublicProfileResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetPublicProfileResult>(
-                                new EzGetPublicProfileResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetPublicProfile(
+                    new GetPublicProfileRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithUserId(userId),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetPublicProfileResult>(
+                            r.Result == null ? null : new EzGetPublicProfileResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -196,34 +163,23 @@ namespace Gs2.Unity.Gs2Friend
                 long? limit=null
         )
 		{
-            yield return _client.DescribeFollows(
-                new DescribeFollowsRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithWithProfile(withProfile)
-                    .WithPageToken(pageToken)
-                    .WithLimit(limit)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDescribeFollowUsersResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDescribeFollowUsersResult>(
-                                new EzDescribeFollowUsersResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeFollows(
+                    new DescribeFollowsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithWithProfile(withProfile)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzDescribeFollowUsersResult>(
+                            r.Result == null ? null : new EzDescribeFollowUsersResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -243,32 +199,21 @@ namespace Gs2.Unity.Gs2Friend
                 string targetUserId
         )
 		{
-            yield return _client.Follow(
-                new FollowRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithTargetUserId(targetUserId)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzFollowResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzFollowResult>(
-                                new EzFollowResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.Follow(
+                    new FollowRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithTargetUserId(targetUserId)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzFollowResult>(
+                            r.Result == null ? null : new EzFollowResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -288,32 +233,21 @@ namespace Gs2.Unity.Gs2Friend
                 string targetUserId
         )
 		{
-            yield return _client.Unfollow(
-                new UnfollowRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithTargetUserId(targetUserId)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzUnfollowResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzUnfollowResult>(
-                                new EzUnfollowResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.Unfollow(
+                    new UnfollowRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithTargetUserId(targetUserId)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzUnfollowResult>(
+                            r.Result == null ? null : new EzUnfollowResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -337,34 +271,23 @@ namespace Gs2.Unity.Gs2Friend
                 long? limit=null
         )
 		{
-            yield return _client.DescribeFriends(
-                new DescribeFriendsRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithWithProfile(withProfile)
-                    .WithPageToken(pageToken)
-                    .WithLimit(limit)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDescribeFriendsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDescribeFriendsResult>(
-                                new EzDescribeFriendsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeFriends(
+                    new DescribeFriendsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithWithProfile(withProfile)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzDescribeFriendsResult>(
+                            r.Result == null ? null : new EzDescribeFriendsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -386,33 +309,22 @@ namespace Gs2.Unity.Gs2Friend
                 bool withProfile
         )
 		{
-            yield return _client.GetFriend(
-                new GetFriendRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithTargetUserId(targetUserId)
-                    .WithWithProfile(withProfile)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetFriendResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetFriendResult>(
-                                new EzGetFriendResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetFriend(
+                    new GetFriendRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithTargetUserId(targetUserId)
+                        .WithWithProfile(withProfile)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetFriendResult>(
+                            r.Result == null ? null : new EzGetFriendResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -432,32 +344,21 @@ namespace Gs2.Unity.Gs2Friend
                 string targetUserId
         )
 		{
-            yield return _client.DeleteFriend(
-                new DeleteFriendRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithTargetUserId(targetUserId)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDeleteFriendResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDeleteFriendResult>(
-                                new EzDeleteFriendResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DeleteFriend(
+                    new DeleteFriendRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithTargetUserId(targetUserId)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzDeleteFriendResult>(
+                            r.Result == null ? null : new EzDeleteFriendResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -475,31 +376,20 @@ namespace Gs2.Unity.Gs2Friend
                 string namespaceName
         )
 		{
-            yield return _client.DescribeSendRequests(
-                new DescribeSendRequestsRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDescribeSendRequestsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDescribeSendRequestsResult>(
-                                new EzDescribeSendRequestsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeSendRequests(
+                    new DescribeSendRequestsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzDescribeSendRequestsResult>(
+                            r.Result == null ? null : new EzDescribeSendRequestsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -519,32 +409,21 @@ namespace Gs2.Unity.Gs2Friend
                 string targetUserId
         )
 		{
-            yield return _client.SendRequest(
-                new SendRequestRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithTargetUserId(targetUserId)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzSendRequestResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzSendRequestResult>(
-                                new EzSendRequestResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.SendRequest(
+                    new SendRequestRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithTargetUserId(targetUserId)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzSendRequestResult>(
+                            r.Result == null ? null : new EzSendRequestResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -564,32 +443,21 @@ namespace Gs2.Unity.Gs2Friend
                 string targetUserId
         )
 		{
-            yield return _client.DeleteRequest(
-                new DeleteRequestRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithTargetUserId(targetUserId)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDeleteRequestResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDeleteRequestResult>(
-                                new EzDeleteRequestResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DeleteRequest(
+                    new DeleteRequestRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithTargetUserId(targetUserId)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzDeleteRequestResult>(
+                            r.Result == null ? null : new EzDeleteRequestResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -607,31 +475,20 @@ namespace Gs2.Unity.Gs2Friend
                 string namespaceName
         )
 		{
-            yield return _client.DescribeReceiveRequests(
-                new DescribeReceiveRequestsRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDescribeReceiveRequestsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDescribeReceiveRequestsResult>(
-                                new EzDescribeReceiveRequestsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeReceiveRequests(
+                    new DescribeReceiveRequestsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzDescribeReceiveRequestsResult>(
+                            r.Result == null ? null : new EzDescribeReceiveRequestsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -651,32 +508,21 @@ namespace Gs2.Unity.Gs2Friend
                 string fromUserId
         )
 		{
-            yield return _client.AcceptRequest(
-                new AcceptRequestRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithFromUserId(fromUserId)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzAcceptResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzAcceptResult>(
-                                new EzAcceptResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.AcceptRequest(
+                    new AcceptRequestRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithFromUserId(fromUserId)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzAcceptResult>(
+                            r.Result == null ? null : new EzAcceptResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -696,32 +542,21 @@ namespace Gs2.Unity.Gs2Friend
                 string fromUserId
         )
 		{
-            yield return _client.RejectRequest(
-                new RejectRequestRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithFromUserId(fromUserId)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzRejectResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzRejectResult>(
-                                new EzRejectResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.RejectRequest(
+                    new RejectRequestRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithFromUserId(fromUserId)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzRejectResult>(
+                            r.Result == null ? null : new EzRejectResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -739,31 +574,20 @@ namespace Gs2.Unity.Gs2Friend
                 string namespaceName
         )
 		{
-            yield return _client.DescribeBlackList(
-                new DescribeBlackListRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetBlackListResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetBlackListResult>(
-                                new EzGetBlackListResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeBlackList(
+                    new DescribeBlackListRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetBlackListResult>(
+                            r.Result == null ? null : new EzGetBlackListResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -783,32 +607,21 @@ namespace Gs2.Unity.Gs2Friend
                 string targetUserId
         )
 		{
-            yield return _client.RegisterBlackList(
-                new RegisterBlackListRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithTargetUserId(targetUserId)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzRegisterBlackListResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzRegisterBlackListResult>(
-                                new EzRegisterBlackListResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.RegisterBlackList(
+                    new RegisterBlackListRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithTargetUserId(targetUserId)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzRegisterBlackListResult>(
+                            r.Result == null ? null : new EzRegisterBlackListResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -828,32 +641,21 @@ namespace Gs2.Unity.Gs2Friend
                 string targetUserId
         )
 		{
-            yield return _client.UnregisterBlackList(
-                new UnregisterBlackListRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithTargetUserId(targetUserId)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzUnregisterBlackListResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzUnregisterBlackListResult>(
-                                new EzUnregisterBlackListResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.UnregisterBlackList(
+                    new UnregisterBlackListRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithTargetUserId(targetUserId)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzUnregisterBlackListResult>(
+                            r.Result == null ? null : new EzUnregisterBlackListResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

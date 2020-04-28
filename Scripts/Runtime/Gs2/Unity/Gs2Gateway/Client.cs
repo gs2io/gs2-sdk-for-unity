@@ -58,32 +58,21 @@ namespace Gs2.Unity.Gs2Gateway
                 bool allowConcurrentAccess
         )
 		{
-            yield return _client.SetUserId(
-                new SetUserIdRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithAllowConcurrentAccess(allowConcurrentAccess)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzSetUserIdResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzSetUserIdResult>(
-                                new EzSetUserIdResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.SetUserId(
+                    new SetUserIdRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAllowConcurrentAccess(allowConcurrentAccess)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzSetUserIdResult>(
+                            r.Result == null ? null : new EzSetUserIdResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

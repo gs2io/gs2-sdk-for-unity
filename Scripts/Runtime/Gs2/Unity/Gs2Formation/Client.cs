@@ -53,30 +53,19 @@ namespace Gs2.Unity.Gs2Formation
                 string namespaceName
         )
 		{
-            yield return _client.DescribeMoldModels(
-                new DescribeMoldModelsRequest()
-                    .WithNamespaceName(namespaceName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListMoldModelsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListMoldModelsResult>(
-                                new EzListMoldModelsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.DescribeMoldModels(
+                    new DescribeMoldModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListMoldModelsResult>(
+                            r.Result == null ? null : new EzListMoldModelsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -93,31 +82,20 @@ namespace Gs2.Unity.Gs2Formation
                 string moldName
         )
 		{
-            yield return _client.GetMoldModel(
-                new GetMoldModelRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithMoldName(moldName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetMoldModelResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetMoldModelResult>(
-                                new EzGetMoldModelResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetMoldModel(
+                    new GetMoldModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithMoldName(moldName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetMoldModelResult>(
+                            r.Result == null ? null : new EzGetMoldModelResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -141,33 +119,22 @@ namespace Gs2.Unity.Gs2Formation
                 long? limit=null
         )
 		{
-            yield return _client.DescribeMolds(
-                new DescribeMoldsRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithPageToken(pageToken)
-                    .WithLimit(limit)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListMoldsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListMoldsResult>(
-                                new EzListMoldsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeMolds(
+                    new DescribeMoldsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListMoldsResult>(
+                            r.Result == null ? null : new EzListMoldsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -187,32 +154,21 @@ namespace Gs2.Unity.Gs2Formation
                 string moldName
         )
 		{
-            yield return _client.GetMold(
-                new GetMoldRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithMoldName(moldName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetMoldResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetMoldResult>(
-                                new EzGetMoldResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetMold(
+                    new GetMoldRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithMoldName(moldName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetMoldResult>(
+                            r.Result == null ? null : new EzGetMoldResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -236,34 +192,23 @@ namespace Gs2.Unity.Gs2Formation
                 long? limit=null
         )
 		{
-            yield return _client.DescribeForms(
-                new DescribeFormsRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithMoldName(moldName)
-                    .WithPageToken(pageToken)
-                    .WithLimit(limit)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListFormsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListFormsResult>(
-                                new EzListFormsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeForms(
+                    new DescribeFormsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithMoldName(moldName)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListFormsResult>(
+                            r.Result == null ? null : new EzListFormsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -285,33 +230,62 @@ namespace Gs2.Unity.Gs2Formation
                 int index
         )
 		{
-            yield return _client.GetForm(
-                new GetFormRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithMoldName(moldName)
-                    .WithIndex(index)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetFormResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetFormResult>(
-                                new EzGetFormResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetForm(
+                    new GetFormRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithMoldName(moldName)
+                        .WithIndex(index)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetFormResult>(
+                            r.Result == null ? null : new EzGetFormResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  フォームを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="moldName">フォームの保存領域の名前</param>
+		/// <param name="index">保存領域のインデックス</param>
+		/// <param name="keyId">署名の発行に使用する暗号鍵 のGRN</param>
+		public IEnumerator GetFormWithSignature(
+		        UnityAction<AsyncResult<EzGetFormWithSignatureResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string moldName,
+                int index,
+                string keyId
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetFormWithSignature(
+                    new GetFormWithSignatureRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithMoldName(moldName)
+                        .WithIndex(index)
+                        .WithKeyId(keyId)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetFormWithSignatureResult>(
+                            r.Result == null ? null : new EzGetFormWithSignatureResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -337,35 +311,24 @@ namespace Gs2.Unity.Gs2Formation
                 string keyId
         )
 		{
-            yield return _client.SetFormWithSignature(
-                new SetFormWithSignatureRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithMoldName(moldName)
-                    .WithIndex(index)
-                    .WithSlots(slots != null ? slots.Select(item => item?.ToModel()).ToList() : new List<SlotWithSignature>(new SlotWithSignature[]{}))
-                    .WithKeyId(keyId)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzSetFormResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzSetFormResult>(
-                                new EzSetFormResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.SetFormWithSignature(
+                    new SetFormWithSignatureRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithMoldName(moldName)
+                        .WithIndex(index)
+                        .WithSlots(slots != null ? slots.Select(item => item?.ToModel()).ToList() : new List<SlotWithSignature>(new SlotWithSignature[]{}))
+                        .WithKeyId(keyId)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzSetFormResult>(
+                            r.Result == null ? null : new EzSetFormResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

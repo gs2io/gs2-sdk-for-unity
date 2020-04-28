@@ -53,30 +53,19 @@ namespace Gs2.Unity.Gs2Exchange
                 string namespaceName
         )
 		{
-            yield return _client.DescribeRateModels(
-                new DescribeRateModelsRequest()
-                    .WithNamespaceName(namespaceName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListRateModelsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListRateModelsResult>(
-                                new EzListRateModelsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.DescribeRateModels(
+                    new DescribeRateModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListRateModelsResult>(
+                            r.Result == null ? null : new EzListRateModelsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -93,31 +82,20 @@ namespace Gs2.Unity.Gs2Exchange
                 string rateName
         )
 		{
-            yield return _client.GetRateModel(
-                new GetRateModelRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithRateName(rateName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetRateModelResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetRateModelResult>(
-                                new EzGetRateModelResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetRateModel(
+                    new GetRateModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRateName(rateName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetRateModelResult>(
+                            r.Result == null ? null : new EzGetRateModelResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -141,34 +119,23 @@ namespace Gs2.Unity.Gs2Exchange
                 List<EzConfig> config=null
         )
 		{
-            yield return _client.Exchange(
-                new ExchangeRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithRateName(rateName)
-                    .WithCount(count)
-                    .WithConfig(config != null ? config.Select(item => item?.ToModel()).ToList() : new List<Config>(new Config[]{}))
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzExchangeResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzExchangeResult>(
-                                new EzExchangeResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.Exchange(
+                    new ExchangeRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRateName(rateName)
+                        .WithCount(count)
+                        .WithConfig(config != null ? config.Select(item => item?.ToModel()).ToList() : new List<Config>(new Config[]{}))
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzExchangeResult>(
+                            r.Result == null ? null : new EzExchangeResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

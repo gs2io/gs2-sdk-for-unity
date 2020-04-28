@@ -74,35 +74,24 @@ namespace Gs2.Unity.Gs2Quest
                 List<EzConfig> config=null
         )
 		{
-            yield return _client.Start(
-                new StartRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithQuestGroupName(questGroupName)
-                    .WithQuestName(questName)
-                    .WithForce(force)
-                    .WithConfig(config != null ? config.Select(item => item?.ToModel()).ToList() : new List<Config>(new Config[]{}))
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzStartResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzStartResult>(
-                                new EzStartResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.Start(
+                    new StartRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithQuestGroupName(questGroupName)
+                        .WithQuestName(questName)
+                        .WithForce(force)
+                        .WithConfig(config != null ? config.Select(item => item?.ToModel()).ToList() : new List<Config>(new Config[]{}))
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzStartResult>(
+                            r.Result == null ? null : new EzStartResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -133,35 +122,24 @@ namespace Gs2.Unity.Gs2Quest
                 List<EzConfig> config=null
         )
 		{
-            yield return _client.End(
-                new EndRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithRewards(rewards != null ? rewards.Select(item => item?.ToModel()).ToList() : new List<Reward>(new Reward[]{}))
-                    .WithTransactionId(transactionId)
-                    .WithIsComplete(isComplete)
-                    .WithConfig(config != null ? config.Select(item => item?.ToModel()).ToList() : new List<Config>(new Config[]{}))
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzEndResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzEndResult>(
-                                new EzEndResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.End(
+                    new EndRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRewards(rewards != null ? rewards.Select(item => item?.ToModel()).ToList() : new List<Reward>(new Reward[]{}))
+                        .WithTransactionId(transactionId)
+                        .WithIsComplete(isComplete)
+                        .WithConfig(config != null ? config.Select(item => item?.ToModel()).ToList() : new List<Config>(new Config[]{}))
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzEndResult>(
+                            r.Result == null ? null : new EzEndResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -179,31 +157,20 @@ namespace Gs2.Unity.Gs2Quest
                 string namespaceName
         )
 		{
-            yield return _client.GetProgress(
-                new GetProgressRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetProgressResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetProgressResult>(
-                                new EzGetProgressResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetProgress(
+                    new GetProgressRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetProgressResult>(
+                            r.Result == null ? null : new EzGetProgressResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -223,31 +190,20 @@ namespace Gs2.Unity.Gs2Quest
                 string namespaceName
         )
 		{
-            yield return _client.DeleteProgress(
-                new DeleteProgressRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDeleteProgressResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDeleteProgressResult>(
-                                new EzDeleteProgressResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DeleteProgress(
+                    new DeleteProgressRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzDeleteProgressResult>(
+                            r.Result == null ? null : new EzDeleteProgressResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -272,33 +228,22 @@ namespace Gs2.Unity.Gs2Quest
                 long? limit=null
         )
 		{
-            yield return _client.DescribeCompletedQuestLists(
-                new DescribeCompletedQuestListsRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithPageToken(pageToken)
-                    .WithLimit(limit)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDescribeCompletedQuestListsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDescribeCompletedQuestListsResult>(
-                                new EzDescribeCompletedQuestListsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeCompletedQuestLists(
+                    new DescribeCompletedQuestListsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzDescribeCompletedQuestListsResult>(
+                            r.Result == null ? null : new EzDescribeCompletedQuestListsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -318,32 +263,21 @@ namespace Gs2.Unity.Gs2Quest
                 string questGroupName
         )
 		{
-            yield return _client.GetCompletedQuestList(
-                new GetCompletedQuestListRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithQuestGroupName(questGroupName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetCompletedQuestListResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetCompletedQuestListResult>(
-                                new EzGetCompletedQuestListResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetCompletedQuestList(
+                    new GetCompletedQuestListRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithQuestGroupName(questGroupName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetCompletedQuestListResult>(
+                            r.Result == null ? null : new EzGetCompletedQuestListResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -358,30 +292,19 @@ namespace Gs2.Unity.Gs2Quest
                 string namespaceName
         )
 		{
-            yield return _client.DescribeQuestGroupModels(
-                new DescribeQuestGroupModelsRequest()
-                    .WithNamespaceName(namespaceName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListQuestGroupsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListQuestGroupsResult>(
-                                new EzListQuestGroupsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.DescribeQuestGroupModels(
+                    new DescribeQuestGroupModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListQuestGroupsResult>(
+                            r.Result == null ? null : new EzListQuestGroupsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -398,31 +321,20 @@ namespace Gs2.Unity.Gs2Quest
                 string questGroupName
         )
 		{
-            yield return _client.GetQuestGroupModel(
-                new GetQuestGroupModelRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithQuestGroupName(questGroupName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetQuestGroupResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetQuestGroupResult>(
-                                new EzGetQuestGroupResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetQuestGroupModel(
+                    new GetQuestGroupModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithQuestGroupName(questGroupName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetQuestGroupResult>(
+                            r.Result == null ? null : new EzGetQuestGroupResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -439,31 +351,20 @@ namespace Gs2.Unity.Gs2Quest
                 string questGroupName
         )
 		{
-            yield return _client.DescribeQuestModels(
-                new DescribeQuestModelsRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithQuestGroupName(questGroupName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListQuestsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListQuestsResult>(
-                                new EzListQuestsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.DescribeQuestModels(
+                    new DescribeQuestModelsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithQuestGroupName(questGroupName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListQuestsResult>(
+                            r.Result == null ? null : new EzListQuestsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -482,32 +383,21 @@ namespace Gs2.Unity.Gs2Quest
                 string questName
         )
 		{
-            yield return _client.GetQuestModel(
-                new GetQuestModelRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithQuestGroupName(questGroupName)
-                    .WithQuestName(questName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetQuestResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetQuestResult>(
-                                new EzGetQuestResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetQuestModel(
+                    new GetQuestModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithQuestGroupName(questGroupName)
+                        .WithQuestName(questName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetQuestResult>(
+                            r.Result == null ? null : new EzGetQuestResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

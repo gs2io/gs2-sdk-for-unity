@@ -2436,6 +2436,137 @@ namespace Gs2.Gs2Formation
 			return Gs2RestSession.Execute(task);
         }
 
+        private class GetFormWithSignatureTask : Gs2RestSessionTask<Result.GetFormWithSignatureResult>
+        {
+			private readonly Request.GetFormWithSignatureRequest _request;
+
+			public GetFormWithSignatureTask(Request.GetFormWithSignatureRequest request, UnityAction<AsyncResult<Result.GetFormWithSignatureResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "formation")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/me/mold/{moldName}/form/{index}/signature";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{moldName}", !string.IsNullOrEmpty(_request.moldName) ? _request.moldName.ToString() : "null");
+                url = url.Replace("{index}",_request.index != null ? _request.index.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                if (_request.keyId != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "keyId", UnityWebRequest.EscapeURL(_request.keyId)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  署名付きフォームを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetFormWithSignature(
+                Request.GetFormWithSignatureRequest request,
+                UnityAction<AsyncResult<Result.GetFormWithSignatureResult>> callback
+        )
+		{
+			var task = new GetFormWithSignatureTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class GetFormWithSignatureByUserIdTask : Gs2RestSessionTask<Result.GetFormWithSignatureByUserIdResult>
+        {
+			private readonly Request.GetFormWithSignatureByUserIdRequest _request;
+
+			public GetFormWithSignatureByUserIdTask(Request.GetFormWithSignatureByUserIdRequest request, UnityAction<AsyncResult<Result.GetFormWithSignatureByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "formation")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/mold/{moldName}/form/{index}/signature";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+                url = url.Replace("{moldName}", !string.IsNullOrEmpty(_request.moldName) ? _request.moldName.ToString() : "null");
+                url = url.Replace("{index}",_request.index != null ? _request.index.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                if (_request.keyId != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "keyId", UnityWebRequest.EscapeURL(_request.keyId)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  ユーザIDを指定して署名付きフォームを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetFormWithSignatureByUserId(
+                Request.GetFormWithSignatureByUserIdRequest request,
+                UnityAction<AsyncResult<Result.GetFormWithSignatureByUserIdResult>> callback
+        )
+		{
+			var task = new GetFormWithSignatureByUserIdTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
         private class SetFormByUserIdTask : Gs2RestSessionTask<Result.SetFormByUserIdResult>
         {
 			private readonly Request.SetFormByUserIdRequest _request;

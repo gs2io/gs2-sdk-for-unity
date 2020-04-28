@@ -53,30 +53,19 @@ namespace Gs2.Unity.Gs2Version
                 string namespaceName
         )
 		{
-            yield return _client.DescribeVersionModels(
-                new DescribeVersionModelsRequest()
-                    .WithNamespaceName(namespaceName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListVersionModelsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListVersionModelsResult>(
-                                new EzListVersionModelsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.DescribeVersionModels(
+                    new DescribeVersionModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListVersionModelsResult>(
+                            r.Result == null ? null : new EzListVersionModelsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -93,31 +82,20 @@ namespace Gs2.Unity.Gs2Version
                 string versionName
         )
 		{
-            yield return _client.GetVersionModel(
-                new GetVersionModelRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithVersionName(versionName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetVersionModelResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetVersionModelResult>(
-                                new EzGetVersionModelResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetVersionModel(
+                    new GetVersionModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithVersionName(versionName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetVersionModelResult>(
+                            r.Result == null ? null : new EzGetVersionModelResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -139,33 +117,22 @@ namespace Gs2.Unity.Gs2Version
                 long? limit=null
         )
 		{
-            yield return _client.DescribeAcceptVersions(
-                new DescribeAcceptVersionsRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithPageToken(pageToken)
-                    .WithLimit(limit)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListResult>(
-                                new EzListResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeAcceptVersions(
+                    new DescribeAcceptVersionsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListResult>(
+                            r.Result == null ? null : new EzListResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -185,32 +152,21 @@ namespace Gs2.Unity.Gs2Version
                 string versionName
         )
 		{
-            yield return _client.DeleteAcceptVersion(
-                new DeleteAcceptVersionRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithVersionName(versionName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDeleteResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDeleteResult>(
-                                new EzDeleteResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DeleteAcceptVersion(
+                    new DeleteAcceptVersionRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithVersionName(versionName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzDeleteResult>(
+                            r.Result == null ? null : new EzDeleteResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -230,32 +186,21 @@ namespace Gs2.Unity.Gs2Version
                 List<EzTargetVersion> targetVersions=null
         )
 		{
-            yield return _client.CheckVersion(
-                new CheckVersionRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithTargetVersions(targetVersions != null ? targetVersions.Select(item => item?.ToModel()).ToList() : new List<TargetVersion>(new TargetVersion[]{}))
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzCheckVersionResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzCheckVersionResult>(
-                                new EzCheckVersionResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.CheckVersion(
+                    new CheckVersionRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithTargetVersions(targetVersions != null ? targetVersions.Select(item => item?.ToModel()).ToList() : new List<TargetVersion>(new TargetVersion[]{}))
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzCheckVersionResult>(
+                            r.Result == null ? null : new EzCheckVersionResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

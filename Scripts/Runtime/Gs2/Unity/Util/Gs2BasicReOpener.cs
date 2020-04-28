@@ -13,7 +13,7 @@ namespace Gs2.Unity.Util
 {
     public class Gs2BasicReopener : IReopener
     {
-        public IEnumerator ReOpen(Gs2WebSocketSession session, UnityAction<AsyncResult<OpenResult>> callback)
+        public override IEnumerator ReOpen(Gs2WebSocketSession session, UnityAction<AsyncResult<OpenResult>> callback)
         {
             yield return session.Open(callback);
         }

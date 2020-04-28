@@ -26,7 +26,7 @@ namespace Gs2.Unity.Util
 {
     public class GameSession
     {
-        public readonly AccessToken AccessToken = null;
+        public AccessToken AccessToken = null;
         
         public GameSession(
             AccessToken accessToken

@@ -6,8 +6,10 @@ using UnityEngine.Events;
 
 namespace Gs2.Unity.Util
 {
-    public interface IReopener
+    public abstract class IReopener
     {
-        IEnumerator ReOpen(Gs2WebSocketSession session, UnityAction<AsyncResult<OpenResult>> callback);
+        public UnityAction<AsyncResult<OpenResult>> Callback { get; set; }
+
+        public abstract IEnumerator ReOpen(Gs2WebSocketSession session, UnityAction<AsyncResult<OpenResult>> callback);
     }
 }

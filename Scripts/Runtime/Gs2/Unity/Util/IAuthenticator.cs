@@ -5,8 +5,10 @@ using UnityEngine.Events;
 
 namespace Gs2.Unity.Util
 {
-    public interface IAuthenticator
+    public abstract class IAuthenticator
     {
-        IEnumerator Authentication(UnityAction<AsyncResult<AccessToken>> callback);
+        public UnityAction<AsyncResult<AccessToken>> Callback { get; set; }
+
+        public abstract IEnumerator Authentication(UnityAction<AsyncResult<AccessToken>> callback);
     }
 }

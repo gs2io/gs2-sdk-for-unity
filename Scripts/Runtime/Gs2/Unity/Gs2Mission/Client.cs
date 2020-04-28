@@ -43,6 +43,63 @@ namespace Gs2.Unity.Gs2Mission
 		}
 
 		/// <summary>
+		///  ミッショングループモデルの一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		public IEnumerator ListMissionGroupModels(
+		        UnityAction<AsyncResult<EzListMissionGroupModelsResult>> callback,
+                string namespaceName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.DescribeMissionGroupModels(
+                    new DescribeMissionGroupModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListMissionGroupModelsResult>(
+                            r.Result == null ? null : new EzListMissionGroupModelsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  ミッショングループ名を指定してミッショングループモデルを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="missionGroupName">グループ名</param>
+		public IEnumerator GetMissionGroupModel(
+		        UnityAction<AsyncResult<EzGetMissionGroupModelResult>> callback,
+                string namespaceName,
+                string missionGroupName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetMissionGroupModel(
+                    new GetMissionGroupModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithMissionGroupName(missionGroupName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetMissionGroupModelResult>(
+                            r.Result == null ? null : new EzGetMissionGroupModelResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
 		///  達成したミッションの一覧を取得<br />
 		/// </summary>
         ///
@@ -60,33 +117,22 @@ namespace Gs2.Unity.Gs2Mission
                 long? limit=null
         )
 		{
-            yield return _client.DescribeCounters(
-                new DescribeCountersRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithPageToken(pageToken)
-                    .WithLimit(limit)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListCountersResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListCountersResult>(
-                                new EzListCountersResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeCounters(
+                    new DescribeCountersRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListCountersResult>(
+                            r.Result == null ? null : new EzListCountersResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -106,32 +152,21 @@ namespace Gs2.Unity.Gs2Mission
                 string counterName=null
         )
 		{
-            yield return _client.GetCounter(
-                new GetCounterRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithCounterName(counterName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetCounterResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetCounterResult>(
-                                new EzGetCounterResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetCounter(
+                    new GetCounterRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithCounterName(counterName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetCounterResult>(
+                            r.Result == null ? null : new EzGetCounterResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -148,31 +183,20 @@ namespace Gs2.Unity.Gs2Mission
                 string missionGroupName
         )
 		{
-            yield return _client.DescribeMissionTaskModels(
-                new DescribeMissionTaskModelsRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithMissionGroupName(missionGroupName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListMissionTaskModelsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListMissionTaskModelsResult>(
-                                new EzListMissionTaskModelsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.DescribeMissionTaskModels(
+                    new DescribeMissionTaskModelsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithMissionGroupName(missionGroupName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListMissionTaskModelsResult>(
+                            r.Result == null ? null : new EzListMissionTaskModelsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -191,111 +215,21 @@ namespace Gs2.Unity.Gs2Mission
                 string missionTaskName
         )
 		{
-            yield return _client.GetMissionTaskModel(
-                new GetMissionTaskModelRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithMissionGroupName(missionGroupName)
-                    .WithMissionTaskName(missionTaskName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetMissionTaskModelResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetMissionTaskModelResult>(
-                                new EzGetMissionTaskModelResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
-            );
-		}
-
-		/// <summary>
-		///  ミッショングループモデルの一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		public IEnumerator ListMissionGroupModels(
-		        UnityAction<AsyncResult<EzListMissionGroupModelsResult>> callback,
-                string namespaceName
-        )
-		{
-            yield return _client.DescribeMissionGroupModels(
-                new DescribeMissionGroupModelsRequest()
-                    .WithNamespaceName(namespaceName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListMissionGroupModelsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListMissionGroupModelsResult>(
-                                new EzListMissionGroupModelsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
-            );
-		}
-
-		/// <summary>
-		///  ミッショングループ名を指定してミッショングループモデルを取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="missionGroupName">グループ名</param>
-		public IEnumerator GetMissionGroupModel(
-		        UnityAction<AsyncResult<EzGetMissionGroupModelResult>> callback,
-                string namespaceName,
-                string missionGroupName
-        )
-		{
-            yield return _client.GetMissionGroupModel(
-                new GetMissionGroupModelRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithMissionGroupName(missionGroupName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetMissionGroupModelResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetMissionGroupModelResult>(
-                                new EzGetMissionGroupModelResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetMissionTaskModel(
+                    new GetMissionTaskModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithMissionGroupName(missionGroupName)
+                        .WithMissionTaskName(missionTaskName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetMissionTaskModelResult>(
+                            r.Result == null ? null : new EzGetMissionTaskModelResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -310,30 +244,19 @@ namespace Gs2.Unity.Gs2Mission
                 string namespaceName
         )
 		{
-            yield return _client.DescribeCounterModels(
-                new DescribeCounterModelsRequest()
-                    .WithNamespaceName(namespaceName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListCounterModelsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListCounterModelsResult>(
-                                new EzListCounterModelsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.DescribeCounterModels(
+                    new DescribeCounterModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListCounterModelsResult>(
+                            r.Result == null ? null : new EzListCounterModelsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -350,31 +273,20 @@ namespace Gs2.Unity.Gs2Mission
                 string counterName
         )
 		{
-            yield return _client.GetCounterModel(
-                new GetCounterModelRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithCounterName(counterName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetCounterModelResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetCounterModelResult>(
-                                new EzGetCounterModelResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetCounterModel(
+                    new GetCounterModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithCounterName(counterName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetCounterModelResult>(
+                            r.Result == null ? null : new EzGetCounterModelResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -396,33 +308,22 @@ namespace Gs2.Unity.Gs2Mission
                 long? limit=null
         )
 		{
-            yield return _client.DescribeCompletes(
-                new DescribeCompletesRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithPageToken(pageToken)
-                    .WithLimit(limit)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListCompletesResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListCompletesResult>(
-                                new EzListCompletesResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeCompletes(
+                    new DescribeCompletesRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListCompletesResult>(
+                            r.Result == null ? null : new EzListCompletesResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -442,32 +343,21 @@ namespace Gs2.Unity.Gs2Mission
                 string missionGroupName
         )
 		{
-            yield return _client.GetComplete(
-                new GetCompleteRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithMissionGroupName(missionGroupName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetCompleteResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetCompleteResult>(
-                                new EzGetCompleteResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetComplete(
+                    new GetCompleteRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithMissionGroupName(missionGroupName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetCompleteResult>(
+                            r.Result == null ? null : new EzGetCompleteResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -489,33 +379,22 @@ namespace Gs2.Unity.Gs2Mission
                 string missionTaskName
         )
 		{
-            yield return _client.Complete(
-                new CompleteRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithMissionGroupName(missionGroupName)
-                    .WithMissionTaskName(missionTaskName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzReceiveRewardsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzReceiveRewardsResult>(
-                                new EzReceiveRewardsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.Complete(
+                    new CompleteRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithMissionGroupName(missionGroupName)
+                        .WithMissionTaskName(missionTaskName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzReceiveRewardsResult>(
+                            r.Result == null ? null : new EzReceiveRewardsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

@@ -56,30 +56,19 @@ namespace Gs2.Unity.Gs2Experience
                 string namespaceName
         )
 		{
-            yield return _client.DescribeExperienceModels(
-                new DescribeExperienceModelsRequest()
-                    .WithNamespaceName(namespaceName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListExperienceModelsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListExperienceModelsResult>(
-                                new EzListExperienceModelsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.DescribeExperienceModels(
+                    new DescribeExperienceModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListExperienceModelsResult>(
+                            r.Result == null ? null : new EzListExperienceModelsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -98,31 +87,20 @@ namespace Gs2.Unity.Gs2Experience
                 string experienceName
         )
 		{
-            yield return _client.GetExperienceModel(
-                new GetExperienceModelRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithExperienceName(experienceName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetExperienceModelResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetExperienceModelResult>(
-                                new EzGetExperienceModelResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetExperienceModel(
+                    new GetExperienceModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithExperienceName(experienceName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetExperienceModelResult>(
+                            r.Result == null ? null : new EzGetExperienceModelResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -148,34 +126,23 @@ namespace Gs2.Unity.Gs2Experience
                 long? limit=null
         )
 		{
-            yield return _client.DescribeStatuses(
-                new DescribeStatusesRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithExperienceName(experienceName)
-                    .WithPageToken(pageToken)
-                    .WithLimit(limit)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListStatusesResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListStatusesResult>(
-                                new EzListStatusesResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeStatuses(
+                    new DescribeStatusesRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithExperienceName(experienceName)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListStatusesResult>(
+                            r.Result == null ? null : new EzListStatusesResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -197,33 +164,22 @@ namespace Gs2.Unity.Gs2Experience
                 string propertyId
         )
 		{
-            yield return _client.GetStatus(
-                new GetStatusRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithExperienceName(experienceName)
-                    .WithPropertyId(propertyId)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetStatusResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetStatusResult>(
-                                new EzGetStatusResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetStatus(
+                    new GetStatusRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithExperienceName(experienceName)
+                        .WithPropertyId(propertyId)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetStatusResult>(
+                            r.Result == null ? null : new EzGetStatusResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

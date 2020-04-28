@@ -53,30 +53,19 @@ namespace Gs2.Unity.Gs2Ranking
                 string namespaceName
         )
 		{
-            yield return _client.DescribeCategoryModels(
-                new DescribeCategoryModelsRequest()
-                    .WithNamespaceName(namespaceName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListCategoriesResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListCategoriesResult>(
-                                new EzListCategoriesResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.DescribeCategoryModels(
+                    new DescribeCategoryModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListCategoriesResult>(
+                            r.Result == null ? null : new EzListCategoriesResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -93,31 +82,20 @@ namespace Gs2.Unity.Gs2Ranking
                 string categoryName
         )
 		{
-            yield return _client.GetCategoryModel(
-                new GetCategoryModelRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithCategoryName(categoryName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetCategoryResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetCategoryResult>(
-                                new EzGetCategoryResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetCategoryModel(
+                    new GetCategoryModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithCategoryName(categoryName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetCategoryResult>(
+                            r.Result == null ? null : new EzGetCategoryResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -137,32 +115,21 @@ namespace Gs2.Unity.Gs2Ranking
                 string categoryName
         )
 		{
-            yield return _client.DescribeSubscribesByCategoryName(
-                new DescribeSubscribesByCategoryNameRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithCategoryName(categoryName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListSubscribesResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListSubscribesResult>(
-                                new EzListSubscribesResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeSubscribesByCategoryName(
+                    new DescribeSubscribesByCategoryNameRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithCategoryName(categoryName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListSubscribesResult>(
+                            r.Result == null ? null : new EzListSubscribesResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -188,33 +155,22 @@ namespace Gs2.Unity.Gs2Ranking
                 string targetUserId
         )
 		{
-            yield return _client.Subscribe(
-                new SubscribeRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithCategoryName(categoryName)
-                    .WithTargetUserId(targetUserId)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzSubscribeResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzSubscribeResult>(
-                                new EzSubscribeResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.Subscribe(
+                    new SubscribeRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithCategoryName(categoryName)
+                        .WithTargetUserId(targetUserId)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzSubscribeResult>(
+                            r.Result == null ? null : new EzSubscribeResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -236,33 +192,22 @@ namespace Gs2.Unity.Gs2Ranking
                 string targetUserId
         )
 		{
-            yield return _client.Unsubscribe(
-                new UnsubscribeRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithCategoryName(categoryName)
-                    .WithTargetUserId(targetUserId)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzUnsubscribeResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzUnsubscribeResult>(
-                                new EzUnsubscribeResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.Unsubscribe(
+                    new UnsubscribeRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithCategoryName(categoryName)
+                        .WithTargetUserId(targetUserId)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzUnsubscribeResult>(
+                            r.Result == null ? null : new EzUnsubscribeResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -286,34 +231,23 @@ namespace Gs2.Unity.Gs2Ranking
                 string metadata=null
         )
 		{
-            yield return _client.PutScore(
-                new PutScoreRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithCategoryName(categoryName)
-                    .WithScore(score)
-                    .WithMetadata(metadata)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzPutScoreResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzPutScoreResult>(
-                                new EzPutScoreResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.PutScore(
+                    new PutScoreRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithCategoryName(categoryName)
+                        .WithScore(score)
+                        .WithMetadata(metadata)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzPutScoreResult>(
+                            r.Result == null ? null : new EzPutScoreResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -339,35 +273,24 @@ namespace Gs2.Unity.Gs2Ranking
                 long? startIndex=null
         )
 		{
-            yield return _client.DescribeRankings(
-                new DescribeRankingsRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithCategoryName(categoryName)
-                    .WithPageToken(pageToken)
-                    .WithLimit(limit)
-                    .WithStartIndex(startIndex)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetRankingResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetRankingResult>(
-                                new EzGetRankingResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeRankings(
+                    new DescribeRankingsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithCategoryName(categoryName)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithStartIndex(startIndex)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetRankingResult>(
+                            r.Result == null ? null : new EzGetRankingResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -386,32 +309,21 @@ namespace Gs2.Unity.Gs2Ranking
                 long score
         )
 		{
-            yield return _client.DescribeNearRankings(
-                new DescribeNearRankingsRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithCategoryName(categoryName)
-                    .WithScore(score),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetNearRankingResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetNearRankingResult>(
-                                new EzGetNearRankingResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.DescribeNearRankings(
+                    new DescribeNearRankingsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithCategoryName(categoryName)
+                        .WithScore(score),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetNearRankingResult>(
+                            r.Result == null ? null : new EzGetNearRankingResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

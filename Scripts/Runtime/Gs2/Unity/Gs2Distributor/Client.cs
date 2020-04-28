@@ -53,30 +53,19 @@ namespace Gs2.Unity.Gs2Distributor
                 string namespaceName
         )
 		{
-            yield return _client.DescribeDistributorModels(
-                new DescribeDistributorModelsRequest()
-                    .WithNamespaceName(namespaceName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListDistributorModelsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListDistributorModelsResult>(
-                                new EzListDistributorModelsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.DescribeDistributorModels(
+                    new DescribeDistributorModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListDistributorModelsResult>(
+                            r.Result == null ? null : new EzListDistributorModelsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -93,31 +82,20 @@ namespace Gs2.Unity.Gs2Distributor
                 string distributorName
         )
 		{
-            yield return _client.GetDistributorModel(
-                new GetDistributorModelRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithDistributorName(distributorName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetDistributorModelResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetDistributorModelResult>(
-                                new EzGetDistributorModelResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetDistributorModel(
+                    new GetDistributorModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithDistributorName(distributorName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetDistributorModelResult>(
+                            r.Result == null ? null : new EzGetDistributorModelResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -138,33 +116,22 @@ namespace Gs2.Unity.Gs2Distributor
                 string contextStack=null
         )
 		{
-            yield return _client.RunStampTask(
-                new RunStampTaskRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithStampTask(stampTask)
-                    .WithKeyId(keyId)
-                    .WithContextStack(contextStack),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzRunStampTaskResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzRunStampTaskResult>(
-                                new EzRunStampTaskResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.RunStampTask(
+                    new RunStampTaskRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithStampTask(stampTask)
+                        .WithKeyId(keyId)
+                        .WithContextStack(contextStack),
+                    r => cb.Invoke(
+                        new AsyncResult<EzRunStampTaskResult>(
+                            r.Result == null ? null : new EzRunStampTaskResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -185,33 +152,22 @@ namespace Gs2.Unity.Gs2Distributor
                 string contextStack=null
         )
 		{
-            yield return _client.RunStampSheet(
-                new RunStampSheetRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithStampSheet(stampSheet)
-                    .WithKeyId(keyId)
-                    .WithContextStack(contextStack),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzRunStampSheetResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzRunStampSheetResult>(
-                                new EzRunStampSheetResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.RunStampSheet(
+                    new RunStampSheetRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithStampSheet(stampSheet)
+                        .WithKeyId(keyId)
+                        .WithContextStack(contextStack),
+                    r => cb.Invoke(
+                        new AsyncResult<EzRunStampSheetResult>(
+                            r.Result == null ? null : new EzRunStampSheetResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -233,32 +189,21 @@ namespace Gs2.Unity.Gs2Distributor
                 string contextStack=null
         )
 		{
-            yield return _client.RunStampTaskWithoutNamespace(
-                new RunStampTaskWithoutNamespaceRequest()
-                    .WithStampTask(stampTask)
-                    .WithKeyId(keyId)
-                    .WithContextStack(contextStack),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzRunStampTaskWithoutNamespaceResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzRunStampTaskWithoutNamespaceResult>(
-                                new EzRunStampTaskWithoutNamespaceResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.RunStampTaskWithoutNamespace(
+                    new RunStampTaskWithoutNamespaceRequest()
+                        .WithStampTask(stampTask)
+                        .WithKeyId(keyId)
+                        .WithContextStack(contextStack),
+                    r => cb.Invoke(
+                        new AsyncResult<EzRunStampTaskWithoutNamespaceResult>(
+                            r.Result == null ? null : new EzRunStampTaskWithoutNamespaceResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -280,32 +225,21 @@ namespace Gs2.Unity.Gs2Distributor
                 string contextStack=null
         )
 		{
-            yield return _client.RunStampSheetWithoutNamespace(
-                new RunStampSheetWithoutNamespaceRequest()
-                    .WithStampSheet(stampSheet)
-                    .WithKeyId(keyId)
-                    .WithContextStack(contextStack),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzRunStampSheetWithoutNamespaceResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzRunStampSheetWithoutNamespaceResult>(
-                                new EzRunStampSheetWithoutNamespaceResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.RunStampSheetWithoutNamespace(
+                    new RunStampSheetWithoutNamespaceRequest()
+                        .WithStampSheet(stampSheet)
+                        .WithKeyId(keyId)
+                        .WithContextStack(contextStack),
+                    r => cb.Invoke(
+                        new AsyncResult<EzRunStampSheetWithoutNamespaceResult>(
+                            r.Result == null ? null : new EzRunStampSheetWithoutNamespaceResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

@@ -58,32 +58,21 @@ namespace Gs2.Unity.Gs2Money
                 int slot
         )
 		{
-            yield return _client.GetWallet(
-                new GetWalletRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithSlot(slot)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetResult>(
-                                new EzGetResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetWallet(
+                    new GetWalletRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithSlot(slot)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetResult>(
+                            r.Result == null ? null : new EzGetResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -107,34 +96,23 @@ namespace Gs2.Unity.Gs2Money
                 bool paidOnly
         )
 		{
-            yield return _client.Withdraw(
-                new WithdrawRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithSlot(slot)
-                    .WithCount(count)
-                    .WithPaidOnly(paidOnly)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzWithdrawResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzWithdrawResult>(
-                                new EzWithdrawResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.Withdraw(
+                    new WithdrawRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithSlot(slot)
+                        .WithCount(count)
+                        .WithPaidOnly(paidOnly)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzWithdrawResult>(
+                            r.Result == null ? null : new EzWithdrawResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

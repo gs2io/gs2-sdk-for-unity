@@ -60,33 +60,22 @@ namespace Gs2.Unity.Gs2Lottery
                 long? limit=null
         )
 		{
-            yield return _client.DescribeBoxes(
-                new DescribeBoxesRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithPageToken(pageToken)
-                    .WithLimit(limit)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDescribeBoxesResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDescribeBoxesResult>(
-                                new EzDescribeBoxesResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeBoxes(
+                    new DescribeBoxesRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzDescribeBoxesResult>(
+                            r.Result == null ? null : new EzDescribeBoxesResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -106,32 +95,21 @@ namespace Gs2.Unity.Gs2Lottery
                 string prizeTableName
         )
 		{
-            yield return _client.GetBox(
-                new GetBoxRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithPrizeTableName(prizeTableName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetBoxResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetBoxResult>(
-                                new EzGetBoxResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetBox(
+                    new GetBoxRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithPrizeTableName(prizeTableName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetBoxResult>(
+                            r.Result == null ? null : new EzGetBoxResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -151,32 +129,21 @@ namespace Gs2.Unity.Gs2Lottery
                 string prizeTableName
         )
 		{
-            yield return _client.ResetBox(
-                new ResetBoxRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithPrizeTableName(prizeTableName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzResetBoxResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzResetBoxResult>(
-                                new EzResetBoxResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.ResetBox(
+                    new ResetBoxRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithPrizeTableName(prizeTableName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzResetBoxResult>(
+                            r.Result == null ? null : new EzResetBoxResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -196,32 +163,21 @@ namespace Gs2.Unity.Gs2Lottery
                 string lotteryName
         )
 		{
-            yield return _client.DescribeProbabilities(
-                new DescribeProbabilitiesRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithLotteryName(lotteryName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListProbabilitiesResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListProbabilitiesResult>(
-                                new EzListProbabilitiesResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeProbabilities(
+                    new DescribeProbabilitiesRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithLotteryName(lotteryName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListProbabilitiesResult>(
+                            r.Result == null ? null : new EzListProbabilitiesResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

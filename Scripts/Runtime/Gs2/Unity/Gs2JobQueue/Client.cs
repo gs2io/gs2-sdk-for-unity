@@ -60,31 +60,20 @@ namespace Gs2.Unity.Gs2JobQueue
                 string namespaceName
         )
 		{
-            yield return _client.Run(
-                new RunRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzRunResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzRunResult>(
-                                new EzRunResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.Run(
+                    new RunRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzRunResult>(
+                            r.Result == null ? null : new EzRunResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

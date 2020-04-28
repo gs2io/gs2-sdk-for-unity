@@ -3211,6 +3211,206 @@ namespace Gs2.Gs2Formation
 			return Gs2WebSocketSession.Execute(task);
         }
 
+        private class GetFormWithSignatureTask : Gs2WebSocketSessionTask<Result.GetFormWithSignatureResult>
+        {
+			private readonly Request.GetFormWithSignatureRequest _request;
+
+			public GetFormWithSignatureTask(Request.GetFormWithSignatureRequest request, UnityAction<AsyncResult<Result.GetFormWithSignatureResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.moldName != null)
+                {
+                    jsonWriter.WritePropertyName("moldName");
+                    jsonWriter.Write(_request.moldName.ToString());
+                }
+                if (_request.index != null)
+                {
+                    jsonWriter.WritePropertyName("index");
+                    jsonWriter.Write(_request.index.ToString());
+                }
+                if (_request.keyId != null)
+                {
+                    jsonWriter.WritePropertyName("keyId");
+                    jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2AccessToken");
+                    jsonWriter.Write(_request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("formation");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("form");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("getFormWithSignature");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  署名付きフォームを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetFormWithSignature(
+                Request.GetFormWithSignatureRequest request,
+                UnityAction<AsyncResult<Result.GetFormWithSignatureResult>> callback
+        )
+		{
+			var task = new GetFormWithSignatureTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class GetFormWithSignatureByUserIdTask : Gs2WebSocketSessionTask<Result.GetFormWithSignatureByUserIdResult>
+        {
+			private readonly Request.GetFormWithSignatureByUserIdRequest _request;
+
+			public GetFormWithSignatureByUserIdTask(Request.GetFormWithSignatureByUserIdRequest request, UnityAction<AsyncResult<Result.GetFormWithSignatureByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.userId != null)
+                {
+                    jsonWriter.WritePropertyName("userId");
+                    jsonWriter.Write(_request.userId.ToString());
+                }
+                if (_request.moldName != null)
+                {
+                    jsonWriter.WritePropertyName("moldName");
+                    jsonWriter.Write(_request.moldName.ToString());
+                }
+                if (_request.index != null)
+                {
+                    jsonWriter.WritePropertyName("index");
+                    jsonWriter.Write(_request.index.ToString());
+                }
+                if (_request.keyId != null)
+                {
+                    jsonWriter.WritePropertyName("keyId");
+                    jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("formation");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("form");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("getFormWithSignatureByUserId");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  ユーザIDを指定して署名付きフォームを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetFormWithSignatureByUserId(
+                Request.GetFormWithSignatureByUserIdRequest request,
+                UnityAction<AsyncResult<Result.GetFormWithSignatureByUserIdResult>> callback
+        )
+		{
+			var task = new GetFormWithSignatureByUserIdTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
         private class SetFormByUserIdTask : Gs2WebSocketSessionTask<Result.SetFormByUserIdResult>
         {
 			private readonly Request.SetFormByUserIdRequest _request;

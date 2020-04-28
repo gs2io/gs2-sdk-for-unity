@@ -55,31 +55,20 @@ namespace Gs2.Unity.Gs2Realtime
                 string roomName
         )
 		{
-            yield return _client.GetRoom(
-                new GetRoomRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithRoomName(roomName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetRoomResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetRoomResult>(
-                                new EzGetRoomResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetRoom(
+                    new GetRoomRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRoomName(roomName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetRoomResult>(
+                            r.Result == null ? null : new EzGetRoomResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

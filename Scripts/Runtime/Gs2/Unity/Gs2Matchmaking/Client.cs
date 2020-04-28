@@ -68,36 +68,25 @@ namespace Gs2.Unity.Gs2Matchmaking
                 long? expiresAt=null
         )
 		{
-            yield return _client.CreateGathering(
-                new CreateGatheringRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithPlayer(player.ToModel())
-                    .WithAttributeRanges(attributeRanges != null ? attributeRanges.Select(item => item?.ToModel()).ToList() : new List<AttributeRange>(new AttributeRange[]{}))
-                    .WithCapacityOfRoles(capacityOfRoles != null ? capacityOfRoles.Select(item => item?.ToModel()).ToList() : new List<CapacityOfRole>(new CapacityOfRole[]{}))
-                    .WithAllowUserIds(allowUserIds)
-                    .WithExpiresAt(expiresAt)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzCreateGatheringResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzCreateGatheringResult>(
-                                new EzCreateGatheringResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.CreateGathering(
+                    new CreateGatheringRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithPlayer(player.ToModel())
+                        .WithAttributeRanges(attributeRanges != null ? attributeRanges.Select(item => item?.ToModel()).ToList() : new List<AttributeRange>(new AttributeRange[]{}))
+                        .WithCapacityOfRoles(capacityOfRoles != null ? capacityOfRoles.Select(item => item?.ToModel()).ToList() : new List<CapacityOfRole>(new CapacityOfRole[]{}))
+                        .WithAllowUserIds(allowUserIds)
+                        .WithExpiresAt(expiresAt)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzCreateGatheringResult>(
+                            r.Result == null ? null : new EzCreateGatheringResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -119,33 +108,22 @@ namespace Gs2.Unity.Gs2Matchmaking
                 List<EzAttributeRange> attributeRanges=null
         )
 		{
-            yield return _client.UpdateGathering(
-                new UpdateGatheringRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithGatheringName(gatheringName)
-                    .WithAttributeRanges(attributeRanges != null ? attributeRanges.Select(item => item?.ToModel()).ToList() : new List<AttributeRange>(new AttributeRange[]{}))
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzUpdateGatheringResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzUpdateGatheringResult>(
-                                new EzUpdateGatheringResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.UpdateGathering(
+                    new UpdateGatheringRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithGatheringName(gatheringName)
+                        .WithAttributeRanges(attributeRanges != null ? attributeRanges.Select(item => item?.ToModel()).ToList() : new List<AttributeRange>(new AttributeRange[]{}))
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzUpdateGatheringResult>(
+                            r.Result == null ? null : new EzUpdateGatheringResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -171,33 +149,22 @@ namespace Gs2.Unity.Gs2Matchmaking
                 string matchmakingContextToken=null
         )
 		{
-            yield return _client.DoMatchmaking(
-                new DoMatchmakingRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithPlayer(player.ToModel())
-                    .WithMatchmakingContextToken(matchmakingContextToken)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDoMatchmakingResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDoMatchmakingResult>(
-                                new EzDoMatchmakingResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DoMatchmaking(
+                    new DoMatchmakingRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithPlayer(player.ToModel())
+                        .WithMatchmakingContextToken(matchmakingContextToken)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzDoMatchmakingResult>(
+                            r.Result == null ? null : new EzDoMatchmakingResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -214,31 +181,20 @@ namespace Gs2.Unity.Gs2Matchmaking
                 string gatheringName
         )
 		{
-            yield return _client.GetGathering(
-                new GetGatheringRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithGatheringName(gatheringName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetGatheringResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetGatheringResult>(
-                                new EzGetGatheringResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetGathering(
+                    new GetGatheringRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithGatheringName(gatheringName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetGatheringResult>(
+                            r.Result == null ? null : new EzGetGatheringResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -260,32 +216,21 @@ namespace Gs2.Unity.Gs2Matchmaking
                 string gatheringName
         )
 		{
-            yield return _client.CancelMatchmaking(
-                new CancelMatchmakingRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithGatheringName(gatheringName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzCancelMatchmakingResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzCancelMatchmakingResult>(
-                                new EzCancelMatchmakingResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.CancelMatchmaking(
+                    new CancelMatchmakingRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithGatheringName(gatheringName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzCancelMatchmakingResult>(
+                            r.Result == null ? null : new EzCancelMatchmakingResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

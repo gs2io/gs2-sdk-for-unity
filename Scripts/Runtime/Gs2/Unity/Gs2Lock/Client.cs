@@ -67,34 +67,23 @@ namespace Gs2.Unity.Gs2Lock
                 long ttl
         )
 		{
-            yield return _client.Lock(
-                new LockRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithPropertyId(propertyId)
-                    .WithTransactionId(transactionId)
-                    .WithTtl(ttl)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzLockResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzLockResult>(
-                                new EzLockResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.Lock(
+                    new LockRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithPropertyId(propertyId)
+                        .WithTransactionId(transactionId)
+                        .WithTtl(ttl)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzLockResult>(
+                            r.Result == null ? null : new EzLockResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -119,33 +108,22 @@ namespace Gs2.Unity.Gs2Lock
                 string transactionId
         )
 		{
-            yield return _client.Unlock(
-                new UnlockRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithPropertyId(propertyId)
-                    .WithTransactionId(transactionId)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzUnlockResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzUnlockResult>(
-                                new EzUnlockResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.Unlock(
+                    new UnlockRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithPropertyId(propertyId)
+                        .WithTransactionId(transactionId)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzUnlockResult>(
+                            r.Result == null ? null : new EzUnlockResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

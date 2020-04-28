@@ -67,35 +67,24 @@ namespace Gs2.Unity.Gs2Chat
                 List<string> whiteListUserIds=null
         )
 		{
-            yield return _client.CreateRoom(
-                new CreateRoomRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithName(name)
-                    .WithMetadata(metadata)
-                    .WithPassword(password)
-                    .WithWhiteListUserIds(whiteListUserIds)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzCreateRoomResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzCreateRoomResult>(
-                                new EzCreateRoomResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.CreateRoom(
+                    new CreateRoomRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithName(name)
+                        .WithMetadata(metadata)
+                        .WithPassword(password)
+                        .WithWhiteListUserIds(whiteListUserIds)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzCreateRoomResult>(
+                            r.Result == null ? null : new EzCreateRoomResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -112,31 +101,20 @@ namespace Gs2.Unity.Gs2Chat
                 string roomName
         )
 		{
-            yield return _client.GetRoom(
-                new GetRoomRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithRoomName(roomName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetRoomResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetRoomResult>(
-                                new EzGetRoomResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetRoom(
+                    new GetRoomRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRoomName(roomName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetRoomResult>(
+                            r.Result == null ? null : new EzGetRoomResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -158,32 +136,21 @@ namespace Gs2.Unity.Gs2Chat
                 string roomName
         )
 		{
-            yield return _client.DeleteRoom(
-                new DeleteRoomRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithRoomName(roomName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDeleteRoomResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDeleteRoomResult>(
-                                new EzDeleteRoomResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DeleteRoom(
+                    new DeleteRoomRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRoomName(roomName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzDeleteRoomResult>(
+                            r.Result == null ? null : new EzDeleteRoomResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -209,35 +176,24 @@ namespace Gs2.Unity.Gs2Chat
                 string password=null
         )
 		{
-            yield return _client.Post(
-                new PostRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithRoomName(roomName)
-                    .WithCategory(category)
-                    .WithMetadata(metadata)
-                    .WithPassword(password)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzPostResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzPostResult>(
-                                new EzPostResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.Post(
+                    new PostRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRoomName(roomName)
+                        .WithCategory(category)
+                        .WithMetadata(metadata)
+                        .WithPassword(password)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzPostResult>(
+                            r.Result == null ? null : new EzPostResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -265,33 +221,22 @@ namespace Gs2.Unity.Gs2Chat
                 long? limit=null
         )
 		{
-            yield return _client.DescribeMessages(
-                new DescribeMessagesRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithRoomName(roomName)
-                    .WithStartAt(startAt)
-                    .WithLimit(limit),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListMessagesResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListMessagesResult>(
-                                new EzListMessagesResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.DescribeMessages(
+                    new DescribeMessagesRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRoomName(roomName)
+                        .WithStartAt(startAt)
+                        .WithLimit(limit),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListMessagesResult>(
+                            r.Result == null ? null : new EzListMessagesResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -313,33 +258,22 @@ namespace Gs2.Unity.Gs2Chat
                 long? limit=null
         )
 		{
-            yield return _client.DescribeSubscribes(
-                new DescribeSubscribesRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithPageToken(pageToken)
-                    .WithLimit(limit)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListSubscribeRoomsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListSubscribeRoomsResult>(
-                                new EzListSubscribeRoomsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeSubscribes(
+                    new DescribeSubscribesRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListSubscribeRoomsResult>(
+                            r.Result == null ? null : new EzListSubscribeRoomsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -365,33 +299,22 @@ namespace Gs2.Unity.Gs2Chat
                 List<EzNotificationType> notificationTypes=null
         )
 		{
-            yield return _client.Subscribe(
-                new SubscribeRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithRoomName(roomName)
-                    .WithNotificationTypes(notificationTypes != null ? notificationTypes.Select(item => item?.ToModel()).ToList() : new List<NotificationType>(new NotificationType[]{}))
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzSubscribeResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzSubscribeResult>(
-                                new EzSubscribeResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.Subscribe(
+                    new SubscribeRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRoomName(roomName)
+                        .WithNotificationTypes(notificationTypes != null ? notificationTypes.Select(item => item?.ToModel()).ToList() : new List<NotificationType>(new NotificationType[]{}))
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzSubscribeResult>(
+                            r.Result == null ? null : new EzSubscribeResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -413,33 +336,22 @@ namespace Gs2.Unity.Gs2Chat
                 List<EzNotificationType> notificationTypes=null
         )
 		{
-            yield return _client.UpdateNotificationType(
-                new UpdateNotificationTypeRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithRoomName(roomName)
-                    .WithNotificationTypes(notificationTypes != null ? notificationTypes.Select(item => item?.ToModel()).ToList() : new List<NotificationType>(new NotificationType[]{}))
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzUpdateSubscribeSettingResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzUpdateSubscribeSettingResult>(
-                                new EzUpdateSubscribeSettingResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.UpdateNotificationType(
+                    new UpdateNotificationTypeRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRoomName(roomName)
+                        .WithNotificationTypes(notificationTypes != null ? notificationTypes.Select(item => item?.ToModel()).ToList() : new List<NotificationType>(new NotificationType[]{}))
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzUpdateSubscribeSettingResult>(
+                            r.Result == null ? null : new EzUpdateSubscribeSettingResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -459,32 +371,21 @@ namespace Gs2.Unity.Gs2Chat
                 string roomName
         )
 		{
-            yield return _client.Unsubscribe(
-                new UnsubscribeRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithRoomName(roomName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzUnsubscribeResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzUnsubscribeResult>(
-                                new EzUnsubscribeResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.Unsubscribe(
+                    new UnsubscribeRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRoomName(roomName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzUnsubscribeResult>(
+                            r.Result == null ? null : new EzUnsubscribeResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

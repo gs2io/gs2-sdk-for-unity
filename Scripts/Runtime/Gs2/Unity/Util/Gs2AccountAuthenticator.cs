@@ -33,7 +33,7 @@ namespace Gs2.Unity.Util
             _password = password;
         }
 
-        public IEnumerator Authentication(UnityAction<AsyncResult<AccessToken>> callback)
+        public override IEnumerator Authentication(UnityAction<AsyncResult<AccessToken>> callback)
         {
             var accountClient = new Gs2AccountWebSocketClient(_session);
 

@@ -63,33 +63,22 @@ namespace Gs2.Unity.Gs2Auth
                 string signature
         )
 		{
-            yield return _client.LoginBySignature(
-                new LoginBySignatureRequest()
-                    .WithUserId(userId)
-                    .WithKeyId(keyId)
-                    .WithBody(body)
-                    .WithSignature(signature),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzLoginResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzLoginResult>(
-                                new EzLoginResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.LoginBySignature(
+                    new LoginBySignatureRequest()
+                        .WithUserId(userId)
+                        .WithKeyId(keyId)
+                        .WithBody(body)
+                        .WithSignature(signature),
+                    r => cb.Invoke(
+                        new AsyncResult<EzLoginResult>(
+                            r.Result == null ? null : new EzLoginResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

@@ -64,34 +64,23 @@ namespace Gs2.Unity.Gs2Limit
                 long? limit=null
         )
 		{
-            yield return _client.DescribeCounters(
-                new DescribeCountersRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithLimitName(limitName)
-                    .WithPageToken(pageToken)
-                    .WithLimit(limit)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListCountersResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListCountersResult>(
-                                new EzListCountersResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeCounters(
+                    new DescribeCountersRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithLimitName(limitName)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListCountersResult>(
+                            r.Result == null ? null : new EzListCountersResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -113,33 +102,22 @@ namespace Gs2.Unity.Gs2Limit
                 string counterName
         )
 		{
-            yield return _client.GetCounter(
-                new GetCounterRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithLimitName(limitName)
-                    .WithCounterName(counterName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetCounterResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetCounterResult>(
-                                new EzGetCounterResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetCounter(
+                    new GetCounterRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithLimitName(limitName)
+                        .WithCounterName(counterName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetCounterResult>(
+                            r.Result == null ? null : new EzGetCounterResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -165,35 +143,24 @@ namespace Gs2.Unity.Gs2Limit
                 int? maxValue=null
         )
 		{
-            yield return _client.CountUp(
-                new CountUpRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithLimitName(limitName)
-                    .WithCounterName(counterName)
-                    .WithCountUpValue(countUpValue)
-                    .WithMaxValue(maxValue)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzCountUpResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzCountUpResult>(
-                                new EzCountUpResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.CountUp(
+                    new CountUpRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithLimitName(limitName)
+                        .WithCounterName(counterName)
+                        .WithCountUpValue(countUpValue)
+                        .WithMaxValue(maxValue)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzCountUpResult>(
+                            r.Result == null ? null : new EzCountUpResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -211,30 +178,19 @@ namespace Gs2.Unity.Gs2Limit
                 string namespaceName
         )
 		{
-            yield return _client.DescribeLimitModels(
-                new DescribeLimitModelsRequest()
-                    .WithNamespaceName(namespaceName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListLimitModelsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListLimitModelsResult>(
-                                new EzListLimitModelsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.DescribeLimitModels(
+                    new DescribeLimitModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListLimitModelsResult>(
+                            r.Result == null ? null : new EzListLimitModelsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -254,31 +210,20 @@ namespace Gs2.Unity.Gs2Limit
                 string limitName
         )
 		{
-            yield return _client.GetLimitModel(
-                new GetLimitModelRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithLimitName(limitName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetLimitModelResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetLimitModelResult>(
-                                new EzGetLimitModelResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetLimitModel(
+                    new GetLimitModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithLimitName(limitName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetLimitModelResult>(
+                            r.Result == null ? null : new EzGetLimitModelResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

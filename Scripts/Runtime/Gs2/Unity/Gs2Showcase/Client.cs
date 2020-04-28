@@ -58,32 +58,21 @@ namespace Gs2.Unity.Gs2Showcase
                 string showcaseName
         )
 		{
-            yield return _client.GetShowcase(
-                new GetShowcaseRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithShowcaseName(showcaseName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetShowcaseResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetShowcaseResult>(
-                                new EzGetShowcaseResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetShowcase(
+                    new GetShowcaseRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithShowcaseName(showcaseName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetShowcaseResult>(
+                            r.Result == null ? null : new EzGetShowcaseResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -107,34 +96,23 @@ namespace Gs2.Unity.Gs2Showcase
                 List<EzConfig> config=null
         )
 		{
-            yield return _client.Buy(
-                new BuyRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithShowcaseName(showcaseName)
-                    .WithDisplayItemId(displayItemId)
-                    .WithConfig(config != null ? config.Select(item => item?.ToModel()).ToList() : new List<Config>(new Config[]{}))
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzBuyResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzBuyResult>(
-                                new EzBuyResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.Buy(
+                    new BuyRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithShowcaseName(showcaseName)
+                        .WithDisplayItemId(displayItemId)
+                        .WithConfig(config != null ? config.Select(item => item?.ToModel()).ToList() : new List<Config>(new Config[]{}))
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzBuyResult>(
+                            r.Result == null ? null : new EzBuyResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

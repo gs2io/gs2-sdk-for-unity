@@ -59,30 +59,19 @@ namespace Gs2.Unity.Gs2Account
                 string namespaceName
         )
 		{
-            yield return _client.CreateAccount(
-                new CreateAccountRequest()
-                    .WithNamespaceName(namespaceName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzCreateResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzCreateResult>(
-                                new EzCreateResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.CreateAccount(
+                    new CreateAccountRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzCreateResult>(
+                            r.Result == null ? null : new EzCreateResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -109,33 +98,22 @@ namespace Gs2.Unity.Gs2Account
                 string password
         )
 		{
-            yield return _client.Authentication(
-                new AuthenticationRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithUserId(userId)
-                    .WithKeyId(keyId)
-                    .WithPassword(password),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzAuthenticationResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzAuthenticationResult>(
-                                new EzAuthenticationResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.Authentication(
+                    new AuthenticationRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithUserId(userId)
+                        .WithKeyId(keyId)
+                        .WithPassword(password),
+                    r => cb.Invoke(
+                        new AsyncResult<EzAuthenticationResult>(
+                            r.Result == null ? null : new EzAuthenticationResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -166,34 +144,23 @@ namespace Gs2.Unity.Gs2Account
                 string password
         )
 		{
-            yield return _client.CreateTakeOver(
-                new CreateTakeOverRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithType(type)
-                    .WithUserIdentifier(userIdentifier)
-                    .WithPassword(password)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzAddTakeOverSettingResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzAddTakeOverSettingResult>(
-                                new EzAddTakeOverSettingResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.CreateTakeOver(
+                    new CreateTakeOverRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithType(type)
+                        .WithUserIdentifier(userIdentifier)
+                        .WithPassword(password)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzAddTakeOverSettingResult>(
+                            r.Result == null ? null : new EzAddTakeOverSettingResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -218,33 +185,22 @@ namespace Gs2.Unity.Gs2Account
                 long? limit=null
         )
 		{
-            yield return _client.DescribeTakeOvers(
-                new DescribeTakeOversRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithPageToken(pageToken)
-                    .WithLimit(limit)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListTakeOverSettingsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListTakeOverSettingsResult>(
-                                new EzListTakeOverSettingsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeTakeOvers(
+                    new DescribeTakeOversRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListTakeOverSettingsResult>(
+                            r.Result == null ? null : new EzListTakeOverSettingsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -275,34 +231,23 @@ namespace Gs2.Unity.Gs2Account
                 string password
         )
 		{
-            yield return _client.UpdateTakeOver(
-                new UpdateTakeOverRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithType(type)
-                    .WithOldPassword(oldPassword)
-                    .WithPassword(password)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzUpdateTakeOverSettingResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzUpdateTakeOverSettingResult>(
-                                new EzUpdateTakeOverSettingResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.UpdateTakeOver(
+                    new UpdateTakeOverRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithType(type)
+                        .WithOldPassword(oldPassword)
+                        .WithPassword(password)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzUpdateTakeOverSettingResult>(
+                            r.Result == null ? null : new EzUpdateTakeOverSettingResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -324,32 +269,21 @@ namespace Gs2.Unity.Gs2Account
                 int type
         )
 		{
-            yield return _client.DeleteTakeOver(
-                new DeleteTakeOverRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithType(type)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDeleteTakeOverSettingResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDeleteTakeOverSettingResult>(
-                                new EzDeleteTakeOverSettingResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DeleteTakeOver(
+                    new DeleteTakeOverRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithType(type)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzDeleteTakeOverSettingResult>(
+                            r.Result == null ? null : new EzDeleteTakeOverSettingResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -373,33 +307,22 @@ namespace Gs2.Unity.Gs2Account
                 string password
         )
 		{
-            yield return _client.DoTakeOver(
-                new DoTakeOverRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithType(type)
-                    .WithUserIdentifier(userIdentifier)
-                    .WithPassword(password),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDoTakeOverResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDoTakeOverResult>(
-                                new EzDoTakeOverResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.DoTakeOver(
+                    new DoTakeOverRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithType(type)
+                        .WithUserIdentifier(userIdentifier)
+                        .WithPassword(password),
+                    r => cb.Invoke(
+                        new AsyncResult<EzDoTakeOverResult>(
+                            r.Result == null ? null : new EzDoTakeOverResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

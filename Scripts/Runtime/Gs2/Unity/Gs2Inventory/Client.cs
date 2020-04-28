@@ -53,30 +53,19 @@ namespace Gs2.Unity.Gs2Inventory
                 string namespaceName
         )
 		{
-            yield return _client.DescribeInventoryModels(
-                new DescribeInventoryModelsRequest()
-                    .WithNamespaceName(namespaceName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListInventoryModelsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListInventoryModelsResult>(
-                                new EzListInventoryModelsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.DescribeInventoryModels(
+                    new DescribeInventoryModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListInventoryModelsResult>(
+                            r.Result == null ? null : new EzListInventoryModelsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -93,31 +82,20 @@ namespace Gs2.Unity.Gs2Inventory
                 string inventoryName
         )
 		{
-            yield return _client.GetInventoryModel(
-                new GetInventoryModelRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithInventoryName(inventoryName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetInventoryModelResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetInventoryModelResult>(
-                                new EzGetInventoryModelResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetInventoryModel(
+                    new GetInventoryModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetInventoryModelResult>(
+                            r.Result == null ? null : new EzGetInventoryModelResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -134,31 +112,20 @@ namespace Gs2.Unity.Gs2Inventory
                 string inventoryName
         )
 		{
-            yield return _client.DescribeItemModels(
-                new DescribeItemModelsRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithInventoryName(inventoryName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListItemModelsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListItemModelsResult>(
-                                new EzListItemModelsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.DescribeItemModels(
+                    new DescribeItemModelsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListItemModelsResult>(
+                            r.Result == null ? null : new EzListItemModelsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -177,32 +144,21 @@ namespace Gs2.Unity.Gs2Inventory
                 string itemName
         )
 		{
-            yield return _client.GetItemModel(
-                new GetItemModelRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithInventoryName(inventoryName)
-                    .WithItemName(itemName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetItemModelResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetItemModelResult>(
-                                new EzGetItemModelResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetItemModel(
+                    new GetItemModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName)
+                        .WithItemName(itemName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetItemModelResult>(
+                            r.Result == null ? null : new EzGetItemModelResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -226,33 +182,22 @@ namespace Gs2.Unity.Gs2Inventory
                 long? limit=null
         )
 		{
-            yield return _client.DescribeInventories(
-                new DescribeInventoriesRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithPageToken(pageToken)
-                    .WithLimit(limit)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListInventoriesResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListInventoriesResult>(
-                                new EzListInventoriesResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeInventories(
+                    new DescribeInventoriesRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListInventoriesResult>(
+                            r.Result == null ? null : new EzListInventoriesResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -272,32 +217,21 @@ namespace Gs2.Unity.Gs2Inventory
                 string inventoryName
         )
 		{
-            yield return _client.GetInventory(
-                new GetInventoryRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithInventoryName(inventoryName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetInventoryResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetInventoryResult>(
-                                new EzGetInventoryResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetInventory(
+                    new GetInventoryRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetInventoryResult>(
+                            r.Result == null ? null : new EzGetInventoryResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -321,34 +255,23 @@ namespace Gs2.Unity.Gs2Inventory
                 long? limit=null
         )
 		{
-            yield return _client.DescribeItemSets(
-                new DescribeItemSetsRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithInventoryName(inventoryName)
-                    .WithPageToken(pageToken)
-                    .WithLimit(limit)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListItemsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListItemsResult>(
-                                new EzListItemsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DescribeItemSets(
+                    new DescribeItemSetsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListItemsResult>(
+                            r.Result == null ? null : new EzListItemsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -373,33 +296,22 @@ namespace Gs2.Unity.Gs2Inventory
                 string itemName
         )
 		{
-            yield return _client.GetItemSet(
-                new GetItemSetRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithInventoryName(inventoryName)
-                    .WithItemName(itemName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetItemResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetItemResult>(
-                                new EzGetItemResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetItemSet(
+                    new GetItemSetRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName)
+                        .WithItemName(itemName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetItemResult>(
+                            r.Result == null ? null : new EzGetItemResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -427,35 +339,24 @@ namespace Gs2.Unity.Gs2Inventory
                 string itemSetName=null
         )
 		{
-            yield return _client.GetItemWithSignature(
-                new GetItemWithSignatureRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithInventoryName(inventoryName)
-                    .WithItemName(itemName)
-                    .WithItemSetName(itemSetName)
-                    .WithKeyId(keyId)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetItemWithSignatureResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetItemWithSignatureResult>(
-                                new EzGetItemWithSignatureResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetItemWithSignature(
+                    new GetItemWithSignatureRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName)
+                        .WithItemName(itemName)
+                        .WithItemSetName(itemSetName)
+                        .WithKeyId(keyId)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetItemWithSignatureResult>(
+                            r.Result == null ? null : new EzGetItemWithSignatureResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -489,35 +390,24 @@ namespace Gs2.Unity.Gs2Inventory
                 string itemSetName=null
         )
 		{
-            yield return _client.ConsumeItemSet(
-                new ConsumeItemSetRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithInventoryName(inventoryName)
-                    .WithItemName(itemName)
-                    .WithConsumeCount(consumeCount)
-                    .WithItemSetName(itemSetName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzConsumeResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzConsumeResult>(
-                                new EzConsumeResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.ConsumeItemSet(
+                    new ConsumeItemSetRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName)
+                        .WithItemName(itemName)
+                        .WithConsumeCount(consumeCount)
+                        .WithItemSetName(itemSetName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzConsumeResult>(
+                            r.Result == null ? null : new EzConsumeResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}

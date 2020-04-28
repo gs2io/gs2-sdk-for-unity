@@ -53,30 +53,19 @@ namespace Gs2.Unity.Gs2Stamina
                 string namespaceName
         )
 		{
-            yield return _client.DescribeStaminaModels(
-                new DescribeStaminaModelsRequest()
-                    .WithNamespaceName(namespaceName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListStaminaModelsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListStaminaModelsResult>(
-                                new EzListStaminaModelsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.DescribeStaminaModels(
+                    new DescribeStaminaModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListStaminaModelsResult>(
+                            r.Result == null ? null : new EzListStaminaModelsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -93,31 +82,20 @@ namespace Gs2.Unity.Gs2Stamina
                 string staminaName
         )
 		{
-            yield return _client.GetStaminaModel(
-                new GetStaminaModelRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithStaminaName(staminaName),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetStaminaModelResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetStaminaModelResult>(
-                                new EzGetStaminaModelResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetStaminaModel(
+                    new GetStaminaModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithStaminaName(staminaName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetStaminaModelResult>(
+                            r.Result == null ? null : new EzGetStaminaModelResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -137,32 +115,21 @@ namespace Gs2.Unity.Gs2Stamina
                 string staminaName
         )
 		{
-            yield return _client.GetStamina(
-                new GetStaminaRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithStaminaName(staminaName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetStaminaResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzGetStaminaResult>(
-                                new EzGetStaminaResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetStamina(
+                    new GetStaminaRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithStaminaName(staminaName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetStaminaResult>(
+                            r.Result == null ? null : new EzGetStaminaResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -184,33 +151,22 @@ namespace Gs2.Unity.Gs2Stamina
                 int consumeValue
         )
 		{
-            yield return _client.ConsumeStamina(
-                new ConsumeStaminaRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithStaminaName(staminaName)
-                    .WithConsumeValue(consumeValue)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzConsumeResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzConsumeResult>(
-                                new EzConsumeResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.ConsumeStamina(
+                    new ConsumeStaminaRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithStaminaName(staminaName)
+                        .WithConsumeValue(consumeValue)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzConsumeResult>(
+                            r.Result == null ? null : new EzConsumeResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 	}
