@@ -30,7 +30,7 @@ namespace Gs2.Core.Net
 {
     public class Gs2RestSession : Gs2Session
     {
-        public const string EndpointHost = "https://{service}.{region}.gen2.gs2io.com";
+        public static string EndpointHost = "https://{service}.{region}.gen2.gs2io.com";
 
         private class LoginResult
         {

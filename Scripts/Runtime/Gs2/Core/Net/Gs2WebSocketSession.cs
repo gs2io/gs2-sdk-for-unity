@@ -27,7 +27,7 @@ namespace Gs2.Core.Net
 {
     public class Gs2WebSocketSession : Gs2Session
     {
-        public const string EndpointHost = "wss://gateway-ws.{region}.gen2.gs2io.com";
+        public static string EndpointHost = "wss://gateway-ws.{region}.gen2.gs2io.com";
 
         public delegate void NotificationHandler(NotificationMessage message);
         public event NotificationHandler OnNotificationMessage;
@@ -71,7 +71,7 @@ namespace Gs2.Core.Net
         private State _state = State.Idle;
         private Gs2Exception _lastGs2Exception = null;
 
-        private readonly WebSocket _webSocket;
+        private WebSocket _webSocket;
 
         private WebSocket CreateWebSocket()
         {
@@ -221,17 +221,14 @@ namespace Gs2.Core.Net
 
         public Gs2WebSocketSession(BasicGs2Credential basicGs2Credential) : base(basicGs2Credential)
         {
-            _webSocket = CreateWebSocket();
         }
 
         public Gs2WebSocketSession(BasicGs2Credential basicGs2Credential, Region region) : base(basicGs2Credential, region)
         {
-            _webSocket = CreateWebSocket();
         }
 
         public Gs2WebSocketSession(BasicGs2Credential basicGs2Credential, string region) : base(basicGs2Credential, region)
         {
-            _webSocket = CreateWebSocket();
         }
 
         public IEnumerator Execute(Gs2WebSocketSessionTask gs2WebSocketSessionTask)
@@ -241,6 +238,10 @@ namespace Gs2.Core.Net
 
         public void Send(string message)
         {
+            if (_webSocket == null)
+            {
+                _webSocket = CreateWebSocket();
+            }
             _webSocket.SendAsync(message, null);
         }
 
@@ -248,6 +249,10 @@ namespace Gs2.Core.Net
         {
             _state = State.Opening;
 
+            if (_webSocket == null)
+            {
+                _webSocket = CreateWebSocket();
+            }
             _webSocket.ConnectAsync();
 
             yield break;
@@ -255,6 +260,10 @@ namespace Gs2.Core.Net
 
         protected override IEnumerator CancelOpenImpl()
         {
+            if (_webSocket == null)
+            {
+                _webSocket = CreateWebSocket();
+            }
             _webSocket.CloseAsync();
 
             yield break;
@@ -266,6 +275,10 @@ namespace Gs2.Core.Net
             // （Gs2Session と独立してロックを用意するとデッドロックしうる）ので、
             // ステートは変化させない
 
+            if (_webSocket == null)
+            {
+                _webSocket = CreateWebSocket();
+            }
             _webSocket.CloseAsync();
 
             yield break;
