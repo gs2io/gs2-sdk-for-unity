@@ -1370,6 +1370,82 @@ namespace Gs2.Gs2Dictionary
 			return Gs2RestSession.Execute(task);
         }
 
+        private class AddEntriesByStampSheetTask : Gs2RestSessionTask<Result.AddEntriesByStampSheetResult>
+        {
+			private readonly Request.AddEntriesByStampSheetRequest _request;
+
+			public AddEntriesByStampSheetTask(Request.AddEntriesByStampSheetRequest request, UnityAction<AsyncResult<Result.AddEntriesByStampSheetResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "dictionary")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/stamp/entry/add";
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.stampSheet != null)
+                {
+                    jsonWriter.WritePropertyName("stampSheet");
+                    jsonWriter.Write(_request.stampSheet.ToString());
+                }
+                if (_request.keyId != null)
+                {
+                    jsonWriter.WritePropertyName("keyId");
+                    jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  スタンプシートでエントリーを追加<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator AddEntriesByStampSheet(
+                Request.AddEntriesByStampSheetRequest request,
+                UnityAction<AsyncResult<Result.AddEntriesByStampSheetResult>> callback
+        )
+		{
+			var task = new AddEntriesByStampSheetTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
         private class ExportMasterTask : Gs2RestSessionTask<Result.ExportMasterResult>
         {
 			private readonly Request.ExportMasterRequest _request;
