@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Matchmaking.Model
 {
 	[Preserve]
-	public class AttributeRange
+	public class AttributeRange : IComparable
 	{
 
         /** 属性名 */
@@ -97,6 +97,37 @@ namespace Gs2.Gs2Matchmaking.Model
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithMin(data.Keys.Contains("min") && data["min"] != null ? (int?)int.Parse(data["min"].ToString()) : null)
                 .WithMax(data.Keys.Contains("max") && data["max"] != null ? (int?)int.Parse(data["max"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as AttributeRange;
+            var diff = 0;
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (min == null && min == other.min)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(min - other.min);
+            }
+            if (max == null && max == other.max)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(max - other.max);
+            }
+            return diff;
         }
 	}
 }

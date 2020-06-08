@@ -23,7 +23,7 @@ using System.Linq;
 using Gs2.Core;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
-using LitJson;
+using Gs2.Util.LitJson;
 
 namespace Gs2.Gs2Script
 {
@@ -42,86 +42,6 @@ namespace Gs2.Gs2Script
 		{
 
 		}
-
-        private class DescribeNamespacesTask : Gs2WebSocketSessionTask<Result.DescribeNamespacesResult>
-        {
-			private readonly Request.DescribeNamespacesRequest _request;
-
-			public DescribeNamespacesTask(Request.DescribeNamespacesRequest request, UnityAction<AsyncResult<Result.DescribeNamespacesResult>> userCallback) : base(userCallback)
-			{
-				_request = request;
-			}
-
-            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
-            {
-                var stringBuilder = new StringBuilder();
-                var jsonWriter = new JsonWriter(stringBuilder);
-
-                jsonWriter.WriteObjectStart();
-
-                if (_request.pageToken != null)
-                {
-                    jsonWriter.WritePropertyName("pageToken");
-                    jsonWriter.Write(_request.pageToken.ToString());
-                }
-                if (_request.limit != null)
-                {
-                    jsonWriter.WritePropertyName("limit");
-                    jsonWriter.Write(_request.limit.ToString());
-                }
-                if (_request.contextStack != null)
-                {
-                    jsonWriter.WritePropertyName("contextStack");
-                    jsonWriter.Write(_request.contextStack.ToString());
-                }
-                if (_request.requestId != null)
-                {
-                    jsonWriter.WritePropertyName("xGs2RequestId");
-                    jsonWriter.Write(_request.requestId);
-                }
-
-                jsonWriter.WritePropertyName("xGs2ClientId");
-                jsonWriter.Write(gs2Session.Credential.ClientId);
-                jsonWriter.WritePropertyName("xGs2ProjectToken");
-                jsonWriter.Write(gs2Session.ProjectToken);
-
-                jsonWriter.WritePropertyName("x_gs2");
-                jsonWriter.WriteObjectStart();
-                jsonWriter.WritePropertyName("service");
-                jsonWriter.Write("script");
-                jsonWriter.WritePropertyName("component");
-                jsonWriter.Write("namespace");
-                jsonWriter.WritePropertyName("function");
-                jsonWriter.Write("describeNamespaces");
-                jsonWriter.WritePropertyName("contentType");
-                jsonWriter.Write("application/json");
-                jsonWriter.WritePropertyName("requestId");
-                jsonWriter.Write(Gs2SessionTaskId.ToString());
-                jsonWriter.WriteObjectEnd();
-
-                jsonWriter.WriteObjectEnd();
-
-                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
-
-                return new EmptyCoroutine();
-            }
-        }
-
-		/// <summary>
-		///  ネームスペースの一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator DescribeNamespaces(
-                Request.DescribeNamespacesRequest request,
-                UnityAction<AsyncResult<Result.DescribeNamespacesResult>> callback
-        )
-		{
-			var task = new DescribeNamespacesTask(request, callback);
-			return Gs2WebSocketSession.Execute(task);
-        }
 
         private class CreateNamespaceTask : Gs2WebSocketSessionTask<Result.CreateNamespaceResult>
         {
@@ -515,91 +435,6 @@ namespace Gs2.Gs2Script
         )
 		{
 			var task = new DeleteNamespaceTask(request, callback);
-			return Gs2WebSocketSession.Execute(task);
-        }
-
-        private class DescribeScriptsTask : Gs2WebSocketSessionTask<Result.DescribeScriptsResult>
-        {
-			private readonly Request.DescribeScriptsRequest _request;
-
-			public DescribeScriptsTask(Request.DescribeScriptsRequest request, UnityAction<AsyncResult<Result.DescribeScriptsResult>> userCallback) : base(userCallback)
-			{
-				_request = request;
-			}
-
-            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
-            {
-                var stringBuilder = new StringBuilder();
-                var jsonWriter = new JsonWriter(stringBuilder);
-
-                jsonWriter.WriteObjectStart();
-
-                if (_request.namespaceName != null)
-                {
-                    jsonWriter.WritePropertyName("namespaceName");
-                    jsonWriter.Write(_request.namespaceName.ToString());
-                }
-                if (_request.pageToken != null)
-                {
-                    jsonWriter.WritePropertyName("pageToken");
-                    jsonWriter.Write(_request.pageToken.ToString());
-                }
-                if (_request.limit != null)
-                {
-                    jsonWriter.WritePropertyName("limit");
-                    jsonWriter.Write(_request.limit.ToString());
-                }
-                if (_request.contextStack != null)
-                {
-                    jsonWriter.WritePropertyName("contextStack");
-                    jsonWriter.Write(_request.contextStack.ToString());
-                }
-                if (_request.requestId != null)
-                {
-                    jsonWriter.WritePropertyName("xGs2RequestId");
-                    jsonWriter.Write(_request.requestId);
-                }
-
-                jsonWriter.WritePropertyName("xGs2ClientId");
-                jsonWriter.Write(gs2Session.Credential.ClientId);
-                jsonWriter.WritePropertyName("xGs2ProjectToken");
-                jsonWriter.Write(gs2Session.ProjectToken);
-
-                jsonWriter.WritePropertyName("x_gs2");
-                jsonWriter.WriteObjectStart();
-                jsonWriter.WritePropertyName("service");
-                jsonWriter.Write("script");
-                jsonWriter.WritePropertyName("component");
-                jsonWriter.Write("script");
-                jsonWriter.WritePropertyName("function");
-                jsonWriter.Write("describeScripts");
-                jsonWriter.WritePropertyName("contentType");
-                jsonWriter.Write("application/json");
-                jsonWriter.WritePropertyName("requestId");
-                jsonWriter.Write(Gs2SessionTaskId.ToString());
-                jsonWriter.WriteObjectEnd();
-
-                jsonWriter.WriteObjectEnd();
-
-                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
-
-                return new EmptyCoroutine();
-            }
-        }
-
-		/// <summary>
-		///  スクリプトの一覧を取得します<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator DescribeScripts(
-                Request.DescribeScriptsRequest request,
-                UnityAction<AsyncResult<Result.DescribeScriptsResult>> callback
-        )
-		{
-			var task = new DescribeScriptsTask(request, callback);
 			return Gs2WebSocketSession.Execute(task);
         }
 
@@ -1120,6 +955,86 @@ namespace Gs2.Gs2Script
         )
 		{
 			var task = new DeleteScriptTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class InvokeScriptTask : Gs2WebSocketSessionTask<Result.InvokeScriptResult>
+        {
+			private readonly Request.InvokeScriptRequest _request;
+
+			public InvokeScriptTask(Request.InvokeScriptRequest request, UnityAction<AsyncResult<Result.InvokeScriptResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.scriptId != null)
+                {
+                    jsonWriter.WritePropertyName("scriptId");
+                    jsonWriter.Write(_request.scriptId.ToString());
+                }
+                if (_request.args != null)
+                {
+                    jsonWriter.WritePropertyName("args");
+                    jsonWriter.Write(_request.args.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("script");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("script");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("invokeScript");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  スクリプトを実行します<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator InvokeScript(
+                Request.InvokeScriptRequest request,
+                UnityAction<AsyncResult<Result.InvokeScriptResult>> callback
+        )
+		{
+			var task = new InvokeScriptTask(request, callback);
 			return Gs2WebSocketSession.Execute(task);
         }
 

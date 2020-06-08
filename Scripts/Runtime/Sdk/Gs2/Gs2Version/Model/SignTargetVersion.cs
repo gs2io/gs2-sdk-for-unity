@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Version.Model
 {
 	[Preserve]
-	public class SignTargetVersion
+	public class SignTargetVersion : IComparable
 	{
 
         /** None */
@@ -137,6 +137,53 @@ namespace Gs2.Gs2Version.Model
                 .WithNamespaceName(data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString() : null)
                 .WithVersionName(data.Keys.Contains("versionName") && data["versionName"] != null ? data["versionName"].ToString() : null)
                 .WithVersion(data.Keys.Contains("version") && data["version"] != null ? Gs2.Gs2Version.Model.Version_.FromDict(data["version"]) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as SignTargetVersion;
+            var diff = 0;
+            if (region == null && region == other.region)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += region.CompareTo(other.region);
+            }
+            if (ownerId == null && ownerId == other.ownerId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += ownerId.CompareTo(other.ownerId);
+            }
+            if (namespaceName == null && namespaceName == other.namespaceName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += namespaceName.CompareTo(other.namespaceName);
+            }
+            if (versionName == null && versionName == other.versionName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += versionName.CompareTo(other.versionName);
+            }
+            if (version == null && version == other.version)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += version.CompareTo(other.version);
+            }
+            return diff;
         }
 	}
 }

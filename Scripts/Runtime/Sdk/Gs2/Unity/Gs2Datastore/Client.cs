@@ -38,11 +38,13 @@ namespace Gs2.Unity.Gs2Datastore
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2DatastoreWebSocketClient _client;
+		private readonly Gs2DatastoreRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2DatastoreWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2DatastoreRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>
@@ -65,7 +67,7 @@ namespace Gs2.Unity.Gs2Datastore
                 long? limit=null
         )
 		{
-            yield return _client.DescribeDataObjects(
+            yield return _restClient.DescribeDataObjects(
                 new DescribeDataObjectsRequest()
                     .WithNamespaceName(namespaceName)
                     .WithStatus(status)
@@ -443,7 +445,7 @@ namespace Gs2.Unity.Gs2Datastore
                 long? limit=null
         )
 		{
-            yield return _client.DescribeDataObjectHistories(
+            yield return _restClient.DescribeDataObjectHistories(
                 new DescribeDataObjectHistoriesRequest()
                     .WithNamespaceName(namespaceName)
                     .WithDataObjectName(dataObjectName)

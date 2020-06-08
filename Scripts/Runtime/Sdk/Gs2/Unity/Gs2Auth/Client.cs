@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Auth
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2AuthWebSocketClient _client;
+		private readonly Gs2AuthRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2AuthWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2AuthRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>

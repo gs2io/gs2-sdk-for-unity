@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Model
 {
 	[Preserve]
-	public class MoldModel
+	public class MoldModel : IComparable
 	{
 
         /** フォームの保存領域マスター */
@@ -205,6 +205,61 @@ namespace Gs2.Gs2Formation.Model
                 .WithFormModel(data.Keys.Contains("formModel") && data["formModel"] != null ? Gs2.Gs2Formation.Model.FormModel.FromDict(data["formModel"]) : null)
                 .WithInitialMaxCapacity(data.Keys.Contains("initialMaxCapacity") && data["initialMaxCapacity"] != null ? (int?)int.Parse(data["initialMaxCapacity"].ToString()) : null)
                 .WithMaxCapacity(data.Keys.Contains("maxCapacity") && data["maxCapacity"] != null ? (int?)int.Parse(data["maxCapacity"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as MoldModel;
+            var diff = 0;
+            if (moldModelId == null && moldModelId == other.moldModelId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += moldModelId.CompareTo(other.moldModelId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (formModel == null && formModel == other.formModel)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += formModel.CompareTo(other.formModel);
+            }
+            if (initialMaxCapacity == null && initialMaxCapacity == other.initialMaxCapacity)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(initialMaxCapacity - other.initialMaxCapacity);
+            }
+            if (maxCapacity == null && maxCapacity == other.maxCapacity)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(maxCapacity - other.maxCapacity);
+            }
+            return diff;
         }
 	}
 }

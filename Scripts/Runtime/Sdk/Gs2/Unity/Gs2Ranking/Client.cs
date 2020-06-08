@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Ranking
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2RankingWebSocketClient _client;
+		private readonly Gs2RankingRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2RankingWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2RankingRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>
@@ -56,7 +58,7 @@ namespace Gs2.Unity.Gs2Ranking
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.DescribeCategoryModels(
+                cb => _restClient.DescribeCategoryModels(
                     new DescribeCategoryModelsRequest()
                         .WithNamespaceName(namespaceName),
                     r => cb.Invoke(
@@ -118,7 +120,7 @@ namespace Gs2.Unity.Gs2Ranking
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeSubscribesByCategoryName(
+                cb => _restClient.DescribeSubscribesByCategoryName(
                     new DescribeSubscribesByCategoryNameRequest()
                         .WithNamespaceName(namespaceName)
                         .WithCategoryName(categoryName)
@@ -276,7 +278,7 @@ namespace Gs2.Unity.Gs2Ranking
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeRankings(
+                cb => _restClient.DescribeRankings(
                     new DescribeRankingsRequest()
                         .WithNamespaceName(namespaceName)
                         .WithCategoryName(categoryName)
@@ -312,7 +314,7 @@ namespace Gs2.Unity.Gs2Ranking
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.DescribeNearRankings(
+                cb => _restClient.DescribeNearRankings(
                     new DescribeNearRankingsRequest()
                         .WithNamespaceName(namespaceName)
                         .WithCategoryName(categoryName)

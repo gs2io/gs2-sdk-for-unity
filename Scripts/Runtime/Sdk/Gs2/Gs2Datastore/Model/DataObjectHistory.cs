@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Datastore.Model
 {
 	[Preserve]
-	public class DataObjectHistory
+	public class DataObjectHistory : IComparable
 	{
 
         /** データオブジェクト履歴 */
@@ -209,6 +209,53 @@ namespace Gs2.Gs2Datastore.Model
                 .WithGeneration(data.Keys.Contains("generation") && data["generation"] != null ? data["generation"].ToString() : null)
                 .WithContentLength(data.Keys.Contains("contentLength") && data["contentLength"] != null ? (long?)long.Parse(data["contentLength"].ToString()) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as DataObjectHistory;
+            var diff = 0;
+            if (dataObjectHistoryId == null && dataObjectHistoryId == other.dataObjectHistoryId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += dataObjectHistoryId.CompareTo(other.dataObjectHistoryId);
+            }
+            if (dataObjectName == null && dataObjectName == other.dataObjectName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += dataObjectName.CompareTo(other.dataObjectName);
+            }
+            if (generation == null && generation == other.generation)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += generation.CompareTo(other.generation);
+            }
+            if (contentLength == null && contentLength == other.contentLength)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(contentLength - other.contentLength);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            return diff;
         }
 	}
 }

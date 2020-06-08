@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Friend.Model
 {
 	[Preserve]
-	public class PublicProfile
+	public class PublicProfile : IComparable
 	{
 
         /** ユーザーID */
@@ -77,6 +77,29 @@ namespace Gs2.Gs2Friend.Model
             return new PublicProfile()
                 .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
                 .WithPublicProfile(data.Keys.Contains("publicProfile") && data["publicProfile"] != null ? data["publicProfile"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as PublicProfile;
+            var diff = 0;
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (publicProfile == null && publicProfile == other.publicProfile)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += publicProfile.CompareTo(other.publicProfile);
+            }
+            return diff;
         }
 	}
 }

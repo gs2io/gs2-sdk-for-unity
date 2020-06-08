@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Exchange.Model
 {
 	[Preserve]
-	public class RateModel
+	public class RateModel : IComparable
 	{
 
         /** 交換レートマスター */
@@ -203,6 +203,61 @@ namespace Gs2.Gs2Exchange.Model
                         return Gs2.Gs2Exchange.Model.AcquireAction.FromDict(value);
                     }
                 ).ToList() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as RateModel;
+            var diff = 0;
+            if (rateModelId == null && rateModelId == other.rateModelId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += rateModelId.CompareTo(other.rateModelId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (consumeActions == null && consumeActions == other.consumeActions)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += consumeActions.Count - other.consumeActions.Count;
+                for (var i = 0; i < consumeActions.Count; i++)
+                {
+                    diff += consumeActions[i].CompareTo(other.consumeActions[i]);
+                }
+            }
+            if (acquireActions == null && acquireActions == other.acquireActions)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += acquireActions.Count - other.acquireActions.Count;
+                for (var i = 0; i < acquireActions.Count; i++)
+                {
+                    diff += acquireActions[i].CompareTo(other.acquireActions[i]);
+                }
+            }
+            return diff;
         }
 	}
 }

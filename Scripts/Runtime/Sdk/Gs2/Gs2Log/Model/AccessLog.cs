@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Log.Model
 {
 	[Preserve]
-	public class AccessLog
+	public class AccessLog : IComparable
 	{
 
         /** 日時 */
@@ -177,6 +177,69 @@ namespace Gs2.Gs2Log.Model
                 .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
                 .WithRequest(data.Keys.Contains("request") && data["request"] != null ? data["request"].ToString() : null)
                 .WithResult(data.Keys.Contains("result") && data["result"] != null ? data["result"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as AccessLog;
+            var diff = 0;
+            if (timestamp == null && timestamp == other.timestamp)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(timestamp - other.timestamp);
+            }
+            if (requestId == null && requestId == other.requestId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += requestId.CompareTo(other.requestId);
+            }
+            if (service == null && service == other.service)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += service.CompareTo(other.service);
+            }
+            if (method == null && method == other.method)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += method.CompareTo(other.method);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (request == null && request == other.request)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += request.CompareTo(other.request);
+            }
+            if (result == null && result == other.result)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += result.CompareTo(other.result);
+            }
+            return diff;
         }
 	}
 }

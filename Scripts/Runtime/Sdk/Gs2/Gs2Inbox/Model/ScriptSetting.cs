@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inbox.Model
 {
 	[Preserve]
-	public class ScriptSetting
+	public class ScriptSetting : IComparable
 	{
 
         /** 実行前に使用する GS2-Script のスクリプト のGRN */
@@ -117,6 +117,45 @@ namespace Gs2.Gs2Inbox.Model
                 .WithDoneTriggerTargetType(data.Keys.Contains("doneTriggerTargetType") && data["doneTriggerTargetType"] != null ? data["doneTriggerTargetType"].ToString() : null)
                 .WithDoneTriggerScriptId(data.Keys.Contains("doneTriggerScriptId") && data["doneTriggerScriptId"] != null ? data["doneTriggerScriptId"].ToString() : null)
                 .WithDoneTriggerQueueNamespaceId(data.Keys.Contains("doneTriggerQueueNamespaceId") && data["doneTriggerQueueNamespaceId"] != null ? data["doneTriggerQueueNamespaceId"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as ScriptSetting;
+            var diff = 0;
+            if (triggerScriptId == null && triggerScriptId == other.triggerScriptId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += triggerScriptId.CompareTo(other.triggerScriptId);
+            }
+            if (doneTriggerTargetType == null && doneTriggerTargetType == other.doneTriggerTargetType)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += doneTriggerTargetType.CompareTo(other.doneTriggerTargetType);
+            }
+            if (doneTriggerScriptId == null && doneTriggerScriptId == other.doneTriggerScriptId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += doneTriggerScriptId.CompareTo(other.doneTriggerScriptId);
+            }
+            if (doneTriggerQueueNamespaceId == null && doneTriggerQueueNamespaceId == other.doneTriggerQueueNamespaceId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += doneTriggerQueueNamespaceId.CompareTo(other.doneTriggerQueueNamespaceId);
+            }
+            return diff;
         }
 	}
 }

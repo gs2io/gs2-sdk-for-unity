@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Dictionary.Model
 {
 	[Preserve]
-	public class EntryModel
+	public class EntryModel : IComparable
 	{
 
         /** エントリーモデルマスター */
@@ -145,6 +145,37 @@ namespace Gs2.Gs2Dictionary.Model
                 .WithEntryModelId(data.Keys.Contains("entryModelId") && data["entryModelId"] != null ? data["entryModelId"].ToString() : null)
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as EntryModel;
+            var diff = 0;
+            if (entryModelId == null && entryModelId == other.entryModelId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += entryModelId.CompareTo(other.entryModelId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            return diff;
         }
 	}
 }

@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Model
 {
 	[Preserve]
-	public class Mold
+	public class Mold : IComparable
 	{
 
         /** 保存したフォーム */
@@ -217,6 +217,61 @@ namespace Gs2.Gs2Formation.Model
                 .WithCapacity(data.Keys.Contains("capacity") && data["capacity"] != null ? (int?)int.Parse(data["capacity"].ToString()) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Mold;
+            var diff = 0;
+            if (moldId == null && moldId == other.moldId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += moldId.CompareTo(other.moldId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (capacity == null && capacity == other.capacity)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(capacity - other.capacity);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

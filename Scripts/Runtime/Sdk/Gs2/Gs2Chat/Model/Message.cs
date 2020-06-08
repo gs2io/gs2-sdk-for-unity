@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Chat.Model
 {
 	[Preserve]
-	public class Message
+	public class Message : IComparable
 	{
 
         /** メッセージ */
@@ -237,6 +237,69 @@ namespace Gs2.Gs2Chat.Model
                 .WithCategory(data.Keys.Contains("category") && data["category"] != null ? (int?)int.Parse(data["category"].ToString()) : null)
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Message;
+            var diff = 0;
+            if (messageId == null && messageId == other.messageId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += messageId.CompareTo(other.messageId);
+            }
+            if (roomName == null && roomName == other.roomName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += roomName.CompareTo(other.roomName);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (category == null && category == other.category)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(category - other.category);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            return diff;
         }
 	}
 }

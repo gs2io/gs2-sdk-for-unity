@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Model
 {
 	[Preserve]
-	public class ScopedValue
+	public class ScopedValue : IComparable
 	{
 
         /** リセットタイミング */
@@ -97,6 +97,37 @@ namespace Gs2.Gs2Mission.Model
                 .WithResetType(data.Keys.Contains("resetType") && data["resetType"] != null ? data["resetType"].ToString() : null)
                 .WithValue(data.Keys.Contains("value") && data["value"] != null ? (long?)long.Parse(data["value"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as ScopedValue;
+            var diff = 0;
+            if (resetType == null && resetType == other.resetType)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += resetType.CompareTo(other.resetType);
+            }
+            if (value == null && value == other.value)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(value - other.value);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

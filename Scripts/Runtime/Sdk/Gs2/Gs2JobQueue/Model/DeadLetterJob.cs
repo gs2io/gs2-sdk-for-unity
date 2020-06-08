@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2JobQueue.Model
 {
 	[Preserve]
-	public class DeadLetterJob
+	public class DeadLetterJob : IComparable
 	{
 
         /** デッドレタージョブ */
@@ -266,6 +266,81 @@ namespace Gs2.Gs2JobQueue.Model
                 ).ToList() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as DeadLetterJob;
+            var diff = 0;
+            if (deadLetterJobId == null && deadLetterJobId == other.deadLetterJobId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += deadLetterJobId.CompareTo(other.deadLetterJobId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (scriptId == null && scriptId == other.scriptId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += scriptId.CompareTo(other.scriptId);
+            }
+            if (args == null && args == other.args)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += args.CompareTo(other.args);
+            }
+            if (result == null && result == other.result)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += result.Count - other.result.Count;
+                for (var i = 0; i < result.Count; i++)
+                {
+                    diff += result[i].CompareTo(other.result[i]);
+                }
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

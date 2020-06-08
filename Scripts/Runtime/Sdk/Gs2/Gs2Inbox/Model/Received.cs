@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inbox.Model
 {
 	[Preserve]
-	public class Received
+	public class Received : IComparable
 	{
 
         /** 受信済みグローバルメッセージ名 */
@@ -194,6 +194,57 @@ namespace Gs2.Gs2Inbox.Model
                 ).ToList() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Received;
+            var diff = 0;
+            if (receivedId == null && receivedId == other.receivedId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += receivedId.CompareTo(other.receivedId);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (receivedGlobalMessageNames == null && receivedGlobalMessageNames == other.receivedGlobalMessageNames)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += receivedGlobalMessageNames.Count - other.receivedGlobalMessageNames.Count;
+                for (var i = 0; i < receivedGlobalMessageNames.Count; i++)
+                {
+                    diff += receivedGlobalMessageNames[i].CompareTo(other.receivedGlobalMessageNames[i]);
+                }
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Model
 {
 	[Preserve]
-	public class SlotWithSignature
+	public class SlotWithSignature : IComparable
 	{
 
         /** スロットモデル名 */
@@ -117,6 +117,45 @@ namespace Gs2.Gs2Formation.Model
                 .WithPropertyType(data.Keys.Contains("propertyType") && data["propertyType"] != null ? data["propertyType"].ToString() : null)
                 .WithBody(data.Keys.Contains("body") && data["body"] != null ? data["body"].ToString() : null)
                 .WithSignature(data.Keys.Contains("signature") && data["signature"] != null ? data["signature"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as SlotWithSignature;
+            var diff = 0;
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (propertyType == null && propertyType == other.propertyType)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += propertyType.CompareTo(other.propertyType);
+            }
+            if (body == null && body == other.body)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += body.CompareTo(other.body);
+            }
+            if (signature == null && signature == other.signature)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += signature.CompareTo(other.signature);
+            }
+            return diff;
         }
 	}
 }

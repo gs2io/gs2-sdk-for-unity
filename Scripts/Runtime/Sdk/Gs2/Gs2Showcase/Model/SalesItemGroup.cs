@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Showcase.Model
 {
 	[Preserve]
-	public class SalesItemGroup
+	public class SalesItemGroup : IComparable
 	{
 
         /** 商品グループ名 */
@@ -154,6 +154,41 @@ namespace Gs2.Gs2Showcase.Model
                         return Gs2.Gs2Showcase.Model.SalesItem.FromDict(value);
                     }
                 ).ToList() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as SalesItemGroup;
+            var diff = 0;
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (salesItems == null && salesItems == other.salesItems)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += salesItems.Count - other.salesItems.Count;
+                for (var i = 0; i < salesItems.Count; i++)
+                {
+                    diff += salesItems[i].CompareTo(other.salesItems[i]);
+                }
+            }
+            return diff;
         }
 	}
 }

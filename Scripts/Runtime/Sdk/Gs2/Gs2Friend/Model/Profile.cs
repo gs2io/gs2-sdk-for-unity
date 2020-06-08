@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Friend.Model
 {
 	[Preserve]
-	public class Profile
+	public class Profile : IComparable
 	{
 
         /** プロフィール */
@@ -225,6 +225,69 @@ namespace Gs2.Gs2Friend.Model
                 .WithFriendProfile(data.Keys.Contains("friendProfile") && data["friendProfile"] != null ? data["friendProfile"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Profile;
+            var diff = 0;
+            if (profileId == null && profileId == other.profileId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += profileId.CompareTo(other.profileId);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (publicProfile == null && publicProfile == other.publicProfile)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += publicProfile.CompareTo(other.publicProfile);
+            }
+            if (followerProfile == null && followerProfile == other.followerProfile)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += followerProfile.CompareTo(other.followerProfile);
+            }
+            if (friendProfile == null && friendProfile == other.friendProfile)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += friendProfile.CompareTo(other.friendProfile);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

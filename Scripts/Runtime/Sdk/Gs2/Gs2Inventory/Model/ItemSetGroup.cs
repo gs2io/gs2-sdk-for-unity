@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Model
 {
 	[Preserve]
-	public class ItemSetGroup
+	public class ItemSetGroup : IComparable
 	{
 
         /** 有効期限ごとのアイテム所持数量 (このモデルは SDK では使用されません) */
@@ -423,6 +423,141 @@ namespace Gs2.Gs2Inventory.Model
                 ).ToList() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as ItemSetGroup;
+            var diff = 0;
+            if (itemSetGroupId == null && itemSetGroupId == other.itemSetGroupId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += itemSetGroupId.CompareTo(other.itemSetGroupId);
+            }
+            if (inventoryName == null && inventoryName == other.inventoryName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += inventoryName.CompareTo(other.inventoryName);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (itemName == null && itemName == other.itemName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += itemName.CompareTo(other.itemName);
+            }
+            if (sortValue == null && sortValue == other.sortValue)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(sortValue - other.sortValue);
+            }
+            if (itemSetItemSetIdList == null && itemSetItemSetIdList == other.itemSetItemSetIdList)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += itemSetItemSetIdList.Count - other.itemSetItemSetIdList.Count;
+                for (var i = 0; i < itemSetItemSetIdList.Count; i++)
+                {
+                    diff += itemSetItemSetIdList[i].CompareTo(other.itemSetItemSetIdList[i]);
+                }
+            }
+            if (itemSetNameList == null && itemSetNameList == other.itemSetNameList)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += itemSetNameList.Count - other.itemSetNameList.Count;
+                for (var i = 0; i < itemSetNameList.Count; i++)
+                {
+                    diff += itemSetNameList[i].CompareTo(other.itemSetNameList[i]);
+                }
+            }
+            if (itemSetCountList == null && itemSetCountList == other.itemSetCountList)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += itemSetCountList.Count - other.itemSetCountList.Count;
+                for (var i = 0; i < itemSetCountList.Count; i++)
+                {
+                    diff += (int)(itemSetCountList[i] - other.itemSetCountList[i]);
+                }
+            }
+            if (itemSetExpiresAtList == null && itemSetExpiresAtList == other.itemSetExpiresAtList)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += itemSetExpiresAtList.Count - other.itemSetExpiresAtList.Count;
+                for (var i = 0; i < itemSetExpiresAtList.Count; i++)
+                {
+                    diff += (int)(itemSetExpiresAtList[i] - other.itemSetExpiresAtList[i]);
+                }
+            }
+            if (itemSetCreatedAtList == null && itemSetCreatedAtList == other.itemSetCreatedAtList)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += itemSetCreatedAtList.Count - other.itemSetCreatedAtList.Count;
+                for (var i = 0; i < itemSetCreatedAtList.Count; i++)
+                {
+                    diff += (int)(itemSetCreatedAtList[i] - other.itemSetCreatedAtList[i]);
+                }
+            }
+            if (itemSetUpdatedAtList == null && itemSetUpdatedAtList == other.itemSetUpdatedAtList)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += itemSetUpdatedAtList.Count - other.itemSetUpdatedAtList.Count;
+                for (var i = 0; i < itemSetUpdatedAtList.Count; i++)
+                {
+                    diff += (int)(itemSetUpdatedAtList[i] - other.itemSetUpdatedAtList[i]);
+                }
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

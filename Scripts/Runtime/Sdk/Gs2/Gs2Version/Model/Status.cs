@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Version.Model
 {
 	[Preserve]
-	public class Status
+	public class Status : IComparable
 	{
 
         /** バージョン設定 */
@@ -77,6 +77,29 @@ namespace Gs2.Gs2Version.Model
             return new Status()
                 .WithVersionModel(data.Keys.Contains("versionModel") && data["versionModel"] != null ? Gs2.Gs2Version.Model.VersionModel.FromDict(data["versionModel"]) : null)
                 .WithCurrentVersion(data.Keys.Contains("currentVersion") && data["currentVersion"] != null ? Gs2.Gs2Version.Model.Version_.FromDict(data["currentVersion"]) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Status;
+            var diff = 0;
+            if (versionModel == null && versionModel == other.versionModel)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += versionModel.CompareTo(other.versionModel);
+            }
+            if (currentVersion == null && currentVersion == other.currentVersion)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += currentVersion.CompareTo(other.currentVersion);
+            }
+            return diff;
         }
 	}
 }

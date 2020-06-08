@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Showcase.Model
 {
 	[Preserve]
-	public class AcquireAction
+	public class AcquireAction : IComparable
 	{
 
         /** スタンプシートで実行するアクションの種類 */
@@ -77,6 +77,29 @@ namespace Gs2.Gs2Showcase.Model
             return new AcquireAction()
                 .WithAction(data.Keys.Contains("action") && data["action"] != null ? data["action"].ToString() : null)
                 .WithRequest(data.Keys.Contains("request") && data["request"] != null ? data["request"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as AcquireAction;
+            var diff = 0;
+            if (action == null && action == other.action)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += action.CompareTo(other.action);
+            }
+            if (request == null && request == other.request)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += request.CompareTo(other.request);
+            }
+            return diff;
         }
 	}
 }

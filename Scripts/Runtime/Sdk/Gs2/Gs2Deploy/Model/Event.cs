@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Deploy.Model
 {
 	[Preserve]
-	public class Event
+	public class Event : IComparable
 	{
 
         /** 発生したイベント */
@@ -205,6 +205,61 @@ namespace Gs2.Gs2Deploy.Model
                 .WithType(data.Keys.Contains("type") && data["type"] != null ? data["type"].ToString() : null)
                 .WithMessage(data.Keys.Contains("message") && data["message"] != null ? data["message"].ToString() : null)
                 .WithEventAt(data.Keys.Contains("eventAt") && data["eventAt"] != null ? (long?)long.Parse(data["eventAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Event;
+            var diff = 0;
+            if (eventId == null && eventId == other.eventId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += eventId.CompareTo(other.eventId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (resourceName == null && resourceName == other.resourceName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += resourceName.CompareTo(other.resourceName);
+            }
+            if (type == null && type == other.type)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += type.CompareTo(other.type);
+            }
+            if (message == null && message == other.message)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += message.CompareTo(other.message);
+            }
+            if (eventAt == null && eventAt == other.eventAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(eventAt - other.eventAt);
+            }
+            return diff;
         }
 	}
 }

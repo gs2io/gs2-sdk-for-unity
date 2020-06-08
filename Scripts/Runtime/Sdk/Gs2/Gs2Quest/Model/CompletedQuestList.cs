@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Model
 {
 	[Preserve]
-	public class CompletedQuestList
+	public class CompletedQuestList : IComparable
 	{
 
         /** クエスト進行 */
@@ -226,6 +226,65 @@ namespace Gs2.Gs2Quest.Model
                 ).ToList() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as CompletedQuestList;
+            var diff = 0;
+            if (completedQuestListId == null && completedQuestListId == other.completedQuestListId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += completedQuestListId.CompareTo(other.completedQuestListId);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (questGroupName == null && questGroupName == other.questGroupName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += questGroupName.CompareTo(other.questGroupName);
+            }
+            if (completeQuestNames == null && completeQuestNames == other.completeQuestNames)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += completeQuestNames.Count - other.completeQuestNames.Count;
+                for (var i = 0; i < completeQuestNames.Count; i++)
+                {
+                    diff += completeQuestNames[i].CompareTo(other.completeQuestNames[i]);
+                }
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

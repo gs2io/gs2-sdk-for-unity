@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Money.Model
 {
 	[Preserve]
-	public class WalletDetail
+	public class WalletDetail : IComparable
 	{
 
         /** 単価 */
@@ -77,6 +77,29 @@ namespace Gs2.Gs2Money.Model
             return new WalletDetail()
                 .WithPrice(data.Keys.Contains("price") && data["price"] != null ? (float?)float.Parse(data["price"].ToString()) : null)
                 .WithCount(data.Keys.Contains("count") && data["count"] != null ? (int?)int.Parse(data["count"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as WalletDetail;
+            var diff = 0;
+            if (price == null && price == other.price)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(price - other.price);
+            }
+            if (count == null && count == other.count)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(count - other.count);
+            }
+            return diff;
         }
 	}
 }

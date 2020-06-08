@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2News.Model
 {
 	[Preserve]
-	public class SetCookieRequestEntry
+	public class SetCookieRequestEntry : IComparable
 	{
 
         /** 記事を閲覧できるようにするために設定してほしい Cookie のキー値 */
@@ -77,6 +77,29 @@ namespace Gs2.Gs2News.Model
             return new SetCookieRequestEntry()
                 .WithKey(data.Keys.Contains("key") && data["key"] != null ? data["key"].ToString() : null)
                 .WithValue(data.Keys.Contains("value") && data["value"] != null ? data["value"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as SetCookieRequestEntry;
+            var diff = 0;
+            if (key == null && key == other.key)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += key.CompareTo(other.key);
+            }
+            if (value == null && value == other.value)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += value.CompareTo(other.value);
+            }
+            return diff;
         }
 	}
 }

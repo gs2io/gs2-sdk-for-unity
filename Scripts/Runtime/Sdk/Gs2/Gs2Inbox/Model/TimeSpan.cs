@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inbox.Model
 {
 	[Preserve]
-	public class TimeSpan
+	public class TimeSpan : IComparable
 	{
 
         /** 現在時刻からの日数 */
@@ -97,6 +97,37 @@ namespace Gs2.Gs2Inbox.Model
                 .WithDays(data.Keys.Contains("days") && data["days"] != null ? (int?)int.Parse(data["days"].ToString()) : null)
                 .WithHours(data.Keys.Contains("hours") && data["hours"] != null ? (int?)int.Parse(data["hours"].ToString()) : null)
                 .WithMinutes(data.Keys.Contains("minutes") && data["minutes"] != null ? (int?)int.Parse(data["minutes"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as TimeSpan;
+            var diff = 0;
+            if (days == null && days == other.days)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(days - other.days);
+            }
+            if (hours == null && hours == other.hours)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(hours - other.hours);
+            }
+            if (minutes == null && minutes == other.minutes)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(minutes - other.minutes);
+            }
+            return diff;
         }
 	}
 }

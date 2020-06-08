@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Limit
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2LimitWebSocketClient _client;
+		private readonly Gs2LimitRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2LimitWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2LimitRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>
@@ -67,7 +69,7 @@ namespace Gs2.Unity.Gs2Limit
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeCounters(
+                cb => _restClient.DescribeCounters(
                     new DescribeCountersRequest()
                         .WithNamespaceName(namespaceName)
                         .WithLimitName(limitName)
@@ -181,7 +183,7 @@ namespace Gs2.Unity.Gs2Limit
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.DescribeLimitModels(
+                cb => _restClient.DescribeLimitModels(
                     new DescribeLimitModelsRequest()
                         .WithNamespaceName(namespaceName),
                     r => cb.Invoke(

@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Log.Model
 {
 	[Preserve]
-	public class ExecuteStampSheetLog
+	public class ExecuteStampSheetLog : IComparable
 	{
 
         /** 日時 */
@@ -177,6 +177,69 @@ namespace Gs2.Gs2Log.Model
                 .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
                 .WithAction(data.Keys.Contains("action") && data["action"] != null ? data["action"].ToString() : null)
                 .WithArgs(data.Keys.Contains("args") && data["args"] != null ? data["args"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as ExecuteStampSheetLog;
+            var diff = 0;
+            if (timestamp == null && timestamp == other.timestamp)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(timestamp - other.timestamp);
+            }
+            if (transactionId == null && transactionId == other.transactionId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += transactionId.CompareTo(other.transactionId);
+            }
+            if (service == null && service == other.service)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += service.CompareTo(other.service);
+            }
+            if (method == null && method == other.method)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += method.CompareTo(other.method);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (action == null && action == other.action)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += action.CompareTo(other.action);
+            }
+            if (args == null && args == other.args)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += args.CompareTo(other.args);
+            }
+            return diff;
         }
 	}
 }

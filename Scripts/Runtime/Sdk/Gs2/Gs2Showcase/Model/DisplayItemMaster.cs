@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Showcase.Model
 {
 	[Preserve]
-	public class DisplayItemMaster
+	public class DisplayItemMaster : IComparable
 	{
 
         /** 陳列商品ID */
@@ -137,6 +137,53 @@ namespace Gs2.Gs2Showcase.Model
                 .WithSalesItemName(data.Keys.Contains("salesItemName") && data["salesItemName"] != null ? data["salesItemName"].ToString() : null)
                 .WithSalesItemGroupName(data.Keys.Contains("salesItemGroupName") && data["salesItemGroupName"] != null ? data["salesItemGroupName"].ToString() : null)
                 .WithSalesPeriodEventId(data.Keys.Contains("salesPeriodEventId") && data["salesPeriodEventId"] != null ? data["salesPeriodEventId"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as DisplayItemMaster;
+            var diff = 0;
+            if (displayItemId == null && displayItemId == other.displayItemId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += displayItemId.CompareTo(other.displayItemId);
+            }
+            if (type == null && type == other.type)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += type.CompareTo(other.type);
+            }
+            if (salesItemName == null && salesItemName == other.salesItemName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += salesItemName.CompareTo(other.salesItemName);
+            }
+            if (salesItemGroupName == null && salesItemGroupName == other.salesItemGroupName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += salesItemGroupName.CompareTo(other.salesItemGroupName);
+            }
+            if (salesPeriodEventId == null && salesPeriodEventId == other.salesPeriodEventId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += salesPeriodEventId.CompareTo(other.salesPeriodEventId);
+            }
+            return diff;
         }
 	}
 }

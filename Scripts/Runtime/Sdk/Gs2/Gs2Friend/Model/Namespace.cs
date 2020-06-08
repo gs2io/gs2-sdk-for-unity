@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Friend.Model
 {
 	[Preserve]
-	public class Namespace
+	public class Namespace : IComparable
 	{
 
         /** ネームスペース */
@@ -433,6 +433,157 @@ namespace Gs2.Gs2Friend.Model
                 .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Friend.Model.LogSetting.FromDict(data["logSetting"]) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Namespace;
+            var diff = 0;
+            if (namespaceId == null && namespaceId == other.namespaceId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += namespaceId.CompareTo(other.namespaceId);
+            }
+            if (ownerId == null && ownerId == other.ownerId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += ownerId.CompareTo(other.ownerId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (description == null && description == other.description)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += description.CompareTo(other.description);
+            }
+            if (followScript == null && followScript == other.followScript)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += followScript.CompareTo(other.followScript);
+            }
+            if (unfollowScript == null && unfollowScript == other.unfollowScript)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += unfollowScript.CompareTo(other.unfollowScript);
+            }
+            if (sendRequestScript == null && sendRequestScript == other.sendRequestScript)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += sendRequestScript.CompareTo(other.sendRequestScript);
+            }
+            if (cancelRequestScript == null && cancelRequestScript == other.cancelRequestScript)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += cancelRequestScript.CompareTo(other.cancelRequestScript);
+            }
+            if (acceptRequestScript == null && acceptRequestScript == other.acceptRequestScript)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += acceptRequestScript.CompareTo(other.acceptRequestScript);
+            }
+            if (rejectRequestScript == null && rejectRequestScript == other.rejectRequestScript)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += rejectRequestScript.CompareTo(other.rejectRequestScript);
+            }
+            if (deleteFriendScript == null && deleteFriendScript == other.deleteFriendScript)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += deleteFriendScript.CompareTo(other.deleteFriendScript);
+            }
+            if (updateProfileScript == null && updateProfileScript == other.updateProfileScript)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += updateProfileScript.CompareTo(other.updateProfileScript);
+            }
+            if (followNotification == null && followNotification == other.followNotification)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += followNotification.CompareTo(other.followNotification);
+            }
+            if (receiveRequestNotification == null && receiveRequestNotification == other.receiveRequestNotification)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += receiveRequestNotification.CompareTo(other.receiveRequestNotification);
+            }
+            if (acceptRequestNotification == null && acceptRequestNotification == other.acceptRequestNotification)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += acceptRequestNotification.CompareTo(other.acceptRequestNotification);
+            }
+            if (logSetting == null && logSetting == other.logSetting)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += logSetting.CompareTo(other.logSetting);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

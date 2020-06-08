@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Datastore.Model
 {
 	[Preserve]
-	public class LogSetting
+	public class LogSetting : IComparable
 	{
 
         /** ログの記録に使用する GS2-Log のネームスペース のGRN */
@@ -57,6 +57,21 @@ namespace Gs2.Gs2Datastore.Model
         {
             return new LogSetting()
                 .WithLoggingNamespaceId(data.Keys.Contains("loggingNamespaceId") && data["loggingNamespaceId"] != null ? data["loggingNamespaceId"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as LogSetting;
+            var diff = 0;
+            if (loggingNamespaceId == null && loggingNamespaceId == other.loggingNamespaceId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += loggingNamespaceId.CompareTo(other.loggingNamespaceId);
+            }
+            return diff;
         }
 	}
 }

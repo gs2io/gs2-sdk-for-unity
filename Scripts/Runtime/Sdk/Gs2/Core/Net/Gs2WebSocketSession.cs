@@ -19,9 +19,9 @@ using System.Collections.Generic;
 using System.Security.Authentication;
 using Gs2.Core.Exception;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine;
-using WebSocketSharp;
+using Gs2.Util.WebSocketSharp;
 
 namespace Gs2.Core.Net
 {

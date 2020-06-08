@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Realtime.Model
 {
 	[Preserve]
-	public class Room
+	public class Room : IComparable
 	{
 
         /** ルーム */
@@ -254,6 +254,81 @@ namespace Gs2.Gs2Realtime.Model
                 ).ToList() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Room;
+            var diff = 0;
+            if (roomId == null && roomId == other.roomId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += roomId.CompareTo(other.roomId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (ipAddress == null && ipAddress == other.ipAddress)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += ipAddress.CompareTo(other.ipAddress);
+            }
+            if (port == null && port == other.port)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(port - other.port);
+            }
+            if (encryptionKey == null && encryptionKey == other.encryptionKey)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += encryptionKey.CompareTo(other.encryptionKey);
+            }
+            if (notificationUserIds == null && notificationUserIds == other.notificationUserIds)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += notificationUserIds.Count - other.notificationUserIds.Count;
+                for (var i = 0; i < notificationUserIds.Count; i++)
+                {
+                    diff += notificationUserIds[i].CompareTo(other.notificationUserIds[i]);
+                }
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

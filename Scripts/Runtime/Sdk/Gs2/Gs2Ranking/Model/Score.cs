@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Ranking.Model
 {
 	[Preserve]
-	public class Score
+	public class Score : IComparable
 	{
 
         /** スコア */
@@ -281,6 +281,77 @@ namespace Gs2.Gs2Ranking.Model
                 .WithScore(data.Keys.Contains("score") && data["score"] != null ? (long?)long.Parse(data["score"].ToString()) : null)
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Score;
+            var diff = 0;
+            if (scoreId == null && scoreId == other.scoreId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += scoreId.CompareTo(other.scoreId);
+            }
+            if (categoryName == null && categoryName == other.categoryName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += categoryName.CompareTo(other.categoryName);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (uniqueId == null && uniqueId == other.uniqueId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += uniqueId.CompareTo(other.uniqueId);
+            }
+            if (scorerUserId == null && scorerUserId == other.scorerUserId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += scorerUserId.CompareTo(other.scorerUserId);
+            }
+            if (score == null && score == other.score)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(score - other.score);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            return diff;
         }
 	}
 }

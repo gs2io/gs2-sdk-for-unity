@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Model
 {
 	[Preserve]
-	public class Probability
+	public class Probability : IComparable
 	{
 
         /** 景品の種類 */
@@ -77,6 +77,29 @@ namespace Gs2.Gs2Lottery.Model
             return new Probability()
                 .WithPrize(data.Keys.Contains("prize") && data["prize"] != null ? Gs2.Gs2Lottery.Model.DrawnPrize.FromDict(data["prize"]) : null)
                 .WithRate(data.Keys.Contains("rate") && data["rate"] != null ? (float?)float.Parse(data["rate"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Probability;
+            var diff = 0;
+            if (prize == null && prize == other.prize)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += prize.CompareTo(other.prize);
+            }
+            if (rate == null && rate == other.rate)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(rate - other.rate);
+            }
+            return diff;
         }
 	}
 }

@@ -15,7 +15,7 @@
  */
 
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 
 namespace Gs2.Core.Net
 {
@@ -28,7 +28,7 @@ namespace Gs2.Core.Net
 		    {
 			    errorMessage = JsonMapper.ToObject<GeneralError>(message).Message;
 		    }
-		    catch (System.Exception e)
+		    catch (System.Exception)
 		    {
 			    errorMessage = message;
 		    }

@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2JobQueue.Model
 {
 	[Preserve]
-	public class JobResultBody
+	public class JobResultBody : IComparable
 	{
 
         /** 試行回数 */
@@ -117,6 +117,45 @@ namespace Gs2.Gs2JobQueue.Model
                 .WithStatusCode(data.Keys.Contains("statusCode") && data["statusCode"] != null ? (int?)int.Parse(data["statusCode"].ToString()) : null)
                 .WithResult(data.Keys.Contains("result") && data["result"] != null ? data["result"].ToString() : null)
                 .WithTryAt(data.Keys.Contains("tryAt") && data["tryAt"] != null ? (long?)long.Parse(data["tryAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as JobResultBody;
+            var diff = 0;
+            if (tryNumber == null && tryNumber == other.tryNumber)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(tryNumber - other.tryNumber);
+            }
+            if (statusCode == null && statusCode == other.statusCode)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(statusCode - other.statusCode);
+            }
+            if (result == null && result == other.result)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += result.CompareTo(other.result);
+            }
+            if (tryAt == null && tryAt == other.tryAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(tryAt - other.tryAt);
+            }
+            return diff;
         }
 	}
 }

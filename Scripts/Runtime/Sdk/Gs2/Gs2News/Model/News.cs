@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2News.Model
 {
 	[Preserve]
-	public class News
+	public class News : IComparable
 	{
 
         /** セクション名 */
@@ -157,6 +157,61 @@ namespace Gs2.Gs2News.Model
                 .WithScheduleEventId(data.Keys.Contains("scheduleEventId") && data["scheduleEventId"] != null ? data["scheduleEventId"].ToString() : null)
                 .WithTimestamp(data.Keys.Contains("timestamp") && data["timestamp"] != null ? (long?)long.Parse(data["timestamp"].ToString()) : null)
                 .WithFrontMatter(data.Keys.Contains("frontMatter") && data["frontMatter"] != null ? data["frontMatter"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as News;
+            var diff = 0;
+            if (section == null && section == other.section)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += section.CompareTo(other.section);
+            }
+            if (content == null && content == other.content)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += content.CompareTo(other.content);
+            }
+            if (title == null && title == other.title)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += title.CompareTo(other.title);
+            }
+            if (scheduleEventId == null && scheduleEventId == other.scheduleEventId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += scheduleEventId.CompareTo(other.scheduleEventId);
+            }
+            if (timestamp == null && timestamp == other.timestamp)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(timestamp - other.timestamp);
+            }
+            if (frontMatter == null && frontMatter == other.frontMatter)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += frontMatter.CompareTo(other.frontMatter);
+            }
+            return diff;
         }
 	}
 }

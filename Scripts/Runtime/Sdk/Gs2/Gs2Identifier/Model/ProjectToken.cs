@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Identifier.Model
 {
 	[Preserve]
-	public class ProjectToken
+	public class ProjectToken : IComparable
 	{
 
         /** プロジェクトトークン */
@@ -57,6 +57,21 @@ namespace Gs2.Gs2Identifier.Model
         {
             return new ProjectToken()
                 .WithToken(data.Keys.Contains("token") && data["token"] != null ? data["token"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as ProjectToken;
+            var diff = 0;
+            if (token == null && token == other.token)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += token.CompareTo(other.token);
+            }
+            return diff;
         }
 	}
 }

@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Showcase.Model
 {
 	[Preserve]
-	public class SalesItemGroupMaster
+	public class SalesItemGroupMaster : IComparable
 	{
 
         /** 商品グループマスター */
@@ -234,6 +234,73 @@ namespace Gs2.Gs2Showcase.Model
                 ).ToList() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as SalesItemGroupMaster;
+            var diff = 0;
+            if (salesItemGroupId == null && salesItemGroupId == other.salesItemGroupId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += salesItemGroupId.CompareTo(other.salesItemGroupId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (description == null && description == other.description)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += description.CompareTo(other.description);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (salesItemNames == null && salesItemNames == other.salesItemNames)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += salesItemNames.Count - other.salesItemNames.Count;
+                for (var i = 0; i < salesItemNames.Count; i++)
+                {
+                    diff += salesItemNames[i].CompareTo(other.salesItemNames[i]);
+                }
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Schedule
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2ScheduleWebSocketClient _client;
+		private readonly Gs2ScheduleRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2ScheduleWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2ScheduleRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>
@@ -59,7 +61,7 @@ namespace Gs2.Unity.Gs2Schedule
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeTriggers(
+                cb => _restClient.DescribeTriggers(
                     new DescribeTriggersRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.token),
@@ -124,7 +126,7 @@ namespace Gs2.Unity.Gs2Schedule
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeEvents(
+                cb => _restClient.DescribeEvents(
                     new DescribeEventsRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.token),

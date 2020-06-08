@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Matchmaking.Model
 {
 	[Preserve]
-	public class CapacityOfRole
+	public class CapacityOfRole : IComparable
 	{
 
         /** ロール名 */
@@ -135,6 +135,53 @@ namespace Gs2.Gs2Matchmaking.Model
                         return Gs2.Gs2Matchmaking.Model.Player.FromDict(value);
                     }
                 ).ToList() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as CapacityOfRole;
+            var diff = 0;
+            if (roleName == null && roleName == other.roleName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += roleName.CompareTo(other.roleName);
+            }
+            if (roleAliases == null && roleAliases == other.roleAliases)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += roleAliases.Count - other.roleAliases.Count;
+                for (var i = 0; i < roleAliases.Count; i++)
+                {
+                    diff += roleAliases[i].CompareTo(other.roleAliases[i]);
+                }
+            }
+            if (capacity == null && capacity == other.capacity)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(capacity - other.capacity);
+            }
+            if (participants == null && participants == other.participants)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += participants.Count - other.participants.Count;
+                for (var i = 0; i < participants.Count; i++)
+                {
+                    diff += participants[i].CompareTo(other.participants[i]);
+                }
+            }
+            return diff;
         }
 	}
 }

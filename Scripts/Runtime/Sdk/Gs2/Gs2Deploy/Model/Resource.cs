@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Deploy.Model
 {
 	[Preserve]
-	public class Resource
+	public class Resource : IComparable
 	{
 
         /** 作成されたのリソース */
@@ -323,6 +323,109 @@ namespace Gs2.Gs2Deploy.Model
                 ).ToList() : null)
                 .WithWorkId(data.Keys.Contains("workId") && data["workId"] != null ? data["workId"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Resource;
+            var diff = 0;
+            if (resourceId == null && resourceId == other.resourceId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += resourceId.CompareTo(other.resourceId);
+            }
+            if (type == null && type == other.type)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += type.CompareTo(other.type);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (request == null && request == other.request)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += request.CompareTo(other.request);
+            }
+            if (response == null && response == other.response)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += response.CompareTo(other.response);
+            }
+            if (rollbackContext == null && rollbackContext == other.rollbackContext)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += rollbackContext.CompareTo(other.rollbackContext);
+            }
+            if (rollbackRequest == null && rollbackRequest == other.rollbackRequest)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += rollbackRequest.CompareTo(other.rollbackRequest);
+            }
+            if (rollbackAfter == null && rollbackAfter == other.rollbackAfter)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += rollbackAfter.Count - other.rollbackAfter.Count;
+                for (var i = 0; i < rollbackAfter.Count; i++)
+                {
+                    diff += rollbackAfter[i].CompareTo(other.rollbackAfter[i]);
+                }
+            }
+            if (outputFields == null && outputFields == other.outputFields)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += outputFields.Count - other.outputFields.Count;
+                for (var i = 0; i < outputFields.Count; i++)
+                {
+                    diff += outputFields[i].CompareTo(other.outputFields[i]);
+                }
+            }
+            if (workId == null && workId == other.workId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += workId.CompareTo(other.workId);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            return diff;
         }
 	}
 }

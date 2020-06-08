@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Model
 {
 	[Preserve]
-	public class Status
+	public class Status : IComparable
 	{
 
         /** ステータス */
@@ -289,6 +289,85 @@ namespace Gs2.Gs2Experience.Model
                 .WithRankCapValue(data.Keys.Contains("rankCapValue") && data["rankCapValue"] != null ? (long?)long.Parse(data["rankCapValue"].ToString()) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Status;
+            var diff = 0;
+            if (statusId == null && statusId == other.statusId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += statusId.CompareTo(other.statusId);
+            }
+            if (experienceName == null && experienceName == other.experienceName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += experienceName.CompareTo(other.experienceName);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (propertyId == null && propertyId == other.propertyId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += propertyId.CompareTo(other.propertyId);
+            }
+            if (experienceValue == null && experienceValue == other.experienceValue)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(experienceValue - other.experienceValue);
+            }
+            if (rankValue == null && rankValue == other.rankValue)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(rankValue - other.rankValue);
+            }
+            if (rankCapValue == null && rankCapValue == other.rankCapValue)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(rankCapValue - other.rankCapValue);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Formation
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2FormationWebSocketClient _client;
+		private readonly Gs2FormationRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2FormationWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2FormationRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>
@@ -56,7 +58,7 @@ namespace Gs2.Unity.Gs2Formation
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.DescribeMoldModels(
+                cb => _restClient.DescribeMoldModels(
                     new DescribeMoldModelsRequest()
                         .WithNamespaceName(namespaceName),
                     r => cb.Invoke(
@@ -122,7 +124,7 @@ namespace Gs2.Unity.Gs2Formation
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeMolds(
+                cb => _restClient.DescribeMolds(
                     new DescribeMoldsRequest()
                         .WithNamespaceName(namespaceName)
                         .WithPageToken(pageToken)
@@ -195,7 +197,7 @@ namespace Gs2.Unity.Gs2Formation
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeForms(
+                cb => _restClient.DescribeForms(
                     new DescribeFormsRequest()
                         .WithNamespaceName(namespaceName)
                         .WithMoldName(moldName)

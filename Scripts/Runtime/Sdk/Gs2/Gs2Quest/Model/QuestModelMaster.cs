@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Model
 {
 	[Preserve]
-	public class QuestModelMaster
+	public class QuestModelMaster : IComparable
 	{
 
         /** クエストモデルマスター */
@@ -373,6 +373,125 @@ namespace Gs2.Gs2Quest.Model
                 ).ToList() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as QuestModelMaster;
+            var diff = 0;
+            if (questModelId == null && questModelId == other.questModelId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += questModelId.CompareTo(other.questModelId);
+            }
+            if (questGroupName == null && questGroupName == other.questGroupName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += questGroupName.CompareTo(other.questGroupName);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (description == null && description == other.description)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += description.CompareTo(other.description);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (contents == null && contents == other.contents)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += contents.Count - other.contents.Count;
+                for (var i = 0; i < contents.Count; i++)
+                {
+                    diff += contents[i].CompareTo(other.contents[i]);
+                }
+            }
+            if (challengePeriodEventId == null && challengePeriodEventId == other.challengePeriodEventId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += challengePeriodEventId.CompareTo(other.challengePeriodEventId);
+            }
+            if (consumeActions == null && consumeActions == other.consumeActions)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += consumeActions.Count - other.consumeActions.Count;
+                for (var i = 0; i < consumeActions.Count; i++)
+                {
+                    diff += consumeActions[i].CompareTo(other.consumeActions[i]);
+                }
+            }
+            if (failedAcquireActions == null && failedAcquireActions == other.failedAcquireActions)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += failedAcquireActions.Count - other.failedAcquireActions.Count;
+                for (var i = 0; i < failedAcquireActions.Count; i++)
+                {
+                    diff += failedAcquireActions[i].CompareTo(other.failedAcquireActions[i]);
+                }
+            }
+            if (premiseQuestNames == null && premiseQuestNames == other.premiseQuestNames)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += premiseQuestNames.Count - other.premiseQuestNames.Count;
+                for (var i = 0; i < premiseQuestNames.Count; i++)
+                {
+                    diff += premiseQuestNames[i].CompareTo(other.premiseQuestNames[i]);
+                }
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

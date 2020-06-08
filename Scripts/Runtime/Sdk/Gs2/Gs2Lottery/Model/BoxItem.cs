@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Model
 {
 	[Preserve]
-	public class BoxItem
+	public class BoxItem : IComparable
 	{
 
         /** 入手アクションのリスト */
@@ -106,6 +106,41 @@ namespace Gs2.Gs2Lottery.Model
                 ).ToList() : null)
                 .WithRemaining(data.Keys.Contains("remaining") && data["remaining"] != null ? (int?)int.Parse(data["remaining"].ToString()) : null)
                 .WithInitial(data.Keys.Contains("initial") && data["initial"] != null ? (int?)int.Parse(data["initial"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as BoxItem;
+            var diff = 0;
+            if (acquireActions == null && acquireActions == other.acquireActions)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += acquireActions.Count - other.acquireActions.Count;
+                for (var i = 0; i < acquireActions.Count; i++)
+                {
+                    diff += acquireActions[i].CompareTo(other.acquireActions[i]);
+                }
+            }
+            if (remaining == null && remaining == other.remaining)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(remaining - other.remaining);
+            }
+            if (initial == null && initial == other.initial)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(initial - other.initial);
+            }
+            return diff;
         }
 	}
 }

@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Model
 {
 	[Preserve]
-	public class Config
+	public class Config : IComparable
 	{
 
         /** 名前 */
@@ -77,6 +77,29 @@ namespace Gs2.Gs2Mission.Model
             return new Config()
                 .WithKey(data.Keys.Contains("key") && data["key"] != null ? data["key"].ToString() : null)
                 .WithValue(data.Keys.Contains("value") && data["value"] != null ? data["value"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Config;
+            var diff = 0;
+            if (key == null && key == other.key)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += key.CompareTo(other.key);
+            }
+            if (value == null && value == other.value)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += value.CompareTo(other.value);
+            }
+            return diff;
         }
 	}
 }

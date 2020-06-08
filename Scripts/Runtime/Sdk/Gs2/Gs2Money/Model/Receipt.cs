@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Money.Model
 {
 	[Preserve]
-	public class Receipt
+	public class Receipt : IComparable
 	{
 
         /** レシート */
@@ -317,6 +317,101 @@ namespace Gs2.Gs2Money.Model
                 .WithTotal(data.Keys.Contains("total") && data["total"] != null ? (int?)int.Parse(data["total"].ToString()) : null)
                 .WithContentsId(data.Keys.Contains("contentsId") && data["contentsId"] != null ? data["contentsId"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Receipt;
+            var diff = 0;
+            if (receiptId == null && receiptId == other.receiptId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += receiptId.CompareTo(other.receiptId);
+            }
+            if (transactionId == null && transactionId == other.transactionId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += transactionId.CompareTo(other.transactionId);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (type == null && type == other.type)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += type.CompareTo(other.type);
+            }
+            if (slot == null && slot == other.slot)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(slot - other.slot);
+            }
+            if (price == null && price == other.price)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(price - other.price);
+            }
+            if (paid == null && paid == other.paid)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(paid - other.paid);
+            }
+            if (free == null && free == other.free)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(free - other.free);
+            }
+            if (total == null && total == other.total)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(total - other.total);
+            }
+            if (contentsId == null && contentsId == other.contentsId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += contentsId.CompareTo(other.contentsId);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            return diff;
         }
 	}
 }

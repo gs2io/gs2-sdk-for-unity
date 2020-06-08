@@ -19,7 +19,7 @@ using System.Linq;
 using Gs2.Core.Control;
 using Gs2.Core.Model;
 using Gs2.Gs2Schedule.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Schedule.Request

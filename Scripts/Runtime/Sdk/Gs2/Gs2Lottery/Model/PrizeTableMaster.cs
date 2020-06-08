@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Model
 {
 	[Preserve]
-	public class PrizeTableMaster
+	public class PrizeTableMaster : IComparable
 	{
 
         /** 排出確率テーブルマスター */
@@ -234,6 +234,73 @@ namespace Gs2.Gs2Lottery.Model
                 ).ToList() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as PrizeTableMaster;
+            var diff = 0;
+            if (prizeTableId == null && prizeTableId == other.prizeTableId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += prizeTableId.CompareTo(other.prizeTableId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (description == null && description == other.description)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += description.CompareTo(other.description);
+            }
+            if (prizes == null && prizes == other.prizes)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += prizes.Count - other.prizes.Count;
+                for (var i = 0; i < prizes.Count; i++)
+                {
+                    diff += prizes[i].CompareTo(other.prizes[i]);
+                }
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

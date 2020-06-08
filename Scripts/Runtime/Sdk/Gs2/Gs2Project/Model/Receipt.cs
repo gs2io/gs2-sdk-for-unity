@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Project.Model
 {
 	[Preserve]
-	public class Receipt
+	public class Receipt : IComparable
 	{
 
         /** 領収書 */
@@ -221,6 +221,77 @@ namespace Gs2.Gs2Project.Model
                 .WithPdfUrl(data.Keys.Contains("pdfUrl") && data["pdfUrl"] != null ? data["pdfUrl"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Receipt;
+            var diff = 0;
+            if (receiptId == null && receiptId == other.receiptId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += receiptId.CompareTo(other.receiptId);
+            }
+            if (accountName == null && accountName == other.accountName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += accountName.CompareTo(other.accountName);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (date == null && date == other.date)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(date - other.date);
+            }
+            if (amount == null && amount == other.amount)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += amount.CompareTo(other.amount);
+            }
+            if (pdfUrl == null && pdfUrl == other.pdfUrl)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += pdfUrl.CompareTo(other.pdfUrl);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

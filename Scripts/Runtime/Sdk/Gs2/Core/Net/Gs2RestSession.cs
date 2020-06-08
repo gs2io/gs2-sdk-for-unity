@@ -21,7 +21,7 @@ using System.Text;
 using Gs2.Core.Exception;
 using Gs2.Core.Model;
 using Gs2.Gs2Identifier.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
@@ -65,7 +65,7 @@ namespace Gs2.Core.Net
                     {
                         accessToken = JsonMapper.ToObject<LoginResult>(gs2RestResponse.Message).access_token;
                     }
-                    catch (System.Exception e)
+                    catch (System.Exception)
                     {
                         error = new UnknownException("JSON parsing error: \n" + gs2RestResponse.Message);
                     }

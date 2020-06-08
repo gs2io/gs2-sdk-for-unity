@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2JobQueue
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2JobQueueWebSocketClient _client;
+		private readonly Gs2JobQueueRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2JobQueueWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2JobQueueRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>

@@ -16,7 +16,7 @@
 
 using System.Collections.Generic;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 
 namespace Gs2.Core.Exception
 {

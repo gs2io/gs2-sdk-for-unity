@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2JobQueue.Model
 {
 	[Preserve]
-	public class JobEntry
+	public class JobEntry : IComparable
 	{
 
         /** スクリプト のGRN */
@@ -97,6 +97,37 @@ namespace Gs2.Gs2JobQueue.Model
                 .WithScriptId(data.Keys.Contains("scriptId") && data["scriptId"] != null ? data["scriptId"].ToString() : null)
                 .WithArgs(data.Keys.Contains("args") && data["args"] != null ? data["args"].ToString() : null)
                 .WithMaxTryCount(data.Keys.Contains("maxTryCount") && data["maxTryCount"] != null ? (int?)int.Parse(data["maxTryCount"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as JobEntry;
+            var diff = 0;
+            if (scriptId == null && scriptId == other.scriptId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += scriptId.CompareTo(other.scriptId);
+            }
+            if (args == null && args == other.args)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += args.CompareTo(other.args);
+            }
+            if (maxTryCount == null && maxTryCount == other.maxTryCount)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(maxTryCount - other.maxTryCount);
+            }
+            return diff;
         }
 	}
 }

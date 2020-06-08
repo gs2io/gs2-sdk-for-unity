@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Model
 {
 	[Preserve]
-	public class Box
+	public class Box : IComparable
 	{
 
         /** ボックス */
@@ -226,6 +226,65 @@ namespace Gs2.Gs2Lottery.Model
                 ).ToList() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Box;
+            var diff = 0;
+            if (boxId == null && boxId == other.boxId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += boxId.CompareTo(other.boxId);
+            }
+            if (prizeTableName == null && prizeTableName == other.prizeTableName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += prizeTableName.CompareTo(other.prizeTableName);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (drawnIndexes == null && drawnIndexes == other.drawnIndexes)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += drawnIndexes.Count - other.drawnIndexes.Count;
+                for (var i = 0; i < drawnIndexes.Count; i++)
+                {
+                    diff += (int)(drawnIndexes[i] - other.drawnIndexes[i]);
+                }
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

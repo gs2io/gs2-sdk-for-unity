@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Money.Model
 {
 	[Preserve]
-	public class Wallet
+	public class Wallet : IComparable
 	{
 
         /** ウォレット */
@@ -266,6 +266,81 @@ namespace Gs2.Gs2Money.Model
                 ).ToList() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Wallet;
+            var diff = 0;
+            if (walletId == null && walletId == other.walletId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += walletId.CompareTo(other.walletId);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (slot == null && slot == other.slot)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(slot - other.slot);
+            }
+            if (paid == null && paid == other.paid)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(paid - other.paid);
+            }
+            if (free == null && free == other.free)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(free - other.free);
+            }
+            if (detail == null && detail == other.detail)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += detail.Count - other.detail.Count;
+                for (var i = 0; i < detail.Count; i++)
+                {
+                    diff += detail[i].CompareTo(other.detail[i]);
+                }
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

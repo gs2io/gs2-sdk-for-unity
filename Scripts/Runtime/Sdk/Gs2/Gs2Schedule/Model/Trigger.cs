@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Schedule.Model
 {
 	[Preserve]
-	public class Trigger
+	public class Trigger : IComparable
 	{
 
         /** トリガー */
@@ -197,6 +197,53 @@ namespace Gs2.Gs2Schedule.Model
                 .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithExpiresAt(data.Keys.Contains("expiresAt") && data["expiresAt"] != null ? (long?)long.Parse(data["expiresAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Trigger;
+            var diff = 0;
+            if (triggerId == null && triggerId == other.triggerId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += triggerId.CompareTo(other.triggerId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (expiresAt == null && expiresAt == other.expiresAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(expiresAt - other.expiresAt);
+            }
+            return diff;
         }
 	}
 }

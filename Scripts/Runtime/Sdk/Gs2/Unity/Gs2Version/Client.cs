@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Version
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2VersionWebSocketClient _client;
+		private readonly Gs2VersionRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2VersionWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2VersionRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>
@@ -56,7 +58,7 @@ namespace Gs2.Unity.Gs2Version
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.DescribeVersionModels(
+                cb => _restClient.DescribeVersionModels(
                     new DescribeVersionModelsRequest()
                         .WithNamespaceName(namespaceName),
                     r => cb.Invoke(
@@ -120,7 +122,7 @@ namespace Gs2.Unity.Gs2Version
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeAcceptVersions(
+                cb => _restClient.DescribeAcceptVersions(
                     new DescribeAcceptVersionsRequest()
                         .WithNamespaceName(namespaceName)
                         .WithPageToken(pageToken)

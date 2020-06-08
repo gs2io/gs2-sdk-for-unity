@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Matchmaking.Model
 {
 	[Preserve]
-	public class Player
+	public class Player : IComparable
 	{
 
         /** ユーザーID */
@@ -135,6 +135,53 @@ namespace Gs2.Gs2Matchmaking.Model
                         return value.ToString();
                     }
                 ).ToList() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Player;
+            var diff = 0;
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (attributes == null && attributes == other.attributes)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += attributes.Count - other.attributes.Count;
+                for (var i = 0; i < attributes.Count; i++)
+                {
+                    diff += attributes[i].CompareTo(other.attributes[i]);
+                }
+            }
+            if (roleName == null && roleName == other.roleName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += roleName.CompareTo(other.roleName);
+            }
+            if (denyUserIds == null && denyUserIds == other.denyUserIds)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += denyUserIds.Count - other.denyUserIds.Count;
+                for (var i = 0; i < denyUserIds.Count; i++)
+                {
+                    diff += denyUserIds[i].CompareTo(other.denyUserIds[i]);
+                }
+            }
+            return diff;
         }
 	}
 }

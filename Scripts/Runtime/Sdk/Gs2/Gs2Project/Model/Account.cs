@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Project.Model
 {
 	[Preserve]
-	public class Account
+	public class Account : IComparable
 	{
 
         /** GS2アカウント */
@@ -249,6 +249,93 @@ namespace Gs2.Gs2Project.Model
                 .WithStatus(data.Keys.Contains("status") && data["status"] != null ? data["status"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Account;
+            var diff = 0;
+            if (accountId == null && accountId == other.accountId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += accountId.CompareTo(other.accountId);
+            }
+            if (ownerId == null && ownerId == other.ownerId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += ownerId.CompareTo(other.ownerId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (email == null && email == other.email)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += email.CompareTo(other.email);
+            }
+            if (fullName == null && fullName == other.fullName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += fullName.CompareTo(other.fullName);
+            }
+            if (companyName == null && companyName == other.companyName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += companyName.CompareTo(other.companyName);
+            }
+            if (password == null && password == other.password)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += password.CompareTo(other.password);
+            }
+            if (status == null && status == other.status)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += status.CompareTo(other.status);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

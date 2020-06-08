@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inbox.Model
 {
 	[Preserve]
-	public class NotificationSetting
+	public class NotificationSetting : IComparable
 	{
 
         /** プッシュ通知に使用する GS2-Gateway のネームスペース のGRN */
@@ -97,6 +97,37 @@ namespace Gs2.Gs2Inbox.Model
                 .WithGatewayNamespaceId(data.Keys.Contains("gatewayNamespaceId") && data["gatewayNamespaceId"] != null ? data["gatewayNamespaceId"].ToString() : null)
                 .WithEnableTransferMobileNotification(data.Keys.Contains("enableTransferMobileNotification") && data["enableTransferMobileNotification"] != null ? (bool?)bool.Parse(data["enableTransferMobileNotification"].ToString()) : null)
                 .WithSound(data.Keys.Contains("sound") && data["sound"] != null ? data["sound"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as NotificationSetting;
+            var diff = 0;
+            if (gatewayNamespaceId == null && gatewayNamespaceId == other.gatewayNamespaceId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += gatewayNamespaceId.CompareTo(other.gatewayNamespaceId);
+            }
+            if (enableTransferMobileNotification == null && enableTransferMobileNotification == other.enableTransferMobileNotification)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += enableTransferMobileNotification == other.enableTransferMobileNotification ? 0 : 1;
+            }
+            if (sound == null && sound == other.sound)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += sound.CompareTo(other.sound);
+            }
+            return diff;
         }
 	}
 }

@@ -40,7 +40,7 @@ namespace Gs2.Core.Net
 			_value = int.TryParse(value, out num) ? num : InvalidIdValue;
 		}
 
-		public string ToString()
+		public override string ToString()
 		{
 			return _value.ToString();
 		}
@@ -52,7 +52,17 @@ namespace Gs2.Core.Net
 
 		public static bool operator !=(Gs2SessionTaskId gs2SessionTaskId1, Gs2SessionTaskId gs2SessionTaskId2)
 		{
-			return gs2SessionTaskId1 != gs2SessionTaskId2;
+			return !(gs2SessionTaskId1 == gs2SessionTaskId2);
+		}
+
+		public override bool Equals(object obj)
+		{
+			return base.Equals(obj);
+		}
+
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
 		}
 
 		public class Generator

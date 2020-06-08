@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Watch.Model
 {
 	[Preserve]
-	public class BillingActivity
+	public class BillingActivity : IComparable
 	{
 
         /** 請求にまつわるアクティビティ */
@@ -249,6 +249,69 @@ namespace Gs2.Gs2Watch.Model
                 .WithService(data.Keys.Contains("service") && data["service"] != null ? data["service"].ToString() : null)
                 .WithActivityType(data.Keys.Contains("activityType") && data["activityType"] != null ? data["activityType"].ToString() : null)
                 .WithValue(data.Keys.Contains("value") && data["value"] != null ? (long?)long.Parse(data["value"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as BillingActivity;
+            var diff = 0;
+            if (billingActivityId == null && billingActivityId == other.billingActivityId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += billingActivityId.CompareTo(other.billingActivityId);
+            }
+            if (ownerId == null && ownerId == other.ownerId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += ownerId.CompareTo(other.ownerId);
+            }
+            if (year == null && year == other.year)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(year - other.year);
+            }
+            if (month == null && month == other.month)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(month - other.month);
+            }
+            if (service == null && service == other.service)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += service.CompareTo(other.service);
+            }
+            if (activityType == null && activityType == other.activityType)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += activityType.CompareTo(other.activityType);
+            }
+            if (value == null && value == other.value)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(value - other.value);
+            }
+            return diff;
         }
 	}
 }

@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Limit.Model
 {
 	[Preserve]
-	public class ResponseCache
+	public class ResponseCache : IComparable
 	{
 
         /** None */
@@ -213,6 +213,69 @@ namespace Gs2.Gs2Limit.Model
                 .WithResult(data.Keys.Contains("result") && data["result"] != null ? data["result"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithExpiredAt(data.Keys.Contains("expiredAt") && data["expiredAt"] != null ? (long?)long.Parse(data["expiredAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as ResponseCache;
+            var diff = 0;
+            if (region == null && region == other.region)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += region.CompareTo(other.region);
+            }
+            if (ownerId == null && ownerId == other.ownerId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += ownerId.CompareTo(other.ownerId);
+            }
+            if (responseCacheId == null && responseCacheId == other.responseCacheId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += responseCacheId.CompareTo(other.responseCacheId);
+            }
+            if (requestHash == null && requestHash == other.requestHash)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += requestHash.CompareTo(other.requestHash);
+            }
+            if (result == null && result == other.result)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += result.CompareTo(other.result);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (expiredAt == null && expiredAt == other.expiredAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(expiredAt - other.expiredAt);
+            }
+            return diff;
         }
 	}
 }

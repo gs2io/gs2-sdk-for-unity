@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Deploy.Model
 {
 	[Preserve]
-	public class OutputField
+	public class OutputField : IComparable
 	{
 
         /** 名前 */
@@ -77,6 +77,29 @@ namespace Gs2.Gs2Deploy.Model
             return new OutputField()
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithFieldName(data.Keys.Contains("fieldName") && data["fieldName"] != null ? data["fieldName"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as OutputField;
+            var diff = 0;
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (fieldName == null && fieldName == other.fieldName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += fieldName.CompareTo(other.fieldName);
+            }
+            return diff;
         }
 	}
 }

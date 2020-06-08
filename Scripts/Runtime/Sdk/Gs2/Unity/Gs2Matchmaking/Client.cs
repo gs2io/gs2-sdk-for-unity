@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Matchmaking
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2MatchmakingWebSocketClient _client;
+		private readonly Gs2MatchmakingRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2MatchmakingWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2MatchmakingRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>

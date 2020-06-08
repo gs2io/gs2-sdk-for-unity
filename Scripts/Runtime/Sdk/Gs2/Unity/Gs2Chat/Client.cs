@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Chat
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2ChatWebSocketClient _client;
+		private readonly Gs2ChatRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2ChatWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2ChatRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>
@@ -224,7 +226,7 @@ namespace Gs2.Unity.Gs2Chat
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.DescribeMessages(
+                cb => _restClient.DescribeMessages(
                     new DescribeMessagesRequest()
                         .WithNamespaceName(namespaceName)
                         .WithRoomName(roomName)
@@ -261,7 +263,7 @@ namespace Gs2.Unity.Gs2Chat
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeSubscribes(
+                cb => _restClient.DescribeSubscribes(
                     new DescribeSubscribesRequest()
                         .WithNamespaceName(namespaceName)
                         .WithPageToken(pageToken)

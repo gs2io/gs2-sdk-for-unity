@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Ranking.Model
 {
 	[Preserve]
-	public class Subscribe
+	public class Subscribe : IComparable
 	{
 
         /** 購読 */
@@ -206,6 +206,57 @@ namespace Gs2.Gs2Ranking.Model
                     }
                 ).ToList() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Subscribe;
+            var diff = 0;
+            if (subscribeId == null && subscribeId == other.subscribeId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += subscribeId.CompareTo(other.subscribeId);
+            }
+            if (categoryName == null && categoryName == other.categoryName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += categoryName.CompareTo(other.categoryName);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (targetUserIds == null && targetUserIds == other.targetUserIds)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += targetUserIds.Count - other.targetUserIds.Count;
+                for (var i = 0; i < targetUserIds.Count; i++)
+                {
+                    diff += targetUserIds[i].CompareTo(other.targetUserIds[i]);
+                }
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            return diff;
         }
 	}
 }

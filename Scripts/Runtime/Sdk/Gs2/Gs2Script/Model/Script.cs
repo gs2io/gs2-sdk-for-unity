@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Script.Model
 {
 	[Preserve]
-	public class Script
+	public class Script : IComparable
 	{
 
         /** スクリプト */
@@ -225,6 +225,69 @@ namespace Gs2.Gs2Script.Model
                 .WithScript(data.Keys.Contains("script") && data["script"] != null ? data["script"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Script;
+            var diff = 0;
+            if (scriptId == null && scriptId == other.scriptId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += scriptId.CompareTo(other.scriptId);
+            }
+            if (ownerId == null && ownerId == other.ownerId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += ownerId.CompareTo(other.ownerId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (description == null && description == other.description)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += description.CompareTo(other.description);
+            }
+            if (script == null && script == other.script)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += script.CompareTo(other.script);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Model
 {
 	[Preserve]
-	public class InventoryModel
+	public class InventoryModel : IComparable
 	{
 
         /** インベントリモデル */
@@ -214,6 +214,65 @@ namespace Gs2.Gs2Inventory.Model
                         return Gs2.Gs2Inventory.Model.ItemModel.FromDict(value);
                     }
                 ).ToList() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as InventoryModel;
+            var diff = 0;
+            if (inventoryModelId == null && inventoryModelId == other.inventoryModelId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += inventoryModelId.CompareTo(other.inventoryModelId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (initialCapacity == null && initialCapacity == other.initialCapacity)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(initialCapacity - other.initialCapacity);
+            }
+            if (maxCapacity == null && maxCapacity == other.maxCapacity)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(maxCapacity - other.maxCapacity);
+            }
+            if (itemModels == null && itemModels == other.itemModels)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += itemModels.Count - other.itemModels.Count;
+                for (var i = 0; i < itemModels.Count; i++)
+                {
+                    diff += itemModels[i].CompareTo(other.itemModels[i]);
+                }
+            }
+            return diff;
         }
 	}
 }

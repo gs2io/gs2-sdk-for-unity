@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Limit.Model
 {
 	[Preserve]
-	public class LimitModelMaster
+	public class LimitModelMaster : IComparable
 	{
 
         /** 回数制限の種類マスター */
@@ -285,6 +285,93 @@ namespace Gs2.Gs2Limit.Model
                 .WithResetHour(data.Keys.Contains("resetHour") && data["resetHour"] != null ? (int?)int.Parse(data["resetHour"].ToString()) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as LimitModelMaster;
+            var diff = 0;
+            if (limitModelId == null && limitModelId == other.limitModelId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += limitModelId.CompareTo(other.limitModelId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (description == null && description == other.description)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += description.CompareTo(other.description);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (resetType == null && resetType == other.resetType)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += resetType.CompareTo(other.resetType);
+            }
+            if (resetDayOfMonth == null && resetDayOfMonth == other.resetDayOfMonth)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(resetDayOfMonth - other.resetDayOfMonth);
+            }
+            if (resetDayOfWeek == null && resetDayOfWeek == other.resetDayOfWeek)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += resetDayOfWeek.CompareTo(other.resetDayOfWeek);
+            }
+            if (resetHour == null && resetHour == other.resetHour)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(resetHour - other.resetHour);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Model
 {
 	[Preserve]
-	public class Slot
+	public class Slot : IComparable
 	{
 
         /** スロットモデル名 */
@@ -77,6 +77,29 @@ namespace Gs2.Gs2Formation.Model
             return new Slot()
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithPropertyId(data.Keys.Contains("propertyId") && data["propertyId"] != null ? data["propertyId"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Slot;
+            var diff = 0;
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (propertyId == null && propertyId == other.propertyId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += propertyId.CompareTo(other.propertyId);
+            }
+            return diff;
         }
 	}
 }

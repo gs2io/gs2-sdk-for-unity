@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Project.Model
 {
 	[Preserve]
-	public class Billing
+	public class Billing : IComparable
 	{
 
         /** 利用状況 */
@@ -333,6 +333,117 @@ namespace Gs2.Gs2Project.Model
                 .WithCurrency(data.Keys.Contains("currency") && data["currency"] != null ? data["currency"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Billing;
+            var diff = 0;
+            if (billingId == null && billingId == other.billingId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += billingId.CompareTo(other.billingId);
+            }
+            if (projectName == null && projectName == other.projectName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += projectName.CompareTo(other.projectName);
+            }
+            if (year == null && year == other.year)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(year - other.year);
+            }
+            if (month == null && month == other.month)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(month - other.month);
+            }
+            if (region == null && region == other.region)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += region.CompareTo(other.region);
+            }
+            if (service == null && service == other.service)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += service.CompareTo(other.service);
+            }
+            if (activityType == null && activityType == other.activityType)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += activityType.CompareTo(other.activityType);
+            }
+            if (unit == null && unit == other.unit)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(unit - other.unit);
+            }
+            if (unitName == null && unitName == other.unitName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += unitName.CompareTo(other.unitName);
+            }
+            if (price == null && price == other.price)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(price - other.price);
+            }
+            if (currency == null && currency == other.currency)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += currency.CompareTo(other.currency);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

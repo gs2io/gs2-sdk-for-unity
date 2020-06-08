@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Matchmaking.Model
 {
 	[Preserve]
-	public class Gathering
+	public class Gathering : IComparable
 	{
 
         /** ギャザリング */
@@ -292,6 +292,97 @@ namespace Gs2.Gs2Matchmaking.Model
                 .WithExpiresAt(data.Keys.Contains("expiresAt") && data["expiresAt"] != null ? (long?)long.Parse(data["expiresAt"].ToString()) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Gathering;
+            var diff = 0;
+            if (gatheringId == null && gatheringId == other.gatheringId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += gatheringId.CompareTo(other.gatheringId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (attributeRanges == null && attributeRanges == other.attributeRanges)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += attributeRanges.Count - other.attributeRanges.Count;
+                for (var i = 0; i < attributeRanges.Count; i++)
+                {
+                    diff += attributeRanges[i].CompareTo(other.attributeRanges[i]);
+                }
+            }
+            if (capacityOfRoles == null && capacityOfRoles == other.capacityOfRoles)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += capacityOfRoles.Count - other.capacityOfRoles.Count;
+                for (var i = 0; i < capacityOfRoles.Count; i++)
+                {
+                    diff += capacityOfRoles[i].CompareTo(other.capacityOfRoles[i]);
+                }
+            }
+            if (allowUserIds == null && allowUserIds == other.allowUserIds)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += allowUserIds.Count - other.allowUserIds.Count;
+                for (var i = 0; i < allowUserIds.Count; i++)
+                {
+                    diff += allowUserIds[i].CompareTo(other.allowUserIds[i]);
+                }
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (expiresAt == null && expiresAt == other.expiresAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(expiresAt - other.expiresAt);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

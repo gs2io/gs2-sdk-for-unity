@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Money.Model
 {
 	[Preserve]
-	public class Namespace
+	public class Namespace : IComparable
 	{
 
         /** ネームスペース */
@@ -413,6 +413,149 @@ namespace Gs2.Gs2Money.Model
                 .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Money.Model.LogSetting.FromDict(data["logSetting"]) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Namespace;
+            var diff = 0;
+            if (namespaceId == null && namespaceId == other.namespaceId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += namespaceId.CompareTo(other.namespaceId);
+            }
+            if (ownerId == null && ownerId == other.ownerId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += ownerId.CompareTo(other.ownerId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (description == null && description == other.description)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += description.CompareTo(other.description);
+            }
+            if (priority == null && priority == other.priority)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += priority.CompareTo(other.priority);
+            }
+            if (shareFree == null && shareFree == other.shareFree)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += shareFree == other.shareFree ? 0 : 1;
+            }
+            if (currency == null && currency == other.currency)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += currency.CompareTo(other.currency);
+            }
+            if (appleKey == null && appleKey == other.appleKey)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += appleKey.CompareTo(other.appleKey);
+            }
+            if (googleKey == null && googleKey == other.googleKey)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += googleKey.CompareTo(other.googleKey);
+            }
+            if (enableFakeReceipt == null && enableFakeReceipt == other.enableFakeReceipt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += enableFakeReceipt == other.enableFakeReceipt ? 0 : 1;
+            }
+            if (createWalletScript == null && createWalletScript == other.createWalletScript)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += createWalletScript.CompareTo(other.createWalletScript);
+            }
+            if (depositScript == null && depositScript == other.depositScript)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += depositScript.CompareTo(other.depositScript);
+            }
+            if (withdrawScript == null && withdrawScript == other.withdrawScript)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += withdrawScript.CompareTo(other.withdrawScript);
+            }
+            if (balance == null && balance == other.balance)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(balance - other.balance);
+            }
+            if (logSetting == null && logSetting == other.logSetting)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += logSetting.CompareTo(other.logSetting);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

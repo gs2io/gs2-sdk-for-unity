@@ -45,6 +45,9 @@ namespace Gs2.Unity.Util
             Gs2Session = new Gs2WebSocketSession(
                 credential
             );
+            Gs2RestSession = new Gs2RestSession(
+                credential
+            );
             _reopener = reopener;
             _authenticator = null;
         }
@@ -55,6 +58,7 @@ namespace Gs2.Unity.Util
         {
             yield return _reopener.ReOpen(
                 Gs2Session,
+                Gs2RestSession,
                 r => {
                     if (r.Error != null)
                     {
@@ -81,6 +85,7 @@ namespace Gs2.Unity.Util
         public IEnumerator Finalize()
         {
             yield return Gs2Session.Close(() => {});
+            yield return Gs2RestSession.Close(() => {});
         }
 
         public IEnumerator Login(
@@ -118,6 +123,7 @@ namespace Gs2.Unity.Util
         }
 
         public Gs2WebSocketSession Gs2Session { get; }
+        public Gs2RestSession Gs2RestSession { get; }
 
         
         public delegate IEnumerator RequestAction<T>(UnityAction<AsyncResult<T>> callback);
@@ -142,7 +148,7 @@ namespace Gs2.Unity.Util
 
                     AsyncResult<OpenResult> asyncOpenResult = null;
 
-                    yield return _reopener.ReOpen(Gs2Session, aor => asyncOpenResult = aor);
+                    yield return _reopener.ReOpen(Gs2Session, Gs2RestSession, aor => asyncOpenResult = aor);
 
                     _reopener.Callback?.Invoke(asyncOpenResult);
 

@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Project.Model
 {
 	[Preserve]
-	public class BillingMethod
+	public class BillingMethod : IComparable
 	{
 
         /** 支払い方法 */
@@ -301,6 +301,109 @@ namespace Gs2.Gs2Project.Model
                 .WithPartnerId(data.Keys.Contains("partnerId") && data["partnerId"] != null ? data["partnerId"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as BillingMethod;
+            var diff = 0;
+            if (billingMethodId == null && billingMethodId == other.billingMethodId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += billingMethodId.CompareTo(other.billingMethodId);
+            }
+            if (accountName == null && accountName == other.accountName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += accountName.CompareTo(other.accountName);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (description == null && description == other.description)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += description.CompareTo(other.description);
+            }
+            if (methodType == null && methodType == other.methodType)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += methodType.CompareTo(other.methodType);
+            }
+            if (cardCustomerId == null && cardCustomerId == other.cardCustomerId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += cardCustomerId.CompareTo(other.cardCustomerId);
+            }
+            if (cardSignatureName == null && cardSignatureName == other.cardSignatureName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += cardSignatureName.CompareTo(other.cardSignatureName);
+            }
+            if (cardBrand == null && cardBrand == other.cardBrand)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += cardBrand.CompareTo(other.cardBrand);
+            }
+            if (cardLast4 == null && cardLast4 == other.cardLast4)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += cardLast4.CompareTo(other.cardLast4);
+            }
+            if (partnerId == null && partnerId == other.partnerId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += partnerId.CompareTo(other.partnerId);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

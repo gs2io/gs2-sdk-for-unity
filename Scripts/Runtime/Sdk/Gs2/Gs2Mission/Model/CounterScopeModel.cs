@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Model
 {
 	[Preserve]
-	public class CounterScopeModel
+	public class CounterScopeModel : IComparable
 	{
 
         /** リセットタイミング */
@@ -117,6 +117,45 @@ namespace Gs2.Gs2Mission.Model
                 .WithResetDayOfMonth(data.Keys.Contains("resetDayOfMonth") && data["resetDayOfMonth"] != null ? (int?)int.Parse(data["resetDayOfMonth"].ToString()) : null)
                 .WithResetDayOfWeek(data.Keys.Contains("resetDayOfWeek") && data["resetDayOfWeek"] != null ? data["resetDayOfWeek"].ToString() : null)
                 .WithResetHour(data.Keys.Contains("resetHour") && data["resetHour"] != null ? (int?)int.Parse(data["resetHour"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as CounterScopeModel;
+            var diff = 0;
+            if (resetType == null && resetType == other.resetType)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += resetType.CompareTo(other.resetType);
+            }
+            if (resetDayOfMonth == null && resetDayOfMonth == other.resetDayOfMonth)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(resetDayOfMonth - other.resetDayOfMonth);
+            }
+            if (resetDayOfWeek == null && resetDayOfWeek == other.resetDayOfWeek)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += resetDayOfWeek.CompareTo(other.resetDayOfWeek);
+            }
+            if (resetHour == null && resetHour == other.resetHour)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(resetHour - other.resetHour);
+            }
+            return diff;
         }
 	}
 }

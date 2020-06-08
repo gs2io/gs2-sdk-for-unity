@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-using LitJson;
+using Gs2.Util.LitJson;
 
 namespace Gs2.Core.Model
 {

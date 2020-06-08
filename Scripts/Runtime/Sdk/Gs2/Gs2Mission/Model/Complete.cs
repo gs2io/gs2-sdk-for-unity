@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Model
 {
 	[Preserve]
-	public class Complete
+	public class Complete : IComparable
 	{
 
         /** 達成状況 */
@@ -255,6 +255,77 @@ namespace Gs2.Gs2Mission.Model
                 ).ToList() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Complete;
+            var diff = 0;
+            if (completeId == null && completeId == other.completeId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += completeId.CompareTo(other.completeId);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (missionGroupName == null && missionGroupName == other.missionGroupName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += missionGroupName.CompareTo(other.missionGroupName);
+            }
+            if (completedMissionTaskNames == null && completedMissionTaskNames == other.completedMissionTaskNames)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += completedMissionTaskNames.Count - other.completedMissionTaskNames.Count;
+                for (var i = 0; i < completedMissionTaskNames.Count; i++)
+                {
+                    diff += completedMissionTaskNames[i].CompareTo(other.completedMissionTaskNames[i]);
+                }
+            }
+            if (receivedMissionTaskNames == null && receivedMissionTaskNames == other.receivedMissionTaskNames)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += receivedMissionTaskNames.Count - other.receivedMissionTaskNames.Count;
+                for (var i = 0; i < receivedMissionTaskNames.Count; i++)
+                {
+                    diff += receivedMissionTaskNames[i].CompareTo(other.receivedMissionTaskNames[i]);
+                }
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

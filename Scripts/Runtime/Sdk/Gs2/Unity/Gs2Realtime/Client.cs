@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Realtime
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2RealtimeWebSocketClient _client;
+		private readonly Gs2RealtimeRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2RealtimeWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2RealtimeRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>

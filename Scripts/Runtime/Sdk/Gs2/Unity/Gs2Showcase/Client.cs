@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Showcase
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2ShowcaseWebSocketClient _client;
+		private readonly Gs2ShowcaseRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2ShowcaseWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2ShowcaseRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>
@@ -99,7 +101,7 @@ namespace Gs2.Unity.Gs2Showcase
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.Buy(
+                cb => _restClient.Buy(
                     new BuyRequest()
                         .WithNamespaceName(namespaceName)
                         .WithShowcaseName(showcaseName)

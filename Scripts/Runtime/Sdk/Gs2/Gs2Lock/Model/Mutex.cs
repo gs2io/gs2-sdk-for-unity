@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lock.Model
 {
 	[Preserve]
-	public class Mutex
+	public class Mutex : IComparable
 	{
 
         /** ミューテックス */
@@ -237,6 +237,69 @@ namespace Gs2.Gs2Lock.Model
                 .WithReferenceCount(data.Keys.Contains("referenceCount") && data["referenceCount"] != null ? (int?)int.Parse(data["referenceCount"].ToString()) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithTtlAt(data.Keys.Contains("ttlAt") && data["ttlAt"] != null ? (long?)long.Parse(data["ttlAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Mutex;
+            var diff = 0;
+            if (mutexId == null && mutexId == other.mutexId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += mutexId.CompareTo(other.mutexId);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (propertyId == null && propertyId == other.propertyId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += propertyId.CompareTo(other.propertyId);
+            }
+            if (transactionId == null && transactionId == other.transactionId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += transactionId.CompareTo(other.transactionId);
+            }
+            if (referenceCount == null && referenceCount == other.referenceCount)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(referenceCount - other.referenceCount);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (ttlAt == null && ttlAt == other.ttlAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(ttlAt - other.ttlAt);
+            }
+            return diff;
         }
 	}
 }

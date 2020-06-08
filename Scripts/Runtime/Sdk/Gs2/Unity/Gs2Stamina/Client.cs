@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Stamina
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2StaminaWebSocketClient _client;
+		private readonly Gs2StaminaRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2StaminaWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2StaminaRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>
@@ -56,7 +58,7 @@ namespace Gs2.Unity.Gs2Stamina
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.DescribeStaminaModels(
+                cb => _restClient.DescribeStaminaModels(
                     new DescribeStaminaModelsRequest()
                         .WithNamespaceName(namespaceName),
                     r => cb.Invoke(

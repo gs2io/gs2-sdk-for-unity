@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Model
 {
 	[Preserve]
-	public class MissionGroupModel
+	public class MissionGroupModel : IComparable
 	{
 
         /** ミッショングループ */
@@ -274,6 +274,89 @@ namespace Gs2.Gs2Mission.Model
                 .WithResetDayOfWeek(data.Keys.Contains("resetDayOfWeek") && data["resetDayOfWeek"] != null ? data["resetDayOfWeek"].ToString() : null)
                 .WithResetHour(data.Keys.Contains("resetHour") && data["resetHour"] != null ? (int?)int.Parse(data["resetHour"].ToString()) : null)
                 .WithCompleteNotificationNamespaceId(data.Keys.Contains("completeNotificationNamespaceId") && data["completeNotificationNamespaceId"] != null ? data["completeNotificationNamespaceId"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as MissionGroupModel;
+            var diff = 0;
+            if (missionGroupId == null && missionGroupId == other.missionGroupId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += missionGroupId.CompareTo(other.missionGroupId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (tasks == null && tasks == other.tasks)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += tasks.Count - other.tasks.Count;
+                for (var i = 0; i < tasks.Count; i++)
+                {
+                    diff += tasks[i].CompareTo(other.tasks[i]);
+                }
+            }
+            if (resetType == null && resetType == other.resetType)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += resetType.CompareTo(other.resetType);
+            }
+            if (resetDayOfMonth == null && resetDayOfMonth == other.resetDayOfMonth)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(resetDayOfMonth - other.resetDayOfMonth);
+            }
+            if (resetDayOfWeek == null && resetDayOfWeek == other.resetDayOfWeek)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += resetDayOfWeek.CompareTo(other.resetDayOfWeek);
+            }
+            if (resetHour == null && resetHour == other.resetHour)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(resetHour - other.resetHour);
+            }
+            if (completeNotificationNamespaceId == null && completeNotificationNamespaceId == other.completeNotificationNamespaceId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += completeNotificationNamespaceId.CompareTo(other.completeNotificationNamespaceId);
+            }
+            return diff;
         }
 	}
 }

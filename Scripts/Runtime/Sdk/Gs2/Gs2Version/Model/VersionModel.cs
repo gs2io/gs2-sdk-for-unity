@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Version.Model
 {
 	[Preserve]
-	public class VersionModel
+	public class VersionModel : IComparable
 	{
 
         /** バージョン設定 */
@@ -265,6 +265,85 @@ namespace Gs2.Gs2Version.Model
                 .WithCurrentVersion(data.Keys.Contains("currentVersion") && data["currentVersion"] != null ? Gs2.Gs2Version.Model.Version_.FromDict(data["currentVersion"]) : null)
                 .WithNeedSignature(data.Keys.Contains("needSignature") && data["needSignature"] != null ? (bool?)bool.Parse(data["needSignature"].ToString()) : null)
                 .WithSignatureKeyId(data.Keys.Contains("signatureKeyId") && data["signatureKeyId"] != null ? data["signatureKeyId"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as VersionModel;
+            var diff = 0;
+            if (versionModelId == null && versionModelId == other.versionModelId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += versionModelId.CompareTo(other.versionModelId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (warningVersion == null && warningVersion == other.warningVersion)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += warningVersion.CompareTo(other.warningVersion);
+            }
+            if (errorVersion == null && errorVersion == other.errorVersion)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += errorVersion.CompareTo(other.errorVersion);
+            }
+            if (scope == null && scope == other.scope)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += scope.CompareTo(other.scope);
+            }
+            if (currentVersion == null && currentVersion == other.currentVersion)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += currentVersion.CompareTo(other.currentVersion);
+            }
+            if (needSignature == null && needSignature == other.needSignature)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += needSignature == other.needSignature ? 0 : 1;
+            }
+            if (signatureKeyId == null && signatureKeyId == other.signatureKeyId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += signatureKeyId.CompareTo(other.signatureKeyId);
+            }
+            return diff;
         }
 	}
 }

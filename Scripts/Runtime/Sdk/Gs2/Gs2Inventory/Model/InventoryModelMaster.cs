@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Model
 {
 	[Preserve]
-	public class InventoryModelMaster
+	public class InventoryModelMaster : IComparable
 	{
 
         /** インベントリモデルマスター */
@@ -245,6 +245,77 @@ namespace Gs2.Gs2Inventory.Model
                 .WithMaxCapacity(data.Keys.Contains("maxCapacity") && data["maxCapacity"] != null ? (int?)int.Parse(data["maxCapacity"].ToString()) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as InventoryModelMaster;
+            var diff = 0;
+            if (inventoryModelId == null && inventoryModelId == other.inventoryModelId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += inventoryModelId.CompareTo(other.inventoryModelId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (description == null && description == other.description)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += description.CompareTo(other.description);
+            }
+            if (initialCapacity == null && initialCapacity == other.initialCapacity)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(initialCapacity - other.initialCapacity);
+            }
+            if (maxCapacity == null && maxCapacity == other.maxCapacity)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(maxCapacity - other.maxCapacity);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

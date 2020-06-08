@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Gs2.Core.Model;
 using Gs2.Gs2Key.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Key.Result

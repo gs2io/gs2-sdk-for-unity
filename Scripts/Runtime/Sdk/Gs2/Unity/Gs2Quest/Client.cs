@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Quest
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2QuestWebSocketClient _client;
+		private readonly Gs2QuestRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2QuestWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2QuestRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>
@@ -77,7 +79,7 @@ namespace Gs2.Unity.Gs2Quest
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.Start(
+                cb => _restClient.Start(
                     new StartRequest()
                         .WithNamespaceName(namespaceName)
                         .WithQuestGroupName(questGroupName)
@@ -125,7 +127,7 @@ namespace Gs2.Unity.Gs2Quest
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.End(
+                cb => _restClient.End(
                     new EndRequest()
                         .WithNamespaceName(namespaceName)
                         .WithRewards(rewards != null ? rewards.Select(item => item?.ToModel()).ToList() : new List<Reward>(new Reward[]{}))
@@ -231,7 +233,7 @@ namespace Gs2.Unity.Gs2Quest
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeCompletedQuestLists(
+                cb => _restClient.DescribeCompletedQuestLists(
                     new DescribeCompletedQuestListsRequest()
                         .WithNamespaceName(namespaceName)
                         .WithPageToken(pageToken)
@@ -295,7 +297,7 @@ namespace Gs2.Unity.Gs2Quest
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.DescribeQuestGroupModels(
+                cb => _restClient.DescribeQuestGroupModels(
                     new DescribeQuestGroupModelsRequest()
                         .WithNamespaceName(namespaceName),
                     r => cb.Invoke(
@@ -354,7 +356,7 @@ namespace Gs2.Unity.Gs2Quest
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.DescribeQuestModels(
+                cb => _restClient.DescribeQuestModels(
                     new DescribeQuestModelsRequest()
                         .WithNamespaceName(namespaceName)
                         .WithQuestGroupName(questGroupName),

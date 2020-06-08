@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Model
 {
 	[Preserve]
-	public class QuestGroupModel
+	public class QuestGroupModel : IComparable
 	{
 
         /** クエストグループ */
@@ -194,6 +194,57 @@ namespace Gs2.Gs2Quest.Model
                     }
                 ).ToList() : null)
                 .WithChallengePeriodEventId(data.Keys.Contains("challengePeriodEventId") && data["challengePeriodEventId"] != null ? data["challengePeriodEventId"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as QuestGroupModel;
+            var diff = 0;
+            if (questGroupModelId == null && questGroupModelId == other.questGroupModelId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += questGroupModelId.CompareTo(other.questGroupModelId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (quests == null && quests == other.quests)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += quests.Count - other.quests.Count;
+                for (var i = 0; i < quests.Count; i++)
+                {
+                    diff += quests[i].CompareTo(other.quests[i]);
+                }
+            }
+            if (challengePeriodEventId == null && challengePeriodEventId == other.challengePeriodEventId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += challengePeriodEventId.CompareTo(other.challengePeriodEventId);
+            }
+            return diff;
         }
 	}
 }

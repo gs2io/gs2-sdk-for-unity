@@ -10,7 +10,7 @@ using Gs2.Unity.Gs2Realtime.Util;
 using Gs2.Unity.Util;
 using UnityEngine;
 using UnityEngine.Events;
-using WebSocketSharp;
+using Gs2.Util.WebSocketSharp;
 
 namespace Gs2.Unity.Gs2Realtime
 {

@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Identifier.Model
 {
 	[Preserve]
-	public class SecurityPolicy
+	public class SecurityPolicy : IComparable
 	{
 
         /** セキュリティポリシー */
@@ -201,6 +201,69 @@ namespace Gs2.Gs2Identifier.Model
                 .WithPolicy(data.Keys.Contains("policy") && data["policy"] != null ? data["policy"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as SecurityPolicy;
+            var diff = 0;
+            if (securityPolicyId == null && securityPolicyId == other.securityPolicyId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += securityPolicyId.CompareTo(other.securityPolicyId);
+            }
+            if (ownerId == null && ownerId == other.ownerId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += ownerId.CompareTo(other.ownerId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (description == null && description == other.description)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += description.CompareTo(other.description);
+            }
+            if (policy == null && policy == other.policy)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += policy.CompareTo(other.policy);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

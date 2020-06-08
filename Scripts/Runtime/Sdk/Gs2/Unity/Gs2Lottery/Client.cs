@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Lottery
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2LotteryWebSocketClient _client;
+		private readonly Gs2LotteryRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2LotteryWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2LotteryRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>
@@ -63,7 +65,7 @@ namespace Gs2.Unity.Gs2Lottery
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeBoxes(
+                cb => _restClient.DescribeBoxes(
                     new DescribeBoxesRequest()
                         .WithNamespaceName(namespaceName)
                         .WithPageToken(pageToken)

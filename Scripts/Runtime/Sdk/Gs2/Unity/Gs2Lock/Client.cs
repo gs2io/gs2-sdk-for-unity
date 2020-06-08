@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Lock
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2LockWebSocketClient _client;
+		private readonly Gs2LockRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2LockWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2LockRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>

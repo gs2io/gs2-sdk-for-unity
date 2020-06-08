@@ -10,6 +10,6 @@ namespace Gs2.Unity.Util
     {
         public UnityAction<AsyncResult<OpenResult>> Callback { get; set; }
 
-        public abstract IEnumerator ReOpen(Gs2WebSocketSession session, UnityAction<AsyncResult<OpenResult>> callback);
+        public abstract IEnumerator ReOpen(Gs2WebSocketSession session, Gs2RestSession restSession, UnityAction<AsyncResult<OpenResult>> callback);
     }
 }

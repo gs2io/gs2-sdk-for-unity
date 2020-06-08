@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Version.Model
 {
 	[Preserve]
-	public class AcceptVersion
+	public class AcceptVersion : IComparable
 	{
 
         /** 承認したバージョン */
@@ -217,6 +217,61 @@ namespace Gs2.Gs2Version.Model
                 .WithVersion(data.Keys.Contains("version") && data["version"] != null ? Gs2.Gs2Version.Model.Version_.FromDict(data["version"]) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as AcceptVersion;
+            var diff = 0;
+            if (acceptVersionId == null && acceptVersionId == other.acceptVersionId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += acceptVersionId.CompareTo(other.acceptVersionId);
+            }
+            if (versionName == null && versionName == other.versionName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += versionName.CompareTo(other.versionName);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (version == null && version == other.version)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += version.CompareTo(other.version);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

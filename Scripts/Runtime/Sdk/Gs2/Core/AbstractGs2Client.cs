@@ -22,7 +22,7 @@ using Gs2.Core.Exception;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Core.Util;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;

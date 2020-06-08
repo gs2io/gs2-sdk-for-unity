@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Friend
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2FriendWebSocketClient _client;
+		private readonly Gs2FriendRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2FriendWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2FriendRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>
@@ -166,7 +168,7 @@ namespace Gs2.Unity.Gs2Friend
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeFollows(
+                cb => _restClient.DescribeFollows(
                     new DescribeFollowsRequest()
                         .WithNamespaceName(namespaceName)
                         .WithWithProfile(withProfile)
@@ -274,7 +276,7 @@ namespace Gs2.Unity.Gs2Friend
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeFriends(
+                cb => _restClient.DescribeFriends(
                     new DescribeFriendsRequest()
                         .WithNamespaceName(namespaceName)
                         .WithWithProfile(withProfile)
@@ -379,7 +381,7 @@ namespace Gs2.Unity.Gs2Friend
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeSendRequests(
+                cb => _restClient.DescribeSendRequests(
                     new DescribeSendRequestsRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.token),
@@ -478,7 +480,7 @@ namespace Gs2.Unity.Gs2Friend
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeReceiveRequests(
+                cb => _restClient.DescribeReceiveRequests(
                     new DescribeReceiveRequestsRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.token),
@@ -577,7 +579,7 @@ namespace Gs2.Unity.Gs2Friend
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeBlackList(
+                cb => _restClient.DescribeBlackList(
                     new DescribeBlackListRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.token),

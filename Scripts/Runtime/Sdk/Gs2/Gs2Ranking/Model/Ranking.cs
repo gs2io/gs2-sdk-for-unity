@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Ranking.Model
 {
 	[Preserve]
-	public class Ranking
+	public class Ranking : IComparable
 	{
 
         /** 順位 */
@@ -157,6 +157,61 @@ namespace Gs2.Gs2Ranking.Model
                 .WithScore(data.Keys.Contains("score") && data["score"] != null ? (long?)long.Parse(data["score"].ToString()) : null)
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Ranking;
+            var diff = 0;
+            if (rank == null && rank == other.rank)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(rank - other.rank);
+            }
+            if (index == null && index == other.index)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(index - other.index);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (score == null && score == other.score)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(score - other.score);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            return diff;
         }
 	}
 }

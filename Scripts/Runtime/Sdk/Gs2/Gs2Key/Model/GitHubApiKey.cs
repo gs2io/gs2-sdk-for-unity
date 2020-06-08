@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Key.Model
 {
 	[Preserve]
-	public class GitHubApiKey
+	public class GitHubApiKey : IComparable
 	{
 
         /** GitHub のAPIキー */
@@ -225,6 +225,69 @@ namespace Gs2.Gs2Key.Model
                 .WithEncryptionKeyName(data.Keys.Contains("encryptionKeyName") && data["encryptionKeyName"] != null ? data["encryptionKeyName"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as GitHubApiKey;
+            var diff = 0;
+            if (apiKeyId == null && apiKeyId == other.apiKeyId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += apiKeyId.CompareTo(other.apiKeyId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (description == null && description == other.description)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += description.CompareTo(other.description);
+            }
+            if (apiKey == null && apiKey == other.apiKey)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += apiKey.CompareTo(other.apiKey);
+            }
+            if (encryptionKeyName == null && encryptionKeyName == other.encryptionKeyName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += encryptionKeyName.CompareTo(other.encryptionKeyName);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

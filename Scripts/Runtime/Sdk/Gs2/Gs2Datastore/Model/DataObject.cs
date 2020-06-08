@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Datastore.Model
 {
 	[Preserve]
-	public class DataObject
+	public class DataObject : IComparable
 	{
 
         /** データオブジェクト */
@@ -326,6 +326,105 @@ namespace Gs2.Gs2Datastore.Model
                 .WithPreviousGeneration(data.Keys.Contains("previousGeneration") && data["previousGeneration"] != null ? data["previousGeneration"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as DataObject;
+            var diff = 0;
+            if (dataObjectId == null && dataObjectId == other.dataObjectId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += dataObjectId.CompareTo(other.dataObjectId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (scope == null && scope == other.scope)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += scope.CompareTo(other.scope);
+            }
+            if (allowUserIds == null && allowUserIds == other.allowUserIds)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += allowUserIds.Count - other.allowUserIds.Count;
+                for (var i = 0; i < allowUserIds.Count; i++)
+                {
+                    diff += allowUserIds[i].CompareTo(other.allowUserIds[i]);
+                }
+            }
+            if (platform == null && platform == other.platform)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += platform.CompareTo(other.platform);
+            }
+            if (status == null && status == other.status)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += status.CompareTo(other.status);
+            }
+            if (generation == null && generation == other.generation)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += generation.CompareTo(other.generation);
+            }
+            if (previousGeneration == null && previousGeneration == other.previousGeneration)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += previousGeneration.CompareTo(other.previousGeneration);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Model
 {
 	[Preserve]
-	public class ExperienceModelMaster
+	public class ExperienceModelMaster : IComparable
 	{
 
         /** 経験値の種類マスター */
@@ -285,6 +285,93 @@ namespace Gs2.Gs2Experience.Model
                 .WithRankThresholdId(data.Keys.Contains("rankThresholdId") && data["rankThresholdId"] != null ? data["rankThresholdId"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as ExperienceModelMaster;
+            var diff = 0;
+            if (experienceModelId == null && experienceModelId == other.experienceModelId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += experienceModelId.CompareTo(other.experienceModelId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (description == null && description == other.description)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += description.CompareTo(other.description);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (defaultExperience == null && defaultExperience == other.defaultExperience)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(defaultExperience - other.defaultExperience);
+            }
+            if (defaultRankCap == null && defaultRankCap == other.defaultRankCap)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(defaultRankCap - other.defaultRankCap);
+            }
+            if (maxRankCap == null && maxRankCap == other.maxRankCap)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(maxRankCap - other.maxRankCap);
+            }
+            if (rankThresholdId == null && rankThresholdId == other.rankThresholdId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += rankThresholdId.CompareTo(other.rankThresholdId);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

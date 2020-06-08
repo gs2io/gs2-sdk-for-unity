@@ -40,11 +40,13 @@ namespace Gs2.Unity.Gs2News
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2NewsWebSocketClient _client;
+		private readonly Gs2NewsRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2NewsWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2NewsRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>
@@ -61,7 +63,7 @@ namespace Gs2.Unity.Gs2News
                 string namespaceName
         )
 		{
-            yield return _client.DescribeNews(
+            yield return _restClient.DescribeNews(
                 new DescribeNewsRequest()
                     .WithNamespaceName(namespaceName)
                     .WithAccessToken(session.AccessToken.token),
@@ -92,7 +94,7 @@ namespace Gs2.Unity.Gs2News
 		/// <summary>
 		///  達成したミッションの一覧を取得<br />
 		/// </summary>
-		///
+        ///
 		/// <returns>IEnumerator</returns>
 		/// <param name="callback">コールバックハンドラ</param>
 		/// <param name="session">ゲームセッション</param>

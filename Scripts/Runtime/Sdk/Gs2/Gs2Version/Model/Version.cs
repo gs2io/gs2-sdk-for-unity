@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Version.Model
 {
 	[Preserve]
-	public class Version_
+	public class Version_ : IComparable
 	{
 
         /** メジャーバージョン */
@@ -97,6 +97,37 @@ namespace Gs2.Gs2Version.Model
                 .WithMajor(data.Keys.Contains("major") && data["major"] != null ? (int?)int.Parse(data["major"].ToString()) : null)
                 .WithMinor(data.Keys.Contains("minor") && data["minor"] != null ? (int?)int.Parse(data["minor"].ToString()) : null)
                 .WithMicro(data.Keys.Contains("micro") && data["micro"] != null ? (int?)int.Parse(data["micro"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Version_;
+            var diff = 0;
+            if (major == null && major == other.major)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(major - other.major);
+            }
+            if (minor == null && minor == other.minor)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(minor - other.minor);
+            }
+            if (micro == null && micro == other.micro)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(micro - other.micro);
+            }
+            return diff;
         }
 	}
 }

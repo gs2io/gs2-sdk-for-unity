@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Model
 {
 	[Preserve]
-	public class LotteryModel
+	public class LotteryModel : IComparable
 	{
 
         /** 抽選の種類マスター */
@@ -225,6 +225,69 @@ namespace Gs2.Gs2Lottery.Model
                 .WithMethod(data.Keys.Contains("method") && data["method"] != null ? data["method"].ToString() : null)
                 .WithPrizeTableName(data.Keys.Contains("prizeTableName") && data["prizeTableName"] != null ? data["prizeTableName"].ToString() : null)
                 .WithChoicePrizeTableScriptId(data.Keys.Contains("choicePrizeTableScriptId") && data["choicePrizeTableScriptId"] != null ? data["choicePrizeTableScriptId"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as LotteryModel;
+            var diff = 0;
+            if (lotteryModelId == null && lotteryModelId == other.lotteryModelId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += lotteryModelId.CompareTo(other.lotteryModelId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (mode == null && mode == other.mode)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += mode.CompareTo(other.mode);
+            }
+            if (method == null && method == other.method)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += method.CompareTo(other.method);
+            }
+            if (prizeTableName == null && prizeTableName == other.prizeTableName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += prizeTableName.CompareTo(other.prizeTableName);
+            }
+            if (choicePrizeTableScriptId == null && choicePrizeTableScriptId == other.choicePrizeTableScriptId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += choicePrizeTableScriptId.CompareTo(other.choicePrizeTableScriptId);
+            }
+            return diff;
         }
 	}
 }

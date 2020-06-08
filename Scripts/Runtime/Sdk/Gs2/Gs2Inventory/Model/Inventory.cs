@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Model
 {
 	[Preserve]
-	public class Inventory
+	public class Inventory : IComparable
 	{
 
         /** インベントリ */
@@ -237,6 +237,69 @@ namespace Gs2.Gs2Inventory.Model
                 .WithCurrentInventoryMaxCapacity(data.Keys.Contains("currentInventoryMaxCapacity") && data["currentInventoryMaxCapacity"] != null ? (int?)int.Parse(data["currentInventoryMaxCapacity"].ToString()) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Inventory;
+            var diff = 0;
+            if (inventoryId == null && inventoryId == other.inventoryId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += inventoryId.CompareTo(other.inventoryId);
+            }
+            if (inventoryName == null && inventoryName == other.inventoryName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += inventoryName.CompareTo(other.inventoryName);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (currentInventoryCapacityUsage == null && currentInventoryCapacityUsage == other.currentInventoryCapacityUsage)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(currentInventoryCapacityUsage - other.currentInventoryCapacityUsage);
+            }
+            if (currentInventoryMaxCapacity == null && currentInventoryMaxCapacity == other.currentInventoryMaxCapacity)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(currentInventoryMaxCapacity - other.currentInventoryMaxCapacity);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

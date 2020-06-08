@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Deploy.Model
 {
 	[Preserve]
-	public class Stack
+	public class Stack : IComparable
 	{
 
         /** スタック */
@@ -233,6 +233,77 @@ namespace Gs2.Gs2Deploy.Model
                 .WithStatus(data.Keys.Contains("status") && data["status"] != null ? data["status"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Stack;
+            var diff = 0;
+            if (stackId == null && stackId == other.stackId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += stackId.CompareTo(other.stackId);
+            }
+            if (ownerId == null && ownerId == other.ownerId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += ownerId.CompareTo(other.ownerId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (description == null && description == other.description)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += description.CompareTo(other.description);
+            }
+            if (template == null && template == other.template)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += template.CompareTo(other.template);
+            }
+            if (status == null && status == other.status)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += status.CompareTo(other.status);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

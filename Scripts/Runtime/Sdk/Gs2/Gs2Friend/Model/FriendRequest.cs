@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Friend.Model
 {
 	[Preserve]
-	public class FriendRequest
+	public class FriendRequest : IComparable
 	{
 
         /** ユーザーID */
@@ -77,6 +77,29 @@ namespace Gs2.Gs2Friend.Model
             return new FriendRequest()
                 .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
                 .WithTargetUserId(data.Keys.Contains("targetUserId") && data["targetUserId"] != null ? data["targetUserId"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as FriendRequest;
+            var diff = 0;
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (targetUserId == null && targetUserId == other.targetUserId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += targetUserId.CompareTo(other.targetUserId);
+            }
+            return diff;
         }
 	}
 }

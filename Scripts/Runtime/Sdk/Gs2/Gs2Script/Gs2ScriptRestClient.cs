@@ -23,7 +23,7 @@ using System.Linq;
 using Gs2.Core;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
-using LitJson;
+using Gs2.Util.LitJson;
 
 namespace Gs2.Gs2Script
 {
@@ -889,6 +889,78 @@ namespace Gs2.Gs2Script
         )
 		{
 			var task = new DeleteScriptTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class InvokeScriptTask : Gs2RestSessionTask<Result.InvokeScriptResult>
+        {
+			private readonly Request.InvokeScriptRequest _request;
+
+			public InvokeScriptTask(Request.InvokeScriptRequest request, UnityAction<AsyncResult<Result.InvokeScriptResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "script")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/invoke";
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.scriptId != null)
+                {
+                    jsonWriter.WritePropertyName("scriptId");
+                    jsonWriter.Write(_request.scriptId.ToString());
+                }
+                if (_request.args != null)
+                {
+                    jsonWriter.WritePropertyName("args");
+                    jsonWriter.Write(_request.args.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  スクリプトを実行します<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator InvokeScript(
+                Request.InvokeScriptRequest request,
+                UnityAction<AsyncResult<Result.InvokeScriptResult>> callback
+        )
+		{
+			var task = new InvokeScriptTask(request, callback);
 			return Gs2RestSession.Execute(task);
         }
 

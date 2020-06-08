@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Stamina.Model
 {
 	[Preserve]
-	public class RecoverIntervalTableMaster
+	public class RecoverIntervalTableMaster : IComparable
 	{
 
         /** スタミナ回復間隔テーブルマスター */
@@ -214,6 +214,65 @@ namespace Gs2.Gs2Stamina.Model
                         return (int?)int.Parse(value.ToString());
                     }
                 ).ToList() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as RecoverIntervalTableMaster;
+            var diff = 0;
+            if (recoverIntervalTableId == null && recoverIntervalTableId == other.recoverIntervalTableId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += recoverIntervalTableId.CompareTo(other.recoverIntervalTableId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (description == null && description == other.description)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += description.CompareTo(other.description);
+            }
+            if (experienceModelId == null && experienceModelId == other.experienceModelId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += experienceModelId.CompareTo(other.experienceModelId);
+            }
+            if (values == null && values == other.values)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += values.Count - other.values.Count;
+                for (var i = 0; i < values.Count; i++)
+                {
+                    diff += (int)(values[i] - other.values[i]);
+                }
+            }
+            return diff;
         }
 	}
 }

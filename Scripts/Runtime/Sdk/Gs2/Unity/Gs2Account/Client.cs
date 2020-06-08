@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Account
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2AccountWebSocketClient _client;
+		private readonly Gs2AccountRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2AccountWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2AccountRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>
@@ -188,7 +190,7 @@ namespace Gs2.Unity.Gs2Account
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeTakeOvers(
+                cb => _restClient.DescribeTakeOvers(
                     new DescribeTakeOversRequest()
                         .WithNamespaceName(namespaceName)
                         .WithPageToken(pageToken)

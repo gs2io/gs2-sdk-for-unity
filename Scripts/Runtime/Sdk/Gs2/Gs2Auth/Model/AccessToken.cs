@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Auth.Model
 {
 	[Preserve]
-	public class AccessToken
+	public class AccessToken : IComparable
 	{
 
         /** オーナーID */
@@ -117,6 +117,45 @@ namespace Gs2.Gs2Auth.Model
                 .WithToken(data.Keys.Contains("token") && data["token"] != null ? data["token"].ToString() : null)
                 .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
                 .WithExpire(data.Keys.Contains("expire") && data["expire"] != null ? (long?)long.Parse(data["expire"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as AccessToken;
+            var diff = 0;
+            if (ownerId == null && ownerId == other.ownerId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += ownerId.CompareTo(other.ownerId);
+            }
+            if (token == null && token == other.token)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += token.CompareTo(other.token);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (expire == null && expire == other.expire)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(expire - other.expire);
+            }
+            return diff;
         }
 	}
 }

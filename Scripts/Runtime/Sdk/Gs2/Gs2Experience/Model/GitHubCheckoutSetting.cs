@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Model
 {
 	[Preserve]
-	public class GitHubCheckoutSetting
+	public class GitHubCheckoutSetting : IComparable
 	{
 
         /** リソースの取得に使用するGitHub のAPIキー のGRN */
@@ -177,6 +177,69 @@ namespace Gs2.Gs2Experience.Model
                 .WithCommitHash(data.Keys.Contains("commitHash") && data["commitHash"] != null ? data["commitHash"].ToString() : null)
                 .WithBranchName(data.Keys.Contains("branchName") && data["branchName"] != null ? data["branchName"].ToString() : null)
                 .WithTagName(data.Keys.Contains("tagName") && data["tagName"] != null ? data["tagName"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as GitHubCheckoutSetting;
+            var diff = 0;
+            if (gitHubApiKeyId == null && gitHubApiKeyId == other.gitHubApiKeyId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += gitHubApiKeyId.CompareTo(other.gitHubApiKeyId);
+            }
+            if (repositoryName == null && repositoryName == other.repositoryName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += repositoryName.CompareTo(other.repositoryName);
+            }
+            if (sourcePath == null && sourcePath == other.sourcePath)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += sourcePath.CompareTo(other.sourcePath);
+            }
+            if (referenceType == null && referenceType == other.referenceType)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += referenceType.CompareTo(other.referenceType);
+            }
+            if (commitHash == null && commitHash == other.commitHash)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += commitHash.CompareTo(other.commitHash);
+            }
+            if (branchName == null && branchName == other.branchName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += branchName.CompareTo(other.branchName);
+            }
+            if (tagName == null && tagName == other.tagName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += tagName.CompareTo(other.tagName);
+            }
+            return diff;
         }
 	}
 }

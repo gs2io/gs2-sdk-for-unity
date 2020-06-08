@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Schedule.Model
 {
 	[Preserve]
-	public class CurrentEventMaster
+	public class CurrentEventMaster : IComparable
 	{
 
         /** ネームスペース名 */
@@ -113,6 +113,29 @@ namespace Gs2.Gs2Schedule.Model
             return new CurrentEventMaster()
                 .WithNamespaceName(data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString() : null)
                 .WithSettings(data.Keys.Contains("settings") && data["settings"] != null ? data["settings"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as CurrentEventMaster;
+            var diff = 0;
+            if (namespaceName == null && namespaceName == other.namespaceName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += namespaceName.CompareTo(other.namespaceName);
+            }
+            if (settings == null && settings == other.settings)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += settings.CompareTo(other.settings);
+            }
+            return diff;
         }
 	}
 }

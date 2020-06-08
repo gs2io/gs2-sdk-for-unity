@@ -16,7 +16,7 @@
 
 using Gs2.Core.Model;
 using Gs2.Core.Exception;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Events;
 
 namespace Gs2.Core.Net
@@ -53,7 +53,7 @@ namespace Gs2.Core.Net
                         result = (T)typeof(T).GetMethod("FromDict")?.Invoke(null, new object[] { message["body"] });
                     }
                 }
-                catch (System.Exception e)
+                catch (System.Exception)
                 {
                     error = new UnknownException("JSON parsing error: \n" + gs2Response.Message);
                 }

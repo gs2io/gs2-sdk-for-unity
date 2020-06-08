@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Model
 {
 	[Preserve]
-	public class Prize
+	public class Prize : IComparable
 	{
 
         /** 景品ID */
@@ -146,6 +146,57 @@ namespace Gs2.Gs2Lottery.Model
                 ).ToList() : null)
                 .WithPrizeTableName(data.Keys.Contains("prizeTableName") && data["prizeTableName"] != null ? data["prizeTableName"].ToString() : null)
                 .WithWeight(data.Keys.Contains("weight") && data["weight"] != null ? (int?)int.Parse(data["weight"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Prize;
+            var diff = 0;
+            if (prizeId == null && prizeId == other.prizeId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += prizeId.CompareTo(other.prizeId);
+            }
+            if (type == null && type == other.type)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += type.CompareTo(other.type);
+            }
+            if (acquireActions == null && acquireActions == other.acquireActions)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += acquireActions.Count - other.acquireActions.Count;
+                for (var i = 0; i < acquireActions.Count; i++)
+                {
+                    diff += acquireActions[i].CompareTo(other.acquireActions[i]);
+                }
+            }
+            if (prizeTableName == null && prizeTableName == other.prizeTableName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += prizeTableName.CompareTo(other.prizeTableName);
+            }
+            if (weight == null && weight == other.weight)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(weight - other.weight);
+            }
+            return diff;
         }
 	}
 }

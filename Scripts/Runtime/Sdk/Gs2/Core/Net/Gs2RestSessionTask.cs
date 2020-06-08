@@ -17,7 +17,7 @@
 using System;
 using System.Collections;
 using Gs2.Core.Exception;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Events;
 using UnityEngine.Networking;
 
@@ -96,7 +96,7 @@ namespace Gs2.Core.Net
                         result = (T)method.Invoke(null, new object[] { JsonMapper.ToObject(gs2Response.Message) });
                     }
                 }
-                catch (JsonException jsonException)
+                catch (JsonException)
                 {
                     error = new UnknownException("JSON parsing error: \n" + gs2Response.Message);
                 }

@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Distributor.Model
 {
 	[Preserve]
-	public class DistributorModel
+	public class DistributorModel : IComparable
 	{
 
         /** 配信設定 */
@@ -194,6 +194,57 @@ namespace Gs2.Gs2Distributor.Model
                         return value.ToString();
                     }
                 ).ToList() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as DistributorModel;
+            var diff = 0;
+            if (distributorModelId == null && distributorModelId == other.distributorModelId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += distributorModelId.CompareTo(other.distributorModelId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (inboxNamespaceId == null && inboxNamespaceId == other.inboxNamespaceId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += inboxNamespaceId.CompareTo(other.inboxNamespaceId);
+            }
+            if (whiteListTargetIds == null && whiteListTargetIds == other.whiteListTargetIds)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += whiteListTargetIds.Count - other.whiteListTargetIds.Count;
+                for (var i = 0; i < whiteListTargetIds.Count; i++)
+                {
+                    diff += whiteListTargetIds[i].CompareTo(other.whiteListTargetIds[i]);
+                }
+            }
+            return diff;
         }
 	}
 }

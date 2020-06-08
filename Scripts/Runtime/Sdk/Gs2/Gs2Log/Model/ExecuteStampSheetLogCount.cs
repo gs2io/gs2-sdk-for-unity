@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Log.Model
 {
 	[Preserve]
-	public class ExecuteStampSheetLogCount
+	public class ExecuteStampSheetLogCount : IComparable
 	{
 
         /** マイクロサービスの種類 */
@@ -137,6 +137,53 @@ namespace Gs2.Gs2Log.Model
                 .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
                 .WithAction(data.Keys.Contains("action") && data["action"] != null ? data["action"].ToString() : null)
                 .WithCount(data.Keys.Contains("count") && data["count"] != null ? (long?)long.Parse(data["count"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as ExecuteStampSheetLogCount;
+            var diff = 0;
+            if (service == null && service == other.service)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += service.CompareTo(other.service);
+            }
+            if (method == null && method == other.method)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += method.CompareTo(other.method);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (action == null && action == other.action)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += action.CompareTo(other.action);
+            }
+            if (count == null && count == other.count)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(count - other.count);
+            }
+            return diff;
         }
 	}
 }

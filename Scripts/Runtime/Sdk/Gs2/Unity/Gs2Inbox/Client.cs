@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Inbox
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2InboxWebSocketClient _client;
+		private readonly Gs2InboxRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2InboxWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2InboxRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>
@@ -65,7 +67,7 @@ namespace Gs2.Unity.Gs2Inbox
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeMessages(
+                cb => _restClient.DescribeMessages(
                     new DescribeMessagesRequest()
                         .WithNamespaceName(namespaceName)
                         .WithPageToken(pageToken)
@@ -131,7 +133,7 @@ namespace Gs2.Unity.Gs2Inbox
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.ReadMessage(
+                cb => _restClient.ReadMessage(
                     new ReadMessageRequest()
                         .WithNamespaceName(namespaceName)
                         .WithMessageName(messageName)

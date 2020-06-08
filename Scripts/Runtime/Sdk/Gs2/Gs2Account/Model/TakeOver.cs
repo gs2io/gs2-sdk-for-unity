@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Account.Model
 {
 	[Preserve]
-	public class TakeOver
+	public class TakeOver : IComparable
 	{
 
         /** 引き継ぎ設定 */
@@ -217,6 +217,61 @@ namespace Gs2.Gs2Account.Model
                 .WithUserIdentifier(data.Keys.Contains("userIdentifier") && data["userIdentifier"] != null ? data["userIdentifier"].ToString() : null)
                 .WithPassword(data.Keys.Contains("password") && data["password"] != null ? data["password"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as TakeOver;
+            var diff = 0;
+            if (takeOverId == null && takeOverId == other.takeOverId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += takeOverId.CompareTo(other.takeOverId);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (type == null && type == other.type)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(type - other.type);
+            }
+            if (userIdentifier == null && userIdentifier == other.userIdentifier)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userIdentifier.CompareTo(other.userIdentifier);
+            }
+            if (password == null && password == other.password)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += password.CompareTo(other.password);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            return diff;
         }
 	}
 }

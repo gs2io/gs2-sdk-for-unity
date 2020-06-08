@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Deploy.Model
 {
 	[Preserve]
-	public class Output
+	public class Output : IComparable
 	{
 
         /** アウトプット */
@@ -165,6 +165,45 @@ namespace Gs2.Gs2Deploy.Model
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithValue(data.Keys.Contains("value") && data["value"] != null ? data["value"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Output;
+            var diff = 0;
+            if (outputId == null && outputId == other.outputId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += outputId.CompareTo(other.outputId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (value == null && value == other.value)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += value.CompareTo(other.value);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            return diff;
         }
 	}
 }

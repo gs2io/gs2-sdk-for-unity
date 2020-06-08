@@ -1,5 +1,5 @@
 using Gs2.Gs2Realtime.Message;
-using WebSocketSharp;
+using Gs2.Util.WebSocketSharp;
 
 namespace Gs2.Unity.Gs2Realtime
 {

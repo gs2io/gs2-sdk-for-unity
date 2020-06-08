@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Model
 {
 	[Preserve]
-	public class AcquireActionConfig
+	public class AcquireActionConfig : IComparable
 	{
 
         /** スロット名 */
@@ -86,6 +86,33 @@ namespace Gs2.Gs2Formation.Model
                         return Gs2.Gs2Formation.Model.Config.FromDict(value);
                     }
                 ).ToList() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as AcquireActionConfig;
+            var diff = 0;
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (config == null && config == other.config)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += config.Count - other.config.Count;
+                for (var i = 0; i < config.Count; i++)
+                {
+                    diff += config[i].CompareTo(other.config[i]);
+                }
+            }
+            return diff;
         }
 	}
 }

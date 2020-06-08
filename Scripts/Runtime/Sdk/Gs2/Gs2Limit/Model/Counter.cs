@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Limit.Model
 {
 	[Preserve]
-	public class Counter
+	public class Counter : IComparable
 	{
 
         /** カウンター */
@@ -249,6 +249,69 @@ namespace Gs2.Gs2Limit.Model
                 .WithCount(data.Keys.Contains("count") && data["count"] != null ? (int?)int.Parse(data["count"].ToString()) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Counter;
+            var diff = 0;
+            if (counterId == null && counterId == other.counterId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += counterId.CompareTo(other.counterId);
+            }
+            if (limitName == null && limitName == other.limitName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += limitName.CompareTo(other.limitName);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (count == null && count == other.count)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(count - other.count);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

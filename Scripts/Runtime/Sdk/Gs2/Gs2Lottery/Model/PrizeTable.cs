@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Model
 {
 	[Preserve]
-	public class PrizeTable
+	public class PrizeTable : IComparable
 	{
 
         /** 排出確率テーブルマスター */
@@ -174,6 +174,49 @@ namespace Gs2.Gs2Lottery.Model
                         return Gs2.Gs2Lottery.Model.Prize.FromDict(value);
                     }
                 ).ToList() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as PrizeTable;
+            var diff = 0;
+            if (prizeTableId == null && prizeTableId == other.prizeTableId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += prizeTableId.CompareTo(other.prizeTableId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (prizes == null && prizes == other.prizes)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += prizes.Count - other.prizes.Count;
+                for (var i = 0; i < prizes.Count; i++)
+                {
+                    diff += prizes[i].CompareTo(other.prizes[i]);
+                }
+            }
+            return diff;
         }
 	}
 }

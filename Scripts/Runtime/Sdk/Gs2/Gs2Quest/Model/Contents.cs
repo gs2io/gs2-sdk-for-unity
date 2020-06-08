@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Model
 {
 	[Preserve]
-	public class Contents
+	public class Contents : IComparable
 	{
 
         /** クエストモデルのメタデータ */
@@ -106,6 +106,41 @@ namespace Gs2.Gs2Quest.Model
                     }
                 ).ToList() : null)
                 .WithWeight(data.Keys.Contains("weight") && data["weight"] != null ? (int?)int.Parse(data["weight"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Contents;
+            var diff = 0;
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (completeAcquireActions == null && completeAcquireActions == other.completeAcquireActions)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += completeAcquireActions.Count - other.completeAcquireActions.Count;
+                for (var i = 0; i < completeAcquireActions.Count; i++)
+                {
+                    diff += completeAcquireActions[i].CompareTo(other.completeAcquireActions[i]);
+                }
+            }
+            if (weight == null && weight == other.weight)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(weight - other.weight);
+            }
+            return diff;
         }
 	}
 }

@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Experience.Model
 {
 	[Preserve]
-	public class Threshold
+	public class Threshold : IComparable
 	{
 
         /** しきい値ID */
@@ -106,6 +106,41 @@ namespace Gs2.Gs2Experience.Model
                         return (long?)long.Parse(value.ToString());
                     }
                 ).ToList() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Threshold;
+            var diff = 0;
+            if (thresholdId == null && thresholdId == other.thresholdId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += thresholdId.CompareTo(other.thresholdId);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (values == null && values == other.values)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += values.Count - other.values.Count;
+                for (var i = 0; i < values.Count; i++)
+                {
+                    diff += (int)(values[i] - other.values[i]);
+                }
+            }
+            return diff;
         }
 	}
 }

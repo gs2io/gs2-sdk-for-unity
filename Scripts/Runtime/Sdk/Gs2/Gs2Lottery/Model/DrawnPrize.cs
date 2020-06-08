@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Lottery.Model
 {
 	[Preserve]
-	public class DrawnPrize
+	public class DrawnPrize : IComparable
 	{
 
         /** 入手アクションのリスト */
@@ -66,6 +66,25 @@ namespace Gs2.Gs2Lottery.Model
                         return Gs2.Gs2Lottery.Model.AcquireAction.FromDict(value);
                     }
                 ).ToList() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as DrawnPrize;
+            var diff = 0;
+            if (acquireActions == null && acquireActions == other.acquireActions)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += acquireActions.Count - other.acquireActions.Count;
+                for (var i = 0; i < acquireActions.Count; i++)
+                {
+                    diff += acquireActions[i].CompareTo(other.acquireActions[i]);
+                }
+            }
+            return diff;
         }
 	}
 }

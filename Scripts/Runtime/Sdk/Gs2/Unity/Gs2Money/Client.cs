@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Money
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2MoneyWebSocketClient _client;
+		private readonly Gs2MoneyRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2MoneyWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2MoneyRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>

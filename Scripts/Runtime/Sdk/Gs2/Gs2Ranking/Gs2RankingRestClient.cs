@@ -23,7 +23,7 @@ using System.Linq;
 using Gs2.Core;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
-using LitJson;
+using Gs2.Util.LitJson;
 
 namespace Gs2.Gs2Ranking
 {

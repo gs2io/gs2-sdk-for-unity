@@ -20,7 +20,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Gs2.Core.Model;
 using Gs2.Core.Exception;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine;
 using UnityEngine.Scripting;
 
@@ -86,7 +86,7 @@ namespace Gs2.Core.Net
 		        Error = ExtractError(errorMessage, gs2Message.status ?? 0);
 		        Gs2SessionTaskId = new Gs2SessionTaskId(gs2Message.requestId);
 	        }
-	        catch (System.Exception e)
+	        catch (System.Exception)
 	        {
 		        Error = new UnknownException("JSON parsing error: \n" + message);
 		        Gs2SessionTaskId = Gs2SessionTaskId.InvalidId;

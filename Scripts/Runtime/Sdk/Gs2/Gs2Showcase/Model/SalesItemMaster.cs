@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Showcase.Model
 {
 	[Preserve]
-	public class SalesItemMaster
+	public class SalesItemMaster : IComparable
 	{
 
         /** 商品マスター */
@@ -263,6 +263,85 @@ namespace Gs2.Gs2Showcase.Model
                 ).ToList() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as SalesItemMaster;
+            var diff = 0;
+            if (salesItemId == null && salesItemId == other.salesItemId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += salesItemId.CompareTo(other.salesItemId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (description == null && description == other.description)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += description.CompareTo(other.description);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (consumeActions == null && consumeActions == other.consumeActions)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += consumeActions.Count - other.consumeActions.Count;
+                for (var i = 0; i < consumeActions.Count; i++)
+                {
+                    diff += consumeActions[i].CompareTo(other.consumeActions[i]);
+                }
+            }
+            if (acquireActions == null && acquireActions == other.acquireActions)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += acquireActions.Count - other.acquireActions.Count;
+                for (var i = 0; i < acquireActions.Count; i++)
+                {
+                    diff += acquireActions[i].CompareTo(other.acquireActions[i]);
+                }
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

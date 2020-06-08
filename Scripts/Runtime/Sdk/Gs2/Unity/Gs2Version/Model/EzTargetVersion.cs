@@ -16,7 +16,7 @@
 using Gs2.Gs2Version.Model;
 using System.Collections.Generic;
 using System.Linq;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 

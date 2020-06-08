@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Chat.Model
 {
 	[Preserve]
-	public class Room
+	public class Room : IComparable
 	{
 
         /** ルーム */
@@ -254,6 +254,81 @@ namespace Gs2.Gs2Chat.Model
                 ).ToList() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Room;
+            var diff = 0;
+            if (roomId == null && roomId == other.roomId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += roomId.CompareTo(other.roomId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (password == null && password == other.password)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += password.CompareTo(other.password);
+            }
+            if (whiteListUserIds == null && whiteListUserIds == other.whiteListUserIds)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += whiteListUserIds.Count - other.whiteListUserIds.Count;
+                for (var i = 0; i < whiteListUserIds.Count; i++)
+                {
+                    diff += whiteListUserIds[i].CompareTo(other.whiteListUserIds[i]);
+                }
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

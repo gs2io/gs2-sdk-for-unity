@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Showcase.Model
 {
 	[Preserve]
-	public class ShowcaseMaster
+	public class ShowcaseMaster : IComparable
 	{
 
         /** 陳列棚マスター */
@@ -254,6 +254,81 @@ namespace Gs2.Gs2Showcase.Model
                 .WithSalesPeriodEventId(data.Keys.Contains("salesPeriodEventId") && data["salesPeriodEventId"] != null ? data["salesPeriodEventId"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as ShowcaseMaster;
+            var diff = 0;
+            if (showcaseId == null && showcaseId == other.showcaseId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += showcaseId.CompareTo(other.showcaseId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (description == null && description == other.description)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += description.CompareTo(other.description);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (displayItems == null && displayItems == other.displayItems)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += displayItems.Count - other.displayItems.Count;
+                for (var i = 0; i < displayItems.Count; i++)
+                {
+                    diff += displayItems[i].CompareTo(other.displayItems[i]);
+                }
+            }
+            if (salesPeriodEventId == null && salesPeriodEventId == other.salesPeriodEventId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += salesPeriodEventId.CompareTo(other.salesPeriodEventId);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

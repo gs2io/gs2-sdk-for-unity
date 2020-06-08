@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Model
 {
 	[Preserve]
-	public class MissionTaskModel
+	public class MissionTaskModel : IComparable
 	{
 
         /** ミッションタスク */
@@ -266,6 +266,81 @@ namespace Gs2.Gs2Mission.Model
                 ).ToList() : null)
                 .WithChallengePeriodEventId(data.Keys.Contains("challengePeriodEventId") && data["challengePeriodEventId"] != null ? data["challengePeriodEventId"].ToString() : null)
                 .WithPremiseMissionTaskName(data.Keys.Contains("premiseMissionTaskName") && data["premiseMissionTaskName"] != null ? data["premiseMissionTaskName"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as MissionTaskModel;
+            var diff = 0;
+            if (missionTaskId == null && missionTaskId == other.missionTaskId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += missionTaskId.CompareTo(other.missionTaskId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (counterName == null && counterName == other.counterName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += counterName.CompareTo(other.counterName);
+            }
+            if (targetValue == null && targetValue == other.targetValue)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(targetValue - other.targetValue);
+            }
+            if (completeAcquireActions == null && completeAcquireActions == other.completeAcquireActions)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += completeAcquireActions.Count - other.completeAcquireActions.Count;
+                for (var i = 0; i < completeAcquireActions.Count; i++)
+                {
+                    diff += completeAcquireActions[i].CompareTo(other.completeAcquireActions[i]);
+                }
+            }
+            if (challengePeriodEventId == null && challengePeriodEventId == other.challengePeriodEventId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += challengePeriodEventId.CompareTo(other.challengePeriodEventId);
+            }
+            if (premiseMissionTaskName == null && premiseMissionTaskName == other.premiseMissionTaskName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += premiseMissionTaskName.CompareTo(other.premiseMissionTaskName);
+            }
+            return diff;
         }
 	}
 }

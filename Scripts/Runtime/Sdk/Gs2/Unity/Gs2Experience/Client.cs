@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Experience
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2ExperienceWebSocketClient _client;
+		private readonly Gs2ExperienceRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2ExperienceWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2ExperienceRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>
@@ -59,7 +61,7 @@ namespace Gs2.Unity.Gs2Experience
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.DescribeExperienceModels(
+                cb => _restClient.DescribeExperienceModels(
                     new DescribeExperienceModelsRequest()
                         .WithNamespaceName(namespaceName),
                     r => cb.Invoke(
@@ -129,7 +131,7 @@ namespace Gs2.Unity.Gs2Experience
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeStatuses(
+                cb => _restClient.DescribeStatuses(
                     new DescribeStatusesRequest()
                         .WithNamespaceName(namespaceName)
                         .WithExperienceName(experienceName)

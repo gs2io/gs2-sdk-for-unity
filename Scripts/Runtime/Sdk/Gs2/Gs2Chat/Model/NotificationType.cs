@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Chat.Model
 {
 	[Preserve]
-	public class NotificationType
+	public class NotificationType : IComparable
 	{
 
         /** 新着メッセージ通知を受け取るカテゴリ */
@@ -77,6 +77,29 @@ namespace Gs2.Gs2Chat.Model
             return new NotificationType()
                 .WithCategory(data.Keys.Contains("category") && data["category"] != null ? (int?)int.Parse(data["category"].ToString()) : null)
                 .WithEnableTransferMobilePushNotification(data.Keys.Contains("enableTransferMobilePushNotification") && data["enableTransferMobilePushNotification"] != null ? (bool?)bool.Parse(data["enableTransferMobilePushNotification"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as NotificationType;
+            var diff = 0;
+            if (category == null && category == other.category)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(category - other.category);
+            }
+            if (enableTransferMobilePushNotification == null && enableTransferMobilePushNotification == other.enableTransferMobilePushNotification)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += enableTransferMobilePushNotification == other.enableTransferMobilePushNotification ? 0 : 1;
+            }
+            return diff;
         }
 	}
 }

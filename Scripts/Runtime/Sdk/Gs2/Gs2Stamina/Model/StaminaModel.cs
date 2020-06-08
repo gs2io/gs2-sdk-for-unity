@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Stamina.Model
 {
 	[Preserve]
-	public class StaminaModel
+	public class StaminaModel : IComparable
 	{
 
         /** スタミナモデルマスター */
@@ -305,6 +305,101 @@ namespace Gs2.Gs2Stamina.Model
                 .WithMaxStaminaTable(data.Keys.Contains("maxStaminaTable") && data["maxStaminaTable"] != null ? Gs2.Gs2Stamina.Model.MaxStaminaTable.FromDict(data["maxStaminaTable"]) : null)
                 .WithRecoverIntervalTable(data.Keys.Contains("recoverIntervalTable") && data["recoverIntervalTable"] != null ? Gs2.Gs2Stamina.Model.RecoverIntervalTable.FromDict(data["recoverIntervalTable"]) : null)
                 .WithRecoverValueTable(data.Keys.Contains("recoverValueTable") && data["recoverValueTable"] != null ? Gs2.Gs2Stamina.Model.RecoverValueTable.FromDict(data["recoverValueTable"]) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as StaminaModel;
+            var diff = 0;
+            if (staminaModelId == null && staminaModelId == other.staminaModelId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += staminaModelId.CompareTo(other.staminaModelId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (recoverIntervalMinutes == null && recoverIntervalMinutes == other.recoverIntervalMinutes)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(recoverIntervalMinutes - other.recoverIntervalMinutes);
+            }
+            if (recoverValue == null && recoverValue == other.recoverValue)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(recoverValue - other.recoverValue);
+            }
+            if (initialCapacity == null && initialCapacity == other.initialCapacity)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(initialCapacity - other.initialCapacity);
+            }
+            if (isOverflow == null && isOverflow == other.isOverflow)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += isOverflow == other.isOverflow ? 0 : 1;
+            }
+            if (maxCapacity == null && maxCapacity == other.maxCapacity)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(maxCapacity - other.maxCapacity);
+            }
+            if (maxStaminaTable == null && maxStaminaTable == other.maxStaminaTable)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += maxStaminaTable.CompareTo(other.maxStaminaTable);
+            }
+            if (recoverIntervalTable == null && recoverIntervalTable == other.recoverIntervalTable)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += recoverIntervalTable.CompareTo(other.recoverIntervalTable);
+            }
+            if (recoverValueTable == null && recoverValueTable == other.recoverValueTable)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += recoverValueTable.CompareTo(other.recoverValueTable);
+            }
+            return diff;
         }
 	}
 }

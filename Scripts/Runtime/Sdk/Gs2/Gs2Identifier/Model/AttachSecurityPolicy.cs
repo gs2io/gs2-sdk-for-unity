@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Identifier.Model
 {
 	[Preserve]
-	public class AttachSecurityPolicy
+	public class AttachSecurityPolicy : IComparable
 	{
 
         /** ユーザ のGRN */
@@ -106,6 +106,41 @@ namespace Gs2.Gs2Identifier.Model
                     }
                 ).ToList() : null)
                 .WithAttachedAt(data.Keys.Contains("attachedAt") && data["attachedAt"] != null ? (long?)long.Parse(data["attachedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as AttachSecurityPolicy;
+            var diff = 0;
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (securityPolicyIds == null && securityPolicyIds == other.securityPolicyIds)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += securityPolicyIds.Count - other.securityPolicyIds.Count;
+                for (var i = 0; i < securityPolicyIds.Count; i++)
+                {
+                    diff += securityPolicyIds[i].CompareTo(other.securityPolicyIds[i]);
+                }
+            }
+            if (attachedAt == null && attachedAt == other.attachedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(attachedAt - other.attachedAt);
+            }
+            return diff;
         }
 	}
 }

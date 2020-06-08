@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Exchange
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2ExchangeWebSocketClient _client;
+		private readonly Gs2ExchangeRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2ExchangeWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2ExchangeRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>
@@ -56,7 +58,7 @@ namespace Gs2.Unity.Gs2Exchange
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.DescribeRateModels(
+                cb => _restClient.DescribeRateModels(
                     new DescribeRateModelsRequest()
                         .WithNamespaceName(namespaceName),
                     r => cb.Invoke(
@@ -122,7 +124,7 @@ namespace Gs2.Unity.Gs2Exchange
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.Exchange(
+                cb => _restClient.Exchange(
                     new ExchangeRequest()
                         .WithNamespaceName(namespaceName)
                         .WithRateName(rateName)

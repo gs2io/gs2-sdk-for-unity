@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Ranking.Model
 {
 	[Preserve]
-	public class CalculatedAt
+	public class CalculatedAt : IComparable
 	{
 
         /** カテゴリ名 */
@@ -77,6 +77,29 @@ namespace Gs2.Gs2Ranking.Model
             return new CalculatedAt()
                 .WithCategoryName(data.Keys.Contains("categoryName") && data["categoryName"] != null ? data["categoryName"].ToString() : null)
                 .WithCalculatedAt(data.Keys.Contains("calculatedAt") && data["calculatedAt"] != null ? (long?)long.Parse(data["calculatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as CalculatedAt;
+            var diff = 0;
+            if (categoryName == null && categoryName == other.categoryName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += categoryName.CompareTo(other.categoryName);
+            }
+            if (calculatedAt == null && calculatedAt == other.calculatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(calculatedAt - other.calculatedAt);
+            }
+            return diff;
         }
 	}
 }

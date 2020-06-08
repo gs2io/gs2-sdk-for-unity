@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Model
 {
 	[Preserve]
-	public class SlotModel
+	public class SlotModel : IComparable
 	{
 
         /** スロットモデル名 */
@@ -97,6 +97,37 @@ namespace Gs2.Gs2Formation.Model
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithPropertyRegex(data.Keys.Contains("propertyRegex") && data["propertyRegex"] != null ? data["propertyRegex"].ToString() : null)
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as SlotModel;
+            var diff = 0;
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (propertyRegex == null && propertyRegex == other.propertyRegex)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += propertyRegex.CompareTo(other.propertyRegex);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            return diff;
         }
 	}
 }

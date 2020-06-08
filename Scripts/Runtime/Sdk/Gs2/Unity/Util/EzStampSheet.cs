@@ -20,7 +20,7 @@ using Gs2.Core;
 using Gs2.Core.Model;
 using Gs2.Gs2Distributor.Result;
 using Gs2.Unity.Gs2Distributor.Result;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Events;
 
 namespace Gs2.Unity.Util

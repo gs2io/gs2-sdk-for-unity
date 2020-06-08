@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Model
 {
 	[Preserve]
-	public class Reward
+	public class Reward : IComparable
 	{
 
         /** スタンプシートで実行するアクションの種類 */
@@ -117,6 +117,45 @@ namespace Gs2.Gs2Quest.Model
                 .WithRequest(data.Keys.Contains("request") && data["request"] != null ? data["request"].ToString() : null)
                 .WithItemId(data.Keys.Contains("itemId") && data["itemId"] != null ? data["itemId"].ToString() : null)
                 .WithValue(data.Keys.Contains("value") && data["value"] != null ? (int?)int.Parse(data["value"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Reward;
+            var diff = 0;
+            if (action == null && action == other.action)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += action.CompareTo(other.action);
+            }
+            if (request == null && request == other.request)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += request.CompareTo(other.request);
+            }
+            if (itemId == null && itemId == other.itemId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += itemId.CompareTo(other.itemId);
+            }
+            if (value == null && value == other.value)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(value - other.value);
+            }
+            return diff;
         }
 	}
 }

@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Model
 {
 	[Preserve]
-	public class MissionGroupModelMaster
+	public class MissionGroupModelMaster : IComparable
 	{
 
         /** ミッショングループマスター */
@@ -305,6 +305,101 @@ namespace Gs2.Gs2Mission.Model
                 .WithCompleteNotificationNamespaceId(data.Keys.Contains("completeNotificationNamespaceId") && data["completeNotificationNamespaceId"] != null ? data["completeNotificationNamespaceId"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as MissionGroupModelMaster;
+            var diff = 0;
+            if (missionGroupId == null && missionGroupId == other.missionGroupId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += missionGroupId.CompareTo(other.missionGroupId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (description == null && description == other.description)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += description.CompareTo(other.description);
+            }
+            if (resetType == null && resetType == other.resetType)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += resetType.CompareTo(other.resetType);
+            }
+            if (resetDayOfMonth == null && resetDayOfMonth == other.resetDayOfMonth)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(resetDayOfMonth - other.resetDayOfMonth);
+            }
+            if (resetDayOfWeek == null && resetDayOfWeek == other.resetDayOfWeek)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += resetDayOfWeek.CompareTo(other.resetDayOfWeek);
+            }
+            if (resetHour == null && resetHour == other.resetHour)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(resetHour - other.resetHour);
+            }
+            if (completeNotificationNamespaceId == null && completeNotificationNamespaceId == other.completeNotificationNamespaceId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += completeNotificationNamespaceId.CompareTo(other.completeNotificationNamespaceId);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

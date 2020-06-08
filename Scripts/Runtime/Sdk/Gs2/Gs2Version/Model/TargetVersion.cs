@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Version.Model
 {
 	[Preserve]
-	public class TargetVersion
+	public class TargetVersion : IComparable
 	{
 
         /** バージョンの名前 */
@@ -117,6 +117,45 @@ namespace Gs2.Gs2Version.Model
                 .WithVersion(data.Keys.Contains("version") && data["version"] != null ? Gs2.Gs2Version.Model.Version_.FromDict(data["version"]) : null)
                 .WithBody(data.Keys.Contains("body") && data["body"] != null ? data["body"].ToString() : null)
                 .WithSignature(data.Keys.Contains("signature") && data["signature"] != null ? data["signature"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as TargetVersion;
+            var diff = 0;
+            if (versionName == null && versionName == other.versionName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += versionName.CompareTo(other.versionName);
+            }
+            if (version == null && version == other.version)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += version.CompareTo(other.version);
+            }
+            if (body == null && body == other.body)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += body.CompareTo(other.body);
+            }
+            if (signature == null && signature == other.signature)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += signature.CompareTo(other.signature);
+            }
+            return diff;
         }
 	}
 }

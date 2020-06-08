@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Showcase.Model
 {
 	[Preserve]
-	public class Showcase
+	public class Showcase : IComparable
 	{
 
         /** 陳列棚 */
@@ -194,6 +194,57 @@ namespace Gs2.Gs2Showcase.Model
                     }
                 ).ToList() : null)
                 .WithSalesPeriodEventId(data.Keys.Contains("salesPeriodEventId") && data["salesPeriodEventId"] != null ? data["salesPeriodEventId"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Showcase;
+            var diff = 0;
+            if (showcaseId == null && showcaseId == other.showcaseId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += showcaseId.CompareTo(other.showcaseId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (displayItems == null && displayItems == other.displayItems)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += displayItems.Count - other.displayItems.Count;
+                for (var i = 0; i < displayItems.Count; i++)
+                {
+                    diff += displayItems[i].CompareTo(other.displayItems[i]);
+                }
+            }
+            if (salesPeriodEventId == null && salesPeriodEventId == other.salesPeriodEventId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += salesPeriodEventId.CompareTo(other.salesPeriodEventId);
+            }
+            return diff;
         }
 	}
 }

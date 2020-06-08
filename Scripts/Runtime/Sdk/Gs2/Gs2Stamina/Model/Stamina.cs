@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Stamina.Model
 {
 	[Preserve]
-	public class Stamina
+	public class Stamina : IComparable
 	{
 
         /** スタミナ */
@@ -337,6 +337,109 @@ namespace Gs2.Gs2Stamina.Model
                 .WithLastRecoveredAt(data.Keys.Contains("lastRecoveredAt") && data["lastRecoveredAt"] != null ? (long?)long.Parse(data["lastRecoveredAt"].ToString()) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Stamina;
+            var diff = 0;
+            if (staminaId == null && staminaId == other.staminaId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += staminaId.CompareTo(other.staminaId);
+            }
+            if (staminaName == null && staminaName == other.staminaName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += staminaName.CompareTo(other.staminaName);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (value == null && value == other.value)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(value - other.value);
+            }
+            if (maxValue == null && maxValue == other.maxValue)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(maxValue - other.maxValue);
+            }
+            if (recoverIntervalMinutes == null && recoverIntervalMinutes == other.recoverIntervalMinutes)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(recoverIntervalMinutes - other.recoverIntervalMinutes);
+            }
+            if (recoverValue == null && recoverValue == other.recoverValue)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(recoverValue - other.recoverValue);
+            }
+            if (overflowValue == null && overflowValue == other.overflowValue)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(overflowValue - other.overflowValue);
+            }
+            if (nextRecoverAt == null && nextRecoverAt == other.nextRecoverAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(nextRecoverAt - other.nextRecoverAt);
+            }
+            if (lastRecoveredAt == null && lastRecoveredAt == other.lastRecoveredAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(lastRecoveredAt - other.lastRecoveredAt);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

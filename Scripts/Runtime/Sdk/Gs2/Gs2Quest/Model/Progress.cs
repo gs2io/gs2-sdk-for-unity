@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Quest.Model
 {
 	[Preserve]
-	public class Progress
+	public class Progress : IComparable
 	{
 
         /** クエスト挑戦 */
@@ -254,6 +254,81 @@ namespace Gs2.Gs2Quest.Model
                 ).ToList() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Progress;
+            var diff = 0;
+            if (progressId == null && progressId == other.progressId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += progressId.CompareTo(other.progressId);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (transactionId == null && transactionId == other.transactionId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += transactionId.CompareTo(other.transactionId);
+            }
+            if (questModelId == null && questModelId == other.questModelId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += questModelId.CompareTo(other.questModelId);
+            }
+            if (randomSeed == null && randomSeed == other.randomSeed)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(randomSeed - other.randomSeed);
+            }
+            if (rewards == null && rewards == other.rewards)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += rewards.Count - other.rewards.Count;
+                for (var i = 0; i < rewards.Count; i++)
+                {
+                    diff += rewards[i].CompareTo(other.rewards[i]);
+                }
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Limit.Model
 {
 	[Preserve]
-	public class LimitModel
+	public class LimitModel : IComparable
 	{
 
         /** 回数制限の種類 */
@@ -225,6 +225,69 @@ namespace Gs2.Gs2Limit.Model
                 .WithResetDayOfMonth(data.Keys.Contains("resetDayOfMonth") && data["resetDayOfMonth"] != null ? (int?)int.Parse(data["resetDayOfMonth"].ToString()) : null)
                 .WithResetDayOfWeek(data.Keys.Contains("resetDayOfWeek") && data["resetDayOfWeek"] != null ? data["resetDayOfWeek"].ToString() : null)
                 .WithResetHour(data.Keys.Contains("resetHour") && data["resetHour"] != null ? (int?)int.Parse(data["resetHour"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as LimitModel;
+            var diff = 0;
+            if (limitModelId == null && limitModelId == other.limitModelId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += limitModelId.CompareTo(other.limitModelId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (resetType == null && resetType == other.resetType)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += resetType.CompareTo(other.resetType);
+            }
+            if (resetDayOfMonth == null && resetDayOfMonth == other.resetDayOfMonth)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(resetDayOfMonth - other.resetDayOfMonth);
+            }
+            if (resetDayOfWeek == null && resetDayOfWeek == other.resetDayOfWeek)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += resetDayOfWeek.CompareTo(other.resetDayOfWeek);
+            }
+            if (resetHour == null && resetHour == other.resetHour)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(resetHour - other.resetHour);
+            }
+            return diff;
         }
 	}
 }

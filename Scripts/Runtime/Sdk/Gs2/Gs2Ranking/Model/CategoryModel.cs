@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Ranking.Model
 {
 	[Preserve]
-	public class CategoryModel
+	public class CategoryModel : IComparable
 	{
 
         /** カテゴリ */
@@ -305,6 +305,101 @@ namespace Gs2.Gs2Ranking.Model
                 .WithCalculateIntervalMinutes(data.Keys.Contains("calculateIntervalMinutes") && data["calculateIntervalMinutes"] != null ? (int?)int.Parse(data["calculateIntervalMinutes"].ToString()) : null)
                 .WithEntryPeriodEventId(data.Keys.Contains("entryPeriodEventId") && data["entryPeriodEventId"] != null ? data["entryPeriodEventId"].ToString() : null)
                 .WithAccessPeriodEventId(data.Keys.Contains("accessPeriodEventId") && data["accessPeriodEventId"] != null ? data["accessPeriodEventId"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as CategoryModel;
+            var diff = 0;
+            if (categoryModelId == null && categoryModelId == other.categoryModelId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += categoryModelId.CompareTo(other.categoryModelId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (minimumValue == null && minimumValue == other.minimumValue)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(minimumValue - other.minimumValue);
+            }
+            if (maximumValue == null && maximumValue == other.maximumValue)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(maximumValue - other.maximumValue);
+            }
+            if (orderDirection == null && orderDirection == other.orderDirection)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += orderDirection.CompareTo(other.orderDirection);
+            }
+            if (scope == null && scope == other.scope)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += scope.CompareTo(other.scope);
+            }
+            if (uniqueByUserId == null && uniqueByUserId == other.uniqueByUserId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += uniqueByUserId == other.uniqueByUserId ? 0 : 1;
+            }
+            if (calculateIntervalMinutes == null && calculateIntervalMinutes == other.calculateIntervalMinutes)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(calculateIntervalMinutes - other.calculateIntervalMinutes);
+            }
+            if (entryPeriodEventId == null && entryPeriodEventId == other.entryPeriodEventId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += entryPeriodEventId.CompareTo(other.entryPeriodEventId);
+            }
+            if (accessPeriodEventId == null && accessPeriodEventId == other.accessPeriodEventId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += accessPeriodEventId.CompareTo(other.accessPeriodEventId);
+            }
+            return diff;
         }
 	}
 }

@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Inventory
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2InventoryWebSocketClient _client;
+		private readonly Gs2InventoryRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2InventoryWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2InventoryRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>
@@ -56,7 +58,7 @@ namespace Gs2.Unity.Gs2Inventory
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.DescribeInventoryModels(
+                cb => _restClient.DescribeInventoryModels(
                     new DescribeInventoryModelsRequest()
                         .WithNamespaceName(namespaceName),
                     r => cb.Invoke(
@@ -115,7 +117,7 @@ namespace Gs2.Unity.Gs2Inventory
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.DescribeItemModels(
+                cb => _restClient.DescribeItemModels(
                     new DescribeItemModelsRequest()
                         .WithNamespaceName(namespaceName)
                         .WithInventoryName(inventoryName),
@@ -185,7 +187,7 @@ namespace Gs2.Unity.Gs2Inventory
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeInventories(
+                cb => _restClient.DescribeInventories(
                     new DescribeInventoriesRequest()
                         .WithNamespaceName(namespaceName)
                         .WithPageToken(pageToken)
@@ -258,7 +260,7 @@ namespace Gs2.Unity.Gs2Inventory
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeItemSets(
+                cb => _restClient.DescribeItemSets(
                     new DescribeItemSetsRequest()
                         .WithNamespaceName(namespaceName)
                         .WithInventoryName(inventoryName)

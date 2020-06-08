@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Model
 {
 	[Preserve]
-	public class ItemModel
+	public class ItemModel : IComparable
 	{
 
         /** アイテムモデルマスター */
@@ -217,6 +217,61 @@ namespace Gs2.Gs2Inventory.Model
                 .WithStackingLimit(data.Keys.Contains("stackingLimit") && data["stackingLimit"] != null ? (long?)long.Parse(data["stackingLimit"].ToString()) : null)
                 .WithAllowMultipleStacks(data.Keys.Contains("allowMultipleStacks") && data["allowMultipleStacks"] != null ? (bool?)bool.Parse(data["allowMultipleStacks"].ToString()) : null)
                 .WithSortValue(data.Keys.Contains("sortValue") && data["sortValue"] != null ? (int?)int.Parse(data["sortValue"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as ItemModel;
+            var diff = 0;
+            if (itemModelId == null && itemModelId == other.itemModelId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += itemModelId.CompareTo(other.itemModelId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (stackingLimit == null && stackingLimit == other.stackingLimit)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(stackingLimit - other.stackingLimit);
+            }
+            if (allowMultipleStacks == null && allowMultipleStacks == other.allowMultipleStacks)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += allowMultipleStacks == other.allowMultipleStacks ? 0 : 1;
+            }
+            if (sortValue == null && sortValue == other.sortValue)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(sortValue - other.sortValue);
+            }
+            return diff;
         }
 	}
 }

@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Dictionary
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2DictionaryWebSocketClient _client;
+		private readonly Gs2DictionaryRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2DictionaryWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2DictionaryRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>
@@ -56,7 +58,7 @@ namespace Gs2.Unity.Gs2Dictionary
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.DescribeEntryModels(
+                cb => _restClient.DescribeEntryModels(
                     new DescribeEntryModelsRequest()
                         .WithNamespaceName(namespaceName),
                     r => cb.Invoke(
@@ -120,7 +122,7 @@ namespace Gs2.Unity.Gs2Dictionary
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeEntries(
+                cb => _restClient.DescribeEntries(
                     new DescribeEntriesRequest()
                         .WithNamespaceName(namespaceName)
                         .WithLimit(limit)

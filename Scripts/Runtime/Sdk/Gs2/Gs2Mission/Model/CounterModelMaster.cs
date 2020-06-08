@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Mission.Model
 {
 	[Preserve]
-	public class CounterModelMaster
+	public class CounterModelMaster : IComparable
 	{
 
         /** カウンターの種類マスター */
@@ -254,6 +254,81 @@ namespace Gs2.Gs2Mission.Model
                 .WithChallengePeriodEventId(data.Keys.Contains("challengePeriodEventId") && data["challengePeriodEventId"] != null ? data["challengePeriodEventId"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as CounterModelMaster;
+            var diff = 0;
+            if (counterId == null && counterId == other.counterId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += counterId.CompareTo(other.counterId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (description == null && description == other.description)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += description.CompareTo(other.description);
+            }
+            if (scopes == null && scopes == other.scopes)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += scopes.Count - other.scopes.Count;
+                for (var i = 0; i < scopes.Count; i++)
+                {
+                    diff += scopes[i].CompareTo(other.scopes[i]);
+                }
+            }
+            if (challengePeriodEventId == null && challengePeriodEventId == other.challengePeriodEventId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += challengePeriodEventId.CompareTo(other.challengePeriodEventId);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

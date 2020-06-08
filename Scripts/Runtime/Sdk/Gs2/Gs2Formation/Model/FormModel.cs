@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Formation.Model
 {
 	[Preserve]
-	public class FormModel
+	public class FormModel : IComparable
 	{
 
         /** フォームマスター */
@@ -186,6 +186,49 @@ namespace Gs2.Gs2Formation.Model
                         return Gs2.Gs2Formation.Model.SlotModel.FromDict(value);
                     }
                 ).ToList() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as FormModel;
+            var diff = 0;
+            if (formModelId == null && formModelId == other.formModelId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += formModelId.CompareTo(other.formModelId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (slots == null && slots == other.slots)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += slots.Count - other.slots.Count;
+                for (var i = 0; i < slots.Count; i++)
+                {
+                    diff += slots[i].CompareTo(other.slots[i]);
+                }
+            }
+            return diff;
         }
 	}
 }

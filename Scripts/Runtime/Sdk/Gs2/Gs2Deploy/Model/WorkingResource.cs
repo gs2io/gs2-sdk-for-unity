@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Deploy.Model
 {
 	[Preserve]
-	public class WorkingResource
+	public class WorkingResource : IComparable
 	{
 
         /** 作成中のリソース */
@@ -372,6 +372,129 @@ namespace Gs2.Gs2Deploy.Model
                 .WithWorkId(data.Keys.Contains("workId") && data["workId"] != null ? data["workId"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as WorkingResource;
+            var diff = 0;
+            if (resourceId == null && resourceId == other.resourceId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += resourceId.CompareTo(other.resourceId);
+            }
+            if (context == null && context == other.context)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += context.CompareTo(other.context);
+            }
+            if (type == null && type == other.type)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += type.CompareTo(other.type);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (request == null && request == other.request)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += request.CompareTo(other.request);
+            }
+            if (after == null && after == other.after)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += after.Count - other.after.Count;
+                for (var i = 0; i < after.Count; i++)
+                {
+                    diff += after[i].CompareTo(other.after[i]);
+                }
+            }
+            if (rollbackContext == null && rollbackContext == other.rollbackContext)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += rollbackContext.CompareTo(other.rollbackContext);
+            }
+            if (rollbackRequest == null && rollbackRequest == other.rollbackRequest)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += rollbackRequest.CompareTo(other.rollbackRequest);
+            }
+            if (rollbackAfter == null && rollbackAfter == other.rollbackAfter)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += rollbackAfter.Count - other.rollbackAfter.Count;
+                for (var i = 0; i < rollbackAfter.Count; i++)
+                {
+                    diff += rollbackAfter[i].CompareTo(other.rollbackAfter[i]);
+                }
+            }
+            if (outputFields == null && outputFields == other.outputFields)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += outputFields.Count - other.outputFields.Count;
+                for (var i = 0; i < outputFields.Count; i++)
+                {
+                    diff += outputFields[i].CompareTo(other.outputFields[i]);
+                }
+            }
+            if (workId == null && workId == other.workId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += workId.CompareTo(other.workId);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inbox.Model
 {
 	[Preserve]
-	public class Message
+	public class Message : IComparable
 	{
 
         /** メッセージ */
@@ -286,6 +286,89 @@ namespace Gs2.Gs2Inbox.Model
                 .WithReceivedAt(data.Keys.Contains("receivedAt") && data["receivedAt"] != null ? (long?)long.Parse(data["receivedAt"].ToString()) : null)
                 .WithReadAt(data.Keys.Contains("readAt") && data["readAt"] != null ? (long?)long.Parse(data["readAt"].ToString()) : null)
                 .WithExpiresAt(data.Keys.Contains("expiresAt") && data["expiresAt"] != null ? (long?)long.Parse(data["expiresAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Message;
+            var diff = 0;
+            if (messageId == null && messageId == other.messageId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += messageId.CompareTo(other.messageId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (isRead == null && isRead == other.isRead)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += isRead == other.isRead ? 0 : 1;
+            }
+            if (readAcquireActions == null && readAcquireActions == other.readAcquireActions)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += readAcquireActions.Count - other.readAcquireActions.Count;
+                for (var i = 0; i < readAcquireActions.Count; i++)
+                {
+                    diff += readAcquireActions[i].CompareTo(other.readAcquireActions[i]);
+                }
+            }
+            if (receivedAt == null && receivedAt == other.receivedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(receivedAt - other.receivedAt);
+            }
+            if (readAt == null && readAt == other.readAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(readAt - other.readAt);
+            }
+            if (expiresAt == null && expiresAt == other.expiresAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(expiresAt - other.expiresAt);
+            }
+            return diff;
         }
 	}
 }

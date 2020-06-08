@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Dictionary.Model
 {
 	[Preserve]
-	public class Entry
+	public class Entry : IComparable
 	{
 
         /** エントリー のGRN */
@@ -177,6 +177,45 @@ namespace Gs2.Gs2Dictionary.Model
                 .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithAcquiredAt(data.Keys.Contains("acquiredAt") && data["acquiredAt"] != null ? (long?)long.Parse(data["acquiredAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Entry;
+            var diff = 0;
+            if (entryId == null && entryId == other.entryId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += entryId.CompareTo(other.entryId);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (acquiredAt == null && acquiredAt == other.acquiredAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(acquiredAt - other.acquiredAt);
+            }
+            return diff;
         }
 	}
 }

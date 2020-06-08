@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2JobQueue.Model
 {
 	[Preserve]
-	public class Job
+	public class Job : IComparable
 	{
 
         /** ジョブ */
@@ -297,6 +297,93 @@ namespace Gs2.Gs2JobQueue.Model
                 .WithIndex(data.Keys.Contains("index") && data["index"] != null ? (double?)double.Parse(data["index"].ToString()) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Job;
+            var diff = 0;
+            if (jobId == null && jobId == other.jobId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += jobId.CompareTo(other.jobId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (userId == null && userId == other.userId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += userId.CompareTo(other.userId);
+            }
+            if (scriptId == null && scriptId == other.scriptId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += scriptId.CompareTo(other.scriptId);
+            }
+            if (args == null && args == other.args)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += args.CompareTo(other.args);
+            }
+            if (currentRetryCount == null && currentRetryCount == other.currentRetryCount)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(currentRetryCount - other.currentRetryCount);
+            }
+            if (maxTryCount == null && maxTryCount == other.maxTryCount)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(maxTryCount - other.maxTryCount);
+            }
+            if (index == null && index == other.index)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(index - other.index);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

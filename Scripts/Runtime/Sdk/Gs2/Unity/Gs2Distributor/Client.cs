@@ -35,11 +35,13 @@ namespace Gs2.Unity.Gs2Distributor
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2DistributorWebSocketClient _client;
+		private readonly Gs2DistributorRestClient _restClient;
 
 		public Client(Gs2.Unity.Util.Profile profile)
 		{
 			_profile = profile;
 			_client = new Gs2DistributorWebSocketClient(profile.Gs2Session);
+			_restClient = new Gs2DistributorRestClient(profile.Gs2RestSession);
 		}
 
 		/// <summary>
@@ -56,7 +58,7 @@ namespace Gs2.Unity.Gs2Distributor
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.DescribeDistributorModels(
+                cb => _restClient.DescribeDistributorModels(
                     new DescribeDistributorModelsRequest()
                         .WithNamespaceName(namespaceName),
                     r => cb.Invoke(

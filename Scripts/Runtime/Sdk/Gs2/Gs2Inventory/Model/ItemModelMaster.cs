@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Inventory.Model
 {
 	[Preserve]
-	public class ItemModelMaster
+	public class ItemModelMaster : IComparable
 	{
 
         /** アイテムモデルマスター */
@@ -297,6 +297,93 @@ namespace Gs2.Gs2Inventory.Model
                 .WithSortValue(data.Keys.Contains("sortValue") && data["sortValue"] != null ? (int?)int.Parse(data["sortValue"].ToString()) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as ItemModelMaster;
+            var diff = 0;
+            if (itemModelId == null && itemModelId == other.itemModelId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += itemModelId.CompareTo(other.itemModelId);
+            }
+            if (inventoryName == null && inventoryName == other.inventoryName)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += inventoryName.CompareTo(other.inventoryName);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (description == null && description == other.description)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += description.CompareTo(other.description);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (stackingLimit == null && stackingLimit == other.stackingLimit)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(stackingLimit - other.stackingLimit);
+            }
+            if (allowMultipleStacks == null && allowMultipleStacks == other.allowMultipleStacks)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += allowMultipleStacks == other.allowMultipleStacks ? 0 : 1;
+            }
+            if (sortValue == null && sortValue == other.sortValue)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(sortValue - other.sortValue);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }

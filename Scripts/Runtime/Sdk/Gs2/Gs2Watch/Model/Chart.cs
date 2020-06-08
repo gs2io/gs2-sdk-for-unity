@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Watch.Model
 {
 	[Preserve]
-	public class Chart
+	public class Chart : IComparable
 	{
 
         /** Datadog のJSON 形式のグラフ定義 */
@@ -117,6 +117,45 @@ namespace Gs2.Gs2Watch.Model
                 .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
                 .WithEmbedId(data.Keys.Contains("embedId") && data["embedId"] != null ? data["embedId"].ToString() : null)
                 .WithHtml(data.Keys.Contains("html") && data["html"] != null ? data["html"].ToString() : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as Chart;
+            var diff = 0;
+            if (chartId == null && chartId == other.chartId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += chartId.CompareTo(other.chartId);
+            }
+            if (ownerId == null && ownerId == other.ownerId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += ownerId.CompareTo(other.ownerId);
+            }
+            if (embedId == null && embedId == other.embedId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += embedId.CompareTo(other.embedId);
+            }
+            if (html == null && html == other.html)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += html.CompareTo(other.html);
+            }
+            return diff;
         }
 	}
 }

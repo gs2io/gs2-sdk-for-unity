@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
-using LitJson;
+using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
 namespace Gs2.Gs2Version.Model
 {
 	[Preserve]
-	public class VersionModelMaster
+	public class VersionModelMaster : IComparable
 	{
 
         /** バージョンマスター */
@@ -325,6 +325,109 @@ namespace Gs2.Gs2Version.Model
                 .WithSignatureKeyId(data.Keys.Contains("signatureKeyId") && data["signatureKeyId"] != null ? data["signatureKeyId"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
+        }
+
+        public int CompareTo(object obj)
+        {
+            var other = obj as VersionModelMaster;
+            var diff = 0;
+            if (versionModelId == null && versionModelId == other.versionModelId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += versionModelId.CompareTo(other.versionModelId);
+            }
+            if (name == null && name == other.name)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += name.CompareTo(other.name);
+            }
+            if (description == null && description == other.description)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += description.CompareTo(other.description);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
+            }
+            if (warningVersion == null && warningVersion == other.warningVersion)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += warningVersion.CompareTo(other.warningVersion);
+            }
+            if (errorVersion == null && errorVersion == other.errorVersion)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += errorVersion.CompareTo(other.errorVersion);
+            }
+            if (scope == null && scope == other.scope)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += scope.CompareTo(other.scope);
+            }
+            if (currentVersion == null && currentVersion == other.currentVersion)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += currentVersion.CompareTo(other.currentVersion);
+            }
+            if (needSignature == null && needSignature == other.needSignature)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += needSignature == other.needSignature ? 0 : 1;
+            }
+            if (signatureKeyId == null && signatureKeyId == other.signatureKeyId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += signatureKeyId.CompareTo(other.signatureKeyId);
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
+            }
+            return diff;
         }
 	}
 }
