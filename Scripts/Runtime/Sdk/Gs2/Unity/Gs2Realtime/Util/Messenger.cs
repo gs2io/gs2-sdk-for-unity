@@ -71,7 +71,7 @@ namespace Gs2.Unity.Gs2Realtime.Util
             }.ToByteArray();
         }
 
-        public Tuple<Container.Types.MessageType, Any> Unpack(byte[] data)
+        public Tuple<Container.Types.MessageType, Any, uint, uint> Unpack(byte[] data)
         {
             var container = Container.Parser.ParseFrom(data);
             _sha256.Initialize();
@@ -80,9 +80,11 @@ namespace Gs2.Unity.Gs2Realtime.Util
             {
                 throw new InvalidDataException("invalid signature.");
             }
-            return new Tuple<Container.Types.MessageType, Any>(
+            return new Tuple<Container.Types.MessageType, Any, uint, uint>(
                 container.MessageType,
-                container.Payload
+                container.Payload,
+                container.SequenceNumber,
+                container.LifeTimeMilliSeconds
             );
         }
 
@@ -116,12 +118,16 @@ namespace Gs2.Unity.Gs2Realtime.Util
             }
         }
 
-        public T UnpackAndParse<T>(byte[] data) where T: IMessage
+        public Tuple<T, uint, uint> UnpackAndParse<T>(byte[] data) where T: IMessage
         {
-            var (messageType, payload) = Unpack(data);
-            return (T)Parse(
-                messageType,
-                payload
+            var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = Unpack(data);
+            return new Tuple<T, uint, uint>(
+                (T)Parse(
+                    messageType,
+                    payload
+                ), 
+                sequenceNumber, 
+                lifeTimeMilliSeconds
             );
         }
     }

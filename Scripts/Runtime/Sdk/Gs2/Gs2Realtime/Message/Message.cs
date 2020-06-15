@@ -24,37 +24,38 @@ namespace Gs2.Gs2Realtime.Message {
     static MessageReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cg1tZXNzYWdlLnByb3RvGhlnb29nbGUvcHJvdG9idWYvYW55LnByb3RvItsC",
+            "Cg1tZXNzYWdlLnByb3RvGhlnb29nbGUvcHJvdG9idWYvYW55LnByb3RvIpED",
             "CglDb250YWluZXISKwoLbWVzc2FnZVR5cGUYASABKA4yFi5Db250YWluZXIu",
             "TWVzc2FnZVR5cGUSJQoHcGF5bG9hZBgCIAEoCzIULmdvb2dsZS5wcm90b2J1",
-            "Zi5BbnkSEQoJc2lnbmF0dXJlGAMgASgMIuYBCgtNZXNzYWdlVHlwZRIRCg1I",
-            "RUxMT19SRVFVRVNUEAASEAoMSEVMTE9fUkVTVUxUEAESDwoLQllFX1JFUVVF",
-            "U1QQAhIeChZVUERBVEVfUFJPRklMRV9SRVFVRVNUEICAgIABEhkKEUpPSU5f",
-            "Tk9USUZJQ0FUSU9OEICAgIACEhoKEkxFQVZFX05PVElGSUNBVElPThCBgICA",
-            "AhIjChtVUERBVEVfUFJPRklMRV9OT1RJRklDQVRJT04QgoCAgAISFgoOQklO",
-            "QVJZX01FU1NBR0UQgICAgAMSDQoFRVJST1IQ/////wcibgoRUlVEUFNlbmRD",
-            "b250YWluZXISFAoMY29ubmVjdGlvbklkGAEgASgNEg4KBnNlY3JldBgCIAEo",
-            "DRIUCgxwYWNrZXROdW1iZXIYAyABKA0SHQoJY29udGFpbmVyGAQgASgLMgou",
-            "Q29udGFpbmVyInYKFFJVRFBSZWNlaXZlQ29udGFpbmVyEh8KF2xhc3RSZWNl",
-            "aXZlUGFja2V0TnVtYmVyGAEgASgNEh4KFnJlY2VpdmVNZXNzYWdlQml0Rmxh",
-            "Z3MYAiABKA0SHQoJY29udGFpbmVyGAMgASgLMgouQ29udGFpbmVyIj8KBlBs",
-            "YXllchIUCgxjb25uZWN0aW9uSWQYASABKA0SDgoGdXNlcklkGAIgASgJEg8K",
-            "B3Byb2ZpbGUYAyABKAwiNgoMSGVsbG9SZXF1ZXN0EhMKC2FjY2Vzc1Rva2Vu",
-            "GAEgASgJEhEKCW15UHJvZmlsZRgCIAEoDCJTCgtIZWxsb1Jlc3VsdBIaCglt",
-            "eVByb2ZpbGUYASABKAsyBy5QbGF5ZXISGAoHcGxheWVycxgCIAMoCzIHLlBs",
-            "YXllchIOCgZzZWNyZXQYAyABKA0iDAoKQnllUmVxdWVzdCIpChRVcGRhdGVQ",
-            "cm9maWxlUmVxdWVzdBIRCglteVByb2ZpbGUYASABKAwiLwoQSm9pbk5vdGlm",
-            "aWNhdGlvbhIbCgpqb2luUGxheWVyGAEgASgLMgcuUGxheWVyIjEKEUxlYXZl",
-            "Tm90aWZpY2F0aW9uEhwKC2xlYXZlUGxheWVyGAEgASgLMgcuUGxheWVyIjoK",
-            "GVVwZGF0ZVByb2ZpbGVOb3RpZmljYXRpb24SHQoMdXBkYXRlUGxheWVyGAEg",
-            "ASgLMgcuUGxheWVyIh0KDUJpbmFyeU1lc3NhZ2USDAoEZGF0YRgBIAEoDCI/",
-            "CgVFcnJvchIRCgljb21wb25lbnQYASABKAkSEgoKc3RhdHVzQ29kZRgCIAEo",
-            "DRIPCgdtZXNzYWdlGAMgASgJQjMKF2lvLmdzMi5yZWFsdGltZS5tZXNzYWdl",
-            "qgIXR3MyLkdzMlJlYWx0aW1lLk1lc3NhZ2ViBnByb3RvMw=="));
+            "Zi5BbnkSEQoJc2lnbmF0dXJlGAMgASgMEhYKDnNlcXVlbmNlTnVtYmVyGAQg",
+            "ASgNEhwKFGxpZmVUaW1lTWlsbGlTZWNvbmRzGAUgASgNIuYBCgtNZXNzYWdl",
+            "VHlwZRIRCg1IRUxMT19SRVFVRVNUEAASEAoMSEVMTE9fUkVTVUxUEAESDwoL",
+            "QllFX1JFUVVFU1QQAhIeChZVUERBVEVfUFJPRklMRV9SRVFVRVNUEICAgIAB",
+            "EhkKEUpPSU5fTk9USUZJQ0FUSU9OEICAgIACEhoKEkxFQVZFX05PVElGSUNB",
+            "VElPThCBgICAAhIjChtVUERBVEVfUFJPRklMRV9OT1RJRklDQVRJT04QgoCA",
+            "gAISFgoOQklOQVJZX01FU1NBR0UQgICAgAMSDQoFRVJST1IQ/////wcibgoR",
+            "UlVEUFNlbmRDb250YWluZXISFAoMY29ubmVjdGlvbklkGAEgASgNEg4KBnNl",
+            "Y3JldBgCIAEoDRIUCgxwYWNrZXROdW1iZXIYAyABKA0SHQoJY29udGFpbmVy",
+            "GAQgASgLMgouQ29udGFpbmVyInYKFFJVRFBSZWNlaXZlQ29udGFpbmVyEh8K",
+            "F2xhc3RSZWNlaXZlUGFja2V0TnVtYmVyGAEgASgNEh4KFnJlY2VpdmVNZXNz",
+            "YWdlQml0RmxhZ3MYAiABKA0SHQoJY29udGFpbmVyGAMgASgLMgouQ29udGFp",
+            "bmVyIj8KBlBsYXllchIUCgxjb25uZWN0aW9uSWQYASABKA0SDgoGdXNlcklk",
+            "GAIgASgJEg8KB3Byb2ZpbGUYAyABKAwiNgoMSGVsbG9SZXF1ZXN0EhMKC2Fj",
+            "Y2Vzc1Rva2VuGAEgASgJEhEKCW15UHJvZmlsZRgCIAEoDCJTCgtIZWxsb1Jl",
+            "c3VsdBIaCglteVByb2ZpbGUYASABKAsyBy5QbGF5ZXISGAoHcGxheWVycxgC",
+            "IAMoCzIHLlBsYXllchIOCgZzZWNyZXQYAyABKA0iDAoKQnllUmVxdWVzdCIp",
+            "ChRVcGRhdGVQcm9maWxlUmVxdWVzdBIRCglteVByb2ZpbGUYASABKAwiLwoQ",
+            "Sm9pbk5vdGlmaWNhdGlvbhIbCgpqb2luUGxheWVyGAEgASgLMgcuUGxheWVy",
+            "IjEKEUxlYXZlTm90aWZpY2F0aW9uEhwKC2xlYXZlUGxheWVyGAEgASgLMgcu",
+            "UGxheWVyIjoKGVVwZGF0ZVByb2ZpbGVOb3RpZmljYXRpb24SHQoMdXBkYXRl",
+            "UGxheWVyGAEgASgLMgcuUGxheWVyIh0KDUJpbmFyeU1lc3NhZ2USDAoEZGF0",
+            "YRgBIAEoDCI/CgVFcnJvchIRCgljb21wb25lbnQYASABKAkSEgoKc3RhdHVz",
+            "Q29kZRgCIAEoDRIPCgdtZXNzYWdlGAMgASgJQjMKF2lvLmdzMi5yZWFsdGlt",
+            "ZS5tZXNzYWdlqgIXR3MyLkdzMlJlYWx0aW1lLk1lc3NhZ2ViBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.AnyReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Gs2.Gs2Realtime.Message.Container), global::Gs2.Gs2Realtime.Message.Container.Parser, new[]{ "MessageType", "Payload", "Signature" }, null, new[]{ typeof(global::Gs2.Gs2Realtime.Message.Container.Types.MessageType) }, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Gs2.Gs2Realtime.Message.Container), global::Gs2.Gs2Realtime.Message.Container.Parser, new[]{ "MessageType", "Payload", "Signature", "SequenceNumber", "LifeTimeMilliSeconds" }, null, new[]{ typeof(global::Gs2.Gs2Realtime.Message.Container.Types.MessageType) }, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Gs2.Gs2Realtime.Message.RUDPSendContainer), global::Gs2.Gs2Realtime.Message.RUDPSendContainer.Parser, new[]{ "ConnectionId", "Secret", "PacketNumber", "Container" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Gs2.Gs2Realtime.Message.RUDPReceiveContainer), global::Gs2.Gs2Realtime.Message.RUDPReceiveContainer.Parser, new[]{ "LastReceivePacketNumber", "ReceiveMessageBitFlags", "Container" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Gs2.Gs2Realtime.Message.Player), global::Gs2.Gs2Realtime.Message.Player.Parser, new[]{ "ConnectionId", "UserId", "Profile" }, null, null, null),
@@ -104,6 +105,8 @@ namespace Gs2.Gs2Realtime.Message {
       messageType_ = other.messageType_;
       payload_ = other.payload_ != null ? other.payload_.Clone() : null;
       signature_ = other.signature_;
+      sequenceNumber_ = other.sequenceNumber_;
+      lifeTimeMilliSeconds_ = other.lifeTimeMilliSeconds_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -151,6 +154,34 @@ namespace Gs2.Gs2Realtime.Message {
       }
     }
 
+    /// <summary>Field number for the "sequenceNumber" field.</summary>
+    public const int SequenceNumberFieldNumber = 4;
+    private uint sequenceNumber_;
+    /// <summary>
+    /// メッセージのシーケンス番号
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public uint SequenceNumber {
+      get { return sequenceNumber_; }
+      set {
+        sequenceNumber_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "lifeTimeMilliSeconds" field.</summary>
+    public const int LifeTimeMilliSecondsFieldNumber = 5;
+    private uint lifeTimeMilliSeconds_;
+    /// <summary>
+    /// ゲームサーバが起動してからの経過ミリ秒
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public uint LifeTimeMilliSeconds {
+      get { return lifeTimeMilliSeconds_; }
+      set {
+        lifeTimeMilliSeconds_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Container);
@@ -167,6 +198,8 @@ namespace Gs2.Gs2Realtime.Message {
       if (MessageType != other.MessageType) return false;
       if (!object.Equals(Payload, other.Payload)) return false;
       if (Signature != other.Signature) return false;
+      if (SequenceNumber != other.SequenceNumber) return false;
+      if (LifeTimeMilliSeconds != other.LifeTimeMilliSeconds) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -176,6 +209,8 @@ namespace Gs2.Gs2Realtime.Message {
       if (MessageType != 0) hash ^= MessageType.GetHashCode();
       if (payload_ != null) hash ^= Payload.GetHashCode();
       if (Signature.Length != 0) hash ^= Signature.GetHashCode();
+      if (SequenceNumber != 0) hash ^= SequenceNumber.GetHashCode();
+      if (LifeTimeMilliSeconds != 0) hash ^= LifeTimeMilliSeconds.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -201,6 +236,14 @@ namespace Gs2.Gs2Realtime.Message {
         output.WriteRawTag(26);
         output.WriteBytes(Signature);
       }
+      if (SequenceNumber != 0) {
+        output.WriteRawTag(32);
+        output.WriteUInt32(SequenceNumber);
+      }
+      if (LifeTimeMilliSeconds != 0) {
+        output.WriteRawTag(40);
+        output.WriteUInt32(LifeTimeMilliSeconds);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -217,6 +260,12 @@ namespace Gs2.Gs2Realtime.Message {
       }
       if (Signature.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(Signature);
+      }
+      if (SequenceNumber != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(SequenceNumber);
+      }
+      if (LifeTimeMilliSeconds != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(LifeTimeMilliSeconds);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -240,6 +289,12 @@ namespace Gs2.Gs2Realtime.Message {
       }
       if (other.Signature.Length != 0) {
         Signature = other.Signature;
+      }
+      if (other.SequenceNumber != 0) {
+        SequenceNumber = other.SequenceNumber;
+      }
+      if (other.LifeTimeMilliSeconds != 0) {
+        LifeTimeMilliSeconds = other.LifeTimeMilliSeconds;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -265,6 +320,14 @@ namespace Gs2.Gs2Realtime.Message {
           }
           case 26: {
             Signature = input.ReadBytes();
+            break;
+          }
+          case 32: {
+            SequenceNumber = input.ReadUInt32();
+            break;
+          }
+          case 40: {
+            LifeTimeMilliSeconds = input.ReadUInt32();
             break;
           }
         }

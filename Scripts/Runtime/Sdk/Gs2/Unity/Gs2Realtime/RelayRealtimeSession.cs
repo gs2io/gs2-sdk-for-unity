@@ -43,15 +43,20 @@ namespace Gs2.Unity.Gs2Realtime
             
             if (!(e is MessageEventArgs data)) return;
             
-            var (messageType, payload) = _messenger.Unpack(data.RawData);
+            var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data.RawData);
             var message = _messenger.Parse(messageType, payload);
             if (message is BinaryMessage binaryMessage)
             {
                 if (OnRelayMessage != null)
                 {
                     _eventQueue.Enqueue(
-                        new OnRelayMessageEvent(
-                            RelayBinaryMessage.Parser.ParseFrom(binaryMessage.Data)
+                        new OnRelayMessageWithMetadataEvent(
+                            RelayBinaryMessage.Parser.ParseFrom(binaryMessage.Data),
+                            new MessageMetadata
+                            {
+                                SequenceNumber = sequenceNumber,
+                                LifeTimeMilliSeconds = lifeTimeMilliSeconds,
+                            }
                         )
                     );
                 }

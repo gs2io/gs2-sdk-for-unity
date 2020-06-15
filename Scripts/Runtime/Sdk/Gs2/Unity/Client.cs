@@ -32,11 +32,14 @@ namespace Gs2.Unity
         public readonly Gs2Showcase.Client Showcase;
         public readonly Gs2Stamina.Client Stamina;
         public readonly Gs2Version.Client Version;
+        public readonly Profile Profile;
 
         public Client(
             Profile profile
         )
         {
+            Profile = profile;
+            
             Account = new Gs2Account.Client(profile);
             Auth = new Gs2Auth.Client(profile);
             Chat = new Gs2Chat.Client(profile);

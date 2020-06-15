@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Google.Protobuf;
 using Gs2.Core;
 using Gs2.Gs2Realtime.Message;
@@ -114,7 +115,11 @@ namespace Gs2.Unity.Gs2Realtime
                 }
                 else
                 {
-                    yield return new WaitForSeconds(0.1f);
+#if DISABLE_COROUTINE
+                    Thread.Sleep(1000);
+#else
+                    yield return new WaitForSeconds(1);
+#endif
                 }
             }
         }
@@ -157,7 +162,7 @@ namespace Gs2.Unity.Gs2Realtime
         {
             if (!(e is MessageEventArgs data)) return;
             
-            var (messageType, payload) = _messenger.Unpack(data.RawData);
+            var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data.RawData);
             var message = _messenger.Parse(messageType, payload);
             if (message is JoinNotification joinNotification)
             {
@@ -234,7 +239,11 @@ namespace Gs2.Unity.Gs2Realtime
 
                 for (var i=0; i<30 && !done; i++)
                 {
+#if DISABLE_COROUTINE
+                    Thread.Sleep(1000);
+#else
                     yield return new WaitForSeconds(1);
+#endif
                 }
 
                 if (!success)
@@ -254,7 +263,7 @@ namespace Gs2.Unity.Gs2Realtime
                     Debug.Log("OnMessage: " + e.ToString());
                     if (e is MessageEventArgs data)
                     {
-                        var (messageType, payload) = _messenger.Unpack(data.RawData);
+                        var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data.RawData);
                         var message = _messenger.Parse(messageType, payload);
                         if (message is Error error)
                         {
@@ -306,7 +315,11 @@ namespace Gs2.Unity.Gs2Realtime
                     
                     for (var i=0; i<30 && !done; i++)
                     {
+#if DISABLE_COROUTINE
+                    Thread.Sleep(1000);
+#else
                         yield return new WaitForSeconds(1);
+#endif
                     }
 
                     if (!success || helloResult == null)
@@ -389,7 +402,11 @@ namespace Gs2.Unity.Gs2Realtime
             
             for (var i=0; i<30 && !done; i++)
             {
+#if DISABLE_COROUTINE
+                    Thread.Sleep(1000);
+#else
                 yield return new WaitForSeconds(1);
+#endif
             }
             
             callback.Invoke(new AsyncResult<bool>(
@@ -428,7 +445,11 @@ namespace Gs2.Unity.Gs2Realtime
             
             for (var i=0; i<30 && !done; i++)
             {
+#if DISABLE_COROUTINE
+                    Thread.Sleep(1000);
+#else
                 yield return new WaitForSeconds(1);
+#endif
             }
 
             if (success)
@@ -464,7 +485,11 @@ namespace Gs2.Unity.Gs2Realtime
 
                 for (var i=0; i<30 && !done; i++)
                 {
+#if DISABLE_COROUTINE
+                    Thread.Sleep(1000);
+#else
                     yield return new WaitForSeconds(1);
+#endif
                 }
             }
             finally
