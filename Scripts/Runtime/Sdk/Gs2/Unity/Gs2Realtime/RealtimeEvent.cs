@@ -13,61 +13,94 @@ namespace Gs2.Unity.Gs2Realtime
         }
     }
 
-    public class OnMessageEvent : RealtimeEvent
+    public abstract class ServerResponseRealtimeEvent : RealtimeEvent
+    {
+        public uint SequenceNumber;
+        public uint LifeTimeMilliSeconds;
+
+        protected ServerResponseRealtimeEvent(
+            RealtimeEventType eventType,
+            uint sequenceNumber,
+            uint lifeTimeMilliSeconds
+        ) : base(eventType)
+        {
+            SequenceNumber = sequenceNumber;
+            LifeTimeMilliSeconds = lifeTimeMilliSeconds;
+        }
+
+        public MessageMetadata Metadata =>
+            new MessageMetadata
+            {
+                SequenceNumber = SequenceNumber,
+                LifeTimeMilliSeconds = LifeTimeMilliSeconds,
+            };
+    }
+
+    public class OnMessageEvent : ServerResponseRealtimeEvent
     {
         public BinaryMessage Message;
 
         public OnMessageEvent(
-            BinaryMessage message
-        ) : base(RealtimeEventType.OnMessage)
+            BinaryMessage message,
+            uint sequenceNumber,
+            uint lifeTimeMilliSeconds
+        ) : base(RealtimeEventType.OnMessage, sequenceNumber, lifeTimeMilliSeconds)
         {
             Message = message;
         }
     }
 
-    public class OnJoinPlayerEvent : RealtimeEvent
+    public class OnJoinPlayerEvent : ServerResponseRealtimeEvent
     {
         public Player Player;
 
         public OnJoinPlayerEvent(
-            Player player
-        ) : base(RealtimeEventType.OnJoinPlayer)
+            Player player,
+            uint sequenceNumber,
+            uint lifeTimeMilliSeconds
+        ) : base(RealtimeEventType.OnJoinPlayer, sequenceNumber, lifeTimeMilliSeconds)
         {
             Player = player;
         }
     }
 
-    public class OnLeavePlayerEvent : RealtimeEvent
+    public class OnLeavePlayerEvent : ServerResponseRealtimeEvent
     {
         public Player Player;
 
         public OnLeavePlayerEvent(
-            Player player
-        ) : base(RealtimeEventType.OnLeavePlayer)
+            Player player,
+            uint sequenceNumber,
+            uint lifeTimeMilliSeconds
+        ) : base(RealtimeEventType.OnLeavePlayer, sequenceNumber, lifeTimeMilliSeconds)
         {
             Player = player;
         }
     }
 
-    public class OnUpdateProfileEvent : RealtimeEvent
+    public class OnUpdateProfileEvent : ServerResponseRealtimeEvent
     {
         public Player Player;
 
         public OnUpdateProfileEvent(
-            Player player
-        ) : base(RealtimeEventType.OnUpdateProfile)
+            Player player,
+            uint sequenceNumber,
+            uint lifeTimeMilliSeconds
+        ) : base(RealtimeEventType.OnUpdateProfile, sequenceNumber, lifeTimeMilliSeconds)
         {
             Player = player;
         }
     }
 
-    public class OnErrorEvent : RealtimeEvent
+    public class OnErrorEvent : ServerResponseRealtimeEvent
     {
         public Error Error;
 
         public OnErrorEvent(
-            Error error
-        ) : base(RealtimeEventType.OnError)
+            Error error,
+            uint sequenceNumber,
+            uint lifeTimeMilliSeconds
+        ) : base(RealtimeEventType.OnError, sequenceNumber, lifeTimeMilliSeconds)
         {
             Error = error;
         }

@@ -1,3 +1,5 @@
+#define DISABLE_COROUTINE
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,10 +18,15 @@ using Gs2.Util.WebSocketSharp;
 namespace Gs2.Unity.Gs2Realtime
 {
     public delegate void OnMessageHandler(BinaryMessage message);
+    public delegate void OnMessageWithMetadataHandler(BinaryMessage message, MessageMetadata metadata);
     public delegate void OnJoinPlayerHandler(Player player);
+    public delegate void OnJoinPlayerWithMetadataHandler(Player player, MessageMetadata metadata);
     public delegate void OnLeavePlayerHandler(Player player);
+    public delegate void OnLeavePlayerWithMetadataHandler(Player player, MessageMetadata metadata);
     public delegate void OnUpdateProfileHandler(Player player);
+    public delegate void OnUpdateProfileWithMetadataHandler(Player player, MessageMetadata metadata);
     public delegate void OnErrorHandler(Error e);
+    public delegate void OnErrorWithMetadataHandler(Error e, MessageMetadata metadata);
     public delegate void OnGeneralErrorHandler(ErrorEventArgs e);
     public delegate void OnCloseHandler(CloseEventArgs e);
     
@@ -39,10 +46,15 @@ namespace Gs2.Unity.Gs2Realtime
         public ByteString Profile { get; private set; } = null;
 
         public event OnMessageHandler OnMessage;
+        public event OnMessageWithMetadataHandler OnMessageWithMetadata;
         public event OnJoinPlayerHandler OnJoinPlayer;
+        public event OnJoinPlayerWithMetadataHandler OnJoinPlayerWithMetadata;
         public event OnLeavePlayerHandler OnLeavePlayer;
+        public event OnLeavePlayerWithMetadataHandler OnLeavePlayerWithMetadata;
         public event OnUpdateProfileHandler OnUpdateProfile;
+        public event OnUpdateProfileWithMetadataHandler OnUpdateProfileWithMetadata;
         public event OnErrorHandler OnError;
+        public event OnErrorWithMetadataHandler OnErrorWithMetadata;
         public event OnGeneralErrorHandler OnGeneralError;
         public event OnCloseHandler OnClose;
 
@@ -51,40 +63,80 @@ namespace Gs2.Unity.Gs2Realtime
             switch (@event.EventType)
             {
                 case RealtimeEventType.OnMessage:
+                {
+                    var typedEvent = @event as OnMessageEvent;
                     if (OnMessage != null)
                     {
-                        OnMessage.Invoke((@event as OnMessageEvent).Message);
+                        OnMessage.Invoke(typedEvent.Message);
+                    }
+
+                    if (OnMessageWithMetadata != null)
+                    {
+                        OnMessageWithMetadata.Invoke(typedEvent.Message, typedEvent.Metadata);
                     }
 
                     break;
+                }
                 case RealtimeEventType.OnJoinPlayer:
+                {
+                    var typedEvent = @event as OnJoinPlayerEvent;
                     if (OnJoinPlayer != null)
                     {
-                        OnJoinPlayer.Invoke((@event as OnJoinPlayerEvent).Player);
+                        OnJoinPlayer.Invoke(typedEvent.Player);
+                    }
+
+                    if (OnJoinPlayerWithMetadata != null)
+                    {
+                        OnJoinPlayerWithMetadata.Invoke(typedEvent.Player, typedEvent.Metadata);
                     }
 
                     break;
+                }
                 case RealtimeEventType.OnLeavePlayer:
+                {
+                    var typedEvent = @event as OnLeavePlayerEvent;
                     if (OnLeavePlayer != null)
                     {
-                        OnLeavePlayer.Invoke((@event as OnLeavePlayerEvent).Player);
+                        OnLeavePlayer.Invoke(typedEvent.Player);
+                    }
+
+                    if (OnLeavePlayerWithMetadata != null)
+                    {
+                        OnLeavePlayerWithMetadata.Invoke(typedEvent.Player, typedEvent.Metadata);
                     }
 
                     break;
+                }
                 case RealtimeEventType.OnUpdateProfile:
+                {
+                    var typedEvent = @event as OnUpdateProfileEvent;
                     if (OnUpdateProfile != null)
                     {
-                        OnUpdateProfile.Invoke((@event as OnUpdateProfileEvent).Player);
+                        OnUpdateProfile.Invoke(typedEvent.Player);
+                    }
+
+                    if (OnUpdateProfileWithMetadata != null)
+                    {
+                        OnUpdateProfileWithMetadata.Invoke(typedEvent.Player, typedEvent.Metadata);
                     }
 
                     break;
+                }
                 case RealtimeEventType.OnError:
+                {
+                    var typedEvent = @event as OnErrorEvent;
                     if (OnError != null)
                     {
-                        OnError.Invoke((@event as OnErrorEvent).Error);
+                        OnError.Invoke(typedEvent.Error);
+                    }
+
+                    if (OnErrorWithMetadata != null)
+                    {
+                        OnErrorWithMetadata.Invoke(typedEvent.Error, typedEvent.Metadata);
                     }
 
                     break;
+                }
                 case RealtimeEventType.OnGeneralError:
                     if (OnGeneralError != null)
                     {
@@ -116,7 +168,7 @@ namespace Gs2.Unity.Gs2Realtime
                 else
                 {
 #if DISABLE_COROUTINE
-                    Thread.Sleep(1000);
+                    yield return null;
 #else
                     yield return new WaitForSeconds(1);
 #endif
@@ -167,31 +219,51 @@ namespace Gs2.Unity.Gs2Realtime
             if (message is JoinNotification joinNotification)
             {
                 _eventQueue.Enqueue(
-                    new OnJoinPlayerEvent(joinNotification.JoinPlayer)
+                    new OnJoinPlayerEvent(
+                        joinNotification.JoinPlayer,
+                        sequenceNumber,
+                        lifeTimeMilliSeconds
+                    )
                 );
             }
             if (message is LeaveNotification leaveNotification)
             {
                 _eventQueue.Enqueue(
-                    new OnLeavePlayerEvent(leaveNotification.LeavePlayer)
+                    new OnLeavePlayerEvent(
+                        leaveNotification.LeavePlayer,
+                        sequenceNumber,
+                        lifeTimeMilliSeconds
+                    )
                 );
             }
             if (message is UpdateProfileNotification updateProfileNotification)
             {
                 _eventQueue.Enqueue(
-                    new OnUpdateProfileEvent(updateProfileNotification.UpdatePlayer)
+                    new OnUpdateProfileEvent(
+                        updateProfileNotification.UpdatePlayer,
+                        sequenceNumber,
+                        lifeTimeMilliSeconds
+                    )
                 );
             }
             if (message is BinaryMessage binaryMessage)
             {
                 _eventQueue.Enqueue(
-                    new OnMessageEvent(binaryMessage)
+                    new OnMessageEvent(
+                        binaryMessage,
+                        sequenceNumber,
+                        lifeTimeMilliSeconds
+                    )
                 );
             }
             if (message is Error error)
             {
                 _eventQueue.Enqueue(
-                    new OnErrorEvent(error)
+                    new OnErrorEvent(
+                        error,
+                        sequenceNumber,
+                        lifeTimeMilliSeconds
+                    )
                 );
             }
         }
@@ -240,7 +312,7 @@ namespace Gs2.Unity.Gs2Realtime
                 for (var i=0; i<30 && !done; i++)
                 {
 #if DISABLE_COROUTINE
-                    Thread.Sleep(1000);
+                    yield return null;
 #else
                     yield return new WaitForSeconds(1);
 #endif
@@ -268,7 +340,11 @@ namespace Gs2.Unity.Gs2Realtime
                         if (message is Error error)
                         {
                             _eventQueue.Enqueue(
-                                new OnErrorEvent(error)
+                                new OnErrorEvent(
+                                    error,
+                                    sequenceNumber,
+                                    lifeTimeMilliSeconds
+                                )
                             );
                             return;
                         }
@@ -316,7 +392,7 @@ namespace Gs2.Unity.Gs2Realtime
                     for (var i=0; i<30 && !done; i++)
                     {
 #if DISABLE_COROUTINE
-                    Thread.Sleep(1000);
+                        yield return null;
 #else
                         yield return new WaitForSeconds(1);
 #endif
@@ -354,7 +430,11 @@ namespace Gs2.Unity.Gs2Realtime
                     foreach (var player in players)
                     {
                         _eventQueue.Enqueue(
-                            new OnJoinPlayerEvent(player)
+                            new OnJoinPlayerEvent(
+                                player,
+                                0,
+                                0
+                            )
                         );
                     }
                 }
@@ -403,7 +483,7 @@ namespace Gs2.Unity.Gs2Realtime
             for (var i=0; i<30 && !done; i++)
             {
 #if DISABLE_COROUTINE
-                    Thread.Sleep(1000);
+                yield return null;
 #else
                 yield return new WaitForSeconds(1);
 #endif
@@ -446,7 +526,7 @@ namespace Gs2.Unity.Gs2Realtime
             for (var i=0; i<30 && !done; i++)
             {
 #if DISABLE_COROUTINE
-                    Thread.Sleep(1000);
+                yield return null;
 #else
                 yield return new WaitForSeconds(1);
 #endif
@@ -486,7 +566,7 @@ namespace Gs2.Unity.Gs2Realtime
                 for (var i=0; i<30 && !done; i++)
                 {
 #if DISABLE_COROUTINE
-                    Thread.Sleep(1000);
+                    yield return null;
 #else
                     yield return new WaitForSeconds(1);
 #endif
