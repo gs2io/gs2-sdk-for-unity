@@ -622,6 +622,9 @@ namespace Gs2.Tutorial
             switch (_steps)
             {
                 case Steps.FirstStep_CloudWeave1:
+                    PlayerPrefs.SetString("io.gs2.tutorial.credential", true.ToString());
+                    PlayerPrefs.Save();
+
                     GUILayout.Label("GS2-SDK for Unity には CloudWeave（クラウドウィーブ） という機能がついているにゃ。");
                     GUILayout.Label("");
                     GUILayout.Label("CloudWeave は GS2-Deploy のテンプレートリポジトリ… 一言で言えば GS2 版の AssetStore だにゃ。");
@@ -635,9 +638,6 @@ namespace Gs2.Tutorial
 
                     if (GUILayout.Button("CloudWeave メニューを開く"))
                     {
-                        PlayerPrefs.SetString("io.gs2.tutorial.credential", true.ToString());
-                        PlayerPrefs.Save();
-
                         var signinWindowType = Type.GetType("Gs2.Weave.EditorExtension.Editor.CloudWeaveWindow, Gs2.Weave.EditorExtension");
                         GetWindow(signinWindowType, false, "CloudWeave");
                         Close();
