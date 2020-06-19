@@ -1,4 +1,4 @@
-#define DISABLE_COROUTINE
+// #define DISABLE_COROUTINE
 
 using System;
 using System.Collections;
