@@ -16,10 +16,12 @@ using Gs2.Util.WebSocketSharp;
 namespace Gs2.Unity.Gs2Realtime
 {
     public delegate void OnRelayMessageHandler(RelayBinaryMessage message);
+    public delegate void OnRelayMessageWithMetadataHandler(RelayBinaryMessage message, MessageMetadata metadata);
     
     public class RelayRealtimeSession : RealtimeSession
     {
         public event OnRelayMessageHandler OnRelayMessage;
+        public event OnRelayMessageWithMetadataHandler OnRelayMessageWithMetadata;
 
         public RelayRealtimeSession(
             string accessToken, 
@@ -47,19 +49,16 @@ namespace Gs2.Unity.Gs2Realtime
             var message = _messenger.Parse(messageType, payload);
             if (message is BinaryMessage binaryMessage)
             {
-                if (OnRelayMessage != null)
-                {
-                    _eventQueue.Enqueue(
-                        new OnRelayMessageWithMetadataEvent(
-                            RelayBinaryMessage.Parser.ParseFrom(binaryMessage.Data),
-                            new MessageMetadata
-                            {
-                                SequenceNumber = sequenceNumber,
-                                LifeTimeMilliSeconds = lifeTimeMilliSeconds,
-                            }
-                        )
-                    );
-                }
+                _eventQueue.Enqueue(
+                    new OnRelayMessageWithMetadataEvent(
+                        RelayBinaryMessage.Parser.ParseFrom(binaryMessage.Data),
+                        new MessageMetadata
+                        {
+                            SequenceNumber = sequenceNumber,
+                            LifeTimeMilliSeconds = lifeTimeMilliSeconds,
+                        }
+                    )
+                );
             }
             else
             {
@@ -76,11 +75,15 @@ namespace Gs2.Unity.Gs2Realtime
                 switch (relayEvent.EventType)
                 {
                     case RelayRealtimeEventType.OnRelayMessage:
+                        OnRelayMessageWithMetadataEvent relayMessageEvent = relayEvent as OnRelayMessageWithMetadataEvent;
                         if (OnRelayMessage != null)
                         {
-                            OnRelayMessage.Invoke((relayEvent as OnRelayMessageEvent).Message);
+                            OnRelayMessage.Invoke(relayMessageEvent.Message);
                         }
-
+                        if (OnRelayMessageWithMetadata != null)
+                        {
+                            OnRelayMessageWithMetadata.Invoke(relayMessageEvent.Message, relayMessageEvent.Metadata);
+                        }
                         break;
                 }
             }
