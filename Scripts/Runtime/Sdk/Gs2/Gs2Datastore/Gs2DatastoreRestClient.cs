@@ -1723,6 +1723,66 @@ namespace Gs2.Gs2Datastore
 			return Gs2RestSession.Execute(task);
         }
 
+        private class PrepareDownloadByUserIdAndDataObjectNameTask : Gs2RestSessionTask<Result.PrepareDownloadByUserIdAndDataObjectNameResult>
+        {
+			private readonly Request.PrepareDownloadByUserIdAndDataObjectNameRequest _request;
+
+			public PrepareDownloadByUserIdAndDataObjectNameTask(Request.PrepareDownloadByUserIdAndDataObjectNameRequest request, UnityAction<AsyncResult<Result.PrepareDownloadByUserIdAndDataObjectNameResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "datastore")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/data/{dataObjectName}/file";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+                url = url.Replace("{dataObjectName}", !string.IsNullOrEmpty(_request.dataObjectName) ? _request.dataObjectName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  ユーザIDとオブジェクト名を指定してデータオブジェクトをダウンロード準備する<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator PrepareDownloadByUserIdAndDataObjectName(
+                Request.PrepareDownloadByUserIdAndDataObjectNameRequest request,
+                UnityAction<AsyncResult<Result.PrepareDownloadByUserIdAndDataObjectNameResult>> callback
+        )
+		{
+			var task = new PrepareDownloadByUserIdAndDataObjectNameTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
         private class PrepareDownloadOwnDataByGenerationTask : Gs2RestSessionTask<Result.PrepareDownloadOwnDataByGenerationResult>
         {
 			private readonly Request.PrepareDownloadOwnDataByGenerationRequest _request;
@@ -1797,11 +1857,11 @@ namespace Gs2.Gs2Datastore
 			return Gs2RestSession.Execute(task);
         }
 
-        private class PrepareDownloadOwnDataByGenerationAndUserIdTask : Gs2RestSessionTask<Result.PrepareDownloadOwnDataByGenerationAndUserIdResult>
+        private class PrepareDownloadByUserIdAndDataObjectNameAndGenerationTask : Gs2RestSessionTask<Result.PrepareDownloadByUserIdAndDataObjectNameAndGenerationResult>
         {
-			private readonly Request.PrepareDownloadOwnDataByGenerationAndUserIdRequest _request;
+			private readonly Request.PrepareDownloadByUserIdAndDataObjectNameAndGenerationRequest _request;
 
-			public PrepareDownloadOwnDataByGenerationAndUserIdTask(Request.PrepareDownloadOwnDataByGenerationAndUserIdRequest request, UnityAction<AsyncResult<Result.PrepareDownloadOwnDataByGenerationAndUserIdResult>> userCallback) : base(userCallback)
+			public PrepareDownloadByUserIdAndDataObjectNameAndGenerationTask(Request.PrepareDownloadByUserIdAndDataObjectNameAndGenerationRequest request, UnityAction<AsyncResult<Result.PrepareDownloadByUserIdAndDataObjectNameAndGenerationResult>> userCallback) : base(userCallback)
 			{
 				_request = request;
 			}
@@ -1859,12 +1919,12 @@ namespace Gs2.Gs2Datastore
 		/// <returns>IEnumerator</returns>
 		/// <param name="callback">コールバックハンドラ</param>
 		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator PrepareDownloadOwnDataByGenerationAndUserId(
-                Request.PrepareDownloadOwnDataByGenerationAndUserIdRequest request,
-                UnityAction<AsyncResult<Result.PrepareDownloadOwnDataByGenerationAndUserIdResult>> callback
+		public IEnumerator PrepareDownloadByUserIdAndDataObjectNameAndGeneration(
+                Request.PrepareDownloadByUserIdAndDataObjectNameAndGenerationRequest request,
+                UnityAction<AsyncResult<Result.PrepareDownloadByUserIdAndDataObjectNameAndGenerationResult>> callback
         )
 		{
-			var task = new PrepareDownloadOwnDataByGenerationAndUserIdTask(request, callback);
+			var task = new PrepareDownloadByUserIdAndDataObjectNameAndGenerationTask(request, callback);
 			return Gs2RestSession.Execute(task);
         }
 
