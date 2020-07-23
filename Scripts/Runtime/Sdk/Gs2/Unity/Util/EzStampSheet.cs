@@ -106,5 +106,45 @@ namespace Gs2.Unity.Util
                 );
             }
         }
+        
+        public IEnumerator ExpressExecute(
+            UnityAction<AsyncResult<EzRunStampSheetExpressResult>> callback, 
+            Gs2.Unity.Client client,
+            string distributorNamespaceName,
+            string stampSheetEncryptKeyId
+        )
+        {
+            if (distributorNamespaceName == null)
+            {
+                yield return client.Distributor.RunStampSheetExpressWithoutNamespace(
+                    r =>
+                    {
+                        callback.Invoke(
+                            new AsyncResult<EzRunStampSheetExpressResult>(
+                                r.Result != null ? new EzRunStampSheetExpressResult(
+                                    new RunStampSheetExpressResult
+                                    {
+                                        taskResults = r.Result.TaskResults,
+                                        sheetResult = r.Result.SheetResult,
+                                    }
+                                ) : null, 
+                                r.Error
+                            )
+                        );
+                    },
+                    _stampSheetStr,
+                    stampSheetEncryptKeyId
+                );
+            }
+            else
+            {
+                yield return client.Distributor.RunStampSheetExpress(
+                    callback,
+                    distributorNamespaceName,
+                    _stampSheetStr,
+                    stampSheetEncryptKeyId
+                );
+            }
+        }
     }
 }

@@ -125,6 +125,22 @@ namespace Gs2.Gs2Inventory.Request
         }
 
 
+        /** 参照元が登録されているアイテムセットは削除できなくする */
+		[UnityEngine.SerializeField]
+        public bool? protectReferencedItem;
+
+        /**
+         * 参照元が登録されているアイテムセットは削除できなくするを設定
+         *
+         * @param protectReferencedItem 参照元が登録されているアイテムセットは削除できなくする
+         * @return this
+         */
+        public UpdateInventoryModelMasterRequest WithProtectReferencedItem(bool? protectReferencedItem) {
+            this.protectReferencedItem = protectReferencedItem;
+            return this;
+        }
+
+
     	[Preserve]
         public static UpdateInventoryModelMasterRequest FromDict(JsonData data)
         {
@@ -135,6 +151,7 @@ namespace Gs2.Gs2Inventory.Request
                 metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
                 initialCapacity = data.Keys.Contains("initialCapacity") && data["initialCapacity"] != null ? (int?)int.Parse(data["initialCapacity"].ToString()) : null,
                 maxCapacity = data.Keys.Contains("maxCapacity") && data["maxCapacity"] != null ? (int?)int.Parse(data["maxCapacity"].ToString()) : null,
+                protectReferencedItem = data.Keys.Contains("protectReferencedItem") && data["protectReferencedItem"] != null ? (bool?)bool.Parse(data["protectReferencedItem"].ToString()) : null,
             };
         }
 

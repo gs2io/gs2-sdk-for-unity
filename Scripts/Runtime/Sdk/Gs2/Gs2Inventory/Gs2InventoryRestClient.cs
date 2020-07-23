@@ -554,6 +554,11 @@ namespace Gs2.Gs2Inventory
                     jsonWriter.WritePropertyName("maxCapacity");
                     jsonWriter.Write(_request.maxCapacity.ToString());
                 }
+                if (_request.protectReferencedItem != null)
+                {
+                    jsonWriter.WritePropertyName("protectReferencedItem");
+                    jsonWriter.Write(_request.protectReferencedItem.ToString());
+                }
                 if (_request.contextStack != null)
                 {
                     jsonWriter.WritePropertyName("contextStack");
@@ -693,6 +698,11 @@ namespace Gs2.Gs2Inventory
                 {
                     jsonWriter.WritePropertyName("maxCapacity");
                     jsonWriter.Write(_request.maxCapacity.ToString());
+                }
+                if (_request.protectReferencedItem != null)
+                {
+                    jsonWriter.WritePropertyName("protectReferencedItem");
+                    jsonWriter.Write(_request.protectReferencedItem.ToString());
                 }
                 if (_request.contextStack != null)
                 {
@@ -2890,6 +2900,697 @@ namespace Gs2.Gs2Inventory
 			return Gs2RestSession.Execute(task);
         }
 
+        private class DescribeReferenceOfTask : Gs2RestSessionTask<Result.DescribeReferenceOfResult>
+        {
+			private readonly Request.DescribeReferenceOfRequest _request;
+
+			public DescribeReferenceOfTask(Request.DescribeReferenceOfRequest request, UnityAction<AsyncResult<Result.DescribeReferenceOfResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "inventory")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/me/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{inventoryName}", !string.IsNullOrEmpty(_request.inventoryName) ? _request.inventoryName.ToString() : "null");
+                url = url.Replace("{itemName}", !string.IsNullOrEmpty(_request.itemName) ? _request.itemName.ToString() : "null");
+                url = url.Replace("{itemSetName}", !string.IsNullOrEmpty(_request.itemSetName) ? _request.itemSetName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  参照元の一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DescribeReferenceOf(
+                Request.DescribeReferenceOfRequest request,
+                UnityAction<AsyncResult<Result.DescribeReferenceOfResult>> callback
+        )
+		{
+			var task = new DescribeReferenceOfTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class DescribeReferenceOfByUserIdTask : Gs2RestSessionTask<Result.DescribeReferenceOfByUserIdResult>
+        {
+			private readonly Request.DescribeReferenceOfByUserIdRequest _request;
+
+			public DescribeReferenceOfByUserIdTask(Request.DescribeReferenceOfByUserIdRequest request, UnityAction<AsyncResult<Result.DescribeReferenceOfByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "inventory")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{inventoryName}", !string.IsNullOrEmpty(_request.inventoryName) ? _request.inventoryName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+                url = url.Replace("{itemName}", !string.IsNullOrEmpty(_request.itemName) ? _request.itemName.ToString() : "null");
+                url = url.Replace("{itemSetName}", !string.IsNullOrEmpty(_request.itemSetName) ? _request.itemSetName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  参照元の一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DescribeReferenceOfByUserId(
+                Request.DescribeReferenceOfByUserIdRequest request,
+                UnityAction<AsyncResult<Result.DescribeReferenceOfByUserIdResult>> callback
+        )
+		{
+			var task = new DescribeReferenceOfByUserIdTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class GetReferenceOfTask : Gs2RestSessionTask<Result.GetReferenceOfResult>
+        {
+			private readonly Request.GetReferenceOfRequest _request;
+
+			public GetReferenceOfTask(Request.GetReferenceOfRequest request, UnityAction<AsyncResult<Result.GetReferenceOfResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "inventory")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/me/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference/{referenceOf}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{inventoryName}", !string.IsNullOrEmpty(_request.inventoryName) ? _request.inventoryName.ToString() : "null");
+                url = url.Replace("{itemName}", !string.IsNullOrEmpty(_request.itemName) ? _request.itemName.ToString() : "null");
+                url = url.Replace("{itemSetName}", !string.IsNullOrEmpty(_request.itemSetName) ? _request.itemSetName.ToString() : "null");
+                url = url.Replace("{referenceOf}", !string.IsNullOrEmpty(_request.referenceOf) ? _request.referenceOf.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  参照元を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetReferenceOf(
+                Request.GetReferenceOfRequest request,
+                UnityAction<AsyncResult<Result.GetReferenceOfResult>> callback
+        )
+		{
+			var task = new GetReferenceOfTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class GetReferenceOfByUserIdTask : Gs2RestSessionTask<Result.GetReferenceOfByUserIdResult>
+        {
+			private readonly Request.GetReferenceOfByUserIdRequest _request;
+
+			public GetReferenceOfByUserIdTask(Request.GetReferenceOfByUserIdRequest request, UnityAction<AsyncResult<Result.GetReferenceOfByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "inventory")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference/{referenceOf}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{inventoryName}", !string.IsNullOrEmpty(_request.inventoryName) ? _request.inventoryName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+                url = url.Replace("{itemName}", !string.IsNullOrEmpty(_request.itemName) ? _request.itemName.ToString() : "null");
+                url = url.Replace("{itemSetName}", !string.IsNullOrEmpty(_request.itemSetName) ? _request.itemSetName.ToString() : "null");
+                url = url.Replace("{referenceOf}", !string.IsNullOrEmpty(_request.referenceOf) ? _request.referenceOf.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  参照元を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetReferenceOfByUserId(
+                Request.GetReferenceOfByUserIdRequest request,
+                UnityAction<AsyncResult<Result.GetReferenceOfByUserIdResult>> callback
+        )
+		{
+			var task = new GetReferenceOfByUserIdTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class VerifyReferenceOfTask : Gs2RestSessionTask<Result.VerifyReferenceOfResult>
+        {
+			private readonly Request.VerifyReferenceOfRequest _request;
+
+			public VerifyReferenceOfTask(Request.VerifyReferenceOfRequest request, UnityAction<AsyncResult<Result.VerifyReferenceOfResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "inventory")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/me/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference/verify";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{inventoryName}", !string.IsNullOrEmpty(_request.inventoryName) ? _request.inventoryName.ToString() : "null");
+                url = url.Replace("{itemName}", !string.IsNullOrEmpty(_request.itemName) ? _request.itemName.ToString() : "null");
+                url = url.Replace("{itemSetName}", !string.IsNullOrEmpty(_request.itemSetName) ? _request.itemSetName.ToString() : "null");
+                url = url.Replace("{referenceOf}", !string.IsNullOrEmpty(_request.referenceOf) ? _request.referenceOf.ToString() : "null");
+                url = url.Replace("{verifyType}", !string.IsNullOrEmpty(_request.verifyType) ? _request.verifyType.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  参照元に関する検証<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator VerifyReferenceOf(
+                Request.VerifyReferenceOfRequest request,
+                UnityAction<AsyncResult<Result.VerifyReferenceOfResult>> callback
+        )
+		{
+			var task = new VerifyReferenceOfTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class VerifyReferenceOfByUserIdTask : Gs2RestSessionTask<Result.VerifyReferenceOfByUserIdResult>
+        {
+			private readonly Request.VerifyReferenceOfByUserIdRequest _request;
+
+			public VerifyReferenceOfByUserIdTask(Request.VerifyReferenceOfByUserIdRequest request, UnityAction<AsyncResult<Result.VerifyReferenceOfByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "inventory")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference/verify";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{inventoryName}", !string.IsNullOrEmpty(_request.inventoryName) ? _request.inventoryName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+                url = url.Replace("{itemName}", !string.IsNullOrEmpty(_request.itemName) ? _request.itemName.ToString() : "null");
+                url = url.Replace("{itemSetName}", !string.IsNullOrEmpty(_request.itemSetName) ? _request.itemSetName.ToString() : "null");
+                url = url.Replace("{referenceOf}", !string.IsNullOrEmpty(_request.referenceOf) ? _request.referenceOf.ToString() : "null");
+                url = url.Replace("{verifyType}", !string.IsNullOrEmpty(_request.verifyType) ? _request.verifyType.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  参照元に関する検証<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator VerifyReferenceOfByUserId(
+                Request.VerifyReferenceOfByUserIdRequest request,
+                UnityAction<AsyncResult<Result.VerifyReferenceOfByUserIdResult>> callback
+        )
+		{
+			var task = new VerifyReferenceOfByUserIdTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class AddReferenceOfTask : Gs2RestSessionTask<Result.AddReferenceOfResult>
+        {
+			private readonly Request.AddReferenceOfRequest _request;
+
+			public AddReferenceOfTask(Request.AddReferenceOfRequest request, UnityAction<AsyncResult<Result.AddReferenceOfResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "inventory")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/me/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{inventoryName}", !string.IsNullOrEmpty(_request.inventoryName) ? _request.inventoryName.ToString() : "null");
+                url = url.Replace("{itemName}", !string.IsNullOrEmpty(_request.itemName) ? _request.itemName.ToString() : "null");
+                url = url.Replace("{itemSetName}", !string.IsNullOrEmpty(_request.itemSetName) ? _request.itemSetName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.referenceOf != null)
+                {
+                    jsonWriter.WritePropertyName("referenceOf");
+                    jsonWriter.Write(_request.referenceOf.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  参照元を追加<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator AddReferenceOf(
+                Request.AddReferenceOfRequest request,
+                UnityAction<AsyncResult<Result.AddReferenceOfResult>> callback
+        )
+		{
+			var task = new AddReferenceOfTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class AddReferenceOfByUserIdTask : Gs2RestSessionTask<Result.AddReferenceOfByUserIdResult>
+        {
+			private readonly Request.AddReferenceOfByUserIdRequest _request;
+
+			public AddReferenceOfByUserIdTask(Request.AddReferenceOfByUserIdRequest request, UnityAction<AsyncResult<Result.AddReferenceOfByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "inventory")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{inventoryName}", !string.IsNullOrEmpty(_request.inventoryName) ? _request.inventoryName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+                url = url.Replace("{itemName}", !string.IsNullOrEmpty(_request.itemName) ? _request.itemName.ToString() : "null");
+                url = url.Replace("{itemSetName}", !string.IsNullOrEmpty(_request.itemSetName) ? _request.itemSetName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.referenceOf != null)
+                {
+                    jsonWriter.WritePropertyName("referenceOf");
+                    jsonWriter.Write(_request.referenceOf.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  参照元を追加<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator AddReferenceOfByUserId(
+                Request.AddReferenceOfByUserIdRequest request,
+                UnityAction<AsyncResult<Result.AddReferenceOfByUserIdResult>> callback
+        )
+		{
+			var task = new AddReferenceOfByUserIdTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class DeleteReferenceOfTask : Gs2RestSessionTask<Result.DeleteReferenceOfResult>
+        {
+			private readonly Request.DeleteReferenceOfRequest _request;
+
+			public DeleteReferenceOfTask(Request.DeleteReferenceOfRequest request, UnityAction<AsyncResult<Result.DeleteReferenceOfResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbDELETE;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "inventory")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/me/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{inventoryName}", !string.IsNullOrEmpty(_request.inventoryName) ? _request.inventoryName.ToString() : "null");
+                url = url.Replace("{itemName}", !string.IsNullOrEmpty(_request.itemName) ? _request.itemName.ToString() : "null");
+                url = url.Replace("{itemSetName}", !string.IsNullOrEmpty(_request.itemSetName) ? _request.itemSetName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  参照元を削除<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DeleteReferenceOf(
+                Request.DeleteReferenceOfRequest request,
+                UnityAction<AsyncResult<Result.DeleteReferenceOfResult>> callback
+        )
+		{
+			var task = new DeleteReferenceOfTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class DeleteReferenceOfByUserIdTask : Gs2RestSessionTask<Result.DeleteReferenceOfByUserIdResult>
+        {
+			private readonly Request.DeleteReferenceOfByUserIdRequest _request;
+
+			public DeleteReferenceOfByUserIdTask(Request.DeleteReferenceOfByUserIdRequest request, UnityAction<AsyncResult<Result.DeleteReferenceOfByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbDELETE;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "inventory")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/inventory/{inventoryName}/item/{itemName}/{itemSetName}/reference";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{inventoryName}", !string.IsNullOrEmpty(_request.inventoryName) ? _request.inventoryName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+                url = url.Replace("{itemName}", !string.IsNullOrEmpty(_request.itemName) ? _request.itemName.ToString() : "null");
+                url = url.Replace("{itemSetName}", !string.IsNullOrEmpty(_request.itemSetName) ? _request.itemSetName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  参照元を削除<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DeleteReferenceOfByUserId(
+                Request.DeleteReferenceOfByUserIdRequest request,
+                UnityAction<AsyncResult<Result.DeleteReferenceOfByUserIdResult>> callback
+        )
+		{
+			var task = new DeleteReferenceOfByUserIdTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
         private class DeleteItemSetByUserIdTask : Gs2RestSessionTask<Result.DeleteItemSetByUserIdResult>
         {
 			private readonly Request.DeleteItemSetByUserIdRequest _request;
@@ -3030,6 +3731,158 @@ namespace Gs2.Gs2Inventory
 			return Gs2RestSession.Execute(task);
         }
 
+        private class AddReferenceOfItemSetByStampSheetTask : Gs2RestSessionTask<Result.AddReferenceOfItemSetByStampSheetResult>
+        {
+			private readonly Request.AddReferenceOfItemSetByStampSheetRequest _request;
+
+			public AddReferenceOfItemSetByStampSheetTask(Request.AddReferenceOfItemSetByStampSheetRequest request, UnityAction<AsyncResult<Result.AddReferenceOfItemSetByStampSheetResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "inventory")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/stamp/item/reference/add";
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.stampSheet != null)
+                {
+                    jsonWriter.WritePropertyName("stampSheet");
+                    jsonWriter.Write(_request.stampSheet.ToString());
+                }
+                if (_request.keyId != null)
+                {
+                    jsonWriter.WritePropertyName("keyId");
+                    jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  スタンプシートでアイテムに参照元を追加<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator AddReferenceOfItemSetByStampSheet(
+                Request.AddReferenceOfItemSetByStampSheetRequest request,
+                UnityAction<AsyncResult<Result.AddReferenceOfItemSetByStampSheetResult>> callback
+        )
+		{
+			var task = new AddReferenceOfItemSetByStampSheetTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class DeleteReferenceOfItemSetByStampSheetTask : Gs2RestSessionTask<Result.DeleteReferenceOfItemSetByStampSheetResult>
+        {
+			private readonly Request.DeleteReferenceOfItemSetByStampSheetRequest _request;
+
+			public DeleteReferenceOfItemSetByStampSheetTask(Request.DeleteReferenceOfItemSetByStampSheetRequest request, UnityAction<AsyncResult<Result.DeleteReferenceOfItemSetByStampSheetResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "inventory")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/stamp/item/reference/delete";
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.stampSheet != null)
+                {
+                    jsonWriter.WritePropertyName("stampSheet");
+                    jsonWriter.Write(_request.stampSheet.ToString());
+                }
+                if (_request.keyId != null)
+                {
+                    jsonWriter.WritePropertyName("keyId");
+                    jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  スタンプシートでアイテムの参照元を削除<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DeleteReferenceOfItemSetByStampSheet(
+                Request.DeleteReferenceOfItemSetByStampSheetRequest request,
+                UnityAction<AsyncResult<Result.DeleteReferenceOfItemSetByStampSheetResult>> callback
+        )
+		{
+			var task = new DeleteReferenceOfItemSetByStampSheetTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
         private class ConsumeItemSetByStampTaskTask : Gs2RestSessionTask<Result.ConsumeItemSetByStampTaskResult>
         {
 			private readonly Request.ConsumeItemSetByStampTaskRequest _request;
@@ -3103,6 +3956,82 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new ConsumeItemSetByStampTaskTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class VerifyReferenceOfByStampTaskTask : Gs2RestSessionTask<Result.VerifyReferenceOfByStampTaskResult>
+        {
+			private readonly Request.VerifyReferenceOfByStampTaskRequest _request;
+
+			public VerifyReferenceOfByStampTaskTask(Request.VerifyReferenceOfByStampTaskRequest request, UnityAction<AsyncResult<Result.VerifyReferenceOfByStampTaskResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "inventory")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/stamp/item/verify";
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.stampTask != null)
+                {
+                    jsonWriter.WritePropertyName("stampTask");
+                    jsonWriter.Write(_request.stampTask.ToString());
+                }
+                if (_request.keyId != null)
+                {
+                    jsonWriter.WritePropertyName("keyId");
+                    jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  スタンプシートでインベントリのアイテムを検証<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator VerifyReferenceOfByStampTask(
+                Request.VerifyReferenceOfByStampTaskRequest request,
+                UnityAction<AsyncResult<Result.VerifyReferenceOfByStampTaskResult>> callback
+        )
+		{
+			var task = new VerifyReferenceOfByStampTaskTask(request, callback);
 			return Gs2RestSession.Execute(task);
         }
 	}

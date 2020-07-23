@@ -97,6 +97,62 @@ namespace Gs2.Gs2Exchange.Model
             return this;
         }
 
+        /** 交換の種類 */
+        public string timingType { set; get; }
+
+        /**
+         * 交換の種類を設定
+         *
+         * @param timingType 交換の種類
+         * @return this
+         */
+        public RateModelMaster WithTimingType(string timingType) {
+            this.timingType = timingType;
+            return this;
+        }
+
+        /** 交換実行から実際に報酬を受け取れるようになるまでの待ち時間（分） */
+        public int? lockTime { set; get; }
+
+        /**
+         * 交換実行から実際に報酬を受け取れるようになるまでの待ち時間（分）を設定
+         *
+         * @param lockTime 交換実行から実際に報酬を受け取れるようになるまでの待ち時間（分）
+         * @return this
+         */
+        public RateModelMaster WithLockTime(int? lockTime) {
+            this.lockTime = lockTime;
+            return this;
+        }
+
+        /** スキップをすることができるか */
+        public bool? enableSkip { set; get; }
+
+        /**
+         * スキップをすることができるかを設定
+         *
+         * @param enableSkip スキップをすることができるか
+         * @return this
+         */
+        public RateModelMaster WithEnableSkip(bool? enableSkip) {
+            this.enableSkip = enableSkip;
+            return this;
+        }
+
+        /** 時短消費アクションリスト */
+        public List<ConsumeAction> skipConsumeActions { set; get; }
+
+        /**
+         * 時短消費アクションリストを設定
+         *
+         * @param skipConsumeActions 時短消費アクションリスト
+         * @return this
+         */
+        public RateModelMaster WithSkipConsumeActions(List<ConsumeAction> skipConsumeActions) {
+            this.skipConsumeActions = skipConsumeActions;
+            return this;
+        }
+
         /** 入手アクションリスト */
         public List<AcquireAction> acquireActions { set; get; }
 
@@ -167,6 +223,31 @@ namespace Gs2.Gs2Exchange.Model
                 writer.WritePropertyName("consumeActions");
                 writer.WriteArrayStart();
                 foreach(var item in this.consumeActions)
+                {
+                    item.WriteJson(writer);
+                }
+                writer.WriteArrayEnd();
+            }
+            if(this.timingType != null)
+            {
+                writer.WritePropertyName("timingType");
+                writer.Write(this.timingType);
+            }
+            if(this.lockTime.HasValue)
+            {
+                writer.WritePropertyName("lockTime");
+                writer.Write(this.lockTime.Value);
+            }
+            if(this.enableSkip.HasValue)
+            {
+                writer.WritePropertyName("enableSkip");
+                writer.Write(this.enableSkip.Value);
+            }
+            if(this.skipConsumeActions != null)
+            {
+                writer.WritePropertyName("skipConsumeActions");
+                writer.WriteArrayStart();
+                foreach(var item in this.skipConsumeActions)
                 {
                     item.WriteJson(writer);
                 }
@@ -256,6 +337,14 @@ namespace Gs2.Gs2Exchange.Model
                         return Gs2.Gs2Exchange.Model.ConsumeAction.FromDict(value);
                     }
                 ).ToList() : null)
+                .WithTimingType(data.Keys.Contains("timingType") && data["timingType"] != null ? data["timingType"].ToString() : null)
+                .WithLockTime(data.Keys.Contains("lockTime") && data["lockTime"] != null ? (int?)int.Parse(data["lockTime"].ToString()) : null)
+                .WithEnableSkip(data.Keys.Contains("enableSkip") && data["enableSkip"] != null ? (bool?)bool.Parse(data["enableSkip"].ToString()) : null)
+                .WithSkipConsumeActions(data.Keys.Contains("skipConsumeActions") && data["skipConsumeActions"] != null ? data["skipConsumeActions"].Cast<JsonData>().Select(value =>
+                    {
+                        return Gs2.Gs2Exchange.Model.ConsumeAction.FromDict(value);
+                    }
+                ).ToList() : null)
                 .WithAcquireActions(data.Keys.Contains("acquireActions") && data["acquireActions"] != null ? data["acquireActions"].Cast<JsonData>().Select(value =>
                     {
                         return Gs2.Gs2Exchange.Model.AcquireAction.FromDict(value);
@@ -311,6 +400,42 @@ namespace Gs2.Gs2Exchange.Model
                 for (var i = 0; i < consumeActions.Count; i++)
                 {
                     diff += consumeActions[i].CompareTo(other.consumeActions[i]);
+                }
+            }
+            if (timingType == null && timingType == other.timingType)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += timingType.CompareTo(other.timingType);
+            }
+            if (lockTime == null && lockTime == other.lockTime)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(lockTime - other.lockTime);
+            }
+            if (enableSkip == null && enableSkip == other.enableSkip)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += enableSkip == other.enableSkip ? 0 : 1;
+            }
+            if (skipConsumeActions == null && skipConsumeActions == other.skipConsumeActions)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += skipConsumeActions.Count - other.skipConsumeActions.Count;
+                for (var i = 0; i < skipConsumeActions.Count; i++)
+                {
+                    diff += skipConsumeActions[i].CompareTo(other.skipConsumeActions[i]);
                 }
             }
             if (acquireActions == null && acquireActions == other.acquireActions)

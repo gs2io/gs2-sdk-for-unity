@@ -19,6 +19,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Gs2.Core;
 using Gs2.Core.Exception;
+using Gs2.Gs2Distributor.Result;
 using Gs2.Unity.Gs2Distributor.Result;
 using UnityEngine.Events;
 
@@ -165,6 +166,63 @@ namespace Gs2.Unity.Util
 					}
 				},
 				stackContext,
+				_client,
+				_distributorNamespaceName,
+				_stampSheetEncryptKeyId
+			);
+		}
+		public IEnumerator ExpressExecute(
+			UnityEvent<Gs2Exception> onError
+		)
+		{
+			if (_running)
+			{
+				yield break;
+			}
+
+			_running = true;
+			
+			yield return _stampSheet.ExpressExecute(
+				r =>
+				{
+					if (r.Error != null)
+					{
+						if (onError != null)
+						{
+							onError.Invoke(r.Error);
+						}
+					}
+					else
+					{
+						if (OnDoneStampTask != null)
+						{
+							foreach (var taskResult in r.Result.TaskResults)
+							{
+								OnDoneStampTask.Invoke(
+									_stampSheet.Tasks[r.Result.TaskResults.IndexOf(taskResult)], 
+									new EzRunStampTaskResult(
+										new RunStampTaskResult
+										{
+											result = taskResult,
+										}
+									)
+								);
+							}
+						}
+						if (OnCompleteStampSheet != null)
+						{
+							OnCompleteStampSheet.Invoke(
+								_stampSheet, 
+								new EzRunStampSheetResult(
+									new RunStampSheetResult
+									{
+										result = r.Result.SheetResult,
+									}
+								)
+							);
+						}
+					}
+				},
 				_client,
 				_distributorNamespaceName,
 				_stampSheetEncryptKeyId

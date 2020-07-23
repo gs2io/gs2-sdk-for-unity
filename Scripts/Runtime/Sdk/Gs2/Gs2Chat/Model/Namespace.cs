@@ -195,6 +195,20 @@ namespace Gs2.Gs2Chat.Model
             return this;
         }
 
+        /** None */
+        public string status { set; get; }
+
+        /**
+         * Noneを設定
+         *
+         * @param status None
+         * @return this
+         */
+        public Namespace WithStatus(string status) {
+            this.status = status;
+            return this;
+        }
+
         /** 作成日時 */
         public long? createdAt { set; get; }
 
@@ -286,6 +300,11 @@ namespace Gs2.Gs2Chat.Model
                 writer.WritePropertyName("logSetting");
                 this.logSetting.WriteJson(writer);
             }
+            if(this.status != null)
+            {
+                writer.WritePropertyName("status");
+                writer.Write(this.status);
+            }
             if(this.createdAt.HasValue)
             {
                 writer.WritePropertyName("createdAt");
@@ -351,6 +370,7 @@ namespace Gs2.Gs2Chat.Model
                 .WithUnsubscribeRoomScript(data.Keys.Contains("unsubscribeRoomScript") && data["unsubscribeRoomScript"] != null ? Gs2.Gs2Chat.Model.ScriptSetting.FromDict(data["unsubscribeRoomScript"]) : null)
                 .WithPostNotification(data.Keys.Contains("postNotification") && data["postNotification"] != null ? Gs2.Gs2Chat.Model.NotificationSetting.FromDict(data["postNotification"]) : null)
                 .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Chat.Model.LogSetting.FromDict(data["logSetting"]) : null)
+                .WithStatus(data.Keys.Contains("status") && data["status"] != null ? data["status"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
@@ -454,6 +474,14 @@ namespace Gs2.Gs2Chat.Model
             else
             {
                 diff += logSetting.CompareTo(other.logSetting);
+            }
+            if (status == null && status == other.status)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += status.CompareTo(other.status);
             }
             if (createdAt == null && createdAt == other.createdAt)
             {

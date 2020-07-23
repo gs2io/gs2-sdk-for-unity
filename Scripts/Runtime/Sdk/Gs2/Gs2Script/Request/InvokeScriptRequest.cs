@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 using System;
 using System.Collections.Generic;
@@ -66,6 +68,7 @@ namespace Gs2.Gs2Script.Request
         {
             return new InvokeScriptRequest {
                 scriptId = data.Keys.Contains("scriptId") && data["scriptId"] != null ? data["scriptId"].ToString(): null,
+                // args = data.Keys.Contains("args") && data["args"] != null ? (Dictionary<string, object>)Dictionary<string, object>.Parse(data["args"].ToString()) : null,
             };
         }
 

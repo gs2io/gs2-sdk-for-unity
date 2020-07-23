@@ -54,6 +54,134 @@ namespace Gs2.Unity.Gs2Mission
 		/// <param name="namespaceName">ネームスペース名</param>
 		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
 		/// <param name="limit">データの取得件数</param>
+		public IEnumerator ListCounters(
+		        UnityAction<AsyncResult<EzListCountersResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string pageToken=null,
+                long? limit=null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribeCounters(
+                    new DescribeCountersRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListCountersResult>(
+                            r.Result == null ? null : new EzListCountersResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  ミッショングループを指定して達成したミッションを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="counterName">カウンター名</param>
+		public IEnumerator GetCounter(
+		        UnityAction<AsyncResult<EzGetCounterResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string counterName=null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetCounter(
+                    new GetCounterRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithCounterName(counterName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetCounterResult>(
+                            r.Result == null ? null : new EzGetCounterResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  カウンターの種類を認証<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		public IEnumerator ListCounterModels(
+		        UnityAction<AsyncResult<EzListCounterModelsResult>> callback,
+                string namespaceName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeCounterModels(
+                    new DescribeCounterModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListCounterModelsResult>(
+                            r.Result == null ? null : new EzListCounterModelsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  カウンターの種類を認証<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="counterName">カウンター名</param>
+		public IEnumerator GetCounterModel(
+		        UnityAction<AsyncResult<EzGetCounterModelResult>> callback,
+                string namespaceName,
+                string counterName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetCounterModel(
+                    new GetCounterModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithCounterName(counterName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetCounterModelResult>(
+                            r.Result == null ? null : new EzGetCounterModelResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  達成したミッションの一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
+		/// <param name="limit">データの取得件数</param>
 		public IEnumerator ListCompletes(
 		        UnityAction<AsyncResult<EzListCompletesResult>> callback,
 		        GameSession session,
@@ -265,134 +393,6 @@ namespace Gs2.Unity.Gs2Mission
                     r => cb.Invoke(
                         new AsyncResult<EzGetMissionTaskModelResult>(
                             r.Result == null ? null : new EzGetMissionTaskModelResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  カウンターの種類を認証<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		public IEnumerator ListCounterModels(
-		        UnityAction<AsyncResult<EzListCounterModelsResult>> callback,
-                string namespaceName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-                null,
-                cb => _restClient.DescribeCounterModels(
-                    new DescribeCounterModelsRequest()
-                        .WithNamespaceName(namespaceName),
-                    r => cb.Invoke(
-                        new AsyncResult<EzListCounterModelsResult>(
-                            r.Result == null ? null : new EzListCounterModelsResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  カウンターの種類を認証<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="counterName">カウンター名</param>
-		public IEnumerator GetCounterModel(
-		        UnityAction<AsyncResult<EzGetCounterModelResult>> callback,
-                string namespaceName,
-                string counterName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-                null,
-                cb => _client.GetCounterModel(
-                    new GetCounterModelRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithCounterName(counterName),
-                    r => cb.Invoke(
-                        new AsyncResult<EzGetCounterModelResult>(
-                            r.Result == null ? null : new EzGetCounterModelResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  達成したミッションの一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
-		/// <param name="limit">データの取得件数</param>
-		public IEnumerator ListCounters(
-		        UnityAction<AsyncResult<EzListCountersResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string pageToken=null,
-                long? limit=null
-        )
-		{
-            yield return _profile.Run(
-                callback,
-		        session,
-                cb => _restClient.DescribeCounters(
-                    new DescribeCountersRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithPageToken(pageToken)
-                        .WithLimit(limit)
-                        .WithAccessToken(session.AccessToken.token),
-                    r => cb.Invoke(
-                        new AsyncResult<EzListCountersResult>(
-                            r.Result == null ? null : new EzListCountersResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  ミッショングループを指定して達成したミッションを取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="counterName">カウンター名</param>
-		public IEnumerator GetCounter(
-		        UnityAction<AsyncResult<EzGetCounterResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string counterName=null
-        )
-		{
-            yield return _profile.Run(
-                callback,
-		        session,
-                cb => _client.GetCounter(
-                    new GetCounterRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithCounterName(counterName)
-                        .WithAccessToken(session.AccessToken.token),
-                    r => cb.Invoke(
-                        new AsyncResult<EzGetCounterResult>(
-                            r.Result == null ? null : new EzGetCounterResult(r.Result),
                             r.Error
                         )
                     )

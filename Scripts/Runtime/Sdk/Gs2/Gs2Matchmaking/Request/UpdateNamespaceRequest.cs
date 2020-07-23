@@ -61,6 +61,22 @@ namespace Gs2.Gs2Matchmaking.Request
         }
 
 
+        /** レーティング計算機能を使用するか */
+		[UnityEngine.SerializeField]
+        public bool? enableRating;
+
+        /**
+         * レーティング計算機能を使用するかを設定
+         *
+         * @param enableRating レーティング計算機能を使用するか
+         * @return this
+         */
+        public UpdateNamespaceRequest WithEnableRating(bool? enableRating) {
+            this.enableRating = enableRating;
+            return this;
+        }
+
+
         /** ギャザリング新規作成時のアクション */
 		[UnityEngine.SerializeField]
         public string createGatheringTriggerType;
@@ -227,6 +243,7 @@ namespace Gs2.Gs2Matchmaking.Request
             return new UpdateNamespaceRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                enableRating = data.Keys.Contains("enableRating") && data["enableRating"] != null ? (bool?)bool.Parse(data["enableRating"].ToString()) : null,
                 createGatheringTriggerType = data.Keys.Contains("createGatheringTriggerType") && data["createGatheringTriggerType"] != null ? data["createGatheringTriggerType"].ToString(): null,
                 createGatheringTriggerRealtimeNamespaceId = data.Keys.Contains("createGatheringTriggerRealtimeNamespaceId") && data["createGatheringTriggerRealtimeNamespaceId"] != null ? data["createGatheringTriggerRealtimeNamespaceId"].ToString(): null,
                 createGatheringTriggerScriptId = data.Keys.Contains("createGatheringTriggerScriptId") && data["createGatheringTriggerScriptId"] != null ? data["createGatheringTriggerScriptId"].ToString(): null,

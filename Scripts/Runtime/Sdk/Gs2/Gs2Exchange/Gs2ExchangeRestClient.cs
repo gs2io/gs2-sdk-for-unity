@@ -134,6 +134,16 @@ namespace Gs2.Gs2Exchange
                     jsonWriter.WritePropertyName("description");
                     jsonWriter.Write(_request.description.ToString());
                 }
+                if (_request.enableAwaitExchange != null)
+                {
+                    jsonWriter.WritePropertyName("enableAwaitExchange");
+                    jsonWriter.Write(_request.enableAwaitExchange.ToString());
+                }
+                if (_request.enableDirectExchange != null)
+                {
+                    jsonWriter.WritePropertyName("enableDirectExchange");
+                    jsonWriter.Write(_request.enableDirectExchange.ToString());
+                }
                 if (_request.queueNamespaceId != null)
                 {
                     jsonWriter.WritePropertyName("queueNamespaceId");
@@ -325,6 +335,16 @@ namespace Gs2.Gs2Exchange
                 {
                     jsonWriter.WritePropertyName("description");
                     jsonWriter.Write(_request.description.ToString());
+                }
+                if (_request.enableAwaitExchange != null)
+                {
+                    jsonWriter.WritePropertyName("enableAwaitExchange");
+                    jsonWriter.Write(_request.enableAwaitExchange.ToString());
+                }
+                if (_request.enableDirectExchange != null)
+                {
+                    jsonWriter.WritePropertyName("enableDirectExchange");
+                    jsonWriter.Write(_request.enableDirectExchange.ToString());
                 }
                 if (_request.queueNamespaceId != null)
                 {
@@ -643,6 +663,35 @@ namespace Gs2.Gs2Exchange
                     jsonWriter.WritePropertyName("metadata");
                     jsonWriter.Write(_request.metadata.ToString());
                 }
+                if (_request.timingType != null)
+                {
+                    jsonWriter.WritePropertyName("timingType");
+                    jsonWriter.Write(_request.timingType.ToString());
+                }
+                if (_request.lockTime != null)
+                {
+                    jsonWriter.WritePropertyName("lockTime");
+                    jsonWriter.Write(_request.lockTime.ToString());
+                }
+                if (_request.enableSkip != null)
+                {
+                    jsonWriter.WritePropertyName("enableSkip");
+                    jsonWriter.Write(_request.enableSkip.ToString());
+                }
+                if (_request.skipConsumeActions != null)
+                {
+                    jsonWriter.WritePropertyName("skipConsumeActions");
+                    jsonWriter.WriteArrayStart();
+                    foreach(var item in _request.skipConsumeActions)
+                    {
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
+                    }
+                    jsonWriter.WriteArrayEnd();
+                }
                 if (_request.acquireActions != null)
                 {
                     jsonWriter.WritePropertyName("acquireActions");
@@ -800,6 +849,35 @@ namespace Gs2.Gs2Exchange
                 {
                     jsonWriter.WritePropertyName("metadata");
                     jsonWriter.Write(_request.metadata.ToString());
+                }
+                if (_request.timingType != null)
+                {
+                    jsonWriter.WritePropertyName("timingType");
+                    jsonWriter.Write(_request.timingType.ToString());
+                }
+                if (_request.lockTime != null)
+                {
+                    jsonWriter.WritePropertyName("lockTime");
+                    jsonWriter.Write(_request.lockTime.ToString());
+                }
+                if (_request.enableSkip != null)
+                {
+                    jsonWriter.WritePropertyName("enableSkip");
+                    jsonWriter.Write(_request.enableSkip.ToString());
+                }
+                if (_request.skipConsumeActions != null)
+                {
+                    jsonWriter.WritePropertyName("skipConsumeActions");
+                    jsonWriter.WriteArrayStart();
+                    foreach(var item in _request.skipConsumeActions)
+                    {
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
+                    }
+                    jsonWriter.WriteArrayEnd();
                 }
                 if (_request.acquireActions != null)
                 {
@@ -1104,6 +1182,82 @@ namespace Gs2.Gs2Exchange
 			return Gs2RestSession.Execute(task);
         }
 
+        private class ExchangeByStampSheetTask : Gs2RestSessionTask<Result.ExchangeByStampSheetResult>
+        {
+			private readonly Request.ExchangeByStampSheetRequest _request;
+
+			public ExchangeByStampSheetTask(Request.ExchangeByStampSheetRequest request, UnityAction<AsyncResult<Result.ExchangeByStampSheetResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "exchange")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/stamp/exchange";
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.stampSheet != null)
+                {
+                    jsonWriter.WritePropertyName("stampSheet");
+                    jsonWriter.Write(_request.stampSheet.ToString());
+                }
+                if (_request.keyId != null)
+                {
+                    jsonWriter.WritePropertyName("keyId");
+                    jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  スタンプシートで交換を実行<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator ExchangeByStampSheet(
+                Request.ExchangeByStampSheetRequest request,
+                UnityAction<AsyncResult<Result.ExchangeByStampSheetResult>> callback
+        )
+		{
+			var task = new ExchangeByStampSheetTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
         private class ExportMasterTask : Gs2RestSessionTask<Result.ExportMasterResult>
         {
 			private readonly Request.ExportMasterRequest _request;
@@ -1347,6 +1501,1053 @@ namespace Gs2.Gs2Exchange
         )
 		{
 			var task = new UpdateCurrentRateMasterFromGitHubTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class CreateAwaitByUserIdTask : Gs2RestSessionTask<Result.CreateAwaitByUserIdResult>
+        {
+			private readonly Request.CreateAwaitByUserIdRequest _request;
+
+			public CreateAwaitByUserIdTask(Request.CreateAwaitByUserIdRequest request, UnityAction<AsyncResult<Result.CreateAwaitByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPUT;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "exchange")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/exchange/{rateName}/await";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+                url = url.Replace("{rateName}", !string.IsNullOrEmpty(_request.rateName) ? _request.rateName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.count != null)
+                {
+                    jsonWriter.WritePropertyName("count");
+                    jsonWriter.Write(_request.count.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  交換待機を作成<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator CreateAwaitByUserId(
+                Request.CreateAwaitByUserIdRequest request,
+                UnityAction<AsyncResult<Result.CreateAwaitByUserIdResult>> callback
+        )
+		{
+			var task = new CreateAwaitByUserIdTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class DescribeAwaitsTask : Gs2RestSessionTask<Result.DescribeAwaitsResult>
+        {
+			private readonly Request.DescribeAwaitsRequest _request;
+
+			public DescribeAwaitsTask(Request.DescribeAwaitsRequest request, UnityAction<AsyncResult<Result.DescribeAwaitsResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "exchange")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/me/exchange/await";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                if (_request.rateName != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "rateName", UnityWebRequest.EscapeURL(_request.rateName)));
+                }
+                if (_request.pageToken != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "pageToken", UnityWebRequest.EscapeURL(_request.pageToken)));
+                }
+                if (_request.limit != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "limit", _request.limit));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  交換待機の一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DescribeAwaits(
+                Request.DescribeAwaitsRequest request,
+                UnityAction<AsyncResult<Result.DescribeAwaitsResult>> callback
+        )
+		{
+			var task = new DescribeAwaitsTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class DescribeAwaitsByUserIdTask : Gs2RestSessionTask<Result.DescribeAwaitsByUserIdResult>
+        {
+			private readonly Request.DescribeAwaitsByUserIdRequest _request;
+
+			public DescribeAwaitsByUserIdTask(Request.DescribeAwaitsByUserIdRequest request, UnityAction<AsyncResult<Result.DescribeAwaitsByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "exchange")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/exchange/await";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                if (_request.rateName != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "rateName", UnityWebRequest.EscapeURL(_request.rateName)));
+                }
+                if (_request.pageToken != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "pageToken", UnityWebRequest.EscapeURL(_request.pageToken)));
+                }
+                if (_request.limit != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "limit", _request.limit));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  交換待機の一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DescribeAwaitsByUserId(
+                Request.DescribeAwaitsByUserIdRequest request,
+                UnityAction<AsyncResult<Result.DescribeAwaitsByUserIdResult>> callback
+        )
+		{
+			var task = new DescribeAwaitsByUserIdTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class GetAwaitTask : Gs2RestSessionTask<Result.GetAwaitResult>
+        {
+			private readonly Request.GetAwaitRequest _request;
+
+			public GetAwaitTask(Request.GetAwaitRequest request, UnityAction<AsyncResult<Result.GetAwaitResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "exchange")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/me/exchange/{rateName}/await/{awaitName}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{rateName}", !string.IsNullOrEmpty(_request.rateName) ? _request.rateName.ToString() : "null");
+                url = url.Replace("{awaitName}", !string.IsNullOrEmpty(_request.awaitName) ? _request.awaitName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  交換待機を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetAwait(
+                Request.GetAwaitRequest request,
+                UnityAction<AsyncResult<Result.GetAwaitResult>> callback
+        )
+		{
+			var task = new GetAwaitTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class GetAwaitByUserIdTask : Gs2RestSessionTask<Result.GetAwaitByUserIdResult>
+        {
+			private readonly Request.GetAwaitByUserIdRequest _request;
+
+			public GetAwaitByUserIdTask(Request.GetAwaitByUserIdRequest request, UnityAction<AsyncResult<Result.GetAwaitByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "exchange")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/exchange/{rateName}/await/{awaitName}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+                url = url.Replace("{rateName}", !string.IsNullOrEmpty(_request.rateName) ? _request.rateName.ToString() : "null");
+                url = url.Replace("{awaitName}", !string.IsNullOrEmpty(_request.awaitName) ? _request.awaitName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  交換待機を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetAwaitByUserId(
+                Request.GetAwaitByUserIdRequest request,
+                UnityAction<AsyncResult<Result.GetAwaitByUserIdResult>> callback
+        )
+		{
+			var task = new GetAwaitByUserIdTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class AcquireTask : Gs2RestSessionTask<Result.AcquireResult>
+        {
+			private readonly Request.AcquireRequest _request;
+
+			public AcquireTask(Request.AcquireRequest request, UnityAction<AsyncResult<Result.AcquireResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "exchange")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/me/exchange/{rateName}/await/{awaitName}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{rateName}", !string.IsNullOrEmpty(_request.rateName) ? _request.rateName.ToString() : "null");
+                url = url.Replace("{awaitName}", !string.IsNullOrEmpty(_request.awaitName) ? _request.awaitName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.config != null)
+                {
+                    jsonWriter.WritePropertyName("config");
+                    jsonWriter.WriteArrayStart();
+                    foreach(var item in _request.config)
+                    {
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
+                    }
+                    jsonWriter.WriteArrayEnd();
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  交換待機の報酬を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator Acquire(
+                Request.AcquireRequest request,
+                UnityAction<AsyncResult<Result.AcquireResult>> callback
+        )
+		{
+			var task = new AcquireTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class AcquireByUserIdTask : Gs2RestSessionTask<Result.AcquireByUserIdResult>
+        {
+			private readonly Request.AcquireByUserIdRequest _request;
+
+			public AcquireByUserIdTask(Request.AcquireByUserIdRequest request, UnityAction<AsyncResult<Result.AcquireByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "exchange")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/exchange/{rateName}/await/{awaitName}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+                url = url.Replace("{rateName}", !string.IsNullOrEmpty(_request.rateName) ? _request.rateName.ToString() : "null");
+                url = url.Replace("{awaitName}", !string.IsNullOrEmpty(_request.awaitName) ? _request.awaitName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.config != null)
+                {
+                    jsonWriter.WritePropertyName("config");
+                    jsonWriter.WriteArrayStart();
+                    foreach(var item in _request.config)
+                    {
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
+                    }
+                    jsonWriter.WriteArrayEnd();
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  交換待機の報酬を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator AcquireByUserId(
+                Request.AcquireByUserIdRequest request,
+                UnityAction<AsyncResult<Result.AcquireByUserIdResult>> callback
+        )
+		{
+			var task = new AcquireByUserIdTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class AcquireForceByUserIdTask : Gs2RestSessionTask<Result.AcquireForceByUserIdResult>
+        {
+			private readonly Request.AcquireForceByUserIdRequest _request;
+
+			public AcquireForceByUserIdTask(Request.AcquireForceByUserIdRequest request, UnityAction<AsyncResult<Result.AcquireForceByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "exchange")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/exchange/{rateName}/await/{awaitName}/force";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+                url = url.Replace("{rateName}", !string.IsNullOrEmpty(_request.rateName) ? _request.rateName.ToString() : "null");
+                url = url.Replace("{awaitName}", !string.IsNullOrEmpty(_request.awaitName) ? _request.awaitName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.config != null)
+                {
+                    jsonWriter.WritePropertyName("config");
+                    jsonWriter.WriteArrayStart();
+                    foreach(var item in _request.config)
+                    {
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
+                    }
+                    jsonWriter.WriteArrayEnd();
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  交換待機の報酬を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator AcquireForceByUserId(
+                Request.AcquireForceByUserIdRequest request,
+                UnityAction<AsyncResult<Result.AcquireForceByUserIdResult>> callback
+        )
+		{
+			var task = new AcquireForceByUserIdTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class SkipTask : Gs2RestSessionTask<Result.SkipResult>
+        {
+			private readonly Request.SkipRequest _request;
+
+			public SkipTask(Request.SkipRequest request, UnityAction<AsyncResult<Result.SkipResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "exchange")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/me/exchange/{rateName}/await/{awaitName}/skip";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{rateName}", !string.IsNullOrEmpty(_request.rateName) ? _request.rateName.ToString() : "null");
+                url = url.Replace("{awaitName}", !string.IsNullOrEmpty(_request.awaitName) ? _request.awaitName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.config != null)
+                {
+                    jsonWriter.WritePropertyName("config");
+                    jsonWriter.WriteArrayStart();
+                    foreach(var item in _request.config)
+                    {
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
+                    }
+                    jsonWriter.WriteArrayEnd();
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  交換待機を対価を払ってスキップ<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator Skip(
+                Request.SkipRequest request,
+                UnityAction<AsyncResult<Result.SkipResult>> callback
+        )
+		{
+			var task = new SkipTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class SkipByUserIdTask : Gs2RestSessionTask<Result.SkipByUserIdResult>
+        {
+			private readonly Request.SkipByUserIdRequest _request;
+
+			public SkipByUserIdTask(Request.SkipByUserIdRequest request, UnityAction<AsyncResult<Result.SkipByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "exchange")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/exchange/{rateName}/await/{awaitName}/skip";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+                url = url.Replace("{rateName}", !string.IsNullOrEmpty(_request.rateName) ? _request.rateName.ToString() : "null");
+                url = url.Replace("{awaitName}", !string.IsNullOrEmpty(_request.awaitName) ? _request.awaitName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.config != null)
+                {
+                    jsonWriter.WritePropertyName("config");
+                    jsonWriter.WriteArrayStart();
+                    foreach(var item in _request.config)
+                    {
+                        if (item == null) {
+                            jsonWriter.Write(null);
+                        } else {
+                            item.WriteJson(jsonWriter);
+                        }
+                    }
+                    jsonWriter.WriteArrayEnd();
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  交換待機を対価を払ってスキップ<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator SkipByUserId(
+                Request.SkipByUserIdRequest request,
+                UnityAction<AsyncResult<Result.SkipByUserIdResult>> callback
+        )
+		{
+			var task = new SkipByUserIdTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class DeleteAwaitTask : Gs2RestSessionTask<Result.DeleteAwaitResult>
+        {
+			private readonly Request.DeleteAwaitRequest _request;
+
+			public DeleteAwaitTask(Request.DeleteAwaitRequest request, UnityAction<AsyncResult<Result.DeleteAwaitResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbDELETE;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "exchange")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/me/exchange/{rateName}/await/{awaitName}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{rateName}", !string.IsNullOrEmpty(_request.rateName) ? _request.rateName.ToString() : "null");
+                url = url.Replace("{awaitName}", !string.IsNullOrEmpty(_request.awaitName) ? _request.awaitName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  交換待機を削除<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DeleteAwait(
+                Request.DeleteAwaitRequest request,
+                UnityAction<AsyncResult<Result.DeleteAwaitResult>> callback
+        )
+		{
+			var task = new DeleteAwaitTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class DeleteAwaitByUserIdTask : Gs2RestSessionTask<Result.DeleteAwaitByUserIdResult>
+        {
+			private readonly Request.DeleteAwaitByUserIdRequest _request;
+
+			public DeleteAwaitByUserIdTask(Request.DeleteAwaitByUserIdRequest request, UnityAction<AsyncResult<Result.DeleteAwaitByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbDELETE;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "exchange")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/exchange/{rateName}/await/{awaitName}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+                url = url.Replace("{rateName}", !string.IsNullOrEmpty(_request.rateName) ? _request.rateName.ToString() : "null");
+                url = url.Replace("{awaitName}", !string.IsNullOrEmpty(_request.awaitName) ? _request.awaitName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  交換待機を削除<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DeleteAwaitByUserId(
+                Request.DeleteAwaitByUserIdRequest request,
+                UnityAction<AsyncResult<Result.DeleteAwaitByUserIdResult>> callback
+        )
+		{
+			var task = new DeleteAwaitByUserIdTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class CreateAwaitByStampSheetTask : Gs2RestSessionTask<Result.CreateAwaitByStampSheetResult>
+        {
+			private readonly Request.CreateAwaitByStampSheetRequest _request;
+
+			public CreateAwaitByStampSheetTask(Request.CreateAwaitByStampSheetRequest request, UnityAction<AsyncResult<Result.CreateAwaitByStampSheetResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "exchange")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/stamp/await/create";
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.stampSheet != null)
+                {
+                    jsonWriter.WritePropertyName("stampSheet");
+                    jsonWriter.Write(_request.stampSheet.ToString());
+                }
+                if (_request.keyId != null)
+                {
+                    jsonWriter.WritePropertyName("keyId");
+                    jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  スタンプシートで交換待機 を作成<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator CreateAwaitByStampSheet(
+                Request.CreateAwaitByStampSheetRequest request,
+                UnityAction<AsyncResult<Result.CreateAwaitByStampSheetResult>> callback
+        )
+		{
+			var task = new CreateAwaitByStampSheetTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class DeleteAwaitByStampTaskTask : Gs2RestSessionTask<Result.DeleteAwaitByStampTaskResult>
+        {
+			private readonly Request.DeleteAwaitByStampTaskRequest _request;
+
+			public DeleteAwaitByStampTaskTask(Request.DeleteAwaitByStampTaskRequest request, UnityAction<AsyncResult<Result.DeleteAwaitByStampTaskResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "exchange")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/stamp/await/delete";
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.stampTask != null)
+                {
+                    jsonWriter.WritePropertyName("stampTask");
+                    jsonWriter.Write(_request.stampTask.ToString());
+                }
+                if (_request.keyId != null)
+                {
+                    jsonWriter.WritePropertyName("keyId");
+                    jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  スタンプタスクで 交換待機 を削除<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DeleteAwaitByStampTask(
+                Request.DeleteAwaitByStampTaskRequest request,
+                UnityAction<AsyncResult<Result.DeleteAwaitByStampTaskResult>> callback
+        )
+		{
+			var task = new DeleteAwaitByStampTaskTask(request, callback);
 			return Gs2RestSession.Execute(task);
         }
 	}

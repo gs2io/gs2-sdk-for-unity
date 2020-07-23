@@ -61,6 +61,38 @@ namespace Gs2.Gs2Exchange.Request
         }
 
 
+        /** 交換結果の受け取りに待ち時間の発生する交換機能を利用するか */
+		[UnityEngine.SerializeField]
+        public bool? enableAwaitExchange;
+
+        /**
+         * 交換結果の受け取りに待ち時間の発生する交換機能を利用するかを設定
+         *
+         * @param enableAwaitExchange 交換結果の受け取りに待ち時間の発生する交換機能を利用するか
+         * @return this
+         */
+        public CreateNamespaceRequest WithEnableAwaitExchange(bool? enableAwaitExchange) {
+            this.enableAwaitExchange = enableAwaitExchange;
+            return this;
+        }
+
+
+        /** 直接交換APIの呼び出しを許可する。許可しない場合はスタンプシート経由でしか交換できない */
+		[UnityEngine.SerializeField]
+        public bool? enableDirectExchange;
+
+        /**
+         * 直接交換APIの呼び出しを許可する。許可しない場合はスタンプシート経由でしか交換できないを設定
+         *
+         * @param enableDirectExchange 直接交換APIの呼び出しを許可する。許可しない場合はスタンプシート経由でしか交換できない
+         * @return this
+         */
+        public CreateNamespaceRequest WithEnableDirectExchange(bool? enableDirectExchange) {
+            this.enableDirectExchange = enableDirectExchange;
+            return this;
+        }
+
+
         /** 交換処理をジョブとして追加するキューのネームスペース のGRN */
 		[UnityEngine.SerializeField]
         public string queueNamespaceId;
@@ -115,6 +147,8 @@ namespace Gs2.Gs2Exchange.Request
             return new CreateNamespaceRequest {
                 name = data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                enableAwaitExchange = data.Keys.Contains("enableAwaitExchange") && data["enableAwaitExchange"] != null ? (bool?)bool.Parse(data["enableAwaitExchange"].ToString()) : null,
+                enableDirectExchange = data.Keys.Contains("enableDirectExchange") && data["enableDirectExchange"] != null ? (bool?)bool.Parse(data["enableDirectExchange"].ToString()) : null,
                 queueNamespaceId = data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? data["queueNamespaceId"].ToString(): null,
                 keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString(): null,
                 logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? global::Gs2.Gs2Exchange.Model.LogSetting.FromDict(data["logSetting"]) : null,

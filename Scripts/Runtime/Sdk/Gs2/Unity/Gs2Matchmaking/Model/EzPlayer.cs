@@ -35,6 +35,9 @@ namespace Gs2.Unity.Gs2Matchmaking.Model
 		/** ロール名 */
 		[UnityEngine.SerializeField]
 		public string RoleName;
+		/** 参加を拒否するユーザIDリスト */
+		[UnityEngine.SerializeField]
+		public List<string> DenyUserIds;
 
 		public EzPlayer()
 		{
@@ -50,6 +53,11 @@ namespace Gs2.Unity.Gs2Matchmaking.Model
                 }
 			).ToList() : new List<EzAttribute>(new EzAttribute[] {});
 			RoleName = @player.roleName;
+			DenyUserIds = @player.denyUserIds != null ? @player.denyUserIds.Select(value =>
+                {
+                    return value;
+                }
+			).ToList() : new List<string>(new string[] {});
 		}
 
         public virtual Player ToModel()
@@ -66,6 +74,11 @@ namespace Gs2.Unity.Gs2Matchmaking.Model
                         }
                 ).ToList() : new List<Attribute_>(new Attribute_[] {}),
                 roleName = RoleName,
+                denyUserIds = DenyUserIds != null ? DenyUserIds.Select(Value0 =>
+                        {
+                            return Value0;
+                        }
+                ).ToList() : new List<string>(new string[] {}),
             };
         }
 
@@ -91,6 +104,16 @@ namespace Gs2.Unity.Gs2Matchmaking.Model
             {
                 writer.WritePropertyName("roleName");
                 writer.Write(this.RoleName);
+            }
+            if(this.DenyUserIds != null)
+            {
+                writer.WritePropertyName("denyUserIds");
+                writer.WriteArrayStart();
+                foreach(var item in this.DenyUserIds)
+                {
+                    writer.Write(item);
+                }
+                writer.WriteArrayEnd();
             }
             writer.WriteObjectEnd();
         }

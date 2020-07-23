@@ -83,6 +83,34 @@ namespace Gs2.Gs2Exchange.Model
             return this;
         }
 
+        /** 直接交換APIの呼び出しを許可する。許可しない場合はスタンプシート経由でしか交換できない */
+        public bool? enableDirectExchange { set; get; }
+
+        /**
+         * 直接交換APIの呼び出しを許可する。許可しない場合はスタンプシート経由でしか交換できないを設定
+         *
+         * @param enableDirectExchange 直接交換APIの呼び出しを許可する。許可しない場合はスタンプシート経由でしか交換できない
+         * @return this
+         */
+        public Namespace WithEnableDirectExchange(bool? enableDirectExchange) {
+            this.enableDirectExchange = enableDirectExchange;
+            return this;
+        }
+
+        /** 交換結果の受け取りに待ち時間の発生する交換機能を利用するか */
+        public bool? enableAwaitExchange { set; get; }
+
+        /**
+         * 交換結果の受け取りに待ち時間の発生する交換機能を利用するかを設定
+         *
+         * @param enableAwaitExchange 交換結果の受け取りに待ち時間の発生する交換機能を利用するか
+         * @return this
+         */
+        public Namespace WithEnableAwaitExchange(bool? enableAwaitExchange) {
+            this.enableAwaitExchange = enableAwaitExchange;
+            return this;
+        }
+
         /** 交換処理をジョブとして追加するキューのネームスペース のGRN */
         public string queueNamespaceId { set; get; }
 
@@ -122,6 +150,20 @@ namespace Gs2.Gs2Exchange.Model
          */
         public Namespace WithLogSetting(Gs2.Gs2Exchange.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
+            return this;
+        }
+
+        /** None */
+        public string status { set; get; }
+
+        /**
+         * Noneを設定
+         *
+         * @param status None
+         * @return this
+         */
+        public Namespace WithStatus(string status) {
+            this.status = status;
             return this;
         }
 
@@ -176,6 +218,16 @@ namespace Gs2.Gs2Exchange.Model
                 writer.WritePropertyName("description");
                 writer.Write(this.description);
             }
+            if(this.enableDirectExchange.HasValue)
+            {
+                writer.WritePropertyName("enableDirectExchange");
+                writer.Write(this.enableDirectExchange.Value);
+            }
+            if(this.enableAwaitExchange.HasValue)
+            {
+                writer.WritePropertyName("enableAwaitExchange");
+                writer.Write(this.enableAwaitExchange.Value);
+            }
             if(this.queueNamespaceId != null)
             {
                 writer.WritePropertyName("queueNamespaceId");
@@ -190,6 +242,11 @@ namespace Gs2.Gs2Exchange.Model
             {
                 writer.WritePropertyName("logSetting");
                 this.logSetting.WriteJson(writer);
+            }
+            if(this.status != null)
+            {
+                writer.WritePropertyName("status");
+                writer.Write(this.status);
             }
             if(this.createdAt.HasValue)
             {
@@ -248,9 +305,12 @@ namespace Gs2.Gs2Exchange.Model
                 .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
+                .WithEnableDirectExchange(data.Keys.Contains("enableDirectExchange") && data["enableDirectExchange"] != null ? (bool?)bool.Parse(data["enableDirectExchange"].ToString()) : null)
+                .WithEnableAwaitExchange(data.Keys.Contains("enableAwaitExchange") && data["enableAwaitExchange"] != null ? (bool?)bool.Parse(data["enableAwaitExchange"].ToString()) : null)
                 .WithQueueNamespaceId(data.Keys.Contains("queueNamespaceId") && data["queueNamespaceId"] != null ? data["queueNamespaceId"].ToString() : null)
                 .WithKeyId(data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString() : null)
                 .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Exchange.Model.LogSetting.FromDict(data["logSetting"]) : null)
+                .WithStatus(data.Keys.Contains("status") && data["status"] != null ? data["status"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
@@ -291,6 +351,22 @@ namespace Gs2.Gs2Exchange.Model
             {
                 diff += description.CompareTo(other.description);
             }
+            if (enableDirectExchange == null && enableDirectExchange == other.enableDirectExchange)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += enableDirectExchange == other.enableDirectExchange ? 0 : 1;
+            }
+            if (enableAwaitExchange == null && enableAwaitExchange == other.enableAwaitExchange)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += enableAwaitExchange == other.enableAwaitExchange ? 0 : 1;
+            }
             if (queueNamespaceId == null && queueNamespaceId == other.queueNamespaceId)
             {
                 // null and null
@@ -314,6 +390,14 @@ namespace Gs2.Gs2Exchange.Model
             else
             {
                 diff += logSetting.CompareTo(other.logSetting);
+            }
+            if (status == null && status == other.status)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += status.CompareTo(other.status);
             }
             if (createdAt == null && createdAt == other.createdAt)
             {

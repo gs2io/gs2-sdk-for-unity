@@ -140,5 +140,168 @@ namespace Gs2.Unity.Gs2Exchange
                 )
             );
 		}
+
+		/// <summary>
+		///  交換待機情報の一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		public IEnumerator ListAwaits(
+		        UnityAction<AsyncResult<EzListAwaitsResult>> callback,
+                string namespaceName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeAwaits(
+                    new DescribeAwaitsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListAwaitsResult>(
+                            r.Result == null ? null : new EzListAwaitsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  交換待機情報を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="rateName">交換レート名</param>
+		public IEnumerator GetAwait(
+		        UnityAction<AsyncResult<EzGetAwaitResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string rateName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetAwait(
+                    new GetAwaitRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRateName(rateName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetAwaitResult>(
+                            r.Result == null ? null : new EzGetAwaitResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  交換待機の報酬を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="rateName">交換レート名</param>
+		public IEnumerator Acquire(
+		        UnityAction<AsyncResult<EzAcquireResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string rateName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.Acquire(
+                    new AcquireRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRateName(rateName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzAcquireResult>(
+                            r.Result == null ? null : new EzAcquireResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  交換待機を対価を払ってスキップ<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="rateName">交換レート名</param>
+		public IEnumerator Skip(
+		        UnityAction<AsyncResult<EzSkipResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string rateName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.Skip(
+                    new SkipRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRateName(rateName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzSkipResult>(
+                            r.Result == null ? null : new EzSkipResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  交換待機情報を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="rateName">交換レート名</param>
+		public IEnumerator DeleteAwait(
+		        UnityAction<AsyncResult<EzDeleteAwaitResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string rateName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DeleteAwait(
+                    new DeleteAwaitRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRateName(rateName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzDeleteAwaitResult>(
+                            r.Result == null ? null : new EzDeleteAwaitResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
 	}
 }

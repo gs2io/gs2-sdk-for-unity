@@ -514,6 +514,11 @@ namespace Gs2.Gs2Inventory
                     jsonWriter.WritePropertyName("maxCapacity");
                     jsonWriter.Write(_request.maxCapacity.ToString());
                 }
+                if (_request.protectReferencedItem != null)
+                {
+                    jsonWriter.WritePropertyName("protectReferencedItem");
+                    jsonWriter.Write(_request.protectReferencedItem.ToString());
+                }
                 if (_request.contextStack != null)
                 {
                     jsonWriter.WritePropertyName("contextStack");
@@ -693,6 +698,11 @@ namespace Gs2.Gs2Inventory
                 {
                     jsonWriter.WritePropertyName("maxCapacity");
                     jsonWriter.Write(_request.maxCapacity.ToString());
+                }
+                if (_request.protectReferencedItem != null)
+                {
+                    jsonWriter.WritePropertyName("protectReferencedItem");
+                    jsonWriter.Write(_request.protectReferencedItem.ToString());
                 }
                 if (_request.contextStack != null)
                 {
@@ -2748,6 +2758,1056 @@ namespace Gs2.Gs2Inventory
 			return Gs2WebSocketSession.Execute(task);
         }
 
+        private class DescribeReferenceOfTask : Gs2WebSocketSessionTask<Result.DescribeReferenceOfResult>
+        {
+			private readonly Request.DescribeReferenceOfRequest _request;
+
+			public DescribeReferenceOfTask(Request.DescribeReferenceOfRequest request, UnityAction<AsyncResult<Result.DescribeReferenceOfResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.inventoryName != null)
+                {
+                    jsonWriter.WritePropertyName("inventoryName");
+                    jsonWriter.Write(_request.inventoryName.ToString());
+                }
+                if (_request.itemName != null)
+                {
+                    jsonWriter.WritePropertyName("itemName");
+                    jsonWriter.Write(_request.itemName.ToString());
+                }
+                if (_request.itemSetName != null)
+                {
+                    jsonWriter.WritePropertyName("itemSetName");
+                    jsonWriter.Write(_request.itemSetName.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2AccessToken");
+                    jsonWriter.Write(_request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("inventory");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("itemSet");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("describeReferenceOf");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  参照元の一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DescribeReferenceOf(
+                Request.DescribeReferenceOfRequest request,
+                UnityAction<AsyncResult<Result.DescribeReferenceOfResult>> callback
+        )
+		{
+			var task = new DescribeReferenceOfTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class DescribeReferenceOfByUserIdTask : Gs2WebSocketSessionTask<Result.DescribeReferenceOfByUserIdResult>
+        {
+			private readonly Request.DescribeReferenceOfByUserIdRequest _request;
+
+			public DescribeReferenceOfByUserIdTask(Request.DescribeReferenceOfByUserIdRequest request, UnityAction<AsyncResult<Result.DescribeReferenceOfByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.inventoryName != null)
+                {
+                    jsonWriter.WritePropertyName("inventoryName");
+                    jsonWriter.Write(_request.inventoryName.ToString());
+                }
+                if (_request.userId != null)
+                {
+                    jsonWriter.WritePropertyName("userId");
+                    jsonWriter.Write(_request.userId.ToString());
+                }
+                if (_request.itemName != null)
+                {
+                    jsonWriter.WritePropertyName("itemName");
+                    jsonWriter.Write(_request.itemName.ToString());
+                }
+                if (_request.itemSetName != null)
+                {
+                    jsonWriter.WritePropertyName("itemSetName");
+                    jsonWriter.Write(_request.itemSetName.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("inventory");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("itemSet");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("describeReferenceOfByUserId");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  参照元の一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DescribeReferenceOfByUserId(
+                Request.DescribeReferenceOfByUserIdRequest request,
+                UnityAction<AsyncResult<Result.DescribeReferenceOfByUserIdResult>> callback
+        )
+		{
+			var task = new DescribeReferenceOfByUserIdTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class GetReferenceOfTask : Gs2WebSocketSessionTask<Result.GetReferenceOfResult>
+        {
+			private readonly Request.GetReferenceOfRequest _request;
+
+			public GetReferenceOfTask(Request.GetReferenceOfRequest request, UnityAction<AsyncResult<Result.GetReferenceOfResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.inventoryName != null)
+                {
+                    jsonWriter.WritePropertyName("inventoryName");
+                    jsonWriter.Write(_request.inventoryName.ToString());
+                }
+                if (_request.itemName != null)
+                {
+                    jsonWriter.WritePropertyName("itemName");
+                    jsonWriter.Write(_request.itemName.ToString());
+                }
+                if (_request.itemSetName != null)
+                {
+                    jsonWriter.WritePropertyName("itemSetName");
+                    jsonWriter.Write(_request.itemSetName.ToString());
+                }
+                if (_request.referenceOf != null)
+                {
+                    jsonWriter.WritePropertyName("referenceOf");
+                    jsonWriter.Write(_request.referenceOf.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2AccessToken");
+                    jsonWriter.Write(_request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("inventory");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("itemSet");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("getReferenceOf");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  参照元を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetReferenceOf(
+                Request.GetReferenceOfRequest request,
+                UnityAction<AsyncResult<Result.GetReferenceOfResult>> callback
+        )
+		{
+			var task = new GetReferenceOfTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class GetReferenceOfByUserIdTask : Gs2WebSocketSessionTask<Result.GetReferenceOfByUserIdResult>
+        {
+			private readonly Request.GetReferenceOfByUserIdRequest _request;
+
+			public GetReferenceOfByUserIdTask(Request.GetReferenceOfByUserIdRequest request, UnityAction<AsyncResult<Result.GetReferenceOfByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.inventoryName != null)
+                {
+                    jsonWriter.WritePropertyName("inventoryName");
+                    jsonWriter.Write(_request.inventoryName.ToString());
+                }
+                if (_request.userId != null)
+                {
+                    jsonWriter.WritePropertyName("userId");
+                    jsonWriter.Write(_request.userId.ToString());
+                }
+                if (_request.itemName != null)
+                {
+                    jsonWriter.WritePropertyName("itemName");
+                    jsonWriter.Write(_request.itemName.ToString());
+                }
+                if (_request.itemSetName != null)
+                {
+                    jsonWriter.WritePropertyName("itemSetName");
+                    jsonWriter.Write(_request.itemSetName.ToString());
+                }
+                if (_request.referenceOf != null)
+                {
+                    jsonWriter.WritePropertyName("referenceOf");
+                    jsonWriter.Write(_request.referenceOf.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("inventory");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("itemSet");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("getReferenceOfByUserId");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  参照元を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetReferenceOfByUserId(
+                Request.GetReferenceOfByUserIdRequest request,
+                UnityAction<AsyncResult<Result.GetReferenceOfByUserIdResult>> callback
+        )
+		{
+			var task = new GetReferenceOfByUserIdTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class VerifyReferenceOfTask : Gs2WebSocketSessionTask<Result.VerifyReferenceOfResult>
+        {
+			private readonly Request.VerifyReferenceOfRequest _request;
+
+			public VerifyReferenceOfTask(Request.VerifyReferenceOfRequest request, UnityAction<AsyncResult<Result.VerifyReferenceOfResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.inventoryName != null)
+                {
+                    jsonWriter.WritePropertyName("inventoryName");
+                    jsonWriter.Write(_request.inventoryName.ToString());
+                }
+                if (_request.itemName != null)
+                {
+                    jsonWriter.WritePropertyName("itemName");
+                    jsonWriter.Write(_request.itemName.ToString());
+                }
+                if (_request.itemSetName != null)
+                {
+                    jsonWriter.WritePropertyName("itemSetName");
+                    jsonWriter.Write(_request.itemSetName.ToString());
+                }
+                if (_request.referenceOf != null)
+                {
+                    jsonWriter.WritePropertyName("referenceOf");
+                    jsonWriter.Write(_request.referenceOf.ToString());
+                }
+                if (_request.verifyType != null)
+                {
+                    jsonWriter.WritePropertyName("verifyType");
+                    jsonWriter.Write(_request.verifyType.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2AccessToken");
+                    jsonWriter.Write(_request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("inventory");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("itemSet");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("verifyReferenceOf");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  参照元に関する検証<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator VerifyReferenceOf(
+                Request.VerifyReferenceOfRequest request,
+                UnityAction<AsyncResult<Result.VerifyReferenceOfResult>> callback
+        )
+		{
+			var task = new VerifyReferenceOfTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class VerifyReferenceOfByUserIdTask : Gs2WebSocketSessionTask<Result.VerifyReferenceOfByUserIdResult>
+        {
+			private readonly Request.VerifyReferenceOfByUserIdRequest _request;
+
+			public VerifyReferenceOfByUserIdTask(Request.VerifyReferenceOfByUserIdRequest request, UnityAction<AsyncResult<Result.VerifyReferenceOfByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.inventoryName != null)
+                {
+                    jsonWriter.WritePropertyName("inventoryName");
+                    jsonWriter.Write(_request.inventoryName.ToString());
+                }
+                if (_request.userId != null)
+                {
+                    jsonWriter.WritePropertyName("userId");
+                    jsonWriter.Write(_request.userId.ToString());
+                }
+                if (_request.itemName != null)
+                {
+                    jsonWriter.WritePropertyName("itemName");
+                    jsonWriter.Write(_request.itemName.ToString());
+                }
+                if (_request.itemSetName != null)
+                {
+                    jsonWriter.WritePropertyName("itemSetName");
+                    jsonWriter.Write(_request.itemSetName.ToString());
+                }
+                if (_request.referenceOf != null)
+                {
+                    jsonWriter.WritePropertyName("referenceOf");
+                    jsonWriter.Write(_request.referenceOf.ToString());
+                }
+                if (_request.verifyType != null)
+                {
+                    jsonWriter.WritePropertyName("verifyType");
+                    jsonWriter.Write(_request.verifyType.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("inventory");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("itemSet");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("verifyReferenceOfByUserId");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  参照元に関する検証<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator VerifyReferenceOfByUserId(
+                Request.VerifyReferenceOfByUserIdRequest request,
+                UnityAction<AsyncResult<Result.VerifyReferenceOfByUserIdResult>> callback
+        )
+		{
+			var task = new VerifyReferenceOfByUserIdTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class AddReferenceOfTask : Gs2WebSocketSessionTask<Result.AddReferenceOfResult>
+        {
+			private readonly Request.AddReferenceOfRequest _request;
+
+			public AddReferenceOfTask(Request.AddReferenceOfRequest request, UnityAction<AsyncResult<Result.AddReferenceOfResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.inventoryName != null)
+                {
+                    jsonWriter.WritePropertyName("inventoryName");
+                    jsonWriter.Write(_request.inventoryName.ToString());
+                }
+                if (_request.itemName != null)
+                {
+                    jsonWriter.WritePropertyName("itemName");
+                    jsonWriter.Write(_request.itemName.ToString());
+                }
+                if (_request.itemSetName != null)
+                {
+                    jsonWriter.WritePropertyName("itemSetName");
+                    jsonWriter.Write(_request.itemSetName.ToString());
+                }
+                if (_request.referenceOf != null)
+                {
+                    jsonWriter.WritePropertyName("referenceOf");
+                    jsonWriter.Write(_request.referenceOf.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2AccessToken");
+                    jsonWriter.Write(_request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("inventory");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("itemSet");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("addReferenceOf");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  参照元を追加<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator AddReferenceOf(
+                Request.AddReferenceOfRequest request,
+                UnityAction<AsyncResult<Result.AddReferenceOfResult>> callback
+        )
+		{
+			var task = new AddReferenceOfTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class AddReferenceOfByUserIdTask : Gs2WebSocketSessionTask<Result.AddReferenceOfByUserIdResult>
+        {
+			private readonly Request.AddReferenceOfByUserIdRequest _request;
+
+			public AddReferenceOfByUserIdTask(Request.AddReferenceOfByUserIdRequest request, UnityAction<AsyncResult<Result.AddReferenceOfByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.inventoryName != null)
+                {
+                    jsonWriter.WritePropertyName("inventoryName");
+                    jsonWriter.Write(_request.inventoryName.ToString());
+                }
+                if (_request.userId != null)
+                {
+                    jsonWriter.WritePropertyName("userId");
+                    jsonWriter.Write(_request.userId.ToString());
+                }
+                if (_request.itemName != null)
+                {
+                    jsonWriter.WritePropertyName("itemName");
+                    jsonWriter.Write(_request.itemName.ToString());
+                }
+                if (_request.itemSetName != null)
+                {
+                    jsonWriter.WritePropertyName("itemSetName");
+                    jsonWriter.Write(_request.itemSetName.ToString());
+                }
+                if (_request.referenceOf != null)
+                {
+                    jsonWriter.WritePropertyName("referenceOf");
+                    jsonWriter.Write(_request.referenceOf.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("inventory");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("itemSet");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("addReferenceOfByUserId");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  参照元を追加<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator AddReferenceOfByUserId(
+                Request.AddReferenceOfByUserIdRequest request,
+                UnityAction<AsyncResult<Result.AddReferenceOfByUserIdResult>> callback
+        )
+		{
+			var task = new AddReferenceOfByUserIdTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class DeleteReferenceOfTask : Gs2WebSocketSessionTask<Result.DeleteReferenceOfResult>
+        {
+			private readonly Request.DeleteReferenceOfRequest _request;
+
+			public DeleteReferenceOfTask(Request.DeleteReferenceOfRequest request, UnityAction<AsyncResult<Result.DeleteReferenceOfResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.inventoryName != null)
+                {
+                    jsonWriter.WritePropertyName("inventoryName");
+                    jsonWriter.Write(_request.inventoryName.ToString());
+                }
+                if (_request.itemName != null)
+                {
+                    jsonWriter.WritePropertyName("itemName");
+                    jsonWriter.Write(_request.itemName.ToString());
+                }
+                if (_request.itemSetName != null)
+                {
+                    jsonWriter.WritePropertyName("itemSetName");
+                    jsonWriter.Write(_request.itemSetName.ToString());
+                }
+                if (_request.referenceOf != null)
+                {
+                    jsonWriter.WritePropertyName("referenceOf");
+                    jsonWriter.Write(_request.referenceOf.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2AccessToken");
+                    jsonWriter.Write(_request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("inventory");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("itemSet");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("deleteReferenceOf");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  参照元を削除<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DeleteReferenceOf(
+                Request.DeleteReferenceOfRequest request,
+                UnityAction<AsyncResult<Result.DeleteReferenceOfResult>> callback
+        )
+		{
+			var task = new DeleteReferenceOfTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class DeleteReferenceOfByUserIdTask : Gs2WebSocketSessionTask<Result.DeleteReferenceOfByUserIdResult>
+        {
+			private readonly Request.DeleteReferenceOfByUserIdRequest _request;
+
+			public DeleteReferenceOfByUserIdTask(Request.DeleteReferenceOfByUserIdRequest request, UnityAction<AsyncResult<Result.DeleteReferenceOfByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.inventoryName != null)
+                {
+                    jsonWriter.WritePropertyName("inventoryName");
+                    jsonWriter.Write(_request.inventoryName.ToString());
+                }
+                if (_request.userId != null)
+                {
+                    jsonWriter.WritePropertyName("userId");
+                    jsonWriter.Write(_request.userId.ToString());
+                }
+                if (_request.itemName != null)
+                {
+                    jsonWriter.WritePropertyName("itemName");
+                    jsonWriter.Write(_request.itemName.ToString());
+                }
+                if (_request.itemSetName != null)
+                {
+                    jsonWriter.WritePropertyName("itemSetName");
+                    jsonWriter.Write(_request.itemSetName.ToString());
+                }
+                if (_request.referenceOf != null)
+                {
+                    jsonWriter.WritePropertyName("referenceOf");
+                    jsonWriter.Write(_request.referenceOf.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("inventory");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("itemSet");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("deleteReferenceOfByUserId");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  参照元を削除<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DeleteReferenceOfByUserId(
+                Request.DeleteReferenceOfByUserIdRequest request,
+                UnityAction<AsyncResult<Result.DeleteReferenceOfByUserIdResult>> callback
+        )
+		{
+			var task = new DeleteReferenceOfByUserIdTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
         private class DeleteItemSetByUserIdTask : Gs2WebSocketSessionTask<Result.DeleteItemSetByUserIdResult>
         {
 			private readonly Request.DeleteItemSetByUserIdRequest _request;
@@ -2933,6 +3993,176 @@ namespace Gs2.Gs2Inventory
 			return Gs2WebSocketSession.Execute(task);
         }
 
+        private class AddReferenceOfItemSetByStampSheetTask : Gs2WebSocketSessionTask<Result.AddReferenceOfItemSetByStampSheetResult>
+        {
+			private readonly Request.AddReferenceOfItemSetByStampSheetRequest _request;
+
+			public AddReferenceOfItemSetByStampSheetTask(Request.AddReferenceOfItemSetByStampSheetRequest request, UnityAction<AsyncResult<Result.AddReferenceOfItemSetByStampSheetResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.stampSheet != null)
+                {
+                    jsonWriter.WritePropertyName("stampSheet");
+                    jsonWriter.Write(_request.stampSheet.ToString());
+                }
+                if (_request.keyId != null)
+                {
+                    jsonWriter.WritePropertyName("keyId");
+                    jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("inventory");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("itemSet");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("addReferenceOfItemSetByStampSheet");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  スタンプシートでアイテムに参照元を追加<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator AddReferenceOfItemSetByStampSheet(
+                Request.AddReferenceOfItemSetByStampSheetRequest request,
+                UnityAction<AsyncResult<Result.AddReferenceOfItemSetByStampSheetResult>> callback
+        )
+		{
+			var task = new AddReferenceOfItemSetByStampSheetTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class DeleteReferenceOfItemSetByStampSheetTask : Gs2WebSocketSessionTask<Result.DeleteReferenceOfItemSetByStampSheetResult>
+        {
+			private readonly Request.DeleteReferenceOfItemSetByStampSheetRequest _request;
+
+			public DeleteReferenceOfItemSetByStampSheetTask(Request.DeleteReferenceOfItemSetByStampSheetRequest request, UnityAction<AsyncResult<Result.DeleteReferenceOfItemSetByStampSheetResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.stampSheet != null)
+                {
+                    jsonWriter.WritePropertyName("stampSheet");
+                    jsonWriter.Write(_request.stampSheet.ToString());
+                }
+                if (_request.keyId != null)
+                {
+                    jsonWriter.WritePropertyName("keyId");
+                    jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("inventory");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("itemSet");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("deleteReferenceOfItemSetByStampSheet");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  スタンプシートでアイテムの参照元を削除<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DeleteReferenceOfItemSetByStampSheet(
+                Request.DeleteReferenceOfItemSetByStampSheetRequest request,
+                UnityAction<AsyncResult<Result.DeleteReferenceOfItemSetByStampSheetResult>> callback
+        )
+		{
+			var task = new DeleteReferenceOfItemSetByStampSheetTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
         private class ConsumeItemSetByStampTaskTask : Gs2WebSocketSessionTask<Result.ConsumeItemSetByStampTaskResult>
         {
 			private readonly Request.ConsumeItemSetByStampTaskRequest _request;
@@ -3015,6 +4245,91 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new ConsumeItemSetByStampTaskTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class VerifyReferenceOfByStampTaskTask : Gs2WebSocketSessionTask<Result.VerifyReferenceOfByStampTaskResult>
+        {
+			private readonly Request.VerifyReferenceOfByStampTaskRequest _request;
+
+			public VerifyReferenceOfByStampTaskTask(Request.VerifyReferenceOfByStampTaskRequest request, UnityAction<AsyncResult<Result.VerifyReferenceOfByStampTaskResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.stampTask != null)
+                {
+                    jsonWriter.WritePropertyName("stampTask");
+                    jsonWriter.Write(_request.stampTask.ToString());
+                }
+                if (_request.keyId != null)
+                {
+                    jsonWriter.WritePropertyName("keyId");
+                    jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("inventory");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("itemSet");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("verifyReferenceOfByStampTask");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  スタンプシートでインベントリのアイテムを検証<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator VerifyReferenceOfByStampTask(
+                Request.VerifyReferenceOfByStampTaskRequest request,
+                UnityAction<AsyncResult<Result.VerifyReferenceOfByStampTaskResult>> callback
+        )
+		{
+			var task = new VerifyReferenceOfByStampTaskTask(request, callback);
 			return Gs2WebSocketSession.Execute(task);
         }
 	}

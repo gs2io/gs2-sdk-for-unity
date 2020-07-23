@@ -111,6 +111,20 @@ namespace Gs2.Gs2Inventory.Model
             return this;
         }
 
+        /** この所持品の参照元リスト */
+        public List<string> referenceOf { set; get; }
+
+        /**
+         * この所持品の参照元リストを設定
+         *
+         * @param referenceOf この所持品の参照元リスト
+         * @return this
+         */
+        public ItemSet WithReferenceOf(List<string> referenceOf) {
+            this.referenceOf = referenceOf;
+            return this;
+        }
+
         /** 表示順番 */
         public int? sortValue { set; get; }
 
@@ -199,6 +213,16 @@ namespace Gs2.Gs2Inventory.Model
             {
                 writer.WritePropertyName("count");
                 writer.Write(this.count.Value);
+            }
+            if(this.referenceOf != null)
+            {
+                writer.WritePropertyName("referenceOf");
+                writer.WriteArrayStart();
+                foreach(var item in this.referenceOf)
+                {
+                    writer.Write(item);
+                }
+                writer.WriteArrayEnd();
             }
             if(this.sortValue.HasValue)
             {
@@ -317,6 +341,11 @@ namespace Gs2.Gs2Inventory.Model
                 .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
                 .WithItemName(data.Keys.Contains("itemName") && data["itemName"] != null ? data["itemName"].ToString() : null)
                 .WithCount(data.Keys.Contains("count") && data["count"] != null ? (long?)long.Parse(data["count"].ToString()) : null)
+                .WithReferenceOf(data.Keys.Contains("referenceOf") && data["referenceOf"] != null ? data["referenceOf"].Cast<JsonData>().Select(value =>
+                    {
+                        return value.ToString();
+                    }
+                ).ToList() : null)
                 .WithSortValue(data.Keys.Contains("sortValue") && data["sortValue"] != null ? (int?)int.Parse(data["sortValue"].ToString()) : null)
                 .WithExpiresAt(data.Keys.Contains("expiresAt") && data["expiresAt"] != null ? (long?)long.Parse(data["expiresAt"].ToString()) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
@@ -374,6 +403,18 @@ namespace Gs2.Gs2Inventory.Model
             else
             {
                 diff += (int)(count - other.count);
+            }
+            if (referenceOf == null && referenceOf == other.referenceOf)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += referenceOf.Count - other.referenceOf.Count;
+                for (var i = 0; i < referenceOf.Count; i++)
+                {
+                    diff += referenceOf[i].CompareTo(other.referenceOf[i]);
+                }
             }
             if (sortValue == null && sortValue == other.sortValue)
             {

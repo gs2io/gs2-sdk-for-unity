@@ -83,6 +83,20 @@ namespace Gs2.Gs2Matchmaking.Model
             return this;
         }
 
+        /** レーティング計算機能を使用するか */
+        public bool? enableRating { set; get; }
+
+        /**
+         * レーティング計算機能を使用するかを設定
+         *
+         * @param enableRating レーティング計算機能を使用するか
+         * @return this
+         */
+        public Namespace WithEnableRating(bool? enableRating) {
+            this.enableRating = enableRating;
+            return this;
+        }
+
         /** ギャザリング新規作成時のアクション */
         public string createGatheringTriggerType { set; get; }
 
@@ -223,6 +237,20 @@ namespace Gs2.Gs2Matchmaking.Model
             return this;
         }
 
+        /** None */
+        public string status { set; get; }
+
+        /**
+         * Noneを設定
+         *
+         * @param status None
+         * @return this
+         */
+        public Namespace WithStatus(string status) {
+            this.status = status;
+            return this;
+        }
+
         /** 作成日時 */
         public long? createdAt { set; get; }
 
@@ -274,6 +302,11 @@ namespace Gs2.Gs2Matchmaking.Model
                 writer.WritePropertyName("description");
                 writer.Write(this.description);
             }
+            if(this.enableRating.HasValue)
+            {
+                writer.WritePropertyName("enableRating");
+                writer.Write(this.enableRating.Value);
+            }
             if(this.createGatheringTriggerType != null)
             {
                 writer.WritePropertyName("createGatheringTriggerType");
@@ -323,6 +356,11 @@ namespace Gs2.Gs2Matchmaking.Model
             {
                 writer.WritePropertyName("logSetting");
                 this.logSetting.WriteJson(writer);
+            }
+            if(this.status != null)
+            {
+                writer.WritePropertyName("status");
+                writer.Write(this.status);
             }
             if(this.createdAt.HasValue)
             {
@@ -381,6 +419,7 @@ namespace Gs2.Gs2Matchmaking.Model
                 .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
+                .WithEnableRating(data.Keys.Contains("enableRating") && data["enableRating"] != null ? (bool?)bool.Parse(data["enableRating"].ToString()) : null)
                 .WithCreateGatheringTriggerType(data.Keys.Contains("createGatheringTriggerType") && data["createGatheringTriggerType"] != null ? data["createGatheringTriggerType"].ToString() : null)
                 .WithCreateGatheringTriggerRealtimeNamespaceId(data.Keys.Contains("createGatheringTriggerRealtimeNamespaceId") && data["createGatheringTriggerRealtimeNamespaceId"] != null ? data["createGatheringTriggerRealtimeNamespaceId"].ToString() : null)
                 .WithCreateGatheringTriggerScriptId(data.Keys.Contains("createGatheringTriggerScriptId") && data["createGatheringTriggerScriptId"] != null ? data["createGatheringTriggerScriptId"].ToString() : null)
@@ -391,6 +430,7 @@ namespace Gs2.Gs2Matchmaking.Model
                 .WithLeaveNotification(data.Keys.Contains("leaveNotification") && data["leaveNotification"] != null ? Gs2.Gs2Matchmaking.Model.NotificationSetting.FromDict(data["leaveNotification"]) : null)
                 .WithCompleteNotification(data.Keys.Contains("completeNotification") && data["completeNotification"] != null ? Gs2.Gs2Matchmaking.Model.NotificationSetting.FromDict(data["completeNotification"]) : null)
                 .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Matchmaking.Model.LogSetting.FromDict(data["logSetting"]) : null)
+                .WithStatus(data.Keys.Contains("status") && data["status"] != null ? data["status"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
@@ -430,6 +470,14 @@ namespace Gs2.Gs2Matchmaking.Model
             else
             {
                 diff += description.CompareTo(other.description);
+            }
+            if (enableRating == null && enableRating == other.enableRating)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += enableRating == other.enableRating ? 0 : 1;
             }
             if (createGatheringTriggerType == null && createGatheringTriggerType == other.createGatheringTriggerType)
             {
@@ -510,6 +558,14 @@ namespace Gs2.Gs2Matchmaking.Model
             else
             {
                 diff += logSetting.CompareTo(other.logSetting);
+            }
+            if (status == null && status == other.status)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += status.CompareTo(other.status);
             }
             if (createdAt == null && createdAt == other.createdAt)
             {

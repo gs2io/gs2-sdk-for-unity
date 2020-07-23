@@ -125,6 +125,11 @@ namespace Gs2.Unity.Gs2Matchmaking.Model
                                                         }
                                                 ).ToList() : new List<Attribute_>(new Attribute_[] {}),
                                                 roleName = Value1.RoleName,
+                                                denyUserIds = Value1.DenyUserIds != null ? Value1.DenyUserIds.Select(Value2 =>
+                                                        {
+                                                            return Value2;
+                                                        }
+                                                ).ToList() : new List<string>(new string[] {}),
                                             };
                                         }
                                 ).ToList() : new List<Player>(new Player[] {}),

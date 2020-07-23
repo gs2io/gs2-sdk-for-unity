@@ -134,6 +134,11 @@ namespace Gs2.Gs2Matchmaking
                     jsonWriter.WritePropertyName("description");
                     jsonWriter.Write(_request.description.ToString());
                 }
+                if (_request.enableRating != null)
+                {
+                    jsonWriter.WritePropertyName("enableRating");
+                    jsonWriter.Write(_request.enableRating.ToString());
+                }
                 if (_request.createGatheringTriggerType != null)
                 {
                     jsonWriter.WritePropertyName("createGatheringTriggerType");
@@ -360,6 +365,11 @@ namespace Gs2.Gs2Matchmaking
                 {
                     jsonWriter.WritePropertyName("description");
                     jsonWriter.Write(_request.description.ToString());
+                }
+                if (_request.enableRating != null)
+                {
+                    jsonWriter.WritePropertyName("enableRating");
+                    jsonWriter.Write(_request.enableRating.ToString());
                 }
                 if (_request.createGatheringTriggerType != null)
                 {
@@ -1394,6 +1404,1521 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new DeleteGatheringTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class DescribeRatingModelMastersTask : Gs2RestSessionTask<Result.DescribeRatingModelMastersResult>
+        {
+			private readonly Request.DescribeRatingModelMastersRequest _request;
+
+			public DescribeRatingModelMastersTask(Request.DescribeRatingModelMastersRequest request, UnityAction<AsyncResult<Result.DescribeRatingModelMastersResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/master/rating";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                if (_request.pageToken != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "pageToken", UnityWebRequest.EscapeURL(_request.pageToken)));
+                }
+                if (_request.limit != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "limit", _request.limit));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  レーティングモデルマスターの一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DescribeRatingModelMasters(
+                Request.DescribeRatingModelMastersRequest request,
+                UnityAction<AsyncResult<Result.DescribeRatingModelMastersResult>> callback
+        )
+		{
+			var task = new DescribeRatingModelMastersTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class CreateRatingModelMasterTask : Gs2RestSessionTask<Result.CreateRatingModelMasterResult>
+        {
+			private readonly Request.CreateRatingModelMasterRequest _request;
+
+			public CreateRatingModelMasterTask(Request.CreateRatingModelMasterRequest request, UnityAction<AsyncResult<Result.CreateRatingModelMasterResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/master/rating";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.name != null)
+                {
+                    jsonWriter.WritePropertyName("name");
+                    jsonWriter.Write(_request.name.ToString());
+                }
+                if (_request.description != null)
+                {
+                    jsonWriter.WritePropertyName("description");
+                    jsonWriter.Write(_request.description.ToString());
+                }
+                if (_request.metadata != null)
+                {
+                    jsonWriter.WritePropertyName("metadata");
+                    jsonWriter.Write(_request.metadata.ToString());
+                }
+                if (_request.volatility != null)
+                {
+                    jsonWriter.WritePropertyName("volatility");
+                    jsonWriter.Write(_request.volatility.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  レーティングモデルマスターを新規作成<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator CreateRatingModelMaster(
+                Request.CreateRatingModelMasterRequest request,
+                UnityAction<AsyncResult<Result.CreateRatingModelMasterResult>> callback
+        )
+		{
+			var task = new CreateRatingModelMasterTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class GetRatingModelMasterTask : Gs2RestSessionTask<Result.GetRatingModelMasterResult>
+        {
+			private readonly Request.GetRatingModelMasterRequest _request;
+
+			public GetRatingModelMasterTask(Request.GetRatingModelMasterRequest request, UnityAction<AsyncResult<Result.GetRatingModelMasterResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/master/rating/{ratingName}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{ratingName}", !string.IsNullOrEmpty(_request.ratingName) ? _request.ratingName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  レーティングモデルマスターを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetRatingModelMaster(
+                Request.GetRatingModelMasterRequest request,
+                UnityAction<AsyncResult<Result.GetRatingModelMasterResult>> callback
+        )
+		{
+			var task = new GetRatingModelMasterTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class UpdateRatingModelMasterTask : Gs2RestSessionTask<Result.UpdateRatingModelMasterResult>
+        {
+			private readonly Request.UpdateRatingModelMasterRequest _request;
+
+			public UpdateRatingModelMasterTask(Request.UpdateRatingModelMasterRequest request, UnityAction<AsyncResult<Result.UpdateRatingModelMasterResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPUT;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/master/rating/{ratingName}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{ratingName}", !string.IsNullOrEmpty(_request.ratingName) ? _request.ratingName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.description != null)
+                {
+                    jsonWriter.WritePropertyName("description");
+                    jsonWriter.Write(_request.description.ToString());
+                }
+                if (_request.metadata != null)
+                {
+                    jsonWriter.WritePropertyName("metadata");
+                    jsonWriter.Write(_request.metadata.ToString());
+                }
+                if (_request.volatility != null)
+                {
+                    jsonWriter.WritePropertyName("volatility");
+                    jsonWriter.Write(_request.volatility.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  レーティングモデルマスターを更新<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator UpdateRatingModelMaster(
+                Request.UpdateRatingModelMasterRequest request,
+                UnityAction<AsyncResult<Result.UpdateRatingModelMasterResult>> callback
+        )
+		{
+			var task = new UpdateRatingModelMasterTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class DeleteRatingModelMasterTask : Gs2RestSessionTask<Result.DeleteRatingModelMasterResult>
+        {
+			private readonly Request.DeleteRatingModelMasterRequest _request;
+
+			public DeleteRatingModelMasterTask(Request.DeleteRatingModelMasterRequest request, UnityAction<AsyncResult<Result.DeleteRatingModelMasterResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbDELETE;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/master/rating/{ratingName}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{ratingName}", !string.IsNullOrEmpty(_request.ratingName) ? _request.ratingName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  レーティングモデルマスターを削除<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DeleteRatingModelMaster(
+                Request.DeleteRatingModelMasterRequest request,
+                UnityAction<AsyncResult<Result.DeleteRatingModelMasterResult>> callback
+        )
+		{
+			var task = new DeleteRatingModelMasterTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class DescribeRatingModelsTask : Gs2RestSessionTask<Result.DescribeRatingModelsResult>
+        {
+			private readonly Request.DescribeRatingModelsRequest _request;
+
+			public DescribeRatingModelsTask(Request.DescribeRatingModelsRequest request, UnityAction<AsyncResult<Result.DescribeRatingModelsResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/rating";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  レーティングモデルの一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DescribeRatingModels(
+                Request.DescribeRatingModelsRequest request,
+                UnityAction<AsyncResult<Result.DescribeRatingModelsResult>> callback
+        )
+		{
+			var task = new DescribeRatingModelsTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class GetRatingModelTask : Gs2RestSessionTask<Result.GetRatingModelResult>
+        {
+			private readonly Request.GetRatingModelRequest _request;
+
+			public GetRatingModelTask(Request.GetRatingModelRequest request, UnityAction<AsyncResult<Result.GetRatingModelResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/rating/{ratingName}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{ratingName}", !string.IsNullOrEmpty(_request.ratingName) ? _request.ratingName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  レーティングモデルを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetRatingModel(
+                Request.GetRatingModelRequest request,
+                UnityAction<AsyncResult<Result.GetRatingModelResult>> callback
+        )
+		{
+			var task = new GetRatingModelTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class ExportMasterTask : Gs2RestSessionTask<Result.ExportMasterResult>
+        {
+			private readonly Request.ExportMasterRequest _request;
+
+			public ExportMasterTask(Request.ExportMasterRequest request, UnityAction<AsyncResult<Result.ExportMasterResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/master/export";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  現在有効なレーティングマスターのマスターデータをエクスポートします<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator ExportMaster(
+                Request.ExportMasterRequest request,
+                UnityAction<AsyncResult<Result.ExportMasterResult>> callback
+        )
+		{
+			var task = new ExportMasterTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class GetCurrentRatingModelMasterTask : Gs2RestSessionTask<Result.GetCurrentRatingModelMasterResult>
+        {
+			private readonly Request.GetCurrentRatingModelMasterRequest _request;
+
+			public GetCurrentRatingModelMasterTask(Request.GetCurrentRatingModelMasterRequest request, UnityAction<AsyncResult<Result.GetCurrentRatingModelMasterResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/master";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  現在有効なレーティングマスターを取得します<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetCurrentRatingModelMaster(
+                Request.GetCurrentRatingModelMasterRequest request,
+                UnityAction<AsyncResult<Result.GetCurrentRatingModelMasterResult>> callback
+        )
+		{
+			var task = new GetCurrentRatingModelMasterTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class UpdateCurrentRatingModelMasterTask : Gs2RestSessionTask<Result.UpdateCurrentRatingModelMasterResult>
+        {
+			private readonly Request.UpdateCurrentRatingModelMasterRequest _request;
+
+			public UpdateCurrentRatingModelMasterTask(Request.UpdateCurrentRatingModelMasterRequest request, UnityAction<AsyncResult<Result.UpdateCurrentRatingModelMasterResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPUT;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/master";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.settings != null)
+                {
+                    jsonWriter.WritePropertyName("settings");
+                    jsonWriter.Write(_request.settings.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  現在有効なレーティングマスターを更新します<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator UpdateCurrentRatingModelMaster(
+                Request.UpdateCurrentRatingModelMasterRequest request,
+                UnityAction<AsyncResult<Result.UpdateCurrentRatingModelMasterResult>> callback
+        )
+		{
+			var task = new UpdateCurrentRatingModelMasterTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class UpdateCurrentRatingModelMasterFromGitHubTask : Gs2RestSessionTask<Result.UpdateCurrentRatingModelMasterFromGitHubResult>
+        {
+			private readonly Request.UpdateCurrentRatingModelMasterFromGitHubRequest _request;
+
+			public UpdateCurrentRatingModelMasterFromGitHubTask(Request.UpdateCurrentRatingModelMasterFromGitHubRequest request, UnityAction<AsyncResult<Result.UpdateCurrentRatingModelMasterFromGitHubResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPUT;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/master/from_git_hub";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.checkoutSetting != null)
+                {
+                    jsonWriter.WritePropertyName("checkoutSetting");
+                    _request.checkoutSetting.WriteJson(jsonWriter);
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  現在有効なレーティングマスターを更新します<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator UpdateCurrentRatingModelMasterFromGitHub(
+                Request.UpdateCurrentRatingModelMasterFromGitHubRequest request,
+                UnityAction<AsyncResult<Result.UpdateCurrentRatingModelMasterFromGitHubResult>> callback
+        )
+		{
+			var task = new UpdateCurrentRatingModelMasterFromGitHubTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class DescribeRatingsTask : Gs2RestSessionTask<Result.DescribeRatingsResult>
+        {
+			private readonly Request.DescribeRatingsRequest _request;
+
+			public DescribeRatingsTask(Request.DescribeRatingsRequest request, UnityAction<AsyncResult<Result.DescribeRatingsResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/me/rating";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                if (_request.pageToken != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "pageToken", UnityWebRequest.EscapeURL(_request.pageToken)));
+                }
+                if (_request.limit != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "limit", _request.limit));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  レーティングの一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DescribeRatings(
+                Request.DescribeRatingsRequest request,
+                UnityAction<AsyncResult<Result.DescribeRatingsResult>> callback
+        )
+		{
+			var task = new DescribeRatingsTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class DescribeRatingsByUserIdTask : Gs2RestSessionTask<Result.DescribeRatingsByUserIdResult>
+        {
+			private readonly Request.DescribeRatingsByUserIdRequest _request;
+
+			public DescribeRatingsByUserIdTask(Request.DescribeRatingsByUserIdRequest request, UnityAction<AsyncResult<Result.DescribeRatingsByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/rating";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                if (_request.pageToken != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "pageToken", UnityWebRequest.EscapeURL(_request.pageToken)));
+                }
+                if (_request.limit != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "limit", _request.limit));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  ユーザIDを指定してレーティングの一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DescribeRatingsByUserId(
+                Request.DescribeRatingsByUserIdRequest request,
+                UnityAction<AsyncResult<Result.DescribeRatingsByUserIdResult>> callback
+        )
+		{
+			var task = new DescribeRatingsByUserIdTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class GetRatingTask : Gs2RestSessionTask<Result.GetRatingResult>
+        {
+			private readonly Request.GetRatingRequest _request;
+
+			public GetRatingTask(Request.GetRatingRequest request, UnityAction<AsyncResult<Result.GetRatingResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/me/rating/{ratingName}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{ratingName}", !string.IsNullOrEmpty(_request.ratingName) ? _request.ratingName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  レーティングを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetRating(
+                Request.GetRatingRequest request,
+                UnityAction<AsyncResult<Result.GetRatingResult>> callback
+        )
+		{
+			var task = new GetRatingTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class GetRatingByUserIdTask : Gs2RestSessionTask<Result.GetRatingByUserIdResult>
+        {
+			private readonly Request.GetRatingByUserIdRequest _request;
+
+			public GetRatingByUserIdTask(Request.GetRatingByUserIdRequest request, UnityAction<AsyncResult<Result.GetRatingByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/rating/{ratingName}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+                url = url.Replace("{ratingName}", !string.IsNullOrEmpty(_request.ratingName) ? _request.ratingName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  レーティングを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetRatingByUserId(
+                Request.GetRatingByUserIdRequest request,
+                UnityAction<AsyncResult<Result.GetRatingByUserIdResult>> callback
+        )
+		{
+			var task = new GetRatingByUserIdTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class PutResultTask : Gs2RestSessionTask<Result.PutResultResult>
+        {
+			private readonly Request.PutResultRequest _request;
+
+			public PutResultTask(Request.PutResultRequest request, UnityAction<AsyncResult<Result.PutResultResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/rating/{ratingName}/vote";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{ratingName}", !string.IsNullOrEmpty(_request.ratingName) ? _request.ratingName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.gameResults != null)
+                {
+                    jsonWriter.WritePropertyName("gameResults");
+                    jsonWriter.WriteArrayStart();
+                    foreach(var item in _request.gameResults)
+                    {
+                        item.WriteJson(jsonWriter);
+                    }
+                    jsonWriter.WriteArrayEnd();
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  レーティング値の再計算を実行<br />
+		///    <br />
+		///    レーティングの計算処理には Glicko-2 rating system をベースとした計算アルゴリズムを採用しています。<br />
+		///    レーティング値の初期値は1500で、レーティングの値が離れた相手に勝利するほど上昇幅は大きく、同じく負けた側は減少幅は大きくなります。<br />
+		///    <br />
+		///    レーティングの計算には参加したユーザIDのリストが必要となります。<br />
+		///    そのため、クライアントから直接このAPIを呼び出すのは適切ではありません。ゲームの勝敗を判断できるゲームサーバから呼び出すようにしてください。<br />
+		///    P2P 対戦など、クライアント主導で対戦を実現している場合は、投票機能を利用して勝敗を決定するようにしてください。<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator PutResult(
+                Request.PutResultRequest request,
+                UnityAction<AsyncResult<Result.PutResultResult>> callback
+        )
+		{
+			var task = new PutResultTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class DeleteRatingTask : Gs2RestSessionTask<Result.DeleteRatingResult>
+        {
+			private readonly Request.DeleteRatingRequest _request;
+
+			public DeleteRatingTask(Request.DeleteRatingRequest request, UnityAction<AsyncResult<Result.DeleteRatingResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbDELETE;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/rating/{ratingName}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+                url = url.Replace("{ratingName}", !string.IsNullOrEmpty(_request.ratingName) ? _request.ratingName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  レーティングを削除<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DeleteRating(
+                Request.DeleteRatingRequest request,
+                UnityAction<AsyncResult<Result.DeleteRatingResult>> callback
+        )
+		{
+			var task = new DeleteRatingTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class GetBallotTask : Gs2RestSessionTask<Result.GetBallotResult>
+        {
+			private readonly Request.GetBallotRequest _request;
+
+			public GetBallotTask(Request.GetBallotRequest request, UnityAction<AsyncResult<Result.GetBallotResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/me/vote/{ratingName}/{gatheringName}/ballot";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{ratingName}", !string.IsNullOrEmpty(_request.ratingName) ? _request.ratingName.ToString() : "null");
+                url = url.Replace("{gatheringName}", !string.IsNullOrEmpty(_request.gatheringName) ? _request.gatheringName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.gatheringId != null)
+                {
+                    jsonWriter.WritePropertyName("gatheringId");
+                    jsonWriter.Write(_request.gatheringId.ToString());
+                }
+                if (_request.numberOfPlayer != null)
+                {
+                    jsonWriter.WritePropertyName("numberOfPlayer");
+                    jsonWriter.Write(_request.numberOfPlayer.ToString());
+                }
+                if (_request.keyId != null)
+                {
+                    jsonWriter.WritePropertyName("keyId");
+                    jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  投票用紙を取得します。<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetBallot(
+                Request.GetBallotRequest request,
+                UnityAction<AsyncResult<Result.GetBallotResult>> callback
+        )
+		{
+			var task = new GetBallotTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class GetBallotByUserIdTask : Gs2RestSessionTask<Result.GetBallotByUserIdResult>
+        {
+			private readonly Request.GetBallotByUserIdRequest _request;
+
+			public GetBallotByUserIdTask(Request.GetBallotByUserIdRequest request, UnityAction<AsyncResult<Result.GetBallotByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/vote/{ratingName}/{gatheringName}/ballot";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{ratingName}", !string.IsNullOrEmpty(_request.ratingName) ? _request.ratingName.ToString() : "null");
+                url = url.Replace("{gatheringName}", !string.IsNullOrEmpty(_request.gatheringName) ? _request.gatheringName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.gatheringId != null)
+                {
+                    jsonWriter.WritePropertyName("gatheringId");
+                    jsonWriter.Write(_request.gatheringId.ToString());
+                }
+                if (_request.numberOfPlayer != null)
+                {
+                    jsonWriter.WritePropertyName("numberOfPlayer");
+                    jsonWriter.Write(_request.numberOfPlayer.ToString());
+                }
+                if (_request.keyId != null)
+                {
+                    jsonWriter.WritePropertyName("keyId");
+                    jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  投票用紙を取得します。<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetBallotByUserId(
+                Request.GetBallotByUserIdRequest request,
+                UnityAction<AsyncResult<Result.GetBallotByUserIdResult>> callback
+        )
+		{
+			var task = new GetBallotByUserIdTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class VoteTask : Gs2RestSessionTask<Result.VoteResult>
+        {
+			private readonly Request.VoteRequest _request;
+
+			public VoteTask(Request.VoteRequest request, UnityAction<AsyncResult<Result.VoteResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/action/vote";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.ballotBody != null)
+                {
+                    jsonWriter.WritePropertyName("ballotBody");
+                    jsonWriter.Write(_request.ballotBody.ToString());
+                }
+                if (_request.ballotSignature != null)
+                {
+                    jsonWriter.WritePropertyName("ballotSignature");
+                    jsonWriter.Write(_request.ballotSignature.ToString());
+                }
+                if (_request.gameResults != null)
+                {
+                    jsonWriter.WritePropertyName("gameResults");
+                    jsonWriter.WriteArrayStart();
+                    foreach(var item in _request.gameResults)
+                    {
+                        item.WriteJson(jsonWriter);
+                    }
+                    jsonWriter.WriteArrayEnd();
+                }
+                if (_request.keyId != null)
+                {
+                    jsonWriter.WritePropertyName("keyId");
+                    jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  対戦結果を投票します。<br />
+		///    <br />
+		///    投票は最初の投票が行われてから5分以内に行う必要があります。<br />
+		///    つまり、結果は即座に反映されず、投票開始からおよそ5分後または全てのプレイヤーが投票を行った際に結果が反映されます。<br />
+		///    5分以内に全ての投票用紙を回収できなかった場合はその時点の投票内容で多数決をとって結果を決定します。<br />
+		///    各結果の投票数が同一だった場合は結果は捨てられます（スクリプトで挙動を変更可）。<br />
+		///    <br />
+		///    結果を即座に反映したい場合は、勝利した側の代表プレイヤーが投票用紙を各プレイヤーから集めて voteMultiple を呼び出すことで結果を即座に反映できます。<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator Vote(
+                Request.VoteRequest request,
+                UnityAction<AsyncResult<Result.VoteResult>> callback
+        )
+		{
+			var task = new VoteTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class VoteMultipleTask : Gs2RestSessionTask<Result.VoteMultipleResult>
+        {
+			private readonly Request.VoteMultipleRequest _request;
+
+			public VoteMultipleTask(Request.VoteMultipleRequest request, UnityAction<AsyncResult<Result.VoteMultipleResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/action/vote/multiple";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.signedBallots != null)
+                {
+                    jsonWriter.WritePropertyName("signedBallots");
+                    jsonWriter.WriteArrayStart();
+                    foreach(var item in _request.signedBallots)
+                    {
+                        item.WriteJson(jsonWriter);
+                    }
+                    jsonWriter.WriteArrayEnd();
+                }
+                if (_request.gameResults != null)
+                {
+                    jsonWriter.WritePropertyName("gameResults");
+                    jsonWriter.WriteArrayStart();
+                    foreach(var item in _request.gameResults)
+                    {
+                        item.WriteJson(jsonWriter);
+                    }
+                    jsonWriter.WriteArrayEnd();
+                }
+                if (_request.keyId != null)
+                {
+                    jsonWriter.WritePropertyName("keyId");
+                    jsonWriter.Write(_request.keyId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  対戦結果をまとめて投票します。<br />
+		///    <br />
+		///    ゲームに勝利した側が他プレイヤーの投票用紙を集めてまとめて投票するのに使用します。<br />
+		///    『勝利した側』としているのは、敗北した側が自分たちが勝ったことにして報告することにインセンティブはありますが、その逆はないためです。<br />
+		///    負けた側が投票用紙を渡してこない可能性がありますが、その場合も過半数の投票用紙があれば結果を通すことができます。<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator VoteMultiple(
+                Request.VoteMultipleRequest request,
+                UnityAction<AsyncResult<Result.VoteMultipleResult>> callback
+        )
+		{
+			var task = new VoteMultipleTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class CommitVoteTask : Gs2RestSessionTask<Result.CommitVoteResult>
+        {
+			private readonly Request.CommitVoteRequest _request;
+
+			public CommitVoteTask(Request.CommitVoteRequest request, UnityAction<AsyncResult<Result.CommitVoteResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "matchmaking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/action/vote/commit";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  投票状況を強制確定<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator CommitVote(
+                Request.CommitVoteRequest request,
+                UnityAction<AsyncResult<Result.CommitVoteResult>> callback
+        )
+		{
+			var task = new CommitVoteTask(request, callback);
 			return Gs2RestSession.Execute(task);
         }
 	}

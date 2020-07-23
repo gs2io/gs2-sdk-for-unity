@@ -174,6 +174,43 @@ namespace Gs2.Unity.Gs2Distributor
 		}
 
 		/// <summary>
+		///  スタンプタスク・スタンプシートを一括実行<br />
+		///    <br />
+		///    一括実行をすることで、レスポンスタイムを短縮できます。<br />
+		///    ただし、スタンプシートの実行の過程で失敗した際には正しくリトライできる保証はありません。<br />
+		///    実行に失敗した時に備えて GS2-Log　でスタンプシートの実行ログを残しておき、カスタマーサポートの際に適切な対応ができるようにしておくことを強く推奨します。<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="stampSheet">実行するスタンプタスク</param>
+		/// <param name="keyId">スタンプシートの暗号化に使用した暗号鍵GRN</param>
+		public IEnumerator RunStampSheetExpress(
+		        UnityAction<AsyncResult<EzRunStampSheetExpressResult>> callback,
+                string namespaceName,
+                string stampSheet,
+                string keyId
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.RunStampSheetExpress(
+                    new RunStampSheetExpressRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithStampSheet(stampSheet)
+                        .WithKeyId(keyId),
+                    r => cb.Invoke(
+                        new AsyncResult<EzRunStampSheetExpressResult>(
+                            r.Result == null ? null : new EzRunStampSheetExpressResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
 		///  スタンプタスクを実行<br />
 		///    <br />
 		///    ネームスペースの指定を省略することで、<br />
@@ -238,6 +275,43 @@ namespace Gs2.Unity.Gs2Distributor
                     r => cb.Invoke(
                         new AsyncResult<EzRunStampSheetWithoutNamespaceResult>(
                             r.Result == null ? null : new EzRunStampSheetWithoutNamespaceResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  スタンプタスク・スタンプシートを一括実行<br />
+		///    <br />
+		///     一括実行をすることで、レスポンスタイムを短縮できます。<br />
+		///     ただし、スタンプシートの実行の過程で失敗した際には正しくリトライできる保証はありません。<br />
+		///     実行に失敗した時に備えて GS2-Log　でスタンプシートの実行ログを残しておき、カスタマーサポートの際に適切な対応ができるようにしておくことを強く推奨します。<br />
+		///    <br />
+		///    ネームスペースの指定を省略することで、<br />
+		///    ログが記録できない・リソース溢れ処理が実行されないなどの副作用があります。<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="stampSheet">実行するスタンプタスク</param>
+		/// <param name="keyId">スタンプシートの暗号化に使用した暗号鍵GRN</param>
+		public IEnumerator RunStampSheetExpressWithoutNamespace(
+		        UnityAction<AsyncResult<EzRunStampSheetExpressWithoutNamespaceResult>> callback,
+                string stampSheet,
+                string keyId
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.RunStampSheetExpressWithoutNamespace(
+                    new RunStampSheetExpressWithoutNamespaceRequest()
+                        .WithStampSheet(stampSheet)
+                        .WithKeyId(keyId),
+                    r => cb.Invoke(
+                        new AsyncResult<EzRunStampSheetExpressWithoutNamespaceResult>(
+                            r.Result == null ? null : new EzRunStampSheetExpressWithoutNamespaceResult(r.Result),
                             r.Error
                         )
                     )

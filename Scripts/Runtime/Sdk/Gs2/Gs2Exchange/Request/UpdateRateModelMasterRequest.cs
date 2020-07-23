@@ -93,6 +93,70 @@ namespace Gs2.Gs2Exchange.Request
         }
 
 
+        /** 交換の種類 */
+		[UnityEngine.SerializeField]
+        public string timingType;
+
+        /**
+         * 交換の種類を設定
+         *
+         * @param timingType 交換の種類
+         * @return this
+         */
+        public UpdateRateModelMasterRequest WithTimingType(string timingType) {
+            this.timingType = timingType;
+            return this;
+        }
+
+
+        /** 交換実行から実際に報酬を受け取れるようになるまでの待ち時間（分） */
+		[UnityEngine.SerializeField]
+        public int? lockTime;
+
+        /**
+         * 交換実行から実際に報酬を受け取れるようになるまでの待ち時間（分）を設定
+         *
+         * @param lockTime 交換実行から実際に報酬を受け取れるようになるまでの待ち時間（分）
+         * @return this
+         */
+        public UpdateRateModelMasterRequest WithLockTime(int? lockTime) {
+            this.lockTime = lockTime;
+            return this;
+        }
+
+
+        /** スキップをすることができるか */
+		[UnityEngine.SerializeField]
+        public bool? enableSkip;
+
+        /**
+         * スキップをすることができるかを設定
+         *
+         * @param enableSkip スキップをすることができるか
+         * @return this
+         */
+        public UpdateRateModelMasterRequest WithEnableSkip(bool? enableSkip) {
+            this.enableSkip = enableSkip;
+            return this;
+        }
+
+
+        /** 時短消費アクションリスト */
+		[UnityEngine.SerializeField]
+        public List<ConsumeAction> skipConsumeActions;
+
+        /**
+         * 時短消費アクションリストを設定
+         *
+         * @param skipConsumeActions 時短消費アクションリスト
+         * @return this
+         */
+        public UpdateRateModelMasterRequest WithSkipConsumeActions(List<ConsumeAction> skipConsumeActions) {
+            this.skipConsumeActions = skipConsumeActions;
+            return this;
+        }
+
+
         /** 入手アクションリスト */
 		[UnityEngine.SerializeField]
         public List<AcquireAction> acquireActions;
@@ -133,6 +197,14 @@ namespace Gs2.Gs2Exchange.Request
                 rateName = data.Keys.Contains("rateName") && data["rateName"] != null ? data["rateName"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
                 metadata = data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString(): null,
+                timingType = data.Keys.Contains("timingType") && data["timingType"] != null ? data["timingType"].ToString(): null,
+                lockTime = data.Keys.Contains("lockTime") && data["lockTime"] != null ? (int?)int.Parse(data["lockTime"].ToString()) : null,
+                enableSkip = data.Keys.Contains("enableSkip") && data["enableSkip"] != null ? (bool?)bool.Parse(data["enableSkip"].ToString()) : null,
+                skipConsumeActions = data.Keys.Contains("skipConsumeActions") && data["skipConsumeActions"] != null ? data["skipConsumeActions"].Cast<JsonData>().Select(value =>
+                    {
+                        return ConsumeAction.FromDict(value);
+                    }
+                ).ToList() : null,
                 acquireActions = data.Keys.Contains("acquireActions") && data["acquireActions"] != null ? data["acquireActions"].Cast<JsonData>().Select(value =>
                     {
                         return AcquireAction.FromDict(value);

@@ -48,6 +48,10 @@ namespace Gs2.Unity.Gs2Matchmaking
 		///  ギャザリングを新規作成<br />
 		///    <br />
 		///    Player に指定する自身のプレイヤー情報のユーザIDは省略できます。<br />
+		///    expiresAtを指定することでギャザリングの有効期限を設定することができます。<br />
+		///    有効期限を用いない場合、古いギャザリングが残り続けマッチングが成立したときには、<br />
+		///    ユーザーがゲームから離脱している可能性があります。<br />
+		///    有効期限を用いる場合は、有効期限が来るたびにユーザーにギャザリングの再作成を促す仕組みにしてください。<br />
 		/// </summary>
         ///
 		/// <returns>IEnumerator</returns>
@@ -229,6 +233,247 @@ namespace Gs2.Unity.Gs2Matchmaking
                     r => cb.Invoke(
                         new AsyncResult<EzCancelMatchmakingResult>(
                             r.Result == null ? null : new EzCancelMatchmakingResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  レーティングモデルの一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		public IEnumerator ListRatingModels(
+		        UnityAction<AsyncResult<EzListRatingModelsResult>> callback,
+                string namespaceName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeRatingModels(
+                    new DescribeRatingModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListRatingModelsResult>(
+                            r.Result == null ? null : new EzListRatingModelsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  レーティング名を指定してレーティングモデルを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="ratingName">レーティングの種類名</param>
+		public IEnumerator GetRatingModel(
+		        UnityAction<AsyncResult<EzGetRatingModelResult>> callback,
+                string namespaceName,
+                string ratingName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetRatingModel(
+                    new GetRatingModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRatingName(ratingName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetRatingModelResult>(
+                            r.Result == null ? null : new EzGetRatingModelResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  レーティング名を指定してレーティングを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
+		/// <param name="limit">データの取得件数</param>
+		public IEnumerator ListRatings(
+		        UnityAction<AsyncResult<EzListRatingsResult>> callback,
+                string namespaceName,
+                string pageToken=null,
+                long? limit=null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeRatings(
+                    new DescribeRatingsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListRatingsResult>(
+                            r.Result == null ? null : new EzListRatingsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  投票用紙を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="ratingName">レーティング名</param>
+		public IEnumerator GetRating(
+		        UnityAction<AsyncResult<EzGetRatingResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string ratingName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetRating(
+                    new GetRatingRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRatingName(ratingName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetRatingResult>(
+                            r.Result == null ? null : new EzGetRatingResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  投票用紙を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="ratingName">レーティング名</param>
+		/// <param name="gatheringName">投票対象のギャザリング名</param>
+		public IEnumerator CreateVote(
+		        UnityAction<AsyncResult<EzCreateVoteResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string ratingName,
+                string gatheringName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetBallot(
+                    new GetBallotRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRatingName(ratingName)
+                        .WithGatheringName(gatheringName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzCreateVoteResult>(
+                            r.Result == null ? null : new EzCreateVoteResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  対戦結果を投票します。<br />
+		///    <br />
+		///    投票は最初の投票が行われてから5分以内に行う必要があります。<br />
+		///    つまり、結果は即座に反映されず、投票開始からおよそ5分後または全てのプレイヤーが投票を行った際に結果が反映されます。<br />
+		///    5分以内に全ての投票用紙を回収できなかった場合はその時点の投票内容で多数決をとって結果を決定します。<br />
+		///    各結果の投票数が同一だった場合は結果は捨てられます（スクリプトで挙動を変更可）。<br />
+		///    <br />
+		///    結果を即座に反映したい場合は、勝利した側の代表プレイヤーが投票用紙を各プレイヤーから集めて voteMultiple を呼び出すことで結果を即座に反映できます。<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="ballotBody">投票用紙の署名対象のデータ</param>
+		/// <param name="ballotSignature">投票用紙の署名</param>
+		/// <param name="gameResults">投票内容。対戦を行ったプレイヤーグループ1に所属するユーザIDのリスト</param>
+		public IEnumerator Vote(
+		        UnityAction<AsyncResult<EzVoteResult>> callback,
+                string namespaceName,
+                string ballotBody,
+                string ballotSignature,
+                List<EzGameResult> gameResults=null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.Vote(
+                    new VoteRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithBallotBody(ballotBody)
+                        .WithBallotSignature(ballotSignature)
+                        .WithGameResults(gameResults != null ? gameResults.Select(item => item?.ToModel()).ToList() : new List<GameResult>(new GameResult[]{})),
+                    r => cb.Invoke(
+                        new AsyncResult<EzVoteResult>(
+                            r.Result == null ? null : new EzVoteResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  対戦結果をまとめて投票します。<br />
+		///    <br />
+		///    ゲームに勝利した側が他プレイヤーの投票用紙を集めてまとめて投票するのに使用します。<br />
+		///    『勝利した側』としているのは、敗北した側が自分たちが勝ったことにして報告することにインセンティブはありますが、その逆はないためです。<br />
+		///    負けた側が投票用紙を渡してこない可能性がありますが、その場合も過半数の投票用紙があれば結果を通すことができます。<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="signedBallots">署名付の投票用紙リスト</param>
+		/// <param name="gameResults">投票内容。対戦を行ったプレイヤーグループ1に所属するユーザIDのリスト</param>
+		public IEnumerator VoteMultiple(
+		        UnityAction<AsyncResult<EzVoteMultipleResult>> callback,
+                string namespaceName,
+                List<EzSignedBallot> signedBallots,
+                List<EzGameResult> gameResults=null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.VoteMultiple(
+                    new VoteMultipleRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithSignedBallots(signedBallots != null ? signedBallots.Select(item => item?.ToModel()).ToList() : new List<SignedBallot>(new SignedBallot[]{}))
+                        .WithGameResults(gameResults != null ? gameResults.Select(item => item?.ToModel()).ToList() : new List<GameResult>(new GameResult[]{})),
+                    r => cb.Invoke(
+                        new AsyncResult<EzVoteMultipleResult>(
+                            r.Result == null ? null : new EzVoteMultipleResult(r.Result),
                             r.Error
                         )
                     )

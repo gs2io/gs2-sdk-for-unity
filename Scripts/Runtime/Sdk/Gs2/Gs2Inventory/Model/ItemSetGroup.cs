@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 using System;
 using System.Collections.Generic;
@@ -136,6 +138,20 @@ namespace Gs2.Gs2Inventory.Model
          */
         public ItemSetGroup WithItemSetCountList(List<long?> itemSetCountList) {
             this.itemSetCountList = itemSetCountList;
+            return this;
+        }
+
+        /** 参照元のリストのリスト */
+        public List<List<string>> itemSetReferenceOfList { set; get; }
+
+        /**
+         * 参照元のリストのリストを設定
+         *
+         * @param itemSetReferenceOfList 参照元のリストのリスト
+         * @return this
+         */
+        public ItemSetGroup WithItemSetReferenceOfList(List<List<string>> itemSetReferenceOfList) {
+            this.itemSetReferenceOfList = itemSetReferenceOfList;
             return this;
         }
 
@@ -264,6 +280,21 @@ namespace Gs2.Gs2Inventory.Model
                 foreach(var item in this.itemSetCountList)
                 {
                     writer.Write(item.Value);
+                }
+                writer.WriteArrayEnd();
+            }
+            if(this.itemSetReferenceOfList != null)
+            {
+                writer.WritePropertyName("itemSetReferenceOfList");
+                writer.WriteArrayStart();
+                foreach(var item in this.itemSetReferenceOfList)
+                {
+                    writer.WriteArrayStart();
+                    foreach(var item2 in item)
+                    {
+                        writer.Write(item2);
+                    }
+                    writer.WriteArrayEnd();
                 }
                 writer.WriteArrayEnd();
             }
@@ -406,6 +437,15 @@ namespace Gs2.Gs2Inventory.Model
                         return (long?)long.Parse(value.ToString());
                     }
                 ).ToList() : null)
+                .WithItemSetReferenceOfList(data.Keys.Contains("itemSetReferenceOfList") && data["itemSetReferenceOfList"] != null ? data["itemSetReferenceOfList"].Cast<List<JsonData>>().Select(value =>
+                    {
+                        return value.Select(value2 =>
+                            {
+                                return value2.ToString();
+                            }
+                        ).ToList();
+                    }
+                ).ToList() : null)
                 .WithItemSetExpiresAtList(data.Keys.Contains("itemSetExpiresAtList") && data["itemSetExpiresAtList"] != null ? data["itemSetExpiresAtList"].Cast<JsonData>().Select(value =>
                     {
                         return (long?)long.Parse(value.ToString());
@@ -503,6 +543,18 @@ namespace Gs2.Gs2Inventory.Model
                 for (var i = 0; i < itemSetCountList.Count; i++)
                 {
                     diff += (int)(itemSetCountList[i] - other.itemSetCountList[i]);
+                }
+            }
+            if (itemSetReferenceOfList == null && itemSetReferenceOfList == other.itemSetReferenceOfList)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += itemSetReferenceOfList.Count - other.itemSetReferenceOfList.Count;
+                for (var i = 0; i < itemSetReferenceOfList.Count; i++)
+                {
+                    // diff += itemSetReferenceOfList[i].CompareTo(other.itemSetReferenceOfList[i]);
                 }
             }
             if (itemSetExpiresAtList == null && itemSetExpiresAtList == other.itemSetExpiresAtList)

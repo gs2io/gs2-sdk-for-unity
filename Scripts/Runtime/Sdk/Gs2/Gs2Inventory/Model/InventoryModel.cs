@@ -97,6 +97,20 @@ namespace Gs2.Gs2Inventory.Model
             return this;
         }
 
+        /** 参照元が登録されているアイテムセットは削除できなくする */
+        public bool? protectReferencedItem { set; get; }
+
+        /**
+         * 参照元が登録されているアイテムセットは削除できなくするを設定
+         *
+         * @param protectReferencedItem 参照元が登録されているアイテムセットは削除できなくする
+         * @return this
+         */
+        public InventoryModel WithProtectReferencedItem(bool? protectReferencedItem) {
+            this.protectReferencedItem = protectReferencedItem;
+            return this;
+        }
+
         /** インベントリに格納可能なアイテムモデル一覧 */
         public List<ItemModel> itemModels { set; get; }
 
@@ -138,6 +152,11 @@ namespace Gs2.Gs2Inventory.Model
             {
                 writer.WritePropertyName("maxCapacity");
                 writer.Write(this.maxCapacity.Value);
+            }
+            if(this.protectReferencedItem.HasValue)
+            {
+                writer.WritePropertyName("protectReferencedItem");
+                writer.Write(this.protectReferencedItem.Value);
             }
             if(this.itemModels != null)
             {
@@ -209,6 +228,7 @@ namespace Gs2.Gs2Inventory.Model
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
                 .WithInitialCapacity(data.Keys.Contains("initialCapacity") && data["initialCapacity"] != null ? (int?)int.Parse(data["initialCapacity"].ToString()) : null)
                 .WithMaxCapacity(data.Keys.Contains("maxCapacity") && data["maxCapacity"] != null ? (int?)int.Parse(data["maxCapacity"].ToString()) : null)
+                .WithProtectReferencedItem(data.Keys.Contains("protectReferencedItem") && data["protectReferencedItem"] != null ? (bool?)bool.Parse(data["protectReferencedItem"].ToString()) : null)
                 .WithItemModels(data.Keys.Contains("itemModels") && data["itemModels"] != null ? data["itemModels"].Cast<JsonData>().Select(value =>
                     {
                         return Gs2.Gs2Inventory.Model.ItemModel.FromDict(value);
@@ -259,6 +279,14 @@ namespace Gs2.Gs2Inventory.Model
             else
             {
                 diff += (int)(maxCapacity - other.maxCapacity);
+            }
+            if (protectReferencedItem == null && protectReferencedItem == other.protectReferencedItem)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += protectReferencedItem == other.protectReferencedItem ? 0 : 1;
             }
             if (itemModels == null && itemModels == other.itemModels)
             {

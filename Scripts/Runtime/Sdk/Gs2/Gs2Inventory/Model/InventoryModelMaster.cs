@@ -111,6 +111,20 @@ namespace Gs2.Gs2Inventory.Model
             return this;
         }
 
+        /** 参照元が登録されているアイテムセットは削除できなくする */
+        public bool? protectReferencedItem { set; get; }
+
+        /**
+         * 参照元が登録されているアイテムセットは削除できなくするを設定
+         *
+         * @param protectReferencedItem 参照元が登録されているアイテムセットは削除できなくする
+         * @return this
+         */
+        public InventoryModelMaster WithProtectReferencedItem(bool? protectReferencedItem) {
+            this.protectReferencedItem = protectReferencedItem;
+            return this;
+        }
+
         /** 作成日時 */
         public long? createdAt { set; get; }
 
@@ -171,6 +185,11 @@ namespace Gs2.Gs2Inventory.Model
             {
                 writer.WritePropertyName("maxCapacity");
                 writer.Write(this.maxCapacity.Value);
+            }
+            if(this.protectReferencedItem.HasValue)
+            {
+                writer.WritePropertyName("protectReferencedItem");
+                writer.Write(this.protectReferencedItem.Value);
             }
             if(this.createdAt.HasValue)
             {
@@ -243,6 +262,7 @@ namespace Gs2.Gs2Inventory.Model
                 .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
                 .WithInitialCapacity(data.Keys.Contains("initialCapacity") && data["initialCapacity"] != null ? (int?)int.Parse(data["initialCapacity"].ToString()) : null)
                 .WithMaxCapacity(data.Keys.Contains("maxCapacity") && data["maxCapacity"] != null ? (int?)int.Parse(data["maxCapacity"].ToString()) : null)
+                .WithProtectReferencedItem(data.Keys.Contains("protectReferencedItem") && data["protectReferencedItem"] != null ? (bool?)bool.Parse(data["protectReferencedItem"].ToString()) : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
@@ -298,6 +318,14 @@ namespace Gs2.Gs2Inventory.Model
             else
             {
                 diff += (int)(maxCapacity - other.maxCapacity);
+            }
+            if (protectReferencedItem == null && protectReferencedItem == other.protectReferencedItem)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += protectReferencedItem == other.protectReferencedItem ? 0 : 1;
             }
             if (createdAt == null && createdAt == other.createdAt)
             {
