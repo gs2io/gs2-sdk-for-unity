@@ -25,6 +25,7 @@ using Gs2.Util.LitJson;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.Scripting;
 
 namespace Gs2.Core.Net
 {
@@ -32,17 +33,31 @@ namespace Gs2.Core.Net
     {
         public static string EndpointHost = "https://{service}.{region}.gen2.gs2io.com";
 
+        [Preserve]
         private class LoginResult
         {
             /** プロジェクトトークン */
-            public string access_token { set; get; }
+            public string access_token;
 
             /** Bearer */
-            public string token_type { set; get; }
+            public string token_type;
 
             /** 有効期間(秒) */
-            public int? expires_in { set; get; }
+            public int? expires_in;
 
+            public static LoginResult FromDict(JsonData data)
+            {
+                if (data == null)
+                {
+                    return new LoginResult();
+                }
+                return new LoginResult
+                {
+                    access_token = data.Keys.Contains("access_token") ? (string)data["access_token"] : null,
+                    token_type = data.Keys.Contains("token_type") ? (string)data["token_type"] : null,
+                    expires_in = data.Keys.Contains("expires_in") ? (int?)data["expires_in"] : null,
+                };
+            }
         }
 
         private class LoginTask : Gs2RestTask
@@ -63,7 +78,7 @@ namespace Gs2.Core.Net
                 {
                     try
                     {
-                        accessToken = JsonMapper.ToObject<LoginResult>(gs2RestResponse.Message).access_token;
+                        accessToken = LoginResult.FromDict(JsonMapper.ToObject(gs2RestResponse.Message)).access_token;
                     }
                     catch (System.Exception)
                     {

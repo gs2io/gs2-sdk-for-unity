@@ -22,6 +22,7 @@ using Gs2.Core.Model;
 using Gs2.Util.LitJson;
 using UnityEngine;
 using Gs2.Util.WebSocketSharp;
+using UnityEngine.Scripting;
 
 namespace Gs2.Core.Net
 {
@@ -32,16 +33,17 @@ namespace Gs2.Core.Net
         public delegate void NotificationHandler(NotificationMessage message);
         public event NotificationHandler OnNotificationMessage;
 
+        [Preserve]
         private class LoginResult
         {
             /** プロジェクトトークン */
-            public string access_token { set; get; }
+            public string access_token;
 
             /** Bearer */
-            public string token_type { set; get; }
+            public string token_type;
 
             /** 有効期間(秒) */
-            public int? expires_in { set; get; }
+            public int? expires_in;
 
             public static LoginResult FromDict(JsonData data)
             {

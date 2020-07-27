@@ -17,13 +17,15 @@ using System;
 using System.Collections.Generic;
 using Gs2.Core.Model;
 using Gs2.Gs2Identifier.Model;
+using UnityEngine.Scripting;
 
 namespace Gs2.Core.Model
 {
+	[Preserve]
 	public class LoginResult
 	{
-        /** プロジェクトトークン */
-        public string access_token { set; get; }
+		/** プロジェクトトークン */
+		public string access_token;
 
 	}
 }
