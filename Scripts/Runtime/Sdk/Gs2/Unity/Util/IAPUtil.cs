@@ -22,6 +22,13 @@ namespace Gs2.Unity.Util
         PurchaseFailed,
     }
     
+    public class PurchaseParameters
+    {
+        public string receipt;
+        public IStoreController controller;
+        public Product product;
+    }
+
     public class IAPUtil
     {
         private IStoreController _controller;
@@ -31,14 +38,14 @@ namespace Gs2.Unity.Util
         private string _receipt;
  
         public IEnumerator Buy(
-            UnityAction<AsyncResult<string>> callback,
+            UnityAction<AsyncResult<PurchaseParameters>> callback,
             string contentsId
         )
         {
             if (_status != Status.None)
             {
                 callback.Invoke(
-                    new AsyncResult<string>(
+                    new AsyncResult<PurchaseParameters>(
                         null, 
                         new ConflictException(
                             new List<RequestError>
@@ -64,7 +71,7 @@ namespace Gs2.Unity.Util
             }
             if (_status == Status.InitializeFailed)
             {
-                callback.Invoke(new AsyncResult<string>(null, _exception));
+                callback.Invoke(new AsyncResult<PurchaseParameters>(null, _exception));
                 yield break;
             }
              
@@ -75,9 +82,14 @@ namespace Gs2.Unity.Util
                 yield return new WaitForSeconds(1);
             }
             
-            callback.Invoke(new AsyncResult<string>(_receipt, _exception));
+            callback.Invoke(new AsyncResult<PurchaseParameters>(
+                new PurchaseParameters {
+                    receipt=_receipt,
+                    controller=_controller,
+                    product=_controller.products.WithID(contentsId),
+                }, _exception));
         }
- 
+
         private class Gs2StoreListener : IStoreListener
         {
             private readonly IAPUtil _client;
