@@ -15,16 +15,18 @@
  */
 
 using Gs2.Util.LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Core.Model
 {
+    [Preserve]
     public class NotificationMessage
     {
-        public string issuer { set; get; }
+        public string issuer;
         
-        public string subject { set; get; }
+        public string subject;
                 
-        public string payload { set; get; }
+        public string payload;
 
         public static NotificationMessage FromDict(JsonData data)
         {

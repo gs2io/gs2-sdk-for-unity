@@ -15,9 +15,11 @@
  */
 
 using Gs2.Util.LitJson;
+using UnityEngine.Scripting;
 
 namespace Gs2.Core.Model
 {
+	[Preserve]
 	public class GeneralError
 	{
 		// ReSharper disable once InconsistentNaming

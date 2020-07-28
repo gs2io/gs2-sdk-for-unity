@@ -14,12 +14,15 @@
  * permissions and limitations under the License.
  */
 
+using UnityEngine.Scripting;
+
 namespace Gs2.Core.Model
 {
+    [Preserve]
     public class SignedStampSheet
     {
-        public string body { set; get; }
+        public string body;
 
-        public string signature { set; get; }
+        public string signature;
     }
 }

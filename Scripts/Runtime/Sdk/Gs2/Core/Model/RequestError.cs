@@ -14,8 +14,11 @@
  * permissions and limitations under the License.
  */
 
+using UnityEngine.Scripting;
+
 namespace Gs2.Core.Model
 {
+	[Preserve]
 	public class RequestError
 	{
 		// ReSharper disable once InconsistentNaming

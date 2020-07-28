@@ -15,23 +15,25 @@
  */
 
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace Gs2.Core.Model
 {
+    [Preserve]
     public class StampSheet
     {
-        public string ownerId { set; get; }
+        public string ownerId;
         
-        public string userId { set; get; }
+        public string userId;
         
-        public string action { set; get; }
+        public string action;
                 
-        public string args { set; get; }
+        public string args;
                 
-        public List<string> tasks { set; get; }
+        public List<string> tasks;
                 
-        public string transactionId { set; get; }
+        public string transactionId;
                 
-        public long timestamp { set; get; }
+        public long timestamp;
     }
 }

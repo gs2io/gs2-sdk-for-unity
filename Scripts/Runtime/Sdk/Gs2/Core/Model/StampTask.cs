@@ -14,16 +14,19 @@
  * permissions and limitations under the License.
  */
 
+using UnityEngine.Scripting;
+
 namespace Gs2.Core.Model
 {
+    [Preserve]
     public class StampTask
     {
-        public string taskId { set; get; }
+        public string taskId;
         
-        public string action { set; get; }
+        public string action;
                 
-        public string args { set; get; }
+        public string args;
                 
-        public long timestamp { set; get; }
+        public long timestamp;
     }
 }
