@@ -31,6 +31,9 @@ namespace Gs2.Unity.Gs2Exchange.Result
         /** 報酬取得処理の実行に使用するスタンプシート */
         public string StampSheet { get; private set; }
 
+        /** スタンプシートの署名計算に使用した暗号鍵GRN */
+        public string StampSheetEncryptionKeyId { get; private set; }
+
 
         public EzSkipResult(
             SkipResult result
@@ -41,6 +44,7 @@ namespace Gs2.Unity.Gs2Exchange.Result
                 Item = new EzAwait(result.item);
             }
             StampSheet = result.stampSheet;
+            StampSheetEncryptionKeyId = result.stampSheetEncryptionKeyId;
         }
 	}
 }

@@ -28,12 +28,16 @@ namespace Gs2.Unity.Gs2Quest.Result
         /** クエストの開始処理の実行に使用するスタンプシート */
         public string StampSheet { get; private set; }
 
+        /** スタンプシートの署名計算に使用した暗号鍵GRN */
+        public string StampSheetEncryptionKeyId { get; private set; }
+
 
         public EzStartResult(
             StartResult result
         )
         {
             StampSheet = result.stampSheet;
+            StampSheetEncryptionKeyId = result.stampSheetEncryptionKeyId;
         }
 	}
 }

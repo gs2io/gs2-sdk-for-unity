@@ -29,12 +29,16 @@ namespace Gs2.Gs2Quest.Result
         /** クエストの開始処理の実行に使用するスタンプシート */
         public string stampSheet { set; get; }
 
+        /** スタンプシートの署名計算に使用した暗号鍵GRN */
+        public string stampSheetEncryptionKeyId { set; get; }
+
 
     	[Preserve]
         public static StartResult FromDict(JsonData data)
         {
             return new StartResult {
                 stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? data["stampSheet"].ToString() : null,
+                stampSheetEncryptionKeyId = data.Keys.Contains("stampSheetEncryptionKeyId") && data["stampSheetEncryptionKeyId"] != null ? data["stampSheetEncryptionKeyId"].ToString() : null,
             };
         }
 	}

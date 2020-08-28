@@ -63,6 +63,7 @@ namespace Gs2.Unity.Gs2Formation.Model
                             {
                                 name = Value0.Name,
                                 propertyId = Value0.PropertyId,
+                                metadata = Value0.Metadata,
                             };
                         }
                 ).ToList() : new List<Slot>(new Slot[] {}),

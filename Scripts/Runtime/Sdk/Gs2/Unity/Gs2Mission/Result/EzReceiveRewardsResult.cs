@@ -28,12 +28,16 @@ namespace Gs2.Unity.Gs2Mission.Result
         /** ミッションの達成報酬を受領するスタンプシート */
         public string StampSheet { get; private set; }
 
+        /** スタンプシートの署名計算に使用した暗号鍵GRN */
+        public string StampSheetEncryptionKeyId { get; private set; }
+
 
         public EzReceiveRewardsResult(
             CompleteResult result
         )
         {
             StampSheet = result.stampSheet;
+            StampSheetEncryptionKeyId = result.stampSheetEncryptionKeyId;
         }
 	}
 }

@@ -215,12 +215,14 @@ namespace Gs2.Unity.Gs2Chat
 		/// <param name="roomName">ルーム名</param>
 		/// <param name="startAt">メッセージの取得を開始する時間</param>
 		/// <param name="limit">データの取得件数</param>
+		/// <param name="password">メッセージを投稿するために必要となるパスワード</param>
 		public IEnumerator ListMessages(
 		        UnityAction<AsyncResult<EzListMessagesResult>> callback,
                 string namespaceName,
                 string roomName,
                 long? startAt=null,
-                long? limit=null
+                long? limit=null,
+                string password=null
         )
 		{
             yield return _profile.Run(
@@ -231,7 +233,8 @@ namespace Gs2.Unity.Gs2Chat
                         .WithNamespaceName(namespaceName)
                         .WithRoomName(roomName)
                         .WithStartAt(startAt)
-                        .WithLimit(limit),
+                        .WithLimit(limit)
+                        .WithPassword(password),
                     r => cb.Invoke(
                         new AsyncResult<EzListMessagesResult>(
                             r.Result == null ? null : new EzListMessagesResult(r.Result),

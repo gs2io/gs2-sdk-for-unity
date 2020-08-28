@@ -31,6 +31,9 @@ namespace Gs2.Unity.Gs2Quest.Result
         /** 報酬付与処理の実行に使用するスタンプシート */
         public string StampSheet { get; private set; }
 
+        /** スタンプシートの署名計算に使用した暗号鍵GRN */
+        public string StampSheetEncryptionKeyId { get; private set; }
+
 
         public EzEndResult(
             EndResult result
@@ -41,6 +44,7 @@ namespace Gs2.Unity.Gs2Quest.Result
                 Item = new EzProgress(result.item);
             }
             StampSheet = result.stampSheet;
+            StampSheetEncryptionKeyId = result.stampSheetEncryptionKeyId;
         }
 	}
 }

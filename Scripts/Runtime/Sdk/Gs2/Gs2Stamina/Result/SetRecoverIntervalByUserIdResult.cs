@@ -29,12 +29,16 @@ namespace Gs2.Gs2Stamina.Result
         /** スタミナ */
         public Stamina item { set; get; }
 
+        /** スタミナモデル */
+        public StaminaModel staminaModel { set; get; }
+
 
     	[Preserve]
         public static SetRecoverIntervalByUserIdResult FromDict(JsonData data)
         {
             return new SetRecoverIntervalByUserIdResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Stamina.Model.Stamina.FromDict(data["item"]) : null,
+                staminaModel = data.Keys.Contains("staminaModel") && data["staminaModel"] != null ? Gs2.Gs2Stamina.Model.StaminaModel.FromDict(data["staminaModel"]) : null,
             };
         }
 	}

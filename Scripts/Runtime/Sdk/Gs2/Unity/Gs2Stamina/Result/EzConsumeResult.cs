@@ -28,6 +28,9 @@ namespace Gs2.Unity.Gs2Stamina.Result
         /** スタミナ */
         public EzStamina Item { get; private set; }
 
+        /** スタミナモデル */
+        public EzStaminaModel StaminaModel { get; private set; }
+
 
         public EzConsumeResult(
             ConsumeStaminaResult result
@@ -36,6 +39,10 @@ namespace Gs2.Unity.Gs2Stamina.Result
             if(result.item != null)
             {
                 Item = new EzStamina(result.item);
+            }
+            if(result.staminaModel != null)
+            {
+                StaminaModel = new EzStaminaModel(result.staminaModel);
             }
         }
 	}

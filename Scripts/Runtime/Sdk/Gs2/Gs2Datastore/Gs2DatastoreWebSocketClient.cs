@@ -74,6 +74,11 @@ namespace Gs2.Gs2Datastore
                     jsonWriter.WritePropertyName("logSetting");
                     _request.logSetting.WriteJson(jsonWriter);
                 }
+                if (_request.doneUploadScript != null)
+                {
+                    jsonWriter.WritePropertyName("doneUploadScript");
+                    _request.doneUploadScript.WriteJson(jsonWriter);
+                }
                 if (_request.contextStack != null)
                 {
                     jsonWriter.WritePropertyName("contextStack");
@@ -308,6 +313,11 @@ namespace Gs2.Gs2Datastore
                 {
                     jsonWriter.WritePropertyName("logSetting");
                     _request.logSetting.WriteJson(jsonWriter);
+                }
+                if (_request.doneUploadScript != null)
+                {
+                    jsonWriter.WritePropertyName("doneUploadScript");
+                    _request.doneUploadScript.WriteJson(jsonWriter);
                 }
                 if (_request.contextStack != null)
                 {

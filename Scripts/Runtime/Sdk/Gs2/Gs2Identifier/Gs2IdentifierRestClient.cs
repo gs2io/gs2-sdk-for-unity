@@ -959,6 +959,243 @@ namespace Gs2.Gs2Identifier
 			return Gs2RestSession.Execute(task);
         }
 
+        private class DescribePasswordsTask : Gs2RestSessionTask<Result.DescribePasswordsResult>
+        {
+			private readonly Request.DescribePasswordsRequest _request;
+
+			public DescribePasswordsTask(Request.DescribePasswordsRequest request, UnityAction<AsyncResult<Result.DescribePasswordsResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "identifier")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/user/{userName}/password";
+
+                url = url.Replace("{userName}", !string.IsNullOrEmpty(_request.userName) ? _request.userName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                if (_request.pageToken != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "pageToken", UnityWebRequest.EscapeURL(_request.pageToken)));
+                }
+                if (_request.limit != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "limit", _request.limit));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  パスワードの一覧を取得します<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DescribePasswords(
+                Request.DescribePasswordsRequest request,
+                UnityAction<AsyncResult<Result.DescribePasswordsResult>> callback
+        )
+		{
+			var task = new DescribePasswordsTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class CreatePasswordTask : Gs2RestSessionTask<Result.CreatePasswordResult>
+        {
+			private readonly Request.CreatePasswordRequest _request;
+
+			public CreatePasswordTask(Request.CreatePasswordRequest request, UnityAction<AsyncResult<Result.CreatePasswordResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "identifier")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/user/{userName}/password";
+
+                url = url.Replace("{userName}", !string.IsNullOrEmpty(_request.userName) ? _request.userName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.password != null)
+                {
+                    jsonWriter.WritePropertyName("password");
+                    jsonWriter.Write(_request.password.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  パスワードを新規作成します<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator CreatePassword(
+                Request.CreatePasswordRequest request,
+                UnityAction<AsyncResult<Result.CreatePasswordResult>> callback
+        )
+		{
+			var task = new CreatePasswordTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class GetPasswordTask : Gs2RestSessionTask<Result.GetPasswordResult>
+        {
+			private readonly Request.GetPasswordRequest _request;
+
+			public GetPasswordTask(Request.GetPasswordRequest request, UnityAction<AsyncResult<Result.GetPasswordResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "identifier")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/user/{userName}/password/entity";
+
+                url = url.Replace("{userName}", !string.IsNullOrEmpty(_request.userName) ? _request.userName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  パスワードを取得します<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetPassword(
+                Request.GetPasswordRequest request,
+                UnityAction<AsyncResult<Result.GetPasswordResult>> callback
+        )
+		{
+			var task = new GetPasswordTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class DeletePasswordTask : Gs2RestSessionTask<Result.DeletePasswordResult>
+        {
+			private readonly Request.DeletePasswordRequest _request;
+
+			public DeletePasswordTask(Request.DeletePasswordRequest request, UnityAction<AsyncResult<Result.DeletePasswordResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbDELETE;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "identifier")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/user/{userName}/password/entity";
+
+                url = url.Replace("{userName}", !string.IsNullOrEmpty(_request.userName) ? _request.userName.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  パスワードを削除します<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DeletePassword(
+                Request.DeletePasswordRequest request,
+                UnityAction<AsyncResult<Result.DeletePasswordResult>> callback
+        )
+		{
+			var task = new DeletePasswordTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
         private class GetHasSecurityPolicyTask : Gs2RestSessionTask<Result.GetHasSecurityPolicyResult>
         {
 			private readonly Request.GetHasSecurityPolicyRequest _request;
@@ -1206,6 +1443,78 @@ namespace Gs2.Gs2Identifier
         )
 		{
 			var task = new LoginTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class LoginByUserTask : Gs2RestSessionTask<Result.LoginByUserResult>
+        {
+			private readonly Request.LoginByUserRequest _request;
+
+			public LoginByUserTask(Request.LoginByUserRequest request, UnityAction<AsyncResult<Result.LoginByUserResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "identifier")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/projectToken/login/user";
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.userName != null)
+                {
+                    jsonWriter.WritePropertyName("userName");
+                    jsonWriter.Write(_request.userName.ToString());
+                }
+                if (_request.password != null)
+                {
+                    jsonWriter.WritePropertyName("password");
+                    jsonWriter.Write(_request.password.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  プロジェクトトークン を取得します<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator LoginByUser(
+                Request.LoginByUserRequest request,
+                UnityAction<AsyncResult<Result.LoginByUserResult>> callback
+        )
+		{
+			var task = new LoginByUserTask(request, callback);
 			return Gs2RestSession.Execute(task);
         }
 	}

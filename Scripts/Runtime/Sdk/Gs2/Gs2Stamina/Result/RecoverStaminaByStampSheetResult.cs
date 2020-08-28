@@ -29,6 +29,9 @@ namespace Gs2.Gs2Stamina.Result
         /** スタミナ */
         public Stamina item { set; get; }
 
+        /** スタミナモデル */
+        public StaminaModel staminaModel { set; get; }
+
         /** スタミナ値の上限を超えて受け取れずに GS2-Inbox に転送したスタミナ値 */
         public long? overflowValue { set; get; }
 
@@ -38,6 +41,7 @@ namespace Gs2.Gs2Stamina.Result
         {
             return new RecoverStaminaByStampSheetResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Stamina.Model.Stamina.FromDict(data["item"]) : null,
+                staminaModel = data.Keys.Contains("staminaModel") && data["staminaModel"] != null ? Gs2.Gs2Stamina.Model.StaminaModel.FromDict(data["staminaModel"]) : null,
                 overflowValue = data.Keys.Contains("overflowValue") && data["overflowValue"] != null ? (long?)long.Parse(data["overflowValue"].ToString()) : null,
             };
         }

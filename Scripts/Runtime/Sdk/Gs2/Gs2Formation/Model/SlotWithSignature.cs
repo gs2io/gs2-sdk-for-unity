@@ -83,6 +83,20 @@ namespace Gs2.Gs2Formation.Model
             return this;
         }
 
+        /** メタデータ */
+        public string metadata { set; get; }
+
+        /**
+         * メタデータを設定
+         *
+         * @param metadata メタデータ
+         * @return this
+         */
+        public SlotWithSignature WithMetadata(string metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
         public void WriteJson(JsonWriter writer)
         {
             writer.WriteObjectStart();
@@ -106,6 +120,11 @@ namespace Gs2.Gs2Formation.Model
                 writer.WritePropertyName("signature");
                 writer.Write(this.signature);
             }
+            if(this.metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.metadata);
+            }
             writer.WriteObjectEnd();
         }
 
@@ -116,7 +135,8 @@ namespace Gs2.Gs2Formation.Model
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithPropertyType(data.Keys.Contains("propertyType") && data["propertyType"] != null ? data["propertyType"].ToString() : null)
                 .WithBody(data.Keys.Contains("body") && data["body"] != null ? data["body"].ToString() : null)
-                .WithSignature(data.Keys.Contains("signature") && data["signature"] != null ? data["signature"].ToString() : null);
+                .WithSignature(data.Keys.Contains("signature") && data["signature"] != null ? data["signature"].ToString() : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null);
         }
 
         public int CompareTo(object obj)
@@ -154,6 +174,14 @@ namespace Gs2.Gs2Formation.Model
             else
             {
                 diff += signature.CompareTo(other.signature);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
             }
             return diff;
         }

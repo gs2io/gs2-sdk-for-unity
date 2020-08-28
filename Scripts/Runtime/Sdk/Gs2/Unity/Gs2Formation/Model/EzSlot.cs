@@ -32,6 +32,9 @@ namespace Gs2.Unity.Gs2Formation.Model
 		/** プロパティID */
 		[UnityEngine.SerializeField]
 		public string PropertyId;
+		/** メタデータ */
+		[UnityEngine.SerializeField]
+		public string Metadata;
 
 		public EzSlot()
 		{
@@ -42,6 +45,7 @@ namespace Gs2.Unity.Gs2Formation.Model
 		{
 			Name = @slot.name;
 			PropertyId = @slot.propertyId;
+			Metadata = @slot.metadata;
 		}
 
         public virtual Slot ToModel()
@@ -49,6 +53,7 @@ namespace Gs2.Unity.Gs2Formation.Model
             return new Slot {
                 name = Name,
                 propertyId = PropertyId,
+                metadata = Metadata,
             };
         }
 
@@ -64,6 +69,11 @@ namespace Gs2.Unity.Gs2Formation.Model
             {
                 writer.WritePropertyName("propertyId");
                 writer.Write(this.PropertyId);
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
             }
             writer.WriteObjectEnd();
         }

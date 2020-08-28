@@ -38,6 +38,9 @@ namespace Gs2.Unity.Gs2Formation.Model
 		/** プロパティIDのリソースを所有していることを証明する署名 */
 		[UnityEngine.SerializeField]
 		public string Signature;
+		/** メタデータ */
+		[UnityEngine.SerializeField]
+		public string Metadata;
 
 		public EzSlotWithSignature()
 		{
@@ -50,6 +53,7 @@ namespace Gs2.Unity.Gs2Formation.Model
 			PropertyType = @slotWithSignature.propertyType;
 			Body = @slotWithSignature.body;
 			Signature = @slotWithSignature.signature;
+			Metadata = @slotWithSignature.metadata;
 		}
 
         public virtual SlotWithSignature ToModel()
@@ -59,6 +63,7 @@ namespace Gs2.Unity.Gs2Formation.Model
                 propertyType = PropertyType,
                 body = Body,
                 signature = Signature,
+                metadata = Metadata,
             };
         }
 
@@ -84,6 +89,11 @@ namespace Gs2.Unity.Gs2Formation.Model
             {
                 writer.WritePropertyName("signature");
                 writer.Write(this.Signature);
+            }
+            if(this.Metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.Metadata);
             }
             writer.WriteObjectEnd();
         }

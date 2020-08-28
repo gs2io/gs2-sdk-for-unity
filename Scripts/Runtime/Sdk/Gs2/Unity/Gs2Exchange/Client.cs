@@ -147,9 +147,11 @@ namespace Gs2.Unity.Gs2Exchange
         ///
 		/// <returns>IEnumerator</returns>
 		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
 		public IEnumerator ListAwaits(
 		        UnityAction<AsyncResult<EzListAwaitsResult>> callback,
-                string namespaceName
+                string namespaceName,
+                string pageToken=null
         )
 		{
             yield return _profile.Run(
@@ -157,7 +159,8 @@ namespace Gs2.Unity.Gs2Exchange
                 null,
                 cb => _restClient.DescribeAwaits(
                     new DescribeAwaitsRequest()
-                        .WithNamespaceName(namespaceName),
+                        .WithNamespaceName(namespaceName)
+                        .WithPageToken(pageToken),
                     r => cb.Invoke(
                         new AsyncResult<EzListAwaitsResult>(
                             r.Result == null ? null : new EzListAwaitsResult(r.Result),

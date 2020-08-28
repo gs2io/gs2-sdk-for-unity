@@ -28,6 +28,9 @@ namespace Gs2.Unity.Gs2Exchange.Result
         /** 交換待機のリスト */
         public List<EzAwait> Items { get; private set; }
 
+        /** 次のページを取得するためのトークン */
+        public string NextPageToken { get; private set; }
+
 
         public EzListAwaitsResult(
             DescribeAwaitsResult result
@@ -38,6 +41,7 @@ namespace Gs2.Unity.Gs2Exchange.Result
             {
                 Items.Add(new EzAwait(item_));
             }
+            NextPageToken = result.nextPageToken;
         }
 	}
 }

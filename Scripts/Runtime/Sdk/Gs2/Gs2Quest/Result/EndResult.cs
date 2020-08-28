@@ -32,6 +32,9 @@ namespace Gs2.Gs2Quest.Result
         /** 報酬付与処理の実行に使用するスタンプシート */
         public string stampSheet { set; get; }
 
+        /** スタンプシートの署名計算に使用した暗号鍵GRN */
+        public string stampSheetEncryptionKeyId { set; get; }
+
 
     	[Preserve]
         public static EndResult FromDict(JsonData data)
@@ -39,6 +42,7 @@ namespace Gs2.Gs2Quest.Result
             return new EndResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Quest.Model.Progress.FromDict(data["item"]) : null,
                 stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? data["stampSheet"].ToString() : null,
+                stampSheetEncryptionKeyId = data.Keys.Contains("stampSheetEncryptionKeyId") && data["stampSheetEncryptionKeyId"] != null ? data["stampSheetEncryptionKeyId"].ToString() : null,
             };
         }
 	}

@@ -35,6 +35,9 @@ namespace Gs2.Gs2Formation.Result
         /** スタンプシート */
         public string stampSheet { set; get; }
 
+        /** スタンプシートの署名計算に使用した暗号鍵GRN */
+        public string stampSheetEncryptionKeyId { set; get; }
+
 
     	[Preserve]
         public static AcquireActionsToFormPropertiesResult FromDict(JsonData data)
@@ -43,6 +46,7 @@ namespace Gs2.Gs2Formation.Result
                 item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Formation.Model.Form.FromDict(data["item"]) : null,
                 mold = data.Keys.Contains("mold") && data["mold"] != null ? Gs2.Gs2Formation.Model.Mold.FromDict(data["mold"]) : null,
                 stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? data["stampSheet"].ToString() : null,
+                stampSheetEncryptionKeyId = data.Keys.Contains("stampSheetEncryptionKeyId") && data["stampSheetEncryptionKeyId"] != null ? data["stampSheetEncryptionKeyId"].ToString() : null,
             };
         }
 	}

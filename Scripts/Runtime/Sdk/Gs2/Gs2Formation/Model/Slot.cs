@@ -55,6 +55,20 @@ namespace Gs2.Gs2Formation.Model
             return this;
         }
 
+        /** メタデータ */
+        public string metadata { set; get; }
+
+        /**
+         * メタデータを設定
+         *
+         * @param metadata メタデータ
+         * @return this
+         */
+        public Slot WithMetadata(string metadata) {
+            this.metadata = metadata;
+            return this;
+        }
+
         public void WriteJson(JsonWriter writer)
         {
             writer.WriteObjectStart();
@@ -68,6 +82,11 @@ namespace Gs2.Gs2Formation.Model
                 writer.WritePropertyName("propertyId");
                 writer.Write(this.propertyId);
             }
+            if(this.metadata != null)
+            {
+                writer.WritePropertyName("metadata");
+                writer.Write(this.metadata);
+            }
             writer.WriteObjectEnd();
         }
 
@@ -76,7 +95,8 @@ namespace Gs2.Gs2Formation.Model
         {
             return new Slot()
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
-                .WithPropertyId(data.Keys.Contains("propertyId") && data["propertyId"] != null ? data["propertyId"].ToString() : null);
+                .WithPropertyId(data.Keys.Contains("propertyId") && data["propertyId"] != null ? data["propertyId"].ToString() : null)
+                .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null);
         }
 
         public int CompareTo(object obj)
@@ -98,6 +118,14 @@ namespace Gs2.Gs2Formation.Model
             else
             {
                 diff += propertyId.CompareTo(other.propertyId);
+            }
+            if (metadata == null && metadata == other.metadata)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += metadata.CompareTo(other.metadata);
             }
             return diff;
         }

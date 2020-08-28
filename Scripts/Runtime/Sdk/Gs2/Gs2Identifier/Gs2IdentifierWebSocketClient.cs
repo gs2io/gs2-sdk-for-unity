@@ -908,6 +908,236 @@ namespace Gs2.Gs2Identifier
 			return Gs2WebSocketSession.Execute(task);
         }
 
+        private class CreatePasswordTask : Gs2WebSocketSessionTask<Result.CreatePasswordResult>
+        {
+			private readonly Request.CreatePasswordRequest _request;
+
+			public CreatePasswordTask(Request.CreatePasswordRequest request, UnityAction<AsyncResult<Result.CreatePasswordResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.userName != null)
+                {
+                    jsonWriter.WritePropertyName("userName");
+                    jsonWriter.Write(_request.userName.ToString());
+                }
+                if (_request.password != null)
+                {
+                    jsonWriter.WritePropertyName("password");
+                    jsonWriter.Write(_request.password.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("identifier");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("password");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("createPassword");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  パスワードを新規作成します<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator CreatePassword(
+                Request.CreatePasswordRequest request,
+                UnityAction<AsyncResult<Result.CreatePasswordResult>> callback
+        )
+		{
+			var task = new CreatePasswordTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class GetPasswordTask : Gs2WebSocketSessionTask<Result.GetPasswordResult>
+        {
+			private readonly Request.GetPasswordRequest _request;
+
+			public GetPasswordTask(Request.GetPasswordRequest request, UnityAction<AsyncResult<Result.GetPasswordResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.userName != null)
+                {
+                    jsonWriter.WritePropertyName("userName");
+                    jsonWriter.Write(_request.userName.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("identifier");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("password");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("getPassword");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  パスワードを取得します<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetPassword(
+                Request.GetPasswordRequest request,
+                UnityAction<AsyncResult<Result.GetPasswordResult>> callback
+        )
+		{
+			var task = new GetPasswordTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class DeletePasswordTask : Gs2WebSocketSessionTask<Result.DeletePasswordResult>
+        {
+			private readonly Request.DeletePasswordRequest _request;
+
+			public DeletePasswordTask(Request.DeletePasswordRequest request, UnityAction<AsyncResult<Result.DeletePasswordResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.userName != null)
+                {
+                    jsonWriter.WritePropertyName("userName");
+                    jsonWriter.Write(_request.userName.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("identifier");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("password");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("deletePassword");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  パスワードを削除します<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DeletePassword(
+                Request.DeletePasswordRequest request,
+                UnityAction<AsyncResult<Result.DeletePasswordResult>> callback
+        )
+		{
+			var task = new DeletePasswordTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
         private class GetHasSecurityPolicyTask : Gs2WebSocketSessionTask<Result.GetHasSecurityPolicyResult>
         {
 			private readonly Request.GetHasSecurityPolicyRequest _request;
@@ -1220,6 +1450,86 @@ namespace Gs2.Gs2Identifier
         )
 		{
 			var task = new LoginTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class LoginByUserTask : Gs2WebSocketSessionTask<Result.LoginByUserResult>
+        {
+			private readonly Request.LoginByUserRequest _request;
+
+			public LoginByUserTask(Request.LoginByUserRequest request, UnityAction<AsyncResult<Result.LoginByUserResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.userName != null)
+                {
+                    jsonWriter.WritePropertyName("userName");
+                    jsonWriter.Write(_request.userName.ToString());
+                }
+                if (_request.password != null)
+                {
+                    jsonWriter.WritePropertyName("password");
+                    jsonWriter.Write(_request.password.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("identifier");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("projectToken");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("loginByUser");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  プロジェクトトークン を取得します<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator LoginByUser(
+                Request.LoginByUserRequest request,
+                UnityAction<AsyncResult<Result.LoginByUserResult>> callback
+        )
+		{
+			var task = new LoginByUserTask(request, callback);
 			return Gs2WebSocketSession.Execute(task);
         }
 	}

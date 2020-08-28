@@ -893,6 +893,77 @@ namespace Gs2.Gs2Project
 			return Gs2RestSession.Execute(task);
         }
 
+        private class GetProjectTokenByIdentifierTask : Gs2RestSessionTask<Result.GetProjectTokenByIdentifierResult>
+        {
+			private readonly Request.GetProjectTokenByIdentifierRequest _request;
+
+			public GetProjectTokenByIdentifierTask(Request.GetProjectTokenByIdentifierRequest request, UnityAction<AsyncResult<Result.GetProjectTokenByIdentifierResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "project")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/account/{accountName}/project/{projectName}/user/{userName}/projectToken";
+
+                url = url.Replace("{accountName}", !string.IsNullOrEmpty(_request.accountName) ? _request.accountName.ToString() : "null");
+                url = url.Replace("{projectName}", !string.IsNullOrEmpty(_request.projectName) ? _request.projectName.ToString() : "null");
+                url = url.Replace("{userName}", !string.IsNullOrEmpty(_request.userName) ? _request.userName.ToString() : "null");
+
+                UnityWebRequest.url = url;
+
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+                jsonWriter.WriteObjectStart();
+                if (_request.password != null)
+                {
+                    jsonWriter.WritePropertyName("password");
+                    jsonWriter.Write(_request.password.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                jsonWriter.WriteObjectEnd();
+
+                var body = stringBuilder.ToString();
+                if (!string.IsNullOrEmpty(body))
+                {
+                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
+                }
+                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  プロジェクトトークンを発行します<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetProjectTokenByIdentifier(
+                Request.GetProjectTokenByIdentifierRequest request,
+                UnityAction<AsyncResult<Result.GetProjectTokenByIdentifierResult>> callback
+        )
+		{
+			var task = new GetProjectTokenByIdentifierTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
         private class UpdateProjectTask : Gs2RestSessionTask<Result.UpdateProjectResult>
         {
 			private readonly Request.UpdateProjectRequest _request;

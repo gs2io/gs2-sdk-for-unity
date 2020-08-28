@@ -29,6 +29,9 @@ namespace Gs2.Gs2Exchange.Result
         /** 交換待機のリスト */
         public List<Await> items { set; get; }
 
+        /** 次のページを取得するためのトークン */
+        public string nextPageToken { set; get; }
+
 
     	[Preserve]
         public static DescribeAwaitsByUserIdResult FromDict(JsonData data)
@@ -39,6 +42,7 @@ namespace Gs2.Gs2Exchange.Result
                         return Gs2.Gs2Exchange.Model.Await.FromDict(value);
                     }
                 ).ToList() : null,
+                nextPageToken = data.Keys.Contains("nextPageToken") && data["nextPageToken"] != null ? data["nextPageToken"].ToString() : null,
             };
         }
 	}

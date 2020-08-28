@@ -32,6 +32,9 @@ namespace Gs2.Gs2Lottery.Result
         /** 排出された景品を入手するスタンプシート */
         public string stampSheet { set; get; }
 
+        /** スタンプシートの署名計算に使用した暗号鍵GRN */
+        public string stampSheetEncryptionKeyId { set; get; }
+
         /** ボックスから取り出したアイテムのリスト */
         public BoxItems boxItems { set; get; }
 
@@ -46,6 +49,7 @@ namespace Gs2.Gs2Lottery.Result
                     }
                 ).ToList() : null,
                 stampSheet = data.Keys.Contains("stampSheet") && data["stampSheet"] != null ? data["stampSheet"].ToString() : null,
+                stampSheetEncryptionKeyId = data.Keys.Contains("stampSheetEncryptionKeyId") && data["stampSheetEncryptionKeyId"] != null ? data["stampSheetEncryptionKeyId"].ToString() : null,
                 boxItems = data.Keys.Contains("boxItems") && data["boxItems"] != null ? Gs2.Gs2Lottery.Model.BoxItems.FromDict(data["boxItems"]) : null,
             };
         }

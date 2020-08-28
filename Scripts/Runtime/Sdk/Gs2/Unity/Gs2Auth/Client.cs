@@ -50,6 +50,8 @@ namespace Gs2.Unity.Gs2Auth
 		///    body と signature には GS2-Account::Authentication の結果を指定します。<br />
 		///    body と signature の検証に成功すると、 `アクセストークン` を応答します。<br />
 		///    `アクセストークン` は有効期限が1時間の一時的な認証情報で、GS2内の各サービスでゲームプレイヤーを識別するために使用されます。<br />
+		///    なおUnityとCocos2d-x向けにGS2-Account::AuthenticationとこのAPIをひとまとめにしたGS2-Profile::Loginを用意しています。<br />
+		///    GS2-Profile::Loginははじめかた⇒サンプルプログラムで解説しています。<br />
 		/// </summary>
         ///
 		/// <returns>IEnumerator</returns>

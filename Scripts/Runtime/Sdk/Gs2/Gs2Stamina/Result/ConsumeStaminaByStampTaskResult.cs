@@ -29,6 +29,9 @@ namespace Gs2.Gs2Stamina.Result
         /** スタミナ */
         public Stamina item { set; get; }
 
+        /** スタミナモデル */
+        public StaminaModel staminaModel { set; get; }
+
         /** スタンプタスクの実行結果を記録したコンテキスト */
         public string newContextStack { set; get; }
 
@@ -38,6 +41,7 @@ namespace Gs2.Gs2Stamina.Result
         {
             return new ConsumeStaminaByStampTaskResult {
                 item = data.Keys.Contains("item") && data["item"] != null ? Gs2.Gs2Stamina.Model.Stamina.FromDict(data["item"]) : null,
+                staminaModel = data.Keys.Contains("staminaModel") && data["staminaModel"] != null ? Gs2.Gs2Stamina.Model.StaminaModel.FromDict(data["staminaModel"]) : null,
                 newContextStack = data.Keys.Contains("newContextStack") && data["newContextStack"] != null ? data["newContextStack"].ToString() : null,
             };
         }

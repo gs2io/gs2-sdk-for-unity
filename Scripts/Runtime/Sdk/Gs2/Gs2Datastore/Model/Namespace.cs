@@ -83,6 +83,20 @@ namespace Gs2.Gs2Datastore.Model
             return this;
         }
 
+        /** アップロード完了報告時に実行するスクリプト */
+        public Gs2.Gs2Datastore.Model.ScriptSetting doneUploadScript { set; get; }
+
+        /**
+         * アップロード完了報告時に実行するスクリプトを設定
+         *
+         * @param doneUploadScript アップロード完了報告時に実行するスクリプト
+         * @return this
+         */
+        public Namespace WithDoneUploadScript(Gs2.Gs2Datastore.Model.ScriptSetting doneUploadScript) {
+            this.doneUploadScript = doneUploadScript;
+            return this;
+        }
+
         /** ログの出力設定 */
         public Gs2.Gs2Datastore.Model.LogSetting logSetting { set; get; }
 
@@ -162,6 +176,11 @@ namespace Gs2.Gs2Datastore.Model
                 writer.WritePropertyName("description");
                 writer.Write(this.description);
             }
+            if(this.doneUploadScript != null)
+            {
+                writer.WritePropertyName("doneUploadScript");
+                this.doneUploadScript.WriteJson(writer);
+            }
             if(this.logSetting != null)
             {
                 writer.WritePropertyName("logSetting");
@@ -229,6 +248,7 @@ namespace Gs2.Gs2Datastore.Model
                 .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
+                .WithDoneUploadScript(data.Keys.Contains("doneUploadScript") && data["doneUploadScript"] != null ? Gs2.Gs2Datastore.Model.ScriptSetting.FromDict(data["doneUploadScript"]) : null)
                 .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Datastore.Model.LogSetting.FromDict(data["logSetting"]) : null)
                 .WithStatus(data.Keys.Contains("status") && data["status"] != null ? data["status"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
@@ -270,6 +290,14 @@ namespace Gs2.Gs2Datastore.Model
             else
             {
                 diff += description.CompareTo(other.description);
+            }
+            if (doneUploadScript == null && doneUploadScript == other.doneUploadScript)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += doneUploadScript.CompareTo(other.doneUploadScript);
             }
             if (logSetting == null && logSetting == other.logSetting)
             {
