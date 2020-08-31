@@ -214,6 +214,91 @@ namespace Gs2.Unity.Gs2Ranking
 		}
 
 		/// <summary>
+		///  ゲームプレイヤーが登録したスコアの一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="categoryName">カテゴリ名</param>
+		/// <param name="scorerUserId">スコアを獲得したユーザID</param>
+		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
+		/// <param name="limit">データの取得件数</param>
+		public IEnumerator ListScores(
+		        UnityAction<AsyncResult<EzListScoresResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string categoryName,
+                string scorerUserId,
+                string pageToken=null,
+                long? limit=null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribeScores(
+                    new DescribeScoresRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithCategoryName(categoryName)
+                        .WithScorerUserId(scorerUserId)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListScoresResult>(
+                            r.Result == null ? null : new EzListScoresResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  ゲームプレイヤーが登録したスコアを取得<br />
+		///    <br />
+		///    ユーザID毎にスコアを1つしか登録できないカテゴリを指定する場合、ユニークIDは省略可能です<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="categoryName">カテゴリ名</param>
+		/// <param name="scorerUserId">スコアを獲得したユーザID</param>
+		/// <param name="uniqueId">スコアのユニークID</param>
+		public IEnumerator GetScore(
+		        UnityAction<AsyncResult<EzGetScoreResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string categoryName,
+                string scorerUserId,
+                string uniqueId=null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetScore(
+                    new GetScoreRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithCategoryName(categoryName)
+                        .WithScorerUserId(scorerUserId)
+                        .WithUniqueId(uniqueId)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetScoreResult>(
+                            r.Result == null ? null : new EzGetScoreResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
 		///  ランキングの一覧を取得<br />
 		/// </summary>
         ///
@@ -322,6 +407,48 @@ namespace Gs2.Unity.Gs2Ranking
                     r => cb.Invoke(
                         new AsyncResult<EzGetNearRankingResult>(
                             r.Result == null ? null : new EzGetNearRankingResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  ランキングを取得<br />
+		///    <br />
+		///    ユーザID毎にスコアを1つしか登録できないカテゴリを指定する場合、ユニークIDは省略可能です<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="categoryName">カテゴリ名</param>
+		/// <param name="scorerUserId">スコアを獲得したユーザID</param>
+		/// <param name="uniqueId">スコアのユニークID</param>
+		public IEnumerator GetRank(
+		        UnityAction<AsyncResult<EzGetRankResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string categoryName,
+                string scorerUserId,
+                string uniqueId=null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetRanking(
+                    new GetRankingRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithCategoryName(categoryName)
+                        .WithScorerUserId(scorerUserId)
+                        .WithUniqueId(uniqueId)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetRankResult>(
+                            r.Result == null ? null : new EzGetRankResult(r.Result),
                             r.Error
                         )
                     )

@@ -1445,6 +1445,270 @@ namespace Gs2.Gs2Ranking
 			return Gs2RestSession.Execute(task);
         }
 
+        private class DescribeScoresTask : Gs2RestSessionTask<Result.DescribeScoresResult>
+        {
+			private readonly Request.DescribeScoresRequest _request;
+
+			public DescribeScoresTask(Request.DescribeScoresRequest request, UnityAction<AsyncResult<Result.DescribeScoresResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "ranking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/me/category/{categoryName}/scorer/{scorerUserId}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{categoryName}", !string.IsNullOrEmpty(_request.categoryName) ? _request.categoryName.ToString() : "null");
+                url = url.Replace("{scorerUserId}", !string.IsNullOrEmpty(_request.scorerUserId) ? _request.scorerUserId.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                if (_request.pageToken != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "pageToken", UnityWebRequest.EscapeURL(_request.pageToken)));
+                }
+                if (_request.limit != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "limit", _request.limit));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  スコアの一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DescribeScores(
+                Request.DescribeScoresRequest request,
+                UnityAction<AsyncResult<Result.DescribeScoresResult>> callback
+        )
+		{
+			var task = new DescribeScoresTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class DescribeScoresByUserIdTask : Gs2RestSessionTask<Result.DescribeScoresByUserIdResult>
+        {
+			private readonly Request.DescribeScoresByUserIdRequest _request;
+
+			public DescribeScoresByUserIdTask(Request.DescribeScoresByUserIdRequest request, UnityAction<AsyncResult<Result.DescribeScoresByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "ranking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/category/{categoryName}/scorer/{scorerUserId}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{categoryName}", !string.IsNullOrEmpty(_request.categoryName) ? _request.categoryName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+                url = url.Replace("{scorerUserId}", !string.IsNullOrEmpty(_request.scorerUserId) ? _request.scorerUserId.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                if (_request.pageToken != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "pageToken", UnityWebRequest.EscapeURL(_request.pageToken)));
+                }
+                if (_request.limit != null) {
+                    queryStrings.Add(string.Format("{0}={1}", "limit", _request.limit));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  スコアの一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator DescribeScoresByUserId(
+                Request.DescribeScoresByUserIdRequest request,
+                UnityAction<AsyncResult<Result.DescribeScoresByUserIdResult>> callback
+        )
+		{
+			var task = new DescribeScoresByUserIdTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class GetScoreTask : Gs2RestSessionTask<Result.GetScoreResult>
+        {
+			private readonly Request.GetScoreRequest _request;
+
+			public GetScoreTask(Request.GetScoreRequest request, UnityAction<AsyncResult<Result.GetScoreResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "ranking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/me/category/{categoryName}/scorer/{scorerUserId}/score/{uniqueId}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{categoryName}", !string.IsNullOrEmpty(_request.categoryName) ? _request.categoryName.ToString() : "null");
+                url = url.Replace("{scorerUserId}", !string.IsNullOrEmpty(_request.scorerUserId) ? _request.scorerUserId.ToString() : "null");
+                url = url.Replace("{uniqueId}", !string.IsNullOrEmpty(_request.uniqueId) ? _request.uniqueId.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  スコアを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetScore(
+                Request.GetScoreRequest request,
+                UnityAction<AsyncResult<Result.GetScoreResult>> callback
+        )
+		{
+			var task = new GetScoreTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class GetScoreByUserIdTask : Gs2RestSessionTask<Result.GetScoreByUserIdResult>
+        {
+			private readonly Request.GetScoreByUserIdRequest _request;
+
+			public GetScoreByUserIdTask(Request.GetScoreByUserIdRequest request, UnityAction<AsyncResult<Result.GetScoreByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "ranking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/category/{categoryName}/scorer/{scorerUserId}/score/{uniqueId}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{categoryName}", !string.IsNullOrEmpty(_request.categoryName) ? _request.categoryName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+                url = url.Replace("{scorerUserId}", !string.IsNullOrEmpty(_request.scorerUserId) ? _request.scorerUserId.ToString() : "null");
+                url = url.Replace("{uniqueId}", !string.IsNullOrEmpty(_request.uniqueId) ? _request.uniqueId.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  スコアを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetScoreByUserId(
+                Request.GetScoreByUserIdRequest request,
+                UnityAction<AsyncResult<Result.GetScoreByUserIdResult>> callback
+        )
+		{
+			var task = new GetScoreByUserIdTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
         private class DescribeRankingsTask : Gs2RestSessionTask<Result.DescribeRankingsResult>
         {
 			private readonly Request.DescribeRankingsRequest _request;
@@ -1643,6 +1907,133 @@ namespace Gs2.Gs2Ranking
         )
 		{
 			var task = new DescribeNearRankingsTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class GetRankingTask : Gs2RestSessionTask<Result.GetRankingResult>
+        {
+			private readonly Request.GetRankingRequest _request;
+
+			public GetRankingTask(Request.GetRankingRequest request, UnityAction<AsyncResult<Result.GetRankingResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "ranking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/me/category/{categoryName}/ranking/scorer/{scorerUserId}/score/{uniqueId}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{categoryName}", !string.IsNullOrEmpty(_request.categoryName) ? _request.categoryName.ToString() : "null");
+                url = url.Replace("{scorerUserId}", !string.IsNullOrEmpty(_request.scorerUserId) ? _request.scorerUserId.ToString() : "null");
+                url = url.Replace("{uniqueId}", !string.IsNullOrEmpty(_request.uniqueId) ? _request.uniqueId.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  ランキングを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetRanking(
+                Request.GetRankingRequest request,
+                UnityAction<AsyncResult<Result.GetRankingResult>> callback
+        )
+		{
+			var task = new GetRankingTask(request, callback);
+			return Gs2RestSession.Execute(task);
+        }
+
+        private class GetRankingByUserIdTask : Gs2RestSessionTask<Result.GetRankingByUserIdResult>
+        {
+			private readonly Request.GetRankingByUserIdRequest _request;
+
+			public GetRankingByUserIdTask(Request.GetRankingByUserIdRequest request, UnityAction<AsyncResult<Result.GetRankingByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+				UnityWebRequest.method = UnityWebRequest.kHttpVerbGET;
+
+                var url = Gs2RestSession.EndpointHost
+                    .Replace("{service}", "ranking")
+                    .Replace("{region}", gs2Session.Region.DisplayName())
+                    + "/{namespaceName}/user/{userId}/category/{categoryName}/ranking/scorer/{scorerUserId}/score/{uniqueId}";
+
+                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{categoryName}", !string.IsNullOrEmpty(_request.categoryName) ? _request.categoryName.ToString() : "null");
+                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
+                url = url.Replace("{scorerUserId}", !string.IsNullOrEmpty(_request.scorerUserId) ? _request.scorerUserId.ToString() : "null");
+                url = url.Replace("{uniqueId}", !string.IsNullOrEmpty(_request.uniqueId) ? _request.uniqueId.ToString() : "null");
+
+                var queryStrings = new List<string> ();
+                if (_request.contextStack != null)
+                {
+                    queryStrings.Add(string.Format("{0}={1}", "contextStack", UnityWebRequest.EscapeURL(_request.contextStack)));
+                }
+                url += "?" + string.Join("&", queryStrings.ToArray());
+
+                UnityWebRequest.url = url;
+
+                if (_request.requestId != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
+                }
+
+                return Send((Gs2RestSession)gs2Session);
+            }
+        }
+
+		/// <summary>
+		///  ランキングを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetRankingByUserId(
+                Request.GetRankingByUserIdRequest request,
+                UnityAction<AsyncResult<Result.GetRankingByUserIdResult>> callback
+        )
+		{
+			var task = new GetRankingByUserIdTask(request, callback);
 			return Gs2RestSession.Execute(task);
         }
 

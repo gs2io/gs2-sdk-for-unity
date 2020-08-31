@@ -1508,6 +1508,406 @@ namespace Gs2.Gs2Ranking
 			return Gs2WebSocketSession.Execute(task);
         }
 
+        private class GetScoreTask : Gs2WebSocketSessionTask<Result.GetScoreResult>
+        {
+			private readonly Request.GetScoreRequest _request;
+
+			public GetScoreTask(Request.GetScoreRequest request, UnityAction<AsyncResult<Result.GetScoreResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.categoryName != null)
+                {
+                    jsonWriter.WritePropertyName("categoryName");
+                    jsonWriter.Write(_request.categoryName.ToString());
+                }
+                if (_request.scorerUserId != null)
+                {
+                    jsonWriter.WritePropertyName("scorerUserId");
+                    jsonWriter.Write(_request.scorerUserId.ToString());
+                }
+                if (_request.uniqueId != null)
+                {
+                    jsonWriter.WritePropertyName("uniqueId");
+                    jsonWriter.Write(_request.uniqueId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2AccessToken");
+                    jsonWriter.Write(_request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("ranking");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("score");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("getScore");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  スコアを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetScore(
+                Request.GetScoreRequest request,
+                UnityAction<AsyncResult<Result.GetScoreResult>> callback
+        )
+		{
+			var task = new GetScoreTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class GetScoreByUserIdTask : Gs2WebSocketSessionTask<Result.GetScoreByUserIdResult>
+        {
+			private readonly Request.GetScoreByUserIdRequest _request;
+
+			public GetScoreByUserIdTask(Request.GetScoreByUserIdRequest request, UnityAction<AsyncResult<Result.GetScoreByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.categoryName != null)
+                {
+                    jsonWriter.WritePropertyName("categoryName");
+                    jsonWriter.Write(_request.categoryName.ToString());
+                }
+                if (_request.userId != null)
+                {
+                    jsonWriter.WritePropertyName("userId");
+                    jsonWriter.Write(_request.userId.ToString());
+                }
+                if (_request.scorerUserId != null)
+                {
+                    jsonWriter.WritePropertyName("scorerUserId");
+                    jsonWriter.Write(_request.scorerUserId.ToString());
+                }
+                if (_request.uniqueId != null)
+                {
+                    jsonWriter.WritePropertyName("uniqueId");
+                    jsonWriter.Write(_request.uniqueId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("ranking");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("score");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("getScoreByUserId");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  スコアを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetScoreByUserId(
+                Request.GetScoreByUserIdRequest request,
+                UnityAction<AsyncResult<Result.GetScoreByUserIdResult>> callback
+        )
+		{
+			var task = new GetScoreByUserIdTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class GetRankingTask : Gs2WebSocketSessionTask<Result.GetRankingResult>
+        {
+			private readonly Request.GetRankingRequest _request;
+
+			public GetRankingTask(Request.GetRankingRequest request, UnityAction<AsyncResult<Result.GetRankingResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.categoryName != null)
+                {
+                    jsonWriter.WritePropertyName("categoryName");
+                    jsonWriter.Write(_request.categoryName.ToString());
+                }
+                if (_request.scorerUserId != null)
+                {
+                    jsonWriter.WritePropertyName("scorerUserId");
+                    jsonWriter.Write(_request.scorerUserId.ToString());
+                }
+                if (_request.uniqueId != null)
+                {
+                    jsonWriter.WritePropertyName("uniqueId");
+                    jsonWriter.Write(_request.uniqueId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.accessToken != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2AccessToken");
+                    jsonWriter.Write(_request.accessToken);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("ranking");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("ranking");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("getRanking");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  ランキングを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetRanking(
+                Request.GetRankingRequest request,
+                UnityAction<AsyncResult<Result.GetRankingResult>> callback
+        )
+		{
+			var task = new GetRankingTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
+        private class GetRankingByUserIdTask : Gs2WebSocketSessionTask<Result.GetRankingByUserIdResult>
+        {
+			private readonly Request.GetRankingByUserIdRequest _request;
+
+			public GetRankingByUserIdTask(Request.GetRankingByUserIdRequest request, UnityAction<AsyncResult<Result.GetRankingByUserIdResult>> userCallback) : base(userCallback)
+			{
+				_request = request;
+			}
+
+            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
+            {
+                var stringBuilder = new StringBuilder();
+                var jsonWriter = new JsonWriter(stringBuilder);
+
+                jsonWriter.WriteObjectStart();
+
+                if (_request.namespaceName != null)
+                {
+                    jsonWriter.WritePropertyName("namespaceName");
+                    jsonWriter.Write(_request.namespaceName.ToString());
+                }
+                if (_request.categoryName != null)
+                {
+                    jsonWriter.WritePropertyName("categoryName");
+                    jsonWriter.Write(_request.categoryName.ToString());
+                }
+                if (_request.userId != null)
+                {
+                    jsonWriter.WritePropertyName("userId");
+                    jsonWriter.Write(_request.userId.ToString());
+                }
+                if (_request.scorerUserId != null)
+                {
+                    jsonWriter.WritePropertyName("scorerUserId");
+                    jsonWriter.Write(_request.scorerUserId.ToString());
+                }
+                if (_request.uniqueId != null)
+                {
+                    jsonWriter.WritePropertyName("uniqueId");
+                    jsonWriter.Write(_request.uniqueId.ToString());
+                }
+                if (_request.contextStack != null)
+                {
+                    jsonWriter.WritePropertyName("contextStack");
+                    jsonWriter.Write(_request.contextStack.ToString());
+                }
+                if (_request.requestId != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2RequestId");
+                    jsonWriter.Write(_request.requestId);
+                }
+                if (_request.duplicationAvoider != null)
+                {
+                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
+                    jsonWriter.Write(_request.duplicationAvoider);
+                }
+
+                jsonWriter.WritePropertyName("xGs2ClientId");
+                jsonWriter.Write(gs2Session.Credential.ClientId);
+                jsonWriter.WritePropertyName("xGs2ProjectToken");
+                jsonWriter.Write(gs2Session.ProjectToken);
+
+                jsonWriter.WritePropertyName("x_gs2");
+                jsonWriter.WriteObjectStart();
+                jsonWriter.WritePropertyName("service");
+                jsonWriter.Write("ranking");
+                jsonWriter.WritePropertyName("component");
+                jsonWriter.Write("ranking");
+                jsonWriter.WritePropertyName("function");
+                jsonWriter.Write("getRankingByUserId");
+                jsonWriter.WritePropertyName("contentType");
+                jsonWriter.Write("application/json");
+                jsonWriter.WritePropertyName("requestId");
+                jsonWriter.Write(Gs2SessionTaskId.ToString());
+                jsonWriter.WriteObjectEnd();
+
+                jsonWriter.WriteObjectEnd();
+
+                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
+
+                return new EmptyCoroutine();
+            }
+        }
+
+		/// <summary>
+		///  ランキングを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="request">リクエストパラメータ</param>
+		public IEnumerator GetRankingByUserId(
+                Request.GetRankingByUserIdRequest request,
+                UnityAction<AsyncResult<Result.GetRankingByUserIdResult>> callback
+        )
+		{
+			var task = new GetRankingByUserIdTask(request, callback);
+			return Gs2WebSocketSession.Execute(task);
+        }
+
         private class PutScoreTask : Gs2WebSocketSessionTask<Result.PutScoreResult>
         {
 			private readonly Request.PutScoreRequest _request;
