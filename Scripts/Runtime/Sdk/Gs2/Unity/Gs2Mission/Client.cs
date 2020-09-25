@@ -116,63 +116,6 @@ namespace Gs2.Unity.Gs2Mission
 		}
 
 		/// <summary>
-		///  ミッショングループモデルの一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		public IEnumerator ListMissionGroupModels(
-		        UnityAction<AsyncResult<EzListMissionGroupModelsResult>> callback,
-                string namespaceName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-                null,
-                cb => _restClient.DescribeMissionGroupModels(
-                    new DescribeMissionGroupModelsRequest()
-                        .WithNamespaceName(namespaceName),
-                    r => cb.Invoke(
-                        new AsyncResult<EzListMissionGroupModelsResult>(
-                            r.Result == null ? null : new EzListMissionGroupModelsResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  ミッショングループ名を指定してミッショングループモデルを取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="missionGroupName">グループ名</param>
-		public IEnumerator GetMissionGroupModel(
-		        UnityAction<AsyncResult<EzGetMissionGroupModelResult>> callback,
-                string namespaceName,
-                string missionGroupName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-                null,
-                cb => _client.GetMissionGroupModel(
-                    new GetMissionGroupModelRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithMissionGroupName(missionGroupName),
-                    r => cb.Invoke(
-                        new AsyncResult<EzGetMissionGroupModelResult>(
-                            r.Result == null ? null : new EzGetMissionGroupModelResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
 		///  ミッションタスクモデルの一覧を取得<br />
 		/// </summary>
         ///
@@ -336,6 +279,63 @@ namespace Gs2.Unity.Gs2Mission
                     r => cb.Invoke(
                         new AsyncResult<EzReceiveRewardsResult>(
                             r.Result == null ? null : new EzReceiveRewardsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  ミッショングループモデルの一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		public IEnumerator ListMissionGroupModels(
+		        UnityAction<AsyncResult<EzListMissionGroupModelsResult>> callback,
+                string namespaceName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeMissionGroupModels(
+                    new DescribeMissionGroupModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListMissionGroupModelsResult>(
+                            r.Result == null ? null : new EzListMissionGroupModelsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  ミッショングループ名を指定してミッショングループモデルを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="missionGroupName">グループ名</param>
+		public IEnumerator GetMissionGroupModel(
+		        UnityAction<AsyncResult<EzGetMissionGroupModelResult>> callback,
+                string namespaceName,
+                string missionGroupName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetMissionGroupModel(
+                    new GetMissionGroupModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithMissionGroupName(missionGroupName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetMissionGroupModelResult>(
+                            r.Result == null ? null : new EzGetMissionGroupModelResult(r.Result),
                             r.Error
                         )
                     )

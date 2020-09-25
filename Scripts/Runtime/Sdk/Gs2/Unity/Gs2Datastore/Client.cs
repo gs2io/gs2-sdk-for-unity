@@ -48,7 +48,7 @@ namespace Gs2.Unity.Gs2Datastore
 		}
 
 		/// <summary>
-		///  データのアップロード準備<br />
+		///  データオブジェクトの一覧を取得<br />
 		/// </summary>
         ///
 		/// <returns>IEnumerator</returns>
@@ -67,39 +67,28 @@ namespace Gs2.Unity.Gs2Datastore
                 long? limit=null
         )
 		{
-            yield return _restClient.DescribeDataObjects(
-                new DescribeDataObjectsRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithStatus(status)
-                    .WithPageToken(pageToken)
-                    .WithLimit(limit)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListMyDataObjectsResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListMyDataObjectsResult>(
-                                new EzListMyDataObjectsResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribeDataObjects(
+                    new DescribeDataObjectsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithStatus(status)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListMyDataObjectsResult>(
+                            r.Result == null ? null : new EzListMyDataObjectsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
 		/// <summary>
-		///  データのアップロード準備<br />
+		///  データオブジェクトを更新<br />
 		/// </summary>
         ///
 		/// <returns>IEnumerator</returns>
@@ -116,33 +105,22 @@ namespace Gs2.Unity.Gs2Datastore
                 List<string> allowUserIds
         )
 		{
-            yield return _client.UpdateDataObject(
-                new UpdateDataObjectRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithScope(scope)
-                    .WithAllowUserIds(allowUserIds)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzUpdateDataObjectResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzUpdateDataObjectResult>(
-                                new EzUpdateDataObjectResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.UpdateDataObject(
+                    new UpdateDataObjectRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithScope(scope)
+                        .WithAllowUserIds(allowUserIds)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzUpdateDataObjectResult>(
+                            r.Result == null ? null : new EzUpdateDataObjectResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -168,35 +146,24 @@ namespace Gs2.Unity.Gs2Datastore
                 bool? updateIfExists=null
         )
 		{
-            yield return _client.PrepareUpload(
-                new PrepareUploadRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithName(name)
-                    .WithScope(scope)
-                    .WithAllowUserIds(allowUserIds)
-                    .WithUpdateIfExists(updateIfExists)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzPrepareUploadResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzPrepareUploadResult>(
-                                new EzPrepareUploadResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.PrepareUpload(
+                    new PrepareUploadRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithName(name)
+                        .WithScope(scope)
+                        .WithAllowUserIds(allowUserIds)
+                        .WithUpdateIfExists(updateIfExists)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzPrepareUploadResult>(
+                            r.Result == null ? null : new EzPrepareUploadResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -216,37 +183,26 @@ namespace Gs2.Unity.Gs2Datastore
                 string dataObjectName
         )
 		{
-            yield return _client.PrepareReUpload(
-                new PrepareReUploadRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithDataObjectName(dataObjectName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzPrepareReUploadResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzPrepareReUploadResult>(
-                                new EzPrepareReUploadResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.PrepareReUpload(
+                    new PrepareReUploadRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithDataObjectName(dataObjectName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzPrepareReUploadResult>(
+                            r.Result == null ? null : new EzPrepareReUploadResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
 		/// <summary>
-		///  データのアップロード準備<br />
+		///  データのアップロード完了を報告<br />
 		/// </summary>
         ///
 		/// <returns>IEnumerator</returns>
@@ -261,37 +217,26 @@ namespace Gs2.Unity.Gs2Datastore
                 string dataObjectName
         )
 		{
-            yield return _client.DoneUpload(
-                new DoneUploadRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithDataObjectName(dataObjectName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDoneUploadResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDoneUploadResult>(
-                                new EzDoneUploadResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DoneUpload(
+                    new DoneUploadRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithDataObjectName(dataObjectName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzDoneUploadResult>(
+                            r.Result == null ? null : new EzDoneUploadResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
 		/// <summary>
-		///  データをダウンロード<br />
+		///  データをダウンロード準備<br />
 		/// </summary>
         ///
 		/// <returns>IEnumerator</returns>
@@ -306,37 +251,26 @@ namespace Gs2.Unity.Gs2Datastore
                 string dataObjectId
         )
 		{
-            yield return _client.PrepareDownload(
-                new PrepareDownloadRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithDataObjectId(dataObjectId)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzPrepareDownloadResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzPrepareDownloadResult>(
-                                new EzPrepareDownloadResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.PrepareDownload(
+                    new PrepareDownloadRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithDataObjectId(dataObjectId)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzPrepareDownloadResult>(
+                            r.Result == null ? null : new EzPrepareDownloadResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
 		/// <summary>
-		///  自分のデータをダウンロード<br />
+		///  自分のデータをダウンロード準備<br />
 		/// </summary>
         ///
 		/// <returns>IEnumerator</returns>
@@ -351,32 +285,54 @@ namespace Gs2.Unity.Gs2Datastore
                 string dataObjectName
         )
 		{
-            yield return _client.PrepareDownloadOwnData(
-                new PrepareDownloadOwnDataRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithDataObjectName(dataObjectName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzPrepareDownloadOwnDataResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzPrepareDownloadOwnDataResult>(
-                                new EzPrepareDownloadOwnDataResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.PrepareDownloadOwnData(
+                    new PrepareDownloadOwnDataRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithDataObjectName(dataObjectName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzPrepareDownloadOwnDataResult>(
+                            r.Result == null ? null : new EzPrepareDownloadOwnDataResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  ユーザIDとデータ名を指定してデータをダウンロード準備<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="userId">ユーザーID</param>
+		/// <param name="dataObjectName">データの名前</param>
+		public IEnumerator PrepareDownloadByUserIdAndDataObjectName(
+		        UnityAction<AsyncResult<EzPrepareDownloadByUserIdAndDataObjectNameResult>> callback,
+                string namespaceName,
+                string userId,
+                string dataObjectName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.PrepareDownloadByUserIdAndDataObjectName(
+                    new PrepareDownloadByUserIdAndDataObjectNameRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithUserId(userId)
+                        .WithDataObjectName(dataObjectName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzPrepareDownloadByUserIdAndDataObjectNameResult>(
+                            r.Result == null ? null : new EzPrepareDownloadByUserIdAndDataObjectNameResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -396,32 +352,21 @@ namespace Gs2.Unity.Gs2Datastore
                 string dataObjectName
         )
 		{
-            yield return _client.DeleteDataObject(
-                new DeleteDataObjectRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithDataObjectName(dataObjectName)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDeleteDataObjectResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzDeleteDataObjectResult>(
-                                new EzDeleteDataObjectResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.DeleteDataObject(
+                    new DeleteDataObjectRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithDataObjectName(dataObjectName)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzDeleteDataObjectResult>(
+                            r.Result == null ? null : new EzDeleteDataObjectResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -445,34 +390,23 @@ namespace Gs2.Unity.Gs2Datastore
                 long? limit=null
         )
 		{
-            yield return _restClient.DescribeDataObjectHistories(
-                new DescribeDataObjectHistoriesRequest()
-                    .WithNamespaceName(namespaceName)
-                    .WithDataObjectName(dataObjectName)
-                    .WithPageToken(pageToken)
-                    .WithLimit(limit)
-                    .WithAccessToken(session.AccessToken.token),
-				r =>
-				{
-				    if(r.Result == null)
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListDataObhectHistoriesResult>(
-                                null,
-                                r.Error
-                            )
-                        );
-				    }
-				    else
-				    {
-                        callback.Invoke(
-                            new AsyncResult<EzListDataObhectHistoriesResult>(
-                                new EzListDataObhectHistoriesResult(r.Result),
-                                r.Error
-                            )
-                        );
-                    }
-				}
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribeDataObjectHistories(
+                    new DescribeDataObjectHistoriesRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithDataObjectName(dataObjectName)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithAccessToken(session.AccessToken.token),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListDataObhectHistoriesResult>(
+                            r.Result == null ? null : new EzListDataObhectHistoriesResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
             );
 		}
 
@@ -930,6 +864,90 @@ namespace Gs2.Unity.Gs2Datastore
 					},
 					session,
 					namespaceName,
+					dataObjectName
+				);
+				
+				if (result == null)
+				{
+					yield break;
+				}
+
+				downloadUrl = result.FileUrl;
+			}
+			{
+				EzDownloadImplResult result = null;
+				yield return DownloadImpl(
+					r =>
+					{
+						if (r.Error != null)
+						{
+							callback.Invoke(
+								new AsyncResult<EzDownloadResult>(
+									null,
+									r.Error
+								)
+							);
+						}
+						else
+						{
+							result = r.Result;
+						}
+					},
+					downloadUrl
+				);
+
+				if (result == null)
+				{
+					yield break;
+				}
+				
+				callback.Invoke(
+					new AsyncResult<EzDownloadResult>(
+						new EzDownloadResult(result.Data), 
+						null
+					)
+				);
+			}
+		}
+
+		/// <summary>
+		///  ユーザIDとデータ名を指定してデータをダウンロード<br />
+		/// </summary>
+		///
+		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="userId">ユーザーID</param>
+		/// <param name="dataObjectName">データの名前</param>
+		public IEnumerator DownloadByUserIdAndDataObjectName(
+			UnityAction<AsyncResult<EzDownloadResult>> callback,
+			string namespaceName,
+			string userId,
+			string dataObjectName
+		)
+		{
+			string downloadUrl;
+			{
+				EzPrepareDownloadByUserIdAndDataObjectNameResult result = null;
+				yield return PrepareDownloadByUserIdAndDataObjectName(
+					r =>
+					{
+						if (r.Error != null)
+						{
+							callback.Invoke(
+								new AsyncResult<EzDownloadResult>(
+									null,
+									r.Error
+								)
+							);
+						}
+						else
+						{
+							result = r.Result;
+						}
+					},
+					namespaceName,
+					userId,
 					dataObjectName
 				);
 				
