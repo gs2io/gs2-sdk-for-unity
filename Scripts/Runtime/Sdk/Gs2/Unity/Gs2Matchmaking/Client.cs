@@ -302,11 +302,14 @@ namespace Gs2.Unity.Gs2Matchmaking
 		/// </summary>
         ///
 		/// <returns>IEnumerator</returns>
+		/// <param name="callback">コールバックハンドラ</param>
+		/// <param name="session">ゲームセッション</param>
 		/// <param name="namespaceName">ネームスペース名</param>
 		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
 		/// <param name="limit">データの取得件数</param>
 		public IEnumerator ListRatings(
 		        UnityAction<AsyncResult<EzListRatingsResult>> callback,
+		        GameSession session,
                 string namespaceName,
                 string pageToken=null,
                 long? limit=null
@@ -314,12 +317,13 @@ namespace Gs2.Unity.Gs2Matchmaking
 		{
             yield return _profile.Run(
                 callback,
-                null,
+		        session,
                 cb => _restClient.DescribeRatings(
                     new DescribeRatingsRequest()
                         .WithNamespaceName(namespaceName)
                         .WithPageToken(pageToken)
-                        .WithLimit(limit),
+                        .WithLimit(limit)
+                        .WithAccessToken(session.AccessToken.token),
                     r => cb.Invoke(
                         new AsyncResult<EzListRatingsResult>(
                             r.Result == null ? null : new EzListRatingsResult(r.Result),
