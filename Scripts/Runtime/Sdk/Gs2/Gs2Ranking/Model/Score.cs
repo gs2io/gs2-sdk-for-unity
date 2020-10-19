@@ -185,16 +185,16 @@ namespace Gs2.Gs2Ranking.Model
             writer.WriteObjectEnd();
         }
 
-    public static string GetCategoryNameFromGrn(
+    public static string GetUniqueIdFromGrn(
         string grn
     )
     {
         var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):ranking:(?<namespaceName>.*):user:(?<userId>.*):category:(?<categoryName>.*):score:(?<scorerUserId>.*):(?<uniqueId>.*)");
-        if (!match.Groups["categoryName"].Success)
+        if (!match.Groups["uniqueId"].Success)
         {
             return null;
         }
-        return match.Groups["categoryName"].Value;
+        return match.Groups["uniqueId"].Value;
     }
 
     public static string GetScorerUserIdFromGrn(
@@ -209,16 +209,16 @@ namespace Gs2.Gs2Ranking.Model
         return match.Groups["scorerUserId"].Value;
     }
 
-    public static string GetUniqueIdFromGrn(
+    public static string GetCategoryNameFromGrn(
         string grn
     )
     {
         var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):ranking:(?<namespaceName>.*):user:(?<userId>.*):category:(?<categoryName>.*):score:(?<scorerUserId>.*):(?<uniqueId>.*)");
-        if (!match.Groups["uniqueId"].Success)
+        if (!match.Groups["categoryName"].Success)
         {
             return null;
         }
-        return match.Groups["uniqueId"].Value;
+        return match.Groups["categoryName"].Value;
     }
 
     public static string GetUserIdFromGrn(

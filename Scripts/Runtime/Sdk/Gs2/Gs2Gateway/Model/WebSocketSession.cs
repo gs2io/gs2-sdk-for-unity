@@ -41,6 +41,20 @@ namespace Gs2.Gs2Gateway.Model
             return this;
         }
 
+        /** API ID */
+        public string apiId { set; get; }
+
+        /**
+         * API IDを設定
+         *
+         * @param apiId API ID
+         * @return this
+         */
+        public WebSocketSession WithApiId(string apiId) {
+            this.apiId = apiId;
+            return this;
+        }
+
         /** オーナーID */
         public string ownerId { set; get; }
 
@@ -119,6 +133,11 @@ namespace Gs2.Gs2Gateway.Model
                 writer.WritePropertyName("connectionId");
                 writer.Write(this.connectionId);
             }
+            if(this.apiId != null)
+            {
+                writer.WritePropertyName("apiId");
+                writer.Write(this.apiId);
+            }
             if(this.ownerId != null)
             {
                 writer.WritePropertyName("ownerId");
@@ -152,6 +171,7 @@ namespace Gs2.Gs2Gateway.Model
         {
             return new WebSocketSession()
                 .WithConnectionId(data.Keys.Contains("connectionId") && data["connectionId"] != null ? data["connectionId"].ToString() : null)
+                .WithApiId(data.Keys.Contains("apiId") && data["apiId"] != null ? data["apiId"].ToString() : null)
                 .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
                 .WithNamespaceName(data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString() : null)
                 .WithUserId(data.Keys.Contains("userId") && data["userId"] != null ? data["userId"].ToString() : null)
@@ -170,6 +190,14 @@ namespace Gs2.Gs2Gateway.Model
             else
             {
                 diff += connectionId.CompareTo(other.connectionId);
+            }
+            if (apiId == null && apiId == other.apiId)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += apiId.CompareTo(other.apiId);
             }
             if (ownerId == null && ownerId == other.ownerId)
             {

@@ -167,11 +167,7 @@ namespace Gs2.Unity.Gs2Realtime
                 }
                 else
                 {
-#if DISABLE_COROUTINE
                     yield return null;
-#else
-                    yield return new WaitForSeconds(1);
-#endif
                 }
             }
         }

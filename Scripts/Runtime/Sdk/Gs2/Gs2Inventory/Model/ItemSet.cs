@@ -247,18 +247,6 @@ namespace Gs2.Gs2Inventory.Model
             writer.WriteObjectEnd();
         }
 
-    public static string GetItemNameFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):inventory:(?<namespaceName>.*):user:(?<userId>.*):inventory:(?<inventoryName>.*):item:(?<itemName>.*):itemSet:(?<itemSetName>.*)");
-        if (!match.Groups["itemName"].Success)
-        {
-            return null;
-        }
-        return match.Groups["itemName"].Value;
-    }
-
     public static string GetItemSetNameFromGrn(
         string grn
     )
@@ -269,6 +257,18 @@ namespace Gs2.Gs2Inventory.Model
             return null;
         }
         return match.Groups["itemSetName"].Value;
+    }
+
+    public static string GetItemNameFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):inventory:(?<namespaceName>.*):user:(?<userId>.*):inventory:(?<inventoryName>.*):item:(?<itemName>.*):itemSet:(?<itemSetName>.*)");
+        if (!match.Groups["itemName"].Success)
+        {
+            return null;
+        }
+        return match.Groups["itemName"].Value;
     }
 
     public static string GetInventoryNameFromGrn(

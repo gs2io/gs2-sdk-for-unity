@@ -153,6 +153,34 @@ namespace Gs2.Gs2Ranking.Model
             return this;
         }
 
+        /** スコアの固定集計開始時刻(時) */
+        public int? calculateFixedTimingHour { set; get; }
+
+        /**
+         * スコアの固定集計開始時刻(時)を設定
+         *
+         * @param calculateFixedTimingHour スコアの固定集計開始時刻(時)
+         * @return this
+         */
+        public CategoryModelMaster WithCalculateFixedTimingHour(int? calculateFixedTimingHour) {
+            this.calculateFixedTimingHour = calculateFixedTimingHour;
+            return this;
+        }
+
+        /** スコアの固定集計開始時刻(分) */
+        public int? calculateFixedTimingMinute { set; get; }
+
+        /**
+         * スコアの固定集計開始時刻(分)を設定
+         *
+         * @param calculateFixedTimingMinute スコアの固定集計開始時刻(分)
+         * @return this
+         */
+        public CategoryModelMaster WithCalculateFixedTimingMinute(int? calculateFixedTimingMinute) {
+            this.calculateFixedTimingMinute = calculateFixedTimingMinute;
+            return this;
+        }
+
         /** スコアの集計間隔(分) */
         public int? calculateIntervalMinutes { set; get; }
 
@@ -192,6 +220,20 @@ namespace Gs2.Gs2Ranking.Model
          */
         public CategoryModelMaster WithAccessPeriodEventId(string accessPeriodEventId) {
             this.accessPeriodEventId = accessPeriodEventId;
+            return this;
+        }
+
+        /** ランキングの世代 */
+        public string generation { set; get; }
+
+        /**
+         * ランキングの世代を設定
+         *
+         * @param generation ランキングの世代
+         * @return this
+         */
+        public CategoryModelMaster WithGeneration(string generation) {
+            this.generation = generation;
             return this;
         }
 
@@ -271,6 +313,16 @@ namespace Gs2.Gs2Ranking.Model
                 writer.WritePropertyName("uniqueByUserId");
                 writer.Write(this.uniqueByUserId.Value);
             }
+            if(this.calculateFixedTimingHour.HasValue)
+            {
+                writer.WritePropertyName("calculateFixedTimingHour");
+                writer.Write(this.calculateFixedTimingHour.Value);
+            }
+            if(this.calculateFixedTimingMinute.HasValue)
+            {
+                writer.WritePropertyName("calculateFixedTimingMinute");
+                writer.Write(this.calculateFixedTimingMinute.Value);
+            }
             if(this.calculateIntervalMinutes.HasValue)
             {
                 writer.WritePropertyName("calculateIntervalMinutes");
@@ -285,6 +337,11 @@ namespace Gs2.Gs2Ranking.Model
             {
                 writer.WritePropertyName("accessPeriodEventId");
                 writer.Write(this.accessPeriodEventId);
+            }
+            if(this.generation != null)
+            {
+                writer.WritePropertyName("generation");
+                writer.Write(this.generation);
             }
             if(this.createdAt.HasValue)
             {
@@ -360,9 +417,12 @@ namespace Gs2.Gs2Ranking.Model
                 .WithOrderDirection(data.Keys.Contains("orderDirection") && data["orderDirection"] != null ? data["orderDirection"].ToString() : null)
                 .WithScope(data.Keys.Contains("scope") && data["scope"] != null ? data["scope"].ToString() : null)
                 .WithUniqueByUserId(data.Keys.Contains("uniqueByUserId") && data["uniqueByUserId"] != null ? (bool?)bool.Parse(data["uniqueByUserId"].ToString()) : null)
+                .WithCalculateFixedTimingHour(data.Keys.Contains("calculateFixedTimingHour") && data["calculateFixedTimingHour"] != null ? (int?)int.Parse(data["calculateFixedTimingHour"].ToString()) : null)
+                .WithCalculateFixedTimingMinute(data.Keys.Contains("calculateFixedTimingMinute") && data["calculateFixedTimingMinute"] != null ? (int?)int.Parse(data["calculateFixedTimingMinute"].ToString()) : null)
                 .WithCalculateIntervalMinutes(data.Keys.Contains("calculateIntervalMinutes") && data["calculateIntervalMinutes"] != null ? (int?)int.Parse(data["calculateIntervalMinutes"].ToString()) : null)
                 .WithEntryPeriodEventId(data.Keys.Contains("entryPeriodEventId") && data["entryPeriodEventId"] != null ? data["entryPeriodEventId"].ToString() : null)
                 .WithAccessPeriodEventId(data.Keys.Contains("accessPeriodEventId") && data["accessPeriodEventId"] != null ? data["accessPeriodEventId"].ToString() : null)
+                .WithGeneration(data.Keys.Contains("generation") && data["generation"] != null ? data["generation"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
@@ -443,6 +503,22 @@ namespace Gs2.Gs2Ranking.Model
             {
                 diff += uniqueByUserId == other.uniqueByUserId ? 0 : 1;
             }
+            if (calculateFixedTimingHour == null && calculateFixedTimingHour == other.calculateFixedTimingHour)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(calculateFixedTimingHour - other.calculateFixedTimingHour);
+            }
+            if (calculateFixedTimingMinute == null && calculateFixedTimingMinute == other.calculateFixedTimingMinute)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(calculateFixedTimingMinute - other.calculateFixedTimingMinute);
+            }
             if (calculateIntervalMinutes == null && calculateIntervalMinutes == other.calculateIntervalMinutes)
             {
                 // null and null
@@ -466,6 +542,14 @@ namespace Gs2.Gs2Ranking.Model
             else
             {
                 diff += accessPeriodEventId.CompareTo(other.accessPeriodEventId);
+            }
+            if (generation == null && generation == other.generation)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += generation.CompareTo(other.generation);
             }
             if (createdAt == null && createdAt == other.createdAt)
             {

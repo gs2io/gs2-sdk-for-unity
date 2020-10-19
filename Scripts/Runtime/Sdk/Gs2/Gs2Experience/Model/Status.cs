@@ -204,18 +204,6 @@ namespace Gs2.Gs2Experience.Model
             writer.WriteObjectEnd();
         }
 
-    public static string GetExperienceNameFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):experience:(?<namespaceName>.*):user:(?<userId>.*):experienceModel:(?<experienceName>.*):property:(?<propertyId>.*)");
-        if (!match.Groups["experienceName"].Success)
-        {
-            return null;
-        }
-        return match.Groups["experienceName"].Value;
-    }
-
     public static string GetPropertyIdFromGrn(
         string grn
     )
@@ -226,6 +214,18 @@ namespace Gs2.Gs2Experience.Model
             return null;
         }
         return match.Groups["propertyId"].Value;
+    }
+
+    public static string GetExperienceNameFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):experience:(?<namespaceName>.*):user:(?<userId>.*):experienceModel:(?<experienceName>.*):property:(?<propertyId>.*)");
+        if (!match.Groups["experienceName"].Success)
+        {
+            return null;
+        }
+        return match.Groups["experienceName"].Value;
     }
 
     public static string GetUserIdFromGrn(

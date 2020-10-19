@@ -579,6 +579,16 @@ namespace Gs2.Gs2Ranking
                     jsonWriter.WritePropertyName("uniqueByUserId");
                     jsonWriter.Write(_request.uniqueByUserId.ToString());
                 }
+                if (_request.calculateFixedTimingHour != null)
+                {
+                    jsonWriter.WritePropertyName("calculateFixedTimingHour");
+                    jsonWriter.Write(_request.calculateFixedTimingHour.ToString());
+                }
+                if (_request.calculateFixedTimingMinute != null)
+                {
+                    jsonWriter.WritePropertyName("calculateFixedTimingMinute");
+                    jsonWriter.Write(_request.calculateFixedTimingMinute.ToString());
+                }
                 if (_request.calculateIntervalMinutes != null)
                 {
                     jsonWriter.WritePropertyName("calculateIntervalMinutes");
@@ -593,6 +603,11 @@ namespace Gs2.Gs2Ranking
                 {
                     jsonWriter.WritePropertyName("accessPeriodEventId");
                     jsonWriter.Write(_request.accessPeriodEventId.ToString());
+                }
+                if (_request.generation != null)
+                {
+                    jsonWriter.WritePropertyName("generation");
+                    jsonWriter.Write(_request.generation.ToString());
                 }
                 if (_request.contextStack != null)
                 {
@@ -789,6 +804,16 @@ namespace Gs2.Gs2Ranking
                     jsonWriter.WritePropertyName("uniqueByUserId");
                     jsonWriter.Write(_request.uniqueByUserId.ToString());
                 }
+                if (_request.calculateFixedTimingHour != null)
+                {
+                    jsonWriter.WritePropertyName("calculateFixedTimingHour");
+                    jsonWriter.Write(_request.calculateFixedTimingHour.ToString());
+                }
+                if (_request.calculateFixedTimingMinute != null)
+                {
+                    jsonWriter.WritePropertyName("calculateFixedTimingMinute");
+                    jsonWriter.Write(_request.calculateFixedTimingMinute.ToString());
+                }
                 if (_request.calculateIntervalMinutes != null)
                 {
                     jsonWriter.WritePropertyName("calculateIntervalMinutes");
@@ -803,6 +828,11 @@ namespace Gs2.Gs2Ranking
                 {
                     jsonWriter.WritePropertyName("accessPeriodEventId");
                     jsonWriter.Write(_request.accessPeriodEventId.ToString());
+                }
+                if (_request.generation != null)
+                {
+                    jsonWriter.WritePropertyName("generation");
+                    jsonWriter.Write(_request.generation.ToString());
                 }
                 if (_request.contextStack != null)
                 {

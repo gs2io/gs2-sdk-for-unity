@@ -173,6 +173,38 @@ namespace Gs2.Gs2Ranking.Request
         }
 
 
+        /** スコアの固定集計開始時刻(時) */
+		[UnityEngine.SerializeField]
+        public int? calculateFixedTimingHour;
+
+        /**
+         * スコアの固定集計開始時刻(時)を設定
+         *
+         * @param calculateFixedTimingHour スコアの固定集計開始時刻(時)
+         * @return this
+         */
+        public CreateCategoryModelMasterRequest WithCalculateFixedTimingHour(int? calculateFixedTimingHour) {
+            this.calculateFixedTimingHour = calculateFixedTimingHour;
+            return this;
+        }
+
+
+        /** スコアの固定集計開始時刻(分) */
+		[UnityEngine.SerializeField]
+        public int? calculateFixedTimingMinute;
+
+        /**
+         * スコアの固定集計開始時刻(分)を設定
+         *
+         * @param calculateFixedTimingMinute スコアの固定集計開始時刻(分)
+         * @return this
+         */
+        public CreateCategoryModelMasterRequest WithCalculateFixedTimingMinute(int? calculateFixedTimingMinute) {
+            this.calculateFixedTimingMinute = calculateFixedTimingMinute;
+            return this;
+        }
+
+
         /** スコアの集計間隔(分) */
 		[UnityEngine.SerializeField]
         public int? calculateIntervalMinutes;
@@ -221,6 +253,22 @@ namespace Gs2.Gs2Ranking.Request
         }
 
 
+        /** ランキングの世代 */
+		[UnityEngine.SerializeField]
+        public string generation;
+
+        /**
+         * ランキングの世代を設定
+         *
+         * @param generation ランキングの世代
+         * @return this
+         */
+        public CreateCategoryModelMasterRequest WithGeneration(string generation) {
+            this.generation = generation;
+            return this;
+        }
+
+
     	[Preserve]
         public static CreateCategoryModelMasterRequest FromDict(JsonData data)
         {
@@ -234,9 +282,12 @@ namespace Gs2.Gs2Ranking.Request
                 orderDirection = data.Keys.Contains("orderDirection") && data["orderDirection"] != null ? data["orderDirection"].ToString(): null,
                 scope = data.Keys.Contains("scope") && data["scope"] != null ? data["scope"].ToString(): null,
                 uniqueByUserId = data.Keys.Contains("uniqueByUserId") && data["uniqueByUserId"] != null ? (bool?)bool.Parse(data["uniqueByUserId"].ToString()) : null,
+                calculateFixedTimingHour = data.Keys.Contains("calculateFixedTimingHour") && data["calculateFixedTimingHour"] != null ? (int?)int.Parse(data["calculateFixedTimingHour"].ToString()) : null,
+                calculateFixedTimingMinute = data.Keys.Contains("calculateFixedTimingMinute") && data["calculateFixedTimingMinute"] != null ? (int?)int.Parse(data["calculateFixedTimingMinute"].ToString()) : null,
                 calculateIntervalMinutes = data.Keys.Contains("calculateIntervalMinutes") && data["calculateIntervalMinutes"] != null ? (int?)int.Parse(data["calculateIntervalMinutes"].ToString()) : null,
                 entryPeriodEventId = data.Keys.Contains("entryPeriodEventId") && data["entryPeriodEventId"] != null ? data["entryPeriodEventId"].ToString(): null,
                 accessPeriodEventId = data.Keys.Contains("accessPeriodEventId") && data["accessPeriodEventId"] != null ? data["accessPeriodEventId"].ToString(): null,
+                generation = data.Keys.Contains("generation") && data["generation"] != null ? data["generation"].ToString(): null,
             };
         }
 
