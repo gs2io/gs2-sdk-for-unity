@@ -11,8 +11,15 @@ using UnityEngine.Events;
 
 namespace Gs2.Unity.Util
 {
+    public class ReOpenEvent : UnityEvent
+    {
+        
+    }
+    
     public class Gs2BasicReopener : IReopener
     {
+        public ReOpenEvent onReOpen = new ReOpenEvent();
+
         public override IEnumerator ReOpen(
             Gs2WebSocketSession session, 
             Gs2RestSession restSession, 
@@ -21,6 +28,8 @@ namespace Gs2.Unity.Util
         {
             yield return session.Open(callback);
             yield return restSession.Open(callback);
+            
+            onReOpen.Invoke();
         }
     }
 }
