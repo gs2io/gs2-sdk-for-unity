@@ -29,6 +29,7 @@ namespace Gs2.Gs2Matchmaking
 {
 	public class Gs2MatchmakingRestClient : AbstractGs2Client
 	{
+		private readonly CertificateHandler _certificateHandler;
 
 		public static string Endpoint = "matchmaking";
 
@@ -41,6 +42,16 @@ namespace Gs2.Gs2Matchmaking
 		public Gs2MatchmakingRestClient(Gs2RestSession Gs2RestSession) : base(Gs2RestSession)
 		{
 
+		}
+
+		/// <summary>
+		/// コンストラクタ。
+		/// </summary>
+		/// <param name="gs2RestSession">REST API 用セッション</param>
+		/// <param name="certificateHandler"></param>
+		public Gs2MatchmakingRestClient(Gs2RestSession gs2RestSession, CertificateHandler certificateHandler) : base(gs2RestSession)
+		{
+			_certificateHandler = certificateHandler;
 		}
 
         private class DescribeNamespacesTask : Gs2RestSessionTask<Result.DescribeNamespacesResult>
@@ -98,6 +109,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new DescribeNamespacesTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -225,6 +240,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new CreateNamespaceTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -279,6 +298,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new GetNamespaceStatusTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -333,6 +356,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new GetNamespaceTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -457,6 +484,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new UpdateNamespaceTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -511,6 +542,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new DeleteNamespaceTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -571,6 +606,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new DescribeGatheringsTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -707,6 +746,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new CreateGatheringTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -840,6 +883,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new CreateGatheringByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -923,6 +970,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new UpdateGatheringTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1003,6 +1054,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new UpdateGatheringByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1081,6 +1136,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new DoMatchmakingByPlayerTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1167,6 +1226,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new DoMatchmakingTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1222,6 +1285,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new GetGatheringTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1287,6 +1354,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new CancelMatchmakingTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1349,6 +1420,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new CancelMatchmakingByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1404,6 +1479,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new DeleteGatheringTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1464,6 +1543,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new DescribeRatingModelMastersTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1548,6 +1631,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new CreateRatingModelMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1603,6 +1690,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new GetRatingModelMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1683,6 +1774,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new UpdateRatingModelMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1738,6 +1833,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new DeleteRatingModelMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1792,6 +1891,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new DescribeRatingModelsTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1847,6 +1950,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new GetRatingModelTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1901,6 +2008,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new ExportMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1955,6 +2066,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new GetCurrentRatingModelMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2024,6 +2139,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new UpdateCurrentRatingModelMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2093,6 +2212,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new UpdateCurrentRatingModelMasterFromGitHubTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2161,6 +2284,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new DescribeRatingsTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2226,6 +2353,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new DescribeRatingsByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2289,6 +2420,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new GetRatingTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2349,6 +2484,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new GetRatingByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2431,6 +2570,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new PutResultTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2491,6 +2634,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new DeleteRatingTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2580,6 +2727,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new GetBallotTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2666,6 +2817,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new GetBallotByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2762,6 +2917,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new VoteTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2855,6 +3014,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new VoteMultipleTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2874,9 +3037,11 @@ namespace Gs2.Gs2Matchmaking
                 var url = Gs2RestSession.EndpointHost
                     .Replace("{service}", "matchmaking")
                     .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/action/vote/commit";
+                    + "/{namespaceName}/user/{userId}/vote/{ratingName}/{gatheringName}/action/vote/commit";
 
                 url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
+                url = url.Replace("{ratingName}", !string.IsNullOrEmpty(_request.ratingName) ? _request.ratingName.ToString() : "null");
+                url = url.Replace("{gatheringName}", !string.IsNullOrEmpty(_request.gatheringName) ? _request.gatheringName.ToString() : "null");
 
                 UnityWebRequest.url = url;
 
@@ -2919,6 +3084,10 @@ namespace Gs2.Gs2Matchmaking
         )
 		{
 			var task = new CommitVoteTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 	}

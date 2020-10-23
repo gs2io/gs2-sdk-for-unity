@@ -29,6 +29,7 @@ namespace Gs2.Gs2Schedule
 {
 	public class Gs2ScheduleRestClient : AbstractGs2Client
 	{
+		private readonly CertificateHandler _certificateHandler;
 
 		public static string Endpoint = "schedule";
 
@@ -41,6 +42,16 @@ namespace Gs2.Gs2Schedule
 		public Gs2ScheduleRestClient(Gs2RestSession Gs2RestSession) : base(Gs2RestSession)
 		{
 
+		}
+
+		/// <summary>
+		/// コンストラクタ。
+		/// </summary>
+		/// <param name="gs2RestSession">REST API 用セッション</param>
+		/// <param name="certificateHandler"></param>
+		public Gs2ScheduleRestClient(Gs2RestSession gs2RestSession, CertificateHandler certificateHandler) : base(gs2RestSession)
+		{
+			_certificateHandler = certificateHandler;
 		}
 
         private class DescribeNamespacesTask : Gs2RestSessionTask<Result.DescribeNamespacesResult>
@@ -98,6 +109,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new DescribeNamespacesTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -175,6 +190,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new CreateNamespaceTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -229,6 +248,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new GetNamespaceStatusTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -283,6 +306,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new GetNamespaceTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -357,6 +384,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new UpdateNamespaceTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -411,6 +442,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new DeleteNamespaceTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -471,6 +506,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new DescribeEventMastersTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -610,6 +649,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new CreateEventMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -665,6 +708,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new GetEventMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -800,6 +847,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new UpdateEventMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -855,6 +906,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new DeleteEventMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -923,6 +978,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new DescribeTriggersTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -988,6 +1047,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new DescribeTriggersByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1051,6 +1114,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new GetTriggerTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1111,6 +1178,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new GetTriggerByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1191,6 +1262,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new TriggerByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1254,6 +1329,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new DeleteTriggerTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1314,6 +1393,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new DeleteTriggerByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1376,6 +1459,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new DescribeEventsTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1435,6 +1522,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new DescribeEventsByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1489,6 +1580,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new DescribeRawEventsTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1552,6 +1647,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new GetEventTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1612,6 +1711,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new GetEventByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1667,6 +1770,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new GetRawEventTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1721,6 +1828,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new ExportMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1775,6 +1886,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new GetCurrentEventMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1844,6 +1959,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new UpdateCurrentEventMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1913,6 +2032,10 @@ namespace Gs2.Gs2Schedule
         )
 		{
 			var task = new UpdateCurrentEventMasterFromGitHubTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 	}

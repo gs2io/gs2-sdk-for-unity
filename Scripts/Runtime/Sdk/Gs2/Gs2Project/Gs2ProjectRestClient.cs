@@ -29,6 +29,7 @@ namespace Gs2.Gs2Project
 {
 	public class Gs2ProjectRestClient : AbstractGs2Client
 	{
+		private readonly CertificateHandler _certificateHandler;
 
 		public static string Endpoint = "project";
 
@@ -41,6 +42,16 @@ namespace Gs2.Gs2Project
 		public Gs2ProjectRestClient(Gs2RestSession Gs2RestSession) : base(Gs2RestSession)
 		{
 
+		}
+
+		/// <summary>
+		/// コンストラクタ。
+		/// </summary>
+		/// <param name="gs2RestSession">REST API 用セッション</param>
+		/// <param name="certificateHandler"></param>
+		public Gs2ProjectRestClient(Gs2RestSession gs2RestSession, CertificateHandler certificateHandler) : base(gs2RestSession)
+		{
+			_certificateHandler = certificateHandler;
 		}
 
         private class CreateAccountTask : Gs2RestSessionTask<Result.CreateAccountResult>
@@ -122,6 +133,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new CreateAccountTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -189,6 +204,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new VerifyTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -261,6 +280,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new SignInTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -328,6 +351,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new IssueAccountTokenTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -395,6 +422,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new ForgetTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -462,6 +493,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new IssuePasswordTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -549,6 +584,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new UpdateAccountTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -601,6 +640,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new DeleteAccountTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -662,6 +705,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new DescribeProjectsTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -764,6 +811,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new CreateProjectTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -821,6 +872,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new GetProjectTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -890,6 +945,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new GetProjectTokenTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -961,6 +1020,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new GetProjectTokenByIdentifierTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1060,6 +1123,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new UpdateProjectTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1117,6 +1184,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new DeleteProjectTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1178,6 +1249,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new DescribeBillingMethodsTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1265,6 +1340,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new CreateBillingMethodTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1322,6 +1401,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new GetBillingMethodTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1396,6 +1479,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new UpdateBillingMethodTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1453,6 +1540,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new DeleteBillingMethodTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1514,6 +1605,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new DescribeReceiptsTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1579,6 +1674,10 @@ namespace Gs2.Gs2Project
         )
 		{
 			var task = new DescribeBillingsTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 	}

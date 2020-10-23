@@ -28,9 +28,17 @@ using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Unity.Util;
 using UnityEngine.Events;
+using UnityEngine.Networking;
 
 namespace Gs2.Unity.Gs2Lock
 {
+	public class DisabledCertificateHandler : CertificateHandler {
+		protected override bool ValidateCertificate(byte[] certificateData)
+		{
+			return true;
+		}
+	}
+
 	public class Client
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
@@ -41,7 +49,14 @@ namespace Gs2.Unity.Gs2Lock
 		{
 			_profile = profile;
 			_client = new Gs2LockWebSocketClient(profile.Gs2Session);
-			_restClient = new Gs2LockRestClient(profile.Gs2RestSession);
+			if (profile.checkRevokeCertificate)
+			{
+				_restClient = new Gs2LockRestClient(profile.Gs2RestSession);
+			}
+			else
+			{
+				_restClient = new Gs2LockRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
+			}
 		}
 
 		/// <summary>

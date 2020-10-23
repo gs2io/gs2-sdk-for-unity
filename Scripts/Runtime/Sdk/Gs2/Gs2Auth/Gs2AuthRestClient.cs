@@ -29,6 +29,7 @@ namespace Gs2.Gs2Auth
 {
 	public class Gs2AuthRestClient : AbstractGs2Client
 	{
+		private readonly CertificateHandler _certificateHandler;
 
 		public static string Endpoint = "auth";
 
@@ -41,6 +42,16 @@ namespace Gs2.Gs2Auth
 		public Gs2AuthRestClient(Gs2RestSession Gs2RestSession) : base(Gs2RestSession)
 		{
 
+		}
+
+		/// <summary>
+		/// コンストラクタ。
+		/// </summary>
+		/// <param name="gs2RestSession">REST API 用セッション</param>
+		/// <param name="certificateHandler"></param>
+		public Gs2AuthRestClient(Gs2RestSession gs2RestSession, CertificateHandler certificateHandler) : base(gs2RestSession)
+		{
+			_certificateHandler = certificateHandler;
 		}
 
         private class LoginTask : Gs2RestSessionTask<Result.LoginResult>
@@ -118,6 +129,10 @@ namespace Gs2.Gs2Auth
         )
 		{
 			var task = new LoginTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -205,6 +220,10 @@ namespace Gs2.Gs2Auth
         )
 		{
 			var task = new LoginBySignatureTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 	}

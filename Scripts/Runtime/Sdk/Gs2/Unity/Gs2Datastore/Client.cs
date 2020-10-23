@@ -34,6 +34,13 @@ using UnityEngine.Networking;
 
 namespace Gs2.Unity.Gs2Datastore
 {
+	public class DisabledCertificateHandler : CertificateHandler {
+		protected override bool ValidateCertificate(byte[] certificateData)
+		{
+			return true;
+		}
+	}
+
 	public class Client
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
@@ -44,7 +51,14 @@ namespace Gs2.Unity.Gs2Datastore
 		{
 			_profile = profile;
 			_client = new Gs2DatastoreWebSocketClient(profile.Gs2Session);
-			_restClient = new Gs2DatastoreRestClient(profile.Gs2RestSession);
+			if (profile.checkRevokeCertificate)
+			{
+				_restClient = new Gs2DatastoreRestClient(profile.Gs2RestSession);
+			}
+			else
+			{
+				_restClient = new Gs2DatastoreRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
+			}
 		}
 
 		/// <summary>

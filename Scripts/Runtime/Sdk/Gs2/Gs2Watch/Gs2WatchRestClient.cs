@@ -29,6 +29,7 @@ namespace Gs2.Gs2Watch
 {
 	public class Gs2WatchRestClient : AbstractGs2Client
 	{
+		private readonly CertificateHandler _certificateHandler;
 
 		public static string Endpoint = "watch";
 
@@ -41,6 +42,16 @@ namespace Gs2.Gs2Watch
 		public Gs2WatchRestClient(Gs2RestSession Gs2RestSession) : base(Gs2RestSession)
 		{
 
+		}
+
+		/// <summary>
+		/// コンストラクタ。
+		/// </summary>
+		/// <param name="gs2RestSession">REST API 用セッション</param>
+		/// <param name="certificateHandler"></param>
+		public Gs2WatchRestClient(Gs2RestSession gs2RestSession, CertificateHandler certificateHandler) : base(gs2RestSession)
+		{
+			_certificateHandler = certificateHandler;
 		}
 
         private class GetChartTask : Gs2RestSessionTask<Result.GetChartResult>
@@ -154,6 +165,10 @@ namespace Gs2.Gs2Watch
         )
 		{
 			var task = new GetChartTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -223,6 +238,10 @@ namespace Gs2.Gs2Watch
         )
 		{
 			var task = new GetCumulativeTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -287,6 +306,10 @@ namespace Gs2.Gs2Watch
         )
 		{
 			var task = new DescribeBillingActivitiesTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -354,6 +377,10 @@ namespace Gs2.Gs2Watch
         )
 		{
 			var task = new GetBillingActivityTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 	}

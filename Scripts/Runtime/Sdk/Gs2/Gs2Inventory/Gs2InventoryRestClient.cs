@@ -29,6 +29,7 @@ namespace Gs2.Gs2Inventory
 {
 	public class Gs2InventoryRestClient : AbstractGs2Client
 	{
+		private readonly CertificateHandler _certificateHandler;
 
 		public static string Endpoint = "inventory";
 
@@ -41,6 +42,16 @@ namespace Gs2.Gs2Inventory
 		public Gs2InventoryRestClient(Gs2RestSession Gs2RestSession) : base(Gs2RestSession)
 		{
 
+		}
+
+		/// <summary>
+		/// コンストラクタ。
+		/// </summary>
+		/// <param name="gs2RestSession">REST API 用セッション</param>
+		/// <param name="certificateHandler"></param>
+		public Gs2InventoryRestClient(Gs2RestSession gs2RestSession, CertificateHandler certificateHandler) : base(gs2RestSession)
+		{
+			_certificateHandler = certificateHandler;
 		}
 
         private class DescribeNamespacesTask : Gs2RestSessionTask<Result.DescribeNamespacesResult>
@@ -98,6 +109,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new DescribeNamespacesTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -190,6 +205,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new CreateNamespaceTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -244,6 +263,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new GetNamespaceStatusTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -298,6 +321,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new GetNamespaceTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -387,6 +414,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new UpdateNamespaceTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -441,6 +472,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new DeleteNamespaceTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -501,6 +536,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new DescribeInventoryModelMastersTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -595,6 +634,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new CreateInventoryModelMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -650,6 +693,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new GetInventoryModelMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -740,6 +787,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new UpdateInventoryModelMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -795,6 +846,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new DeleteInventoryModelMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -849,6 +904,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new DescribeInventoryModelsTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -904,6 +963,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new GetInventoryModelTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -965,6 +1028,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new DescribeItemModelMastersTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1060,6 +1127,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new CreateItemModelMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1116,6 +1187,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new GetItemModelMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1207,6 +1282,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new UpdateItemModelMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1263,6 +1342,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new DeleteItemModelMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1318,6 +1401,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new DescribeItemModelsTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1374,6 +1461,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new GetItemModelTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1428,6 +1519,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new ExportMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1482,6 +1577,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new GetCurrentItemModelMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1551,6 +1650,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new UpdateCurrentItemModelMasterTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1620,6 +1723,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new UpdateCurrentItemModelMasterFromGitHubTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1688,6 +1795,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new DescribeInventoriesTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1753,6 +1864,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new DescribeInventoriesByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1816,6 +1931,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new GetInventoryTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1876,6 +1995,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new GetInventoryByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -1951,6 +2074,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new AddCapacityByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2026,6 +2153,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new SetCapacityByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2086,6 +2217,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new DeleteInventoryByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2162,6 +2297,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new AddCapacityByStampSheetTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2238,6 +2377,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new SetCapacityByStampSheetTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2307,6 +2450,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new DescribeItemSetsTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2373,6 +2520,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new DescribeItemSetsByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2440,6 +2591,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new GetItemSetTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2504,6 +2659,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new GetItemSetByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2574,6 +2733,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new GetItemWithSignatureTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2641,6 +2804,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new GetItemWithSignatureByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2732,6 +2899,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new AcquireItemSetByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2816,6 +2987,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new ConsumeItemSetTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2897,6 +3072,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new ConsumeItemSetByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -2962,6 +3141,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new DescribeReferenceOfTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -3024,6 +3207,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new DescribeReferenceOfByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -3090,6 +3277,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new GetReferenceOfTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -3153,6 +3344,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new GetReferenceOfByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -3230,6 +3425,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new VerifyReferenceOfTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -3304,6 +3503,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new VerifyReferenceOfByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -3384,6 +3587,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new AddReferenceOfTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -3461,6 +3668,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new AddReferenceOfByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -3526,6 +3737,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new DeleteReferenceOfTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -3588,6 +3803,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new DeleteReferenceOfByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -3652,6 +3871,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new DeleteItemSetByUserIdTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -3728,6 +3951,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new AcquireItemSetByStampSheetTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -3804,6 +4031,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new AddReferenceOfItemSetByStampSheetTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -3880,6 +4111,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new DeleteReferenceOfItemSetByStampSheetTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -3956,6 +4191,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new ConsumeItemSetByStampTaskTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 
@@ -4032,6 +4271,10 @@ namespace Gs2.Gs2Inventory
         )
 		{
 			var task = new VerifyReferenceOfByStampTaskTask(request, callback);
+			if (_certificateHandler != null)
+			{
+				task.UnityWebRequest.certificateHandler = _certificateHandler;
+			}
 			return Gs2RestSession.Execute(task);
         }
 	}

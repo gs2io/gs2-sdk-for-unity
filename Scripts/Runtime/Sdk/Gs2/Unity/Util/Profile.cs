@@ -24,6 +24,7 @@ using Gs2.Gs2Auth.Model;
 using JetBrains.Annotations;
 using UnityEngine.Events;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Gs2.Unity.Util
 {
@@ -31,11 +32,12 @@ namespace Gs2.Unity.Util
     {
         private readonly IReopener _reopener;
         private IAuthenticator _authenticator;
-        
+
         public Profile(
             string clientId,
             string clientSecret,
-            IReopener reopener
+            IReopener reopener,
+            bool checkCertificateRevocation = true
         )
         {
             BasicGs2Credential credential = new BasicGs2Credential(
@@ -43,13 +45,15 @@ namespace Gs2.Unity.Util
                 clientSecret
             );
             Gs2Session = new Gs2WebSocketSession(
-                credential
+                credential,
+                checkCertificateRevocation
             );
             Gs2RestSession = new Gs2RestSession(
                 credential
             );
             _reopener = reopener;
             _authenticator = null;
+            this.checkRevokeCertificate = checkCertificateRevocation;
         }
 
         public IEnumerator Initialize(
@@ -185,5 +189,7 @@ namespace Gs2.Unity.Util
             
             callback.Invoke(asyncResult);
         }
+        
+        public bool checkRevokeCertificate { get; }
     }
 }

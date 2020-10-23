@@ -2817,6 +2817,16 @@ namespace Gs2.Gs2Matchmaking
                     jsonWriter.WritePropertyName("namespaceName");
                     jsonWriter.Write(_request.namespaceName.ToString());
                 }
+                if (_request.ratingName != null)
+                {
+                    jsonWriter.WritePropertyName("ratingName");
+                    jsonWriter.Write(_request.ratingName.ToString());
+                }
+                if (_request.gatheringName != null)
+                {
+                    jsonWriter.WritePropertyName("gatheringName");
+                    jsonWriter.Write(_request.gatheringName.ToString());
+                }
                 if (_request.contextStack != null)
                 {
                     jsonWriter.WritePropertyName("contextStack");

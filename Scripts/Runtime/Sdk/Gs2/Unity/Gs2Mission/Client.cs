@@ -28,9 +28,17 @@ using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Unity.Util;
 using UnityEngine.Events;
+using UnityEngine.Networking;
 
 namespace Gs2.Unity.Gs2Mission
 {
+	public class DisabledCertificateHandler : CertificateHandler {
+		protected override bool ValidateCertificate(byte[] certificateData)
+		{
+			return true;
+		}
+	}
+
 	public class Client
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
@@ -41,121 +49,14 @@ namespace Gs2.Unity.Gs2Mission
 		{
 			_profile = profile;
 			_client = new Gs2MissionWebSocketClient(profile.Gs2Session);
-			_restClient = new Gs2MissionRestClient(profile.Gs2RestSession);
-		}
-
-		/// <summary>
-		///  ミッショングループモデルの一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		public IEnumerator ListMissionGroupModels(
-		        UnityAction<AsyncResult<EzListMissionGroupModelsResult>> callback,
-                string namespaceName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-                null,
-                cb => _restClient.DescribeMissionGroupModels(
-                    new DescribeMissionGroupModelsRequest()
-                        .WithNamespaceName(namespaceName),
-                    r => cb.Invoke(
-                        new AsyncResult<EzListMissionGroupModelsResult>(
-                            r.Result == null ? null : new EzListMissionGroupModelsResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  ミッショングループ名を指定してミッショングループモデルを取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="missionGroupName">グループ名</param>
-		public IEnumerator GetMissionGroupModel(
-		        UnityAction<AsyncResult<EzGetMissionGroupModelResult>> callback,
-                string namespaceName,
-                string missionGroupName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-                null,
-                cb => _client.GetMissionGroupModel(
-                    new GetMissionGroupModelRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithMissionGroupName(missionGroupName),
-                    r => cb.Invoke(
-                        new AsyncResult<EzGetMissionGroupModelResult>(
-                            r.Result == null ? null : new EzGetMissionGroupModelResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  カウンターの種類を認証<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		public IEnumerator ListCounterModels(
-		        UnityAction<AsyncResult<EzListCounterModelsResult>> callback,
-                string namespaceName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-                null,
-                cb => _restClient.DescribeCounterModels(
-                    new DescribeCounterModelsRequest()
-                        .WithNamespaceName(namespaceName),
-                    r => cb.Invoke(
-                        new AsyncResult<EzListCounterModelsResult>(
-                            r.Result == null ? null : new EzListCounterModelsResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  カウンターの種類を認証<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="counterName">カウンター名</param>
-		public IEnumerator GetCounterModel(
-		        UnityAction<AsyncResult<EzGetCounterModelResult>> callback,
-                string namespaceName,
-                string counterName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-                null,
-                cb => _client.GetCounterModel(
-                    new GetCounterModelRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithCounterName(counterName),
-                    r => cb.Invoke(
-                        new AsyncResult<EzGetCounterModelResult>(
-                            r.Result == null ? null : new EzGetCounterModelResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
+			if (profile.checkRevokeCertificate)
+			{
+				_restClient = new Gs2MissionRestClient(profile.Gs2RestSession);
+			}
+			else
+			{
+				_restClient = new Gs2MissionRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
+			}
 		}
 
 		/// <summary>
@@ -322,6 +223,120 @@ namespace Gs2.Unity.Gs2Mission
                     r => cb.Invoke(
                         new AsyncResult<EzReceiveRewardsResult>(
                             r.Result == null ? null : new EzReceiveRewardsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  ミッショングループモデルの一覧を取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		public IEnumerator ListMissionGroupModels(
+		        UnityAction<AsyncResult<EzListMissionGroupModelsResult>> callback,
+                string namespaceName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeMissionGroupModels(
+                    new DescribeMissionGroupModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListMissionGroupModelsResult>(
+                            r.Result == null ? null : new EzListMissionGroupModelsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  ミッショングループ名を指定してミッショングループモデルを取得<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="missionGroupName">グループ名</param>
+		public IEnumerator GetMissionGroupModel(
+		        UnityAction<AsyncResult<EzGetMissionGroupModelResult>> callback,
+                string namespaceName,
+                string missionGroupName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetMissionGroupModel(
+                    new GetMissionGroupModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithMissionGroupName(missionGroupName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetMissionGroupModelResult>(
+                            r.Result == null ? null : new EzGetMissionGroupModelResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  カウンターの種類を認証<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		public IEnumerator ListCounterModels(
+		        UnityAction<AsyncResult<EzListCounterModelsResult>> callback,
+                string namespaceName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeCounterModels(
+                    new DescribeCounterModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzListCounterModelsResult>(
+                            r.Result == null ? null : new EzListCounterModelsResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  カウンターの種類を認証<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="counterName">カウンター名</param>
+		public IEnumerator GetCounterModel(
+		        UnityAction<AsyncResult<EzGetCounterModelResult>> callback,
+                string namespaceName,
+                string counterName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetCounterModel(
+                    new GetCounterModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithCounterName(counterName),
+                    r => cb.Invoke(
+                        new AsyncResult<EzGetCounterModelResult>(
+                            r.Result == null ? null : new EzGetCounterModelResult(r.Result),
                             r.Error
                         )
                     )

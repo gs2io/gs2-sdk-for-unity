@@ -45,11 +45,45 @@ namespace Gs2.Gs2Matchmaking.Request
         }
 
 
+        /** レーティング名 */
+		[UnityEngine.SerializeField]
+        public string ratingName;
+
+        /**
+         * レーティング名を設定
+         *
+         * @param ratingName レーティング名
+         * @return this
+         */
+        public CommitVoteRequest WithRatingName(string ratingName) {
+            this.ratingName = ratingName;
+            return this;
+        }
+
+
+        /** 投票対象のギャザリング名 */
+		[UnityEngine.SerializeField]
+        public string gatheringName;
+
+        /**
+         * 投票対象のギャザリング名を設定
+         *
+         * @param gatheringName 投票対象のギャザリング名
+         * @return this
+         */
+        public CommitVoteRequest WithGatheringName(string gatheringName) {
+            this.gatheringName = gatheringName;
+            return this;
+        }
+
+
     	[Preserve]
         public static CommitVoteRequest FromDict(JsonData data)
         {
             return new CommitVoteRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
+                ratingName = data.Keys.Contains("ratingName") && data["ratingName"] != null ? data["ratingName"].ToString(): null,
+                gatheringName = data.Keys.Contains("gatheringName") && data["gatheringName"] != null ? data["gatheringName"].ToString(): null,
             };
         }
 

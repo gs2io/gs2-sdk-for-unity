@@ -45,7 +45,7 @@ namespace Gs2.Core.Net
         }
 
         private readonly Gs2RestTask _gs2RestTask;
-        protected UnityWebRequest UnityWebRequest => _gs2RestTask.UnityWebRequest;
+        public UnityWebRequest UnityWebRequest => _gs2RestTask.UnityWebRequest;
 
         protected Gs2RestSessionTask()
         {

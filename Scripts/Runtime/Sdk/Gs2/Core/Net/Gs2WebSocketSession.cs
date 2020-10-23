@@ -74,12 +74,13 @@ namespace Gs2.Core.Net
         private Gs2Exception _lastGs2Exception = null;
 
         private WebSocket _webSocket;
+        private bool _checkCertificateRevocation;
 
         private WebSocket CreateWebSocket()
         {
             var url = EndpointHost.Replace("{region}", Region.DisplayName());
 
-            var webSocket = new WebSocket(url) {SslConfiguration = {EnabledSslProtocols = SslProtocols.Tls12}};
+            var webSocket = new WebSocket(url) {SslConfiguration = {EnabledSslProtocols = SslProtocols.Tls12, CheckCertificateRevocation = _checkCertificateRevocation}};
 
             webSocket.OnOpen += (sender, eventArgs) =>
             {
@@ -221,16 +222,19 @@ namespace Gs2.Core.Net
             return webSocket;
         }
 
-        public Gs2WebSocketSession(BasicGs2Credential basicGs2Credential) : base(basicGs2Credential)
+        public Gs2WebSocketSession(BasicGs2Credential basicGs2Credential, bool checkCertificateRevocation = true) : base(basicGs2Credential)
         {
+            _checkCertificateRevocation = checkCertificateRevocation;
         }
 
-        public Gs2WebSocketSession(BasicGs2Credential basicGs2Credential, Region region) : base(basicGs2Credential, region)
+        public Gs2WebSocketSession(BasicGs2Credential basicGs2Credential, Region region, bool checkCertificateRevocation = true) : base(basicGs2Credential, region)
         {
+            _checkCertificateRevocation = checkCertificateRevocation;
         }
 
-        public Gs2WebSocketSession(BasicGs2Credential basicGs2Credential, string region) : base(basicGs2Credential, region)
+        public Gs2WebSocketSession(BasicGs2Credential basicGs2Credential, string region, bool checkCertificateRevocation = true) : base(basicGs2Credential, region)
         {
+            _checkCertificateRevocation = checkCertificateRevocation;
         }
 
         public IEnumerator Execute(Gs2WebSocketSessionTask gs2WebSocketSessionTask)

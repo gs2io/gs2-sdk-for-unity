@@ -152,18 +152,6 @@ namespace Gs2.Gs2Matchmaking.Model
             writer.WriteObjectEnd();
         }
 
-    public static string GetRatingNameFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):matchmaking:(?<namespaceName>.*):vote:(?<ratingName>.*):(?<gatheringName>.*)");
-        if (!match.Groups["ratingName"].Success)
-        {
-            return null;
-        }
-        return match.Groups["ratingName"].Value;
-    }
-
     public static string GetGatheringNameFromGrn(
         string grn
     )
@@ -174,6 +162,18 @@ namespace Gs2.Gs2Matchmaking.Model
             return null;
         }
         return match.Groups["gatheringName"].Value;
+    }
+
+    public static string GetRatingNameFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):matchmaking:(?<namespaceName>.*):vote:(?<ratingName>.*):(?<gatheringName>.*)");
+        if (!match.Groups["ratingName"].Success)
+        {
+            return null;
+        }
+        return match.Groups["ratingName"].Value;
     }
 
     public static string GetNamespaceNameFromGrn(
