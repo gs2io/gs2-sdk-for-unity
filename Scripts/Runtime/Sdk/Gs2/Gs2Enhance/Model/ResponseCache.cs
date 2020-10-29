@@ -128,16 +128,16 @@ namespace Gs2.Gs2Enhance.Model
             writer.WriteObjectEnd();
         }
 
-    public static string GetRegionFromGrn(
+    public static string GetRequestHashFromGrn(
         string grn
     )
     {
         var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):hash:(?<requestHash>.*)");
-        if (!match.Groups["region"].Success)
+        if (!match.Groups["requestHash"].Success)
         {
             return null;
         }
-        return match.Groups["region"].Value;
+        return match.Groups["requestHash"].Value;
     }
 
     public static string GetOwnerIdFromGrn(
@@ -152,16 +152,16 @@ namespace Gs2.Gs2Enhance.Model
         return match.Groups["ownerId"].Value;
     }
 
-    public static string GetRequestHashFromGrn(
+    public static string GetRegionFromGrn(
         string grn
     )
     {
         var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):hash:(?<requestHash>.*)");
-        if (!match.Groups["requestHash"].Success)
+        if (!match.Groups["region"].Success)
         {
             return null;
         }
-        return match.Groups["requestHash"].Value;
+        return match.Groups["region"].Value;
     }
 
     	[Preserve]

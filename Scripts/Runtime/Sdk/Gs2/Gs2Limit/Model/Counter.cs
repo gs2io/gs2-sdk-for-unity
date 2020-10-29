@@ -166,18 +166,6 @@ namespace Gs2.Gs2Limit.Model
             writer.WriteObjectEnd();
         }
 
-    public static string GetLimitNameFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):limit:(?<namespaceName>.*):user:(?<userId>.*):limit:(?<limitName>.*):counter:(?<counterName>.*)");
-        if (!match.Groups["limitName"].Success)
-        {
-            return null;
-        }
-        return match.Groups["limitName"].Value;
-    }
-
     public static string GetCounterNameFromGrn(
         string grn
     )
@@ -188,6 +176,18 @@ namespace Gs2.Gs2Limit.Model
             return null;
         }
         return match.Groups["counterName"].Value;
+    }
+
+    public static string GetLimitNameFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):limit:(?<namespaceName>.*):user:(?<userId>.*):limit:(?<limitName>.*):counter:(?<counterName>.*)");
+        if (!match.Groups["limitName"].Success)
+        {
+            return null;
+        }
+        return match.Groups["limitName"].Value;
     }
 
     public static string GetUserIdFromGrn(

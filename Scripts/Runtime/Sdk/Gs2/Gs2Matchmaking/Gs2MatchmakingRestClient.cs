@@ -2668,11 +2668,6 @@ namespace Gs2.Gs2Matchmaking
                 var stringBuilder = new StringBuilder();
                 var jsonWriter = new JsonWriter(stringBuilder);
                 jsonWriter.WriteObjectStart();
-                if (_request.gatheringId != null)
-                {
-                    jsonWriter.WritePropertyName("gatheringId");
-                    jsonWriter.Write(_request.gatheringId.ToString());
-                }
                 if (_request.numberOfPlayer != null)
                 {
                     jsonWriter.WritePropertyName("numberOfPlayer");
@@ -2762,11 +2757,6 @@ namespace Gs2.Gs2Matchmaking
                 var stringBuilder = new StringBuilder();
                 var jsonWriter = new JsonWriter(stringBuilder);
                 jsonWriter.WriteObjectStart();
-                if (_request.gatheringId != null)
-                {
-                    jsonWriter.WritePropertyName("gatheringId");
-                    jsonWriter.Write(_request.gatheringId.ToString());
-                }
                 if (_request.numberOfPlayer != null)
                 {
                     jsonWriter.WritePropertyName("numberOfPlayer");

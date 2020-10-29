@@ -2396,11 +2396,6 @@ namespace Gs2.Gs2Matchmaking
                     jsonWriter.WritePropertyName("gatheringName");
                     jsonWriter.Write(_request.gatheringName.ToString());
                 }
-                if (_request.gatheringId != null)
-                {
-                    jsonWriter.WritePropertyName("gatheringId");
-                    jsonWriter.Write(_request.gatheringId.ToString());
-                }
                 if (_request.numberOfPlayer != null)
                 {
                     jsonWriter.WritePropertyName("numberOfPlayer");
@@ -2510,11 +2505,6 @@ namespace Gs2.Gs2Matchmaking
                 {
                     jsonWriter.WritePropertyName("userId");
                     jsonWriter.Write(_request.userId.ToString());
-                }
-                if (_request.gatheringId != null)
-                {
-                    jsonWriter.WritePropertyName("gatheringId");
-                    jsonWriter.Write(_request.gatheringId.ToString());
                 }
                 if (_request.numberOfPlayer != null)
                 {
