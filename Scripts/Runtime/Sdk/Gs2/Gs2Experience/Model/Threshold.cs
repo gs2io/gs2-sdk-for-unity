@@ -27,20 +27,6 @@ namespace Gs2.Gs2Experience.Model
 	public class Threshold : IComparable
 	{
 
-        /** しきい値ID */
-        public string thresholdId { set; get; }
-
-        /**
-         * しきい値IDを設定
-         *
-         * @param thresholdId しきい値ID
-         * @return this
-         */
-        public Threshold WithThresholdId(string thresholdId) {
-            this.thresholdId = thresholdId;
-            return this;
-        }
-
         /** ランクアップ閾値のメタデータ */
         public string metadata { set; get; }
 
@@ -72,11 +58,6 @@ namespace Gs2.Gs2Experience.Model
         public void WriteJson(JsonWriter writer)
         {
             writer.WriteObjectStart();
-            if(this.thresholdId != null)
-            {
-                writer.WritePropertyName("thresholdId");
-                writer.Write(this.thresholdId);
-            }
             if(this.metadata != null)
             {
                 writer.WritePropertyName("metadata");
@@ -99,7 +80,6 @@ namespace Gs2.Gs2Experience.Model
         public static Threshold FromDict(JsonData data)
         {
             return new Threshold()
-                .WithThresholdId(data.Keys.Contains("thresholdId") && data["thresholdId"] != null ? data["thresholdId"].ToString() : null)
                 .WithMetadata(data.Keys.Contains("metadata") && data["metadata"] != null ? data["metadata"].ToString() : null)
                 .WithValues(data.Keys.Contains("values") && data["values"] != null ? data["values"].Cast<JsonData>().Select(value =>
                     {
@@ -112,14 +92,6 @@ namespace Gs2.Gs2Experience.Model
         {
             var other = obj as Threshold;
             var diff = 0;
-            if (thresholdId == null && thresholdId == other.thresholdId)
-            {
-                // null and null
-            }
-            else
-            {
-                diff += thresholdId.CompareTo(other.thresholdId);
-            }
             if (metadata == null && metadata == other.metadata)
             {
                 // null and null

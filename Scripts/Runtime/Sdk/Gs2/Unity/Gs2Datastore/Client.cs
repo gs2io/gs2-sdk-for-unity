@@ -26,6 +26,7 @@ using Gs2.Gs2Datastore.Result;
 using Gs2.Unity.Gs2Datastore.Model;
 using Gs2.Unity.Gs2Datastore.Result;
 using Gs2.Core;
+using Gs2.Core.Exception;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Unity.Util;
@@ -377,6 +378,36 @@ namespace Gs2.Unity.Gs2Datastore
                     r => cb.Invoke(
                         new AsyncResult<EzDeleteDataObjectResult>(
                             r.Result == null ? null : new EzDeleteDataObjectResult(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+		/// <summary>
+		///  データの管理情報を修復<br />
+		/// </summary>
+        ///
+		/// <returns>IEnumerator</returns>
+		/// <param name="namespaceName">ネームスペース名</param>
+		/// <param name="dataObjectId">データオブジェクト</param>
+		public IEnumerator RestoreDataObject(
+		        UnityAction<AsyncResult<EzRestoreDataObjectResult>> callback,
+                string namespaceName,
+                string dataObjectId
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.RestoreDataObject(
+                    new RestoreDataObjectRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithDataObjectId(dataObjectId),
+                    r => cb.Invoke(
+                        new AsyncResult<EzRestoreDataObjectResult>(
+                            r.Result == null ? null : new EzRestoreDataObjectResult(r.Result),
                             r.Error
                         )
                     )
@@ -780,71 +811,93 @@ namespace Gs2.Unity.Gs2Datastore
 			string dataObjectId
 		)
 		{
-			string downloadUrl;
+			var isDataAlreadyRestored = false;
+
+			while (true)
 			{
-				EzPrepareDownloadResult result = null;
-				yield return PrepareDownload(
-					r =>
+				EzDataObject dataObject;
+				string downloadUrl;
+				{
+					EzPrepareDownloadResult result = null;
+					yield return PrepareDownload(
+						r =>
+						{
+							if (r.Error != null)
+							{
+								callback.Invoke(
+									new AsyncResult<EzDownloadResult>(
+										null,
+										r.Error
+									)
+								);
+							}
+							else
+							{
+								result = r.Result;
+							}
+						},
+						session,
+						namespaceName,
+						dataObjectId
+					);
+				
+					if (result == null)
 					{
-						if (r.Error != null)
+						yield break;
+					}
+
+					dataObject = result.Item;
+					downloadUrl = result.FileUrl;
+				}
+				{
+					AsyncResult<EzDownloadImplResult> asyncDownloadImplResult = null;
+
+					yield return DownloadImpl(
+						r => asyncDownloadImplResult = r,
+						downloadUrl
+					);
+
+					// Not Found だった場合、データの不整合を疑って1回だけ修復を試みる
+					if (!isDataAlreadyRestored && asyncDownloadImplResult.Error is NotFoundException)
+					{
+						AsyncResult<EzRestoreDataObjectResult> asyncRestoreDataObjectResult = null;
+
+						yield return RestoreDataObject(
+							r => asyncRestoreDataObjectResult = r,
+							namespaceName,
+							dataObject.DataObjectId
+						);
+						
+						if (asyncDownloadImplResult.Error != null)
 						{
 							callback.Invoke(
 								new AsyncResult<EzDownloadResult>(
 									null,
-									r.Error
+									asyncRestoreDataObjectResult.Error
 								)
 							);
+							yield break;
 						}
-						else
-						{
-							result = r.Result;
-						}
-					},
-					session,
-					namespaceName,
-					dataObjectId
-				);
-				
-				if (result == null)
-				{
-					yield break;
+
+						isDataAlreadyRestored = true;
+
+						continue;
+					}
+
+					callback.Invoke(
+						asyncDownloadImplResult.Error == null
+						? new AsyncResult<EzDownloadResult>(
+							new EzDownloadResult(asyncDownloadImplResult.Result.Data), 
+							null
+						)
+						: new AsyncResult<EzDownloadResult>(
+							null,
+							asyncDownloadImplResult.Error
+						)
+					);
 				}
 
-				downloadUrl = result.FileUrl;
-			}
-			{
-				EzDownloadImplResult result = null;
-				yield return DownloadImpl(
-					r =>
-					{
-						if (r.Error != null)
-						{
-							callback.Invoke(
-								new AsyncResult<EzDownloadResult>(
-									null,
-									r.Error
-								)
-							);
-						}
-						else
-						{
-							result = r.Result;
-						}
-					},
-					downloadUrl
-				);
-
-				if (result == null)
-				{
-					yield break;
-				}
-				
-				callback.Invoke(
-					new AsyncResult<EzDownloadResult>(
-						new EzDownloadResult(result.Data), 
-						null
-					)
-				);
+				break;
 			}
 		}
 
@@ -864,71 +917,93 @@ namespace Gs2.Unity.Gs2Datastore
 			string dataObjectName
 		)
 		{
-			string downloadUrl;
+			var isDataAlreadyRestored = false;
+
+			while (true)
 			{
-				EzPrepareDownloadOwnDataResult result = null;
-				yield return PrepareDownloadOwnData(
-					r =>
+				EzDataObject dataObject;
+				string downloadUrl;
+				{
+					EzPrepareDownloadOwnDataResult result = null;
+					yield return PrepareDownloadOwnData(
+						r =>
+						{
+							if (r.Error != null)
+							{
+								callback.Invoke(
+									new AsyncResult<EzDownloadResult>(
+										null,
+										r.Error
+									)
+								);
+							}
+							else
+							{
+								result = r.Result;
+							}
+						},
+						session,
+						namespaceName,
+						dataObjectName
+					);
+				
+					if (result == null)
 					{
-						if (r.Error != null)
+						yield break;
+					}
+
+					dataObject = result.Item;
+					downloadUrl = result.FileUrl;
+				}
+				{
+					AsyncResult<EzDownloadImplResult> asyncDownloadImplResult = null;
+
+					yield return DownloadImpl(
+						r => asyncDownloadImplResult = r,
+						downloadUrl
+					);
+
+					// Not Found だった場合、データの不整合を疑って1回だけ修復を試みる
+					if (!isDataAlreadyRestored && asyncDownloadImplResult.Error is NotFoundException)
+					{
+						AsyncResult<EzRestoreDataObjectResult> asyncRestoreDataObjectResult = null;
+
+						yield return RestoreDataObject(
+							r => asyncRestoreDataObjectResult = r,
+							namespaceName,
+							dataObject.DataObjectId
+						);
+						
+						if (asyncDownloadImplResult.Error != null)
 						{
 							callback.Invoke(
 								new AsyncResult<EzDownloadResult>(
 									null,
-									r.Error
+									asyncRestoreDataObjectResult.Error
 								)
 							);
+							yield break;
 						}
-						else
-						{
-							result = r.Result;
-						}
-					},
-					session,
-					namespaceName,
-					dataObjectName
-				);
-				
-				if (result == null)
-				{
-					yield break;
+
+						isDataAlreadyRestored = true;
+
+						continue;
+					}
+
+					callback.Invoke(
+						asyncDownloadImplResult.Error == null
+						? new AsyncResult<EzDownloadResult>(
+							new EzDownloadResult(asyncDownloadImplResult.Result.Data), 
+							null
+						)
+						: new AsyncResult<EzDownloadResult>(
+							null,
+							asyncDownloadImplResult.Error
+						)
+					);
 				}
 
-				downloadUrl = result.FileUrl;
-			}
-			{
-				EzDownloadImplResult result = null;
-				yield return DownloadImpl(
-					r =>
-					{
-						if (r.Error != null)
-						{
-							callback.Invoke(
-								new AsyncResult<EzDownloadResult>(
-									null,
-									r.Error
-								)
-							);
-						}
-						else
-						{
-							result = r.Result;
-						}
-					},
-					downloadUrl
-				);
-
-				if (result == null)
-				{
-					yield break;
-				}
-				
-				callback.Invoke(
-					new AsyncResult<EzDownloadResult>(
-						new EzDownloadResult(result.Data), 
-						null
-					)
-				);
+				break;
 			}
 		}
 
@@ -948,71 +1023,93 @@ namespace Gs2.Unity.Gs2Datastore
 			string dataObjectName
 		)
 		{
-			string downloadUrl;
+			var isDataAlreadyRestored = false;
+
+			while (true)
 			{
-				EzPrepareDownloadByUserIdAndDataObjectNameResult result = null;
-				yield return PrepareDownloadByUserIdAndDataObjectName(
-					r =>
+				EzDataObject dataObject;
+				string downloadUrl;
+				{
+					EzPrepareDownloadByUserIdAndDataObjectNameResult result = null;
+					yield return PrepareDownloadByUserIdAndDataObjectName(
+						r =>
+						{
+							if (r.Error != null)
+							{
+								callback.Invoke(
+									new AsyncResult<EzDownloadResult>(
+										null,
+										r.Error
+									)
+								);
+							}
+							else
+							{
+								result = r.Result;
+							}
+						},
+						namespaceName,
+						userId,
+						dataObjectName
+					);
+				
+					if (result == null)
 					{
-						if (r.Error != null)
+						yield break;
+					}
+
+					dataObject = result.Item;
+					downloadUrl = result.FileUrl;
+				}
+				{
+					AsyncResult<EzDownloadImplResult> asyncDownloadImplResult = null;
+
+					yield return DownloadImpl(
+						r => asyncDownloadImplResult = r,
+						downloadUrl
+					);
+
+					// Not Found だった場合、データの不整合を疑って1回だけ修復を試みる
+					if (!isDataAlreadyRestored && asyncDownloadImplResult.Error is NotFoundException)
+					{
+						AsyncResult<EzRestoreDataObjectResult> asyncRestoreDataObjectResult = null;
+
+						yield return RestoreDataObject(
+							r => asyncRestoreDataObjectResult = r,
+							namespaceName,
+							dataObject.DataObjectId
+						);
+						
+						if (asyncDownloadImplResult.Error != null)
 						{
 							callback.Invoke(
 								new AsyncResult<EzDownloadResult>(
 									null,
-									r.Error
+									asyncRestoreDataObjectResult.Error
 								)
 							);
+							yield break;
 						}
-						else
-						{
-							result = r.Result;
-						}
-					},
-					namespaceName,
-					userId,
-					dataObjectName
-				);
-				
-				if (result == null)
-				{
-					yield break;
+
+						isDataAlreadyRestored = true;
+
+						continue;
+					}
+
+					callback.Invoke(
+						asyncDownloadImplResult.Error == null
+						? new AsyncResult<EzDownloadResult>(
+							new EzDownloadResult(asyncDownloadImplResult.Result.Data), 
+							null
+						)
+						: new AsyncResult<EzDownloadResult>(
+							null,
+							asyncDownloadImplResult.Error
+						)
+					);
 				}
 
-				downloadUrl = result.FileUrl;
-			}
-			{
-				EzDownloadImplResult result = null;
-				yield return DownloadImpl(
-					r =>
-					{
-						if (r.Error != null)
-						{
-							callback.Invoke(
-								new AsyncResult<EzDownloadResult>(
-									null,
-									r.Error
-								)
-							);
-						}
-						else
-						{
-							result = r.Result;
-						}
-					},
-					downloadUrl
-				);
-
-				if (result == null)
-				{
-					yield break;
-				}
-				
-				callback.Invoke(
-					new AsyncResult<EzDownloadResult>(
-						new EzDownloadResult(result.Data), 
-						null
-					)
-				);
+				break;
 			}
 		}
 	}

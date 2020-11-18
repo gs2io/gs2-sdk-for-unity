@@ -83,6 +83,34 @@ namespace Gs2.Gs2Dictionary.Model
             return this;
         }
 
+        /** エントリー登録時に実行するスクリプト */
+        public Gs2.Gs2Dictionary.Model.ScriptSetting entryScript { set; get; }
+
+        /**
+         * エントリー登録時に実行するスクリプトを設定
+         *
+         * @param entryScript エントリー登録時に実行するスクリプト
+         * @return this
+         */
+        public Namespace WithEntryScript(Gs2.Gs2Dictionary.Model.ScriptSetting entryScript) {
+            this.entryScript = entryScript;
+            return this;
+        }
+
+        /** 登録済みのエントリーを再度登録しようとした時に実行するスクリプト */
+        public Gs2.Gs2Dictionary.Model.ScriptSetting duplicateEntryScript { set; get; }
+
+        /**
+         * 登録済みのエントリーを再度登録しようとした時に実行するスクリプトを設定
+         *
+         * @param duplicateEntryScript 登録済みのエントリーを再度登録しようとした時に実行するスクリプト
+         * @return this
+         */
+        public Namespace WithDuplicateEntryScript(Gs2.Gs2Dictionary.Model.ScriptSetting duplicateEntryScript) {
+            this.duplicateEntryScript = duplicateEntryScript;
+            return this;
+        }
+
         /** ログの出力設定 */
         public Gs2.Gs2Dictionary.Model.LogSetting logSetting { set; get; }
 
@@ -94,20 +122,6 @@ namespace Gs2.Gs2Dictionary.Model
          */
         public Namespace WithLogSetting(Gs2.Gs2Dictionary.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
-            return this;
-        }
-
-        /** None */
-        public string status { set; get; }
-
-        /**
-         * Noneを設定
-         *
-         * @param status None
-         * @return this
-         */
-        public Namespace WithStatus(string status) {
-            this.status = status;
             return this;
         }
 
@@ -162,15 +176,20 @@ namespace Gs2.Gs2Dictionary.Model
                 writer.WritePropertyName("description");
                 writer.Write(this.description);
             }
+            if(this.entryScript != null)
+            {
+                writer.WritePropertyName("entryScript");
+                this.entryScript.WriteJson(writer);
+            }
+            if(this.duplicateEntryScript != null)
+            {
+                writer.WritePropertyName("duplicateEntryScript");
+                this.duplicateEntryScript.WriteJson(writer);
+            }
             if(this.logSetting != null)
             {
                 writer.WritePropertyName("logSetting");
                 this.logSetting.WriteJson(writer);
-            }
-            if(this.status != null)
-            {
-                writer.WritePropertyName("status");
-                writer.Write(this.status);
             }
             if(this.createdAt.HasValue)
             {
@@ -229,8 +248,9 @@ namespace Gs2.Gs2Dictionary.Model
                 .WithOwnerId(data.Keys.Contains("ownerId") && data["ownerId"] != null ? data["ownerId"].ToString() : null)
                 .WithName(data.Keys.Contains("name") && data["name"] != null ? data["name"].ToString() : null)
                 .WithDescription(data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString() : null)
+                .WithEntryScript(data.Keys.Contains("entryScript") && data["entryScript"] != null ? Gs2.Gs2Dictionary.Model.ScriptSetting.FromDict(data["entryScript"]) : null)
+                .WithDuplicateEntryScript(data.Keys.Contains("duplicateEntryScript") && data["duplicateEntryScript"] != null ? Gs2.Gs2Dictionary.Model.ScriptSetting.FromDict(data["duplicateEntryScript"]) : null)
                 .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Dictionary.Model.LogSetting.FromDict(data["logSetting"]) : null)
-                .WithStatus(data.Keys.Contains("status") && data["status"] != null ? data["status"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
@@ -271,6 +291,22 @@ namespace Gs2.Gs2Dictionary.Model
             {
                 diff += description.CompareTo(other.description);
             }
+            if (entryScript == null && entryScript == other.entryScript)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += entryScript.CompareTo(other.entryScript);
+            }
+            if (duplicateEntryScript == null && duplicateEntryScript == other.duplicateEntryScript)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += duplicateEntryScript.CompareTo(other.duplicateEntryScript);
+            }
             if (logSetting == null && logSetting == other.logSetting)
             {
                 // null and null
@@ -278,14 +314,6 @@ namespace Gs2.Gs2Dictionary.Model
             else
             {
                 diff += logSetting.CompareTo(other.logSetting);
-            }
-            if (status == null && status == other.status)
-            {
-                // null and null
-            }
-            else
-            {
-                diff += status.CompareTo(other.status);
             }
             if (createdAt == null && createdAt == other.createdAt)
             {

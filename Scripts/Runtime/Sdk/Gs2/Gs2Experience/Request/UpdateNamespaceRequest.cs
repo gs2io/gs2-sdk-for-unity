@@ -125,6 +125,22 @@ namespace Gs2.Gs2Experience.Request
         }
 
 
+        /** 経験値あふれしたときに実行するスクリプト */
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Experience.Model.ScriptSetting overflowExperienceScript;
+
+        /**
+         * 経験値あふれしたときに実行するスクリプトを設定
+         *
+         * @param overflowExperienceScript 経験値あふれしたときに実行するスクリプト
+         * @return this
+         */
+        public UpdateNamespaceRequest WithOverflowExperienceScript(global::Gs2.Gs2Experience.Model.ScriptSetting overflowExperienceScript) {
+            this.overflowExperienceScript = overflowExperienceScript;
+            return this;
+        }
+
+
         /** ログの出力設定 */
 		[UnityEngine.SerializeField]
         public global::Gs2.Gs2Experience.Model.LogSetting logSetting;
@@ -151,6 +167,7 @@ namespace Gs2.Gs2Experience.Request
                 changeExperienceScript = data.Keys.Contains("changeExperienceScript") && data["changeExperienceScript"] != null ? global::Gs2.Gs2Experience.Model.ScriptSetting.FromDict(data["changeExperienceScript"]) : null,
                 changeRankScript = data.Keys.Contains("changeRankScript") && data["changeRankScript"] != null ? global::Gs2.Gs2Experience.Model.ScriptSetting.FromDict(data["changeRankScript"]) : null,
                 changeRankCapScript = data.Keys.Contains("changeRankCapScript") && data["changeRankCapScript"] != null ? global::Gs2.Gs2Experience.Model.ScriptSetting.FromDict(data["changeRankCapScript"]) : null,
+                overflowExperienceScript = data.Keys.Contains("overflowExperienceScript") && data["overflowExperienceScript"] != null ? global::Gs2.Gs2Experience.Model.ScriptSetting.FromDict(data["overflowExperienceScript"]) : null,
                 logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? global::Gs2.Gs2Experience.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }

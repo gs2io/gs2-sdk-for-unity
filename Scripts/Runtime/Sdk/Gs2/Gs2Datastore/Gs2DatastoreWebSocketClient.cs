@@ -2199,10 +2199,10 @@ namespace Gs2.Gs2Datastore
                     jsonWriter.WritePropertyName("namespaceName");
                     jsonWriter.Write(_request.namespaceName.ToString());
                 }
-                if (_request.dataObjectName != null)
+                if (_request.dataObjectId != null)
                 {
-                    jsonWriter.WritePropertyName("dataObjectName");
-                    jsonWriter.Write(_request.dataObjectName.ToString());
+                    jsonWriter.WritePropertyName("dataObjectId");
+                    jsonWriter.Write(_request.dataObjectId.ToString());
                 }
                 if (_request.contextStack != null)
                 {
@@ -2213,16 +2213,6 @@ namespace Gs2.Gs2Datastore
                 {
                     jsonWriter.WritePropertyName("xGs2RequestId");
                     jsonWriter.Write(_request.requestId);
-                }
-                if (_request.accessToken != null)
-                {
-                    jsonWriter.WritePropertyName("xGs2AccessToken");
-                    jsonWriter.Write(_request.accessToken);
-                }
-                if (_request.duplicationAvoider != null)
-                {
-                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
-                    jsonWriter.Write(_request.duplicationAvoider);
                 }
 
                 jsonWriter.WritePropertyName("xGs2ClientId");
@@ -2265,96 +2255,6 @@ namespace Gs2.Gs2Datastore
         )
 		{
 			var task = new RestoreDataObjectTask(request, callback);
-			return Gs2WebSocketSession.Execute(task);
-        }
-
-        private class RestoreDataObjectByUserIdTask : Gs2WebSocketSessionTask<Result.RestoreDataObjectByUserIdResult>
-        {
-			private readonly Request.RestoreDataObjectByUserIdRequest _request;
-
-			public RestoreDataObjectByUserIdTask(Request.RestoreDataObjectByUserIdRequest request, UnityAction<AsyncResult<Result.RestoreDataObjectByUserIdResult>> userCallback) : base(userCallback)
-			{
-				_request = request;
-			}
-
-            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
-            {
-                var stringBuilder = new StringBuilder();
-                var jsonWriter = new JsonWriter(stringBuilder);
-
-                jsonWriter.WriteObjectStart();
-
-                if (_request.namespaceName != null)
-                {
-                    jsonWriter.WritePropertyName("namespaceName");
-                    jsonWriter.Write(_request.namespaceName.ToString());
-                }
-                if (_request.dataObjectName != null)
-                {
-                    jsonWriter.WritePropertyName("dataObjectName");
-                    jsonWriter.Write(_request.dataObjectName.ToString());
-                }
-                if (_request.userId != null)
-                {
-                    jsonWriter.WritePropertyName("userId");
-                    jsonWriter.Write(_request.userId.ToString());
-                }
-                if (_request.contextStack != null)
-                {
-                    jsonWriter.WritePropertyName("contextStack");
-                    jsonWriter.Write(_request.contextStack.ToString());
-                }
-                if (_request.requestId != null)
-                {
-                    jsonWriter.WritePropertyName("xGs2RequestId");
-                    jsonWriter.Write(_request.requestId);
-                }
-                if (_request.duplicationAvoider != null)
-                {
-                    jsonWriter.WritePropertyName("xGs2DuplicationAvoider");
-                    jsonWriter.Write(_request.duplicationAvoider);
-                }
-
-                jsonWriter.WritePropertyName("xGs2ClientId");
-                jsonWriter.Write(gs2Session.Credential.ClientId);
-                jsonWriter.WritePropertyName("xGs2ProjectToken");
-                jsonWriter.Write(gs2Session.ProjectToken);
-
-                jsonWriter.WritePropertyName("x_gs2");
-                jsonWriter.WriteObjectStart();
-                jsonWriter.WritePropertyName("service");
-                jsonWriter.Write("datastore");
-                jsonWriter.WritePropertyName("component");
-                jsonWriter.Write("dataObject");
-                jsonWriter.WritePropertyName("function");
-                jsonWriter.Write("restoreDataObjectByUserId");
-                jsonWriter.WritePropertyName("contentType");
-                jsonWriter.Write("application/json");
-                jsonWriter.WritePropertyName("requestId");
-                jsonWriter.Write(Gs2SessionTaskId.ToString());
-                jsonWriter.WriteObjectEnd();
-
-                jsonWriter.WriteObjectEnd();
-
-                ((Gs2WebSocketSession)gs2Session).Send(stringBuilder.ToString());
-
-                return new EmptyCoroutine();
-            }
-        }
-
-		/// <summary>
-		///  ユーザIDを指定してデータオブジェクトの管理情報を修復する<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator RestoreDataObjectByUserId(
-                Request.RestoreDataObjectByUserIdRequest request,
-                UnityAction<AsyncResult<Result.RestoreDataObjectByUserIdResult>> callback
-        )
-		{
-			var task = new RestoreDataObjectByUserIdTask(request, callback);
 			return Gs2WebSocketSession.Execute(task);
         }
 

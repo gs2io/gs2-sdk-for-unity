@@ -61,6 +61,38 @@ namespace Gs2.Gs2Dictionary.Request
         }
 
 
+        /** エントリー登録時に実行するスクリプト */
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Dictionary.Model.ScriptSetting entryScript;
+
+        /**
+         * エントリー登録時に実行するスクリプトを設定
+         *
+         * @param entryScript エントリー登録時に実行するスクリプト
+         * @return this
+         */
+        public UpdateNamespaceRequest WithEntryScript(global::Gs2.Gs2Dictionary.Model.ScriptSetting entryScript) {
+            this.entryScript = entryScript;
+            return this;
+        }
+
+
+        /** 登録済みのエントリーを再度登録しようとした時に実行するスクリプト */
+		[UnityEngine.SerializeField]
+        public global::Gs2.Gs2Dictionary.Model.ScriptSetting duplicateEntryScript;
+
+        /**
+         * 登録済みのエントリーを再度登録しようとした時に実行するスクリプトを設定
+         *
+         * @param duplicateEntryScript 登録済みのエントリーを再度登録しようとした時に実行するスクリプト
+         * @return this
+         */
+        public UpdateNamespaceRequest WithDuplicateEntryScript(global::Gs2.Gs2Dictionary.Model.ScriptSetting duplicateEntryScript) {
+            this.duplicateEntryScript = duplicateEntryScript;
+            return this;
+        }
+
+
         /** ログの出力設定 */
 		[UnityEngine.SerializeField]
         public global::Gs2.Gs2Dictionary.Model.LogSetting logSetting;
@@ -83,6 +115,8 @@ namespace Gs2.Gs2Dictionary.Request
             return new UpdateNamespaceRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 description = data.Keys.Contains("description") && data["description"] != null ? data["description"].ToString(): null,
+                entryScript = data.Keys.Contains("entryScript") && data["entryScript"] != null ? global::Gs2.Gs2Dictionary.Model.ScriptSetting.FromDict(data["entryScript"]) : null,
+                duplicateEntryScript = data.Keys.Contains("duplicateEntryScript") && data["duplicateEntryScript"] != null ? global::Gs2.Gs2Dictionary.Model.ScriptSetting.FromDict(data["duplicateEntryScript"]) : null,
                 logSetting = data.Keys.Contains("logSetting") && data["logSetting"] != null ? global::Gs2.Gs2Dictionary.Model.LogSetting.FromDict(data["logSetting"]) : null,
             };
         }

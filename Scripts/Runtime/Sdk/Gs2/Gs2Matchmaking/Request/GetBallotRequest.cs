@@ -77,22 +77,6 @@ namespace Gs2.Gs2Matchmaking.Request
         }
 
 
-        /** 投票対象となる */
-		[UnityEngine.SerializeField]
-        public string gatheringId;
-
-        /**
-         * 投票対象となるを設定
-         *
-         * @param gatheringId 投票対象となる
-         * @return this
-         */
-        public GetBallotRequest WithGatheringId(string gatheringId) {
-            this.gatheringId = gatheringId;
-            return this;
-        }
-
-
         /** 参加人数 */
 		[UnityEngine.SerializeField]
         public int? numberOfPlayer;
@@ -162,7 +146,6 @@ namespace Gs2.Gs2Matchmaking.Request
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
                 ratingName = data.Keys.Contains("ratingName") && data["ratingName"] != null ? data["ratingName"].ToString(): null,
                 gatheringName = data.Keys.Contains("gatheringName") && data["gatheringName"] != null ? data["gatheringName"].ToString(): null,
-                gatheringId = data.Keys.Contains("gatheringId") && data["gatheringId"] != null ? data["gatheringId"].ToString(): null,
                 numberOfPlayer = data.Keys.Contains("numberOfPlayer") && data["numberOfPlayer"] != null ? (int?)int.Parse(data["numberOfPlayer"].ToString()) : null,
                 keyId = data.Keys.Contains("keyId") && data["keyId"] != null ? data["keyId"].ToString(): null,
                 duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,

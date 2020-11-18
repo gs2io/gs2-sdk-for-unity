@@ -45,59 +45,28 @@ namespace Gs2.Gs2Datastore.Request
         }
 
 
-        /** データの名前 */
+        /** データオブジェクト */
 		[UnityEngine.SerializeField]
-        public string dataObjectName;
+        public string dataObjectId;
 
         /**
-         * データの名前を設定
+         * データオブジェクトを設定
          *
-         * @param dataObjectName データの名前
+         * @param dataObjectId データオブジェクト
          * @return this
          */
-        public RestoreDataObjectRequest WithDataObjectName(string dataObjectName) {
-            this.dataObjectName = dataObjectName;
+        public RestoreDataObjectRequest WithDataObjectId(string dataObjectId) {
+            this.dataObjectId = dataObjectId;
             return this;
         }
 
-
-        /** 重複実行回避機能に使用するID */
-		[UnityEngine.SerializeField]
-        public string duplicationAvoider;
-
-        /**
-         * 重複実行回避機能に使用するIDを設定
-         *
-         * @param duplicationAvoider 重複実行回避機能に使用するID
-         * @return this
-         */
-        public RestoreDataObjectRequest WithDuplicationAvoider(string duplicationAvoider) {
-            this.duplicationAvoider = duplicationAvoider;
-            return this;
-        }
-
-
-        /** アクセストークン */
-        public string accessToken { set; get; }
-
-        /**
-         * アクセストークンを設定
-         *
-         * @param accessToken アクセストークン
-         * @return this
-         */
-        public RestoreDataObjectRequest WithAccessToken(string accessToken) {
-            this.accessToken = accessToken;
-            return this;
-        }
 
     	[Preserve]
         public static RestoreDataObjectRequest FromDict(JsonData data)
         {
             return new RestoreDataObjectRequest {
                 namespaceName = data.Keys.Contains("namespaceName") && data["namespaceName"] != null ? data["namespaceName"].ToString(): null,
-                dataObjectName = data.Keys.Contains("dataObjectName") && data["dataObjectName"] != null ? data["dataObjectName"].ToString(): null,
-                duplicationAvoider = data.Keys.Contains("duplicationAvoider") && data["duplicationAvoider"] != null ? data["duplicationAvoider"].ToString(): null,
+                dataObjectId = data.Keys.Contains("dataObjectId") && data["dataObjectId"] != null ? data["dataObjectId"].ToString(): null,
             };
         }
 

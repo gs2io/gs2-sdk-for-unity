@@ -139,6 +139,20 @@ namespace Gs2.Gs2Experience.Model
             return this;
         }
 
+        /** 経験値あふれしたときに実行するスクリプト */
+        public Gs2.Gs2Experience.Model.ScriptSetting overflowExperienceScript { set; get; }
+
+        /**
+         * 経験値あふれしたときに実行するスクリプトを設定
+         *
+         * @param overflowExperienceScript 経験値あふれしたときに実行するスクリプト
+         * @return this
+         */
+        public Namespace WithOverflowExperienceScript(Gs2.Gs2Experience.Model.ScriptSetting overflowExperienceScript) {
+            this.overflowExperienceScript = overflowExperienceScript;
+            return this;
+        }
+
         /** ログの出力設定 */
         public Gs2.Gs2Experience.Model.LogSetting logSetting { set; get; }
 
@@ -150,20 +164,6 @@ namespace Gs2.Gs2Experience.Model
          */
         public Namespace WithLogSetting(Gs2.Gs2Experience.Model.LogSetting logSetting) {
             this.logSetting = logSetting;
-            return this;
-        }
-
-        /** None */
-        public string status { set; get; }
-
-        /**
-         * Noneを設定
-         *
-         * @param status None
-         * @return this
-         */
-        public Namespace WithStatus(string status) {
-            this.status = status;
             return this;
         }
 
@@ -238,15 +238,15 @@ namespace Gs2.Gs2Experience.Model
                 writer.WritePropertyName("changeRankCapScript");
                 this.changeRankCapScript.WriteJson(writer);
             }
+            if(this.overflowExperienceScript != null)
+            {
+                writer.WritePropertyName("overflowExperienceScript");
+                this.overflowExperienceScript.WriteJson(writer);
+            }
             if(this.logSetting != null)
             {
                 writer.WritePropertyName("logSetting");
                 this.logSetting.WriteJson(writer);
-            }
-            if(this.status != null)
-            {
-                writer.WritePropertyName("status");
-                writer.Write(this.status);
             }
             if(this.createdAt.HasValue)
             {
@@ -309,8 +309,8 @@ namespace Gs2.Gs2Experience.Model
                 .WithChangeExperienceScript(data.Keys.Contains("changeExperienceScript") && data["changeExperienceScript"] != null ? Gs2.Gs2Experience.Model.ScriptSetting.FromDict(data["changeExperienceScript"]) : null)
                 .WithChangeRankScript(data.Keys.Contains("changeRankScript") && data["changeRankScript"] != null ? Gs2.Gs2Experience.Model.ScriptSetting.FromDict(data["changeRankScript"]) : null)
                 .WithChangeRankCapScript(data.Keys.Contains("changeRankCapScript") && data["changeRankCapScript"] != null ? Gs2.Gs2Experience.Model.ScriptSetting.FromDict(data["changeRankCapScript"]) : null)
+                .WithOverflowExperienceScript(data.Keys.Contains("overflowExperienceScript") && data["overflowExperienceScript"] != null ? Gs2.Gs2Experience.Model.ScriptSetting.FromDict(data["overflowExperienceScript"]) : null)
                 .WithLogSetting(data.Keys.Contains("logSetting") && data["logSetting"] != null ? Gs2.Gs2Experience.Model.LogSetting.FromDict(data["logSetting"]) : null)
-                .WithStatus(data.Keys.Contains("status") && data["status"] != null ? data["status"].ToString() : null)
                 .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
                 .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
@@ -383,6 +383,14 @@ namespace Gs2.Gs2Experience.Model
             {
                 diff += changeRankCapScript.CompareTo(other.changeRankCapScript);
             }
+            if (overflowExperienceScript == null && overflowExperienceScript == other.overflowExperienceScript)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += overflowExperienceScript.CompareTo(other.overflowExperienceScript);
+            }
             if (logSetting == null && logSetting == other.logSetting)
             {
                 // null and null
@@ -390,14 +398,6 @@ namespace Gs2.Gs2Experience.Model
             else
             {
                 diff += logSetting.CompareTo(other.logSetting);
-            }
-            if (status == null && status == other.status)
-            {
-                // null and null
-            }
-            else
-            {
-                diff += status.CompareTo(other.status);
             }
             if (createdAt == null && createdAt == other.createdAt)
             {

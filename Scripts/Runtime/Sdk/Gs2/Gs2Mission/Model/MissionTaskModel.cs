@@ -194,7 +194,7 @@ namespace Gs2.Gs2Mission.Model
         string grn
     )
     {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):mission:(?<namespaceName>.*)::");
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):mission:(?<namespaceName>.*):group:(?<missionGroupName>.*):");
         if (!match.Groups["missionTaskName"].Success)
         {
             return null;
@@ -206,7 +206,7 @@ namespace Gs2.Gs2Mission.Model
         string grn
     )
     {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):mission:(?<namespaceName>.*)::");
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):mission:(?<namespaceName>.*):group:(?<missionGroupName>.*):");
         if (!match.Groups["missionGroupName"].Success)
         {
             return null;
@@ -218,7 +218,7 @@ namespace Gs2.Gs2Mission.Model
         string grn
     )
     {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):mission:(?<namespaceName>.*)::");
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):mission:(?<namespaceName>.*):group:(?<missionGroupName>.*):");
         if (!match.Groups["namespaceName"].Success)
         {
             return null;
@@ -230,7 +230,7 @@ namespace Gs2.Gs2Mission.Model
         string grn
     )
     {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):mission:(?<namespaceName>.*)::");
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):mission:(?<namespaceName>.*):group:(?<missionGroupName>.*):");
         if (!match.Groups["ownerId"].Success)
         {
             return null;
@@ -242,7 +242,7 @@ namespace Gs2.Gs2Mission.Model
         string grn
     )
     {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):mission:(?<namespaceName>.*)::");
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):mission:(?<namespaceName>.*):group:(?<missionGroupName>.*):");
         if (!match.Groups["region"].Success)
         {
             return null;

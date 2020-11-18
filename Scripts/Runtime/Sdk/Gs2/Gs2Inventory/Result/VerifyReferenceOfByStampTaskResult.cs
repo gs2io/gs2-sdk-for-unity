@@ -26,8 +26,8 @@ namespace Gs2.Gs2Inventory.Result
 	[Preserve]
 	public class VerifyReferenceOfByStampTaskResult
 	{
-        /** この所持品の参照元 */
-        public string item { set; get; }
+        /** この所持品の参照元のリスト */
+        public List<string> item { set; get; }
 
         /** 有効期限ごとのアイテム所持数量 */
         public ItemSet itemSet { set; get; }
@@ -46,7 +46,11 @@ namespace Gs2.Gs2Inventory.Result
         public static VerifyReferenceOfByStampTaskResult FromDict(JsonData data)
         {
             return new VerifyReferenceOfByStampTaskResult {
-                item = data.Keys.Contains("item") && data["item"] != null ? data["item"].ToString() : null,
+                item = data.Keys.Contains("item") && data["item"] != null ? data["item"].Cast<JsonData>().Select(value =>
+                    {
+                        return value.ToString();
+                    }
+                ).ToList() : null,
                 itemSet = data.Keys.Contains("itemSet") && data["itemSet"] != null ? Gs2.Gs2Inventory.Model.ItemSet.FromDict(data["itemSet"]) : null,
                 itemModel = data.Keys.Contains("itemModel") && data["itemModel"] != null ? Gs2.Gs2Inventory.Model.ItemModel.FromDict(data["itemModel"]) : null,
                 inventory = data.Keys.Contains("inventory") && data["inventory"] != null ? Gs2.Gs2Inventory.Model.Inventory.FromDict(data["inventory"]) : null,

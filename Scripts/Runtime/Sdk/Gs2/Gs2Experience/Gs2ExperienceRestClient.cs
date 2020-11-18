@@ -169,6 +169,11 @@ namespace Gs2.Gs2Experience
                     jsonWriter.WritePropertyName("changeRankCapScript");
                     _request.changeRankCapScript.WriteJson(jsonWriter);
                 }
+                if (_request.overflowExperienceScript != null)
+                {
+                    jsonWriter.WritePropertyName("overflowExperienceScript");
+                    _request.overflowExperienceScript.WriteJson(jsonWriter);
+                }
                 if (_request.logSetting != null)
                 {
                     jsonWriter.WritePropertyName("logSetting");
@@ -382,6 +387,11 @@ namespace Gs2.Gs2Experience
                 {
                     jsonWriter.WritePropertyName("changeRankCapScript");
                     _request.changeRankCapScript.WriteJson(jsonWriter);
+                }
+                if (_request.overflowExperienceScript != null)
+                {
+                    jsonWriter.WritePropertyName("overflowExperienceScript");
+                    _request.overflowExperienceScript.WriteJson(jsonWriter);
                 }
                 if (_request.logSetting != null)
                 {

@@ -147,18 +147,6 @@ namespace Gs2.Gs2Account.Model
             writer.WriteObjectEnd();
         }
 
-    public static string GetTypeFromGrn(
-        string grn
-    )
-    {
-        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):account:(?<namespaceName>.*):takeover:type:(?<type>.*):userIdentifier:(?<userIdentifier>.*)");
-        if (!match.Groups["type"].Success)
-        {
-            return null;
-        }
-        return match.Groups["type"].Value;
-    }
-
     public static string GetUserIdentifierFromGrn(
         string grn
     )
@@ -169,6 +157,18 @@ namespace Gs2.Gs2Account.Model
             return null;
         }
         return match.Groups["userIdentifier"].Value;
+    }
+
+    public static string GetTypeFromGrn(
+        string grn
+    )
+    {
+        var match = Regex.Match(grn, "grn:gs2:(?<region>.*):(?<ownerId>.*):account:(?<namespaceName>.*):takeover:type:(?<type>.*):userIdentifier:(?<userIdentifier>.*)");
+        if (!match.Groups["type"].Success)
+        {
+            return null;
+        }
+        return match.Groups["type"].Value;
     }
 
     public static string GetNamespaceNameFromGrn(

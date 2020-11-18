@@ -149,6 +149,16 @@ namespace Gs2.Gs2Dictionary
                     jsonWriter.WritePropertyName("description");
                     jsonWriter.Write(_request.description.ToString());
                 }
+                if (_request.entryScript != null)
+                {
+                    jsonWriter.WritePropertyName("entryScript");
+                    _request.entryScript.WriteJson(jsonWriter);
+                }
+                if (_request.duplicateEntryScript != null)
+                {
+                    jsonWriter.WritePropertyName("duplicateEntryScript");
+                    _request.duplicateEntryScript.WriteJson(jsonWriter);
+                }
                 if (_request.logSetting != null)
                 {
                     jsonWriter.WritePropertyName("logSetting");
@@ -342,6 +352,16 @@ namespace Gs2.Gs2Dictionary
                 {
                     jsonWriter.WritePropertyName("description");
                     jsonWriter.Write(_request.description.ToString());
+                }
+                if (_request.entryScript != null)
+                {
+                    jsonWriter.WritePropertyName("entryScript");
+                    _request.entryScript.WriteJson(jsonWriter);
+                }
+                if (_request.duplicateEntryScript != null)
+                {
+                    jsonWriter.WritePropertyName("duplicateEntryScript");
+                    _request.duplicateEntryScript.WriteJson(jsonWriter);
                 }
                 if (_request.logSetting != null)
                 {

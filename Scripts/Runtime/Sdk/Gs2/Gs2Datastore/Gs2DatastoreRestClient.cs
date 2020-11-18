@@ -2069,16 +2069,20 @@ namespace Gs2.Gs2Datastore
                 var url = Gs2RestSession.EndpointHost
                     .Replace("{service}", "datastore")
                     .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/user/me/data/{dataObjectName}/restore";
+                    + "/{namespaceName}/file/restore";
 
                 url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
-                url = url.Replace("{dataObjectName}", !string.IsNullOrEmpty(_request.dataObjectName) ? _request.dataObjectName.ToString() : "null");
 
                 UnityWebRequest.url = url;
 
                 var stringBuilder = new StringBuilder();
                 var jsonWriter = new JsonWriter(stringBuilder);
                 jsonWriter.WriteObjectStart();
+                if (_request.dataObjectId != null)
+                {
+                    jsonWriter.WritePropertyName("dataObjectId");
+                    jsonWriter.Write(_request.dataObjectId.ToString());
+                }
                 if (_request.contextStack != null)
                 {
                     jsonWriter.WritePropertyName("contextStack");
@@ -2096,14 +2100,6 @@ namespace Gs2.Gs2Datastore
                 if (_request.requestId != null)
                 {
                     UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
-                }
-                if (_request.accessToken != null)
-                {
-                    UnityWebRequest.SetRequestHeader("X-GS2-ACCESS-TOKEN", _request.accessToken);
-                }
-                if (_request.duplicationAvoider != null)
-                {
-                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
                 }
 
                 return Send((Gs2RestSession)gs2Session);
@@ -2123,80 +2119,6 @@ namespace Gs2.Gs2Datastore
         )
 		{
 			var task = new RestoreDataObjectTask(request, callback);
-			if (_certificateHandler != null)
-			{
-				task.UnityWebRequest.certificateHandler = _certificateHandler;
-			}
-			return Gs2RestSession.Execute(task);
-        }
-
-        private class RestoreDataObjectByUserIdTask : Gs2RestSessionTask<Result.RestoreDataObjectByUserIdResult>
-        {
-			private readonly Request.RestoreDataObjectByUserIdRequest _request;
-
-			public RestoreDataObjectByUserIdTask(Request.RestoreDataObjectByUserIdRequest request, UnityAction<AsyncResult<Result.RestoreDataObjectByUserIdResult>> userCallback) : base(userCallback)
-			{
-				_request = request;
-			}
-
-            protected override IEnumerator ExecuteImpl(Gs2Session gs2Session)
-            {
-				UnityWebRequest.method = UnityWebRequest.kHttpVerbPOST;
-
-                var url = Gs2RestSession.EndpointHost
-                    .Replace("{service}", "datastore")
-                    .Replace("{region}", gs2Session.Region.DisplayName())
-                    + "/{namespaceName}/user/{userId}/data/{dataObjectName}/restore";
-
-                url = url.Replace("{namespaceName}", !string.IsNullOrEmpty(_request.namespaceName) ? _request.namespaceName.ToString() : "null");
-                url = url.Replace("{dataObjectName}", !string.IsNullOrEmpty(_request.dataObjectName) ? _request.dataObjectName.ToString() : "null");
-                url = url.Replace("{userId}", !string.IsNullOrEmpty(_request.userId) ? _request.userId.ToString() : "null");
-
-                UnityWebRequest.url = url;
-
-                var stringBuilder = new StringBuilder();
-                var jsonWriter = new JsonWriter(stringBuilder);
-                jsonWriter.WriteObjectStart();
-                if (_request.contextStack != null)
-                {
-                    jsonWriter.WritePropertyName("contextStack");
-                    jsonWriter.Write(_request.contextStack.ToString());
-                }
-                jsonWriter.WriteObjectEnd();
-
-                var body = stringBuilder.ToString();
-                if (!string.IsNullOrEmpty(body))
-                {
-                    UnityWebRequest.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(body));
-                }
-                UnityWebRequest.SetRequestHeader("Content-Type", "application/json");
-
-                if (_request.requestId != null)
-                {
-                    UnityWebRequest.SetRequestHeader("X-GS2-REQUEST-ID", _request.requestId);
-                }
-                if (_request.duplicationAvoider != null)
-                {
-                    UnityWebRequest.SetRequestHeader("X-GS2-DUPLICATION-AVOIDER", _request.duplicationAvoider);
-                }
-
-                return Send((Gs2RestSession)gs2Session);
-            }
-        }
-
-		/// <summary>
-		///  ユーザIDを指定してデータオブジェクトの管理情報を修復する<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="request">リクエストパラメータ</param>
-		public IEnumerator RestoreDataObjectByUserId(
-                Request.RestoreDataObjectByUserIdRequest request,
-                UnityAction<AsyncResult<Result.RestoreDataObjectByUserIdResult>> callback
-        )
-		{
-			var task = new RestoreDataObjectByUserIdTask(request, callback);
 			if (_certificateHandler != null)
 			{
 				task.UnityWebRequest.certificateHandler = _certificateHandler;

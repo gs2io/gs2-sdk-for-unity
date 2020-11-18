@@ -111,6 +111,34 @@ namespace Gs2.Gs2Stamina.Model
             return this;
         }
 
+        /** 作成日時 */
+        public long? createdAt { set; get; }
+
+        /**
+         * 作成日時を設定
+         *
+         * @param createdAt 作成日時
+         * @return this
+         */
+        public RecoverValueTableMaster WithCreatedAt(long? createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        /** 最終更新日時 */
+        public long? updatedAt { set; get; }
+
+        /**
+         * 最終更新日時を設定
+         *
+         * @param updatedAt 最終更新日時
+         * @return this
+         */
+        public RecoverValueTableMaster WithUpdatedAt(long? updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
         public void WriteJson(JsonWriter writer)
         {
             writer.WriteObjectStart();
@@ -148,6 +176,16 @@ namespace Gs2.Gs2Stamina.Model
                     writer.Write(item.Value);
                 }
                 writer.WriteArrayEnd();
+            }
+            if(this.createdAt.HasValue)
+            {
+                writer.WritePropertyName("createdAt");
+                writer.Write(this.createdAt.Value);
+            }
+            if(this.updatedAt.HasValue)
+            {
+                writer.WritePropertyName("updatedAt");
+                writer.Write(this.updatedAt.Value);
             }
             writer.WriteObjectEnd();
         }
@@ -213,7 +251,9 @@ namespace Gs2.Gs2Stamina.Model
                     {
                         return (int?)int.Parse(value.ToString());
                     }
-                ).ToList() : null);
+                ).ToList() : null)
+                .WithCreatedAt(data.Keys.Contains("createdAt") && data["createdAt"] != null ? (long?)long.Parse(data["createdAt"].ToString()) : null)
+                .WithUpdatedAt(data.Keys.Contains("updatedAt") && data["updatedAt"] != null ? (long?)long.Parse(data["updatedAt"].ToString()) : null);
         }
 
         public int CompareTo(object obj)
@@ -271,6 +311,22 @@ namespace Gs2.Gs2Stamina.Model
                 {
                     diff += (int)(values[i] - other.values[i]);
                 }
+            }
+            if (createdAt == null && createdAt == other.createdAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(createdAt - other.createdAt);
+            }
+            if (updatedAt == null && updatedAt == other.updatedAt)
+            {
+                // null and null
+            }
+            else
+            {
+                diff += (int)(updatedAt - other.updatedAt);
             }
             return diff;
         }
