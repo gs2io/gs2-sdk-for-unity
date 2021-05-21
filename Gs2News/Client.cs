@@ -39,7 +39,7 @@ namespace Gs2.Unity.Gs2News
 		}
 	}
 
-	public class Client
+	public partial class Client
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2NewsWebSocketClient _client;
