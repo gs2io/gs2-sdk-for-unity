@@ -39,7 +39,7 @@ namespace Gs2.Unity.Gs2Dictionary
 		}
 	}
 
-	public class Client
+	public partial class Client
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
 		private readonly Gs2DictionaryWebSocketClient _client;
