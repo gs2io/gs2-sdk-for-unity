@@ -13,35 +13,36 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Version.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Version.Model;
-using Gs2.Gs2Version.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Version.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzListResult
 	{
-        /** 承認したバージョンのリスト */
-        public List<EzAcceptVersion> Items { get; private set; }
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> Items;
+		[SerializeField]
+		public string NextPageToken;
 
-        /** リストの続きを取得するためのページトークン */
-        public string NextPageToken { get; private set; }
-
-
-        public EzListResult(
-            DescribeAcceptVersionsResult result
-        )
+        public static EzListResult FromModel(Gs2.Gs2Version.Result.DescribeAcceptVersionsResult model)
         {
-            Items = new List<EzAcceptVersion>();
-            foreach (var item_ in result.items)
-            {
-                Items.Add(new EzAcceptVersion(item_));
-            }
-            NextPageToken = result.nextPageToken;
+            return new EzListResult {
+                Items = model.Items == null ? new List<Gs2.Unity.Gs2Version.Model.EzAcceptVersion>() : model.Items.Select(v => {
+                    return Gs2.Unity.Gs2Version.Model.EzAcceptVersion.FromModel(v);
+                }).ToList(),
+                NextPageToken = model.NextPageToken == null ? null : model.NextPageToken,
+            };
         }
-	}
+    }
 }

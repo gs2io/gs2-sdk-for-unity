@@ -13,31 +13,33 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Experience.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Experience.Model;
-using Gs2.Gs2Experience.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Experience.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzListExperienceModelsResult
 	{
-        /** 経験値・ランクアップ閾値モデルのリスト */
-        public List<EzExperienceModel> Items { get; private set; }
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Experience.Model.EzExperienceModel> Items;
 
-
-        public EzListExperienceModelsResult(
-            DescribeExperienceModelsResult result
-        )
+        public static EzListExperienceModelsResult FromModel(Gs2.Gs2Experience.Result.DescribeExperienceModelsResult model)
         {
-            Items = new List<EzExperienceModel>();
-            foreach (var item_ in result.items)
-            {
-                Items.Add(new EzExperienceModel(item_));
-            }
+            return new EzListExperienceModelsResult {
+                Items = model.Items == null ? new List<Gs2.Unity.Gs2Experience.Model.EzExperienceModel>() : model.Items.Select(v => {
+                    return Gs2.Unity.Gs2Experience.Model.EzExperienceModel.FromModel(v);
+                }).ToList(),
+            };
         }
-	}
+    }
 }

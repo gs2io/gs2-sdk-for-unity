@@ -13,83 +13,54 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2JobQueue.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2JobQueue.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzJob
 	{
-		/** ジョブ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string JobId;
-		/** ジョブの実行に使用するスクリプト のGRN */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string ScriptId;
-		/** 引数 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Args;
-		/** 現在のリトライ回数 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int CurrentRetryCount;
-		/** 最大試行回数 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int MaxTryCount;
 
-		public EzJob()
-		{
-
-		}
-
-		public EzJob(Gs2.Gs2JobQueue.Model.Job @job)
-		{
-			JobId = @job.jobId;
-			ScriptId = @job.scriptId;
-			Args = @job.args;
-			CurrentRetryCount = @job.currentRetryCount.HasValue ? @job.currentRetryCount.Value : 0;
-			MaxTryCount = @job.maxTryCount.HasValue ? @job.maxTryCount.Value : 0;
-		}
-
-        public virtual Job ToModel()
+        public Gs2.Gs2JobQueue.Model.Job ToModel()
         {
-            return new Job {
-                jobId = JobId,
-                scriptId = ScriptId,
-                args = Args,
-                currentRetryCount = CurrentRetryCount,
-                maxTryCount = MaxTryCount,
+            return new Gs2.Gs2JobQueue.Model.Job {
+                JobId = JobId,
+                ScriptId = ScriptId,
+                Args = Args,
+                CurrentRetryCount = CurrentRetryCount,
+                MaxTryCount = MaxTryCount,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzJob FromModel(Gs2.Gs2JobQueue.Model.Job model)
         {
-            writer.WriteObjectStart();
-            if(this.JobId != null)
-            {
-                writer.WritePropertyName("jobId");
-                writer.Write(this.JobId);
-            }
-            if(this.ScriptId != null)
-            {
-                writer.WritePropertyName("scriptId");
-                writer.Write(this.ScriptId);
-            }
-            if(this.Args != null)
-            {
-                writer.WritePropertyName("args");
-                writer.Write(this.Args);
-            }
-            writer.WritePropertyName("currentRetryCount");
-            writer.Write(this.CurrentRetryCount);
-            writer.WritePropertyName("maxTryCount");
-            writer.Write(this.MaxTryCount);
-            writer.WriteObjectEnd();
+            return new EzJob {
+                JobId = model.JobId == null ? null : model.JobId,
+                ScriptId = model.ScriptId == null ? null : model.ScriptId,
+                Args = model.Args == null ? null : model.Args,
+                CurrentRetryCount = model.CurrentRetryCount ?? 0,
+                MaxTryCount = model.MaxTryCount ?? 0,
+            };
         }
-	}
+    }
 }

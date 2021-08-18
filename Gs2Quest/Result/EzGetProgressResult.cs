@@ -13,44 +13,37 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Quest.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Quest.Model;
-using Gs2.Gs2Quest.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Quest.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzGetProgressResult
 	{
-        /** クエスト挑戦 */
-        public EzProgress Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Quest.Model.EzProgress Item;
+		[SerializeField]
+		public Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel QuestGroup;
+		[SerializeField]
+		public Gs2.Unity.Gs2Quest.Model.EzQuestModel Quest;
 
-        /** クエストグループ */
-        public EzQuestGroupModel QuestGroup { get; private set; }
-
-        /** クエストモデル */
-        public EzQuestModel Quest { get; private set; }
-
-
-        public EzGetProgressResult(
-            GetProgressResult result
-        )
+        public static EzGetProgressResult FromModel(Gs2.Gs2Quest.Result.GetProgressResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzProgress(result.item);
-            }
-            if(result.questGroup != null)
-            {
-                QuestGroup = new EzQuestGroupModel(result.questGroup);
-            }
-            if(result.quest != null)
-            {
-                Quest = new EzQuestModel(result.quest);
-            }
+            return new EzGetProgressResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Quest.Model.EzProgress.FromModel(model.Item),
+                QuestGroup = model.QuestGroup == null ? null : Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel.FromModel(model.QuestGroup),
+                Quest = model.Quest == null ? null : Gs2.Unity.Gs2Quest.Model.EzQuestModel.FromModel(model.Quest),
+            };
         }
-	}
+    }
 }

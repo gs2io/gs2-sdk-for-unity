@@ -13,73 +13,46 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Version.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Version.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzAcceptVersion
 	{
-		/** 承認したバージョン名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string VersionName;
-		/** ユーザーID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string UserId;
-		/** 承認したバージョン */
-		[UnityEngine.SerializeField]
-		public EzVersion Version;
+		[SerializeField]
+		public Gs2.Unity.Gs2Version.Model.EzVersion Version;
 
-		public EzAcceptVersion()
-		{
-
-		}
-
-		public EzAcceptVersion(Gs2.Gs2Version.Model.AcceptVersion @acceptVersion)
-		{
-			VersionName = @acceptVersion.versionName;
-			UserId = @acceptVersion.userId;
-			Version = @acceptVersion.version != null ? new EzVersion(@acceptVersion.version) : null;
-		}
-
-        public virtual AcceptVersion ToModel()
+        public Gs2.Gs2Version.Model.AcceptVersion ToModel()
         {
-            return new AcceptVersion {
-                versionName = VersionName,
-                userId = UserId,
-                version = new Version_ {
-                    major = Version.Major,
-                    minor = Version.Minor,
-                    micro = Version.Micro,
-                },
+            return new Gs2.Gs2Version.Model.AcceptVersion {
+                VersionName = VersionName,
+                UserId = UserId,
+                Version = Version?.ToModel(),
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzAcceptVersion FromModel(Gs2.Gs2Version.Model.AcceptVersion model)
         {
-            writer.WriteObjectStart();
-            if(this.VersionName != null)
-            {
-                writer.WritePropertyName("versionName");
-                writer.Write(this.VersionName);
-            }
-            if(this.UserId != null)
-            {
-                writer.WritePropertyName("userId");
-                writer.Write(this.UserId);
-            }
-            if(this.Version != null)
-            {
-                writer.WritePropertyName("version");
-                this.Version.WriteJson(writer);
-            }
-            writer.WriteObjectEnd();
+            return new EzAcceptVersion {
+                VersionName = model.VersionName == null ? null : model.VersionName,
+                UserId = model.UserId == null ? null : model.UserId,
+                Version = model.Version == null ? null : Gs2.Unity.Gs2Version.Model.EzVersion.FromModel(model.Version),
+            };
         }
-	}
+    }
 }

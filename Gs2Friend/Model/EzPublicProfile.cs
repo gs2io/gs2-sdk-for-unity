@@ -13,59 +13,42 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Friend.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Friend.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzPublicProfile
 	{
-		/** ユーザーID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string UserId;
-		/** 公開されるプロフィール */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string PublicProfile;
 
-		public EzPublicProfile()
-		{
-
-		}
-
-		public EzPublicProfile(Gs2.Gs2Friend.Model.PublicProfile @publicProfile)
-		{
-			UserId = @publicProfile.userId;
-			PublicProfile = @publicProfile.publicProfile;
-		}
-
-        public virtual PublicProfile ToModel()
+        public Gs2.Gs2Friend.Model.PublicProfile ToModel()
         {
-            return new PublicProfile {
-                userId = UserId,
-                publicProfile = PublicProfile,
+            return new Gs2.Gs2Friend.Model.PublicProfile {
+                UserId = UserId,
+                Value = PublicProfile,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzPublicProfile FromModel(Gs2.Gs2Friend.Model.PublicProfile model)
         {
-            writer.WriteObjectStart();
-            if(this.UserId != null)
-            {
-                writer.WritePropertyName("userId");
-                writer.Write(this.UserId);
-            }
-            if(this.PublicProfile != null)
-            {
-                writer.WritePropertyName("publicProfile");
-                writer.Write(this.PublicProfile);
-            }
-            writer.WriteObjectEnd();
+            return new EzPublicProfile {
+                UserId = model.UserId == null ? null : model.UserId,
+                PublicProfile = model.Value == null ? null : model.Value,
+            };
         }
-	}
+    }
 }

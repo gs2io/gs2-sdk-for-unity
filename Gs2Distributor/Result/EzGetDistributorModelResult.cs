@@ -13,30 +13,31 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Distributor.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Distributor.Model;
-using Gs2.Gs2Distributor.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Distributor.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzGetDistributorModelResult
 	{
-        /** 配信設定 */
-        public EzDistributorModel Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Distributor.Model.EzDistributorModel Item;
 
-
-        public EzGetDistributorModelResult(
-            GetDistributorModelResult result
-        )
+        public static EzGetDistributorModelResult FromModel(Gs2.Gs2Distributor.Result.GetDistributorModelResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzDistributorModel(result.item);
-            }
+            return new EzGetDistributorModelResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Distributor.Model.EzDistributorModel.FromModel(model.Item),
+            };
         }
-	}
+    }
 }

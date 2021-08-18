@@ -2,7 +2,7 @@
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
  *
- * Licensed under the Apache License, Version 2.0(the "License").
+ * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
  * A copy of the License is located at
  *
@@ -14,22 +14,28 @@
  * permissions and limitations under the License.
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Gs2.Gs2Dictionary;
-using Gs2.Gs2Dictionary.Model;
-using Gs2.Gs2Dictionary.Request;
-using Gs2.Gs2Dictionary.Result;
 using Gs2.Unity.Gs2Dictionary.Model;
 using Gs2.Unity.Gs2Dictionary.Result;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Gs2Quest;
+using Gs2.Gs2Quest.Model;
+using Gs2.Gs2Quest.Request;
+using Gs2.Gs2Quest.Result;
+using Gs2.Unity.Gs2Quest.Model;
+using Gs2.Unity.Gs2Quest.Result;
 using Gs2.Core;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Unity.Util;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Dictionary
 {
 	public class DisabledCertificateHandler : CertificateHandler {
@@ -39,6 +45,8 @@ namespace Gs2.Unity.Gs2Dictionary
 		}
 	}
 
+	[Preserve]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
@@ -59,42 +67,8 @@ namespace Gs2.Unity.Gs2Dictionary
 			}
 		}
 
-		/// <summary>
-		///  エントリーモデル情報の一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		public IEnumerator ListEntryModels(
-		        UnityAction<AsyncResult<EzListEntryModelsResult>> callback,
-                string namespaceName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-                null,
-                cb => _restClient.DescribeEntryModels(
-                    new DescribeEntryModelsRequest()
-                        .WithNamespaceName(namespaceName),
-                    r => cb.Invoke(
-                        new AsyncResult<EzListEntryModelsResult>(
-                            r.Result == null ? null : new EzListEntryModelsResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  エントリーモデル情報を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="entryName">エントリーモデル名</param>
-		public IEnumerator GetEntryModel(
-		        UnityAction<AsyncResult<EzGetEntryModelResult>> callback,
+        public IEnumerator GetEntryModel(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzGetEntryModelResult>> callback,
                 string namespaceName,
                 string entryName
         )
@@ -103,12 +77,12 @@ namespace Gs2.Unity.Gs2Dictionary
                 callback,
                 null,
                 cb => _client.GetEntryModel(
-                    new GetEntryModelRequest()
+                    new Gs2.Gs2Dictionary.Request.GetEntryModelRequest()
                         .WithNamespaceName(namespaceName)
                         .WithEntryName(entryName),
                     r => cb.Invoke(
-                        new AsyncResult<EzGetEntryModelResult>(
-                            r.Result == null ? null : new EzGetEntryModelResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzGetEntryModelResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Dictionary.Result.EzGetEntryModelResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -116,36 +90,20 @@ namespace Gs2.Unity.Gs2Dictionary
             );
 		}
 
-		/// <summary>
-		///  エントリーの一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="limit">データの取得件数</param>
-		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
-		public IEnumerator ListEntries(
-		        UnityAction<AsyncResult<EzListEntriesResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                long? limit=null,
-                string pageToken=null
+        public IEnumerator ListEntryModels(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzListEntryModelsResult>> callback,
+                string namespaceName
         )
 		{
             yield return _profile.Run(
                 callback,
-		        session,
-                cb => _restClient.DescribeEntries(
-                    new DescribeEntriesRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithLimit(limit)
-                        .WithPageToken(pageToken)
-                        .WithAccessToken(session.AccessToken.token),
+                null,
+                cb => _restClient.DescribeEntryModels(
+                    new Gs2.Gs2Dictionary.Request.DescribeEntryModelsRequest()
+                        .WithNamespaceName(namespaceName),
                     r => cb.Invoke(
-                        new AsyncResult<EzListEntriesResult>(
-                            r.Result == null ? null : new EzListEntriesResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzListEntryModelsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Dictionary.Result.EzListEntryModelsResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -153,17 +111,8 @@ namespace Gs2.Unity.Gs2Dictionary
             );
 		}
 
-		/// <summary>
-		///  エントリーを取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="entryModelName">エントリー名</param>
-		public IEnumerator GetEntry(
-		        UnityAction<AsyncResult<EzGetEntryResult>> callback,
+        public IEnumerator GetEntry(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzGetEntryResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string entryModelName
@@ -173,13 +122,13 @@ namespace Gs2.Unity.Gs2Dictionary
                 callback,
 		        session,
                 cb => _client.GetEntry(
-                    new GetEntryRequest()
+                    new Gs2.Gs2Dictionary.Request.GetEntryRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithEntryModelName(entryModelName)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithEntryModelName(entryModelName),
                     r => cb.Invoke(
-                        new AsyncResult<EzGetEntryResult>(
-                            r.Result == null ? null : new EzGetEntryResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzGetEntryResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Dictionary.Result.EzGetEntryResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -187,18 +136,8 @@ namespace Gs2.Unity.Gs2Dictionary
             );
 		}
 
-		/// <summary>
-		///  エントリーを取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="entryModelName">エントリー名</param>
-		/// <param name="keyId">署名の発行に使用する暗号鍵 のGRN</param>
-		public IEnumerator GetEntryWithSignature(
-		        UnityAction<AsyncResult<EzGetEntryWithSignatureResult>> callback,
+        public IEnumerator GetEntryWithSignature(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzGetEntryWithSignatureResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string entryModelName,
@@ -208,20 +147,47 @@ namespace Gs2.Unity.Gs2Dictionary
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.GetEntryWithSignature(
-                    new GetEntryWithSignatureRequest()
+                cb => _restClient.GetEntryWithSignature(
+                    new Gs2.Gs2Dictionary.Request.GetEntryWithSignatureRequest()
                         .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
                         .WithEntryModelName(entryModelName)
-                        .WithKeyId(keyId)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithKeyId(keyId),
                     r => cb.Invoke(
-                        new AsyncResult<EzGetEntryWithSignatureResult>(
-                            r.Result == null ? null : new EzGetEntryWithSignatureResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzGetEntryWithSignatureResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Dictionary.Result.EzGetEntryWithSignatureResult.FromModel(r.Result),
                             r.Error
                         )
                     )
                 )
             );
 		}
-	}
+
+        public IEnumerator ListEntries(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzListEntriesResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                int limit,
+                string pageToken = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribeEntries(
+                    new Gs2.Gs2Dictionary.Request.DescribeEntriesRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithLimit(limit)
+                        .WithPageToken(pageToken),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzListEntriesResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Dictionary.Result.EzListEntriesResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+    }
 }

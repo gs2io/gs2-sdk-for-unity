@@ -13,59 +13,42 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Dictionary.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Dictionary.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzEntryModel
 	{
-		/** エントリーの種類名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** エントリーの種類のメタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
 
-		public EzEntryModel()
-		{
-
-		}
-
-		public EzEntryModel(Gs2.Gs2Dictionary.Model.EntryModel @entryModel)
-		{
-			Name = @entryModel.name;
-			Metadata = @entryModel.metadata;
-		}
-
-        public virtual EntryModel ToModel()
+        public Gs2.Gs2Dictionary.Model.EntryModel ToModel()
         {
-            return new EntryModel {
-                name = Name,
-                metadata = Metadata,
+            return new Gs2.Gs2Dictionary.Model.EntryModel {
+                Name = Name,
+                Metadata = Metadata,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzEntryModel FromModel(Gs2.Gs2Dictionary.Model.EntryModel model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            writer.WriteObjectEnd();
+            return new EzEntryModel {
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+            };
         }
-	}
+    }
 }

@@ -13,83 +13,54 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Enhance.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Enhance.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzProgress
 	{
-		/** 強化実行 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string ProgressId;
-		/** レートモデル名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string RateName;
-		/** 強化対象のプロパティID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string PropertyId;
-		/** 入手できる経験値 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int ExperienceValue;
-		/** 経験値倍率 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public float Rate;
 
-		public EzProgress()
-		{
-
-		}
-
-		public EzProgress(Gs2.Gs2Enhance.Model.Progress @progress)
-		{
-			ProgressId = @progress.progressId;
-			RateName = @progress.rateName;
-			PropertyId = @progress.propertyId;
-			ExperienceValue = @progress.experienceValue.HasValue ? @progress.experienceValue.Value : 0;
-			Rate = @progress.rate.HasValue ? @progress.rate.Value : 0;
-		}
-
-        public virtual Progress ToModel()
+        public Gs2.Gs2Enhance.Model.Progress ToModel()
         {
-            return new Progress {
-                progressId = ProgressId,
-                rateName = RateName,
-                propertyId = PropertyId,
-                experienceValue = ExperienceValue,
-                rate = Rate,
+            return new Gs2.Gs2Enhance.Model.Progress {
+                ProgressId = ProgressId,
+                RateName = RateName,
+                PropertyId = PropertyId,
+                ExperienceValue = ExperienceValue,
+                Rate = Rate,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzProgress FromModel(Gs2.Gs2Enhance.Model.Progress model)
         {
-            writer.WriteObjectStart();
-            if(this.ProgressId != null)
-            {
-                writer.WritePropertyName("progressId");
-                writer.Write(this.ProgressId);
-            }
-            if(this.RateName != null)
-            {
-                writer.WritePropertyName("rateName");
-                writer.Write(this.RateName);
-            }
-            if(this.PropertyId != null)
-            {
-                writer.WritePropertyName("propertyId");
-                writer.Write(this.PropertyId);
-            }
-            writer.WritePropertyName("experienceValue");
-            writer.Write(this.ExperienceValue);
-            writer.WritePropertyName("rate");
-            writer.Write(this.Rate);
-            writer.WriteObjectEnd();
+            return new EzProgress {
+                ProgressId = model.ProgressId == null ? null : model.ProgressId,
+                RateName = model.RateName == null ? null : model.RateName,
+                PropertyId = model.PropertyId == null ? null : model.PropertyId,
+                ExperienceValue = model.ExperienceValue ?? 0,
+                Rate = model.Rate ?? 0,
+            };
         }
-	}
+    }
 }

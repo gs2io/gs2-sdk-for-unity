@@ -13,139 +13,50 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Showcase.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Showcase.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzShowcase
 	{
-		/** 商品名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** 商品のメタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** インベントリに格納可能なアイテムモデル一覧 */
-		[UnityEngine.SerializeField]
-		public List<EzDisplayItem> DisplayItems;
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Showcase.Model.EzDisplayItem> DisplayItems;
 
-		public EzShowcase()
-		{
-
-		}
-
-		public EzShowcase(Gs2.Gs2Showcase.Model.Showcase @showcase)
-		{
-			Name = @showcase.name;
-			Metadata = @showcase.metadata;
-			DisplayItems = @showcase.displayItems != null ? @showcase.displayItems.Select(value =>
-                {
-                    return new EzDisplayItem(value);
-                }
-			).ToList() : new List<EzDisplayItem>(new EzDisplayItem[] {});
-		}
-
-        public virtual Showcase ToModel()
+        public Gs2.Gs2Showcase.Model.Showcase ToModel()
         {
-            return new Showcase {
-                name = Name,
-                metadata = Metadata,
-                displayItems = DisplayItems != null ? DisplayItems.Select(Value0 =>
-                        {
-                            return new DisplayItem
-                            {
-                                displayItemId = Value0.DisplayItemId,
-                                type = Value0.Type,
-                                salesItem = new SalesItem {
-                                    name = Value0.SalesItem.Name,
-                                    metadata = Value0.SalesItem.Metadata,
-                                    consumeActions = Value0.SalesItem.ConsumeActions != null ? Value0.SalesItem.ConsumeActions.Select(Value2 =>
-                                            {
-                                                return new ConsumeAction
-                                                {
-                                                    action = Value2.Action,
-                                                    request = Value2.Request,
-                                                };
-                                            }
-                                    ).ToList() : new List<ConsumeAction>(new ConsumeAction[] {}),
-                                    acquireActions = Value0.SalesItem.AcquireActions != null ? Value0.SalesItem.AcquireActions.Select(Value2 =>
-                                            {
-                                                return new AcquireAction
-                                                {
-                                                    action = Value2.Action,
-                                                    request = Value2.Request,
-                                                };
-                                            }
-                                    ).ToList() : new List<AcquireAction>(new AcquireAction[] {}),
-                                },
-                                salesItemGroup = new SalesItemGroup {
-                                    name = Value0.SalesItemGroup.Name,
-                                    metadata = Value0.SalesItemGroup.Metadata,
-                                    salesItems = Value0.SalesItemGroup.SalesItems != null ? Value0.SalesItemGroup.SalesItems.Select(Value2 =>
-                                            {
-                                                return new SalesItem
-                                                {
-                                                    name = Value2.Name,
-                                                    metadata = Value2.Metadata,
-                                                    consumeActions = Value2.ConsumeActions != null ? Value2.ConsumeActions.Select(Value3 =>
-                                                            {
-                                                                return new ConsumeAction
-                                                                {
-                                                                    action = Value3.Action,
-                                                                    request = Value3.Request,
-                                                                };
-                                                            }
-                                                    ).ToList() : new List<ConsumeAction>(new ConsumeAction[] {}),
-                                                    acquireActions = Value2.AcquireActions != null ? Value2.AcquireActions.Select(Value3 =>
-                                                            {
-                                                                return new AcquireAction
-                                                                {
-                                                                    action = Value3.Action,
-                                                                    request = Value3.Request,
-                                                                };
-                                                            }
-                                                    ).ToList() : new List<AcquireAction>(new AcquireAction[] {}),
-                                                };
-                                            }
-                                    ).ToList() : new List<SalesItem>(new SalesItem[] {}),
-                                },
-                            };
-                        }
-                ).ToList() : new List<DisplayItem>(new DisplayItem[] {}),
+            return new Gs2.Gs2Showcase.Model.Showcase {
+                Name = Name,
+                Metadata = Metadata,
+                DisplayItems = DisplayItems?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzShowcase FromModel(Gs2.Gs2Showcase.Model.Showcase model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            if(this.DisplayItems != null)
-            {
-                writer.WritePropertyName("displayItems");
-                writer.WriteArrayStart();
-                foreach(var item in this.DisplayItems)
-                {
-                    item.WriteJson(writer);
-                }
-                writer.WriteArrayEnd();
-            }
-            writer.WriteObjectEnd();
+            return new EzShowcase {
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                DisplayItems = model.DisplayItems == null ? new List<Gs2.Unity.Gs2Showcase.Model.EzDisplayItem>() : model.DisplayItems.Select(v => {
+                    return Gs2.Unity.Gs2Showcase.Model.EzDisplayItem.FromModel(v);
+                }).ToList(),
+            };
         }
-	}
+    }
 }

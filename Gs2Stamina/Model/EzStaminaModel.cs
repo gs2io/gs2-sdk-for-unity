@@ -13,151 +13,74 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Stamina.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Stamina.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzStaminaModel
 	{
-		/** スタミナの種類名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** スタミナの種類のメタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** スタミナを回復する速度(分) */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int RecoverIntervalMinutes;
-		/** 時間経過後に回復する量 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int RecoverValue;
-		/** スタミナの最大値の初期値 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int InitialCapacity;
-		/** 最大値を超えて回復するか */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public bool IsOverflow;
-		/** 溢れた状況での最大値 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int MaxCapacity;
-		/** GS2-Experience と連携する際に使用するスタミナ最大値テーブル */
-		[UnityEngine.SerializeField]
-		public EzMaxStaminaTable MaxStaminaTable;
-		/** GS2-Experience と連携する際に使用する回復間隔テーブル */
-		[UnityEngine.SerializeField]
-		public EzRecoverIntervalTable RecoverIntervalTable;
-		/** GS2-Experience と連携する際に使用する回復量テーブル */
-		[UnityEngine.SerializeField]
-		public EzRecoverValueTable RecoverValueTable;
+		[SerializeField]
+		public Gs2.Unity.Gs2Stamina.Model.EzMaxStaminaTable MaxStaminaTable;
+		[SerializeField]
+		public Gs2.Unity.Gs2Stamina.Model.EzRecoverIntervalTable RecoverIntervalTable;
+		[SerializeField]
+		public Gs2.Unity.Gs2Stamina.Model.EzRecoverValueTable RecoverValueTable;
 
-		public EzStaminaModel()
-		{
-
-		}
-
-		public EzStaminaModel(Gs2.Gs2Stamina.Model.StaminaModel @staminaModel)
-		{
-			Name = @staminaModel.name;
-			Metadata = @staminaModel.metadata;
-			RecoverIntervalMinutes = @staminaModel.recoverIntervalMinutes.HasValue ? @staminaModel.recoverIntervalMinutes.Value : 0;
-			RecoverValue = @staminaModel.recoverValue.HasValue ? @staminaModel.recoverValue.Value : 0;
-			InitialCapacity = @staminaModel.initialCapacity.HasValue ? @staminaModel.initialCapacity.Value : 0;
-			IsOverflow = @staminaModel.isOverflow.HasValue ? @staminaModel.isOverflow.Value : false;
-			MaxCapacity = @staminaModel.maxCapacity.HasValue ? @staminaModel.maxCapacity.Value : 0;
-			MaxStaminaTable = @staminaModel.maxStaminaTable != null ? new EzMaxStaminaTable(@staminaModel.maxStaminaTable) : null;
-			RecoverIntervalTable = @staminaModel.recoverIntervalTable != null ? new EzRecoverIntervalTable(@staminaModel.recoverIntervalTable) : null;
-			RecoverValueTable = @staminaModel.recoverValueTable != null ? new EzRecoverValueTable(@staminaModel.recoverValueTable) : null;
-		}
-
-        public virtual StaminaModel ToModel()
+        public Gs2.Gs2Stamina.Model.StaminaModel ToModel()
         {
-            return new StaminaModel {
-                name = Name,
-                metadata = Metadata,
-                recoverIntervalMinutes = RecoverIntervalMinutes,
-                recoverValue = RecoverValue,
-                initialCapacity = InitialCapacity,
-                isOverflow = IsOverflow,
-                maxCapacity = MaxCapacity,
-                maxStaminaTable = new MaxStaminaTable {
-                    name = MaxStaminaTable.Name,
-                    metadata = MaxStaminaTable.Metadata,
-                    experienceModelId = MaxStaminaTable.ExperienceModelId,
-                    values = MaxStaminaTable.Values != null ? MaxStaminaTable.Values.Select(Value1 =>
-                            {
-                                return (int?)Value1;
-                            }
-                    ).ToList() : new List<int?>(new int?[] {}),
-                },
-                recoverIntervalTable = new RecoverIntervalTable {
-                    name = RecoverIntervalTable.Name,
-                    metadata = RecoverIntervalTable.Metadata,
-                    experienceModelId = RecoverIntervalTable.ExperienceModelId,
-                    values = RecoverIntervalTable.Values != null ? RecoverIntervalTable.Values.Select(Value1 =>
-                            {
-                                return (int?)Value1;
-                            }
-                    ).ToList() : new List<int?>(new int?[] {}),
-                },
-                recoverValueTable = new RecoverValueTable {
-                    name = RecoverValueTable.Name,
-                    metadata = RecoverValueTable.Metadata,
-                    experienceModelId = RecoverValueTable.ExperienceModelId,
-                    values = RecoverValueTable.Values != null ? RecoverValueTable.Values.Select(Value1 =>
-                            {
-                                return (int?)Value1;
-                            }
-                    ).ToList() : new List<int?>(new int?[] {}),
-                },
+            return new Gs2.Gs2Stamina.Model.StaminaModel {
+                Name = Name,
+                Metadata = Metadata,
+                RecoverIntervalMinutes = RecoverIntervalMinutes,
+                RecoverValue = RecoverValue,
+                InitialCapacity = InitialCapacity,
+                IsOverflow = IsOverflow,
+                MaxCapacity = MaxCapacity,
+                MaxStaminaTable = MaxStaminaTable?.ToModel(),
+                RecoverIntervalTable = RecoverIntervalTable?.ToModel(),
+                RecoverValueTable = RecoverValueTable?.ToModel(),
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzStaminaModel FromModel(Gs2.Gs2Stamina.Model.StaminaModel model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            writer.WritePropertyName("recoverIntervalMinutes");
-            writer.Write(this.RecoverIntervalMinutes);
-            writer.WritePropertyName("recoverValue");
-            writer.Write(this.RecoverValue);
-            writer.WritePropertyName("initialCapacity");
-            writer.Write(this.InitialCapacity);
-            writer.WritePropertyName("isOverflow");
-            writer.Write(this.IsOverflow);
-            writer.WritePropertyName("maxCapacity");
-            writer.Write(this.MaxCapacity);
-            if(this.MaxStaminaTable != null)
-            {
-                writer.WritePropertyName("maxStaminaTable");
-                this.MaxStaminaTable.WriteJson(writer);
-            }
-            if(this.RecoverIntervalTable != null)
-            {
-                writer.WritePropertyName("recoverIntervalTable");
-                this.RecoverIntervalTable.WriteJson(writer);
-            }
-            if(this.RecoverValueTable != null)
-            {
-                writer.WritePropertyName("recoverValueTable");
-                this.RecoverValueTable.WriteJson(writer);
-            }
-            writer.WriteObjectEnd();
+            return new EzStaminaModel {
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                RecoverIntervalMinutes = model.RecoverIntervalMinutes ?? 0,
+                RecoverValue = model.RecoverValue ?? 0,
+                InitialCapacity = model.InitialCapacity ?? 0,
+                IsOverflow = model.IsOverflow ?? false,
+                MaxCapacity = model.MaxCapacity ?? 0,
+                MaxStaminaTable = model.MaxStaminaTable == null ? null : Gs2.Unity.Gs2Stamina.Model.EzMaxStaminaTable.FromModel(model.MaxStaminaTable),
+                RecoverIntervalTable = model.RecoverIntervalTable == null ? null : Gs2.Unity.Gs2Stamina.Model.EzRecoverIntervalTable.FromModel(model.RecoverIntervalTable),
+                RecoverValueTable = model.RecoverValueTable == null ? null : Gs2.Unity.Gs2Stamina.Model.EzRecoverValueTable.FromModel(model.RecoverValueTable),
+            };
         }
-	}
+    }
 }

@@ -2,7 +2,7 @@
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
  *
- * Licensed under the Apache License, Version 2.0(the "License").
+ * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
  * A copy of the License is located at
  *
@@ -14,22 +14,28 @@
  * permissions and limitations under the License.
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Gs2.Gs2Limit;
-using Gs2.Gs2Limit.Model;
-using Gs2.Gs2Limit.Request;
-using Gs2.Gs2Limit.Result;
 using Gs2.Unity.Gs2Limit.Model;
 using Gs2.Unity.Gs2Limit.Result;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Gs2Quest;
+using Gs2.Gs2Quest.Model;
+using Gs2.Gs2Quest.Request;
+using Gs2.Gs2Quest.Result;
+using Gs2.Unity.Gs2Quest.Model;
+using Gs2.Unity.Gs2Quest.Result;
 using Gs2.Core;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Unity.Util;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Limit
 {
 	public class DisabledCertificateHandler : CertificateHandler {
@@ -39,6 +45,8 @@ namespace Gs2.Unity.Gs2Limit
 		}
 	}
 
+	[Preserve]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
@@ -59,41 +67,30 @@ namespace Gs2.Unity.Gs2Limit
 			}
 		}
 
-		/// <summary>
-		///  ゲームプレイヤーに紐づく回数制限カウンターの一覧を取得<br />
-		///    <br />
-		///    回数制限名は省略可能です。<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="limitName">回数制限の種類の名前</param>
-		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
-		/// <param name="limit">データの取得件数</param>
-		public IEnumerator ListCounters(
-		        UnityAction<AsyncResult<EzListCountersResult>> callback,
+        public IEnumerator CountUp(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Limit.Result.EzCountUpResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string limitName=null,
-                string pageToken=null,
-                long? limit=null
+                string limitName,
+                string counterName,
+                int? countUpValue = null,
+                int? maxValue = null
         )
 		{
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _restClient.DescribeCounters(
-                    new DescribeCountersRequest()
+                cb => _client.CountUp(
+                    new Gs2.Gs2Limit.Request.CountUpRequest()
                         .WithNamespaceName(namespaceName)
                         .WithLimitName(limitName)
-                        .WithPageToken(pageToken)
-                        .WithLimit(limit)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithCounterName(counterName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithCountUpValue(countUpValue)
+                        .WithMaxValue(maxValue),
                     r => cb.Invoke(
-                        new AsyncResult<EzListCountersResult>(
-                            r.Result == null ? null : new EzListCountersResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Limit.Result.EzCountUpResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Limit.Result.EzCountUpResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -101,18 +98,8 @@ namespace Gs2.Unity.Gs2Limit
             );
 		}
 
-		/// <summary>
-		///  回数制限名とカウンター名を指定してゲームプレイヤーに紐づく回数制限カウンターを取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="limitName">回数制限の種類の名前</param>
-		/// <param name="counterName">カウンターの名前</param>
-		public IEnumerator GetCounter(
-		        UnityAction<AsyncResult<EzGetCounterResult>> callback,
+        public IEnumerator GetCounter(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Limit.Result.EzGetCounterResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string limitName,
@@ -123,14 +110,14 @@ namespace Gs2.Unity.Gs2Limit
                 callback,
 		        session,
                 cb => _client.GetCounter(
-                    new GetCounterRequest()
+                    new Gs2.Gs2Limit.Request.GetCounterRequest()
                         .WithNamespaceName(namespaceName)
                         .WithLimitName(limitName)
                         .WithCounterName(counterName)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token),
                     r => cb.Invoke(
-                        new AsyncResult<EzGetCounterResult>(
-                            r.Result == null ? null : new EzGetCounterResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Limit.Result.EzGetCounterResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Limit.Result.EzGetCounterResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -138,42 +125,28 @@ namespace Gs2.Unity.Gs2Limit
             );
 		}
 
-		/// <summary>
-		///  回数制限名とカウンター名を指定してゲームプレイヤーに紐づく回数制限カウンターをカウントアップ<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="limitName">回数制限の種類の名前</param>
-		/// <param name="counterName">カウンターの名前</param>
-		/// <param name="countUpValue">カウントアップする量</param>
-		/// <param name="maxValue">カウントアップを許容する最大値 を入力してください</param>
-		public IEnumerator CountUp(
-		        UnityAction<AsyncResult<EzCountUpResult>> callback,
+        public IEnumerator ListCounters(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Limit.Result.EzListCountersResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string limitName,
-                string counterName,
-                int? countUpValue=null,
-                int? maxValue=null
+                int limit,
+                string limitName = null,
+                string pageToken = null
         )
 		{
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.CountUp(
-                    new CountUpRequest()
+                cb => _restClient.DescribeCounters(
+                    new Gs2.Gs2Limit.Request.DescribeCountersRequest()
                         .WithNamespaceName(namespaceName)
                         .WithLimitName(limitName)
-                        .WithCounterName(counterName)
-                        .WithCountUpValue(countUpValue)
-                        .WithMaxValue(maxValue)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit),
                     r => cb.Invoke(
-                        new AsyncResult<EzCountUpResult>(
-                            r.Result == null ? null : new EzCountUpResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Limit.Result.EzListCountersResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Limit.Result.EzListCountersResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -181,48 +154,8 @@ namespace Gs2.Unity.Gs2Limit
             );
 		}
 
-		/// <summary>
-		///  回数制限モデルの一覧を取得<br />
-		///    <br />
-		///    近日実施する予定のイベントに関する回数制限設定をしたことで、イベントの情報などが露呈する可能性があります。<br />
-		///    回数制限モデルの持つ情報をゲーム内から使用しない場合は 本APIへのアクセス権を剥奪しておく方が安全です。<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		public IEnumerator ListLimitModels(
-		        UnityAction<AsyncResult<EzListLimitModelsResult>> callback,
-                string namespaceName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-                null,
-                cb => _restClient.DescribeLimitModels(
-                    new DescribeLimitModelsRequest()
-                        .WithNamespaceName(namespaceName),
-                    r => cb.Invoke(
-                        new AsyncResult<EzListLimitModelsResult>(
-                            r.Result == null ? null : new EzListLimitModelsResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  回数制限名を指定して回数制限モデルを取得<br />
-		///    <br />
-		///    近日実施する予定のイベントに関する回数制限設定をしたことで、イベントの情報などが露呈する可能性があります。<br />
-		///    回数制限モデルの持つ情報をゲーム内から使用しない場合は 本APIへのアクセス権を剥奪しておく方が安全です。<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="limitName">回数制限の種類名</param>
-		public IEnumerator GetLimitModel(
-		        UnityAction<AsyncResult<EzGetLimitModelResult>> callback,
+        public IEnumerator GetLimitModel(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Limit.Result.EzGetLimitModelResult>> callback,
                 string namespaceName,
                 string limitName
         )
@@ -231,17 +164,38 @@ namespace Gs2.Unity.Gs2Limit
                 callback,
                 null,
                 cb => _client.GetLimitModel(
-                    new GetLimitModelRequest()
+                    new Gs2.Gs2Limit.Request.GetLimitModelRequest()
                         .WithNamespaceName(namespaceName)
                         .WithLimitName(limitName),
                     r => cb.Invoke(
-                        new AsyncResult<EzGetLimitModelResult>(
-                            r.Result == null ? null : new EzGetLimitModelResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Limit.Result.EzGetLimitModelResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Limit.Result.EzGetLimitModelResult.FromModel(r.Result),
                             r.Error
                         )
                     )
                 )
             );
 		}
-	}
+
+        public IEnumerator ListLimitModels(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Limit.Result.EzListLimitModelsResult>> callback,
+                string namespaceName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeLimitModels(
+                    new Gs2.Gs2Limit.Request.DescribeLimitModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Limit.Result.EzListLimitModelsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Limit.Result.EzListLimitModelsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+    }
 }

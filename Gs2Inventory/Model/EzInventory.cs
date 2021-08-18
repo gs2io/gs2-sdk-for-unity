@@ -13,73 +13,50 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Inventory.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Inventory.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzInventory
 	{
-		/** インベントリ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string InventoryId;
-		/** インベントリモデル名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string InventoryName;
-		/** 現在のインベントリのキャパシティ使用量 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int CurrentInventoryCapacityUsage;
-		/** 現在のインベントリの最大キャパシティ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int CurrentInventoryMaxCapacity;
 
-		public EzInventory()
-		{
-
-		}
-
-		public EzInventory(Gs2.Gs2Inventory.Model.Inventory @inventory)
-		{
-			InventoryId = @inventory.inventoryId;
-			InventoryName = @inventory.inventoryName;
-			CurrentInventoryCapacityUsage = @inventory.currentInventoryCapacityUsage.HasValue ? @inventory.currentInventoryCapacityUsage.Value : 0;
-			CurrentInventoryMaxCapacity = @inventory.currentInventoryMaxCapacity.HasValue ? @inventory.currentInventoryMaxCapacity.Value : 0;
-		}
-
-        public virtual Inventory ToModel()
+        public Gs2.Gs2Inventory.Model.Inventory ToModel()
         {
-            return new Inventory {
-                inventoryId = InventoryId,
-                inventoryName = InventoryName,
-                currentInventoryCapacityUsage = CurrentInventoryCapacityUsage,
-                currentInventoryMaxCapacity = CurrentInventoryMaxCapacity,
+            return new Gs2.Gs2Inventory.Model.Inventory {
+                InventoryId = InventoryId,
+                InventoryName = InventoryName,
+                CurrentInventoryCapacityUsage = CurrentInventoryCapacityUsage,
+                CurrentInventoryMaxCapacity = CurrentInventoryMaxCapacity,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzInventory FromModel(Gs2.Gs2Inventory.Model.Inventory model)
         {
-            writer.WriteObjectStart();
-            if(this.InventoryId != null)
-            {
-                writer.WritePropertyName("inventoryId");
-                writer.Write(this.InventoryId);
-            }
-            if(this.InventoryName != null)
-            {
-                writer.WritePropertyName("inventoryName");
-                writer.Write(this.InventoryName);
-            }
-            writer.WritePropertyName("currentInventoryCapacityUsage");
-            writer.Write(this.CurrentInventoryCapacityUsage);
-            writer.WritePropertyName("currentInventoryMaxCapacity");
-            writer.Write(this.CurrentInventoryMaxCapacity);
-            writer.WriteObjectEnd();
+            return new EzInventory {
+                InventoryId = model.InventoryId == null ? null : model.InventoryId,
+                InventoryName = model.InventoryName == null ? null : model.InventoryName,
+                CurrentInventoryCapacityUsage = model.CurrentInventoryCapacityUsage ?? 0,
+                CurrentInventoryMaxCapacity = model.CurrentInventoryMaxCapacity ?? 0,
+            };
         }
-	}
+    }
 }

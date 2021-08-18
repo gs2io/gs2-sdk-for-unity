@@ -2,7 +2,7 @@
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
  *
- * Licensed under the Apache License, Version 2.0(the "License").
+ * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
  * A copy of the License is located at
  *
@@ -14,22 +14,28 @@
  * permissions and limitations under the License.
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Gs2.Gs2Distributor;
-using Gs2.Gs2Distributor.Model;
-using Gs2.Gs2Distributor.Request;
-using Gs2.Gs2Distributor.Result;
 using Gs2.Unity.Gs2Distributor.Model;
 using Gs2.Unity.Gs2Distributor.Result;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Gs2Quest;
+using Gs2.Gs2Quest.Model;
+using Gs2.Gs2Quest.Request;
+using Gs2.Gs2Quest.Result;
+using Gs2.Unity.Gs2Quest.Model;
+using Gs2.Unity.Gs2Quest.Result;
 using Gs2.Core;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Unity.Util;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Distributor
 {
 	public class DisabledCertificateHandler : CertificateHandler {
@@ -39,6 +45,8 @@ namespace Gs2.Unity.Gs2Distributor
 		}
 	}
 
+	[Preserve]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
@@ -59,42 +67,8 @@ namespace Gs2.Unity.Gs2Distributor
 			}
 		}
 
-		/// <summary>
-		///  配信設定を認証<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		public IEnumerator ListDistributorModels(
-		        UnityAction<AsyncResult<EzListDistributorModelsResult>> callback,
-                string namespaceName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-                null,
-                cb => _restClient.DescribeDistributorModels(
-                    new DescribeDistributorModelsRequest()
-                        .WithNamespaceName(namespaceName),
-                    r => cb.Invoke(
-                        new AsyncResult<EzListDistributorModelsResult>(
-                            r.Result == null ? null : new EzListDistributorModelsResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  配信設定を認証<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="distributorName">配信設定名</param>
-		public IEnumerator GetDistributorModel(
-		        UnityAction<AsyncResult<EzGetDistributorModelResult>> callback,
+        public IEnumerator GetDistributorModel(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzGetDistributorModelResult>> callback,
                 string namespaceName,
                 string distributorName
         )
@@ -102,13 +76,13 @@ namespace Gs2.Unity.Gs2Distributor
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.GetDistributorModel(
-                    new GetDistributorModelRequest()
+                cb => _restClient.GetDistributorModel(
+                    new Gs2.Gs2Distributor.Request.GetDistributorModelRequest()
                         .WithNamespaceName(namespaceName)
                         .WithDistributorName(distributorName),
                     r => cb.Invoke(
-                        new AsyncResult<EzGetDistributorModelResult>(
-                            r.Result == null ? null : new EzGetDistributorModelResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzGetDistributorModelResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Distributor.Result.EzGetDistributorModelResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -116,35 +90,20 @@ namespace Gs2.Unity.Gs2Distributor
             );
 		}
 
-		/// <summary>
-		///  スタンプタスクを実行<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="stampTask">実行するスタンプタスク</param>
-		/// <param name="keyId">スタンプシートの暗号化に使用した暗号鍵GRN</param>
-		/// <param name="contextStack">スタンプシートの実行状況を記録するスタックメモリ</param>
-		public IEnumerator RunStampTask(
-		        UnityAction<AsyncResult<EzRunStampTaskResult>> callback,
-                string namespaceName,
-                string stampTask,
-                string keyId,
-                string contextStack=null
+        public IEnumerator ListDistributorModels(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzListDistributorModelsResult>> callback,
+                string namespaceName
         )
 		{
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.RunStampTask(
-                    new RunStampTaskRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithStampTask(stampTask)
-                        .WithKeyId(keyId)
-                        .WithContextStack(contextStack),
+                cb => _restClient.DescribeDistributorModels(
+                    new Gs2.Gs2Distributor.Request.DescribeDistributorModelsRequest()
+                        .WithNamespaceName(namespaceName),
                     r => cb.Invoke(
-                        new AsyncResult<EzRunStampTaskResult>(
-                            r.Result == null ? null : new EzRunStampTaskResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzListDistributorModelsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Distributor.Result.EzListDistributorModelsResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -152,35 +111,26 @@ namespace Gs2.Unity.Gs2Distributor
             );
 		}
 
-		/// <summary>
-		///  スタンプシートを実行<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="stampSheet">実行するスタンプタスク</param>
-		/// <param name="keyId">スタンプシートの暗号化に使用した暗号鍵GRN</param>
-		/// <param name="contextStack">スタンプシートの実行状況を記録するスタックメモリ</param>
-		public IEnumerator RunStampSheet(
-		        UnityAction<AsyncResult<EzRunStampSheetResult>> callback,
+        public IEnumerator RunStampSheet(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzRunStampSheetResult>> callback,
                 string namespaceName,
                 string stampSheet,
                 string keyId,
-                string contextStack=null
+                string contextStack = null
         )
 		{
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.RunStampSheet(
-                    new RunStampSheetRequest()
+                cb => _restClient.RunStampSheet(
+                    new Gs2.Gs2Distributor.Request.RunStampSheetRequest()
                         .WithNamespaceName(namespaceName)
                         .WithStampSheet(stampSheet)
                         .WithKeyId(keyId)
                         .WithContextStack(contextStack),
                     r => cb.Invoke(
-                        new AsyncResult<EzRunStampSheetResult>(
-                            r.Result == null ? null : new EzRunStampSheetResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzRunStampSheetResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Distributor.Result.EzRunStampSheetResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -188,20 +138,8 @@ namespace Gs2.Unity.Gs2Distributor
             );
 		}
 
-		/// <summary>
-		///  スタンプタスク・スタンプシートを一括実行<br />
-		///    <br />
-		///    一括実行をすることで、レスポンスタイムを短縮できます。<br />
-		///    ただし、スタンプシートの実行の過程で失敗した際には正しくリトライできる保証はありません。<br />
-		///    実行に失敗した時に備えて GS2-Log　でスタンプシートの実行ログを残しておき、カスタマーサポートの際に適切な対応ができるようにしておくことを強く推奨します。<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="stampSheet">実行するスタンプタスク</param>
-		/// <param name="keyId">スタンプシートの暗号化に使用した暗号鍵GRN</param>
-		public IEnumerator RunStampSheetExpress(
-		        UnityAction<AsyncResult<EzRunStampSheetExpressResult>> callback,
+        public IEnumerator RunStampSheetExpress(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzRunStampSheetExpressResult>> callback,
                 string namespaceName,
                 string stampSheet,
                 string keyId
@@ -210,14 +148,14 @@ namespace Gs2.Unity.Gs2Distributor
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.RunStampSheetExpress(
-                    new RunStampSheetExpressRequest()
+                cb => _restClient.RunStampSheetExpress(
+                    new Gs2.Gs2Distributor.Request.RunStampSheetExpressRequest()
                         .WithNamespaceName(namespaceName)
                         .WithStampSheet(stampSheet)
                         .WithKeyId(keyId),
                     r => cb.Invoke(
-                        new AsyncResult<EzRunStampSheetExpressResult>(
-                            r.Result == null ? null : new EzRunStampSheetExpressResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzRunStampSheetExpressResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Distributor.Result.EzRunStampSheetExpressResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -225,94 +163,8 @@ namespace Gs2.Unity.Gs2Distributor
             );
 		}
 
-		/// <summary>
-		///  スタンプタスクを実行<br />
-		///    <br />
-		///    ネームスペースの指定を省略することで、<br />
-		///    ログが記録できない・リソース溢れ処理が実行されないなどの副作用があります。<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="stampTask">実行するスタンプタスク</param>
-		/// <param name="keyId">スタンプシートの暗号化に使用した暗号鍵GRN</param>
-		/// <param name="contextStack">スタンプシートの実行状況を記録するスタックメモリ</param>
-		public IEnumerator RunStampTaskWithoutNamespace(
-		        UnityAction<AsyncResult<EzRunStampTaskWithoutNamespaceResult>> callback,
-                string stampTask,
-                string keyId,
-                string contextStack=null
-        )
-		{
-            yield return _profile.Run(
-                callback,
-                null,
-                cb => _client.RunStampTaskWithoutNamespace(
-                    new RunStampTaskWithoutNamespaceRequest()
-                        .WithStampTask(stampTask)
-                        .WithKeyId(keyId)
-                        .WithContextStack(contextStack),
-                    r => cb.Invoke(
-                        new AsyncResult<EzRunStampTaskWithoutNamespaceResult>(
-                            r.Result == null ? null : new EzRunStampTaskWithoutNamespaceResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  スタンプシートを実行<br />
-		///    <br />
-		///    ネームスペースの指定を省略することで、<br />
-		///    ログが記録できない・リソース溢れ処理が実行されないなどの副作用があります。<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="stampSheet">実行するスタンプタスク</param>
-		/// <param name="keyId">スタンプシートの暗号化に使用した暗号鍵GRN</param>
-		/// <param name="contextStack">スタンプシートの実行状況を記録するスタックメモリ</param>
-		public IEnumerator RunStampSheetWithoutNamespace(
-		        UnityAction<AsyncResult<EzRunStampSheetWithoutNamespaceResult>> callback,
-                string stampSheet,
-                string keyId,
-                string contextStack=null
-        )
-		{
-            yield return _profile.Run(
-                callback,
-                null,
-                cb => _client.RunStampSheetWithoutNamespace(
-                    new RunStampSheetWithoutNamespaceRequest()
-                        .WithStampSheet(stampSheet)
-                        .WithKeyId(keyId)
-                        .WithContextStack(contextStack),
-                    r => cb.Invoke(
-                        new AsyncResult<EzRunStampSheetWithoutNamespaceResult>(
-                            r.Result == null ? null : new EzRunStampSheetWithoutNamespaceResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  スタンプタスク・スタンプシートを一括実行<br />
-		///    <br />
-		///     一括実行をすることで、レスポンスタイムを短縮できます。<br />
-		///     ただし、スタンプシートの実行の過程で失敗した際には正しくリトライできる保証はありません。<br />
-		///     実行に失敗した時に備えて GS2-Log　でスタンプシートの実行ログを残しておき、カスタマーサポートの際に適切な対応ができるようにしておくことを強く推奨します。<br />
-		///    <br />
-		///    ネームスペースの指定を省略することで、<br />
-		///    ログが記録できない・リソース溢れ処理が実行されないなどの副作用があります。<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="stampSheet">実行するスタンプタスク</param>
-		/// <param name="keyId">スタンプシートの暗号化に使用した暗号鍵GRN</param>
-		public IEnumerator RunStampSheetExpressWithoutNamespace(
-		        UnityAction<AsyncResult<EzRunStampSheetExpressWithoutNamespaceResult>> callback,
+        public IEnumerator RunStampSheetExpressWithoutNamespace(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzRunStampSheetExpressWithoutNamespaceResult>> callback,
                 string stampSheet,
                 string keyId
         )
@@ -320,18 +172,95 @@ namespace Gs2.Unity.Gs2Distributor
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.RunStampSheetExpressWithoutNamespace(
-                    new RunStampSheetExpressWithoutNamespaceRequest()
+                cb => _restClient.RunStampSheetExpressWithoutNamespace(
+                    new Gs2.Gs2Distributor.Request.RunStampSheetExpressWithoutNamespaceRequest()
                         .WithStampSheet(stampSheet)
                         .WithKeyId(keyId),
                     r => cb.Invoke(
-                        new AsyncResult<EzRunStampSheetExpressWithoutNamespaceResult>(
-                            r.Result == null ? null : new EzRunStampSheetExpressWithoutNamespaceResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzRunStampSheetExpressWithoutNamespaceResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Distributor.Result.EzRunStampSheetExpressWithoutNamespaceResult.FromModel(r.Result),
                             r.Error
                         )
                     )
                 )
             );
 		}
-	}
+
+        public IEnumerator RunStampSheetWithoutNamespace(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzRunStampSheetWithoutNamespaceResult>> callback,
+                string stampSheet,
+                string keyId,
+                string contextStack = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.RunStampSheetWithoutNamespace(
+                    new Gs2.Gs2Distributor.Request.RunStampSheetWithoutNamespaceRequest()
+                        .WithStampSheet(stampSheet)
+                        .WithKeyId(keyId)
+                        .WithContextStack(contextStack),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzRunStampSheetWithoutNamespaceResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Distributor.Result.EzRunStampSheetWithoutNamespaceResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator RunStampTask(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzRunStampTaskResult>> callback,
+                string namespaceName,
+                string stampTask,
+                string keyId,
+                string contextStack = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.RunStampTask(
+                    new Gs2.Gs2Distributor.Request.RunStampTaskRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithStampTask(stampTask)
+                        .WithKeyId(keyId)
+                        .WithContextStack(contextStack),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzRunStampTaskResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Distributor.Result.EzRunStampTaskResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator RunStampTaskWithoutNamespace(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzRunStampTaskWithoutNamespaceResult>> callback,
+                string stampTask,
+                string keyId,
+                string contextStack = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.RunStampTaskWithoutNamespace(
+                    new Gs2.Gs2Distributor.Request.RunStampTaskWithoutNamespaceRequest()
+                        .WithStampTask(stampTask)
+                        .WithKeyId(keyId)
+                        .WithContextStack(contextStack),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzRunStampTaskWithoutNamespaceResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Distributor.Result.EzRunStampTaskWithoutNamespaceResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+    }
 }

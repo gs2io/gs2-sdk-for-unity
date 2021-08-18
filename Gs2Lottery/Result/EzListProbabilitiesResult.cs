@@ -13,31 +13,33 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Lottery.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Lottery.Model;
-using Gs2.Gs2Lottery.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Lottery.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzListProbabilitiesResult
 	{
-        /** 景品の当選確率リスト */
-        public List<EzProbability> Items { get; private set; }
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Lottery.Model.EzProbability> Items;
 
-
-        public EzListProbabilitiesResult(
-            DescribeProbabilitiesResult result
-        )
+        public static EzListProbabilitiesResult FromModel(Gs2.Gs2Lottery.Result.DescribeProbabilitiesResult model)
         {
-            Items = new List<EzProbability>();
-            foreach (var item_ in result.items)
-            {
-                Items.Add(new EzProbability(item_));
-            }
+            return new EzListProbabilitiesResult {
+                Items = model.Items == null ? new List<Gs2.Unity.Gs2Lottery.Model.EzProbability>() : model.Items.Select(v => {
+                    return Gs2.Unity.Gs2Lottery.Model.EzProbability.FromModel(v);
+                }).ToList(),
+            };
         }
-	}
+    }
 }

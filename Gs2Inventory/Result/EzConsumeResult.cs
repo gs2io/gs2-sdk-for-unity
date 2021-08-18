@@ -13,45 +13,39 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Inventory.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Inventory.Model;
-using Gs2.Gs2Inventory.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Inventory.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzConsumeResult
 	{
-        /** 消費後の有効期限ごとのアイテム所持数量のリスト */
-        public List<EzItemSet> Items { get; private set; }
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Inventory.Model.EzItemSet> Items;
+		[SerializeField]
+		public Gs2.Unity.Gs2Inventory.Model.EzItemModel ItemModel;
+		[SerializeField]
+		public Gs2.Unity.Gs2Inventory.Model.EzInventory Inventory;
 
-        /** アイテムモデル */
-        public EzItemModel ItemModel { get; private set; }
-
-        /** インベントリ */
-        public EzInventory Inventory { get; private set; }
-
-
-        public EzConsumeResult(
-            ConsumeItemSetResult result
-        )
+        public static EzConsumeResult FromModel(Gs2.Gs2Inventory.Result.ConsumeItemSetResult model)
         {
-            Items = new List<EzItemSet>();
-            foreach (var item_ in result.items)
-            {
-                Items.Add(new EzItemSet(item_));
-            }
-            if(result.itemModel != null)
-            {
-                ItemModel = new EzItemModel(result.itemModel);
-            }
-            if(result.inventory != null)
-            {
-                Inventory = new EzInventory(result.inventory);
-            }
+            return new EzConsumeResult {
+                Items = model.Items == null ? new List<Gs2.Unity.Gs2Inventory.Model.EzItemSet>() : model.Items.Select(v => {
+                    return Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel(v);
+                }).ToList(),
+                ItemModel = model.ItemModel == null ? null : Gs2.Unity.Gs2Inventory.Model.EzItemModel.FromModel(model.ItemModel),
+                Inventory = model.Inventory == null ? null : Gs2.Unity.Gs2Inventory.Model.EzInventory.FromModel(model.Inventory),
+            };
         }
-	}
+    }
 }

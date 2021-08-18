@@ -13,30 +13,31 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Stamina.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Stamina.Model;
-using Gs2.Gs2Stamina.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Stamina.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzGetStaminaModelResult
 	{
-        /** スタミナモデル */
-        public EzStaminaModel Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Stamina.Model.EzStaminaModel Item;
 
-
-        public EzGetStaminaModelResult(
-            GetStaminaModelResult result
-        )
+        public static EzGetStaminaModelResult FromModel(Gs2.Gs2Stamina.Result.GetStaminaModelResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzStaminaModel(result.item);
-            }
+            return new EzGetStaminaModelResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Stamina.Model.EzStaminaModel.FromModel(model.Item),
+            };
         }
-	}
+    }
 }

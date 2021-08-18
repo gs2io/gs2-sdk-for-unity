@@ -13,83 +13,54 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Chat.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Chat.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzMessage
 	{
-		/** ルーム名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string RoomName;
-		/** 発言したユーザID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string UserId;
-		/** メッセージの種類を分類したい時の種類番号 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int Category;
-		/** メタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** 作成日時 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long CreatedAt;
 
-		public EzMessage()
-		{
-
-		}
-
-		public EzMessage(Gs2.Gs2Chat.Model.Message @message)
-		{
-			RoomName = @message.roomName;
-			UserId = @message.userId;
-			Category = @message.category.HasValue ? @message.category.Value : 0;
-			Metadata = @message.metadata;
-			CreatedAt = @message.createdAt.HasValue ? @message.createdAt.Value : 0;
-		}
-
-        public virtual Message ToModel()
+        public Gs2.Gs2Chat.Model.Message ToModel()
         {
-            return new Message {
-                roomName = RoomName,
-                userId = UserId,
-                category = Category,
-                metadata = Metadata,
-                createdAt = CreatedAt,
+            return new Gs2.Gs2Chat.Model.Message {
+                RoomName = RoomName,
+                UserId = UserId,
+                Category = Category,
+                Metadata = Metadata,
+                CreatedAt = CreatedAt,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzMessage FromModel(Gs2.Gs2Chat.Model.Message model)
         {
-            writer.WriteObjectStart();
-            if(this.RoomName != null)
-            {
-                writer.WritePropertyName("roomName");
-                writer.Write(this.RoomName);
-            }
-            if(this.UserId != null)
-            {
-                writer.WritePropertyName("userId");
-                writer.Write(this.UserId);
-            }
-            writer.WritePropertyName("category");
-            writer.Write(this.Category);
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            writer.WritePropertyName("createdAt");
-            writer.Write(this.CreatedAt);
-            writer.WriteObjectEnd();
+            return new EzMessage {
+                RoomName = model.RoomName == null ? null : model.RoomName,
+                UserId = model.UserId == null ? null : model.UserId,
+                Category = model.Category ?? 0,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                CreatedAt = model.CreatedAt ?? 0,
+            };
         }
-	}
+    }
 }

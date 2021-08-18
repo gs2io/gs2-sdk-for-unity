@@ -13,30 +13,31 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Experience.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Experience.Model;
-using Gs2.Gs2Experience.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Experience.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzGetExperienceModelResult
 	{
-        /** 経験値・ランクアップ閾値モデル */
-        public EzExperienceModel Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Experience.Model.EzExperienceModel Item;
 
-
-        public EzGetExperienceModelResult(
-            GetExperienceModelResult result
-        )
+        public static EzGetExperienceModelResult FromModel(Gs2.Gs2Experience.Result.GetExperienceModelResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzExperienceModel(result.item);
-            }
+            return new EzGetExperienceModelResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Experience.Model.EzExperienceModel.FromModel(model.Item),
+            };
         }
-	}
+    }
 }

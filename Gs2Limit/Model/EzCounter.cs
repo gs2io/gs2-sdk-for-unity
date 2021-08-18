@@ -13,90 +13,58 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Limit.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Limit.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzCounter
 	{
-		/** カウンター */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string CounterId;
-		/** 回数制限の種類の名前 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string LimitName;
-		/** カウンターの名前 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** カウント値 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int Count;
-		/** 作成日時 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long CreatedAt;
-		/** 最終更新日時 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long UpdatedAt;
 
-		public EzCounter()
-		{
-
-		}
-
-		public EzCounter(Gs2.Gs2Limit.Model.Counter @counter)
-		{
-			CounterId = @counter.counterId;
-			LimitName = @counter.limitName;
-			Name = @counter.name;
-			Count = @counter.count.HasValue ? @counter.count.Value : 0;
-			CreatedAt = @counter.createdAt.HasValue ? @counter.createdAt.Value : 0;
-			UpdatedAt = @counter.updatedAt.HasValue ? @counter.updatedAt.Value : 0;
-		}
-
-        public virtual Counter ToModel()
+        public Gs2.Gs2Limit.Model.Counter ToModel()
         {
-            return new Counter {
-                counterId = CounterId,
-                limitName = LimitName,
-                name = Name,
-                count = Count,
-                createdAt = CreatedAt,
-                updatedAt = UpdatedAt,
+            return new Gs2.Gs2Limit.Model.Counter {
+                CounterId = CounterId,
+                LimitName = LimitName,
+                Name = Name,
+                Count = Count,
+                CreatedAt = CreatedAt,
+                UpdatedAt = UpdatedAt,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzCounter FromModel(Gs2.Gs2Limit.Model.Counter model)
         {
-            writer.WriteObjectStart();
-            if(this.CounterId != null)
-            {
-                writer.WritePropertyName("counterId");
-                writer.Write(this.CounterId);
-            }
-            if(this.LimitName != null)
-            {
-                writer.WritePropertyName("limitName");
-                writer.Write(this.LimitName);
-            }
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            writer.WritePropertyName("count");
-            writer.Write(this.Count);
-            writer.WritePropertyName("createdAt");
-            writer.Write(this.CreatedAt);
-            writer.WritePropertyName("updatedAt");
-            writer.Write(this.UpdatedAt);
-            writer.WriteObjectEnd();
+            return new EzCounter {
+                CounterId = model.CounterId == null ? null : model.CounterId,
+                LimitName = model.LimitName == null ? null : model.LimitName,
+                Name = model.Name == null ? null : model.Name,
+                Count = model.Count ?? 0,
+                CreatedAt = model.CreatedAt ?? 0,
+                UpdatedAt = model.UpdatedAt ?? 0,
+            };
         }
-	}
+    }
 }

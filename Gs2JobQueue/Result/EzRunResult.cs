@@ -13,44 +13,37 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2JobQueue.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2JobQueue.Model;
-using Gs2.Gs2JobQueue.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2JobQueue.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzRunResult
 	{
-        /** ジョブ */
-        public EzJob Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2JobQueue.Model.EzJob Item;
+		[SerializeField]
+		public Gs2.Unity.Gs2JobQueue.Model.EzJobResultBody Result;
+		[SerializeField]
+		public bool IsLastJob;
 
-        /** ジョブの実行結果 */
-        public EzJobResultBody Result { get; private set; }
-
-        /** None */
-        public bool IsLastJob { get; private set; }
-
-
-        public EzRunResult(
-            RunResult result
-        )
+        public static EzRunResult FromModel(Gs2.Gs2JobQueue.Result.RunResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzJob(result.item);
-            }
-            if(result.result != null)
-            {
-                Result = new EzJobResultBody(result.result);
-            }
-            if(result.isLastJob.HasValue)
-            {
-                IsLastJob = result.isLastJob.Value;
-            }
+            return new EzRunResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2JobQueue.Model.EzJob.FromModel(model.Item),
+                Result = model.Result == null ? null : Gs2.Unity.Gs2JobQueue.Model.EzJobResultBody.FromModel(model.Result),
+                IsLastJob = model.IsLastJob ?? false,
+            };
         }
-	}
+    }
 }

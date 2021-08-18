@@ -13,39 +13,39 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2News.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2News.Model;
-using Gs2.Gs2News.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2News.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzGetContentsUrlResult
 	{
-        /** お知らせコンテンツにアクセスするために設定の必要なクッキー のリスト */
-        public List<EzSetCookieRequestEntry> Items { get; private set; }
+		[SerializeField]
+		public List<Gs2.Unity.Gs2News.Model.EzSetCookieRequestEntry> Items;
+		[SerializeField]
+		public string BrowserUrl;
+		[SerializeField]
+		public string ZipUrl;
 
-        /** お知らせコンテンツにアクセスするためのURL */
-        public string BrowserUrl { get; private set; }
-
-        /** ZIP形式のお知らせコンテンツにアクセスするためのURL Cookieの設定は不要 */
-        public string ZipUrl { get; private set; }
-
-
-        public EzGetContentsUrlResult(
-            WantGrantResult result
-        )
+        public static EzGetContentsUrlResult FromModel(Gs2.Gs2News.Result.WantGrantResult model)
         {
-            Items = new List<EzSetCookieRequestEntry>();
-            foreach (var item_ in result.items)
-            {
-                Items.Add(new EzSetCookieRequestEntry(item_));
-            }
-            BrowserUrl = result.browserUrl;
-            ZipUrl = result.zipUrl;
+            return new EzGetContentsUrlResult {
+                Items = model.Items == null ? new List<Gs2.Unity.Gs2News.Model.EzSetCookieRequestEntry>() : model.Items.Select(v => {
+                    return Gs2.Unity.Gs2News.Model.EzSetCookieRequestEntry.FromModel(v);
+                }).ToList(),
+                BrowserUrl = model.BrowserUrl == null ? null : model.BrowserUrl,
+                ZipUrl = model.ZipUrl == null ? null : model.ZipUrl,
+            };
         }
-	}
+    }
 }

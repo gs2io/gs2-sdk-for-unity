@@ -13,51 +13,40 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Formation.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Formation.Model;
-using Gs2.Gs2Formation.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Formation.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzGetFormResult
 	{
-        /** フォーム */
-        public EzForm Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Formation.Model.EzForm Item;
+		[SerializeField]
+		public Gs2.Unity.Gs2Formation.Model.EzMold Mold;
+		[SerializeField]
+		public Gs2.Unity.Gs2Formation.Model.EzMoldModel MoldModel;
+		[SerializeField]
+		public Gs2.Unity.Gs2Formation.Model.EzFormModel FormModel;
 
-        /** 保存したフォーム */
-        public EzMold Mold { get; private set; }
-
-        /** フォームの保存領域 */
-        public EzMoldModel MoldModel { get; private set; }
-
-        /** フォームモデル */
-        public EzFormModel FormModel { get; private set; }
-
-
-        public EzGetFormResult(
-            GetFormResult result
-        )
+        public static EzGetFormResult FromModel(Gs2.Gs2Formation.Result.GetFormResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzForm(result.item);
-            }
-            if(result.mold != null)
-            {
-                Mold = new EzMold(result.mold);
-            }
-            if(result.moldModel != null)
-            {
-                MoldModel = new EzMoldModel(result.moldModel);
-            }
-            if(result.formModel != null)
-            {
-                FormModel = new EzFormModel(result.formModel);
-            }
+            return new EzGetFormResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Formation.Model.EzForm.FromModel(model.Item),
+                Mold = model.Mold == null ? null : Gs2.Unity.Gs2Formation.Model.EzMold.FromModel(model.Mold),
+                MoldModel = model.MoldModel == null ? null : Gs2.Unity.Gs2Formation.Model.EzMoldModel.FromModel(model.MoldModel),
+                FormModel = model.FormModel == null ? null : Gs2.Unity.Gs2Formation.Model.EzFormModel.FromModel(model.FormModel),
+            };
         }
-	}
+    }
 }

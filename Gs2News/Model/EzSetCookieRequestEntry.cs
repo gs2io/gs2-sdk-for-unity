@@ -13,59 +13,42 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2News.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2News.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzSetCookieRequestEntry
 	{
-		/** 記事を閲覧できるようにするために設定してほしい Cookie のキー値 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Key;
-		/** 記事を閲覧できるようにするために設定してほしい Cookie の値 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Value;
 
-		public EzSetCookieRequestEntry()
-		{
-
-		}
-
-		public EzSetCookieRequestEntry(Gs2.Gs2News.Model.SetCookieRequestEntry @setCookieRequestEntry)
-		{
-			Key = @setCookieRequestEntry.key;
-			Value = @setCookieRequestEntry.value;
-		}
-
-        public virtual SetCookieRequestEntry ToModel()
+        public Gs2.Gs2News.Model.SetCookieRequestEntry ToModel()
         {
-            return new SetCookieRequestEntry {
-                key = Key,
-                value = Value,
+            return new Gs2.Gs2News.Model.SetCookieRequestEntry {
+                Key = Key,
+                Value = Value,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzSetCookieRequestEntry FromModel(Gs2.Gs2News.Model.SetCookieRequestEntry model)
         {
-            writer.WriteObjectStart();
-            if(this.Key != null)
-            {
-                writer.WritePropertyName("key");
-                writer.Write(this.Key);
-            }
-            if(this.Value != null)
-            {
-                writer.WritePropertyName("value");
-                writer.Write(this.Value);
-            }
-            writer.WriteObjectEnd();
+            return new EzSetCookieRequestEntry {
+                Key = model.Key == null ? null : model.Key,
+                Value = model.Value == null ? null : model.Value,
+            };
         }
-	}
+    }
 }

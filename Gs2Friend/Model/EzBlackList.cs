@@ -13,72 +13,46 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Friend.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Friend.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzBlackList
 	{
-		/** ユーザーID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string UserId;
-		/** ブラックリストのユーザーIDリスト */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public List<string> TargetUserIds;
 
-		public EzBlackList()
-		{
-
-		}
-
-		public EzBlackList(Gs2.Gs2Friend.Model.BlackList @blackList)
-		{
-			UserId = @blackList.userId;
-			TargetUserIds = @blackList.targetUserIds != null ? @blackList.targetUserIds.Select(value =>
-                {
-                    return value;
-                }
-			).ToList() : new List<string>(new string[] {});
-		}
-
-        public virtual BlackList ToModel()
+        public Gs2.Gs2Friend.Model.BlackList ToModel()
         {
-            return new BlackList {
-                userId = UserId,
-                targetUserIds = TargetUserIds != null ? TargetUserIds.Select(Value0 =>
-                        {
-                            return Value0;
-                        }
-                ).ToList() : new List<string>(new string[] {}),
+            return new Gs2.Gs2Friend.Model.BlackList {
+                UserId = UserId,
+                TargetUserIds = TargetUserIds?.Select(v => {
+                    return v;
+                }).ToArray(),
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzBlackList FromModel(Gs2.Gs2Friend.Model.BlackList model)
         {
-            writer.WriteObjectStart();
-            if(this.UserId != null)
-            {
-                writer.WritePropertyName("userId");
-                writer.Write(this.UserId);
-            }
-            if(this.TargetUserIds != null)
-            {
-                writer.WritePropertyName("targetUserIds");
-                writer.WriteArrayStart();
-                foreach(var item in this.TargetUserIds)
-                {
-                    writer.Write(item);
-                }
-                writer.WriteArrayEnd();
-            }
-            writer.WriteObjectEnd();
+            return new EzBlackList {
+                UserId = model.UserId == null ? null : model.UserId,
+                TargetUserIds = model.TargetUserIds == null ? new List<string>() : model.TargetUserIds.Select(v => {
+                    return v;
+                }).ToList(),
+            };
         }
-	}
+    }
 }

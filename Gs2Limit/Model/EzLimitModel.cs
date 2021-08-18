@@ -13,103 +13,62 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Limit.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Limit.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzLimitModel
 	{
-		/** 回数制限の種類 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string LimitModelId;
-		/** 回数制限の種類名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** 回数制限の種類のメタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** リセットタイミング */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string ResetType;
-		/** リセットをする日にち */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int ResetDayOfMonth;
-		/** リセットする曜日 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string ResetDayOfWeek;
-		/** リセット時刻 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int ResetHour;
 
-		public EzLimitModel()
-		{
-
-		}
-
-		public EzLimitModel(Gs2.Gs2Limit.Model.LimitModel @limitModel)
-		{
-			LimitModelId = @limitModel.limitModelId;
-			Name = @limitModel.name;
-			Metadata = @limitModel.metadata;
-			ResetType = @limitModel.resetType;
-			ResetDayOfMonth = @limitModel.resetDayOfMonth.HasValue ? @limitModel.resetDayOfMonth.Value : 0;
-			ResetDayOfWeek = @limitModel.resetDayOfWeek;
-			ResetHour = @limitModel.resetHour.HasValue ? @limitModel.resetHour.Value : 0;
-		}
-
-        public virtual LimitModel ToModel()
+        public Gs2.Gs2Limit.Model.LimitModel ToModel()
         {
-            return new LimitModel {
-                limitModelId = LimitModelId,
-                name = Name,
-                metadata = Metadata,
-                resetType = ResetType,
-                resetDayOfMonth = ResetDayOfMonth,
-                resetDayOfWeek = ResetDayOfWeek,
-                resetHour = ResetHour,
+            return new Gs2.Gs2Limit.Model.LimitModel {
+                LimitModelId = LimitModelId,
+                Name = Name,
+                Metadata = Metadata,
+                ResetType = ResetType,
+                ResetDayOfMonth = ResetDayOfMonth,
+                ResetDayOfWeek = ResetDayOfWeek,
+                ResetHour = ResetHour,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzLimitModel FromModel(Gs2.Gs2Limit.Model.LimitModel model)
         {
-            writer.WriteObjectStart();
-            if(this.LimitModelId != null)
-            {
-                writer.WritePropertyName("limitModelId");
-                writer.Write(this.LimitModelId);
-            }
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            if(this.ResetType != null)
-            {
-                writer.WritePropertyName("resetType");
-                writer.Write(this.ResetType);
-            }
-            writer.WritePropertyName("resetDayOfMonth");
-            writer.Write(this.ResetDayOfMonth);
-            if(this.ResetDayOfWeek != null)
-            {
-                writer.WritePropertyName("resetDayOfWeek");
-                writer.Write(this.ResetDayOfWeek);
-            }
-            writer.WritePropertyName("resetHour");
-            writer.Write(this.ResetHour);
-            writer.WriteObjectEnd();
+            return new EzLimitModel {
+                LimitModelId = model.LimitModelId == null ? null : model.LimitModelId,
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                ResetType = model.ResetType == null ? null : model.ResetType,
+                ResetDayOfMonth = model.ResetDayOfMonth ?? 0,
+                ResetDayOfWeek = model.ResetDayOfWeek == null ? null : model.ResetDayOfWeek,
+                ResetHour = model.ResetHour ?? 0,
+            };
         }
-	}
+    }
 }

@@ -13,86 +13,50 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Chat.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Chat.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzSubscribe
 	{
-		/** 購読するユーザID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string UserId;
-		/** 購読するルーム名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string RoomName;
-		/** 新着メッセージ通知を受け取るカテゴリリスト */
-		[UnityEngine.SerializeField]
-		public List<EzNotificationType> NotificationTypes;
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Chat.Model.EzNotificationType> NotificationTypes;
 
-		public EzSubscribe()
-		{
-
-		}
-
-		public EzSubscribe(Gs2.Gs2Chat.Model.Subscribe @subscribe)
-		{
-			UserId = @subscribe.userId;
-			RoomName = @subscribe.roomName;
-			NotificationTypes = @subscribe.notificationTypes != null ? @subscribe.notificationTypes.Select(value =>
-                {
-                    return new EzNotificationType(value);
-                }
-			).ToList() : new List<EzNotificationType>(new EzNotificationType[] {});
-		}
-
-        public virtual Subscribe ToModel()
+        public Gs2.Gs2Chat.Model.Subscribe ToModel()
         {
-            return new Subscribe {
-                userId = UserId,
-                roomName = RoomName,
-                notificationTypes = NotificationTypes != null ? NotificationTypes.Select(Value0 =>
-                        {
-                            return new NotificationType
-                            {
-                                category = Value0.Category,
-                                enableTransferMobilePushNotification = Value0.EnableTransferMobilePushNotification,
-                            };
-                        }
-                ).ToList() : new List<NotificationType>(new NotificationType[] {}),
+            return new Gs2.Gs2Chat.Model.Subscribe {
+                UserId = UserId,
+                RoomName = RoomName,
+                NotificationTypes = NotificationTypes?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzSubscribe FromModel(Gs2.Gs2Chat.Model.Subscribe model)
         {
-            writer.WriteObjectStart();
-            if(this.UserId != null)
-            {
-                writer.WritePropertyName("userId");
-                writer.Write(this.UserId);
-            }
-            if(this.RoomName != null)
-            {
-                writer.WritePropertyName("roomName");
-                writer.Write(this.RoomName);
-            }
-            if(this.NotificationTypes != null)
-            {
-                writer.WritePropertyName("notificationTypes");
-                writer.WriteArrayStart();
-                foreach(var item in this.NotificationTypes)
-                {
-                    item.WriteJson(writer);
-                }
-                writer.WriteArrayEnd();
-            }
-            writer.WriteObjectEnd();
+            return new EzSubscribe {
+                UserId = model.UserId == null ? null : model.UserId,
+                RoomName = model.RoomName == null ? null : model.RoomName,
+                NotificationTypes = model.NotificationTypes == null ? new List<Gs2.Unity.Gs2Chat.Model.EzNotificationType>() : model.NotificationTypes.Select(v => {
+                    return Gs2.Unity.Gs2Chat.Model.EzNotificationType.FromModel(v);
+                }).ToList(),
+            };
         }
-	}
+    }
 }

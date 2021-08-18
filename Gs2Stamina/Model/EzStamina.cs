@@ -13,84 +13,58 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Stamina.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Stamina.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzStamina
 	{
-		/** スタミナモデルの名前 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string StaminaName;
-		/** 最終更新時におけるスタミナ値 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int Value;
-		/** スタミナの最大値 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int MaxValue;
-		/** スタミナの回復間隔(分) */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int RecoverIntervalMinutes;
-		/** スタミナの回復量 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int RecoverValue;
-		/** 次回スタミナが回復する時間 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long NextRecoverAt;
 
-		public EzStamina()
-		{
-
-		}
-
-		public EzStamina(Gs2.Gs2Stamina.Model.Stamina @stamina)
-		{
-			StaminaName = @stamina.staminaName;
-			Value = @stamina.value.HasValue ? @stamina.value.Value : 0;
-			MaxValue = @stamina.maxValue.HasValue ? @stamina.maxValue.Value : 0;
-			RecoverIntervalMinutes = @stamina.recoverIntervalMinutes.HasValue ? @stamina.recoverIntervalMinutes.Value : 0;
-			RecoverValue = @stamina.recoverValue.HasValue ? @stamina.recoverValue.Value : 0;
-			NextRecoverAt = @stamina.nextRecoverAt.HasValue ? @stamina.nextRecoverAt.Value : 0;
-		}
-
-        public virtual Stamina ToModel()
+        public Gs2.Gs2Stamina.Model.Stamina ToModel()
         {
-            return new Stamina {
-                staminaName = StaminaName,
-                value = Value,
-                maxValue = MaxValue,
-                recoverIntervalMinutes = RecoverIntervalMinutes,
-                recoverValue = RecoverValue,
-                nextRecoverAt = NextRecoverAt,
+            return new Gs2.Gs2Stamina.Model.Stamina {
+                StaminaName = StaminaName,
+                Value = Value,
+                MaxValue = MaxValue,
+                RecoverIntervalMinutes = RecoverIntervalMinutes,
+                RecoverValue = RecoverValue,
+                NextRecoverAt = NextRecoverAt,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzStamina FromModel(Gs2.Gs2Stamina.Model.Stamina model)
         {
-            writer.WriteObjectStart();
-            if(this.StaminaName != null)
-            {
-                writer.WritePropertyName("staminaName");
-                writer.Write(this.StaminaName);
-            }
-            writer.WritePropertyName("value");
-            writer.Write(this.Value);
-            writer.WritePropertyName("maxValue");
-            writer.Write(this.MaxValue);
-            writer.WritePropertyName("recoverIntervalMinutes");
-            writer.Write(this.RecoverIntervalMinutes);
-            writer.WritePropertyName("recoverValue");
-            writer.Write(this.RecoverValue);
-            writer.WritePropertyName("nextRecoverAt");
-            writer.Write(this.NextRecoverAt);
-            writer.WriteObjectEnd();
+            return new EzStamina {
+                StaminaName = model.StaminaName == null ? null : model.StaminaName,
+                Value = model.Value ?? 0,
+                MaxValue = model.MaxValue ?? 0,
+                RecoverIntervalMinutes = model.RecoverIntervalMinutes ?? 0,
+                RecoverValue = model.RecoverValue ?? 0,
+                NextRecoverAt = model.NextRecoverAt ?? 0,
+            };
         }
-	}
+    }
 }

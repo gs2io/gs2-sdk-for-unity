@@ -13,86 +13,54 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Ranking.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Ranking.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzScore
 	{
-		/** カテゴリ名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string CategoryName;
-		/** ユーザID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string UserId;
-		/** スコアを獲得したユーザID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string ScorerUserId;
-		/** スコア */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long Score;
-		/** メタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
 
-		public EzScore()
-		{
-
-		}
-
-		public EzScore(Gs2.Gs2Ranking.Model.Score @score)
-		{
-			CategoryName = @score.categoryName;
-			UserId = @score.userId;
-			ScorerUserId = @score.scorerUserId;
-			Score = @score.score.HasValue ? @score.score.Value : 0;
-			Metadata = @score.metadata;
-		}
-
-        public virtual Score ToModel()
+        public Gs2.Gs2Ranking.Model.Score ToModel()
         {
-            return new Score {
-                categoryName = CategoryName,
-                userId = UserId,
-                scorerUserId = ScorerUserId,
-                score = Score,
-                metadata = Metadata,
+            return new Gs2.Gs2Ranking.Model.Score {
+                CategoryName = CategoryName,
+                UserId = UserId,
+                ScorerUserId = ScorerUserId,
+                Value = Score,
+                Metadata = Metadata,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzScore FromModel(Gs2.Gs2Ranking.Model.Score model)
         {
-            writer.WriteObjectStart();
-            if(this.CategoryName != null)
-            {
-                writer.WritePropertyName("categoryName");
-                writer.Write(this.CategoryName);
-            }
-            if(this.UserId != null)
-            {
-                writer.WritePropertyName("userId");
-                writer.Write(this.UserId);
-            }
-            if(this.ScorerUserId != null)
-            {
-                writer.WritePropertyName("scorerUserId");
-                writer.Write(this.ScorerUserId);
-            }
-            writer.WritePropertyName("score");
-            writer.Write(this.Score);
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            writer.WriteObjectEnd();
+            return new EzScore {
+                CategoryName = model.CategoryName == null ? null : model.CategoryName,
+                UserId = model.UserId == null ? null : model.UserId,
+                ScorerUserId = model.ScorerUserId == null ? null : model.ScorerUserId,
+                Score = model.Value ?? 0,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+            };
         }
-	}
+    }
 }

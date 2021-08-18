@@ -13,59 +13,42 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Showcase.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Showcase.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzConsumeAction
 	{
-		/** スタンプタスクで実行するアクションの種類 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Action;
-		/** 消費リクエストのJSON */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Request;
 
-		public EzConsumeAction()
-		{
-
-		}
-
-		public EzConsumeAction(Gs2.Gs2Showcase.Model.ConsumeAction @consumeAction)
-		{
-			Action = @consumeAction.action;
-			Request = @consumeAction.request;
-		}
-
-        public virtual ConsumeAction ToModel()
+        public Gs2.Gs2Showcase.Model.ConsumeAction ToModel()
         {
-            return new ConsumeAction {
-                action = Action,
-                request = Request,
+            return new Gs2.Gs2Showcase.Model.ConsumeAction {
+                Action = Action,
+                Request = Request,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzConsumeAction FromModel(Gs2.Gs2Showcase.Model.ConsumeAction model)
         {
-            writer.WriteObjectStart();
-            if(this.Action != null)
-            {
-                writer.WritePropertyName("action");
-                writer.Write(this.Action);
-            }
-            if(this.Request != null)
-            {
-                writer.WritePropertyName("request");
-                writer.Write(this.Request);
-            }
-            writer.WriteObjectEnd();
+            return new EzConsumeAction {
+                Action = model.Action == null ? null : model.Action,
+                Request = model.Request == null ? null : model.Request,
+            };
         }
-	}
+    }
 }

@@ -13,96 +13,54 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Formation.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Formation.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzMoldModel
 	{
-		/** フォームの保存領域名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** メタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** None */
-		[UnityEngine.SerializeField]
-		public EzFormModel FormModel;
-		/** フォームを保存できる初期キャパシティ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
+		public Gs2.Unity.Gs2Formation.Model.EzFormModel FormModel;
+		[SerializeField]
 		public int InitialMaxCapacity;
-		/** フォームを保存できるキャパシティ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int MaxCapacity;
 
-		public EzMoldModel()
-		{
-
-		}
-
-		public EzMoldModel(Gs2.Gs2Formation.Model.MoldModel @moldModel)
-		{
-			Name = @moldModel.name;
-			Metadata = @moldModel.metadata;
-			FormModel = @moldModel.formModel != null ? new EzFormModel(@moldModel.formModel) : null;
-			InitialMaxCapacity = @moldModel.initialMaxCapacity.HasValue ? @moldModel.initialMaxCapacity.Value : 0;
-			MaxCapacity = @moldModel.maxCapacity.HasValue ? @moldModel.maxCapacity.Value : 0;
-		}
-
-        public virtual MoldModel ToModel()
+        public Gs2.Gs2Formation.Model.MoldModel ToModel()
         {
-            return new MoldModel {
-                name = Name,
-                metadata = Metadata,
-                formModel = new FormModel {
-                    name = FormModel.Name,
-                    metadata = FormModel.Metadata,
-                    slots = FormModel.Slots != null ? FormModel.Slots.Select(Value1 =>
-                            {
-                                return new SlotModel
-                                {
-                                    name = Value1.Name,
-                                    propertyRegex = Value1.PropertyRegex,
-                                    metadata = Value1.Metadata,
-                                };
-                            }
-                    ).ToList() : new List<SlotModel>(new SlotModel[] {}),
-                },
-                initialMaxCapacity = InitialMaxCapacity,
-                maxCapacity = MaxCapacity,
+            return new Gs2.Gs2Formation.Model.MoldModel {
+                Name = Name,
+                Metadata = Metadata,
+                FormModel = FormModel?.ToModel(),
+                InitialMaxCapacity = InitialMaxCapacity,
+                MaxCapacity = MaxCapacity,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzMoldModel FromModel(Gs2.Gs2Formation.Model.MoldModel model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            if(this.FormModel != null)
-            {
-                writer.WritePropertyName("formModel");
-                this.FormModel.WriteJson(writer);
-            }
-            writer.WritePropertyName("initialMaxCapacity");
-            writer.Write(this.InitialMaxCapacity);
-            writer.WritePropertyName("maxCapacity");
-            writer.Write(this.MaxCapacity);
-            writer.WriteObjectEnd();
+            return new EzMoldModel {
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                FormModel = model.FormModel == null ? null : Gs2.Unity.Gs2Formation.Model.EzFormModel.FromModel(model.FormModel),
+                InitialMaxCapacity = model.InitialMaxCapacity ?? 0,
+                MaxCapacity = model.MaxCapacity ?? 0,
+            };
         }
-	}
+    }
 }

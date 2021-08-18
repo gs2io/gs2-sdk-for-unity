@@ -13,59 +13,42 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Friend.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Friend.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzFriendRequest
 	{
-		/** ユーザーID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string UserId;
-		/** ユーザーID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string TargetUserId;
 
-		public EzFriendRequest()
-		{
-
-		}
-
-		public EzFriendRequest(Gs2.Gs2Friend.Model.FriendRequest @friendRequest)
-		{
-			UserId = @friendRequest.userId;
-			TargetUserId = @friendRequest.targetUserId;
-		}
-
-        public virtual FriendRequest ToModel()
+        public Gs2.Gs2Friend.Model.FriendRequest ToModel()
         {
-            return new FriendRequest {
-                userId = UserId,
-                targetUserId = TargetUserId,
+            return new Gs2.Gs2Friend.Model.FriendRequest {
+                UserId = UserId,
+                TargetUserId = TargetUserId,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzFriendRequest FromModel(Gs2.Gs2Friend.Model.FriendRequest model)
         {
-            writer.WriteObjectStart();
-            if(this.UserId != null)
-            {
-                writer.WritePropertyName("userId");
-                writer.Write(this.UserId);
-            }
-            if(this.TargetUserId != null)
-            {
-                writer.WritePropertyName("targetUserId");
-                writer.Write(this.TargetUserId);
-            }
-            writer.WriteObjectEnd();
+            return new EzFriendRequest {
+                UserId = model.UserId == null ? null : model.UserId,
+                TargetUserId = model.TargetUserId == null ? null : model.TargetUserId,
+            };
         }
-	}
+    }
 }

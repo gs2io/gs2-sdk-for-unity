@@ -51,10 +51,10 @@ namespace Gs2.Unity.Gs2News
         )
         {
             string zipUrl = null;
-            yield return _client.WantGrant(
+            yield return _restClient.WantGrant(
                 new WantGrantRequest()
                     .WithNamespaceName(namespaceName)
-                    .WithAccessToken(session.AccessToken.token),
+                    .WithAccessToken(session.AccessToken.Token),
                 r =>
                 {
                     if(r.Result == null)
@@ -68,7 +68,7 @@ namespace Gs2.Unity.Gs2News
                     }
                     else
                     {
-                        zipUrl = r.Result.zipUrl;
+                        zipUrl = r.Result.ZipUrl;
                     }
                 }
             );

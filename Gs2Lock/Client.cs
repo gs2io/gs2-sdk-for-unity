@@ -2,7 +2,7 @@
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
  *
- * Licensed under the Apache License, Version 2.0(the "License").
+ * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
  * A copy of the License is located at
  *
@@ -14,22 +14,28 @@
  * permissions and limitations under the License.
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Gs2.Gs2Lock;
-using Gs2.Gs2Lock.Model;
-using Gs2.Gs2Lock.Request;
-using Gs2.Gs2Lock.Result;
 using Gs2.Unity.Gs2Lock.Model;
 using Gs2.Unity.Gs2Lock.Result;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Gs2Quest;
+using Gs2.Gs2Quest.Model;
+using Gs2.Gs2Quest.Request;
+using Gs2.Gs2Quest.Result;
+using Gs2.Unity.Gs2Quest.Model;
+using Gs2.Unity.Gs2Quest.Result;
 using Gs2.Core;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Unity.Util;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Lock
 {
 	public class DisabledCertificateHandler : CertificateHandler {
@@ -39,6 +45,8 @@ namespace Gs2.Unity.Gs2Lock
 		}
 	}
 
+	[Preserve]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
@@ -59,24 +67,8 @@ namespace Gs2.Unity.Gs2Lock
 			}
 		}
 
-		/// <summary>
-		///  ロックを取得<br />
-		///    <br />
-		///    ttl で指定した秒数 `プロパティID` のリソースをロックします。<br />
-		///    ロックする際には `トランザクションID` を指定する必要があります。<br />
-		///    異なる `トランザクションID` による同一 `プロパティID` に対するロック取得は失敗します。<br />
-		///    同一トランザクションからのロック取得リクエストの場合は参照カウントを増やします。<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">カテゴリー名</param>
-		/// <param name="propertyId">プロパティID</param>
-		/// <param name="transactionId">ロックを取得するトランザクションID</param>
-		/// <param name="ttl">ロックを取得する期限（秒）</param>
-		public IEnumerator Lock(
-		        UnityAction<AsyncResult<EzLockResult>> callback,
+        public IEnumerator Lock(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Lock.Result.EzLockResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string propertyId,
@@ -88,15 +80,15 @@ namespace Gs2.Unity.Gs2Lock
                 callback,
 		        session,
                 cb => _client.Lock(
-                    new LockRequest()
+                    new Gs2.Gs2Lock.Request.LockRequest()
                         .WithNamespaceName(namespaceName)
                         .WithPropertyId(propertyId)
+                        .WithAccessToken(session.AccessToken.Token)
                         .WithTransactionId(transactionId)
-                        .WithTtl(ttl)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithTtl(ttl),
                     r => cb.Invoke(
-                        new AsyncResult<EzLockResult>(
-                            r.Result == null ? null : new EzLockResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Lock.Result.EzLockResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Lock.Result.EzLockResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -104,21 +96,8 @@ namespace Gs2.Unity.Gs2Lock
             );
 		}
 
-		/// <summary>
-		///  ロックを解放<br />
-		///    <br />
-		///    ロックの解放には同一 `トランザクションID` から解放する必要があります。<br />
-		///    ロックの取得時に再入を行った場合は同一回数ロックの解放を行い、参照カウントが0になったタイミングで実際に解放が行われます。<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">カテゴリー名</param>
-		/// <param name="propertyId">プロパティID</param>
-		/// <param name="transactionId">ロックを取得したトランザクションID</param>
-		public IEnumerator Unlock(
-		        UnityAction<AsyncResult<EzUnlockResult>> callback,
+        public IEnumerator Unlock(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Lock.Result.EzUnlockResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string propertyId,
@@ -129,19 +108,19 @@ namespace Gs2.Unity.Gs2Lock
                 callback,
 		        session,
                 cb => _client.Unlock(
-                    new UnlockRequest()
+                    new Gs2.Gs2Lock.Request.UnlockRequest()
                         .WithNamespaceName(namespaceName)
                         .WithPropertyId(propertyId)
-                        .WithTransactionId(transactionId)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithTransactionId(transactionId),
                     r => cb.Invoke(
-                        new AsyncResult<EzUnlockResult>(
-                            r.Result == null ? null : new EzUnlockResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Lock.Result.EzUnlockResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Lock.Result.EzUnlockResult.FromModel(r.Result),
                             r.Error
                         )
                     )
                 )
             );
 		}
-	}
+    }
 }

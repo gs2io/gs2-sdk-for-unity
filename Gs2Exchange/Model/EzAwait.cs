@@ -13,76 +13,50 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Exchange.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Exchange.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzAwait
 	{
-		/** ユーザーID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string UserId;
-		/** 交換レート名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string RateName;
-		/** 交換待機の名前 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** 作成日時 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long ExchangedAt;
 
-		public EzAwait()
-		{
-
-		}
-
-		public EzAwait(Gs2.Gs2Exchange.Model.Await @await)
-		{
-			UserId = @await.userId;
-			RateName = @await.rateName;
-			Name = @await.name;
-			ExchangedAt = @await.exchangedAt.HasValue ? @await.exchangedAt.Value : 0;
-		}
-
-        public virtual Await ToModel()
+        public Gs2.Gs2Exchange.Model.Await ToModel()
         {
-            return new Await {
-                userId = UserId,
-                rateName = RateName,
-                name = Name,
-                exchangedAt = ExchangedAt,
+            return new Gs2.Gs2Exchange.Model.Await {
+                UserId = UserId,
+                RateName = RateName,
+                Name = Name,
+                ExchangedAt = ExchangedAt,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzAwait FromModel(Gs2.Gs2Exchange.Model.Await model)
         {
-            writer.WriteObjectStart();
-            if(this.UserId != null)
-            {
-                writer.WritePropertyName("userId");
-                writer.Write(this.UserId);
-            }
-            if(this.RateName != null)
-            {
-                writer.WritePropertyName("rateName");
-                writer.Write(this.RateName);
-            }
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            writer.WritePropertyName("exchangedAt");
-            writer.Write(this.ExchangedAt);
-            writer.WriteObjectEnd();
+            return new EzAwait {
+                UserId = model.UserId == null ? null : model.UserId,
+                RateName = model.RateName == null ? null : model.RateName,
+                Name = model.Name == null ? null : model.Name,
+                ExchangedAt = model.ExchangedAt ?? 0,
+            };
         }
-	}
+    }
 }

@@ -2,7 +2,7 @@
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
  *
- * Licensed under the Apache License, Version 2.0(the "License").
+ * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
  * A copy of the License is located at
  *
@@ -14,22 +14,28 @@
  * permissions and limitations under the License.
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Gs2.Gs2Exchange;
-using Gs2.Gs2Exchange.Model;
-using Gs2.Gs2Exchange.Request;
-using Gs2.Gs2Exchange.Result;
 using Gs2.Unity.Gs2Exchange.Model;
 using Gs2.Unity.Gs2Exchange.Result;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Gs2Quest;
+using Gs2.Gs2Quest.Model;
+using Gs2.Gs2Quest.Request;
+using Gs2.Gs2Quest.Result;
+using Gs2.Unity.Gs2Quest.Model;
+using Gs2.Unity.Gs2Quest.Result;
 using Gs2.Core;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Unity.Util;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Exchange
 {
 	public class DisabledCertificateHandler : CertificateHandler {
@@ -39,6 +45,8 @@ namespace Gs2.Unity.Gs2Exchange
 		}
 	}
 
+	[Preserve]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
@@ -59,152 +67,8 @@ namespace Gs2.Unity.Gs2Exchange
 			}
 		}
 
-		/// <summary>
-		///  交換レートモデル情報の一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		public IEnumerator ListRateModels(
-		        UnityAction<AsyncResult<EzListRateModelsResult>> callback,
-                string namespaceName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-                null,
-                cb => _restClient.DescribeRateModels(
-                    new DescribeRateModelsRequest()
-                        .WithNamespaceName(namespaceName),
-                    r => cb.Invoke(
-                        new AsyncResult<EzListRateModelsResult>(
-                            r.Result == null ? null : new EzListRateModelsResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  交換レートモデル情報を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="rateName">交換レート名</param>
-		public IEnumerator GetRateModel(
-		        UnityAction<AsyncResult<EzGetRateModelResult>> callback,
-                string namespaceName,
-                string rateName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-                null,
-                cb => _client.GetRateModel(
-                    new GetRateModelRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithRateName(rateName),
-                    r => cb.Invoke(
-                        new AsyncResult<EzGetRateModelResult>(
-                            r.Result == null ? null : new EzGetRateModelResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  交換を実行<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="rateName">交換レートの種類名</param>
-		/// <param name="count">交換するロット数</param>
-		/// <param name="config">設定値</param>
-		public IEnumerator Exchange(
-		        UnityAction<AsyncResult<EzExchangeResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string rateName,
-                int count,
-                List<EzConfig> config=null
-        )
-		{
-            yield return _profile.Run(
-                callback,
-		        session,
-                cb => _restClient.Exchange(
-                    new ExchangeRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithRateName(rateName)
-                        .WithCount(count)
-                        .WithConfig(config != null ? config.Select(item => item?.ToModel()).ToList() : new List<Config>(new Config[]{}))
-                        .WithAccessToken(session.AccessToken.token),
-                    r => cb.Invoke(
-                        new AsyncResult<EzExchangeResult>(
-                            r.Result == null ? null : new EzExchangeResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  交換待機情報の一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="rateName">交換レート名</param>
-		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
-		public IEnumerator ListAwaits(
-		        UnityAction<AsyncResult<EzListAwaitsResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string rateName=null,
-                string pageToken=null
-        )
-		{
-            yield return _profile.Run(
-                callback,
-		        session,
-                cb => _restClient.DescribeAwaits(
-                    new DescribeAwaitsRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithRateName(rateName)
-                        .WithPageToken(pageToken)
-                        .WithAccessToken(session.AccessToken.token),
-                    r => cb.Invoke(
-                        new AsyncResult<EzListAwaitsResult>(
-                            r.Result == null ? null : new EzListAwaitsResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  交換待機情報を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="rateName">交換レート名</param>
-		/// <param name="awaitName">交換待機の名前</param>
-		public IEnumerator GetAwait(
-		        UnityAction<AsyncResult<EzGetAwaitResult>> callback,
+        public IEnumerator Acquire(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzAcquireResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string rateName,
@@ -214,15 +78,15 @@ namespace Gs2.Unity.Gs2Exchange
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.GetAwait(
-                    new GetAwaitRequest()
+                cb => _restClient.Acquire(
+                    new Gs2.Gs2Exchange.Request.AcquireRequest()
                         .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
                         .WithRateName(rateName)
-                        .WithAwaitName(awaitName)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAwaitName(awaitName),
                     r => cb.Invoke(
-                        new AsyncResult<EzGetAwaitResult>(
-                            r.Result == null ? null : new EzGetAwaitResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzAcquireResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Exchange.Result.EzAcquireResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -230,92 +94,8 @@ namespace Gs2.Unity.Gs2Exchange
             );
 		}
 
-		/// <summary>
-		///  交換待機の報酬を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="rateName">交換レート名</param>
-		/// <param name="awaitName">交換待機の名前</param>
-		public IEnumerator Acquire(
-		        UnityAction<AsyncResult<EzAcquireResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string rateName,
-                string awaitName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-		        session,
-                cb => _client.Acquire(
-                    new AcquireRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithRateName(rateName)
-                        .WithAwaitName(awaitName)
-                        .WithAccessToken(session.AccessToken.token),
-                    r => cb.Invoke(
-                        new AsyncResult<EzAcquireResult>(
-                            r.Result == null ? null : new EzAcquireResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  交換待機を対価を払ってスキップ<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="rateName">交換レート名</param>
-		/// <param name="awaitName">交換待機の名前</param>
-		public IEnumerator Skip(
-		        UnityAction<AsyncResult<EzSkipResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string rateName,
-                string awaitName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-		        session,
-                cb => _client.Skip(
-                    new SkipRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithRateName(rateName)
-                        .WithAwaitName(awaitName)
-                        .WithAccessToken(session.AccessToken.token),
-                    r => cb.Invoke(
-                        new AsyncResult<EzSkipResult>(
-                            r.Result == null ? null : new EzSkipResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  交換待機情報を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="rateName">交換レート名</param>
-		/// <param name="awaitName">交換待機の名前</param>
-		public IEnumerator DeleteAwait(
-		        UnityAction<AsyncResult<EzDeleteAwaitResult>> callback,
+        public IEnumerator DeleteAwait(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzDeleteAwaitResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string rateName,
@@ -326,19 +106,175 @@ namespace Gs2.Unity.Gs2Exchange
                 callback,
 		        session,
                 cb => _client.DeleteAwait(
-                    new DeleteAwaitRequest()
+                    new Gs2.Gs2Exchange.Request.DeleteAwaitRequest()
                         .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
                         .WithRateName(rateName)
-                        .WithAwaitName(awaitName)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAwaitName(awaitName),
                     r => cb.Invoke(
-                        new AsyncResult<EzDeleteAwaitResult>(
-                            r.Result == null ? null : new EzDeleteAwaitResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzDeleteAwaitResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Exchange.Result.EzDeleteAwaitResult.FromModel(r.Result),
                             r.Error
                         )
                     )
                 )
             );
 		}
-	}
+
+        public IEnumerator GetAwait(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzGetAwaitResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string rateName,
+                string awaitName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetAwait(
+                    new Gs2.Gs2Exchange.Request.GetAwaitRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithRateName(rateName)
+                        .WithAwaitName(awaitName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzGetAwaitResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Exchange.Result.EzGetAwaitResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListAwaits(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzListAwaitsResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string rateName = null,
+                string pageToken = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribeAwaits(
+                    new Gs2.Gs2Exchange.Request.DescribeAwaitsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRateName(rateName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithPageToken(pageToken),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzListAwaitsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Exchange.Result.EzListAwaitsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator Skip(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzSkipResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string rateName,
+                string awaitName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.Skip(
+                    new Gs2.Gs2Exchange.Request.SkipRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithRateName(rateName)
+                        .WithAwaitName(awaitName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzSkipResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Exchange.Result.EzSkipResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator GetRateModel(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzGetRateModelResult>> callback,
+                string namespaceName,
+                string rateName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.GetRateModel(
+                    new Gs2.Gs2Exchange.Request.GetRateModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRateName(rateName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzGetRateModelResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Exchange.Result.EzGetRateModelResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListRateModels(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzListRateModelsResult>> callback,
+                string namespaceName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeRateModels(
+                    new Gs2.Gs2Exchange.Request.DescribeRateModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzListRateModelsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Exchange.Result.EzListRateModelsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator Exchange(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzExchangeResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string rateName,
+                int count,
+                List<Gs2.Unity.Gs2Exchange.Model.EzConfig> config = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.Exchange(
+                    new Gs2.Gs2Exchange.Request.ExchangeRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRateName(rateName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithCount(count)
+                        .WithConfig(config?.Select(v => {
+                            return v?.ToModel();
+                        }).ToArray()),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzExchangeResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Exchange.Result.EzExchangeResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+    }
 }

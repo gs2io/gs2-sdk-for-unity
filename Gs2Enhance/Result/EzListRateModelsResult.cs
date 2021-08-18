@@ -13,31 +13,33 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Enhance.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Enhance.Model;
-using Gs2.Gs2Enhance.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Enhance.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzListRateModelsResult
 	{
-        /** 強化レートモデルのリスト */
-        public List<EzRateModel> Items { get; private set; }
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Enhance.Model.EzRateModel> Items;
 
-
-        public EzListRateModelsResult(
-            DescribeRateModelsResult result
-        )
+        public static EzListRateModelsResult FromModel(Gs2.Gs2Enhance.Result.DescribeRateModelsResult model)
         {
-            Items = new List<EzRateModel>();
-            foreach (var item_ in result.items)
-            {
-                Items.Add(new EzRateModel(item_));
-            }
+            return new EzListRateModelsResult {
+                Items = model.Items == null ? new List<Gs2.Unity.Gs2Enhance.Model.EzRateModel>() : model.Items.Select(v => {
+                    return Gs2.Unity.Gs2Enhance.Model.EzRateModel.FromModel(v);
+                }).ToList(),
+            };
         }
-	}
+    }
 }

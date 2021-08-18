@@ -13,113 +13,58 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Exchange.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Exchange.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzRateModel
 	{
-		/** 交換レートの種類名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** 交換レートの種類のメタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** 消費アクションリスト */
-		[UnityEngine.SerializeField]
-		public List<EzConsumeAction> ConsumeActions;
-		/** 入手アクションリスト */
-		[UnityEngine.SerializeField]
-		public List<EzAcquireAction> AcquireActions;
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Exchange.Model.EzConsumeAction> ConsumeActions;
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Exchange.Model.EzAcquireAction> AcquireActions;
 
-		public EzRateModel()
-		{
-
-		}
-
-		public EzRateModel(Gs2.Gs2Exchange.Model.RateModel @rateModel)
-		{
-			Name = @rateModel.name;
-			Metadata = @rateModel.metadata;
-			ConsumeActions = @rateModel.consumeActions != null ? @rateModel.consumeActions.Select(value =>
-                {
-                    return new EzConsumeAction(value);
-                }
-			).ToList() : new List<EzConsumeAction>(new EzConsumeAction[] {});
-			AcquireActions = @rateModel.acquireActions != null ? @rateModel.acquireActions.Select(value =>
-                {
-                    return new EzAcquireAction(value);
-                }
-			).ToList() : new List<EzAcquireAction>(new EzAcquireAction[] {});
-		}
-
-        public virtual RateModel ToModel()
+        public Gs2.Gs2Exchange.Model.RateModel ToModel()
         {
-            return new RateModel {
-                name = Name,
-                metadata = Metadata,
-                consumeActions = ConsumeActions != null ? ConsumeActions.Select(Value0 =>
-                        {
-                            return new ConsumeAction
-                            {
-                                action = Value0.Action,
-                                request = Value0.Request,
-                            };
-                        }
-                ).ToList() : new List<ConsumeAction>(new ConsumeAction[] {}),
-                acquireActions = AcquireActions != null ? AcquireActions.Select(Value0 =>
-                        {
-                            return new AcquireAction
-                            {
-                                action = Value0.Action,
-                                request = Value0.Request,
-                            };
-                        }
-                ).ToList() : new List<AcquireAction>(new AcquireAction[] {}),
+            return new Gs2.Gs2Exchange.Model.RateModel {
+                Name = Name,
+                Metadata = Metadata,
+                ConsumeActions = ConsumeActions?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
+                AcquireActions = AcquireActions?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzRateModel FromModel(Gs2.Gs2Exchange.Model.RateModel model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            if(this.ConsumeActions != null)
-            {
-                writer.WritePropertyName("consumeActions");
-                writer.WriteArrayStart();
-                foreach(var item in this.ConsumeActions)
-                {
-                    item.WriteJson(writer);
-                }
-                writer.WriteArrayEnd();
-            }
-            if(this.AcquireActions != null)
-            {
-                writer.WritePropertyName("acquireActions");
-                writer.WriteArrayStart();
-                foreach(var item in this.AcquireActions)
-                {
-                    item.WriteJson(writer);
-                }
-                writer.WriteArrayEnd();
-            }
-            writer.WriteObjectEnd();
+            return new EzRateModel {
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                ConsumeActions = model.ConsumeActions == null ? new List<Gs2.Unity.Gs2Exchange.Model.EzConsumeAction>() : model.ConsumeActions.Select(v => {
+                    return Gs2.Unity.Gs2Exchange.Model.EzConsumeAction.FromModel(v);
+                }).ToList(),
+                AcquireActions = model.AcquireActions == null ? new List<Gs2.Unity.Gs2Exchange.Model.EzAcquireAction>() : model.AcquireActions.Select(v => {
+                    return Gs2.Unity.Gs2Exchange.Model.EzAcquireAction.FromModel(v);
+                }).ToList(),
+            };
         }
-	}
+    }
 }

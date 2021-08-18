@@ -13,79 +13,50 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Ranking.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Ranking.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzCategoryModel
 	{
-		/** カテゴリ名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** カテゴリのメタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** スコアの登録可能期間とするイベントマスター のGRN */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string EntryPeriodEventId;
-		/** アクセス可能期間とするイベントマスター のGRN */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string AccessPeriodEventId;
 
-		public EzCategoryModel()
-		{
-
-		}
-
-		public EzCategoryModel(Gs2.Gs2Ranking.Model.CategoryModel @categoryModel)
-		{
-			Name = @categoryModel.name;
-			Metadata = @categoryModel.metadata;
-			EntryPeriodEventId = @categoryModel.entryPeriodEventId;
-			AccessPeriodEventId = @categoryModel.accessPeriodEventId;
-		}
-
-        public virtual CategoryModel ToModel()
+        public Gs2.Gs2Ranking.Model.CategoryModel ToModel()
         {
-            return new CategoryModel {
-                name = Name,
-                metadata = Metadata,
-                entryPeriodEventId = EntryPeriodEventId,
-                accessPeriodEventId = AccessPeriodEventId,
+            return new Gs2.Gs2Ranking.Model.CategoryModel {
+                Name = Name,
+                Metadata = Metadata,
+                EntryPeriodEventId = EntryPeriodEventId,
+                AccessPeriodEventId = AccessPeriodEventId,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzCategoryModel FromModel(Gs2.Gs2Ranking.Model.CategoryModel model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            if(this.EntryPeriodEventId != null)
-            {
-                writer.WritePropertyName("entryPeriodEventId");
-                writer.Write(this.EntryPeriodEventId);
-            }
-            if(this.AccessPeriodEventId != null)
-            {
-                writer.WritePropertyName("accessPeriodEventId");
-                writer.Write(this.AccessPeriodEventId);
-            }
-            writer.WriteObjectEnd();
+            return new EzCategoryModel {
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                EntryPeriodEventId = model.EntryPeriodEventId == null ? null : model.EntryPeriodEventId,
+                AccessPeriodEventId = model.AccessPeriodEventId == null ? null : model.AccessPeriodEventId,
+            };
         }
-	}
+    }
 }

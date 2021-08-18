@@ -13,35 +13,36 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Mission.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Mission.Model;
-using Gs2.Gs2Mission.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Mission.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzListCompletesResult
 	{
-        /** 達成状況のリスト */
-        public List<EzComplete> Items { get; private set; }
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Mission.Model.EzComplete> Items;
+		[SerializeField]
+		public string NextPageToken;
 
-        /** リストの続きを取得するためのページトークン */
-        public string NextPageToken { get; private set; }
-
-
-        public EzListCompletesResult(
-            DescribeCompletesResult result
-        )
+        public static EzListCompletesResult FromModel(Gs2.Gs2Mission.Result.DescribeCompletesResult model)
         {
-            Items = new List<EzComplete>();
-            foreach (var item_ in result.items)
-            {
-                Items.Add(new EzComplete(item_));
-            }
-            NextPageToken = result.nextPageToken;
+            return new EzListCompletesResult {
+                Items = model.Items == null ? new List<Gs2.Unity.Gs2Mission.Model.EzComplete>() : model.Items.Select(v => {
+                    return Gs2.Unity.Gs2Mission.Model.EzComplete.FromModel(v);
+                }).ToList(),
+                NextPageToken = model.NextPageToken == null ? null : model.NextPageToken,
+            };
         }
-	}
+    }
 }

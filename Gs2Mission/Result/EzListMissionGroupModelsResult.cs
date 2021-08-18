@@ -13,31 +13,33 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Mission.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Mission.Model;
-using Gs2.Gs2Mission.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Mission.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzListMissionGroupModelsResult
 	{
-        /** ミッショングループのリスト */
-        public List<EzMissionGroupModel> Items { get; private set; }
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel> Items;
 
-
-        public EzListMissionGroupModelsResult(
-            DescribeMissionGroupModelsResult result
-        )
+        public static EzListMissionGroupModelsResult FromModel(Gs2.Gs2Mission.Result.DescribeMissionGroupModelsResult model)
         {
-            Items = new List<EzMissionGroupModel>();
-            foreach (var item_ in result.items)
-            {
-                Items.Add(new EzMissionGroupModel(item_));
-            }
+            return new EzListMissionGroupModelsResult {
+                Items = model.Items == null ? new List<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel>() : model.Items.Select(v => {
+                    return Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel.FromModel(v);
+                }).ToList(),
+            };
         }
-	}
+    }
 }

@@ -13,38 +13,37 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Exchange.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Exchange.Model;
-using Gs2.Gs2Exchange.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Exchange.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzExchangeResult
 	{
-        /** 交換レートモデル */
-        public EzRateModel Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Exchange.Model.EzRateModel Item;
+		[SerializeField]
+		public string StampSheet;
+		[SerializeField]
+		public string StampSheetEncryptionKeyId;
 
-        /** 交換処理の実行に使用するスタンプシート */
-        public string StampSheet { get; private set; }
-
-        /** スタンプシートの署名計算に使用した暗号鍵GRN */
-        public string StampSheetEncryptionKeyId { get; private set; }
-
-
-        public EzExchangeResult(
-            ExchangeResult result
-        )
+        public static EzExchangeResult FromModel(Gs2.Gs2Exchange.Result.ExchangeResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzRateModel(result.item);
-            }
-            StampSheet = result.stampSheet;
-            StampSheetEncryptionKeyId = result.stampSheetEncryptionKeyId;
+            return new EzExchangeResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Exchange.Model.EzRateModel.FromModel(model.Item),
+                StampSheet = model.StampSheet == null ? null : model.StampSheet,
+                StampSheetEncryptionKeyId = model.StampSheetEncryptionKeyId == null ? null : model.StampSheetEncryptionKeyId,
+            };
         }
-	}
+    }
 }

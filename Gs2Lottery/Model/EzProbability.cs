@@ -13,66 +13,42 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Lottery.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Lottery.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzProbability
 	{
-		/** 景品の種類 */
-		[UnityEngine.SerializeField]
-		public EzDrawnPrize Prize;
-		/** 排出確率(0.0〜1.0) */
-		[UnityEngine.SerializeField]
+		[SerializeField]
+		public Gs2.Unity.Gs2Lottery.Model.EzDrawnPrize Prize;
+		[SerializeField]
 		public float Rate;
 
-		public EzProbability()
-		{
-
-		}
-
-		public EzProbability(Gs2.Gs2Lottery.Model.Probability @probability)
-		{
-			Prize = @probability.prize != null ? new EzDrawnPrize(@probability.prize) : null;
-			Rate = @probability.rate.HasValue ? @probability.rate.Value : 0;
-		}
-
-        public virtual Probability ToModel()
+        public Gs2.Gs2Lottery.Model.Probability ToModel()
         {
-            return new Probability {
-                prize = new DrawnPrize {
-                    acquireActions = Prize.AcquireActions != null ? Prize.AcquireActions.Select(Value1 =>
-                            {
-                                return new AcquireAction
-                                {
-                                    action = Value1.Action,
-                                    request = Value1.Request,
-                                };
-                            }
-                    ).ToList() : new List<AcquireAction>(new AcquireAction[] {}),
-                },
-                rate = Rate,
+            return new Gs2.Gs2Lottery.Model.Probability {
+                Prize = Prize?.ToModel(),
+                Rate = Rate,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzProbability FromModel(Gs2.Gs2Lottery.Model.Probability model)
         {
-            writer.WriteObjectStart();
-            if(this.Prize != null)
-            {
-                writer.WritePropertyName("prize");
-                this.Prize.WriteJson(writer);
-            }
-            writer.WritePropertyName("rate");
-            writer.Write(this.Rate);
-            writer.WriteObjectEnd();
+            return new EzProbability {
+                Prize = model.Prize == null ? null : Gs2.Unity.Gs2Lottery.Model.EzDrawnPrize.FromModel(model.Prize),
+                Rate = model.Rate ?? 0,
+            };
         }
-	}
+    }
 }

@@ -2,7 +2,7 @@
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
  *
- * Licensed under the Apache License, Version 2.0(the "License").
+ * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
  * A copy of the License is located at
  *
@@ -14,22 +14,28 @@
  * permissions and limitations under the License.
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Gs2.Gs2Realtime;
-using Gs2.Gs2Realtime.Model;
-using Gs2.Gs2Realtime.Request;
-using Gs2.Gs2Realtime.Result;
 using Gs2.Unity.Gs2Realtime.Model;
 using Gs2.Unity.Gs2Realtime.Result;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Gs2Quest;
+using Gs2.Gs2Quest.Model;
+using Gs2.Gs2Quest.Request;
+using Gs2.Gs2Quest.Result;
+using Gs2.Unity.Gs2Quest.Model;
+using Gs2.Unity.Gs2Quest.Result;
 using Gs2.Core;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Unity.Util;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Realtime
 {
 	public class DisabledCertificateHandler : CertificateHandler {
@@ -39,6 +45,8 @@ namespace Gs2.Unity.Gs2Realtime
 		}
 	}
 
+	[Preserve]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
@@ -59,15 +67,8 @@ namespace Gs2.Unity.Gs2Realtime
 			}
 		}
 
-		/// <summary>
-		///  ルームの情報を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="roomName">ルーム名</param>
-		public IEnumerator GetRoom(
-		        UnityAction<AsyncResult<EzGetRoomResult>> callback,
+        public IEnumerator GetRoom(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Realtime.Result.EzGetRoomResult>> callback,
                 string namespaceName,
                 string roomName
         )
@@ -75,18 +76,18 @@ namespace Gs2.Unity.Gs2Realtime
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.GetRoom(
-                    new GetRoomRequest()
+                cb => _restClient.GetRoom(
+                    new Gs2.Gs2Realtime.Request.GetRoomRequest()
                         .WithNamespaceName(namespaceName)
                         .WithRoomName(roomName),
                     r => cb.Invoke(
-                        new AsyncResult<EzGetRoomResult>(
-                            r.Result == null ? null : new EzGetRoomResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Realtime.Result.EzGetRoomResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Realtime.Result.EzGetRoomResult.FromModel(r.Result),
                             r.Error
                         )
                     )
                 )
             );
 		}
-	}
+    }
 }

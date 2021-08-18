@@ -13,59 +13,42 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Matchmaking.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Matchmaking.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzSignedBallot
 	{
-		/** 投票用紙の署名対象のデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Body;
-		/** 投票用紙の署名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Signature;
 
-		public EzSignedBallot()
-		{
-
-		}
-
-		public EzSignedBallot(Gs2.Gs2Matchmaking.Model.SignedBallot @signedBallot)
-		{
-			Body = @signedBallot.body;
-			Signature = @signedBallot.signature;
-		}
-
-        public virtual SignedBallot ToModel()
+        public Gs2.Gs2Matchmaking.Model.SignedBallot ToModel()
         {
-            return new SignedBallot {
-                body = Body,
-                signature = Signature,
+            return new Gs2.Gs2Matchmaking.Model.SignedBallot {
+                Body = Body,
+                Signature = Signature,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzSignedBallot FromModel(Gs2.Gs2Matchmaking.Model.SignedBallot model)
         {
-            writer.WriteObjectStart();
-            if(this.Body != null)
-            {
-                writer.WritePropertyName("body");
-                writer.Write(this.Body);
-            }
-            if(this.Signature != null)
-            {
-                writer.WritePropertyName("signature");
-                writer.Write(this.Signature);
-            }
-            writer.WriteObjectEnd();
+            return new EzSignedBallot {
+                Body = model.Body == null ? null : model.Body,
+                Signature = model.Signature == null ? null : model.Signature,
+            };
         }
-	}
+    }
 }

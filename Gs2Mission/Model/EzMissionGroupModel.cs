@@ -13,143 +13,70 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Mission.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Mission.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzMissionGroupModel
 	{
-		/** グループ名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** メタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** タスクリスト */
-		[UnityEngine.SerializeField]
-		public List<EzMissionTaskModel> Tasks;
-		/** リセットタイミング */
-		[UnityEngine.SerializeField]
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Mission.Model.EzMissionTaskModel> Tasks;
+		[SerializeField]
 		public string ResetType;
-		/** リセットをする日にち */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int ResetDayOfMonth;
-		/** リセットする曜日 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string ResetDayOfWeek;
-		/** リセット時刻 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int ResetHour;
-		/** ミッションを達成したときの通知先ネームスペース のGRN */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string CompleteNotificationNamespaceId;
 
-		public EzMissionGroupModel()
-		{
-
-		}
-
-		public EzMissionGroupModel(Gs2.Gs2Mission.Model.MissionGroupModel @missionGroupModel)
-		{
-			Name = @missionGroupModel.name;
-			Metadata = @missionGroupModel.metadata;
-			Tasks = @missionGroupModel.tasks != null ? @missionGroupModel.tasks.Select(value =>
-                {
-                    return new EzMissionTaskModel(value);
-                }
-			).ToList() : new List<EzMissionTaskModel>(new EzMissionTaskModel[] {});
-			ResetType = @missionGroupModel.resetType;
-			ResetDayOfMonth = @missionGroupModel.resetDayOfMonth.HasValue ? @missionGroupModel.resetDayOfMonth.Value : 0;
-			ResetDayOfWeek = @missionGroupModel.resetDayOfWeek;
-			ResetHour = @missionGroupModel.resetHour.HasValue ? @missionGroupModel.resetHour.Value : 0;
-			CompleteNotificationNamespaceId = @missionGroupModel.completeNotificationNamespaceId;
-		}
-
-        public virtual MissionGroupModel ToModel()
+        public Gs2.Gs2Mission.Model.MissionGroupModel ToModel()
         {
-            return new MissionGroupModel {
-                name = Name,
-                metadata = Metadata,
-                tasks = Tasks != null ? Tasks.Select(Value0 =>
-                        {
-                            return new MissionTaskModel
-                            {
-                                name = Value0.Name,
-                                metadata = Value0.Metadata,
-                                counterName = Value0.CounterName,
-                                targetValue = Value0.TargetValue,
-                                completeAcquireActions = Value0.CompleteAcquireActions != null ? Value0.CompleteAcquireActions.Select(Value1 =>
-                                        {
-                                            return new AcquireAction
-                                            {
-                                                action = Value1.Action,
-                                                request = Value1.Request,
-                                            };
-                                        }
-                                ).ToList() : new List<AcquireAction>(new AcquireAction[] {}),
-                                challengePeriodEventId = Value0.ChallengePeriodEventId,
-                                premiseMissionTaskName = Value0.PremiseMissionTaskName,
-                            };
-                        }
-                ).ToList() : new List<MissionTaskModel>(new MissionTaskModel[] {}),
-                resetType = ResetType,
-                resetDayOfMonth = ResetDayOfMonth,
-                resetDayOfWeek = ResetDayOfWeek,
-                resetHour = ResetHour,
-                completeNotificationNamespaceId = CompleteNotificationNamespaceId,
+            return new Gs2.Gs2Mission.Model.MissionGroupModel {
+                Name = Name,
+                Metadata = Metadata,
+                Tasks = Tasks?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
+                ResetType = ResetType,
+                ResetDayOfMonth = ResetDayOfMonth,
+                ResetDayOfWeek = ResetDayOfWeek,
+                ResetHour = ResetHour,
+                CompleteNotificationNamespaceId = CompleteNotificationNamespaceId,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzMissionGroupModel FromModel(Gs2.Gs2Mission.Model.MissionGroupModel model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            if(this.Tasks != null)
-            {
-                writer.WritePropertyName("tasks");
-                writer.WriteArrayStart();
-                foreach(var item in this.Tasks)
-                {
-                    item.WriteJson(writer);
-                }
-                writer.WriteArrayEnd();
-            }
-            if(this.ResetType != null)
-            {
-                writer.WritePropertyName("resetType");
-                writer.Write(this.ResetType);
-            }
-            writer.WritePropertyName("resetDayOfMonth");
-            writer.Write(this.ResetDayOfMonth);
-            if(this.ResetDayOfWeek != null)
-            {
-                writer.WritePropertyName("resetDayOfWeek");
-                writer.Write(this.ResetDayOfWeek);
-            }
-            writer.WritePropertyName("resetHour");
-            writer.Write(this.ResetHour);
-            if(this.CompleteNotificationNamespaceId != null)
-            {
-                writer.WritePropertyName("completeNotificationNamespaceId");
-                writer.Write(this.CompleteNotificationNamespaceId);
-            }
-            writer.WriteObjectEnd();
+            return new EzMissionGroupModel {
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                Tasks = model.Tasks == null ? new List<Gs2.Unity.Gs2Mission.Model.EzMissionTaskModel>() : model.Tasks.Select(v => {
+                    return Gs2.Unity.Gs2Mission.Model.EzMissionTaskModel.FromModel(v);
+                }).ToList(),
+                ResetType = model.ResetType == null ? null : model.ResetType,
+                ResetDayOfMonth = model.ResetDayOfMonth ?? 0,
+                ResetDayOfWeek = model.ResetDayOfWeek == null ? null : model.ResetDayOfWeek,
+                ResetHour = model.ResetHour ?? 0,
+                CompleteNotificationNamespaceId = model.CompleteNotificationNamespaceId == null ? null : model.CompleteNotificationNamespaceId,
+            };
         }
-	}
+    }
 }

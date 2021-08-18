@@ -13,56 +13,42 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Enhance.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Enhance.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzMaterial
 	{
-		/** 強化対象の GS2-Inventory アイテムセットGRN */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string MaterialItemSetId;
-		/** 消費数量 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int Count;
 
-		public EzMaterial()
-		{
-
-		}
-
-		public EzMaterial(Gs2.Gs2Enhance.Model.Material @material)
-		{
-			MaterialItemSetId = @material.materialItemSetId;
-			Count = @material.count.HasValue ? @material.count.Value : 0;
-		}
-
-        public virtual Material ToModel()
+        public Gs2.Gs2Enhance.Model.Material ToModel()
         {
-            return new Material {
-                materialItemSetId = MaterialItemSetId,
-                count = Count,
+            return new Gs2.Gs2Enhance.Model.Material {
+                MaterialItemSetId = MaterialItemSetId,
+                Count = Count,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzMaterial FromModel(Gs2.Gs2Enhance.Model.Material model)
         {
-            writer.WriteObjectStart();
-            if(this.MaterialItemSetId != null)
-            {
-                writer.WritePropertyName("materialItemSetId");
-                writer.Write(this.MaterialItemSetId);
-            }
-            writer.WritePropertyName("count");
-            writer.Write(this.Count);
-            writer.WriteObjectEnd();
+            return new EzMaterial {
+                MaterialItemSetId = model.MaterialItemSetId == null ? null : model.MaterialItemSetId,
+                Count = model.Count ?? 0,
+            };
         }
-	}
+    }
 }

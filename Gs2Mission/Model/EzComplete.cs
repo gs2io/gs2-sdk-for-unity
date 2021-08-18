@@ -13,95 +13,54 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Mission.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Mission.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzComplete
 	{
-		/** ミッショングループ名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string MissionGroupName;
-		/** 達成済みのタスク名リスト */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public List<string> CompletedMissionTaskNames;
-		/** 報酬の受け取り済みのタスク名リスト */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public List<string> ReceivedMissionTaskNames;
 
-		public EzComplete()
-		{
-
-		}
-
-		public EzComplete(Gs2.Gs2Mission.Model.Complete @complete)
-		{
-			MissionGroupName = @complete.missionGroupName;
-			CompletedMissionTaskNames = @complete.completedMissionTaskNames != null ? @complete.completedMissionTaskNames.Select(value =>
-                {
-                    return value;
-                }
-			).ToList() : new List<string>(new string[] {});
-			ReceivedMissionTaskNames = @complete.receivedMissionTaskNames != null ? @complete.receivedMissionTaskNames.Select(value =>
-                {
-                    return value;
-                }
-			).ToList() : new List<string>(new string[] {});
-		}
-
-        public virtual Complete ToModel()
+        public Gs2.Gs2Mission.Model.Complete ToModel()
         {
-            return new Complete {
-                missionGroupName = MissionGroupName,
-                completedMissionTaskNames = CompletedMissionTaskNames != null ? CompletedMissionTaskNames.Select(Value0 =>
-                        {
-                            return Value0;
-                        }
-                ).ToList() : new List<string>(new string[] {}),
-                receivedMissionTaskNames = ReceivedMissionTaskNames != null ? ReceivedMissionTaskNames.Select(Value0 =>
-                        {
-                            return Value0;
-                        }
-                ).ToList() : new List<string>(new string[] {}),
+            return new Gs2.Gs2Mission.Model.Complete {
+                MissionGroupName = MissionGroupName,
+                CompletedMissionTaskNames = CompletedMissionTaskNames?.Select(v => {
+                    return v;
+                }).ToArray(),
+                ReceivedMissionTaskNames = ReceivedMissionTaskNames?.Select(v => {
+                    return v;
+                }).ToArray(),
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzComplete FromModel(Gs2.Gs2Mission.Model.Complete model)
         {
-            writer.WriteObjectStart();
-            if(this.MissionGroupName != null)
-            {
-                writer.WritePropertyName("missionGroupName");
-                writer.Write(this.MissionGroupName);
-            }
-            if(this.CompletedMissionTaskNames != null)
-            {
-                writer.WritePropertyName("completedMissionTaskNames");
-                writer.WriteArrayStart();
-                foreach(var item in this.CompletedMissionTaskNames)
-                {
-                    writer.Write(item);
-                }
-                writer.WriteArrayEnd();
-            }
-            if(this.ReceivedMissionTaskNames != null)
-            {
-                writer.WritePropertyName("receivedMissionTaskNames");
-                writer.WriteArrayStart();
-                foreach(var item in this.ReceivedMissionTaskNames)
-                {
-                    writer.Write(item);
-                }
-                writer.WriteArrayEnd();
-            }
-            writer.WriteObjectEnd();
+            return new EzComplete {
+                MissionGroupName = model.MissionGroupName == null ? null : model.MissionGroupName,
+                CompletedMissionTaskNames = model.CompletedMissionTaskNames == null ? new List<string>() : model.CompletedMissionTaskNames.Select(v => {
+                    return v;
+                }).ToList(),
+                ReceivedMissionTaskNames = model.ReceivedMissionTaskNames == null ? new List<string>() : model.ReceivedMissionTaskNames.Select(v => {
+                    return v;
+                }).ToList(),
+            };
         }
-	}
+    }
 }

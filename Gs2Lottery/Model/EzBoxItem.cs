@@ -13,80 +13,50 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Lottery.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Lottery.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzBoxItem
 	{
-		/** 入手アクションのリスト */
-		[UnityEngine.SerializeField]
-		public List<EzAcquireAction> AcquireActions;
-		/** 残り数量 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Lottery.Model.EzAcquireAction> AcquireActions;
+		[SerializeField]
 		public int Remaining;
-		/** 初期数量 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int Initial;
 
-		public EzBoxItem()
-		{
-
-		}
-
-		public EzBoxItem(Gs2.Gs2Lottery.Model.BoxItem @boxItem)
-		{
-			AcquireActions = @boxItem.acquireActions != null ? @boxItem.acquireActions.Select(value =>
-                {
-                    return new EzAcquireAction(value);
-                }
-			).ToList() : new List<EzAcquireAction>(new EzAcquireAction[] {});
-			Remaining = @boxItem.remaining.HasValue ? @boxItem.remaining.Value : 0;
-			Initial = @boxItem.initial.HasValue ? @boxItem.initial.Value : 0;
-		}
-
-        public virtual BoxItem ToModel()
+        public Gs2.Gs2Lottery.Model.BoxItem ToModel()
         {
-            return new BoxItem {
-                acquireActions = AcquireActions != null ? AcquireActions.Select(Value0 =>
-                        {
-                            return new AcquireAction
-                            {
-                                action = Value0.Action,
-                                request = Value0.Request,
-                            };
-                        }
-                ).ToList() : new List<AcquireAction>(new AcquireAction[] {}),
-                remaining = Remaining,
-                initial = Initial,
+            return new Gs2.Gs2Lottery.Model.BoxItem {
+                AcquireActions = AcquireActions?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
+                Remaining = Remaining,
+                Initial = Initial,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzBoxItem FromModel(Gs2.Gs2Lottery.Model.BoxItem model)
         {
-            writer.WriteObjectStart();
-            if(this.AcquireActions != null)
-            {
-                writer.WritePropertyName("acquireActions");
-                writer.WriteArrayStart();
-                foreach(var item in this.AcquireActions)
-                {
-                    item.WriteJson(writer);
-                }
-                writer.WriteArrayEnd();
-            }
-            writer.WritePropertyName("remaining");
-            writer.Write(this.Remaining);
-            writer.WritePropertyName("initial");
-            writer.Write(this.Initial);
-            writer.WriteObjectEnd();
+            return new EzBoxItem {
+                AcquireActions = model.AcquireActions == null ? new List<Gs2.Unity.Gs2Lottery.Model.EzAcquireAction>() : model.AcquireActions.Select(v => {
+                    return Gs2.Unity.Gs2Lottery.Model.EzAcquireAction.FromModel(v);
+                }).ToList(),
+                Remaining = model.Remaining ?? 0,
+                Initial = model.Initial ?? 0,
+            };
         }
-	}
+    }
 }

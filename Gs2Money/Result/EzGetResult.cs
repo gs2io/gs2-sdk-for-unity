@@ -13,30 +13,31 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Money.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Money.Model;
-using Gs2.Gs2Money.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Money.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzGetResult
 	{
-        /** ウォレット */
-        public EzWallet Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Money.Model.EzWallet Item;
 
-
-        public EzGetResult(
-            GetWalletResult result
-        )
+        public static EzGetResult FromModel(Gs2.Gs2Money.Result.GetWalletResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzWallet(result.item);
-            }
+            return new EzGetResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Money.Model.EzWallet.FromModel(model.Item),
+            };
         }
-	}
+    }
 }

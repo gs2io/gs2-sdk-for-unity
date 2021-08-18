@@ -13,35 +13,36 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Matchmaking.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Matchmaking.Model;
-using Gs2.Gs2Matchmaking.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Matchmaking.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzListRatingsResult
 	{
-        /** レーティングのリスト */
-        public List<EzRating> Items { get; private set; }
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Matchmaking.Model.EzRating> Items;
+		[SerializeField]
+		public string NextPageToken;
 
-        /** リストの続きを取得するためのページトークン */
-        public string NextPageToken { get; private set; }
-
-
-        public EzListRatingsResult(
-            DescribeRatingsResult result
-        )
+        public static EzListRatingsResult FromModel(Gs2.Gs2Matchmaking.Result.DescribeRatingsResult model)
         {
-            Items = new List<EzRating>();
-            foreach (var item_ in result.items)
-            {
-                Items.Add(new EzRating(item_));
-            }
-            NextPageToken = result.nextPageToken;
+            return new EzListRatingsResult {
+                Items = model.Items == null ? new List<Gs2.Unity.Gs2Matchmaking.Model.EzRating>() : model.Items.Select(v => {
+                    return Gs2.Unity.Gs2Matchmaking.Model.EzRating.FromModel(v);
+                }).ToList(),
+                NextPageToken = model.NextPageToken == null ? null : model.NextPageToken,
+            };
         }
-	}
+    }
 }

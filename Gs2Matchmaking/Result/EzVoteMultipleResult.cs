@@ -13,30 +13,31 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Matchmaking.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Matchmaking.Model;
-using Gs2.Gs2Matchmaking.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Matchmaking.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzVoteMultipleResult
 	{
-        /** 投票用紙 */
-        public EzBallot Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Matchmaking.Model.EzBallot Item;
 
-
-        public EzVoteMultipleResult(
-            VoteMultipleResult result
-        )
+        public static EzVoteMultipleResult FromModel(Gs2.Gs2Matchmaking.Result.VoteMultipleResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzBallot(result.item);
-            }
+            return new EzVoteMultipleResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Matchmaking.Model.EzBallot.FromModel(model.Item),
+            };
         }
-	}
+    }
 }

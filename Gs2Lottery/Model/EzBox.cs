@@ -13,76 +13,46 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Lottery.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Lottery.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzBox
 	{
-		/** 排出確率テーブル名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string PrizeTableName;
-		/** 排出済み景品のインデックスのリスト */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public List<int> DrawnIndexes;
 
-		public EzBox()
-		{
-
-		}
-
-		public EzBox(Gs2.Gs2Lottery.Model.Box @box)
-		{
-			PrizeTableName = @box.prizeTableName;
-			DrawnIndexes = @box.drawnIndexes != null ? @box.drawnIndexes.Select(value =>
-                {
-                    if (value.HasValue)
-                    {
-                        return value.Value;
-                    }
-                    return 0;
-                }
-			).ToList() : new List<int>(new int[] {});
-		}
-
-        public virtual Box ToModel()
+        public Gs2.Gs2Lottery.Model.Box ToModel()
         {
-            return new Box {
-                prizeTableName = PrizeTableName,
-                drawnIndexes = DrawnIndexes != null ? DrawnIndexes.Select(Value0 =>
-                        {
-                            return (int?)Value0;
-                        }
-                ).ToList() : new List<int?>(new int?[] {}),
+            return new Gs2.Gs2Lottery.Model.Box {
+                PrizeTableName = PrizeTableName,
+                DrawnIndexes = DrawnIndexes?.Select(v => {
+                    return v;
+                }).ToArray(),
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzBox FromModel(Gs2.Gs2Lottery.Model.Box model)
         {
-            writer.WriteObjectStart();
-            if(this.PrizeTableName != null)
-            {
-                writer.WritePropertyName("prizeTableName");
-                writer.Write(this.PrizeTableName);
-            }
-            if(this.DrawnIndexes != null)
-            {
-                writer.WritePropertyName("drawnIndexes");
-                writer.WriteArrayStart();
-                foreach(var item in this.DrawnIndexes)
-                {
-                    writer.Write(item);
-                }
-                writer.WriteArrayEnd();
-            }
-            writer.WriteObjectEnd();
+            return new EzBox {
+                PrizeTableName = model.PrizeTableName == null ? null : model.PrizeTableName,
+                DrawnIndexes = model.DrawnIndexes == null ? new List<int>() : model.DrawnIndexes.Select(v => {
+                    return v;
+                }).ToList(),
+            };
         }
-	}
+    }
 }

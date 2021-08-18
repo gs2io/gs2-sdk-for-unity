@@ -13,56 +13,42 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Matchmaking.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Matchmaking.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzGameResult
 	{
-		/** 順位 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int Rank;
-		/** ユーザーID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string UserId;
 
-		public EzGameResult()
-		{
-
-		}
-
-		public EzGameResult(Gs2.Gs2Matchmaking.Model.GameResult @gameResult)
-		{
-			Rank = @gameResult.rank.HasValue ? @gameResult.rank.Value : 0;
-			UserId = @gameResult.userId;
-		}
-
-        public virtual GameResult ToModel()
+        public Gs2.Gs2Matchmaking.Model.GameResult ToModel()
         {
-            return new GameResult {
-                rank = Rank,
-                userId = UserId,
+            return new Gs2.Gs2Matchmaking.Model.GameResult {
+                Rank = Rank,
+                UserId = UserId,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzGameResult FromModel(Gs2.Gs2Matchmaking.Model.GameResult model)
         {
-            writer.WriteObjectStart();
-            writer.WritePropertyName("rank");
-            writer.Write(this.Rank);
-            if(this.UserId != null)
-            {
-                writer.WritePropertyName("userId");
-                writer.Write(this.UserId);
-            }
-            writer.WriteObjectEnd();
+            return new EzGameResult {
+                Rank = model.Rank ?? 0,
+                UserId = model.UserId == null ? null : model.UserId,
+            };
         }
-	}
+    }
 }

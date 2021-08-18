@@ -13,124 +13,70 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Inbox.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Inbox.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzMessage
 	{
-		/** メッセージ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string MessageId;
-		/** メッセージID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** メッセージの内容に相当するメタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** 既読状態 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public bool IsRead;
-		/** 開封時に実行する入手アクション */
-		[UnityEngine.SerializeField]
-		public List<EzAcquireAction> ReadAcquireActions;
-		/** 作成日時 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Inbox.Model.EzAcquireAction> ReadAcquireActions;
+		[SerializeField]
 		public long ReceivedAt;
-		/** 最終更新日時 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long ReadAt;
-		/** メッセージの有効期限 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long ExpiresAt;
 
-		public EzMessage()
-		{
-
-		}
-
-		public EzMessage(Gs2.Gs2Inbox.Model.Message @message)
-		{
-			MessageId = @message.messageId;
-			Name = @message.name;
-			Metadata = @message.metadata;
-			IsRead = @message.isRead.HasValue ? @message.isRead.Value : false;
-			ReadAcquireActions = @message.readAcquireActions != null ? @message.readAcquireActions.Select(value =>
-                {
-                    return new EzAcquireAction(value);
-                }
-			).ToList() : new List<EzAcquireAction>(new EzAcquireAction[] {});
-			ReceivedAt = @message.receivedAt.HasValue ? @message.receivedAt.Value : 0;
-			ReadAt = @message.readAt.HasValue ? @message.readAt.Value : 0;
-			ExpiresAt = @message.expiresAt.HasValue ? @message.expiresAt.Value : 0;
-		}
-
-        public virtual Message ToModel()
+        public Gs2.Gs2Inbox.Model.Message ToModel()
         {
-            return new Message {
-                messageId = MessageId,
-                name = Name,
-                metadata = Metadata,
-                isRead = IsRead,
-                readAcquireActions = ReadAcquireActions != null ? ReadAcquireActions.Select(Value0 =>
-                        {
-                            return new AcquireAction
-                            {
-                                action = Value0.Action,
-                                request = Value0.Request,
-                            };
-                        }
-                ).ToList() : new List<AcquireAction>(new AcquireAction[] {}),
-                receivedAt = ReceivedAt,
-                readAt = ReadAt,
-                expiresAt = ExpiresAt,
+            return new Gs2.Gs2Inbox.Model.Message {
+                MessageId = MessageId,
+                Name = Name,
+                Metadata = Metadata,
+                IsRead = IsRead,
+                ReadAcquireActions = ReadAcquireActions?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
+                ReceivedAt = ReceivedAt,
+                ReadAt = ReadAt,
+                ExpiresAt = ExpiresAt,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzMessage FromModel(Gs2.Gs2Inbox.Model.Message model)
         {
-            writer.WriteObjectStart();
-            if(this.MessageId != null)
-            {
-                writer.WritePropertyName("messageId");
-                writer.Write(this.MessageId);
-            }
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            writer.WritePropertyName("isRead");
-            writer.Write(this.IsRead);
-            if(this.ReadAcquireActions != null)
-            {
-                writer.WritePropertyName("readAcquireActions");
-                writer.WriteArrayStart();
-                foreach(var item in this.ReadAcquireActions)
-                {
-                    item.WriteJson(writer);
-                }
-                writer.WriteArrayEnd();
-            }
-            writer.WritePropertyName("receivedAt");
-            writer.Write(this.ReceivedAt);
-            writer.WritePropertyName("readAt");
-            writer.Write(this.ReadAt);
-            writer.WritePropertyName("expiresAt");
-            writer.Write(this.ExpiresAt);
-            writer.WriteObjectEnd();
+            return new EzMessage {
+                MessageId = model.MessageId == null ? null : model.MessageId,
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                IsRead = model.IsRead ?? false,
+                ReadAcquireActions = model.ReadAcquireActions == null ? new List<Gs2.Unity.Gs2Inbox.Model.EzAcquireAction>() : model.ReadAcquireActions.Select(v => {
+                    return Gs2.Unity.Gs2Inbox.Model.EzAcquireAction.FromModel(v);
+                }).ToList(),
+                ReceivedAt = model.ReceivedAt ?? 0,
+                ReadAt = model.ReadAt ?? 0,
+                ExpiresAt = model.ExpiresAt ?? 0,
+            };
         }
-	}
+    }
 }

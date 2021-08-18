@@ -2,7 +2,7 @@
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
  *
- * Licensed under the Apache License, Version 2.0(the "License").
+ * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
  * A copy of the License is located at
  *
@@ -14,22 +14,28 @@
  * permissions and limitations under the License.
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Gs2.Gs2Version;
-using Gs2.Gs2Version.Model;
-using Gs2.Gs2Version.Request;
-using Gs2.Gs2Version.Result;
 using Gs2.Unity.Gs2Version.Model;
 using Gs2.Unity.Gs2Version.Result;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Gs2Quest;
+using Gs2.Gs2Quest.Model;
+using Gs2.Gs2Quest.Request;
+using Gs2.Gs2Quest.Result;
+using Gs2.Unity.Gs2Quest.Model;
+using Gs2.Unity.Gs2Quest.Result;
 using Gs2.Core;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Unity.Util;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Version
 {
 	public class DisabledCertificateHandler : CertificateHandler {
@@ -39,6 +45,8 @@ namespace Gs2.Unity.Gs2Version
 		}
 	}
 
+	[Preserve]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
@@ -59,42 +67,8 @@ namespace Gs2.Unity.Gs2Version
 			}
 		}
 
-		/// <summary>
-		///  バージョン設定を認証<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		public IEnumerator ListVersionModels(
-		        UnityAction<AsyncResult<EzListVersionModelsResult>> callback,
-                string namespaceName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-                null,
-                cb => _restClient.DescribeVersionModels(
-                    new DescribeVersionModelsRequest()
-                        .WithNamespaceName(namespaceName),
-                    r => cb.Invoke(
-                        new AsyncResult<EzListVersionModelsResult>(
-                            r.Result == null ? null : new EzListVersionModelsResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  バージョン設定を認証<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="versionName">バージョン名</param>
-		public IEnumerator GetVersionModel(
-		        UnityAction<AsyncResult<EzGetVersionModelResult>> callback,
+        public IEnumerator GetVersionModel(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Version.Result.EzGetVersionModelResult>> callback,
                 string namespaceName,
                 string versionName
         )
@@ -103,12 +77,12 @@ namespace Gs2.Unity.Gs2Version
                 callback,
                 null,
                 cb => _client.GetVersionModel(
-                    new GetVersionModelRequest()
+                    new Gs2.Gs2Version.Request.GetVersionModelRequest()
                         .WithNamespaceName(namespaceName)
                         .WithVersionName(versionName),
                     r => cb.Invoke(
-                        new AsyncResult<EzGetVersionModelResult>(
-                            r.Result == null ? null : new EzGetVersionModelResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Version.Result.EzGetVersionModelResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Version.Result.EzGetVersionModelResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -116,36 +90,20 @@ namespace Gs2.Unity.Gs2Version
             );
 		}
 
-		/// <summary>
-		///  承認したバージョンの一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
-		/// <param name="limit">データの取得件数</param>
-		public IEnumerator List(
-		        UnityAction<AsyncResult<EzListResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string pageToken=null,
-                long? limit=null
+        public IEnumerator ListVersionModels(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Version.Result.EzListVersionModelsResult>> callback,
+                string namespaceName
         )
 		{
             yield return _profile.Run(
                 callback,
-		        session,
-                cb => _restClient.DescribeAcceptVersions(
-                    new DescribeAcceptVersionsRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithPageToken(pageToken)
-                        .WithLimit(limit)
-                        .WithAccessToken(session.AccessToken.token),
+                null,
+                cb => _restClient.DescribeVersionModels(
+                    new Gs2.Gs2Version.Request.DescribeVersionModelsRequest()
+                        .WithNamespaceName(namespaceName),
                     r => cb.Invoke(
-                        new AsyncResult<EzListResult>(
-                            r.Result == null ? null : new EzListResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Version.Result.EzListVersionModelsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Version.Result.EzListVersionModelsResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -153,17 +111,8 @@ namespace Gs2.Unity.Gs2Version
             );
 		}
 
-		/// <summary>
-		///  承認する<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="versionName">承認したバージョン名</param>
-		public IEnumerator Accept(
-		        UnityAction<AsyncResult<EzAcceptResult>> callback,
+        public IEnumerator Accept(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Version.Result.EzAcceptResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string versionName
@@ -173,13 +122,13 @@ namespace Gs2.Unity.Gs2Version
                 callback,
 		        session,
                 cb => _client.Accept(
-                    new AcceptRequest()
+                    new Gs2.Gs2Version.Request.AcceptRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithVersionName(versionName)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithVersionName(versionName),
                     r => cb.Invoke(
-                        new AsyncResult<EzAcceptResult>(
-                            r.Result == null ? null : new EzAcceptResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Version.Result.EzAcceptResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Version.Result.EzAcceptResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -187,17 +136,8 @@ namespace Gs2.Unity.Gs2Version
             );
 		}
 
-		/// <summary>
-		///  承認したバージョンを削除する<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="versionName">承認したバージョン名</param>
-		public IEnumerator Delete(
-		        UnityAction<AsyncResult<EzDeleteResult>> callback,
+        public IEnumerator Delete(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Version.Result.EzDeleteResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string versionName
@@ -207,13 +147,13 @@ namespace Gs2.Unity.Gs2Version
                 callback,
 		        session,
                 cb => _client.DeleteAcceptVersion(
-                    new DeleteAcceptVersionRequest()
+                    new Gs2.Gs2Version.Request.DeleteAcceptVersionRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithVersionName(versionName)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithVersionName(versionName),
                     r => cb.Invoke(
-                        new AsyncResult<EzDeleteResult>(
-                            r.Result == null ? null : new EzDeleteResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Version.Result.EzDeleteResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Version.Result.EzDeleteResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -221,38 +161,58 @@ namespace Gs2.Unity.Gs2Version
             );
 		}
 
-		/// <summary>
-		///  スタンプタスクを実行<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="targetVersions">加算するリソース</param>
-		public IEnumerator CheckVersion(
-		        UnityAction<AsyncResult<EzCheckVersionResult>> callback,
+        public IEnumerator List(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Version.Result.EzListResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                List<EzTargetVersion> targetVersions=null
+                int limit,
+                string pageToken = null
         )
 		{
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.CheckVersion(
-                    new CheckVersionRequest()
+                cb => _restClient.DescribeAcceptVersions(
+                    new Gs2.Gs2Version.Request.DescribeAcceptVersionsRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithTargetVersions(targetVersions != null ? targetVersions.Select(item => item?.ToModel()).ToList() : new List<TargetVersion>(new TargetVersion[]{}))
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit),
                     r => cb.Invoke(
-                        new AsyncResult<EzCheckVersionResult>(
-                            r.Result == null ? null : new EzCheckVersionResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Version.Result.EzListResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Version.Result.EzListResult.FromModel(r.Result),
                             r.Error
                         )
                     )
                 )
             );
 		}
-	}
+
+        public IEnumerator CheckVersion(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Version.Result.EzCheckVersionResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                List<Gs2.Unity.Gs2Version.Model.EzTargetVersion> targetVersions = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.CheckVersion(
+                    new Gs2.Gs2Version.Request.CheckVersionRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithTargetVersions(targetVersions?.Select(v => {
+                            return v?.ToModel();
+                        }).ToArray()),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Version.Result.EzCheckVersionResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Version.Result.EzCheckVersionResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+    }
 }

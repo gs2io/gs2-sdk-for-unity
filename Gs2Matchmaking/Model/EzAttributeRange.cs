@@ -13,63 +13,46 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Matchmaking.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Matchmaking.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzAttributeRange
 	{
-		/** 属性名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** ギャザリング参加可能な属性値の最小値 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int Min;
-		/** ギャザリング参加可能な属性値の最大値 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int Max;
 
-		public EzAttributeRange()
-		{
-
-		}
-
-		public EzAttributeRange(Gs2.Gs2Matchmaking.Model.AttributeRange @attributeRange)
-		{
-			Name = @attributeRange.name;
-			Min = @attributeRange.min.HasValue ? @attributeRange.min.Value : 0;
-			Max = @attributeRange.max.HasValue ? @attributeRange.max.Value : 0;
-		}
-
-        public virtual AttributeRange ToModel()
+        public Gs2.Gs2Matchmaking.Model.AttributeRange ToModel()
         {
-            return new AttributeRange {
-                name = Name,
-                min = Min,
-                max = Max,
+            return new Gs2.Gs2Matchmaking.Model.AttributeRange {
+                Name = Name,
+                Min = Min,
+                Max = Max,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzAttributeRange FromModel(Gs2.Gs2Matchmaking.Model.AttributeRange model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            writer.WritePropertyName("min");
-            writer.Write(this.Min);
-            writer.WritePropertyName("max");
-            writer.Write(this.Max);
-            writer.WriteObjectEnd();
+            return new EzAttributeRange {
+                Name = model.Name == null ? null : model.Name,
+                Min = model.Min ?? 0,
+                Max = model.Max ?? 0,
+            };
         }
-	}
+    }
 }

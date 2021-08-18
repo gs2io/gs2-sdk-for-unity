@@ -13,92 +13,54 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Distributor.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Distributor.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzDistributorModel
 	{
-		/** ディストリビューターの種類名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** ディストリビューターの種類のメタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** 所持品がキャパシティをオーバーしたときに転送するプレゼントボックスのネームスペース のGRN */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string InboxNamespaceId;
-		/** ディストリビューターを通して処理出来る対象のリソースGRNのホワイトリスト */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public List<string> WhiteListTargetIds;
 
-		public EzDistributorModel()
-		{
-
-		}
-
-		public EzDistributorModel(Gs2.Gs2Distributor.Model.DistributorModel @distributorModel)
-		{
-			Name = @distributorModel.name;
-			Metadata = @distributorModel.metadata;
-			InboxNamespaceId = @distributorModel.inboxNamespaceId;
-			WhiteListTargetIds = @distributorModel.whiteListTargetIds != null ? @distributorModel.whiteListTargetIds.Select(value =>
-                {
-                    return value;
-                }
-			).ToList() : new List<string>(new string[] {});
-		}
-
-        public virtual DistributorModel ToModel()
+        public Gs2.Gs2Distributor.Model.DistributorModel ToModel()
         {
-            return new DistributorModel {
-                name = Name,
-                metadata = Metadata,
-                inboxNamespaceId = InboxNamespaceId,
-                whiteListTargetIds = WhiteListTargetIds != null ? WhiteListTargetIds.Select(Value0 =>
-                        {
-                            return Value0;
-                        }
-                ).ToList() : new List<string>(new string[] {}),
+            return new Gs2.Gs2Distributor.Model.DistributorModel {
+                Name = Name,
+                Metadata = Metadata,
+                InboxNamespaceId = InboxNamespaceId,
+                WhiteListTargetIds = WhiteListTargetIds?.Select(v => {
+                    return v;
+                }).ToArray(),
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzDistributorModel FromModel(Gs2.Gs2Distributor.Model.DistributorModel model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            if(this.InboxNamespaceId != null)
-            {
-                writer.WritePropertyName("inboxNamespaceId");
-                writer.Write(this.InboxNamespaceId);
-            }
-            if(this.WhiteListTargetIds != null)
-            {
-                writer.WritePropertyName("whiteListTargetIds");
-                writer.WriteArrayStart();
-                foreach(var item in this.WhiteListTargetIds)
-                {
-                    writer.Write(item);
-                }
-                writer.WriteArrayEnd();
-            }
-            writer.WriteObjectEnd();
+            return new EzDistributorModel {
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                InboxNamespaceId = model.InboxNamespaceId == null ? null : model.InboxNamespaceId,
+                WhiteListTargetIds = model.WhiteListTargetIds == null ? new List<string>() : model.WhiteListTargetIds.Select(v => {
+                    return v;
+                }).ToList(),
+            };
         }
-	}
+    }
 }

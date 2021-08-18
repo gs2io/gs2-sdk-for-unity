@@ -13,35 +13,36 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Quest.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Quest.Model;
-using Gs2.Gs2Quest.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Quest.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzDescribeCompletedQuestListsResult
 	{
-        /** クエスト進行のリスト */
-        public List<EzCompletedQuestList> Items { get; private set; }
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList> Items;
+		[SerializeField]
+		public string NextPageToken;
 
-        /** リストの続きを取得するためのページトークン */
-        public string NextPageToken { get; private set; }
-
-
-        public EzDescribeCompletedQuestListsResult(
-            DescribeCompletedQuestListsResult result
-        )
+        public static EzDescribeCompletedQuestListsResult FromModel(Gs2.Gs2Quest.Result.DescribeCompletedQuestListsResult model)
         {
-            Items = new List<EzCompletedQuestList>();
-            foreach (var item_ in result.items)
-            {
-                Items.Add(new EzCompletedQuestList(item_));
-            }
-            NextPageToken = result.nextPageToken;
+            return new EzDescribeCompletedQuestListsResult {
+                Items = model.Items == null ? new List<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList>() : model.Items.Select(v => {
+                    return Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList.FromModel(v);
+                }).ToList(),
+                NextPageToken = model.NextPageToken == null ? null : model.NextPageToken,
+            };
         }
-	}
+    }
 }

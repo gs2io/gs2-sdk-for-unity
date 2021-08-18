@@ -13,96 +13,58 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2News.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2News.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzNews
 	{
-		/** セクション名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Section;
-		/** コンテンツ名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Content;
-		/** 記事見出し */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Title;
-		/** 配信期間を決定する GS2-Schedule のイベントID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string ScheduleEventId;
-		/** タイムスタンプ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long Timestamp;
-		/** Front Matter */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string FrontMatter;
 
-		public EzNews()
-		{
-
-		}
-
-		public EzNews(Gs2.Gs2News.Model.News @news)
-		{
-			Section = @news.section;
-			Content = @news.content;
-			Title = @news.title;
-			ScheduleEventId = @news.scheduleEventId;
-			Timestamp = @news.timestamp.HasValue ? @news.timestamp.Value : 0;
-			FrontMatter = @news.frontMatter;
-		}
-
-        public virtual News ToModel()
+        public Gs2.Gs2News.Model.News ToModel()
         {
-            return new News {
-                section = Section,
-                content = Content,
-                title = Title,
-                scheduleEventId = ScheduleEventId,
-                timestamp = Timestamp,
-                frontMatter = FrontMatter,
+            return new Gs2.Gs2News.Model.News {
+                Section = Section,
+                Content = Content,
+                Title = Title,
+                ScheduleEventId = ScheduleEventId,
+                Timestamp = Timestamp,
+                FrontMatter = FrontMatter,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzNews FromModel(Gs2.Gs2News.Model.News model)
         {
-            writer.WriteObjectStart();
-            if(this.Section != null)
-            {
-                writer.WritePropertyName("section");
-                writer.Write(this.Section);
-            }
-            if(this.Content != null)
-            {
-                writer.WritePropertyName("content");
-                writer.Write(this.Content);
-            }
-            if(this.Title != null)
-            {
-                writer.WritePropertyName("title");
-                writer.Write(this.Title);
-            }
-            if(this.ScheduleEventId != null)
-            {
-                writer.WritePropertyName("scheduleEventId");
-                writer.Write(this.ScheduleEventId);
-            }
-            writer.WritePropertyName("timestamp");
-            writer.Write(this.Timestamp);
-            if(this.FrontMatter != null)
-            {
-                writer.WritePropertyName("frontMatter");
-                writer.Write(this.FrontMatter);
-            }
-            writer.WriteObjectEnd();
+            return new EzNews {
+                Section = model.Section == null ? null : model.Section,
+                Content = model.Content == null ? null : model.Content,
+                Title = model.Title == null ? null : model.Title,
+                ScheduleEventId = model.ScheduleEventId == null ? null : model.ScheduleEventId,
+                Timestamp = model.Timestamp ?? 0,
+                FrontMatter = model.FrontMatter == null ? null : model.FrontMatter,
+            };
         }
-	}
+    }
 }

@@ -13,30 +13,31 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Quest.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Quest.Model;
-using Gs2.Gs2Quest.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Quest.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzGetQuestGroupResult
 	{
-        /** クエストグループ */
-        public EzQuestGroupModel Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel Item;
 
-
-        public EzGetQuestGroupResult(
-            GetQuestGroupModelResult result
-        )
+        public static EzGetQuestGroupResult FromModel(Gs2.Gs2Quest.Result.GetQuestGroupModelResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzQuestGroupModel(result.item);
-            }
+            return new EzGetQuestGroupResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel.FromModel(model.Item),
+            };
         }
-	}
+    }
 }

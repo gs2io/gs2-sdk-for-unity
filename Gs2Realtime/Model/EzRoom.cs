@@ -13,76 +13,50 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Realtime.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Realtime.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzRoom
 	{
-		/** ルーム名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** IPアドレス */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string IpAddress;
-		/** 待受ポート */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int Port;
-		/** 暗号鍵 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string EncryptionKey;
 
-		public EzRoom()
-		{
-
-		}
-
-		public EzRoom(Gs2.Gs2Realtime.Model.Room @room)
-		{
-			Name = @room.name;
-			IpAddress = @room.ipAddress;
-			Port = @room.port.HasValue ? @room.port.Value : 0;
-			EncryptionKey = @room.encryptionKey;
-		}
-
-        public virtual Room ToModel()
+        public Gs2.Gs2Realtime.Model.Room ToModel()
         {
-            return new Room {
-                name = Name,
-                ipAddress = IpAddress,
-                port = Port,
-                encryptionKey = EncryptionKey,
+            return new Gs2.Gs2Realtime.Model.Room {
+                Name = Name,
+                IpAddress = IpAddress,
+                Port = Port,
+                EncryptionKey = EncryptionKey,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzRoom FromModel(Gs2.Gs2Realtime.Model.Room model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.IpAddress != null)
-            {
-                writer.WritePropertyName("ipAddress");
-                writer.Write(this.IpAddress);
-            }
-            writer.WritePropertyName("port");
-            writer.Write(this.Port);
-            if(this.EncryptionKey != null)
-            {
-                writer.WritePropertyName("encryptionKey");
-                writer.Write(this.EncryptionKey);
-            }
-            writer.WriteObjectEnd();
+            return new EzRoom {
+                Name = model.Name == null ? null : model.Name,
+                IpAddress = model.IpAddress == null ? null : model.IpAddress,
+                Port = model.Port ?? 0,
+                EncryptionKey = model.EncryptionKey == null ? null : model.EncryptionKey,
+            };
         }
-	}
+    }
 }

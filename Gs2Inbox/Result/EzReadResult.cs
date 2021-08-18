@@ -13,38 +13,37 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Inbox.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Inbox.Model;
-using Gs2.Gs2Inbox.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Inbox.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzReadResult
 	{
-        /** メッセージ */
-        public EzMessage Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Inbox.Model.EzMessage Item;
+		[SerializeField]
+		public string StampSheet;
+		[SerializeField]
+		public string StampSheetEncryptionKeyId;
 
-        /** スタンプシート */
-        public string StampSheet { get; private set; }
-
-        /** スタンプシートの署名計算に使用した暗号鍵GRN */
-        public string StampSheetEncryptionKeyId { get; private set; }
-
-
-        public EzReadResult(
-            ReadMessageResult result
-        )
+        public static EzReadResult FromModel(Gs2.Gs2Inbox.Result.ReadMessageResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzMessage(result.item);
-            }
-            StampSheet = result.stampSheet;
-            StampSheetEncryptionKeyId = result.stampSheetEncryptionKeyId;
+            return new EzReadResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Inbox.Model.EzMessage.FromModel(model.Item),
+                StampSheet = model.StampSheet == null ? null : model.StampSheet,
+                StampSheetEncryptionKeyId = model.StampSheetEncryptionKeyId == null ? null : model.StampSheetEncryptionKeyId,
+            };
         }
-	}
+    }
 }

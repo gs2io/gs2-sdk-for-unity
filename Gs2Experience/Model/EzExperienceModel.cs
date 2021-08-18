@@ -13,97 +13,58 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Experience.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Experience.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzExperienceModel
 	{
-		/** 経験値の種類名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** 経験値の種類のメタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** 経験値の初期値 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long DefaultExperience;
-		/** ランクキャップの初期値 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long DefaultRankCap;
-		/** ランクキャップの最大値 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long MaxRankCap;
-		/** ランクアップ閾値 */
-		[UnityEngine.SerializeField]
-		public EzThreshold RankThreshold;
+		[SerializeField]
+		public Gs2.Unity.Gs2Experience.Model.EzThreshold RankThreshold;
 
-		public EzExperienceModel()
-		{
-
-		}
-
-		public EzExperienceModel(Gs2.Gs2Experience.Model.ExperienceModel @experienceModel)
-		{
-			Name = @experienceModel.name;
-			Metadata = @experienceModel.metadata;
-			DefaultExperience = @experienceModel.defaultExperience.HasValue ? @experienceModel.defaultExperience.Value : 0;
-			DefaultRankCap = @experienceModel.defaultRankCap.HasValue ? @experienceModel.defaultRankCap.Value : 0;
-			MaxRankCap = @experienceModel.maxRankCap.HasValue ? @experienceModel.maxRankCap.Value : 0;
-			RankThreshold = @experienceModel.rankThreshold != null ? new EzThreshold(@experienceModel.rankThreshold) : null;
-		}
-
-        public virtual ExperienceModel ToModel()
+        public Gs2.Gs2Experience.Model.ExperienceModel ToModel()
         {
-            return new ExperienceModel {
-                name = Name,
-                metadata = Metadata,
-                defaultExperience = DefaultExperience,
-                defaultRankCap = DefaultRankCap,
-                maxRankCap = MaxRankCap,
-                rankThreshold = new Threshold {
-                    metadata = RankThreshold.Metadata,
-                    values = RankThreshold.Values != null ? RankThreshold.Values.Select(Value1 =>
-                            {
-                                return (long?)Value1;
-                            }
-                    ).ToList() : new List<long?>(new long?[] {}),
-                },
+            return new Gs2.Gs2Experience.Model.ExperienceModel {
+                Name = Name,
+                Metadata = Metadata,
+                DefaultExperience = DefaultExperience,
+                DefaultRankCap = DefaultRankCap,
+                MaxRankCap = MaxRankCap,
+                RankThreshold = RankThreshold?.ToModel(),
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzExperienceModel FromModel(Gs2.Gs2Experience.Model.ExperienceModel model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            writer.WritePropertyName("defaultExperience");
-            writer.Write(this.DefaultExperience);
-            writer.WritePropertyName("defaultRankCap");
-            writer.Write(this.DefaultRankCap);
-            writer.WritePropertyName("maxRankCap");
-            writer.Write(this.MaxRankCap);
-            if(this.RankThreshold != null)
-            {
-                writer.WritePropertyName("rankThreshold");
-                this.RankThreshold.WriteJson(writer);
-            }
-            writer.WriteObjectEnd();
+            return new EzExperienceModel {
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                DefaultExperience = model.DefaultExperience ?? 0,
+                DefaultRankCap = model.DefaultRankCap ?? 0,
+                MaxRankCap = model.MaxRankCap ?? 0,
+                RankThreshold = model.RankThreshold == null ? null : Gs2.Unity.Gs2Experience.Model.EzThreshold.FromModel(model.RankThreshold),
+            };
         }
-	}
+    }
 }

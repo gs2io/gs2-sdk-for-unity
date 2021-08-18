@@ -13,41 +13,37 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Datastore.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Datastore.Model;
-using Gs2.Gs2Datastore.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Datastore.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzPrepareDownloadResult
 	{
-        /** データオブジェクト */
-        public EzDataObject Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Datastore.Model.EzDataObject Item;
+		[SerializeField]
+		public string FileUrl;
+		[SerializeField]
+		public long ContentLength;
 
-        /** ファイルをダウンロードするためのURL */
-        public string FileUrl { get; private set; }
-
-        /** ファイルの容量 */
-        public long ContentLength { get; private set; }
-
-
-        public EzPrepareDownloadResult(
-            PrepareDownloadResult result
-        )
+        public static EzPrepareDownloadResult FromModel(Gs2.Gs2Datastore.Result.PrepareDownloadResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzDataObject(result.item);
-            }
-            FileUrl = result.fileUrl;
-            if(result.contentLength.HasValue)
-            {
-                ContentLength = result.contentLength.Value;
-            }
+            return new EzPrepareDownloadResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Datastore.Model.EzDataObject.FromModel(model.Item),
+                FileUrl = model.FileUrl == null ? null : model.FileUrl,
+                ContentLength = model.ContentLength ?? 0,
+            };
         }
-	}
+    }
 }

@@ -200,10 +200,10 @@ namespace Gs2.Unity.Util
 							{
 								OnDoneStampTask.Invoke(
 									_stampSheet.Tasks[r.Result.TaskResults.IndexOf(taskResult)], 
-									new EzRunStampTaskResult(
+									EzRunStampTaskResult.FromModel(
 										new RunStampTaskResult
 										{
-											result = taskResult,
+											Result = taskResult,
 										}
 									)
 								);
@@ -213,10 +213,10 @@ namespace Gs2.Unity.Util
 						{
 							OnCompleteStampSheet.Invoke(
 								_stampSheet, 
-								new EzRunStampSheetResult(
+								EzRunStampSheetResult.FromModel(
 									new RunStampSheetResult
 									{
-										result = r.Result.SheetResult,
+										Result = r.Result.SheetResult,
 									}
 								)
 							);

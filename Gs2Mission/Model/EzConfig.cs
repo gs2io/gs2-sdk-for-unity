@@ -13,59 +13,42 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Mission.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Mission.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzConfig
 	{
-		/** 名前 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Key;
-		/** 値 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Value;
 
-		public EzConfig()
-		{
-
-		}
-
-		public EzConfig(Gs2.Gs2Mission.Model.Config @config)
-		{
-			Key = @config.key;
-			Value = @config.value;
-		}
-
-        public virtual Config ToModel()
+        public Gs2.Gs2Mission.Model.Config ToModel()
         {
-            return new Config {
-                key = Key,
-                value = Value,
+            return new Gs2.Gs2Mission.Model.Config {
+                Key = Key,
+                Value = Value,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzConfig FromModel(Gs2.Gs2Mission.Model.Config model)
         {
-            writer.WriteObjectStart();
-            if(this.Key != null)
-            {
-                writer.WritePropertyName("key");
-                writer.Write(this.Key);
-            }
-            if(this.Value != null)
-            {
-                writer.WritePropertyName("value");
-                writer.Write(this.Value);
-            }
-            writer.WriteObjectEnd();
+            return new EzConfig {
+                Key = model.Key == null ? null : model.Key,
+                Value = model.Value == null ? null : model.Value,
+            };
         }
-	}
+    }
 }

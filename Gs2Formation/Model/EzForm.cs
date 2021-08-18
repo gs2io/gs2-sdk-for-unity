@@ -13,84 +13,50 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Formation.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Formation.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzForm
 	{
-		/** フォームの保存領域の名前 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** 保存領域のインデックス */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int Index;
-		/** スロットリスト */
-		[UnityEngine.SerializeField]
-		public List<EzSlot> Slots;
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Formation.Model.EzSlot> Slots;
 
-		public EzForm()
-		{
-
-		}
-
-		public EzForm(Gs2.Gs2Formation.Model.Form @form)
-		{
-			Name = @form.name;
-			Index = @form.index.HasValue ? @form.index.Value : 0;
-			Slots = @form.slots != null ? @form.slots.Select(value =>
-                {
-                    return new EzSlot(value);
-                }
-			).ToList() : new List<EzSlot>(new EzSlot[] {});
-		}
-
-        public virtual Form ToModel()
+        public Gs2.Gs2Formation.Model.Form ToModel()
         {
-            return new Form {
-                name = Name,
-                index = Index,
-                slots = Slots != null ? Slots.Select(Value0 =>
-                        {
-                            return new Slot
-                            {
-                                name = Value0.Name,
-                                propertyId = Value0.PropertyId,
-                                metadata = Value0.Metadata,
-                            };
-                        }
-                ).ToList() : new List<Slot>(new Slot[] {}),
+            return new Gs2.Gs2Formation.Model.Form {
+                Name = Name,
+                Index = Index,
+                Slots = Slots?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzForm FromModel(Gs2.Gs2Formation.Model.Form model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            writer.WritePropertyName("index");
-            writer.Write(this.Index);
-            if(this.Slots != null)
-            {
-                writer.WritePropertyName("slots");
-                writer.WriteArrayStart();
-                foreach(var item in this.Slots)
-                {
-                    item.WriteJson(writer);
-                }
-                writer.WriteArrayEnd();
-            }
-            writer.WriteObjectEnd();
+            return new EzForm {
+                Name = model.Name == null ? null : model.Name,
+                Index = model.Index ?? 0,
+                Slots = model.Slots == null ? new List<Gs2.Unity.Gs2Formation.Model.EzSlot>() : model.Slots.Select(v => {
+                    return Gs2.Unity.Gs2Formation.Model.EzSlot.FromModel(v);
+                }).ToList(),
+            };
         }
-	}
+    }
 }

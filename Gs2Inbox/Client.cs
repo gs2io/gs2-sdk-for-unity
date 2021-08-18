@@ -2,7 +2,7 @@
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
  *
- * Licensed under the Apache License, Version 2.0(the "License").
+ * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
  * A copy of the License is located at
  *
@@ -14,22 +14,28 @@
  * permissions and limitations under the License.
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Gs2.Gs2Inbox;
-using Gs2.Gs2Inbox.Model;
-using Gs2.Gs2Inbox.Request;
-using Gs2.Gs2Inbox.Result;
 using Gs2.Unity.Gs2Inbox.Model;
 using Gs2.Unity.Gs2Inbox.Result;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Gs2Quest;
+using Gs2.Gs2Quest.Model;
+using Gs2.Gs2Quest.Request;
+using Gs2.Gs2Quest.Result;
+using Gs2.Unity.Gs2Quest.Model;
+using Gs2.Unity.Gs2Quest.Result;
 using Gs2.Core;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Unity.Util;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Inbox
 {
 	public class DisabledCertificateHandler : CertificateHandler {
@@ -39,6 +45,8 @@ namespace Gs2.Unity.Gs2Inbox
 		}
 	}
 
+	[Preserve]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
@@ -59,123 +67,8 @@ namespace Gs2.Unity.Gs2Inbox
 			}
 		}
 
-		/// <summary>
-		///  プレゼントボックス に届いているメッセージの一覧を取得<br />
-		///    <br />
-		///    メッセージは最新のメッセージから順番に取得できます。<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
-		/// <param name="limit">データの取得件数</param>
-		public IEnumerator List(
-		        UnityAction<AsyncResult<EzListResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string pageToken=null,
-                long? limit=null
-        )
-		{
-            yield return _profile.Run(
-                callback,
-		        session,
-                cb => _restClient.DescribeMessages(
-                    new DescribeMessagesRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithPageToken(pageToken)
-                        .WithLimit(limit)
-                        .WithAccessToken(session.AccessToken.token),
-                    r => cb.Invoke(
-                        new AsyncResult<EzListResult>(
-                            r.Result == null ? null : new EzListResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  グローバルメッセージを受信する<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		public IEnumerator ReceiveGlobalMessage(
-		        UnityAction<AsyncResult<EzReceiveGlobalMessageResult>> callback,
-		        GameSession session,
-                string namespaceName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-		        session,
-                cb => _client.ReceiveGlobalMessage(
-                    new ReceiveGlobalMessageRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithAccessToken(session.AccessToken.token),
-                    r => cb.Invoke(
-                        new AsyncResult<EzReceiveGlobalMessageResult>(
-                            r.Result == null ? null : new EzReceiveGlobalMessageResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  メッセージを既読にする<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="messageName">メッセージID</param>
-		public IEnumerator Read(
-		        UnityAction<AsyncResult<EzReadResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string messageName=null
-        )
-		{
-            yield return _profile.Run(
-                callback,
-		        session,
-                cb => _restClient.ReadMessage(
-                    new ReadMessageRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithMessageName(messageName)
-                        .WithAccessToken(session.AccessToken.token),
-                    r => cb.Invoke(
-                        new AsyncResult<EzReadResult>(
-                            r.Result == null ? null : new EzReadResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  メッセージを削除する<br />
-		///    <br />
-		///    プレゼントボックスの設定でメッセージを開封したときに自動的に削除するオプションを付けていない場合は、このAPIを使用して明示的にメッセージを削除する必要があります。<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="messageName">メッセージID</param>
-		public IEnumerator Delete(
-		        UnityAction<AsyncResult<EzDeleteResult>> callback,
+        public IEnumerator Delete(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzDeleteResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string messageName
@@ -185,18 +78,93 @@ namespace Gs2.Unity.Gs2Inbox
                 callback,
 		        session,
                 cb => _client.DeleteMessage(
-                    new DeleteMessageRequest()
+                    new Gs2.Gs2Inbox.Request.DeleteMessageRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithMessageName(messageName)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithMessageName(messageName),
                     r => cb.Invoke(
-                        new AsyncResult<EzDeleteResult>(
-                            r.Result == null ? null : new EzDeleteResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzDeleteResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inbox.Result.EzDeleteResult.FromModel(r.Result),
                             r.Error
                         )
                     )
                 )
             );
 		}
-	}
+
+        public IEnumerator List(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzListResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                int limit,
+                string pageToken = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribeMessages(
+                    new Gs2.Gs2Inbox.Request.DescribeMessagesRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzListResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inbox.Result.EzListResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator Read(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzReadResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string messageName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.ReadMessage(
+                    new Gs2.Gs2Inbox.Request.ReadMessageRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithMessageName(messageName)
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzReadResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inbox.Result.EzReadResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ReceiveGlobalMessage(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzReceiveGlobalMessageResult>> callback,
+		        GameSession session,
+                string namespaceName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.ReceiveGlobalMessage(
+                    new Gs2.Gs2Inbox.Request.ReceiveGlobalMessageRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzReceiveGlobalMessageResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inbox.Result.EzReceiveGlobalMessageResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+    }
 }

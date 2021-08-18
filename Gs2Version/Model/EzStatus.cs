@@ -13,83 +13,42 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Version.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Version.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzStatus
 	{
-		/** バージョン設定 */
-		[UnityEngine.SerializeField]
-		public EzVersionModel VersionModel;
-		/** 現在のバージョン */
-		[UnityEngine.SerializeField]
-		public EzVersion CurrentVersion;
+		[SerializeField]
+		public Gs2.Unity.Gs2Version.Model.EzVersionModel VersionModel;
+		[SerializeField]
+		public Gs2.Unity.Gs2Version.Model.EzVersion CurrentVersion;
 
-		public EzStatus()
-		{
-
-		}
-
-		public EzStatus(Gs2.Gs2Version.Model.Status @status)
-		{
-			VersionModel = @status.versionModel != null ? new EzVersionModel(@status.versionModel) : null;
-			CurrentVersion = @status.currentVersion != null ? new EzVersion(@status.currentVersion) : null;
-		}
-
-        public virtual Status ToModel()
+        public Gs2.Gs2Version.Model.Status ToModel()
         {
-            return new Status {
-                versionModel = new VersionModel {
-                    name = VersionModel.Name,
-                    metadata = VersionModel.Metadata,
-                    warningVersion = new Version_ {
-                        major = VersionModel.WarningVersion.Major,
-                        minor = VersionModel.WarningVersion.Minor,
-                        micro = VersionModel.WarningVersion.Micro,
-                    },
-                    errorVersion = new Version_ {
-                        major = VersionModel.ErrorVersion.Major,
-                        minor = VersionModel.ErrorVersion.Minor,
-                        micro = VersionModel.ErrorVersion.Micro,
-                    },
-                    scope = VersionModel.Scope,
-                    currentVersion = new Version_ {
-                        major = VersionModel.CurrentVersion.Major,
-                        minor = VersionModel.CurrentVersion.Minor,
-                        micro = VersionModel.CurrentVersion.Micro,
-                    },
-                    needSignature = VersionModel.NeedSignature,
-                },
-                currentVersion = new Version_ {
-                    major = CurrentVersion.Major,
-                    minor = CurrentVersion.Minor,
-                    micro = CurrentVersion.Micro,
-                },
+            return new Gs2.Gs2Version.Model.Status {
+                VersionModel = VersionModel?.ToModel(),
+                CurrentVersion = CurrentVersion?.ToModel(),
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzStatus FromModel(Gs2.Gs2Version.Model.Status model)
         {
-            writer.WriteObjectStart();
-            if(this.VersionModel != null)
-            {
-                writer.WritePropertyName("versionModel");
-                this.VersionModel.WriteJson(writer);
-            }
-            if(this.CurrentVersion != null)
-            {
-                writer.WritePropertyName("currentVersion");
-                this.CurrentVersion.WriteJson(writer);
-            }
-            writer.WriteObjectEnd();
+            return new EzStatus {
+                VersionModel = model.VersionModel == null ? null : Gs2.Unity.Gs2Version.Model.EzVersionModel.FromModel(model.VersionModel),
+                CurrentVersion = model.CurrentVersion == null ? null : Gs2.Unity.Gs2Version.Model.EzVersion.FromModel(model.CurrentVersion),
+            };
         }
-	}
+    }
 }

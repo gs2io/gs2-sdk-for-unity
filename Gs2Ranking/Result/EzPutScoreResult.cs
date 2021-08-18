@@ -13,30 +13,31 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Ranking.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Ranking.Model;
-using Gs2.Gs2Ranking.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Ranking.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzPutScoreResult
 	{
-        /** 登録したスコア */
-        public EzScore Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Ranking.Model.EzScore Item;
 
-
-        public EzPutScoreResult(
-            PutScoreResult result
-        )
+        public static EzPutScoreResult FromModel(Gs2.Gs2Ranking.Result.PutScoreResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzScore(result.item);
-            }
+            return new EzPutScoreResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Ranking.Model.EzScore.FromModel(model.Item),
+            };
         }
-	}
+    }
 }

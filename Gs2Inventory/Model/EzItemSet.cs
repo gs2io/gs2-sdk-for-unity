@@ -13,100 +13,62 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Inventory.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Inventory.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzItemSet
 	{
-		/** 有効期限ごとのアイテム所持数量 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string ItemSetId;
-		/** アイテムセットを識別する名前 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** インベントリの名前 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string InventoryName;
-		/** アイテムマスターの名前 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string ItemName;
-		/** 所持数量 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long Count;
-		/** 表示順番 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int SortValue;
-		/** 有効期限 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long ExpiresAt;
 
-		public EzItemSet()
-		{
-
-		}
-
-		public EzItemSet(Gs2.Gs2Inventory.Model.ItemSet @itemSet)
-		{
-			ItemSetId = @itemSet.itemSetId;
-			Name = @itemSet.name;
-			InventoryName = @itemSet.inventoryName;
-			ItemName = @itemSet.itemName;
-			Count = @itemSet.count.HasValue ? @itemSet.count.Value : 0;
-			SortValue = @itemSet.sortValue.HasValue ? @itemSet.sortValue.Value : 0;
-			ExpiresAt = @itemSet.expiresAt.HasValue ? @itemSet.expiresAt.Value : 0;
-		}
-
-        public virtual ItemSet ToModel()
+        public Gs2.Gs2Inventory.Model.ItemSet ToModel()
         {
-            return new ItemSet {
-                itemSetId = ItemSetId,
-                name = Name,
-                inventoryName = InventoryName,
-                itemName = ItemName,
-                count = Count,
-                sortValue = SortValue,
-                expiresAt = ExpiresAt,
+            return new Gs2.Gs2Inventory.Model.ItemSet {
+                ItemSetId = ItemSetId,
+                Name = Name,
+                InventoryName = InventoryName,
+                ItemName = ItemName,
+                Count = Count,
+                SortValue = SortValue,
+                ExpiresAt = ExpiresAt,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzItemSet FromModel(Gs2.Gs2Inventory.Model.ItemSet model)
         {
-            writer.WriteObjectStart();
-            if(this.ItemSetId != null)
-            {
-                writer.WritePropertyName("itemSetId");
-                writer.Write(this.ItemSetId);
-            }
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.InventoryName != null)
-            {
-                writer.WritePropertyName("inventoryName");
-                writer.Write(this.InventoryName);
-            }
-            if(this.ItemName != null)
-            {
-                writer.WritePropertyName("itemName");
-                writer.Write(this.ItemName);
-            }
-            writer.WritePropertyName("count");
-            writer.Write(this.Count);
-            writer.WritePropertyName("sortValue");
-            writer.Write(this.SortValue);
-            writer.WritePropertyName("expiresAt");
-            writer.Write(this.ExpiresAt);
-            writer.WriteObjectEnd();
+            return new EzItemSet {
+                ItemSetId = model.ItemSetId == null ? null : model.ItemSetId,
+                Name = model.Name == null ? null : model.Name,
+                InventoryName = model.InventoryName == null ? null : model.InventoryName,
+                ItemName = model.ItemName == null ? null : model.ItemName,
+                Count = model.Count ?? 0,
+                SortValue = model.SortValue ?? 0,
+                ExpiresAt = model.ExpiresAt ?? 0,
+            };
         }
-	}
+    }
 }

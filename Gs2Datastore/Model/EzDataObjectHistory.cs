@@ -13,73 +13,50 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Datastore.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Datastore.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzDataObjectHistory
 	{
-		/** データオブジェクト履歴 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string DataObjectHistoryId;
-		/** 世代ID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Generation;
-		/** データサイズ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long ContentLength;
-		/** 作成日時 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long CreatedAt;
 
-		public EzDataObjectHistory()
-		{
-
-		}
-
-		public EzDataObjectHistory(Gs2.Gs2Datastore.Model.DataObjectHistory @dataObjectHistory)
-		{
-			DataObjectHistoryId = @dataObjectHistory.dataObjectHistoryId;
-			Generation = @dataObjectHistory.generation;
-			ContentLength = @dataObjectHistory.contentLength.HasValue ? @dataObjectHistory.contentLength.Value : 0;
-			CreatedAt = @dataObjectHistory.createdAt.HasValue ? @dataObjectHistory.createdAt.Value : 0;
-		}
-
-        public virtual DataObjectHistory ToModel()
+        public Gs2.Gs2Datastore.Model.DataObjectHistory ToModel()
         {
-            return new DataObjectHistory {
-                dataObjectHistoryId = DataObjectHistoryId,
-                generation = Generation,
-                contentLength = ContentLength,
-                createdAt = CreatedAt,
+            return new Gs2.Gs2Datastore.Model.DataObjectHistory {
+                DataObjectHistoryId = DataObjectHistoryId,
+                Generation = Generation,
+                ContentLength = ContentLength,
+                CreatedAt = CreatedAt,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzDataObjectHistory FromModel(Gs2.Gs2Datastore.Model.DataObjectHistory model)
         {
-            writer.WriteObjectStart();
-            if(this.DataObjectHistoryId != null)
-            {
-                writer.WritePropertyName("dataObjectHistoryId");
-                writer.Write(this.DataObjectHistoryId);
-            }
-            if(this.Generation != null)
-            {
-                writer.WritePropertyName("generation");
-                writer.Write(this.Generation);
-            }
-            writer.WritePropertyName("contentLength");
-            writer.Write(this.ContentLength);
-            writer.WritePropertyName("createdAt");
-            writer.Write(this.CreatedAt);
-            writer.WriteObjectEnd();
+            return new EzDataObjectHistory {
+                DataObjectHistoryId = model.DataObjectHistoryId == null ? null : model.DataObjectHistoryId,
+                Generation = model.Generation == null ? null : model.Generation,
+                ContentLength = model.ContentLength ?? 0,
+                CreatedAt = model.CreatedAt ?? 0,
+            };
         }
-	}
+    }
 }

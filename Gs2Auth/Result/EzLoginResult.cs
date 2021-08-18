@@ -13,38 +13,37 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Auth.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Auth.Model;
-using Gs2.Gs2Auth.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Auth.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzLoginResult
 	{
-        /** アクセストークン */
-        public string Token { get; private set; }
+		[SerializeField]
+		public string Token;
+		[SerializeField]
+		public string UserId;
+		[SerializeField]
+		public long Expire;
 
-        /** ユーザーID */
-        public string UserId { get; private set; }
-
-        /** 有効期限 */
-        public long Expire { get; private set; }
-
-
-        public EzLoginResult(
-            LoginBySignatureResult result
-        )
+        public static EzLoginResult FromModel(Gs2.Gs2Auth.Result.LoginBySignatureResult model)
         {
-            Token = result.token;
-            UserId = result.userId;
-            if(result.expire.HasValue)
-            {
-                Expire = result.expire.Value;
-            }
+            return new EzLoginResult {
+                Token = model.Token == null ? null : model.Token,
+                UserId = model.UserId == null ? null : model.UserId,
+                Expire = model.Expire ?? 0,
+            };
         }
-	}
+    }
 }

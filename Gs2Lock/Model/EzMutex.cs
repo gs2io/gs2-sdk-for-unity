@@ -13,83 +13,46 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Lock.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Lock.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzMutex
 	{
-		/** ミューテックス */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string MutexId;
-		/** プロパティID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string PropertyId;
-		/** ロックを取得したトランザクションID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string TransactionId;
-		/** 参照回数 */
-		[UnityEngine.SerializeField]
-		public int ReferenceCount;
-		/** ロックの有効期限 */
-		[UnityEngine.SerializeField]
-		public long TtlAt;
 
-		public EzMutex()
-		{
-
-		}
-
-		public EzMutex(Gs2.Gs2Lock.Model.Mutex @mutex)
-		{
-			MutexId = @mutex.mutexId;
-			PropertyId = @mutex.propertyId;
-			TransactionId = @mutex.transactionId;
-			ReferenceCount = @mutex.referenceCount.HasValue ? @mutex.referenceCount.Value : 0;
-			TtlAt = @mutex.ttlAt.HasValue ? @mutex.ttlAt.Value : 0;
-		}
-
-        public virtual Mutex ToModel()
+        public Gs2.Gs2Lock.Model.Mutex ToModel()
         {
-            return new Mutex {
-                mutexId = MutexId,
-                propertyId = PropertyId,
-                transactionId = TransactionId,
-                referenceCount = ReferenceCount,
-                ttlAt = TtlAt,
+            return new Gs2.Gs2Lock.Model.Mutex {
+                MutexId = MutexId,
+                PropertyId = PropertyId,
+                TransactionId = TransactionId,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzMutex FromModel(Gs2.Gs2Lock.Model.Mutex model)
         {
-            writer.WriteObjectStart();
-            if(this.MutexId != null)
-            {
-                writer.WritePropertyName("mutexId");
-                writer.Write(this.MutexId);
-            }
-            if(this.PropertyId != null)
-            {
-                writer.WritePropertyName("propertyId");
-                writer.Write(this.PropertyId);
-            }
-            if(this.TransactionId != null)
-            {
-                writer.WritePropertyName("transactionId");
-                writer.Write(this.TransactionId);
-            }
-            writer.WritePropertyName("referenceCount");
-            writer.Write(this.ReferenceCount);
-            writer.WritePropertyName("ttlAt");
-            writer.Write(this.TtlAt);
-            writer.WriteObjectEnd();
+            return new EzMutex {
+                MutexId = model.MutexId == null ? null : model.MutexId,
+                PropertyId = model.PropertyId == null ? null : model.PropertyId,
+                TransactionId = model.TransactionId == null ? null : model.TransactionId,
+            };
         }
-	}
+    }
 }

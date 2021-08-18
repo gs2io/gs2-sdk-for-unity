@@ -13,90 +13,58 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Matchmaking.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Matchmaking.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzRating
 	{
-		/** レーティング */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string RatingId;
-		/** レーティング名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** ユーザーID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string UserId;
-		/** None */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public float RateValue;
-		/** 作成日時 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long CreatedAt;
-		/** 最終更新日時 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long UpdatedAt;
 
-		public EzRating()
-		{
-
-		}
-
-		public EzRating(Gs2.Gs2Matchmaking.Model.Rating @rating)
-		{
-			RatingId = @rating.ratingId;
-			Name = @rating.name;
-			UserId = @rating.userId;
-			RateValue = @rating.rateValue.HasValue ? @rating.rateValue.Value : 0;
-			CreatedAt = @rating.createdAt.HasValue ? @rating.createdAt.Value : 0;
-			UpdatedAt = @rating.updatedAt.HasValue ? @rating.updatedAt.Value : 0;
-		}
-
-        public virtual Rating ToModel()
+        public Gs2.Gs2Matchmaking.Model.Rating ToModel()
         {
-            return new Rating {
-                ratingId = RatingId,
-                name = Name,
-                userId = UserId,
-                rateValue = RateValue,
-                createdAt = CreatedAt,
-                updatedAt = UpdatedAt,
+            return new Gs2.Gs2Matchmaking.Model.Rating {
+                RatingId = RatingId,
+                Name = Name,
+                UserId = UserId,
+                RateValue = RateValue,
+                CreatedAt = CreatedAt,
+                UpdatedAt = UpdatedAt,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzRating FromModel(Gs2.Gs2Matchmaking.Model.Rating model)
         {
-            writer.WriteObjectStart();
-            if(this.RatingId != null)
-            {
-                writer.WritePropertyName("ratingId");
-                writer.Write(this.RatingId);
-            }
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.UserId != null)
-            {
-                writer.WritePropertyName("userId");
-                writer.Write(this.UserId);
-            }
-            writer.WritePropertyName("rateValue");
-            writer.Write(this.RateValue);
-            writer.WritePropertyName("createdAt");
-            writer.Write(this.CreatedAt);
-            writer.WritePropertyName("updatedAt");
-            writer.Write(this.UpdatedAt);
-            writer.WriteObjectEnd();
+            return new EzRating {
+                RatingId = model.RatingId == null ? null : model.RatingId,
+                Name = model.Name == null ? null : model.Name,
+                UserId = model.UserId == null ? null : model.UserId,
+                RateValue = model.RateValue ?? 0,
+                CreatedAt = model.CreatedAt ?? 0,
+                UpdatedAt = model.UpdatedAt ?? 0,
+            };
         }
-	}
+    }
 }

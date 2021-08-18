@@ -13,69 +13,46 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Formation.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Formation.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzSlot
 	{
-		/** スロットモデル名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** プロパティID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string PropertyId;
-		/** メタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
 
-		public EzSlot()
-		{
-
-		}
-
-		public EzSlot(Gs2.Gs2Formation.Model.Slot @slot)
-		{
-			Name = @slot.name;
-			PropertyId = @slot.propertyId;
-			Metadata = @slot.metadata;
-		}
-
-        public virtual Slot ToModel()
+        public Gs2.Gs2Formation.Model.Slot ToModel()
         {
-            return new Slot {
-                name = Name,
-                propertyId = PropertyId,
-                metadata = Metadata,
+            return new Gs2.Gs2Formation.Model.Slot {
+                Name = Name,
+                PropertyId = PropertyId,
+                Metadata = Metadata,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzSlot FromModel(Gs2.Gs2Formation.Model.Slot model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.PropertyId != null)
-            {
-                writer.WritePropertyName("propertyId");
-                writer.Write(this.PropertyId);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            writer.WriteObjectEnd();
+            return new EzSlot {
+                Name = model.Name == null ? null : model.Name,
+                PropertyId = model.PropertyId == null ? null : model.PropertyId,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+            };
         }
-	}
+    }
 }

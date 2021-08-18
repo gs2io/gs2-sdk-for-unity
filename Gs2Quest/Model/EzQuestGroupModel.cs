@@ -13,138 +13,54 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Quest.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Quest.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzQuestGroupModel
 	{
-		/** クエストグループ名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** クエストグループのメタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** グループに属するクエスト */
-		[UnityEngine.SerializeField]
-		public List<EzQuestModel> Quests;
-		/** 挑戦可能な期間を指定するイベントマスター のGRN */
-		[UnityEngine.SerializeField]
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Quest.Model.EzQuestModel> Quests;
+		[SerializeField]
 		public string ChallengePeriodEventId;
 
-		public EzQuestGroupModel()
-		{
-
-		}
-
-		public EzQuestGroupModel(Gs2.Gs2Quest.Model.QuestGroupModel @questGroupModel)
-		{
-			Name = @questGroupModel.name;
-			Metadata = @questGroupModel.metadata;
-			Quests = @questGroupModel.quests != null ? @questGroupModel.quests.Select(value =>
-                {
-                    return new EzQuestModel(value);
-                }
-			).ToList() : new List<EzQuestModel>(new EzQuestModel[] {});
-			ChallengePeriodEventId = @questGroupModel.challengePeriodEventId;
-		}
-
-        public virtual QuestGroupModel ToModel()
+        public Gs2.Gs2Quest.Model.QuestGroupModel ToModel()
         {
-            return new QuestGroupModel {
-                name = Name,
-                metadata = Metadata,
-                quests = Quests != null ? Quests.Select(Value0 =>
-                        {
-                            return new QuestModel
-                            {
-                                questModelId = Value0.QuestModelId,
-                                name = Value0.Name,
-                                metadata = Value0.Metadata,
-                                contents = Value0.Contents != null ? Value0.Contents.Select(Value1 =>
-                                        {
-                                            return new Contents
-                                            {
-                                                metadata = Value1.Metadata,
-                                                completeAcquireActions = Value1.CompleteAcquireActions != null ? Value1.CompleteAcquireActions.Select(Value2 =>
-                                                        {
-                                                            return new AcquireAction
-                                                            {
-                                                                action = Value2.Action,
-                                                                request = Value2.Request,
-                                                            };
-                                                        }
-                                                ).ToList() : new List<AcquireAction>(new AcquireAction[] {}),
-                                            };
-                                        }
-                                ).ToList() : new List<Contents>(new Contents[] {}),
-                                challengePeriodEventId = Value0.ChallengePeriodEventId,
-                                consumeActions = Value0.ConsumeActions != null ? Value0.ConsumeActions.Select(Value1 =>
-                                        {
-                                            return new ConsumeAction
-                                            {
-                                                action = Value1.Action,
-                                                request = Value1.Request,
-                                            };
-                                        }
-                                ).ToList() : new List<ConsumeAction>(new ConsumeAction[] {}),
-                                failedAcquireActions = Value0.FailedAcquireActions != null ? Value0.FailedAcquireActions.Select(Value1 =>
-                                        {
-                                            return new AcquireAction
-                                            {
-                                                action = Value1.Action,
-                                                request = Value1.Request,
-                                            };
-                                        }
-                                ).ToList() : new List<AcquireAction>(new AcquireAction[] {}),
-                                premiseQuestNames = Value0.PremiseQuestNames != null ? Value0.PremiseQuestNames.Select(Value1 =>
-                                        {
-                                            return Value1;
-                                        }
-                                ).ToList() : new List<string>(new string[] {}),
-                            };
-                        }
-                ).ToList() : new List<QuestModel>(new QuestModel[] {}),
-                challengePeriodEventId = ChallengePeriodEventId,
+            return new Gs2.Gs2Quest.Model.QuestGroupModel {
+                Name = Name,
+                Metadata = Metadata,
+                Quests = Quests?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
+                ChallengePeriodEventId = ChallengePeriodEventId,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzQuestGroupModel FromModel(Gs2.Gs2Quest.Model.QuestGroupModel model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            if(this.Quests != null)
-            {
-                writer.WritePropertyName("quests");
-                writer.WriteArrayStart();
-                foreach(var item in this.Quests)
-                {
-                    item.WriteJson(writer);
-                }
-                writer.WriteArrayEnd();
-            }
-            if(this.ChallengePeriodEventId != null)
-            {
-                writer.WritePropertyName("challengePeriodEventId");
-                writer.Write(this.ChallengePeriodEventId);
-            }
-            writer.WriteObjectEnd();
+            return new EzQuestGroupModel {
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                Quests = model.Quests == null ? new List<Gs2.Unity.Gs2Quest.Model.EzQuestModel>() : model.Quests.Select(v => {
+                    return Gs2.Unity.Gs2Quest.Model.EzQuestModel.FromModel(v);
+                }).ToList(),
+                ChallengePeriodEventId = model.ChallengePeriodEventId == null ? null : model.ChallengePeriodEventId,
+            };
         }
-	}
+    }
 }

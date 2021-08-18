@@ -13,66 +13,46 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2JobQueue.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2JobQueue.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzJobEntry
 	{
-		/** スクリプト のGRN */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string ScriptId;
-		/** 引数 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Args;
-		/** 最大試行回数 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int MaxTryCount;
 
-		public EzJobEntry()
-		{
-
-		}
-
-		public EzJobEntry(Gs2.Gs2JobQueue.Model.JobEntry @jobEntry)
-		{
-			ScriptId = @jobEntry.scriptId;
-			Args = @jobEntry.args;
-			MaxTryCount = @jobEntry.maxTryCount.HasValue ? @jobEntry.maxTryCount.Value : 0;
-		}
-
-        public virtual JobEntry ToModel()
+        public Gs2.Gs2JobQueue.Model.JobEntry ToModel()
         {
-            return new JobEntry {
-                scriptId = ScriptId,
-                args = Args,
-                maxTryCount = MaxTryCount,
+            return new Gs2.Gs2JobQueue.Model.JobEntry {
+                ScriptId = ScriptId,
+                Args = Args,
+                MaxTryCount = MaxTryCount,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzJobEntry FromModel(Gs2.Gs2JobQueue.Model.JobEntry model)
         {
-            writer.WriteObjectStart();
-            if(this.ScriptId != null)
-            {
-                writer.WritePropertyName("scriptId");
-                writer.Write(this.ScriptId);
-            }
-            if(this.Args != null)
-            {
-                writer.WritePropertyName("args");
-                writer.Write(this.Args);
-            }
-            writer.WritePropertyName("maxTryCount");
-            writer.Write(this.MaxTryCount);
-            writer.WriteObjectEnd();
+            return new EzJobEntry {
+                ScriptId = model.ScriptId == null ? null : model.ScriptId,
+                Args = model.Args == null ? null : model.Args,
+                MaxTryCount = model.MaxTryCount ?? 0,
+            };
         }
-	}
+    }
 }

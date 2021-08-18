@@ -13,79 +13,50 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Friend.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Friend.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzProfile
 	{
-		/** ユーザーID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string UserId;
-		/** 公開されるプロフィール */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string PublicProfile;
-		/** フォロワー向けに公開されるプロフィール */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string FollowerProfile;
-		/** フレンド向けに公開されるプロフィール */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string FriendProfile;
 
-		public EzProfile()
-		{
-
-		}
-
-		public EzProfile(Gs2.Gs2Friend.Model.Profile @profile)
-		{
-			UserId = @profile.userId;
-			PublicProfile = @profile.publicProfile;
-			FollowerProfile = @profile.followerProfile;
-			FriendProfile = @profile.friendProfile;
-		}
-
-        public virtual Profile ToModel()
+        public Gs2.Gs2Friend.Model.Profile ToModel()
         {
-            return new Profile {
-                userId = UserId,
-                publicProfile = PublicProfile,
-                followerProfile = FollowerProfile,
-                friendProfile = FriendProfile,
+            return new Gs2.Gs2Friend.Model.Profile {
+                UserId = UserId,
+                PublicProfile = PublicProfile,
+                FollowerProfile = FollowerProfile,
+                FriendProfile = FriendProfile,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzProfile FromModel(Gs2.Gs2Friend.Model.Profile model)
         {
-            writer.WriteObjectStart();
-            if(this.UserId != null)
-            {
-                writer.WritePropertyName("userId");
-                writer.Write(this.UserId);
-            }
-            if(this.PublicProfile != null)
-            {
-                writer.WritePropertyName("publicProfile");
-                writer.Write(this.PublicProfile);
-            }
-            if(this.FollowerProfile != null)
-            {
-                writer.WritePropertyName("followerProfile");
-                writer.Write(this.FollowerProfile);
-            }
-            if(this.FriendProfile != null)
-            {
-                writer.WritePropertyName("friendProfile");
-                writer.Write(this.FriendProfile);
-            }
-            writer.WriteObjectEnd();
+            return new EzProfile {
+                UserId = model.UserId == null ? null : model.UserId,
+                PublicProfile = model.PublicProfile == null ? null : model.PublicProfile,
+                FollowerProfile = model.FollowerProfile == null ? null : model.FollowerProfile,
+                FriendProfile = model.FriendProfile == null ? null : model.FriendProfile,
+            };
         }
-	}
+    }
 }

@@ -13,56 +13,42 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Mission.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Mission.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzScopedValue
 	{
-		/** リセットタイミング */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string ResetType;
-		/** カウント */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long Value;
 
-		public EzScopedValue()
-		{
-
-		}
-
-		public EzScopedValue(Gs2.Gs2Mission.Model.ScopedValue @scopedValue)
-		{
-			ResetType = @scopedValue.resetType;
-			Value = @scopedValue.value.HasValue ? @scopedValue.value.Value : 0;
-		}
-
-        public virtual ScopedValue ToModel()
+        public Gs2.Gs2Mission.Model.ScopedValue ToModel()
         {
-            return new ScopedValue {
-                resetType = ResetType,
-                value = Value,
+            return new Gs2.Gs2Mission.Model.ScopedValue {
+                ResetType = ResetType,
+                Value = Value,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzScopedValue FromModel(Gs2.Gs2Mission.Model.ScopedValue model)
         {
-            writer.WriteObjectStart();
-            if(this.ResetType != null)
-            {
-                writer.WritePropertyName("resetType");
-                writer.Write(this.ResetType);
-            }
-            writer.WritePropertyName("value");
-            writer.Write(this.Value);
-            writer.WriteObjectEnd();
+            return new EzScopedValue {
+                ResetType = model.ResetType == null ? null : model.ResetType,
+                Value = model.Value ?? 0,
+            };
         }
-	}
+    }
 }

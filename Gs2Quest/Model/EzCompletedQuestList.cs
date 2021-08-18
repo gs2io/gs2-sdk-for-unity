@@ -13,72 +13,46 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Quest.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Quest.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzCompletedQuestList
 	{
-		/** クエストグループ名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string QuestGroupName;
-		/** 攻略済みのクエスト名一覧のリスト */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public List<string> CompleteQuestNames;
 
-		public EzCompletedQuestList()
-		{
-
-		}
-
-		public EzCompletedQuestList(Gs2.Gs2Quest.Model.CompletedQuestList @completedQuestList)
-		{
-			QuestGroupName = @completedQuestList.questGroupName;
-			CompleteQuestNames = @completedQuestList.completeQuestNames != null ? @completedQuestList.completeQuestNames.Select(value =>
-                {
-                    return value;
-                }
-			).ToList() : new List<string>(new string[] {});
-		}
-
-        public virtual CompletedQuestList ToModel()
+        public Gs2.Gs2Quest.Model.CompletedQuestList ToModel()
         {
-            return new CompletedQuestList {
-                questGroupName = QuestGroupName,
-                completeQuestNames = CompleteQuestNames != null ? CompleteQuestNames.Select(Value0 =>
-                        {
-                            return Value0;
-                        }
-                ).ToList() : new List<string>(new string[] {}),
+            return new Gs2.Gs2Quest.Model.CompletedQuestList {
+                QuestGroupName = QuestGroupName,
+                CompleteQuestNames = CompleteQuestNames?.Select(v => {
+                    return v;
+                }).ToArray(),
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzCompletedQuestList FromModel(Gs2.Gs2Quest.Model.CompletedQuestList model)
         {
-            writer.WriteObjectStart();
-            if(this.QuestGroupName != null)
-            {
-                writer.WritePropertyName("questGroupName");
-                writer.Write(this.QuestGroupName);
-            }
-            if(this.CompleteQuestNames != null)
-            {
-                writer.WritePropertyName("completeQuestNames");
-                writer.WriteArrayStart();
-                foreach(var item in this.CompleteQuestNames)
-                {
-                    writer.Write(item);
-                }
-                writer.WriteArrayEnd();
-            }
-            writer.WriteObjectEnd();
+            return new EzCompletedQuestList {
+                QuestGroupName = model.QuestGroupName == null ? null : model.QuestGroupName,
+                CompleteQuestNames = model.CompleteQuestNames == null ? new List<string>() : model.CompleteQuestNames.Select(v => {
+                    return v;
+                }).ToList(),
+            };
         }
-	}
+    }
 }

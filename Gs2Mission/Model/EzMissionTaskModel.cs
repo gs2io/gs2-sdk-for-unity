@@ -13,123 +13,66 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Mission.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Mission.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzMissionTaskModel
 	{
-		/** タスク名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** メタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** カウンター名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string CounterName;
-		/** 目標値 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long TargetValue;
-		/** ミッション達成時の報酬 */
-		[UnityEngine.SerializeField]
-		public List<EzAcquireAction> CompleteAcquireActions;
-		/** 達成報酬の受け取り可能な期間を指定するイベントマスター のGRN */
-		[UnityEngine.SerializeField]
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Mission.Model.EzAcquireAction> CompleteAcquireActions;
+		[SerializeField]
 		public string ChallengePeriodEventId;
-		/** このタスクに挑戦するために達成しておく必要のあるタスクの名前 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string PremiseMissionTaskName;
 
-		public EzMissionTaskModel()
-		{
-
-		}
-
-		public EzMissionTaskModel(Gs2.Gs2Mission.Model.MissionTaskModel @missionTaskModel)
-		{
-			Name = @missionTaskModel.name;
-			Metadata = @missionTaskModel.metadata;
-			CounterName = @missionTaskModel.counterName;
-			TargetValue = @missionTaskModel.targetValue.HasValue ? @missionTaskModel.targetValue.Value : 0;
-			CompleteAcquireActions = @missionTaskModel.completeAcquireActions != null ? @missionTaskModel.completeAcquireActions.Select(value =>
-                {
-                    return new EzAcquireAction(value);
-                }
-			).ToList() : new List<EzAcquireAction>(new EzAcquireAction[] {});
-			ChallengePeriodEventId = @missionTaskModel.challengePeriodEventId;
-			PremiseMissionTaskName = @missionTaskModel.premiseMissionTaskName;
-		}
-
-        public virtual MissionTaskModel ToModel()
+        public Gs2.Gs2Mission.Model.MissionTaskModel ToModel()
         {
-            return new MissionTaskModel {
-                name = Name,
-                metadata = Metadata,
-                counterName = CounterName,
-                targetValue = TargetValue,
-                completeAcquireActions = CompleteAcquireActions != null ? CompleteAcquireActions.Select(Value0 =>
-                        {
-                            return new AcquireAction
-                            {
-                                action = Value0.Action,
-                                request = Value0.Request,
-                            };
-                        }
-                ).ToList() : new List<AcquireAction>(new AcquireAction[] {}),
-                challengePeriodEventId = ChallengePeriodEventId,
-                premiseMissionTaskName = PremiseMissionTaskName,
+            return new Gs2.Gs2Mission.Model.MissionTaskModel {
+                Name = Name,
+                Metadata = Metadata,
+                CounterName = CounterName,
+                TargetValue = TargetValue,
+                CompleteAcquireActions = CompleteAcquireActions?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
+                ChallengePeriodEventId = ChallengePeriodEventId,
+                PremiseMissionTaskName = PremiseMissionTaskName,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzMissionTaskModel FromModel(Gs2.Gs2Mission.Model.MissionTaskModel model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            if(this.CounterName != null)
-            {
-                writer.WritePropertyName("counterName");
-                writer.Write(this.CounterName);
-            }
-            writer.WritePropertyName("targetValue");
-            writer.Write(this.TargetValue);
-            if(this.CompleteAcquireActions != null)
-            {
-                writer.WritePropertyName("completeAcquireActions");
-                writer.WriteArrayStart();
-                foreach(var item in this.CompleteAcquireActions)
-                {
-                    item.WriteJson(writer);
-                }
-                writer.WriteArrayEnd();
-            }
-            if(this.ChallengePeriodEventId != null)
-            {
-                writer.WritePropertyName("challengePeriodEventId");
-                writer.Write(this.ChallengePeriodEventId);
-            }
-            if(this.PremiseMissionTaskName != null)
-            {
-                writer.WritePropertyName("premiseMissionTaskName");
-                writer.Write(this.PremiseMissionTaskName);
-            }
-            writer.WriteObjectEnd();
+            return new EzMissionTaskModel {
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                CounterName = model.CounterName == null ? null : model.CounterName,
+                TargetValue = model.TargetValue ?? 0,
+                CompleteAcquireActions = model.CompleteAcquireActions == null ? new List<Gs2.Unity.Gs2Mission.Model.EzAcquireAction>() : model.CompleteAcquireActions.Select(v => {
+                    return Gs2.Unity.Gs2Mission.Model.EzAcquireAction.FromModel(v);
+                }).ToList(),
+                ChallengePeriodEventId = model.ChallengePeriodEventId == null ? null : model.ChallengePeriodEventId,
+                PremiseMissionTaskName = model.PremiseMissionTaskName == null ? null : model.PremiseMissionTaskName,
+            };
         }
-	}
+    }
 }

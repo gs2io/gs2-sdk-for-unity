@@ -13,30 +13,31 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Chat.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Chat.Model;
-using Gs2.Gs2Chat.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Chat.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzGetRoomResult
 	{
-        /** ルーム */
-        public EzRoom Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Chat.Model.EzRoom Item;
 
-
-        public EzGetRoomResult(
-            GetRoomResult result
-        )
+        public static EzGetRoomResult FromModel(Gs2.Gs2Chat.Result.GetRoomResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzRoom(result.item);
-            }
+            return new EzGetRoomResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Chat.Model.EzRoom.FromModel(model.Item),
+            };
         }
-	}
+    }
 }

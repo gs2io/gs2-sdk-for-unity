@@ -13,31 +13,33 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Distributor.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Distributor.Model;
-using Gs2.Gs2Distributor.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Distributor.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzListDistributorModelsResult
 	{
-        /** 配信設定のリスト */
-        public List<EzDistributorModel> Items { get; private set; }
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel> Items;
 
-
-        public EzListDistributorModelsResult(
-            DescribeDistributorModelsResult result
-        )
+        public static EzListDistributorModelsResult FromModel(Gs2.Gs2Distributor.Result.DescribeDistributorModelsResult model)
         {
-            Items = new List<EzDistributorModel>();
-            foreach (var item_ in result.items)
-            {
-                Items.Add(new EzDistributorModel(item_));
-            }
+            return new EzListDistributorModelsResult {
+                Items = model.Items == null ? new List<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel>() : model.Items.Select(v => {
+                    return Gs2.Unity.Gs2Distributor.Model.EzDistributorModel.FromModel(v);
+                }).ToList(),
+            };
         }
-	}
+    }
 }

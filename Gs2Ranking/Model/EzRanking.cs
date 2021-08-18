@@ -13,87 +13,58 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Ranking.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Ranking.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzRanking
 	{
-		/** 順位 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long Rank;
-		/** 1位からのインデックス */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long Index;
-		/** ユーザID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string UserId;
-		/** スコア */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long Score;
-		/** メタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** 作成日時 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long CreatedAt;
 
-		public EzRanking()
-		{
-
-		}
-
-		public EzRanking(Gs2.Gs2Ranking.Model.Ranking @ranking)
-		{
-			Rank = @ranking.rank.HasValue ? @ranking.rank.Value : 0;
-			Index = @ranking.index.HasValue ? @ranking.index.Value : 0;
-			UserId = @ranking.userId;
-			Score = @ranking.score.HasValue ? @ranking.score.Value : 0;
-			Metadata = @ranking.metadata;
-			CreatedAt = @ranking.createdAt.HasValue ? @ranking.createdAt.Value : 0;
-		}
-
-        public virtual Ranking ToModel()
+        public Gs2.Gs2Ranking.Model.Ranking ToModel()
         {
-            return new Ranking {
-                rank = Rank,
-                index = Index,
-                userId = UserId,
-                score = Score,
-                metadata = Metadata,
-                createdAt = CreatedAt,
+            return new Gs2.Gs2Ranking.Model.Ranking {
+                Rank = Rank,
+                Index = Index,
+                UserId = UserId,
+                Score = Score,
+                Metadata = Metadata,
+                CreatedAt = CreatedAt,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzRanking FromModel(Gs2.Gs2Ranking.Model.Ranking model)
         {
-            writer.WriteObjectStart();
-            writer.WritePropertyName("rank");
-            writer.Write(this.Rank);
-            writer.WritePropertyName("index");
-            writer.Write(this.Index);
-            if(this.UserId != null)
-            {
-                writer.WritePropertyName("userId");
-                writer.Write(this.UserId);
-            }
-            writer.WritePropertyName("score");
-            writer.Write(this.Score);
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            writer.WritePropertyName("createdAt");
-            writer.Write(this.CreatedAt);
-            writer.WriteObjectEnd();
+            return new EzRanking {
+                Rank = model.Rank ?? 0,
+                Index = model.Index ?? 0,
+                UserId = model.UserId == null ? null : model.UserId,
+                Score = model.Score ?? 0,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                CreatedAt = model.CreatedAt ?? 0,
+            };
         }
-	}
+    }
 }

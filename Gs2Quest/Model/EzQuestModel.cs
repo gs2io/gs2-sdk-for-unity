@@ -13,191 +13,82 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Quest.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Quest.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzQuestModel
 	{
-		/** クエストモデル */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string QuestModelId;
-		/** クエストモデル名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** クエストモデルのメタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** クエストの内容 */
-		[UnityEngine.SerializeField]
-		public List<EzContents> Contents;
-		/** 挑戦可能な期間を指定するイベントマスター のGRN */
-		[UnityEngine.SerializeField]
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Quest.Model.EzContents> Contents;
+		[SerializeField]
 		public string ChallengePeriodEventId;
-		/** クエストの参加料 */
-		[UnityEngine.SerializeField]
-		public List<EzConsumeAction> ConsumeActions;
-		/** クエスト失敗時の報酬 */
-		[UnityEngine.SerializeField]
-		public List<EzAcquireAction> FailedAcquireActions;
-		/** クエストに挑戦するためにクリアしておく必要のあるクエスト名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Quest.Model.EzConsumeAction> ConsumeActions;
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Quest.Model.EzAcquireAction> FailedAcquireActions;
+		[SerializeField]
 		public List<string> PremiseQuestNames;
 
-		public EzQuestModel()
-		{
-
-		}
-
-		public EzQuestModel(Gs2.Gs2Quest.Model.QuestModel @questModel)
-		{
-			QuestModelId = @questModel.questModelId;
-			Name = @questModel.name;
-			Metadata = @questModel.metadata;
-			Contents = @questModel.contents != null ? @questModel.contents.Select(value =>
-                {
-                    return new EzContents(value);
-                }
-			).ToList() : new List<EzContents>(new EzContents[] {});
-			ChallengePeriodEventId = @questModel.challengePeriodEventId;
-			ConsumeActions = @questModel.consumeActions != null ? @questModel.consumeActions.Select(value =>
-                {
-                    return new EzConsumeAction(value);
-                }
-			).ToList() : new List<EzConsumeAction>(new EzConsumeAction[] {});
-			FailedAcquireActions = @questModel.failedAcquireActions != null ? @questModel.failedAcquireActions.Select(value =>
-                {
-                    return new EzAcquireAction(value);
-                }
-			).ToList() : new List<EzAcquireAction>(new EzAcquireAction[] {});
-			PremiseQuestNames = @questModel.premiseQuestNames != null ? @questModel.premiseQuestNames.Select(value =>
-                {
-                    return value;
-                }
-			).ToList() : new List<string>(new string[] {});
-		}
-
-        public virtual QuestModel ToModel()
+        public Gs2.Gs2Quest.Model.QuestModel ToModel()
         {
-            return new QuestModel {
-                questModelId = QuestModelId,
-                name = Name,
-                metadata = Metadata,
-                contents = Contents != null ? Contents.Select(Value0 =>
-                        {
-                            return new Contents
-                            {
-                                metadata = Value0.Metadata,
-                                completeAcquireActions = Value0.CompleteAcquireActions != null ? Value0.CompleteAcquireActions.Select(Value1 =>
-                                        {
-                                            return new AcquireAction
-                                            {
-                                                action = Value1.Action,
-                                                request = Value1.Request,
-                                            };
-                                        }
-                                ).ToList() : new List<AcquireAction>(new AcquireAction[] {}),
-                            };
-                        }
-                ).ToList() : new List<Contents>(new Contents[] {}),
-                challengePeriodEventId = ChallengePeriodEventId,
-                consumeActions = ConsumeActions != null ? ConsumeActions.Select(Value0 =>
-                        {
-                            return new ConsumeAction
-                            {
-                                action = Value0.Action,
-                                request = Value0.Request,
-                            };
-                        }
-                ).ToList() : new List<ConsumeAction>(new ConsumeAction[] {}),
-                failedAcquireActions = FailedAcquireActions != null ? FailedAcquireActions.Select(Value0 =>
-                        {
-                            return new AcquireAction
-                            {
-                                action = Value0.Action,
-                                request = Value0.Request,
-                            };
-                        }
-                ).ToList() : new List<AcquireAction>(new AcquireAction[] {}),
-                premiseQuestNames = PremiseQuestNames != null ? PremiseQuestNames.Select(Value0 =>
-                        {
-                            return Value0;
-                        }
-                ).ToList() : new List<string>(new string[] {}),
+            return new Gs2.Gs2Quest.Model.QuestModel {
+                QuestModelId = QuestModelId,
+                Name = Name,
+                Metadata = Metadata,
+                Contents = Contents?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
+                ChallengePeriodEventId = ChallengePeriodEventId,
+                ConsumeActions = ConsumeActions?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
+                FailedAcquireActions = FailedAcquireActions?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
+                PremiseQuestNames = PremiseQuestNames?.Select(v => {
+                    return v;
+                }).ToArray(),
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzQuestModel FromModel(Gs2.Gs2Quest.Model.QuestModel model)
         {
-            writer.WriteObjectStart();
-            if(this.QuestModelId != null)
-            {
-                writer.WritePropertyName("questModelId");
-                writer.Write(this.QuestModelId);
-            }
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            if(this.Contents != null)
-            {
-                writer.WritePropertyName("contents");
-                writer.WriteArrayStart();
-                foreach(var item in this.Contents)
-                {
-                    item.WriteJson(writer);
-                }
-                writer.WriteArrayEnd();
-            }
-            if(this.ChallengePeriodEventId != null)
-            {
-                writer.WritePropertyName("challengePeriodEventId");
-                writer.Write(this.ChallengePeriodEventId);
-            }
-            if(this.ConsumeActions != null)
-            {
-                writer.WritePropertyName("consumeActions");
-                writer.WriteArrayStart();
-                foreach(var item in this.ConsumeActions)
-                {
-                    item.WriteJson(writer);
-                }
-                writer.WriteArrayEnd();
-            }
-            if(this.FailedAcquireActions != null)
-            {
-                writer.WritePropertyName("failedAcquireActions");
-                writer.WriteArrayStart();
-                foreach(var item in this.FailedAcquireActions)
-                {
-                    item.WriteJson(writer);
-                }
-                writer.WriteArrayEnd();
-            }
-            if(this.PremiseQuestNames != null)
-            {
-                writer.WritePropertyName("premiseQuestNames");
-                writer.WriteArrayStart();
-                foreach(var item in this.PremiseQuestNames)
-                {
-                    writer.Write(item);
-                }
-                writer.WriteArrayEnd();
-            }
-            writer.WriteObjectEnd();
+            return new EzQuestModel {
+                QuestModelId = model.QuestModelId == null ? null : model.QuestModelId,
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                Contents = model.Contents == null ? new List<Gs2.Unity.Gs2Quest.Model.EzContents>() : model.Contents.Select(v => {
+                    return Gs2.Unity.Gs2Quest.Model.EzContents.FromModel(v);
+                }).ToList(),
+                ChallengePeriodEventId = model.ChallengePeriodEventId == null ? null : model.ChallengePeriodEventId,
+                ConsumeActions = model.ConsumeActions == null ? new List<Gs2.Unity.Gs2Quest.Model.EzConsumeAction>() : model.ConsumeActions.Select(v => {
+                    return Gs2.Unity.Gs2Quest.Model.EzConsumeAction.FromModel(v);
+                }).ToList(),
+                FailedAcquireActions = model.FailedAcquireActions == null ? new List<Gs2.Unity.Gs2Quest.Model.EzAcquireAction>() : model.FailedAcquireActions.Select(v => {
+                    return Gs2.Unity.Gs2Quest.Model.EzAcquireAction.FromModel(v);
+                }).ToList(),
+                PremiseQuestNames = model.PremiseQuestNames == null ? new List<string>() : model.PremiseQuestNames.Select(v => {
+                    return v;
+                }).ToList(),
+            };
         }
-	}
+    }
 }

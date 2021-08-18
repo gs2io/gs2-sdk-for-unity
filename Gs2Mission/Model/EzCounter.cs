@@ -13,76 +13,46 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Mission.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Mission.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzCounter
 	{
-		/** カウンター名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** 値 */
-		[UnityEngine.SerializeField]
-		public List<EzScopedValue> Values;
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Mission.Model.EzScopedValue> Values;
 
-		public EzCounter()
-		{
-
-		}
-
-		public EzCounter(Gs2.Gs2Mission.Model.Counter @counter)
-		{
-			Name = @counter.name;
-			Values = @counter.values != null ? @counter.values.Select(value =>
-                {
-                    return new EzScopedValue(value);
-                }
-			).ToList() : new List<EzScopedValue>(new EzScopedValue[] {});
-		}
-
-        public virtual Counter ToModel()
+        public Gs2.Gs2Mission.Model.Counter ToModel()
         {
-            return new Counter {
-                name = Name,
-                values = Values != null ? Values.Select(Value0 =>
-                        {
-                            return new ScopedValue
-                            {
-                                resetType = Value0.ResetType,
-                                value = Value0.Value,
-                            };
-                        }
-                ).ToList() : new List<ScopedValue>(new ScopedValue[] {}),
+            return new Gs2.Gs2Mission.Model.Counter {
+                Name = Name,
+                Values = Values?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzCounter FromModel(Gs2.Gs2Mission.Model.Counter model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Values != null)
-            {
-                writer.WritePropertyName("values");
-                writer.WriteArrayStart();
-                foreach(var item in this.Values)
-                {
-                    item.WriteJson(writer);
-                }
-                writer.WriteArrayEnd();
-            }
-            writer.WriteObjectEnd();
+            return new EzCounter {
+                Name = model.Name == null ? null : model.Name,
+                Values = model.Values == null ? new List<Gs2.Unity.Gs2Mission.Model.EzScopedValue>() : model.Values.Select(v => {
+                    return Gs2.Unity.Gs2Mission.Model.EzScopedValue.FromModel(v);
+                }).ToList(),
+            };
         }
-	}
+    }
 }

@@ -13,49 +13,38 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Friend.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Friend.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzFollowUser
 	{
-		/** ユーザーID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string UserId;
 
-		public EzFollowUser()
-		{
-
-		}
-
-		public EzFollowUser(Gs2.Gs2Friend.Model.FollowUser @followUser)
-		{
-			UserId = @followUser.userId;
-		}
-
-        public virtual FollowUser ToModel()
+        public Gs2.Gs2Friend.Model.FollowUser ToModel()
         {
-            return new FollowUser {
-                userId = UserId,
+            return new Gs2.Gs2Friend.Model.FollowUser {
+                UserId = UserId,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzFollowUser FromModel(Gs2.Gs2Friend.Model.FollowUser model)
         {
-            writer.WriteObjectStart();
-            if(this.UserId != null)
-            {
-                writer.WritePropertyName("userId");
-                writer.Write(this.UserId);
-            }
-            writer.WriteObjectEnd();
+            return new EzFollowUser {
+                UserId = model.UserId == null ? null : model.UserId,
+            };
         }
-	}
+    }
 }

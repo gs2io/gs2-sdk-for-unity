@@ -2,7 +2,7 @@
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
  *
- * Licensed under the Apache License, Version 2.0(the "License").
+ * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
  * A copy of the License is located at
  *
@@ -14,22 +14,28 @@
  * permissions and limitations under the License.
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Gs2.Gs2Gateway;
-using Gs2.Gs2Gateway.Model;
-using Gs2.Gs2Gateway.Request;
-using Gs2.Gs2Gateway.Result;
 using Gs2.Unity.Gs2Gateway.Model;
 using Gs2.Unity.Gs2Gateway.Result;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Gs2Quest;
+using Gs2.Gs2Quest.Model;
+using Gs2.Gs2Quest.Request;
+using Gs2.Gs2Quest.Result;
+using Gs2.Unity.Gs2Quest.Model;
+using Gs2.Unity.Gs2Quest.Result;
 using Gs2.Core;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Unity.Util;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Gateway
 {
 	public class DisabledCertificateHandler : CertificateHandler {
@@ -39,6 +45,8 @@ namespace Gs2.Unity.Gs2Gateway
 		}
 	}
 
+	[Preserve]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
@@ -59,17 +67,8 @@ namespace Gs2.Unity.Gs2Gateway
 			}
 		}
 
-		/// <summary>
-		///  サーバからプッシュ通知を受けるためのユーザーIDを設定<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="allowConcurrentAccess">同時に異なるクライアントからの接続を許容するか</param>
-		public IEnumerator SetUserId(
-		        UnityAction<AsyncResult<EzSetUserIdResult>> callback,
+        public IEnumerator SetUserId(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Gateway.Result.EzSetUserIdResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 bool allowConcurrentAccess
@@ -79,18 +78,18 @@ namespace Gs2.Unity.Gs2Gateway
                 callback,
 		        session,
                 cb => _client.SetUserId(
-                    new SetUserIdRequest()
+                    new Gs2.Gs2Gateway.Request.SetUserIdRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithAllowConcurrentAccess(allowConcurrentAccess)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithAllowConcurrentAccess(allowConcurrentAccess),
                     r => cb.Invoke(
-                        new AsyncResult<EzSetUserIdResult>(
-                            r.Result == null ? null : new EzSetUserIdResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Gateway.Result.EzSetUserIdResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Gateway.Result.EzSetUserIdResult.FromModel(r.Result),
                             r.Error
                         )
                     )
                 )
             );
 		}
-	}
+    }
 }

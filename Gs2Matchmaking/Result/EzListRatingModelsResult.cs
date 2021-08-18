@@ -13,31 +13,33 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Matchmaking.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Matchmaking.Model;
-using Gs2.Gs2Matchmaking.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Matchmaking.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzListRatingModelsResult
 	{
-        /** レーティングモデルのリスト */
-        public List<EzRatingModel> Items { get; private set; }
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel> Items;
 
-
-        public EzListRatingModelsResult(
-            DescribeRatingModelsResult result
-        )
+        public static EzListRatingModelsResult FromModel(Gs2.Gs2Matchmaking.Result.DescribeRatingModelsResult model)
         {
-            Items = new List<EzRatingModel>();
-            foreach (var item_ in result.items)
-            {
-                Items.Add(new EzRatingModel(item_));
-            }
+            return new EzListRatingModelsResult {
+                Items = model.Items == null ? new List<Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel>() : model.Items.Select(v => {
+                    return Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel.FromModel(v);
+                }).ToList(),
+            };
         }
-	}
+    }
 }

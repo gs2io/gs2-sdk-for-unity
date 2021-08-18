@@ -13,31 +13,34 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Enhance.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Enhance.Model;
-using Gs2.Gs2Enhance.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Enhance.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzStartResult
 	{
-        /** 強化の開始処理の実行に使用するスタンプシート */
-        public string StampSheet { get; private set; }
+		[SerializeField]
+		public string StampSheet;
+		[SerializeField]
+		public string StampSheetEncryptionKeyId;
 
-        /** スタンプシートの署名計算に使用した暗号鍵GRN */
-        public string StampSheetEncryptionKeyId { get; private set; }
-
-
-        public EzStartResult(
-            StartResult result
-        )
+        public static EzStartResult FromModel(Gs2.Gs2Enhance.Result.StartResult model)
         {
-            StampSheet = result.stampSheet;
-            StampSheetEncryptionKeyId = result.stampSheetEncryptionKeyId;
+            return new EzStartResult {
+                StampSheet = model.StampSheet == null ? null : model.StampSheet,
+                StampSheetEncryptionKeyId = model.StampSheetEncryptionKeyId == null ? null : model.StampSheetEncryptionKeyId,
+            };
         }
-	}
+    }
 }

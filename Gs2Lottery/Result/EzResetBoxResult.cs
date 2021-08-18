@@ -13,23 +13,28 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Lottery.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Lottery.Model;
-using Gs2.Gs2Lottery.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Lottery.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzResetBoxResult
 	{
 
-        public EzResetBoxResult(
-            ResetBoxResult result
-        )
+        public static EzResetBoxResult FromModel(Gs2.Gs2Lottery.Result.ResetBoxResult model)
         {
+            return new EzResetBoxResult {
+            };
         }
-	}
+    }
 }

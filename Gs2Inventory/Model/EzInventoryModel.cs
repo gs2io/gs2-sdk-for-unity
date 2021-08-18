@@ -13,73 +13,50 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Inventory.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Inventory.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzInventoryModel
 	{
-		/** インベントリの種類名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** インベントリの種類のメタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** インベントリの初期サイズ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int InitialCapacity;
-		/** インベントリの最大サイズ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int MaxCapacity;
 
-		public EzInventoryModel()
-		{
-
-		}
-
-		public EzInventoryModel(Gs2.Gs2Inventory.Model.InventoryModel @inventoryModel)
-		{
-			Name = @inventoryModel.name;
-			Metadata = @inventoryModel.metadata;
-			InitialCapacity = @inventoryModel.initialCapacity.HasValue ? @inventoryModel.initialCapacity.Value : 0;
-			MaxCapacity = @inventoryModel.maxCapacity.HasValue ? @inventoryModel.maxCapacity.Value : 0;
-		}
-
-        public virtual InventoryModel ToModel()
+        public Gs2.Gs2Inventory.Model.InventoryModel ToModel()
         {
-            return new InventoryModel {
-                name = Name,
-                metadata = Metadata,
-                initialCapacity = InitialCapacity,
-                maxCapacity = MaxCapacity,
+            return new Gs2.Gs2Inventory.Model.InventoryModel {
+                Name = Name,
+                Metadata = Metadata,
+                InitialCapacity = InitialCapacity,
+                MaxCapacity = MaxCapacity,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzInventoryModel FromModel(Gs2.Gs2Inventory.Model.InventoryModel model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            writer.WritePropertyName("initialCapacity");
-            writer.Write(this.InitialCapacity);
-            writer.WritePropertyName("maxCapacity");
-            writer.Write(this.MaxCapacity);
-            writer.WriteObjectEnd();
+            return new EzInventoryModel {
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                InitialCapacity = model.InitialCapacity ?? 0,
+                MaxCapacity = model.MaxCapacity ?? 0,
+            };
         }
-	}
+    }
 }

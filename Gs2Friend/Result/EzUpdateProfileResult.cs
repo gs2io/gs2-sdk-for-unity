@@ -13,30 +13,31 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Friend.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Friend.Model;
-using Gs2.Gs2Friend.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Friend.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzUpdateProfileResult
 	{
-        /** 更新したプロフィール */
-        public EzProfile Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Friend.Model.EzProfile Item;
 
-
-        public EzUpdateProfileResult(
-            UpdateProfileResult result
-        )
+        public static EzUpdateProfileResult FromModel(Gs2.Gs2Friend.Result.UpdateProfileResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzProfile(result.item);
-            }
+            return new EzUpdateProfileResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Friend.Model.EzProfile.FromModel(model.Item),
+            };
         }
-	}
+    }
 }

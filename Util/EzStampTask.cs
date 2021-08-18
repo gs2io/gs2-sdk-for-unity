@@ -40,7 +40,7 @@ namespace Gs2.Unity.Util
         
         public T ToRequest<T> () where T: IRequest 
         {
-            return (T)typeof(T).GetMethod("FromDict")?.Invoke(null, new object[] { JsonMapper.ToObject(Args) });
+            return (T)typeof(T).GetMethod("FromJson")?.Invoke(null, new object[] { JsonMapper.ToObject(Args) });
         }
 
         public string TaskId => _stampTask.taskId;
@@ -66,11 +66,11 @@ namespace Gs2.Unity.Util
                     {
                         callback.Invoke(
                             new AsyncResult<EzRunStampTaskResult>(
-                                r.Result != null ? new EzRunStampTaskResult(
+                                r.Result != null ? EzRunStampTaskResult.FromModel(
                                     new RunStampTaskResult
                                     {
-                                        result = r.Result.Result,
-                                        contextStack = r.Result.ContextStack,
+                                        Result = r.Result.Result,
+                                        ContextStack = r.Result.ContextStack,
                                     }
                                 ) : null, 
                                 r.Error

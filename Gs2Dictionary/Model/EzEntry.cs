@@ -13,76 +13,50 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Dictionary.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Dictionary.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzEntry
 	{
-		/** エントリー のGRN */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string EntryId;
-		/** ユーザーID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string UserId;
-		/** エントリーの種類名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** None */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long AcquiredAt;
 
-		public EzEntry()
-		{
-
-		}
-
-		public EzEntry(Gs2.Gs2Dictionary.Model.Entry @entry)
-		{
-			EntryId = @entry.entryId;
-			UserId = @entry.userId;
-			Name = @entry.name;
-			AcquiredAt = @entry.acquiredAt.HasValue ? @entry.acquiredAt.Value : 0;
-		}
-
-        public virtual Entry ToModel()
+        public Gs2.Gs2Dictionary.Model.Entry ToModel()
         {
-            return new Entry {
-                entryId = EntryId,
-                userId = UserId,
-                name = Name,
-                acquiredAt = AcquiredAt,
+            return new Gs2.Gs2Dictionary.Model.Entry {
+                EntryId = EntryId,
+                UserId = UserId,
+                Name = Name,
+                AcquiredAt = AcquiredAt,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzEntry FromModel(Gs2.Gs2Dictionary.Model.Entry model)
         {
-            writer.WriteObjectStart();
-            if(this.EntryId != null)
-            {
-                writer.WritePropertyName("entryId");
-                writer.Write(this.EntryId);
-            }
-            if(this.UserId != null)
-            {
-                writer.WritePropertyName("userId");
-                writer.Write(this.UserId);
-            }
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            writer.WritePropertyName("acquiredAt");
-            writer.Write(this.AcquiredAt);
-            writer.WriteObjectEnd();
+            return new EzEntry {
+                EntryId = model.EntryId == null ? null : model.EntryId,
+                UserId = model.UserId == null ? null : model.UserId,
+                Name = model.Name == null ? null : model.Name,
+                AcquiredAt = model.AcquiredAt ?? 0,
+            };
         }
-	}
+    }
 }

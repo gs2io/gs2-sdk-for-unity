@@ -13,38 +13,37 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Account.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Account.Model;
-using Gs2.Gs2Account.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Account.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzAuthenticationResult
 	{
-        /** ゲームプレイヤーアカウント */
-        public EzAccount Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Account.Model.EzAccount Item;
+		[SerializeField]
+		public string Body;
+		[SerializeField]
+		public string Signature;
 
-        /** 署名対象のアカウント情報 */
-        public string Body { get; private set; }
-
-        /** 署名 */
-        public string Signature { get; private set; }
-
-
-        public EzAuthenticationResult(
-            AuthenticationResult result
-        )
+        public static EzAuthenticationResult FromModel(Gs2.Gs2Account.Result.AuthenticationResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzAccount(result.item);
-            }
-            Body = result.body;
-            Signature = result.signature;
+            return new EzAuthenticationResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Account.Model.EzAccount.FromModel(model.Item),
+                Body = model.Body == null ? null : model.Body,
+                Signature = model.Signature == null ? null : model.Signature,
+            };
         }
-	}
+    }
 }

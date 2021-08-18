@@ -13,113 +13,58 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Showcase.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Showcase.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzSalesItem
 	{
-		/** 商品名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** 商品のメタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** 消費アクションリスト */
-		[UnityEngine.SerializeField]
-		public List<EzConsumeAction> ConsumeActions;
-		/** 入手アクションリスト */
-		[UnityEngine.SerializeField]
-		public List<EzAcquireAction> AcquireActions;
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Showcase.Model.EzConsumeAction> ConsumeActions;
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Showcase.Model.EzAcquireAction> AcquireActions;
 
-		public EzSalesItem()
-		{
-
-		}
-
-		public EzSalesItem(Gs2.Gs2Showcase.Model.SalesItem @salesItem)
-		{
-			Name = @salesItem.name;
-			Metadata = @salesItem.metadata;
-			ConsumeActions = @salesItem.consumeActions != null ? @salesItem.consumeActions.Select(value =>
-                {
-                    return new EzConsumeAction(value);
-                }
-			).ToList() : new List<EzConsumeAction>(new EzConsumeAction[] {});
-			AcquireActions = @salesItem.acquireActions != null ? @salesItem.acquireActions.Select(value =>
-                {
-                    return new EzAcquireAction(value);
-                }
-			).ToList() : new List<EzAcquireAction>(new EzAcquireAction[] {});
-		}
-
-        public virtual SalesItem ToModel()
+        public Gs2.Gs2Showcase.Model.SalesItem ToModel()
         {
-            return new SalesItem {
-                name = Name,
-                metadata = Metadata,
-                consumeActions = ConsumeActions != null ? ConsumeActions.Select(Value0 =>
-                        {
-                            return new ConsumeAction
-                            {
-                                action = Value0.Action,
-                                request = Value0.Request,
-                            };
-                        }
-                ).ToList() : new List<ConsumeAction>(new ConsumeAction[] {}),
-                acquireActions = AcquireActions != null ? AcquireActions.Select(Value0 =>
-                        {
-                            return new AcquireAction
-                            {
-                                action = Value0.Action,
-                                request = Value0.Request,
-                            };
-                        }
-                ).ToList() : new List<AcquireAction>(new AcquireAction[] {}),
+            return new Gs2.Gs2Showcase.Model.SalesItem {
+                Name = Name,
+                Metadata = Metadata,
+                ConsumeActions = ConsumeActions?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
+                AcquireActions = AcquireActions?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzSalesItem FromModel(Gs2.Gs2Showcase.Model.SalesItem model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            if(this.ConsumeActions != null)
-            {
-                writer.WritePropertyName("consumeActions");
-                writer.WriteArrayStart();
-                foreach(var item in this.ConsumeActions)
-                {
-                    item.WriteJson(writer);
-                }
-                writer.WriteArrayEnd();
-            }
-            if(this.AcquireActions != null)
-            {
-                writer.WritePropertyName("acquireActions");
-                writer.WriteArrayStart();
-                foreach(var item in this.AcquireActions)
-                {
-                    item.WriteJson(writer);
-                }
-                writer.WriteArrayEnd();
-            }
-            writer.WriteObjectEnd();
+            return new EzSalesItem {
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                ConsumeActions = model.ConsumeActions == null ? new List<Gs2.Unity.Gs2Showcase.Model.EzConsumeAction>() : model.ConsumeActions.Select(v => {
+                    return Gs2.Unity.Gs2Showcase.Model.EzConsumeAction.FromModel(v);
+                }).ToList(),
+                AcquireActions = model.AcquireActions == null ? new List<Gs2.Unity.Gs2Showcase.Model.EzAcquireAction>() : model.AcquireActions.Select(v => {
+                    return Gs2.Unity.Gs2Showcase.Model.EzAcquireAction.FromModel(v);
+                }).ToList(),
+            };
         }
-	}
+    }
 }

@@ -13,27 +13,31 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Distributor.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Distributor.Model;
-using Gs2.Gs2Distributor.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Distributor.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzRunStampSheetWithoutNamespaceResult
 	{
-        /** レスポンス内容 */
-        public string Result { get; private set; }
+		[SerializeField]
+		public string Result;
 
-
-        public EzRunStampSheetWithoutNamespaceResult(
-            RunStampSheetWithoutNamespaceResult result
-        )
+        public static EzRunStampSheetWithoutNamespaceResult FromModel(Gs2.Gs2Distributor.Result.RunStampSheetWithoutNamespaceResult model)
         {
-            Result = result.result;
+            return new EzRunStampSheetWithoutNamespaceResult {
+                Result = model.Result == null ? null : model.Result,
+            };
         }
-	}
+    }
 }

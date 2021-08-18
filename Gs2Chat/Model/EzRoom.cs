@@ -13,59 +13,42 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Chat.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Chat.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzRoom
 	{
-		/** ルーム名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** メタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
 
-		public EzRoom()
-		{
-
-		}
-
-		public EzRoom(Gs2.Gs2Chat.Model.Room @room)
-		{
-			Name = @room.name;
-			Metadata = @room.metadata;
-		}
-
-        public virtual Room ToModel()
+        public Gs2.Gs2Chat.Model.Room ToModel()
         {
-            return new Room {
-                name = Name,
-                metadata = Metadata,
+            return new Gs2.Gs2Chat.Model.Room {
+                Name = Name,
+                Metadata = Metadata,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzRoom FromModel(Gs2.Gs2Chat.Model.Room model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            writer.WriteObjectEnd();
+            return new EzRoom {
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+            };
         }
-	}
+    }
 }

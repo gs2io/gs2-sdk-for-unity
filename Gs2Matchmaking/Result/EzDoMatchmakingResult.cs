@@ -13,34 +13,34 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Matchmaking.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Matchmaking.Model;
-using Gs2.Gs2Matchmaking.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Matchmaking.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzDoMatchmakingResult
 	{
-        /** ギャザリング */
-        public EzGathering Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Matchmaking.Model.EzGathering Item;
+		[SerializeField]
+		public string MatchmakingContextToken;
 
-        /** マッチメイキングの状態を保持するトークン */
-        public string MatchmakingContextToken { get; private set; }
-
-
-        public EzDoMatchmakingResult(
-            DoMatchmakingResult result
-        )
+        public static EzDoMatchmakingResult FromModel(Gs2.Gs2Matchmaking.Result.DoMatchmakingResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzGathering(result.item);
-            }
-            MatchmakingContextToken = result.matchmakingContextToken;
+            return new EzDoMatchmakingResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Matchmaking.Model.EzGathering.FromModel(model.Item),
+                MatchmakingContextToken = model.MatchmakingContextToken == null ? null : model.MatchmakingContextToken,
+            };
         }
-	}
+    }
 }

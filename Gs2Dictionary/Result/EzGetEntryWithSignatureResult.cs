@@ -13,38 +13,37 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Dictionary.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Dictionary.Model;
-using Gs2.Gs2Dictionary.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Dictionary.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzGetEntryWithSignatureResult
 	{
-        /** エントリー */
-        public EzEntry Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Dictionary.Model.EzEntry Item;
+		[SerializeField]
+		public string Body;
+		[SerializeField]
+		public string Signature;
 
-        /** 署名対象のエントリー情報 */
-        public string Body { get; private set; }
-
-        /** 署名 */
-        public string Signature { get; private set; }
-
-
-        public EzGetEntryWithSignatureResult(
-            GetEntryWithSignatureResult result
-        )
+        public static EzGetEntryWithSignatureResult FromModel(Gs2.Gs2Dictionary.Result.GetEntryWithSignatureResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzEntry(result.item);
-            }
-            Body = result.body;
-            Signature = result.signature;
+            return new EzGetEntryWithSignatureResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Dictionary.Model.EzEntry.FromModel(model.Item),
+                Body = model.Body == null ? null : model.Body,
+                Signature = model.Signature == null ? null : model.Signature,
+            };
         }
-	}
+    }
 }

@@ -13,80 +13,54 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Inventory.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Inventory.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzItemModel
 	{
-		/** アイテムモデルの種類名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** アイテムモデルの種類のメタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** スタック可能な最大数量 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long StackingLimit;
-		/** スタック可能な最大数量を超えた時複数枠にアイテムを保管することを許すか */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public bool AllowMultipleStacks;
-		/** 表示順番 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int SortValue;
 
-		public EzItemModel()
-		{
-
-		}
-
-		public EzItemModel(Gs2.Gs2Inventory.Model.ItemModel @itemModel)
-		{
-			Name = @itemModel.name;
-			Metadata = @itemModel.metadata;
-			StackingLimit = @itemModel.stackingLimit.HasValue ? @itemModel.stackingLimit.Value : 0;
-			AllowMultipleStacks = @itemModel.allowMultipleStacks.HasValue ? @itemModel.allowMultipleStacks.Value : false;
-			SortValue = @itemModel.sortValue.HasValue ? @itemModel.sortValue.Value : 0;
-		}
-
-        public virtual ItemModel ToModel()
+        public Gs2.Gs2Inventory.Model.ItemModel ToModel()
         {
-            return new ItemModel {
-                name = Name,
-                metadata = Metadata,
-                stackingLimit = StackingLimit,
-                allowMultipleStacks = AllowMultipleStacks,
-                sortValue = SortValue,
+            return new Gs2.Gs2Inventory.Model.ItemModel {
+                Name = Name,
+                Metadata = Metadata,
+                StackingLimit = StackingLimit,
+                AllowMultipleStacks = AllowMultipleStacks,
+                SortValue = SortValue,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzItemModel FromModel(Gs2.Gs2Inventory.Model.ItemModel model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            writer.WritePropertyName("stackingLimit");
-            writer.Write(this.StackingLimit);
-            writer.WritePropertyName("allowMultipleStacks");
-            writer.Write(this.AllowMultipleStacks);
-            writer.WritePropertyName("sortValue");
-            writer.Write(this.SortValue);
-            writer.WriteObjectEnd();
+            return new EzItemModel {
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                StackingLimit = model.StackingLimit ?? 0,
+                AllowMultipleStacks = model.AllowMultipleStacks ?? false,
+                SortValue = model.SortValue ?? 0,
+            };
         }
-	}
+    }
 }

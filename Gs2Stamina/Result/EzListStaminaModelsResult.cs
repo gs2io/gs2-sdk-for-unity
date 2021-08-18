@@ -13,31 +13,33 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Stamina.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Stamina.Model;
-using Gs2.Gs2Stamina.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Stamina.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzListStaminaModelsResult
 	{
-        /** スタミナモデルのリスト */
-        public List<EzStaminaModel> Items { get; private set; }
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Stamina.Model.EzStaminaModel> Items;
 
-
-        public EzListStaminaModelsResult(
-            DescribeStaminaModelsResult result
-        )
+        public static EzListStaminaModelsResult FromModel(Gs2.Gs2Stamina.Result.DescribeStaminaModelsResult model)
         {
-            Items = new List<EzStaminaModel>();
-            foreach (var item_ in result.items)
-            {
-                Items.Add(new EzStaminaModel(item_));
-            }
+            return new EzListStaminaModelsResult {
+                Items = model.Items == null ? new List<Gs2.Unity.Gs2Stamina.Model.EzStaminaModel>() : model.Items.Select(v => {
+                    return Gs2.Unity.Gs2Stamina.Model.EzStaminaModel.FromModel(v);
+                }).ToList(),
+            };
         }
-	}
+    }
 }

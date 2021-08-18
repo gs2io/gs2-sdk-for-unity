@@ -13,59 +13,42 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Lottery.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Lottery.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzAcquireAction
 	{
-		/** スタンプシートで実行するアクションの種類 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Action;
-		/** 入手リクエストのJSON */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Request;
 
-		public EzAcquireAction()
-		{
-
-		}
-
-		public EzAcquireAction(Gs2.Gs2Lottery.Model.AcquireAction @acquireAction)
-		{
-			Action = @acquireAction.action;
-			Request = @acquireAction.request;
-		}
-
-        public virtual AcquireAction ToModel()
+        public Gs2.Gs2Lottery.Model.AcquireAction ToModel()
         {
-            return new AcquireAction {
-                action = Action,
-                request = Request,
+            return new Gs2.Gs2Lottery.Model.AcquireAction {
+                Action = Action,
+                Request = Request,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzAcquireAction FromModel(Gs2.Gs2Lottery.Model.AcquireAction model)
         {
-            writer.WriteObjectStart();
-            if(this.Action != null)
-            {
-                writer.WritePropertyName("action");
-                writer.Write(this.Action);
-            }
-            if(this.Request != null)
-            {
-                writer.WritePropertyName("request");
-                writer.Write(this.Request);
-            }
-            writer.WriteObjectEnd();
+            return new EzAcquireAction {
+                Action = model.Action == null ? null : model.Action,
+                Request = model.Request == null ? null : model.Request,
+            };
         }
-	}
+    }
 }

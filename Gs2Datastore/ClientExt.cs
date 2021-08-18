@@ -175,8 +175,8 @@ namespace Gs2.Unity.Gs2Datastore
 					session,
 					namespaceName,
 					scope,
-					allowUserIds,
 					name,
+					allowUserIds,
 					updateIfExists
 				);
 

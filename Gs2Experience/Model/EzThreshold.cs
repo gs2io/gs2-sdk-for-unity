@@ -13,76 +13,46 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Experience.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Experience.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzThreshold
 	{
-		/** ランクアップ閾値のメタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** ランクアップ経験値閾値リスト */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public List<long> Values;
 
-		public EzThreshold()
-		{
-
-		}
-
-		public EzThreshold(Gs2.Gs2Experience.Model.Threshold @threshold)
-		{
-			Metadata = @threshold.metadata;
-			Values = @threshold.values != null ? @threshold.values.Select(value =>
-                {
-                    if (value.HasValue)
-                    {
-                        return value.Value;
-                    }
-                    return 0;
-                }
-			).ToList() : new List<long>(new long[] {});
-		}
-
-        public virtual Threshold ToModel()
+        public Gs2.Gs2Experience.Model.Threshold ToModel()
         {
-            return new Threshold {
-                metadata = Metadata,
-                values = Values != null ? Values.Select(Value0 =>
-                        {
-                            return (long?)Value0;
-                        }
-                ).ToList() : new List<long?>(new long?[] {}),
+            return new Gs2.Gs2Experience.Model.Threshold {
+                Metadata = Metadata,
+                Values = Values?.Select(v => {
+                    return v;
+                }).ToArray(),
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzThreshold FromModel(Gs2.Gs2Experience.Model.Threshold model)
         {
-            writer.WriteObjectStart();
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            if(this.Values != null)
-            {
-                writer.WritePropertyName("values");
-                writer.WriteArrayStart();
-                foreach(var item in this.Values)
-                {
-                    writer.Write(item);
-                }
-                writer.WriteArrayEnd();
-            }
-            writer.WriteObjectEnd();
+            return new EzThreshold {
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                Values = model.Values == null ? new List<long>() : model.Values.Select(v => {
+                    return v;
+                }).ToList(),
+            };
         }
-	}
+    }
 }

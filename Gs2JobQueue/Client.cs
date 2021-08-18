@@ -2,7 +2,7 @@
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
  *
- * Licensed under the Apache License, Version 2.0(the "License").
+ * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
  * A copy of the License is located at
  *
@@ -14,22 +14,28 @@
  * permissions and limitations under the License.
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Gs2.Gs2JobQueue;
-using Gs2.Gs2JobQueue.Model;
-using Gs2.Gs2JobQueue.Request;
-using Gs2.Gs2JobQueue.Result;
 using Gs2.Unity.Gs2JobQueue.Model;
 using Gs2.Unity.Gs2JobQueue.Result;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Gs2Quest;
+using Gs2.Gs2Quest.Model;
+using Gs2.Gs2Quest.Request;
+using Gs2.Gs2Quest.Result;
+using Gs2.Unity.Gs2Quest.Model;
+using Gs2.Unity.Gs2Quest.Result;
 using Gs2.Core;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Unity.Util;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2JobQueue
 {
 	public class DisabledCertificateHandler : CertificateHandler {
@@ -39,6 +45,8 @@ namespace Gs2.Unity.Gs2JobQueue
 		}
 	}
 
+	[Preserve]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
@@ -59,20 +67,8 @@ namespace Gs2.Unity.Gs2JobQueue
 			}
 		}
 
-		/// <summary>
-		///  タスクキューのジョブを実行します。<br />
-		///    <br />
-		///    タスクキューのプッシュ通知設定をすることでタスクキューに新しくジョブが追加されたときにプッシュ通知を受けることができます。<br />
-		///    定期的にこのAPIを呼び出すか、プッシュ通知をトリガーしてこのAPIを呼び出してください。<br />
-		///    `isLastJob` が false を返している間は繰り返し実行してください。<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		public IEnumerator Run(
-		        UnityAction<AsyncResult<EzRunResult>> callback,
+        public IEnumerator Run(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2JobQueue.Result.EzRunResult>> callback,
 		        GameSession session,
                 string namespaceName
         )
@@ -80,18 +76,18 @@ namespace Gs2.Unity.Gs2JobQueue
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.Run(
-                    new RunRequest()
+                cb => _restClient.Run(
+                    new Gs2.Gs2JobQueue.Request.RunRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token),
                     r => cb.Invoke(
-                        new AsyncResult<EzRunResult>(
-                            r.Result == null ? null : new EzRunResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2JobQueue.Result.EzRunResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2JobQueue.Result.EzRunResult.FromModel(r.Result),
                             r.Error
                         )
                     )
                 )
             );
 		}
-	}
+    }
 }

@@ -2,7 +2,7 @@
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
  *
- * Licensed under the Apache License, Version 2.0(the "License").
+ * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
  * A copy of the License is located at
  *
@@ -14,22 +14,28 @@
  * permissions and limitations under the License.
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Gs2.Gs2Ranking;
-using Gs2.Gs2Ranking.Model;
-using Gs2.Gs2Ranking.Request;
-using Gs2.Gs2Ranking.Result;
 using Gs2.Unity.Gs2Ranking.Model;
 using Gs2.Unity.Gs2Ranking.Result;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Gs2Quest;
+using Gs2.Gs2Quest.Model;
+using Gs2.Gs2Quest.Request;
+using Gs2.Gs2Quest.Result;
+using Gs2.Unity.Gs2Quest.Model;
+using Gs2.Unity.Gs2Quest.Result;
 using Gs2.Core;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Unity.Util;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Ranking
 {
 	public class DisabledCertificateHandler : CertificateHandler {
@@ -39,6 +45,8 @@ namespace Gs2.Unity.Gs2Ranking
 		}
 	}
 
+	[Preserve]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
@@ -59,42 +67,8 @@ namespace Gs2.Unity.Gs2Ranking
 			}
 		}
 
-		/// <summary>
-		///  カテゴリの一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		public IEnumerator ListCategories(
-		        UnityAction<AsyncResult<EzListCategoriesResult>> callback,
-                string namespaceName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-                null,
-                cb => _restClient.DescribeCategoryModels(
-                    new DescribeCategoryModelsRequest()
-                        .WithNamespaceName(namespaceName),
-                    r => cb.Invoke(
-                        new AsyncResult<EzListCategoriesResult>(
-                            r.Result == null ? null : new EzListCategoriesResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  カテゴリの一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="categoryName">カテゴリモデル名</param>
-		public IEnumerator GetCategory(
-		        UnityAction<AsyncResult<EzGetCategoryResult>> callback,
+        public IEnumerator GetCategory(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzGetCategoryResult>> callback,
                 string namespaceName,
                 string categoryName
         )
@@ -103,12 +77,12 @@ namespace Gs2.Unity.Gs2Ranking
                 callback,
                 null,
                 cb => _client.GetCategoryModel(
-                    new GetCategoryModelRequest()
+                    new Gs2.Gs2Ranking.Request.GetCategoryModelRequest()
                         .WithNamespaceName(namespaceName)
                         .WithCategoryName(categoryName),
                     r => cb.Invoke(
-                        new AsyncResult<EzGetCategoryResult>(
-                            r.Result == null ? null : new EzGetCategoryResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzGetCategoryResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Ranking.Result.EzGetCategoryResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -116,17 +90,29 @@ namespace Gs2.Unity.Gs2Ranking
             );
 		}
 
-		/// <summary>
-		///  購読しているユーザIDの一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="categoryName">カテゴリ名</param>
-		public IEnumerator ListSubscribes(
-		        UnityAction<AsyncResult<EzListSubscribesResult>> callback,
+        public IEnumerator ListCategories(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzListCategoriesResult>> callback,
+                string namespaceName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeCategoryModels(
+                    new Gs2.Gs2Ranking.Request.DescribeCategoryModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzListCategoriesResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Ranking.Result.EzListCategoriesResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListSubscribes(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzListSubscribesResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string categoryName
@@ -136,13 +122,13 @@ namespace Gs2.Unity.Gs2Ranking
                 callback,
 		        session,
                 cb => _restClient.DescribeSubscribesByCategoryName(
-                    new DescribeSubscribesByCategoryNameRequest()
+                    new Gs2.Gs2Ranking.Request.DescribeSubscribesByCategoryNameRequest()
                         .WithNamespaceName(namespaceName)
                         .WithCategoryName(categoryName)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token),
                     r => cb.Invoke(
-                        new AsyncResult<EzListSubscribesResult>(
-                            r.Result == null ? null : new EzListSubscribesResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzListSubscribesResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Ranking.Result.EzListSubscribesResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -150,22 +136,8 @@ namespace Gs2.Unity.Gs2Ranking
             );
 		}
 
-		/// <summary>
-		///  ユーザIDを購読<br />
-		///    <br />
-		///    ユーザIDを購読することで、そのユーザIDに関する新着メッセージ投稿の通知を受けることができます<br />
-		///    購読する際のオプションとして、「メッセージに付加されたカテゴリが特定の値のものだけ通知する」といった設定や<br />
-		///    「通知を受けたときにオフラインだった場合、モバイルプッシュ通知に転送する」といった設定ができます。<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="categoryName">カテゴリ名</param>
-		/// <param name="targetUserId">購読されるユーザID</param>
-		public IEnumerator Subscribe(
-		        UnityAction<AsyncResult<EzSubscribeResult>> callback,
+        public IEnumerator Subscribe(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzSubscribeResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string categoryName,
@@ -176,14 +148,14 @@ namespace Gs2.Unity.Gs2Ranking
                 callback,
 		        session,
                 cb => _client.Subscribe(
-                    new SubscribeRequest()
+                    new Gs2.Gs2Ranking.Request.SubscribeRequest()
                         .WithNamespaceName(namespaceName)
                         .WithCategoryName(categoryName)
-                        .WithTargetUserId(targetUserId)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithTargetUserId(targetUserId),
                     r => cb.Invoke(
-                        new AsyncResult<EzSubscribeResult>(
-                            r.Result == null ? null : new EzSubscribeResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzSubscribeResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Ranking.Result.EzSubscribeResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -191,18 +163,8 @@ namespace Gs2.Unity.Gs2Ranking
             );
 		}
 
-		/// <summary>
-		///  購読の解除<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="categoryName">カテゴリ名</param>
-		/// <param name="targetUserId">購読されるユーザID</param>
-		public IEnumerator Unsubscribe(
-		        UnityAction<AsyncResult<EzUnsubscribeResult>> callback,
+        public IEnumerator Unsubscribe(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzUnsubscribeResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string categoryName,
@@ -213,14 +175,14 @@ namespace Gs2.Unity.Gs2Ranking
                 callback,
 		        session,
                 cb => _client.Unsubscribe(
-                    new UnsubscribeRequest()
+                    new Gs2.Gs2Ranking.Request.UnsubscribeRequest()
                         .WithNamespaceName(namespaceName)
                         .WithCategoryName(categoryName)
-                        .WithTargetUserId(targetUserId)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithTargetUserId(targetUserId),
                     r => cb.Invoke(
-                        new AsyncResult<EzUnsubscribeResult>(
-                            r.Result == null ? null : new EzUnsubscribeResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzUnsubscribeResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Ranking.Result.EzUnsubscribeResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -228,184 +190,8 @@ namespace Gs2.Unity.Gs2Ranking
             );
 		}
 
-		/// <summary>
-		///  ゲームプレイヤーが登録したスコアの一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="categoryName">カテゴリ名</param>
-		/// <param name="scorerUserId">スコアを獲得したユーザID</param>
-		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
-		/// <param name="limit">データの取得件数</param>
-		public IEnumerator ListScores(
-		        UnityAction<AsyncResult<EzListScoresResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string categoryName,
-                string scorerUserId,
-                string pageToken=null,
-                long? limit=null
-        )
-		{
-            yield return _profile.Run(
-                callback,
-		        session,
-                cb => _restClient.DescribeScores(
-                    new DescribeScoresRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithCategoryName(categoryName)
-                        .WithScorerUserId(scorerUserId)
-                        .WithPageToken(pageToken)
-                        .WithLimit(limit)
-                        .WithAccessToken(session.AccessToken.token),
-                    r => cb.Invoke(
-                        new AsyncResult<EzListScoresResult>(
-                            r.Result == null ? null : new EzListScoresResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  ゲームプレイヤーが登録したスコアを取得<br />
-		///    <br />
-		///    ユーザID毎にスコアを1つしか登録できないカテゴリを指定する場合、ユニークIDは省略可能です<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="categoryName">カテゴリ名</param>
-		/// <param name="scorerUserId">スコアを獲得したユーザID</param>
-		/// <param name="uniqueId">スコアのユニークID</param>
-		public IEnumerator GetScore(
-		        UnityAction<AsyncResult<EzGetScoreResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string categoryName,
-                string scorerUserId,
-                string uniqueId=null
-        )
-		{
-            yield return _profile.Run(
-                callback,
-		        session,
-                cb => _client.GetScore(
-                    new GetScoreRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithCategoryName(categoryName)
-                        .WithScorerUserId(scorerUserId)
-                        .WithUniqueId(uniqueId)
-                        .WithAccessToken(session.AccessToken.token),
-                    r => cb.Invoke(
-                        new AsyncResult<EzGetScoreResult>(
-                            r.Result == null ? null : new EzGetScoreResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  ランキングの一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="categoryName">カテゴリ名</param>
-		/// <param name="score">スコア</param>
-		/// <param name="metadata">メタデータ</param>
-		public IEnumerator PutScore(
-		        UnityAction<AsyncResult<EzPutScoreResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string categoryName,
-                long score,
-                string metadata=null
-        )
-		{
-            yield return _profile.Run(
-                callback,
-		        session,
-                cb => _client.PutScore(
-                    new PutScoreRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithCategoryName(categoryName)
-                        .WithScore(score)
-                        .WithMetadata(metadata)
-                        .WithAccessToken(session.AccessToken.token),
-                    r => cb.Invoke(
-                        new AsyncResult<EzPutScoreResult>(
-                            r.Result == null ? null : new EzPutScoreResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  ランキングの一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="categoryName">カテゴリ名</param>
-		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
-		/// <param name="limit">データの取得件数</param>
-		/// <param name="startIndex">ランキングの取得を開始するインデックス</param>
-		public IEnumerator GetRanking(
-		        UnityAction<AsyncResult<EzGetRankingResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string categoryName,
-                string pageToken=null,
-                long? limit=null,
-                long? startIndex=null
-        )
-		{
-            yield return _profile.Run(
-                callback,
-		        session,
-                cb => _restClient.DescribeRankings(
-                    new DescribeRankingsRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithCategoryName(categoryName)
-                        .WithPageToken(pageToken)
-                        .WithLimit(limit)
-                        .WithStartIndex(startIndex)
-                        .WithAccessToken(session.AccessToken.token),
-                    r => cb.Invoke(
-                        new AsyncResult<EzGetRankingResult>(
-                            r.Result == null ? null : new EzGetRankingResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  ランキングの一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="categoryName">カテゴリ名</param>
-		/// <param name="score">スコア</param>
-		public IEnumerator GetNearRanking(
-		        UnityAction<AsyncResult<EzGetNearRankingResult>> callback,
+        public IEnumerator GetNearRanking(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzGetNearRankingResult>> callback,
                 string namespaceName,
                 string categoryName,
                 long score
@@ -415,13 +201,13 @@ namespace Gs2.Unity.Gs2Ranking
                 callback,
                 null,
                 cb => _restClient.DescribeNearRankings(
-                    new DescribeNearRankingsRequest()
+                    new Gs2.Gs2Ranking.Request.DescribeNearRankingsRequest()
                         .WithNamespaceName(namespaceName)
                         .WithCategoryName(categoryName)
                         .WithScore(score),
                     r => cb.Invoke(
-                        new AsyncResult<EzGetNearRankingResult>(
-                            r.Result == null ? null : new EzGetNearRankingResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzGetNearRankingResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Ranking.Result.EzGetNearRankingResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -429,46 +215,153 @@ namespace Gs2.Unity.Gs2Ranking
             );
 		}
 
-		/// <summary>
-		///  ランキングを取得<br />
-		///    <br />
-		///    ユーザID毎にスコアを1つしか登録できないカテゴリを指定する場合、ユニークIDは省略可能です<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="categoryName">カテゴリ名</param>
-		/// <param name="scorerUserId">スコアを獲得したユーザID</param>
-		/// <param name="uniqueId">スコアのユニークID</param>
-		public IEnumerator GetRank(
-		        UnityAction<AsyncResult<EzGetRankResult>> callback,
+        public IEnumerator GetRank(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzGetRankResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string categoryName,
                 string scorerUserId,
-                string uniqueId=null
+                string uniqueId = null
         )
 		{
             yield return _profile.Run(
                 callback,
 		        session,
                 cb => _client.GetRanking(
-                    new GetRankingRequest()
+                    new Gs2.Gs2Ranking.Request.GetRankingRequest()
                         .WithNamespaceName(namespaceName)
                         .WithCategoryName(categoryName)
+                        .WithAccessToken(session.AccessToken.Token)
                         .WithScorerUserId(scorerUserId)
-                        .WithUniqueId(uniqueId)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithUniqueId(uniqueId),
                     r => cb.Invoke(
-                        new AsyncResult<EzGetRankResult>(
-                            r.Result == null ? null : new EzGetRankResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzGetRankResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Ranking.Result.EzGetRankResult.FromModel(r.Result),
                             r.Error
                         )
                     )
                 )
             );
 		}
-	}
+
+        public IEnumerator GetRanking(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzGetRankingResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string categoryName,
+                int limit,
+                string pageToken = null,
+                long? startIndex = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribeRankings(
+                    new Gs2.Gs2Ranking.Request.DescribeRankingsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithCategoryName(categoryName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit)
+                        .WithStartIndex(startIndex),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzGetRankingResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Ranking.Result.EzGetRankingResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator PutScore(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzPutScoreResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string categoryName,
+                long score,
+                string metadata = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.PutScore(
+                    new Gs2.Gs2Ranking.Request.PutScoreRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithCategoryName(categoryName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithScore(score)
+                        .WithMetadata(metadata),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzPutScoreResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Ranking.Result.EzPutScoreResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator GetScore(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzGetScoreResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string categoryName,
+                string scorerUserId,
+                string uniqueId = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetScore(
+                    new Gs2.Gs2Ranking.Request.GetScoreRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithCategoryName(categoryName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithScorerUserId(scorerUserId)
+                        .WithUniqueId(uniqueId),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzGetScoreResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Ranking.Result.EzGetScoreResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListScores(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzListScoresResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string categoryName,
+                string scorerUserId,
+                int limit,
+                string pageToken = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribeScores(
+                    new Gs2.Gs2Ranking.Request.DescribeScoresRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithCategoryName(categoryName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithScorerUserId(scorerUserId)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzListScoresResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Ranking.Result.EzListScoresResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+    }
 }

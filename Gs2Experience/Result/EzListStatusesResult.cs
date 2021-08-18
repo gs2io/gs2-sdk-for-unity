@@ -13,35 +13,36 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Experience.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Experience.Model;
-using Gs2.Gs2Experience.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Experience.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzListStatusesResult
 	{
-        /** ステータスのリスト */
-        public List<EzStatus> Items { get; private set; }
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Experience.Model.EzStatus> Items;
+		[SerializeField]
+		public string NextPageToken;
 
-        /** リストの続きを取得するためのページトークン */
-        public string NextPageToken { get; private set; }
-
-
-        public EzListStatusesResult(
-            DescribeStatusesResult result
-        )
+        public static EzListStatusesResult FromModel(Gs2.Gs2Experience.Result.DescribeStatusesResult model)
         {
-            Items = new List<EzStatus>();
-            foreach (var item_ in result.items)
-            {
-                Items.Add(new EzStatus(item_));
-            }
-            NextPageToken = result.nextPageToken;
+            return new EzListStatusesResult {
+                Items = model.Items == null ? new List<Gs2.Unity.Gs2Experience.Model.EzStatus>() : model.Items.Select(v => {
+                    return Gs2.Unity.Gs2Experience.Model.EzStatus.FromModel(v);
+                }).ToList(),
+                NextPageToken = model.NextPageToken == null ? null : model.NextPageToken,
+            };
         }
-	}
+    }
 }

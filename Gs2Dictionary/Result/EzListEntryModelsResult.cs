@@ -13,31 +13,33 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Dictionary.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Dictionary.Model;
-using Gs2.Gs2Dictionary.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Dictionary.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzListEntryModelsResult
 	{
-        /** エントリーモデルのリスト */
-        public List<EzEntryModel> Items { get; private set; }
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Dictionary.Model.EzEntryModel> Items;
 
-
-        public EzListEntryModelsResult(
-            DescribeEntryModelsResult result
-        )
+        public static EzListEntryModelsResult FromModel(Gs2.Gs2Dictionary.Result.DescribeEntryModelsResult model)
         {
-            Items = new List<EzEntryModel>();
-            foreach (var item_ in result.items)
-            {
-                Items.Add(new EzEntryModel(item_));
-            }
+            return new EzListEntryModelsResult {
+                Items = model.Items == null ? new List<Gs2.Unity.Gs2Dictionary.Model.EzEntryModel>() : model.Items.Select(v => {
+                    return Gs2.Unity.Gs2Dictionary.Model.EzEntryModel.FromModel(v);
+                }).ToList(),
+            };
         }
-	}
+    }
 }

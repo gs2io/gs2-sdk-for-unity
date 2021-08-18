@@ -13,60 +13,46 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Version.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Version.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzVersion
 	{
-		/** メジャーバージョン */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int Major;
-		/** マイナーバージョン */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int Minor;
-		/** マイクロバージョン */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int Micro;
 
-		public EzVersion()
-		{
-
-		}
-
-		public EzVersion(Gs2.Gs2Version.Model.Version_ @version)
-		{
-			Major = @version.major.HasValue ? @version.major.Value : 0;
-			Minor = @version.minor.HasValue ? @version.minor.Value : 0;
-			Micro = @version.micro.HasValue ? @version.micro.Value : 0;
-		}
-
-        public virtual Version_ ToModel()
+        public Gs2.Gs2Version.Model.Version_ ToModel()
         {
-            return new Version_ {
-                major = Major,
-                minor = Minor,
-                micro = Micro,
+            return new Gs2.Gs2Version.Model.Version_ {
+                Major = Major,
+                Minor = Minor,
+                Micro = Micro,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzVersion FromModel(Gs2.Gs2Version.Model.Version_ model)
         {
-            writer.WriteObjectStart();
-            writer.WritePropertyName("major");
-            writer.Write(this.Major);
-            writer.WritePropertyName("minor");
-            writer.Write(this.Minor);
-            writer.WritePropertyName("micro");
-            writer.Write(this.Micro);
-            writer.WriteObjectEnd();
+            return new EzVersion {
+                Major = model.Major ?? 0,
+                Minor = model.Minor ?? 0,
+                Micro = model.Micro ?? 0,
+            };
         }
-	}
+    }
 }

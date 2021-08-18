@@ -13,69 +13,46 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Gateway.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Gateway.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzWebSocketSession
 	{
-		/** コネクションID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string ConnectionId;
-		/** ネームスペース名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string NamespaceName;
-		/** ユーザーID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string UserId;
 
-		public EzWebSocketSession()
-		{
-
-		}
-
-		public EzWebSocketSession(Gs2.Gs2Gateway.Model.WebSocketSession @webSocketSession)
-		{
-			ConnectionId = @webSocketSession.connectionId;
-			NamespaceName = @webSocketSession.namespaceName;
-			UserId = @webSocketSession.userId;
-		}
-
-        public virtual WebSocketSession ToModel()
+        public Gs2.Gs2Gateway.Model.WebSocketSession ToModel()
         {
-            return new WebSocketSession {
-                connectionId = ConnectionId,
-                namespaceName = NamespaceName,
-                userId = UserId,
+            return new Gs2.Gs2Gateway.Model.WebSocketSession {
+                ConnectionId = ConnectionId,
+                NamespaceName = NamespaceName,
+                UserId = UserId,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzWebSocketSession FromModel(Gs2.Gs2Gateway.Model.WebSocketSession model)
         {
-            writer.WriteObjectStart();
-            if(this.ConnectionId != null)
-            {
-                writer.WritePropertyName("connectionId");
-                writer.Write(this.ConnectionId);
-            }
-            if(this.NamespaceName != null)
-            {
-                writer.WritePropertyName("namespaceName");
-                writer.Write(this.NamespaceName);
-            }
-            if(this.UserId != null)
-            {
-                writer.WritePropertyName("userId");
-                writer.Write(this.UserId);
-            }
-            writer.WriteObjectEnd();
+            return new EzWebSocketSession {
+                ConnectionId = model.ConnectionId == null ? null : model.ConnectionId,
+                NamespaceName = model.NamespaceName == null ? null : model.NamespaceName,
+                UserId = model.UserId == null ? null : model.UserId,
+            };
         }
-	}
+    }
 }

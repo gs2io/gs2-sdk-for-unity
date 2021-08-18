@@ -13,39 +13,39 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2News.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2News.Model;
-using Gs2.Gs2News.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2News.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzListNewsesResult
 	{
-        /** お知らせ記事のリスト */
-        public List<EzNews> Items { get; private set; }
+		[SerializeField]
+		public List<Gs2.Unity.Gs2News.Model.EzNews> Items;
+		[SerializeField]
+		public string ContentHash;
+		[SerializeField]
+		public string TemplateHash;
 
-        /** お知らせ記事データのハッシュ値 */
-        public string ContentHash { get; private set; }
-
-        /** テンプレートデータのハッシュ値 */
-        public string TemplateHash { get; private set; }
-
-
-        public EzListNewsesResult(
-            DescribeNewsResult result
-        )
+        public static EzListNewsesResult FromModel(Gs2.Gs2News.Result.DescribeNewsResult model)
         {
-            Items = new List<EzNews>();
-            foreach (var item_ in result.items)
-            {
-                Items.Add(new EzNews(item_));
-            }
-            ContentHash = result.contentHash;
-            TemplateHash = result.templateHash;
+            return new EzListNewsesResult {
+                Items = model.Items == null ? new List<Gs2.Unity.Gs2News.Model.EzNews>() : model.Items.Select(v => {
+                    return Gs2.Unity.Gs2News.Model.EzNews.FromModel(v);
+                }).ToList(),
+                ContentHash = model.ContentHash == null ? null : model.ContentHash,
+                TemplateHash = model.TemplateHash == null ? null : model.TemplateHash,
+            };
         }
-	}
+    }
 }

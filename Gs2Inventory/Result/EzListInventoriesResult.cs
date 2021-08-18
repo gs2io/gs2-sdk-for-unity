@@ -13,35 +13,36 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Inventory.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Inventory.Model;
-using Gs2.Gs2Inventory.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Inventory.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzListInventoriesResult
 	{
-        /** インベントリのリスト */
-        public List<EzInventory> Items { get; private set; }
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Inventory.Model.EzInventory> Items;
+		[SerializeField]
+		public string NextPageToken;
 
-        /** リストの続きを取得するためのページトークン */
-        public string NextPageToken { get; private set; }
-
-
-        public EzListInventoriesResult(
-            DescribeInventoriesResult result
-        )
+        public static EzListInventoriesResult FromModel(Gs2.Gs2Inventory.Result.DescribeInventoriesResult model)
         {
-            Items = new List<EzInventory>();
-            foreach (var item_ in result.items)
-            {
-                Items.Add(new EzInventory(item_));
-            }
-            NextPageToken = result.nextPageToken;
+            return new EzListInventoriesResult {
+                Items = model.Items == null ? new List<Gs2.Unity.Gs2Inventory.Model.EzInventory>() : model.Items.Select(v => {
+                    return Gs2.Unity.Gs2Inventory.Model.EzInventory.FromModel(v);
+                }).ToList(),
+                NextPageToken = model.NextPageToken == null ? null : model.NextPageToken,
+            };
         }
-	}
+    }
 }

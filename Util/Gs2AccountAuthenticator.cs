@@ -12,14 +12,14 @@ namespace Gs2.Unity.Util
 {
     public class Gs2AccountAuthenticator : IAuthenticator
     {
-        private readonly Gs2WebSocketSession _session;
+        private readonly Gs2RestSession _session;
         private readonly string _accountNamespaceName;
         private readonly string _keyId;
         private readonly string _userId;
         private readonly string _password;
         
         public Gs2AccountAuthenticator(
-            Gs2WebSocketSession session,
+            Gs2RestSession session,
             string accountNamespaceName,
             string keyId,
             string userId,
@@ -35,7 +35,7 @@ namespace Gs2.Unity.Util
 
         public override IEnumerator Authentication(UnityAction<AsyncResult<AccessToken>> callback)
         {
-            var accountClient = new Gs2AccountWebSocketClient(_session);
+            var accountClient = new Gs2AccountRestClient(_session);
 
             string body = null;
             string signature = null;
@@ -59,8 +59,8 @@ namespace Gs2.Unity.Util
                     }
                     else
                     {
-                        body = r.Result.body;
-                        signature = r.Result.signature;
+                        body = r.Result.Body;
+                        signature = r.Result.Signature;
                     }
                 }
             );
@@ -70,7 +70,7 @@ namespace Gs2.Unity.Util
                 yield break;
             }
             
-            var authClient = new Gs2AuthWebSocketClient(_session);
+            var authClient = new Gs2AuthRestClient(_session);
 
             yield return authClient.LoginBySignature(
                 new LoginBySignatureRequest()
@@ -94,9 +94,9 @@ namespace Gs2.Unity.Util
                         callback.Invoke(
                             new AsyncResult<AccessToken>(
                                 new AccessToken()
-                                    .WithToken(r.Result.token)
-                                    .WithExpire(r.Result.expire)
-                                    .WithUserId(r.Result.userId), 
+                                    .WithToken(r.Result.Token)
+                                    .WithExpire(r.Result.Expire)
+                                    .WithUserId(r.Result.UserId), 
                                 r.Error
                             )
                         );

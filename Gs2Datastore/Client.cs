@@ -2,7 +2,7 @@
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
  *
- * Licensed under the Apache License, Version 2.0(the "License").
+ * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
  * A copy of the License is located at
  *
@@ -14,22 +14,28 @@
  * permissions and limitations under the License.
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Gs2.Gs2Datastore;
-using Gs2.Gs2Datastore.Model;
-using Gs2.Gs2Datastore.Request;
-using Gs2.Gs2Datastore.Result;
 using Gs2.Unity.Gs2Datastore.Model;
 using Gs2.Unity.Gs2Datastore.Result;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Gs2Quest;
+using Gs2.Gs2Quest.Model;
+using Gs2.Gs2Quest.Request;
+using Gs2.Gs2Quest.Result;
+using Gs2.Unity.Gs2Quest.Model;
+using Gs2.Unity.Gs2Quest.Result;
 using Gs2.Core;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Unity.Util;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Datastore
 {
 	public class DisabledCertificateHandler : CertificateHandler {
@@ -39,6 +45,8 @@ namespace Gs2.Unity.Gs2Datastore
 		}
 	}
 
+	[Preserve]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
@@ -59,39 +67,78 @@ namespace Gs2.Unity.Gs2Datastore
 			}
 		}
 
-		/// <summary>
-		///  データオブジェクトの一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="status">状態</param>
-		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
-		/// <param name="limit">データの取得件数</param>
-		public IEnumerator ListMyDataObjects(
-		        UnityAction<AsyncResult<EzListMyDataObjectsResult>> callback,
+        public IEnumerator DeleteDataObject(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzDeleteDataObjectResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string status=null,
-                string pageToken=null,
-                long? limit=null
+                string dataObjectName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.DeleteDataObject(
+                    new Gs2.Gs2Datastore.Request.DeleteDataObjectRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithDataObjectName(dataObjectName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzDeleteDataObjectResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Datastore.Result.EzDeleteDataObjectResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator DoneUpload(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzDoneUploadResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string dataObjectName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.DoneUpload(
+                    new Gs2.Gs2Datastore.Request.DoneUploadRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithDataObjectName(dataObjectName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzDoneUploadResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Datastore.Result.EzDoneUploadResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListMyDataObjects(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzListMyDataObjectsResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                int limit,
+                string status = null,
+                string pageToken = null
         )
 		{
             yield return _profile.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeDataObjects(
-                    new DescribeDataObjectsRequest()
+                    new Gs2.Gs2Datastore.Request.DescribeDataObjectsRequest()
                         .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
                         .WithStatus(status)
                         .WithPageToken(pageToken)
-                        .WithLimit(limit)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithLimit(limit),
                     r => cb.Invoke(
-                        new AsyncResult<EzListMyDataObjectsResult>(
-                            r.Result == null ? null : new EzListMyDataObjectsResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzListMyDataObjectsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Datastore.Result.EzListMyDataObjectsResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -99,165 +146,8 @@ namespace Gs2.Unity.Gs2Datastore
             );
 		}
 
-		/// <summary>
-		///  データオブジェクトを更新<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="scope">ファイルのアクセス権</param>
-		/// <param name="allowUserIds">公開するユーザIDリスト</param>
-		public IEnumerator UpdateDataObject(
-		        UnityAction<AsyncResult<EzUpdateDataObjectResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string scope,
-                List<string> allowUserIds
-        )
-		{
-            yield return _profile.Run(
-                callback,
-		        session,
-                cb => _client.UpdateDataObject(
-                    new UpdateDataObjectRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithScope(scope)
-                        .WithAllowUserIds(allowUserIds)
-                        .WithAccessToken(session.AccessToken.token),
-                    r => cb.Invoke(
-                        new AsyncResult<EzUpdateDataObjectResult>(
-                            r.Result == null ? null : new EzUpdateDataObjectResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  データのアップロード準備<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="name">データの名前</param>
-		/// <param name="scope">ファイルのアクセス権</param>
-		/// <param name="allowUserIds">公開するユーザIDリスト</param>
-		/// <param name="updateIfExists">既にデータが存在する場合にエラーとするか、データを更新するか</param>
-		public IEnumerator PrepareUpload(
-		        UnityAction<AsyncResult<EzPrepareUploadResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string scope,
-                List<string> allowUserIds,
-                string name=null,
-                bool? updateIfExists=null
-        )
-		{
-            yield return _profile.Run(
-                callback,
-		        session,
-                cb => _client.PrepareUpload(
-                    new PrepareUploadRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithName(name)
-                        .WithScope(scope)
-                        .WithAllowUserIds(allowUserIds)
-                        .WithUpdateIfExists(updateIfExists)
-                        .WithAccessToken(session.AccessToken.token),
-                    r => cb.Invoke(
-                        new AsyncResult<EzPrepareUploadResult>(
-                            r.Result == null ? null : new EzPrepareUploadResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  データの再アップロード準備<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="dataObjectName">データの名前</param>
-		public IEnumerator PrepareReUpload(
-		        UnityAction<AsyncResult<EzPrepareReUploadResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string dataObjectName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-		        session,
-                cb => _client.PrepareReUpload(
-                    new PrepareReUploadRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithDataObjectName(dataObjectName)
-                        .WithAccessToken(session.AccessToken.token),
-                    r => cb.Invoke(
-                        new AsyncResult<EzPrepareReUploadResult>(
-                            r.Result == null ? null : new EzPrepareReUploadResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  データのアップロード完了を報告<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="dataObjectName">データの名前</param>
-		public IEnumerator DoneUpload(
-		        UnityAction<AsyncResult<EzDoneUploadResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string dataObjectName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-		        session,
-                cb => _client.DoneUpload(
-                    new DoneUploadRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithDataObjectName(dataObjectName)
-                        .WithAccessToken(session.AccessToken.token),
-                    r => cb.Invoke(
-                        new AsyncResult<EzDoneUploadResult>(
-                            r.Result == null ? null : new EzDoneUploadResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  データをダウンロード準備<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="dataObjectId">データオブジェクト</param>
-		public IEnumerator PrepareDownload(
-		        UnityAction<AsyncResult<EzPrepareDownloadResult>> callback,
+        public IEnumerator PrepareDownload(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzPrepareDownloadResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string dataObjectId
@@ -266,14 +156,14 @@ namespace Gs2.Unity.Gs2Datastore
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.PrepareDownload(
-                    new PrepareDownloadRequest()
+                cb => _restClient.PrepareDownload(
+                    new Gs2.Gs2Datastore.Request.PrepareDownloadRequest()
                         .WithNamespaceName(namespaceName)
                         .WithDataObjectId(dataObjectId)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token),
                     r => cb.Invoke(
-                        new AsyncResult<EzPrepareDownloadResult>(
-                            r.Result == null ? null : new EzPrepareDownloadResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzPrepareDownloadResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Datastore.Result.EzPrepareDownloadResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -281,50 +171,8 @@ namespace Gs2.Unity.Gs2Datastore
             );
 		}
 
-		/// <summary>
-		///  自分のデータをダウンロード準備<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="dataObjectName">データの名前</param>
-		public IEnumerator PrepareDownloadOwnData(
-		        UnityAction<AsyncResult<EzPrepareDownloadOwnDataResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string dataObjectName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-		        session,
-                cb => _client.PrepareDownloadOwnData(
-                    new PrepareDownloadOwnDataRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithDataObjectName(dataObjectName)
-                        .WithAccessToken(session.AccessToken.token),
-                    r => cb.Invoke(
-                        new AsyncResult<EzPrepareDownloadOwnDataResult>(
-                            r.Result == null ? null : new EzPrepareDownloadOwnDataResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  ユーザIDとデータ名を指定してデータをダウンロード準備<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="userId">ユーザーID</param>
-		/// <param name="dataObjectName">データの名前</param>
-		public IEnumerator PrepareDownloadByUserIdAndDataObjectName(
-		        UnityAction<AsyncResult<EzPrepareDownloadByUserIdAndDataObjectNameResult>> callback,
+        public IEnumerator PrepareDownloadByUserIdAndDataObjectName(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzPrepareDownloadByUserIdAndDataObjectNameResult>> callback,
                 string namespaceName,
                 string userId,
                 string dataObjectName
@@ -333,14 +181,14 @@ namespace Gs2.Unity.Gs2Datastore
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.PrepareDownloadByUserIdAndDataObjectName(
-                    new PrepareDownloadByUserIdAndDataObjectNameRequest()
+                cb => _restClient.PrepareDownloadByUserIdAndDataObjectName(
+                    new Gs2.Gs2Datastore.Request.PrepareDownloadByUserIdAndDataObjectNameRequest()
                         .WithNamespaceName(namespaceName)
                         .WithUserId(userId)
                         .WithDataObjectName(dataObjectName),
                     r => cb.Invoke(
-                        new AsyncResult<EzPrepareDownloadByUserIdAndDataObjectNameResult>(
-                            r.Result == null ? null : new EzPrepareDownloadByUserIdAndDataObjectNameResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzPrepareDownloadByUserIdAndDataObjectNameResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Datastore.Result.EzPrepareDownloadByUserIdAndDataObjectNameResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -348,17 +196,8 @@ namespace Gs2.Unity.Gs2Datastore
             );
 		}
 
-		/// <summary>
-		///  アップロードしたデータを削除<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="dataObjectName">データの名前</param>
-		public IEnumerator DeleteDataObject(
-		        UnityAction<AsyncResult<EzDeleteDataObjectResult>> callback,
+        public IEnumerator PrepareDownloadOwnData(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzPrepareDownloadOwnDataResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string dataObjectName
@@ -367,14 +206,14 @@ namespace Gs2.Unity.Gs2Datastore
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DeleteDataObject(
-                    new DeleteDataObjectRequest()
+                cb => _restClient.PrepareDownloadOwnData(
+                    new Gs2.Gs2Datastore.Request.PrepareDownloadOwnDataRequest()
                         .WithNamespaceName(namespaceName)
                         .WithDataObjectName(dataObjectName)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token),
                     r => cb.Invoke(
-                        new AsyncResult<EzDeleteDataObjectResult>(
-                            r.Result == null ? null : new EzDeleteDataObjectResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzPrepareDownloadOwnDataResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Datastore.Result.EzPrepareDownloadOwnDataResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -382,15 +221,66 @@ namespace Gs2.Unity.Gs2Datastore
             );
 		}
 
-		/// <summary>
-		///  データの管理情報を修復<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="dataObjectId">データオブジェクト</param>
-		public IEnumerator RestoreDataObject(
-		        UnityAction<AsyncResult<EzRestoreDataObjectResult>> callback,
+        public IEnumerator PrepareReUpload(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzPrepareReUploadResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string dataObjectName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.PrepareReUpload(
+                    new Gs2.Gs2Datastore.Request.PrepareReUploadRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithDataObjectName(dataObjectName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzPrepareReUploadResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Datastore.Result.EzPrepareReUploadResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator PrepareUpload(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzPrepareUploadResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string scope,
+                string name = null,
+                List<string> allowUserIds = null,
+                bool? updateIfExists = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.PrepareUpload(
+                    new Gs2.Gs2Datastore.Request.PrepareUploadRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithName(name)
+                        .WithScope(scope)
+                        .WithAllowUserIds(allowUserIds?.Select(v => {
+                            return v;
+                        }).ToArray())
+                        .WithUpdateIfExists(updateIfExists),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzPrepareUploadResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Datastore.Result.EzPrepareUploadResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator RestoreDataObject(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzRestoreDataObjectResult>> callback,
                 string namespaceName,
                 string dataObjectId
         )
@@ -398,13 +288,13 @@ namespace Gs2.Unity.Gs2Datastore
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.RestoreDataObject(
-                    new RestoreDataObjectRequest()
+                cb => _restClient.RestoreDataObject(
+                    new Gs2.Gs2Datastore.Request.RestoreDataObjectRequest()
                         .WithNamespaceName(namespaceName)
                         .WithDataObjectId(dataObjectId),
                     r => cb.Invoke(
-                        new AsyncResult<EzRestoreDataObjectResult>(
-                            r.Result == null ? null : new EzRestoreDataObjectResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzRestoreDataObjectResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Datastore.Result.EzRestoreDataObjectResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -412,44 +302,62 @@ namespace Gs2.Unity.Gs2Datastore
             );
 		}
 
-		/// <summary>
-		///  データオブジェクト履歴の一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="dataObjectName">データの名前</param>
-		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
-		/// <param name="limit">データの取得件数</param>
-		public IEnumerator ListDataObhectHistories(
-		        UnityAction<AsyncResult<EzListDataObhectHistoriesResult>> callback,
+        public IEnumerator UpdateDataObject(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzUpdateDataObjectResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string dataObjectName,
-                string pageToken=null,
-                long? limit=null
+                string scope,
+                List<string> allowUserIds = null
         )
 		{
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _restClient.DescribeDataObjectHistories(
-                    new DescribeDataObjectHistoriesRequest()
+                cb => _restClient.UpdateDataObject(
+                    new Gs2.Gs2Datastore.Request.UpdateDataObjectRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithDataObjectName(dataObjectName)
-                        .WithPageToken(pageToken)
-                        .WithLimit(limit)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithScope(scope)
+                        .WithAllowUserIds(allowUserIds?.Select(v => {
+                            return v;
+                        }).ToArray()),
                     r => cb.Invoke(
-                        new AsyncResult<EzListDataObhectHistoriesResult>(
-                            r.Result == null ? null : new EzListDataObhectHistoriesResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzUpdateDataObjectResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Datastore.Result.EzUpdateDataObjectResult.FromModel(r.Result),
                             r.Error
                         )
                     )
                 )
             );
 		}
-	}
+
+        public IEnumerator ListDataObjectHistories(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzListDataObjectHistoriesResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string dataObjectName,
+                int limit,
+                string pageToken = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribeDataObjectHistories(
+                    new Gs2.Gs2Datastore.Request.DescribeDataObjectHistoriesRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithDataObjectName(dataObjectName)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzListDataObjectHistoriesResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Datastore.Result.EzListDataObjectHistoriesResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+    }
 }

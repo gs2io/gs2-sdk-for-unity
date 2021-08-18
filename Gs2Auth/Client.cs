@@ -2,7 +2,7 @@
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
  *
- * Licensed under the Apache License, Version 2.0(the "License").
+ * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
  * A copy of the License is located at
  *
@@ -14,22 +14,28 @@
  * permissions and limitations under the License.
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Gs2.Gs2Auth;
-using Gs2.Gs2Auth.Model;
-using Gs2.Gs2Auth.Request;
-using Gs2.Gs2Auth.Result;
 using Gs2.Unity.Gs2Auth.Model;
 using Gs2.Unity.Gs2Auth.Result;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Gs2Quest;
+using Gs2.Gs2Quest.Model;
+using Gs2.Gs2Quest.Request;
+using Gs2.Gs2Quest.Result;
+using Gs2.Unity.Gs2Quest.Model;
+using Gs2.Unity.Gs2Quest.Result;
 using Gs2.Core;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Unity.Util;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Auth
 {
 	public class DisabledCertificateHandler : CertificateHandler {
@@ -39,6 +45,8 @@ namespace Gs2.Unity.Gs2Auth
 		}
 	}
 
+	[Preserve]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
@@ -59,23 +67,8 @@ namespace Gs2.Unity.Gs2Auth
 			}
 		}
 
-		/// <summary>
-		///  指定したユーザIDでGS2にログイン<br />
-		///    <br />
-		///    body と signature には GS2-Account::Authentication の結果を指定します。<br />
-		///    body と signature の検証に成功すると、 `アクセストークン` を応答します。<br />
-		///    `アクセストークン` は有効期限が1時間の一時的な認証情報で、GS2内の各サービスでゲームプレイヤーを識別するために使用されます。<br />
-		///    なおUnityとCocos2d-x向けにGS2-Account::AuthenticationとこのAPIをひとまとめにしたGS2-Profile::Loginを用意しています。<br />
-		///    GS2-Profile::Loginははじめかた⇒サンプルプログラムで解説しています。<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="userId">ユーザーID</param>
-		/// <param name="keyId">署名の作成に使用した暗号鍵 のGRN</param>
-		/// <param name="body">アカウント認証情報の署名対象</param>
-		/// <param name="signature">署名</param>
-		public IEnumerator Login(
-		        UnityAction<AsyncResult<EzLoginResult>> callback,
+        public IEnumerator Login(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Auth.Result.EzLoginResult>> callback,
                 string userId,
                 string keyId,
                 string body,
@@ -85,20 +78,20 @@ namespace Gs2.Unity.Gs2Auth
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.LoginBySignature(
-                    new LoginBySignatureRequest()
+                cb => _restClient.LoginBySignature(
+                    new Gs2.Gs2Auth.Request.LoginBySignatureRequest()
                         .WithUserId(userId)
                         .WithKeyId(keyId)
                         .WithBody(body)
                         .WithSignature(signature),
                     r => cb.Invoke(
-                        new AsyncResult<EzLoginResult>(
-                            r.Result == null ? null : new EzLoginResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Auth.Result.EzLoginResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Auth.Result.EzLoginResult.FromModel(r.Result),
                             r.Error
                         )
                     )
                 )
             );
 		}
-	}
+    }
 }

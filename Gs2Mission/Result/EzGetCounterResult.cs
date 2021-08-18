@@ -13,30 +13,31 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Mission.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Mission.Model;
-using Gs2.Gs2Mission.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Mission.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzGetCounterResult
 	{
-        /** カウンター */
-        public EzCounter Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Mission.Model.EzCounter Item;
 
-
-        public EzGetCounterResult(
-            GetCounterResult result
-        )
+        public static EzGetCounterResult FromModel(Gs2.Gs2Mission.Result.GetCounterResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzCounter(result.item);
-            }
+            return new EzGetCounterResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Mission.Model.EzCounter.FromModel(model.Item),
+            };
         }
-	}
+    }
 }

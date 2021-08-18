@@ -13,89 +13,54 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Formation.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Formation.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzSlotWithSignature
 	{
-		/** スロットモデル名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** プロパティの種類 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string PropertyType;
-		/** ペイロード */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Body;
-		/** プロパティIDのリソースを所有していることを証明する署名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Signature;
-		/** メタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
 
-		public EzSlotWithSignature()
-		{
-
-		}
-
-		public EzSlotWithSignature(Gs2.Gs2Formation.Model.SlotWithSignature @slotWithSignature)
-		{
-			Name = @slotWithSignature.name;
-			PropertyType = @slotWithSignature.propertyType;
-			Body = @slotWithSignature.body;
-			Signature = @slotWithSignature.signature;
-			Metadata = @slotWithSignature.metadata;
-		}
-
-        public virtual SlotWithSignature ToModel()
+        public Gs2.Gs2Formation.Model.SlotWithSignature ToModel()
         {
-            return new SlotWithSignature {
-                name = Name,
-                propertyType = PropertyType,
-                body = Body,
-                signature = Signature,
-                metadata = Metadata,
+            return new Gs2.Gs2Formation.Model.SlotWithSignature {
+                Name = Name,
+                PropertyType = PropertyType,
+                Body = Body,
+                Signature = Signature,
+                Metadata = Metadata,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzSlotWithSignature FromModel(Gs2.Gs2Formation.Model.SlotWithSignature model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.PropertyType != null)
-            {
-                writer.WritePropertyName("propertyType");
-                writer.Write(this.PropertyType);
-            }
-            if(this.Body != null)
-            {
-                writer.WritePropertyName("body");
-                writer.Write(this.Body);
-            }
-            if(this.Signature != null)
-            {
-                writer.WritePropertyName("signature");
-                writer.Write(this.Signature);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            writer.WriteObjectEnd();
+            return new EzSlotWithSignature {
+                Name = model.Name == null ? null : model.Name,
+                PropertyType = model.PropertyType == null ? null : model.PropertyType,
+                Body = model.Body == null ? null : model.Body,
+                Signature = model.Signature == null ? null : model.Signature,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+            };
         }
-	}
+    }
 }

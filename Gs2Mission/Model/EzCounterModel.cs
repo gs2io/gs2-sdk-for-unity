@@ -13,98 +13,54 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Mission.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Mission.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzCounterModel
 	{
-		/** カウンター名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** メタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** カウンターのリセットタイミング */
-		[UnityEngine.SerializeField]
-		public List<EzCounterScopeModel> Scopes;
-		/** カウントアップ可能な期間を指定するイベントマスター のGRN */
-		[UnityEngine.SerializeField]
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Mission.Model.EzCounterScopeModel> Scopes;
+		[SerializeField]
 		public string ChallengePeriodEventId;
 
-		public EzCounterModel()
-		{
-
-		}
-
-		public EzCounterModel(Gs2.Gs2Mission.Model.CounterModel @counterModel)
-		{
-			Name = @counterModel.name;
-			Metadata = @counterModel.metadata;
-			Scopes = @counterModel.scopes != null ? @counterModel.scopes.Select(value =>
-                {
-                    return new EzCounterScopeModel(value);
-                }
-			).ToList() : new List<EzCounterScopeModel>(new EzCounterScopeModel[] {});
-			ChallengePeriodEventId = @counterModel.challengePeriodEventId;
-		}
-
-        public virtual CounterModel ToModel()
+        public Gs2.Gs2Mission.Model.CounterModel ToModel()
         {
-            return new CounterModel {
-                name = Name,
-                metadata = Metadata,
-                scopes = Scopes != null ? Scopes.Select(Value0 =>
-                        {
-                            return new CounterScopeModel
-                            {
-                                resetType = Value0.ResetType,
-                                resetDayOfMonth = Value0.ResetDayOfMonth,
-                                resetDayOfWeek = Value0.ResetDayOfWeek,
-                                resetHour = Value0.ResetHour,
-                            };
-                        }
-                ).ToList() : new List<CounterScopeModel>(new CounterScopeModel[] {}),
-                challengePeriodEventId = ChallengePeriodEventId,
+            return new Gs2.Gs2Mission.Model.CounterModel {
+                Name = Name,
+                Metadata = Metadata,
+                Scopes = Scopes?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
+                ChallengePeriodEventId = ChallengePeriodEventId,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzCounterModel FromModel(Gs2.Gs2Mission.Model.CounterModel model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            if(this.Scopes != null)
-            {
-                writer.WritePropertyName("scopes");
-                writer.WriteArrayStart();
-                foreach(var item in this.Scopes)
-                {
-                    item.WriteJson(writer);
-                }
-                writer.WriteArrayEnd();
-            }
-            if(this.ChallengePeriodEventId != null)
-            {
-                writer.WritePropertyName("challengePeriodEventId");
-                writer.Write(this.ChallengePeriodEventId);
-            }
-            writer.WriteObjectEnd();
+            return new EzCounterModel {
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                Scopes = model.Scopes == null ? new List<Gs2.Unity.Gs2Mission.Model.EzCounterScopeModel>() : model.Scopes.Select(v => {
+                    return Gs2.Unity.Gs2Mission.Model.EzCounterScopeModel.FromModel(v);
+                }).ToList(),
+                ChallengePeriodEventId = model.ChallengePeriodEventId == null ? null : model.ChallengePeriodEventId,
+            };
         }
-	}
+    }
 }

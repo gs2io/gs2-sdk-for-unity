@@ -13,70 +13,50 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2JobQueue.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2JobQueue.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzJobResultBody
 	{
-		/** 試行回数 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int TryNumber;
-		/** ステータスコード */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int StatusCode;
-		/** レスポンスの内容 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Result;
-		/** 実行日時 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long TryAt;
 
-		public EzJobResultBody()
-		{
-
-		}
-
-		public EzJobResultBody(Gs2.Gs2JobQueue.Model.JobResultBody @jobResultBody)
-		{
-			TryNumber = @jobResultBody.tryNumber.HasValue ? @jobResultBody.tryNumber.Value : 0;
-			StatusCode = @jobResultBody.statusCode.HasValue ? @jobResultBody.statusCode.Value : 0;
-			Result = @jobResultBody.result;
-			TryAt = @jobResultBody.tryAt.HasValue ? @jobResultBody.tryAt.Value : 0;
-		}
-
-        public virtual JobResultBody ToModel()
+        public Gs2.Gs2JobQueue.Model.JobResultBody ToModel()
         {
-            return new JobResultBody {
-                tryNumber = TryNumber,
-                statusCode = StatusCode,
-                result = Result,
-                tryAt = TryAt,
+            return new Gs2.Gs2JobQueue.Model.JobResultBody {
+                TryNumber = TryNumber,
+                StatusCode = StatusCode,
+                Result = Result,
+                TryAt = TryAt,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzJobResultBody FromModel(Gs2.Gs2JobQueue.Model.JobResultBody model)
         {
-            writer.WriteObjectStart();
-            writer.WritePropertyName("tryNumber");
-            writer.Write(this.TryNumber);
-            writer.WritePropertyName("statusCode");
-            writer.Write(this.StatusCode);
-            if(this.Result != null)
-            {
-                writer.WritePropertyName("result");
-                writer.Write(this.Result);
-            }
-            writer.WritePropertyName("tryAt");
-            writer.Write(this.TryAt);
-            writer.WriteObjectEnd();
+            return new EzJobResultBody {
+                TryNumber = model.TryNumber ?? 0,
+                StatusCode = model.StatusCode ?? 0,
+                Result = model.Result == null ? null : model.Result,
+                TryAt = model.TryAt ?? 0,
+            };
         }
-	}
+    }
 }

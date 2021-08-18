@@ -2,7 +2,7 @@
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
  *
- * Licensed under the Apache License, Version 2.0(the "License").
+ * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
  * A copy of the License is located at
  *
@@ -14,22 +14,28 @@
  * permissions and limitations under the License.
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Gs2.Gs2Inventory;
-using Gs2.Gs2Inventory.Model;
-using Gs2.Gs2Inventory.Request;
-using Gs2.Gs2Inventory.Result;
 using Gs2.Unity.Gs2Inventory.Model;
 using Gs2.Unity.Gs2Inventory.Result;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Gs2Quest;
+using Gs2.Gs2Quest.Model;
+using Gs2.Gs2Quest.Request;
+using Gs2.Gs2Quest.Result;
+using Gs2.Unity.Gs2Quest.Model;
+using Gs2.Unity.Gs2Quest.Result;
 using Gs2.Core;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Unity.Util;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Inventory
 {
 	public class DisabledCertificateHandler : CertificateHandler {
@@ -39,6 +45,8 @@ namespace Gs2.Unity.Gs2Inventory
 		}
 	}
 
+	[Preserve]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
@@ -59,14 +67,31 @@ namespace Gs2.Unity.Gs2Inventory
 			}
 		}
 
-		/// <summary>
-		///  インベントリモデルの一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		public IEnumerator ListInventoryModels(
-		        UnityAction<AsyncResult<EzListInventoryModelsResult>> callback,
+        public IEnumerator GetInventoryModel(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetInventoryModelResult>> callback,
+                string namespaceName,
+                string inventoryName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.GetInventoryModel(
+                    new Gs2.Gs2Inventory.Request.GetInventoryModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetInventoryModelResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzGetInventoryModelResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListInventoryModels(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListInventoryModelsResult>> callback,
                 string namespaceName
         )
 		{
@@ -74,11 +99,11 @@ namespace Gs2.Unity.Gs2Inventory
                 callback,
                 null,
                 cb => _restClient.DescribeInventoryModels(
-                    new DescribeInventoryModelsRequest()
+                    new Gs2.Gs2Inventory.Request.DescribeInventoryModelsRequest()
                         .WithNamespaceName(namespaceName),
                     r => cb.Invoke(
-                        new AsyncResult<EzListInventoryModelsResult>(
-                            r.Result == null ? null : new EzListInventoryModelsResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListInventoryModelsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzListInventoryModelsResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -86,76 +111,8 @@ namespace Gs2.Unity.Gs2Inventory
             );
 		}
 
-		/// <summary>
-		///  インベントリ名を指定してインベントリモデルを取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="inventoryName">インベントリの種類名</param>
-		public IEnumerator GetInventoryModel(
-		        UnityAction<AsyncResult<EzGetInventoryModelResult>> callback,
-                string namespaceName,
-                string inventoryName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-                null,
-                cb => _client.GetInventoryModel(
-                    new GetInventoryModelRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithInventoryName(inventoryName),
-                    r => cb.Invoke(
-                        new AsyncResult<EzGetInventoryModelResult>(
-                            r.Result == null ? null : new EzGetInventoryModelResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  インベントリ名を指定してアイテムモデルの一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="inventoryName">インベントリの種類名</param>
-		public IEnumerator ListItemModels(
-		        UnityAction<AsyncResult<EzListItemModelsResult>> callback,
-                string namespaceName,
-                string inventoryName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-                null,
-                cb => _restClient.DescribeItemModels(
-                    new DescribeItemModelsRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithInventoryName(inventoryName),
-                    r => cb.Invoke(
-                        new AsyncResult<EzListItemModelsResult>(
-                            r.Result == null ? null : new EzListItemModelsResult(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-		/// <summary>
-		///  インベントリ名とアイテム名を指定してアイテムモデルを取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="inventoryName">インベントリの種類名</param>
-		/// <param name="itemName">アイテムモデルの種類名</param>
-		public IEnumerator GetItemModel(
-		        UnityAction<AsyncResult<EzGetItemModelResult>> callback,
+        public IEnumerator GetItemModel(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetItemModelResult>> callback,
                 string namespaceName,
                 string inventoryName,
                 string itemName
@@ -165,13 +122,13 @@ namespace Gs2.Unity.Gs2Inventory
                 callback,
                 null,
                 cb => _client.GetItemModel(
-                    new GetItemModelRequest()
+                    new Gs2.Gs2Inventory.Request.GetItemModelRequest()
                         .WithNamespaceName(namespaceName)
                         .WithInventoryName(inventoryName)
                         .WithItemName(itemName),
                     r => cb.Invoke(
-                        new AsyncResult<EzGetItemModelResult>(
-                            r.Result == null ? null : new EzGetItemModelResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetItemModelResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzGetItemModelResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -179,38 +136,22 @@ namespace Gs2.Unity.Gs2Inventory
             );
 		}
 
-		/// <summary>
-		///  インベントリの一覧を取得<br />
-		///    <br />
-		///    ゲームプレイヤーに紐付いたインベントリの一覧を取得します。<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
-		/// <param name="limit">データの取得件数</param>
-		public IEnumerator ListInventories(
-		        UnityAction<AsyncResult<EzListInventoriesResult>> callback,
-		        GameSession session,
+        public IEnumerator ListItemModels(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListItemModelsResult>> callback,
                 string namespaceName,
-                string pageToken=null,
-                long? limit=null
+                string inventoryName
         )
 		{
             yield return _profile.Run(
                 callback,
-		        session,
-                cb => _restClient.DescribeInventories(
-                    new DescribeInventoriesRequest()
+                null,
+                cb => _restClient.DescribeItemModels(
+                    new Gs2.Gs2Inventory.Request.DescribeItemModelsRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithPageToken(pageToken)
-                        .WithLimit(limit)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithInventoryName(inventoryName),
                     r => cb.Invoke(
-                        new AsyncResult<EzListInventoriesResult>(
-                            r.Result == null ? null : new EzListInventoriesResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListItemModelsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzListItemModelsResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -218,17 +159,8 @@ namespace Gs2.Unity.Gs2Inventory
             );
 		}
 
-		/// <summary>
-		///  インベントリ名を指定してインベントリの情報を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="inventoryName">インベントリの種類名</param>
-		public IEnumerator GetInventory(
-		        UnityAction<AsyncResult<EzGetInventoryResult>> callback,
+        public IEnumerator GetInventory(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetInventoryResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string inventoryName
@@ -238,13 +170,13 @@ namespace Gs2.Unity.Gs2Inventory
                 callback,
 		        session,
                 cb => _client.GetInventory(
-                    new GetInventoryRequest()
+                    new Gs2.Gs2Inventory.Request.GetInventoryRequest()
                         .WithNamespaceName(namespaceName)
                         .WithInventoryName(inventoryName)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token),
                     r => cb.Invoke(
-                        new AsyncResult<EzGetInventoryResult>(
-                            r.Result == null ? null : new EzGetInventoryResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetInventoryResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzGetInventoryResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -252,39 +184,26 @@ namespace Gs2.Unity.Gs2Inventory
             );
 		}
 
-		/// <summary>
-		///  指定したインベントリ内の所有しているアイテム一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="inventoryName">インベントリの種類名</param>
-		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
-		/// <param name="limit">データの取得件数</param>
-		public IEnumerator ListItems(
-		        UnityAction<AsyncResult<EzListItemsResult>> callback,
+        public IEnumerator ListInventories(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListInventoriesResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string inventoryName,
-                string pageToken=null,
-                long? limit=null
+                int limit,
+                string pageToken = null
         )
 		{
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _restClient.DescribeItemSets(
-                    new DescribeItemSetsRequest()
+                cb => _restClient.DescribeInventories(
+                    new Gs2.Gs2Inventory.Request.DescribeInventoriesRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithInventoryName(inventoryName)
+                        .WithAccessToken(session.AccessToken.Token)
                         .WithPageToken(pageToken)
-                        .WithLimit(limit)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithLimit(limit),
                     r => cb.Invoke(
-                        new AsyncResult<EzListItemsResult>(
-                            r.Result == null ? null : new EzListItemsResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListInventoriesResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzListInventoriesResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -292,21 +211,39 @@ namespace Gs2.Unity.Gs2Inventory
             );
 		}
 
-		/// <summary>
-		///  インベントリ名とアイテム名を指定してアイテムを取得<br />
-		///    <br />
-		///    アイテムは複数のスタックに分割されて応答されることがあります。<br />
-		///    また、有効期限の異なるアイテムは、必ず別のスタックになります。<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="inventoryName">インベントリの種類名</param>
-		/// <param name="itemName">アイテムモデルの種類名</param>
-		public IEnumerator GetItem(
-		        UnityAction<AsyncResult<EzGetItemResult>> callback,
+        public IEnumerator Consume(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzConsumeResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string inventoryName,
+                string itemName,
+                long consumeCount,
+                string itemSetName = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.ConsumeItemSet(
+                    new Gs2.Gs2Inventory.Request.ConsumeItemSetRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName)
+                        .WithItemName(itemName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithConsumeCount(consumeCount)
+                        .WithItemSetName(itemSetName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzConsumeResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzConsumeResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator GetItem(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetItemResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string inventoryName,
@@ -316,15 +253,15 @@ namespace Gs2.Unity.Gs2Inventory
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.GetItemSet(
-                    new GetItemSetRequest()
+                cb => _restClient.GetItemSet(
+                    new Gs2.Gs2Inventory.Request.GetItemSetRequest()
                         .WithNamespaceName(namespaceName)
                         .WithInventoryName(inventoryName)
                         .WithItemName(itemName)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token),
                     r => cb.Invoke(
-                        new AsyncResult<EzGetItemResult>(
-                            r.Result == null ? null : new EzGetItemResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetItemResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzGetItemResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -332,44 +269,30 @@ namespace Gs2.Unity.Gs2Inventory
             );
 		}
 
-		/// <summary>
-		///  インベントリ名とアイテム名を指定して署名付きアイテムを取得<br />
-		///    <br />
-		///    このAPIによって、APIを呼び出した瞬間に該当アイテムを所有していることを証明することができる<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="inventoryName">インベントリの種類名</param>
-		/// <param name="itemName">アイテムモデルの種類名</param>
-		/// <param name="itemSetName">アイテムセットを識別する名前</param>
-		/// <param name="keyId">署名の発行に使用する暗号鍵 のGRN</param>
-		public IEnumerator GetItemWithSignature(
-		        UnityAction<AsyncResult<EzGetItemWithSignatureResult>> callback,
+        public IEnumerator GetItemWithSignature(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetItemWithSignatureResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string inventoryName,
                 string itemName,
                 string keyId,
-                string itemSetName=null
+                string itemSetName = null
         )
 		{
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.GetItemWithSignature(
-                    new GetItemWithSignatureRequest()
+                cb => _restClient.GetItemWithSignature(
+                    new Gs2.Gs2Inventory.Request.GetItemWithSignatureRequest()
                         .WithNamespaceName(namespaceName)
                         .WithInventoryName(inventoryName)
                         .WithItemName(itemName)
+                        .WithAccessToken(session.AccessToken.Token)
                         .WithItemSetName(itemSetName)
-                        .WithKeyId(keyId)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithKeyId(keyId),
                     r => cb.Invoke(
-                        new AsyncResult<EzGetItemWithSignatureResult>(
-                            r.Result == null ? null : new EzGetItemWithSignatureResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetItemWithSignatureResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzGetItemWithSignatureResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -377,55 +300,33 @@ namespace Gs2.Unity.Gs2Inventory
             );
 		}
 
-		/// <summary>
-		///  アイテムを消費<br />
-		///    <br />
-		///    ゲーム内からアイテムを消費したい場合に使用します。<br />
-		///    <br />
-		///    GS2のシステムと連携してアイテムの増減を行う場合はこのAPIを使用することはありません。<br />
-		///    なぜなら、商品を購入するためや、クエストに参加するために必要な対価の場合は GS2-Showcase や GS2-Quest 上で対価を設定し、<br />
-		///    商品の購入時やクエスト参加時に自動的に対価としてアイテムやその他のリソースが消費されるためです。<br />
-		///    <br />
-		///    そのため、このAPIはGS2を介さない要素のためにアイテムを消費する場合に使用してください。<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="inventoryName">インベントリの名前</param>
-		/// <param name="itemName">アイテムマスターの名前</param>
-		/// <param name="consumeCount">消費する量</param>
-		/// <param name="itemSetName">アイテムセットを識別する名前</param>
-		public IEnumerator Consume(
-		        UnityAction<AsyncResult<EzConsumeResult>> callback,
+        public IEnumerator ListItems(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListItemsResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string inventoryName,
-                string itemName,
-                long consumeCount,
-                string itemSetName=null
+                int limit,
+                string pageToken = null
         )
 		{
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.ConsumeItemSet(
-                    new ConsumeItemSetRequest()
+                cb => _restClient.DescribeItemSets(
+                    new Gs2.Gs2Inventory.Request.DescribeItemSetsRequest()
                         .WithNamespaceName(namespaceName)
                         .WithInventoryName(inventoryName)
-                        .WithItemName(itemName)
-                        .WithConsumeCount(consumeCount)
-                        .WithItemSetName(itemSetName)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit),
                     r => cb.Invoke(
-                        new AsyncResult<EzConsumeResult>(
-                            r.Result == null ? null : new EzConsumeResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListItemsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzListItemsResult.FromModel(r.Result),
                             r.Error
                         )
                     )
                 )
             );
 		}
-	}
+    }
 }

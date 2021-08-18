@@ -13,30 +13,31 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Formation.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Formation.Model;
-using Gs2.Gs2Formation.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Formation.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzGetMoldModelResult
 	{
-        /** フォームの保存領域 */
-        public EzMoldModel Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Formation.Model.EzMoldModel Item;
 
-
-        public EzGetMoldModelResult(
-            GetMoldModelResult result
-        )
+        public static EzGetMoldModelResult FromModel(Gs2.Gs2Formation.Result.GetMoldModelResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzMoldModel(result.item);
-            }
+            return new EzGetMoldModelResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Formation.Model.EzMoldModel.FromModel(model.Item),
+            };
         }
-	}
+    }
 }

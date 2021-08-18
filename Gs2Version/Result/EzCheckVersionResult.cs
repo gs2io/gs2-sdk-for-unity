@@ -13,43 +13,41 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Version.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Version.Model;
-using Gs2.Gs2Version.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Version.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzCheckVersionResult
 	{
-        /** プロジェクトトークン */
-        public string ProjectToken { get; private set; }
+		[SerializeField]
+		public string ProjectToken;
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Version.Model.EzStatus> Warnings;
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Version.Model.EzStatus> Errors;
 
-        /** バージョンの検証結果のリスト */
-        public List<EzStatus> Warnings { get; private set; }
-
-        /** バージョンの検証結果のリスト */
-        public List<EzStatus> Errors { get; private set; }
-
-
-        public EzCheckVersionResult(
-            CheckVersionResult result
-        )
+        public static EzCheckVersionResult FromModel(Gs2.Gs2Version.Result.CheckVersionResult model)
         {
-            ProjectToken = result.projectToken;
-            Warnings = new List<EzStatus>();
-            foreach (var item_ in result.warnings)
-            {
-                Warnings.Add(new EzStatus(item_));
-            }
-            Errors = new List<EzStatus>();
-            foreach (var item_ in result.errors)
-            {
-                Errors.Add(new EzStatus(item_));
-            }
+            return new EzCheckVersionResult {
+                ProjectToken = model.ProjectToken == null ? null : model.ProjectToken,
+                Warnings = model.Warnings == null ? new List<Gs2.Unity.Gs2Version.Model.EzStatus>() : model.Warnings.Select(v => {
+                    return Gs2.Unity.Gs2Version.Model.EzStatus.FromModel(v);
+                }).ToList(),
+                Errors = model.Errors == null ? new List<Gs2.Unity.Gs2Version.Model.EzStatus>() : model.Errors.Select(v => {
+                    return Gs2.Unity.Gs2Version.Model.EzStatus.FromModel(v);
+                }).ToList(),
+            };
         }
-	}
+    }
 }

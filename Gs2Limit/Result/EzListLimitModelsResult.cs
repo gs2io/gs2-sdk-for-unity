@@ -13,31 +13,33 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Limit.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Limit.Model;
-using Gs2.Gs2Limit.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Limit.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzListLimitModelsResult
 	{
-        /** 回数制限の種類のリスト */
-        public List<EzLimitModel> Items { get; private set; }
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Limit.Model.EzLimitModel> Items;
 
-
-        public EzListLimitModelsResult(
-            DescribeLimitModelsResult result
-        )
+        public static EzListLimitModelsResult FromModel(Gs2.Gs2Limit.Result.DescribeLimitModelsResult model)
         {
-            Items = new List<EzLimitModel>();
-            foreach (var item_ in result.items)
-            {
-                Items.Add(new EzLimitModel(item_));
-            }
+            return new EzListLimitModelsResult {
+                Items = model.Items == null ? new List<Gs2.Unity.Gs2Limit.Model.EzLimitModel>() : model.Items.Select(v => {
+                    return Gs2.Unity.Gs2Limit.Model.EzLimitModel.FromModel(v);
+                }).ToList(),
+            };
         }
-	}
+    }
 }

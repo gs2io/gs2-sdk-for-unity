@@ -13,80 +13,54 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Experience.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Experience.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzStatus
 	{
-		/** 経験値の種類の名前 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string ExperienceName;
-		/** プロパティID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string PropertyId;
-		/** 累計獲得経験値 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long ExperienceValue;
-		/** 現在のランク */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long RankValue;
-		/** 現在のランクキャップ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long RankCapValue;
 
-		public EzStatus()
-		{
-
-		}
-
-		public EzStatus(Gs2.Gs2Experience.Model.Status @status)
-		{
-			ExperienceName = @status.experienceName;
-			PropertyId = @status.propertyId;
-			ExperienceValue = @status.experienceValue.HasValue ? @status.experienceValue.Value : 0;
-			RankValue = @status.rankValue.HasValue ? @status.rankValue.Value : 0;
-			RankCapValue = @status.rankCapValue.HasValue ? @status.rankCapValue.Value : 0;
-		}
-
-        public virtual Status ToModel()
+        public Gs2.Gs2Experience.Model.Status ToModel()
         {
-            return new Status {
-                experienceName = ExperienceName,
-                propertyId = PropertyId,
-                experienceValue = ExperienceValue,
-                rankValue = RankValue,
-                rankCapValue = RankCapValue,
+            return new Gs2.Gs2Experience.Model.Status {
+                ExperienceName = ExperienceName,
+                PropertyId = PropertyId,
+                ExperienceValue = ExperienceValue,
+                RankValue = RankValue,
+                RankCapValue = RankCapValue,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzStatus FromModel(Gs2.Gs2Experience.Model.Status model)
         {
-            writer.WriteObjectStart();
-            if(this.ExperienceName != null)
-            {
-                writer.WritePropertyName("experienceName");
-                writer.Write(this.ExperienceName);
-            }
-            if(this.PropertyId != null)
-            {
-                writer.WritePropertyName("propertyId");
-                writer.Write(this.PropertyId);
-            }
-            writer.WritePropertyName("experienceValue");
-            writer.Write(this.ExperienceValue);
-            writer.WritePropertyName("rankValue");
-            writer.Write(this.RankValue);
-            writer.WritePropertyName("rankCapValue");
-            writer.Write(this.RankCapValue);
-            writer.WriteObjectEnd();
+            return new EzStatus {
+                ExperienceName = model.ExperienceName == null ? null : model.ExperienceName,
+                PropertyId = model.PropertyId == null ? null : model.PropertyId,
+                ExperienceValue = model.ExperienceValue ?? 0,
+                RankValue = model.RankValue ?? 0,
+                RankCapValue = model.RankCapValue ?? 0,
+            };
         }
-	}
+    }
 }

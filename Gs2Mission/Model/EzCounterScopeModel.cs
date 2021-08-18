@@ -13,73 +13,50 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Mission.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Mission.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzCounterScopeModel
 	{
-		/** リセットタイミング */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string ResetType;
-		/** リセットをする日にち */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int ResetDayOfMonth;
-		/** リセットする曜日 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string ResetDayOfWeek;
-		/** リセット時刻 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int ResetHour;
 
-		public EzCounterScopeModel()
-		{
-
-		}
-
-		public EzCounterScopeModel(Gs2.Gs2Mission.Model.CounterScopeModel @counterScopeModel)
-		{
-			ResetType = @counterScopeModel.resetType;
-			ResetDayOfMonth = @counterScopeModel.resetDayOfMonth.HasValue ? @counterScopeModel.resetDayOfMonth.Value : 0;
-			ResetDayOfWeek = @counterScopeModel.resetDayOfWeek;
-			ResetHour = @counterScopeModel.resetHour.HasValue ? @counterScopeModel.resetHour.Value : 0;
-		}
-
-        public virtual CounterScopeModel ToModel()
+        public Gs2.Gs2Mission.Model.CounterScopeModel ToModel()
         {
-            return new CounterScopeModel {
-                resetType = ResetType,
-                resetDayOfMonth = ResetDayOfMonth,
-                resetDayOfWeek = ResetDayOfWeek,
-                resetHour = ResetHour,
+            return new Gs2.Gs2Mission.Model.CounterScopeModel {
+                ResetType = ResetType,
+                ResetDayOfMonth = ResetDayOfMonth,
+                ResetDayOfWeek = ResetDayOfWeek,
+                ResetHour = ResetHour,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzCounterScopeModel FromModel(Gs2.Gs2Mission.Model.CounterScopeModel model)
         {
-            writer.WriteObjectStart();
-            if(this.ResetType != null)
-            {
-                writer.WritePropertyName("resetType");
-                writer.Write(this.ResetType);
-            }
-            writer.WritePropertyName("resetDayOfMonth");
-            writer.Write(this.ResetDayOfMonth);
-            if(this.ResetDayOfWeek != null)
-            {
-                writer.WritePropertyName("resetDayOfWeek");
-                writer.Write(this.ResetDayOfWeek);
-            }
-            writer.WritePropertyName("resetHour");
-            writer.Write(this.ResetHour);
-            writer.WriteObjectEnd();
+            return new EzCounterScopeModel {
+                ResetType = model.ResetType == null ? null : model.ResetType,
+                ResetDayOfMonth = model.ResetDayOfMonth ?? 0,
+                ResetDayOfWeek = model.ResetDayOfWeek == null ? null : model.ResetDayOfWeek,
+                ResetHour = model.ResetHour ?? 0,
+            };
         }
-	}
+    }
 }

@@ -13,37 +13,34 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Formation.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Formation.Model;
-using Gs2.Gs2Formation.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Formation.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzGetMoldResult
 	{
-        /** 保存したフォーム */
-        public EzMold Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Formation.Model.EzMold Item;
+		[SerializeField]
+		public Gs2.Unity.Gs2Formation.Model.EzMoldModel MoldModel;
 
-        /** フォームの保存領域 */
-        public EzMoldModel MoldModel { get; private set; }
-
-
-        public EzGetMoldResult(
-            GetMoldResult result
-        )
+        public static EzGetMoldResult FromModel(Gs2.Gs2Formation.Result.GetMoldResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzMold(result.item);
-            }
-            if(result.moldModel != null)
-            {
-                MoldModel = new EzMoldModel(result.moldModel);
-            }
+            return new EzGetMoldResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Formation.Model.EzMold.FromModel(model.Item),
+                MoldModel = model.MoldModel == null ? null : Gs2.Unity.Gs2Formation.Model.EzMoldModel.FromModel(model.MoldModel),
+            };
         }
-	}
+    }
 }

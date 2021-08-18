@@ -13,35 +13,36 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Chat.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Chat.Model;
-using Gs2.Gs2Chat.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Chat.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzListSubscribeRoomsResult
 	{
-        /** 購読のリスト */
-        public List<EzSubscribe> Items { get; private set; }
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Chat.Model.EzSubscribe> Items;
+		[SerializeField]
+		public string NextPageToken;
 
-        /** リストの続きを取得するためのページトークン */
-        public string NextPageToken { get; private set; }
-
-
-        public EzListSubscribeRoomsResult(
-            DescribeSubscribesResult result
-        )
+        public static EzListSubscribeRoomsResult FromModel(Gs2.Gs2Chat.Result.DescribeSubscribesResult model)
         {
-            Items = new List<EzSubscribe>();
-            foreach (var item_ in result.items)
-            {
-                Items.Add(new EzSubscribe(item_));
-            }
-            NextPageToken = result.nextPageToken;
+            return new EzListSubscribeRoomsResult {
+                Items = model.Items == null ? new List<Gs2.Unity.Gs2Chat.Model.EzSubscribe>() : model.Items.Select(v => {
+                    return Gs2.Unity.Gs2Chat.Model.EzSubscribe.FromModel(v);
+                }).ToList(),
+                NextPageToken = model.NextPageToken == null ? null : model.NextPageToken,
+            };
         }
-	}
+    }
 }

@@ -13,53 +13,42 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Chat.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Chat.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzNotificationType
 	{
-		/** 新着メッセージ通知を受け取るカテゴリ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int Category;
-		/** オフラインだった時にモバイルプッシュ通知に転送するか */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public bool EnableTransferMobilePushNotification;
 
-		public EzNotificationType()
-		{
-
-		}
-
-		public EzNotificationType(Gs2.Gs2Chat.Model.NotificationType @notificationType)
-		{
-			Category = @notificationType.category.HasValue ? @notificationType.category.Value : 0;
-			EnableTransferMobilePushNotification = @notificationType.enableTransferMobilePushNotification.HasValue ? @notificationType.enableTransferMobilePushNotification.Value : false;
-		}
-
-        public virtual NotificationType ToModel()
+        public Gs2.Gs2Chat.Model.NotificationType ToModel()
         {
-            return new NotificationType {
-                category = Category,
-                enableTransferMobilePushNotification = EnableTransferMobilePushNotification,
+            return new Gs2.Gs2Chat.Model.NotificationType {
+                Category = Category,
+                EnableTransferMobilePushNotification = EnableTransferMobilePushNotification,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzNotificationType FromModel(Gs2.Gs2Chat.Model.NotificationType model)
         {
-            writer.WriteObjectStart();
-            writer.WritePropertyName("category");
-            writer.Write(this.Category);
-            writer.WritePropertyName("enableTransferMobilePushNotification");
-            writer.Write(this.EnableTransferMobilePushNotification);
-            writer.WriteObjectEnd();
+            return new EzNotificationType {
+                Category = model.Category ?? 0,
+                EnableTransferMobilePushNotification = model.EnableTransferMobilePushNotification ?? false,
+            };
         }
-	}
+    }
 }

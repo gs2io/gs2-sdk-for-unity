@@ -13,67 +13,50 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Money.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Money.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzWallet
 	{
-		/** スロット番号 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int Slot;
-		/** 有償課金通貨所持量 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int Paid;
-		/** 無償課金通貨所持量 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int Free;
-		/** 最終更新日時 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long UpdatedAt;
 
-		public EzWallet()
-		{
-
-		}
-
-		public EzWallet(Gs2.Gs2Money.Model.Wallet @wallet)
-		{
-			Slot = @wallet.slot.HasValue ? @wallet.slot.Value : 0;
-			Paid = @wallet.paid.HasValue ? @wallet.paid.Value : 0;
-			Free = @wallet.free.HasValue ? @wallet.free.Value : 0;
-			UpdatedAt = @wallet.updatedAt.HasValue ? @wallet.updatedAt.Value : 0;
-		}
-
-        public virtual Wallet ToModel()
+        public Gs2.Gs2Money.Model.Wallet ToModel()
         {
-            return new Wallet {
-                slot = Slot,
-                paid = Paid,
-                free = Free,
-                updatedAt = UpdatedAt,
+            return new Gs2.Gs2Money.Model.Wallet {
+                Slot = Slot,
+                Paid = Paid,
+                Free = Free,
+                UpdatedAt = UpdatedAt,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzWallet FromModel(Gs2.Gs2Money.Model.Wallet model)
         {
-            writer.WriteObjectStart();
-            writer.WritePropertyName("slot");
-            writer.Write(this.Slot);
-            writer.WritePropertyName("paid");
-            writer.Write(this.Paid);
-            writer.WritePropertyName("free");
-            writer.Write(this.Free);
-            writer.WritePropertyName("updatedAt");
-            writer.Write(this.UpdatedAt);
-            writer.WriteObjectEnd();
+            return new EzWallet {
+                Slot = model.Slot ?? 0,
+                Paid = model.Paid ?? 0,
+                Free = model.Free ?? 0,
+                UpdatedAt = model.UpdatedAt ?? 0,
+            };
         }
-	}
+    }
 }

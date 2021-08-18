@@ -13,30 +13,31 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Chat.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Chat.Model;
-using Gs2.Gs2Chat.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Chat.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzUpdateSubscribeSettingResult
 	{
-        /** 更新した購読 */
-        public EzSubscribe Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Chat.Model.EzSubscribe Item;
 
-
-        public EzUpdateSubscribeSettingResult(
-            UpdateNotificationTypeResult result
-        )
+        public static EzUpdateSubscribeSettingResult FromModel(Gs2.Gs2Chat.Result.UpdateNotificationTypeResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzSubscribe(result.item);
-            }
+            return new EzUpdateSubscribeSettingResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Chat.Model.EzSubscribe.FromModel(model.Item),
+            };
         }
-	}
+    }
 }

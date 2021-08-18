@@ -13,76 +13,50 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Quest.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Quest.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzReward
 	{
-		/** スタンプシートで実行するアクションの種類 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Action;
-		/** リクエストモデル */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Request;
-		/** 入手するリソースGRN */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string ItemId;
-		/** 入手する数量 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int Value;
 
-		public EzReward()
-		{
-
-		}
-
-		public EzReward(Gs2.Gs2Quest.Model.Reward @reward)
-		{
-			Action = @reward.action;
-			Request = @reward.request;
-			ItemId = @reward.itemId;
-			Value = @reward.value.HasValue ? @reward.value.Value : 0;
-		}
-
-        public virtual Reward ToModel()
+        public Gs2.Gs2Quest.Model.Reward ToModel()
         {
-            return new Reward {
-                action = Action,
-                request = Request,
-                itemId = ItemId,
-                value = Value,
+            return new Gs2.Gs2Quest.Model.Reward {
+                Action = Action,
+                Request = Request,
+                ItemId = ItemId,
+                Value = Value,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzReward FromModel(Gs2.Gs2Quest.Model.Reward model)
         {
-            writer.WriteObjectStart();
-            if(this.Action != null)
-            {
-                writer.WritePropertyName("action");
-                writer.Write(this.Action);
-            }
-            if(this.Request != null)
-            {
-                writer.WritePropertyName("request");
-                writer.Write(this.Request);
-            }
-            if(this.ItemId != null)
-            {
-                writer.WritePropertyName("itemId");
-                writer.Write(this.ItemId);
-            }
-            writer.WritePropertyName("value");
-            writer.Write(this.Value);
-            writer.WriteObjectEnd();
+            return new EzReward {
+                Action = model.Action == null ? null : model.Action,
+                Request = model.Request == null ? null : model.Request,
+                ItemId = model.ItemId == null ? null : model.ItemId,
+                Value = model.Value ?? 0,
+            };
         }
-	}
+    }
 }

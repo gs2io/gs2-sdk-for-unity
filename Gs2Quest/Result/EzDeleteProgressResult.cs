@@ -13,30 +13,31 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Quest.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Quest.Model;
-using Gs2.Gs2Quest.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Quest.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzDeleteProgressResult
 	{
-        /** クエスト挑戦 */
-        public EzProgress Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Quest.Model.EzProgress Item;
 
-
-        public EzDeleteProgressResult(
-            DeleteProgressResult result
-        )
+        public static EzDeleteProgressResult FromModel(Gs2.Gs2Quest.Result.DeleteProgressResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzProgress(result.item);
-            }
+            return new EzDeleteProgressResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Quest.Model.EzProgress.FromModel(model.Item),
+            };
         }
-	}
+    }
 }

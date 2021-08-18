@@ -13,30 +13,31 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Enhance.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Enhance.Model;
-using Gs2.Gs2Enhance.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Enhance.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzGetRateModelResult
 	{
-        /** 強化レートモデル */
-        public EzRateModel Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Enhance.Model.EzRateModel Item;
 
-
-        public EzGetRateModelResult(
-            GetRateModelResult result
-        )
+        public static EzGetRateModelResult FromModel(Gs2.Gs2Enhance.Result.GetRateModelResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzRateModel(result.item);
-            }
+            return new EzGetRateModelResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Enhance.Model.EzRateModel.FromModel(model.Item),
+            };
         }
-	}
+    }
 }

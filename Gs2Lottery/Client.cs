@@ -2,7 +2,7 @@
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
  *
- * Licensed under the Apache License, Version 2.0(the "License").
+ * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
  * A copy of the License is located at
  *
@@ -14,22 +14,28 @@
  * permissions and limitations under the License.
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Gs2.Gs2Lottery;
-using Gs2.Gs2Lottery.Model;
-using Gs2.Gs2Lottery.Request;
-using Gs2.Gs2Lottery.Result;
 using Gs2.Unity.Gs2Lottery.Model;
 using Gs2.Unity.Gs2Lottery.Result;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Gs2Quest;
+using Gs2.Gs2Quest.Model;
+using Gs2.Gs2Quest.Request;
+using Gs2.Gs2Quest.Result;
+using Gs2.Unity.Gs2Quest.Model;
+using Gs2.Unity.Gs2Quest.Result;
 using Gs2.Core;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Unity.Util;
 using UnityEngine.Events;
 using UnityEngine.Networking;
+using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Lottery
 {
 	public class DisabledCertificateHandler : CertificateHandler {
@@ -39,6 +45,8 @@ namespace Gs2.Unity.Gs2Lottery
 		}
 	}
 
+	[Preserve]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
 		private readonly Gs2.Unity.Util.Profile _profile;
@@ -59,36 +67,26 @@ namespace Gs2.Unity.Gs2Lottery
 			}
 		}
 
-		/// <summary>
-		///  ボックスの排出済みアイテム情報一覧を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="pageToken">データの取得を開始する位置を指定するトークン</param>
-		/// <param name="limit">データの取得件数</param>
-		public IEnumerator DescribeBoxes(
-		        UnityAction<AsyncResult<EzDescribeBoxesResult>> callback,
+        public IEnumerator DescribeBoxes(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Lottery.Result.EzDescribeBoxesResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string pageToken=null,
-                long? limit=null
+                int limit,
+                string pageToken = null
         )
 		{
             yield return _profile.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeBoxes(
-                    new DescribeBoxesRequest()
+                    new Gs2.Gs2Lottery.Request.DescribeBoxesRequest()
                         .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
                         .WithPageToken(pageToken)
-                        .WithLimit(limit)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithLimit(limit),
                     r => cb.Invoke(
-                        new AsyncResult<EzDescribeBoxesResult>(
-                            r.Result == null ? null : new EzDescribeBoxesResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Lottery.Result.EzDescribeBoxesResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Lottery.Result.EzDescribeBoxesResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -96,17 +94,8 @@ namespace Gs2.Unity.Gs2Lottery
             );
 		}
 
-		/// <summary>
-		///  ボックスの排出済みアイテム情報を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="prizeTableName">排出確率テーブル名</param>
-		public IEnumerator GetBox(
-		        UnityAction<AsyncResult<EzGetBoxResult>> callback,
+        public IEnumerator GetBox(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Lottery.Result.EzGetBoxResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string prizeTableName
@@ -115,14 +104,14 @@ namespace Gs2.Unity.Gs2Lottery
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.GetBox(
-                    new GetBoxRequest()
+                cb => _restClient.GetBox(
+                    new Gs2.Gs2Lottery.Request.GetBoxRequest()
                         .WithNamespaceName(namespaceName)
                         .WithPrizeTableName(prizeTableName)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token),
                     r => cb.Invoke(
-                        new AsyncResult<EzGetBoxResult>(
-                            r.Result == null ? null : new EzGetBoxResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Lottery.Result.EzGetBoxResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Lottery.Result.EzGetBoxResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -130,17 +119,8 @@ namespace Gs2.Unity.Gs2Lottery
             );
 		}
 
-		/// <summary>
-		///  ボックスのリセット<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="prizeTableName">排出確率テーブル名</param>
-		public IEnumerator ResetBox(
-		        UnityAction<AsyncResult<EzResetBoxResult>> callback,
+        public IEnumerator ResetBox(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Lottery.Result.EzResetBoxResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string prizeTableName
@@ -150,13 +130,13 @@ namespace Gs2.Unity.Gs2Lottery
                 callback,
 		        session,
                 cb => _client.ResetBox(
-                    new ResetBoxRequest()
+                    new Gs2.Gs2Lottery.Request.ResetBoxRequest()
                         .WithNamespaceName(namespaceName)
                         .WithPrizeTableName(prizeTableName)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token),
                     r => cb.Invoke(
-                        new AsyncResult<EzResetBoxResult>(
-                            r.Result == null ? null : new EzResetBoxResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Lottery.Result.EzResetBoxResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Lottery.Result.EzResetBoxResult.FromModel(r.Result),
                             r.Error
                         )
                     )
@@ -164,17 +144,8 @@ namespace Gs2.Unity.Gs2Lottery
             );
 		}
 
-		/// <summary>
-		///  排出確率を取得<br />
-		/// </summary>
-        ///
-		/// <returns>IEnumerator</returns>
-		/// <param name="callback">コールバックハンドラ</param>
-		/// <param name="session">ゲームセッション</param>
-		/// <param name="namespaceName">ネームスペース名</param>
-		/// <param name="lotteryName">抽選モデルの種類名</param>
-		public IEnumerator ListProbabilities(
-		        UnityAction<AsyncResult<EzListProbabilitiesResult>> callback,
+        public IEnumerator ListProbabilities(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Lottery.Result.EzListProbabilitiesResult>> callback,
 		        GameSession session,
                 string namespaceName,
                 string lotteryName
@@ -183,19 +154,19 @@ namespace Gs2.Unity.Gs2Lottery
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DescribeProbabilities(
-                    new DescribeProbabilitiesRequest()
+                cb => _restClient.DescribeProbabilities(
+                    new Gs2.Gs2Lottery.Request.DescribeProbabilitiesRequest()
                         .WithNamespaceName(namespaceName)
                         .WithLotteryName(lotteryName)
-                        .WithAccessToken(session.AccessToken.token),
+                        .WithAccessToken(session.AccessToken.Token),
                     r => cb.Invoke(
-                        new AsyncResult<EzListProbabilitiesResult>(
-                            r.Result == null ? null : new EzListProbabilitiesResult(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2Lottery.Result.EzListProbabilitiesResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Lottery.Result.EzListProbabilitiesResult.FromModel(r.Result),
                             r.Error
                         )
                     )
                 )
             );
 		}
-	}
+    }
 }

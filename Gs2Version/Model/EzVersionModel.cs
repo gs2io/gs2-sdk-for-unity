@@ -13,118 +13,62 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Version.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Version.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzVersionModel
 	{
-		/** バージョンの種類名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** バージョンの種類のメタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** バージョンアップを促すバージョン */
-		[UnityEngine.SerializeField]
-		public EzVersion WarningVersion;
-		/** バージョンチェックを蹴るバージョン */
-		[UnityEngine.SerializeField]
-		public EzVersion ErrorVersion;
-		/** 判定に使用するバージョン値の種類 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
+		public Gs2.Unity.Gs2Version.Model.EzVersion WarningVersion;
+		[SerializeField]
+		public Gs2.Unity.Gs2Version.Model.EzVersion ErrorVersion;
+		[SerializeField]
 		public string Scope;
-		/** 現在のバージョン */
-		[UnityEngine.SerializeField]
-		public EzVersion CurrentVersion;
-		/** 判定するバージョン値に署名検証を必要とするか */
-		[UnityEngine.SerializeField]
+		[SerializeField]
+		public Gs2.Unity.Gs2Version.Model.EzVersion CurrentVersion;
+		[SerializeField]
 		public bool NeedSignature;
 
-		public EzVersionModel()
-		{
-
-		}
-
-		public EzVersionModel(Gs2.Gs2Version.Model.VersionModel @versionModel)
-		{
-			Name = @versionModel.name;
-			Metadata = @versionModel.metadata;
-			WarningVersion = @versionModel.warningVersion != null ? new EzVersion(@versionModel.warningVersion) : null;
-			ErrorVersion = @versionModel.errorVersion != null ? new EzVersion(@versionModel.errorVersion) : null;
-			Scope = @versionModel.scope;
-			CurrentVersion = @versionModel.currentVersion != null ? new EzVersion(@versionModel.currentVersion) : null;
-			NeedSignature = @versionModel.needSignature.HasValue ? @versionModel.needSignature.Value : false;
-		}
-
-        public virtual VersionModel ToModel()
+        public Gs2.Gs2Version.Model.VersionModel ToModel()
         {
-            return new VersionModel {
-                name = Name,
-                metadata = Metadata,
-                warningVersion = new Version_ {
-                    major = WarningVersion.Major,
-                    minor = WarningVersion.Minor,
-                    micro = WarningVersion.Micro,
-                },
-                errorVersion = new Version_ {
-                    major = ErrorVersion.Major,
-                    minor = ErrorVersion.Minor,
-                    micro = ErrorVersion.Micro,
-                },
-                scope = Scope,
-                currentVersion = new Version_ {
-                    major = CurrentVersion.Major,
-                    minor = CurrentVersion.Minor,
-                    micro = CurrentVersion.Micro,
-                },
-                needSignature = NeedSignature,
+            return new Gs2.Gs2Version.Model.VersionModel {
+                Name = Name,
+                Metadata = Metadata,
+                WarningVersion = WarningVersion?.ToModel(),
+                ErrorVersion = ErrorVersion?.ToModel(),
+                Scope = Scope,
+                CurrentVersion = CurrentVersion?.ToModel(),
+                NeedSignature = NeedSignature,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzVersionModel FromModel(Gs2.Gs2Version.Model.VersionModel model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            if(this.WarningVersion != null)
-            {
-                writer.WritePropertyName("warningVersion");
-                this.WarningVersion.WriteJson(writer);
-            }
-            if(this.ErrorVersion != null)
-            {
-                writer.WritePropertyName("errorVersion");
-                this.ErrorVersion.WriteJson(writer);
-            }
-            if(this.Scope != null)
-            {
-                writer.WritePropertyName("scope");
-                writer.Write(this.Scope);
-            }
-            if(this.CurrentVersion != null)
-            {
-                writer.WritePropertyName("currentVersion");
-                this.CurrentVersion.WriteJson(writer);
-            }
-            writer.WritePropertyName("needSignature");
-            writer.Write(this.NeedSignature);
-            writer.WriteObjectEnd();
+            return new EzVersionModel {
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                WarningVersion = model.WarningVersion == null ? null : Gs2.Unity.Gs2Version.Model.EzVersion.FromModel(model.WarningVersion),
+                ErrorVersion = model.ErrorVersion == null ? null : Gs2.Unity.Gs2Version.Model.EzVersion.FromModel(model.ErrorVersion),
+                Scope = model.Scope == null ? null : model.Scope,
+                CurrentVersion = model.CurrentVersion == null ? null : Gs2.Unity.Gs2Version.Model.EzVersion.FromModel(model.CurrentVersion),
+                NeedSignature = model.NeedSignature ?? false,
+            };
         }
-	}
+    }
 }

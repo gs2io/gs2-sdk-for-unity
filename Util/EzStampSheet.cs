@@ -48,7 +48,7 @@ namespace Gs2.Unity.Util
         
         public T ToRequest<T> () where T: IRequest 
         {
-            return (T)typeof(T).GetMethod("FromDict")?.Invoke(null, new object[] { JsonMapper.ToObject(Args) });
+            return (T)typeof(T).GetMethod("FromJson")?.Invoke(null, new object[] { JsonMapper.ToObject(Args) });
         }
 
         public string OwnerId => _stampSheet.ownerId;
@@ -80,10 +80,10 @@ namespace Gs2.Unity.Util
                     {
                         callback.Invoke(
                             new AsyncResult<EzRunStampSheetResult>(
-                                r.Result != null ? new EzRunStampSheetResult(
+                                r.Result != null ? EzRunStampSheetResult.FromModel(
                                     new RunStampSheetResult
                                     {
-                                        result = r.Result.Result,
+                                        Result = r.Result.Result,
                                     }
                                 ) : null, 
                                 r.Error
@@ -121,11 +121,11 @@ namespace Gs2.Unity.Util
                     {
                         callback.Invoke(
                             new AsyncResult<EzRunStampSheetExpressResult>(
-                                r.Result != null ? new EzRunStampSheetExpressResult(
+                                r.Result != null ? EzRunStampSheetExpressResult.FromModel(
                                     new RunStampSheetExpressResult
                                     {
-                                        taskResults = r.Result.TaskResults,
-                                        sheetResult = r.Result.SheetResult,
+                                        TaskResults = r.Result.TaskResults.ToArray(),
+                                        SheetResult = r.Result.SheetResult,
                                     }
                                 ) : null, 
                                 r.Error

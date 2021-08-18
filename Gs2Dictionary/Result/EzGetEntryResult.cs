@@ -13,30 +13,31 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-using System;
+
+using Gs2.Gs2Dictionary.Model;
 using System.Collections.Generic;
-using Gs2.Core.Model;
-using Gs2.Unity.Gs2Dictionary.Model;
-using Gs2.Gs2Dictionary.Result;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Dictionary.Result
 {
 	[Preserve]
+	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzGetEntryResult
 	{
-        /** エントリー */
-        public EzEntry Item { get; private set; }
+		[SerializeField]
+		public Gs2.Unity.Gs2Dictionary.Model.EzEntry Item;
 
-
-        public EzGetEntryResult(
-            GetEntryResult result
-        )
+        public static EzGetEntryResult FromModel(Gs2.Gs2Dictionary.Result.GetEntryResult model)
         {
-            if(result.item != null)
-            {
-                Item = new EzEntry(result.item);
-            }
+            return new EzGetEntryResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Dictionary.Model.EzEntry.FromModel(model.Item),
+            };
         }
-	}
+    }
 }

@@ -13,66 +13,46 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Formation.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Formation.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzMold
 	{
-		/** フォームの保存領域の名前 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** ユーザーID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string UserId;
-		/** 現在のキャパシティ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int Capacity;
 
-		public EzMold()
-		{
-
-		}
-
-		public EzMold(Gs2.Gs2Formation.Model.Mold @mold)
-		{
-			Name = @mold.name;
-			UserId = @mold.userId;
-			Capacity = @mold.capacity.HasValue ? @mold.capacity.Value : 0;
-		}
-
-        public virtual Mold ToModel()
+        public Gs2.Gs2Formation.Model.Mold ToModel()
         {
-            return new Mold {
-                name = Name,
-                userId = UserId,
-                capacity = Capacity,
+            return new Gs2.Gs2Formation.Model.Mold {
+                Name = Name,
+                UserId = UserId,
+                Capacity = Capacity,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzMold FromModel(Gs2.Gs2Formation.Model.Mold model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.UserId != null)
-            {
-                writer.WritePropertyName("userId");
-                writer.Write(this.UserId);
-            }
-            writer.WritePropertyName("capacity");
-            writer.Write(this.Capacity);
-            writer.WriteObjectEnd();
+            return new EzMold {
+                Name = model.Name == null ? null : model.Name,
+                UserId = model.UserId == null ? null : model.UserId,
+                Capacity = model.Capacity ?? 0,
+            };
         }
-	}
+    }
 }

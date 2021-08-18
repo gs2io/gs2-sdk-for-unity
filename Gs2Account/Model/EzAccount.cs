@@ -13,66 +13,46 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Account.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Account.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzAccount
 	{
-		/** アカウントID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string UserId;
-		/** パスワード */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Password;
-		/** 作成日時 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long CreatedAt;
 
-		public EzAccount()
-		{
-
-		}
-
-		public EzAccount(Gs2.Gs2Account.Model.Account @account)
-		{
-			UserId = @account.userId;
-			Password = @account.password;
-			CreatedAt = @account.createdAt.HasValue ? @account.createdAt.Value : 0;
-		}
-
-        public virtual Account ToModel()
+        public Gs2.Gs2Account.Model.Account ToModel()
         {
-            return new Account {
-                userId = UserId,
-                password = Password,
-                createdAt = CreatedAt,
+            return new Gs2.Gs2Account.Model.Account {
+                UserId = UserId,
+                Password = Password,
+                CreatedAt = CreatedAt,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzAccount FromModel(Gs2.Gs2Account.Model.Account model)
         {
-            writer.WriteObjectStart();
-            if(this.UserId != null)
-            {
-                writer.WritePropertyName("userId");
-                writer.Write(this.UserId);
-            }
-            if(this.Password != null)
-            {
-                writer.WritePropertyName("password");
-                writer.Write(this.Password);
-            }
-            writer.WritePropertyName("createdAt");
-            writer.Write(this.CreatedAt);
-            writer.WriteObjectEnd();
+            return new EzAccount {
+                UserId = model.UserId == null ? null : model.UserId,
+                Password = model.Password == null ? null : model.Password,
+                CreatedAt = model.CreatedAt ?? 0,
+            };
         }
-	}
+    }
 }

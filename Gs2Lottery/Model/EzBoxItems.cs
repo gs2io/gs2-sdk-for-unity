@@ -13,95 +13,50 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Lottery.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Lottery.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzBoxItems
 	{
-		/** ボックス */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string BoxId;
-		/** 排出確率テーブル名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string PrizeTableName;
-		/** ボックスから取り出したアイテムのリスト */
-		[UnityEngine.SerializeField]
-		public List<EzBoxItem> Items;
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Lottery.Model.EzBoxItem> Items;
 
-		public EzBoxItems()
-		{
-
-		}
-
-		public EzBoxItems(Gs2.Gs2Lottery.Model.BoxItems @boxItems)
-		{
-			BoxId = @boxItems.boxId;
-			PrizeTableName = @boxItems.prizeTableName;
-			Items = @boxItems.items != null ? @boxItems.items.Select(value =>
-                {
-                    return new EzBoxItem(value);
-                }
-			).ToList() : new List<EzBoxItem>(new EzBoxItem[] {});
-		}
-
-        public virtual BoxItems ToModel()
+        public Gs2.Gs2Lottery.Model.BoxItems ToModel()
         {
-            return new BoxItems {
-                boxId = BoxId,
-                prizeTableName = PrizeTableName,
-                items = Items != null ? Items.Select(Value0 =>
-                        {
-                            return new BoxItem
-                            {
-                                acquireActions = Value0.AcquireActions != null ? Value0.AcquireActions.Select(Value1 =>
-                                        {
-                                            return new AcquireAction
-                                            {
-                                                action = Value1.Action,
-                                                request = Value1.Request,
-                                            };
-                                        }
-                                ).ToList() : new List<AcquireAction>(new AcquireAction[] {}),
-                                remaining = Value0.Remaining,
-                                initial = Value0.Initial,
-                            };
-                        }
-                ).ToList() : new List<BoxItem>(new BoxItem[] {}),
+            return new Gs2.Gs2Lottery.Model.BoxItems {
+                BoxId = BoxId,
+                PrizeTableName = PrizeTableName,
+                Items = Items?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzBoxItems FromModel(Gs2.Gs2Lottery.Model.BoxItems model)
         {
-            writer.WriteObjectStart();
-            if(this.BoxId != null)
-            {
-                writer.WritePropertyName("boxId");
-                writer.Write(this.BoxId);
-            }
-            if(this.PrizeTableName != null)
-            {
-                writer.WritePropertyName("prizeTableName");
-                writer.Write(this.PrizeTableName);
-            }
-            if(this.Items != null)
-            {
-                writer.WritePropertyName("items");
-                writer.WriteArrayStart();
-                foreach(var item in this.Items)
-                {
-                    item.WriteJson(writer);
-                }
-                writer.WriteArrayEnd();
-            }
-            writer.WriteObjectEnd();
+            return new EzBoxItems {
+                BoxId = model.BoxId == null ? null : model.BoxId,
+                PrizeTableName = model.PrizeTableName == null ? null : model.PrizeTableName,
+                Items = model.Items == null ? new List<Gs2.Unity.Gs2Lottery.Model.EzBoxItem>() : model.Items.Select(v => {
+                    return Gs2.Unity.Gs2Lottery.Model.EzBoxItem.FromModel(v);
+                }).ToList(),
+            };
         }
-	}
+    }
 }

@@ -13,56 +13,42 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Matchmaking.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Matchmaking.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzAttribute
 	{
-		/** 属性名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** 属性値 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int Value;
 
-		public EzAttribute()
-		{
-
-		}
-
-		public EzAttribute(Gs2.Gs2Matchmaking.Model.Attribute_ @attribute)
-		{
-			Name = @attribute.name;
-			Value = @attribute.value.HasValue ? @attribute.value.Value : 0;
-		}
-
-        public virtual Attribute_ ToModel()
+        public Gs2.Gs2Matchmaking.Model.Attribute_ ToModel()
         {
-            return new Attribute_ {
-                name = Name,
-                value = Value,
+            return new Gs2.Gs2Matchmaking.Model.Attribute_ {
+                Name = Name,
+                Value = Value,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzAttribute FromModel(Gs2.Gs2Matchmaking.Model.Attribute_ model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            writer.WritePropertyName("value");
-            writer.Write(this.Value);
-            writer.WriteObjectEnd();
+            return new EzAttribute {
+                Name = model.Name == null ? null : model.Name,
+                Value = model.Value ?? 0,
+            };
         }
-	}
+    }
 }

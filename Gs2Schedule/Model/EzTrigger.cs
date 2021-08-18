@@ -13,73 +13,50 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Schedule.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Schedule.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzTrigger
 	{
-		/** トリガー */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string TriggerId;
-		/** トリガーの名前 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** 作成日時 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long CreatedAt;
-		/** トリガーの有効期限 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public long ExpiresAt;
 
-		public EzTrigger()
-		{
-
-		}
-
-		public EzTrigger(Gs2.Gs2Schedule.Model.Trigger @trigger)
-		{
-			TriggerId = @trigger.triggerId;
-			Name = @trigger.name;
-			CreatedAt = @trigger.createdAt.HasValue ? @trigger.createdAt.Value : 0;
-			ExpiresAt = @trigger.expiresAt.HasValue ? @trigger.expiresAt.Value : 0;
-		}
-
-        public virtual Trigger ToModel()
+        public Gs2.Gs2Schedule.Model.Trigger ToModel()
         {
-            return new Trigger {
-                triggerId = TriggerId,
-                name = Name,
-                createdAt = CreatedAt,
-                expiresAt = ExpiresAt,
+            return new Gs2.Gs2Schedule.Model.Trigger {
+                TriggerId = TriggerId,
+                Name = Name,
+                CreatedAt = CreatedAt,
+                ExpiresAt = ExpiresAt,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzTrigger FromModel(Gs2.Gs2Schedule.Model.Trigger model)
         {
-            writer.WriteObjectStart();
-            if(this.TriggerId != null)
-            {
-                writer.WritePropertyName("triggerId");
-                writer.Write(this.TriggerId);
-            }
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            writer.WritePropertyName("createdAt");
-            writer.Write(this.CreatedAt);
-            writer.WritePropertyName("expiresAt");
-            writer.Write(this.ExpiresAt);
-            writer.WriteObjectEnd();
+            return new EzTrigger {
+                TriggerId = model.TriggerId == null ? null : model.TriggerId,
+                Name = model.Name == null ? null : model.Name,
+                CreatedAt = model.CreatedAt ?? 0,
+                ExpiresAt = model.ExpiresAt ?? 0,
+            };
         }
-	}
+    }
 }

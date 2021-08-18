@@ -13,76 +13,46 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Quest.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Quest.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzContents
 	{
-		/** クエストモデルのメタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** クエストクリア時の報酬 */
-		[UnityEngine.SerializeField]
-		public List<EzAcquireAction> CompleteAcquireActions;
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Quest.Model.EzAcquireAction> CompleteAcquireActions;
 
-		public EzContents()
-		{
-
-		}
-
-		public EzContents(Gs2.Gs2Quest.Model.Contents @contents)
-		{
-			Metadata = @contents.metadata;
-			CompleteAcquireActions = @contents.completeAcquireActions != null ? @contents.completeAcquireActions.Select(value =>
-                {
-                    return new EzAcquireAction(value);
-                }
-			).ToList() : new List<EzAcquireAction>(new EzAcquireAction[] {});
-		}
-
-        public virtual Contents ToModel()
+        public Gs2.Gs2Quest.Model.Contents ToModel()
         {
-            return new Contents {
-                metadata = Metadata,
-                completeAcquireActions = CompleteAcquireActions != null ? CompleteAcquireActions.Select(Value0 =>
-                        {
-                            return new AcquireAction
-                            {
-                                action = Value0.Action,
-                                request = Value0.Request,
-                            };
-                        }
-                ).ToList() : new List<AcquireAction>(new AcquireAction[] {}),
+            return new Gs2.Gs2Quest.Model.Contents {
+                Metadata = Metadata,
+                CompleteAcquireActions = CompleteAcquireActions?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzContents FromModel(Gs2.Gs2Quest.Model.Contents model)
         {
-            writer.WriteObjectStart();
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            if(this.CompleteAcquireActions != null)
-            {
-                writer.WritePropertyName("completeAcquireActions");
-                writer.WriteArrayStart();
-                foreach(var item in this.CompleteAcquireActions)
-                {
-                    item.WriteJson(writer);
-                }
-                writer.WriteArrayEnd();
-            }
-            writer.WriteObjectEnd();
+            return new EzContents {
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                CompleteAcquireActions = model.CompleteAcquireActions == null ? new List<Gs2.Unity.Gs2Quest.Model.EzAcquireAction>() : model.CompleteAcquireActions.Select(v => {
+                    return Gs2.Unity.Gs2Quest.Model.EzAcquireAction.FromModel(v);
+                }).ToList(),
+            };
         }
-	}
+    }
 }

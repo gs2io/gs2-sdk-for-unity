@@ -13,66 +13,46 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Matchmaking.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Matchmaking.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzRatingModel
 	{
-		/** レーティングの種類名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Name;
-		/** レーティングの種類のメタデータ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string Metadata;
-		/** レート値の変動の大きさ */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int Volatility;
 
-		public EzRatingModel()
-		{
-
-		}
-
-		public EzRatingModel(Gs2.Gs2Matchmaking.Model.RatingModel @ratingModel)
-		{
-			Name = @ratingModel.name;
-			Metadata = @ratingModel.metadata;
-			Volatility = @ratingModel.volatility.HasValue ? @ratingModel.volatility.Value : 0;
-		}
-
-        public virtual RatingModel ToModel()
+        public Gs2.Gs2Matchmaking.Model.RatingModel ToModel()
         {
-            return new RatingModel {
-                name = Name,
-                metadata = Metadata,
-                volatility = Volatility,
+            return new Gs2.Gs2Matchmaking.Model.RatingModel {
+                Name = Name,
+                Metadata = Metadata,
+                Volatility = Volatility,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzRatingModel FromModel(Gs2.Gs2Matchmaking.Model.RatingModel model)
         {
-            writer.WriteObjectStart();
-            if(this.Name != null)
-            {
-                writer.WritePropertyName("name");
-                writer.Write(this.Name);
-            }
-            if(this.Metadata != null)
-            {
-                writer.WritePropertyName("metadata");
-                writer.Write(this.Metadata);
-            }
-            writer.WritePropertyName("volatility");
-            writer.Write(this.Volatility);
-            writer.WriteObjectEnd();
+            return new EzRatingModel {
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                Volatility = model.Volatility ?? 0,
+            };
         }
-	}
+    }
 }

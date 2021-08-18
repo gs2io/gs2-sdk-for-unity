@@ -13,76 +13,50 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
 using Gs2.Gs2Matchmaking.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+using UnityEngine;
 using UnityEngine.Scripting;
 
-
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Matchmaking.Model
 {
 	[Preserve]
 	[System.Serializable]
+	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzBallot
 	{
-		/** ユーザーID */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string UserId;
-		/** レーティング計算に使用するレーティング名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string RatingName;
-		/** 投票対象のギャザリング名 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public string GatheringName;
-		/** 参加人数 */
-		[UnityEngine.SerializeField]
+		[SerializeField]
 		public int NumberOfPlayer;
 
-		public EzBallot()
-		{
-
-		}
-
-		public EzBallot(Gs2.Gs2Matchmaking.Model.Ballot @ballot)
-		{
-			UserId = @ballot.userId;
-			RatingName = @ballot.ratingName;
-			GatheringName = @ballot.gatheringName;
-			NumberOfPlayer = @ballot.numberOfPlayer.HasValue ? @ballot.numberOfPlayer.Value : 0;
-		}
-
-        public virtual Ballot ToModel()
+        public Gs2.Gs2Matchmaking.Model.Ballot ToModel()
         {
-            return new Ballot {
-                userId = UserId,
-                ratingName = RatingName,
-                gatheringName = GatheringName,
-                numberOfPlayer = NumberOfPlayer,
+            return new Gs2.Gs2Matchmaking.Model.Ballot {
+                UserId = UserId,
+                RatingName = RatingName,
+                GatheringName = GatheringName,
+                NumberOfPlayer = NumberOfPlayer,
             };
         }
 
-        public virtual void WriteJson(JsonWriter writer)
+        public static EzBallot FromModel(Gs2.Gs2Matchmaking.Model.Ballot model)
         {
-            writer.WriteObjectStart();
-            if(this.UserId != null)
-            {
-                writer.WritePropertyName("userId");
-                writer.Write(this.UserId);
-            }
-            if(this.RatingName != null)
-            {
-                writer.WritePropertyName("ratingName");
-                writer.Write(this.RatingName);
-            }
-            if(this.GatheringName != null)
-            {
-                writer.WritePropertyName("gatheringName");
-                writer.Write(this.GatheringName);
-            }
-            writer.WritePropertyName("numberOfPlayer");
-            writer.Write(this.NumberOfPlayer);
-            writer.WriteObjectEnd();
+            return new EzBallot {
+                UserId = model.UserId == null ? null : model.UserId,
+                RatingName = model.RatingName == null ? null : model.RatingName,
+                GatheringName = model.GatheringName == null ? null : model.GatheringName,
+                NumberOfPlayer = model.NumberOfPlayer ?? 0,
+            };
         }
-	}
+    }
 }
