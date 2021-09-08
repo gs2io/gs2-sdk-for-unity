@@ -104,7 +104,7 @@ namespace Gs2.Unity.Gs2Chat
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzDeleteRoomResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string roomName = null
+                string roomName
         )
 		{
             yield return _profile.Run(
@@ -128,7 +128,7 @@ namespace Gs2.Unity.Gs2Chat
         public IEnumerator GetRoom(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzGetRoomResult>> callback,
                 string namespaceName,
-                string roomName = null
+                string roomName
         )
 		{
             yield return _profile.Run(
@@ -150,6 +150,7 @@ namespace Gs2.Unity.Gs2Chat
 
         public IEnumerator ListMessages(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzListMessagesResult>> callback,
+		        GameSession session,
                 string namespaceName,
                 string roomName,
                 int limit,
@@ -159,7 +160,7 @@ namespace Gs2.Unity.Gs2Chat
 		{
             yield return _profile.Run(
                 callback,
-                null,
+		        session,
                 cb => _restClient.DescribeMessages(
                     new Gs2.Gs2Chat.Request.DescribeMessagesRequest()
                         .WithNamespaceName(namespaceName)
