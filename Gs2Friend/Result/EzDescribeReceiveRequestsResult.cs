@@ -32,6 +32,8 @@ namespace Gs2.Unity.Gs2Friend.Result
 	{
 		[SerializeField]
 		public List<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> Items;
+		[SerializeField]
+		public string NextPageToken;
 
         public static EzDescribeReceiveRequestsResult FromModel(Gs2.Gs2Friend.Result.DescribeReceiveRequestsResult model)
         {
@@ -39,6 +41,7 @@ namespace Gs2.Unity.Gs2Friend.Result
                 Items = model.Items == null ? new List<Gs2.Unity.Gs2Friend.Model.EzFriendRequest>() : model.Items.Select(v => {
                     return Gs2.Unity.Gs2Friend.Model.EzFriendRequest.FromModel(v);
                 }).ToList(),
+                NextPageToken = model.NextPageToken == null ? null : model.NextPageToken,
             };
         }
     }
