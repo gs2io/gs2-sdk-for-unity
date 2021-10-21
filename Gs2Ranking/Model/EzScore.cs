@@ -35,6 +35,8 @@ namespace Gs2.Unity.Gs2Ranking.Model
 		[SerializeField]
 		public string UserId;
 		[SerializeField]
+		public string UniqueId;
+		[SerializeField]
 		public string ScorerUserId;
 		[SerializeField]
 		public long Score;
@@ -46,6 +48,7 @@ namespace Gs2.Unity.Gs2Ranking.Model
             return new Gs2.Gs2Ranking.Model.Score {
                 CategoryName = CategoryName,
                 UserId = UserId,
+                UniqueId = UniqueId,
                 ScorerUserId = ScorerUserId,
                 Value = Score,
                 Metadata = Metadata,
@@ -57,6 +60,7 @@ namespace Gs2.Unity.Gs2Ranking.Model
             return new EzScore {
                 CategoryName = model.CategoryName == null ? null : model.CategoryName,
                 UserId = model.UserId == null ? null : model.UserId,
+                UniqueId = model.UniqueId == null ? null : model.UniqueId,
                 ScorerUserId = model.ScorerUserId == null ? null : model.ScorerUserId,
                 Score = model.Value ?? 0,
                 Metadata = model.Metadata == null ? null : model.Metadata,

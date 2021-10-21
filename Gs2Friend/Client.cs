@@ -146,8 +146,8 @@ namespace Gs2.Unity.Gs2Friend
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzDescribeFollowUsersResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                bool withProfile,
-                int limit,
+                bool? withProfile = null,
+                int? limit = null,
                 string pageToken = null
         )
 		{
@@ -159,8 +159,8 @@ namespace Gs2.Unity.Gs2Friend
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithWithProfile(withProfile)
-                        .WithPageToken(pageToken)
-                        .WithLimit(limit),
+                        .WithLimit(limit)
+                        .WithPageToken(pageToken),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Friend.Result.EzDescribeFollowUsersResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Friend.Result.EzDescribeFollowUsersResult.FromModel(r.Result),
@@ -250,8 +250,8 @@ namespace Gs2.Unity.Gs2Friend
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzDescribeFriendsResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                bool withProfile,
-                int limit,
+                bool? withProfile = null,
+                int? limit = null,
                 string pageToken = null
         )
 		{
@@ -263,8 +263,8 @@ namespace Gs2.Unity.Gs2Friend
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithWithProfile(withProfile)
-                        .WithPageToken(pageToken)
-                        .WithLimit(limit),
+                        .WithLimit(limit)
+                        .WithPageToken(pageToken),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Friend.Result.EzDescribeFriendsResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Friend.Result.EzDescribeFriendsResult.FromModel(r.Result),
@@ -280,7 +280,7 @@ namespace Gs2.Unity.Gs2Friend
 		        GameSession session,
                 string namespaceName,
                 string targetUserId,
-                bool withProfile
+                bool? withProfile = null
         )
 		{
             yield return _profile.Run(

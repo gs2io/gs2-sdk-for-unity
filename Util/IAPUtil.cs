@@ -48,7 +48,7 @@ namespace Gs2.Unity.Util
                     new AsyncResult<PurchaseParameters>(
                         null, 
                         new ConflictException(
-                            new List<RequestError>
+                            new RequestError[]
                             {
                                 new RequestError("state", "money.state.state.error.running")
                             }

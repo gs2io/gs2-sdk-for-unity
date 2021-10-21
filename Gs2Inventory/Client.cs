@@ -275,8 +275,8 @@ namespace Gs2.Unity.Gs2Inventory
                 string namespaceName,
                 string inventoryName,
                 string itemName,
-                string itemSetName,
-                string keyId
+                string keyId,
+                string itemSetName = null
         )
 		{
             yield return _profile.Run(

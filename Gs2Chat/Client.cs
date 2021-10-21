@@ -71,7 +71,7 @@ namespace Gs2.Unity.Gs2Chat
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzCreateRoomResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string name = null,
+                string name,
                 string metadata = null,
                 string password = null,
                 List<string> whiteListUserIds = null
@@ -153,8 +153,8 @@ namespace Gs2.Unity.Gs2Chat
 		        GameSession session,
                 string namespaceName,
                 string roomName,
+                long startAt,
                 int limit,
-                long? startAt = null,
                 string password = null
         )
 		{

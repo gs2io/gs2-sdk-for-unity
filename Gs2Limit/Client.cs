@@ -73,7 +73,7 @@ namespace Gs2.Unity.Gs2Limit
                 string namespaceName,
                 string limitName,
                 string counterName,
-                int? countUpValue = null,
+                int countUpValue,
                 int? maxValue = null
         )
 		{

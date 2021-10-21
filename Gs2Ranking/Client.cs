@@ -231,8 +231,8 @@ namespace Gs2.Unity.Gs2Ranking
                     new Gs2.Gs2Ranking.Request.GetRankingRequest()
                         .WithNamespaceName(namespaceName)
                         .WithCategoryName(categoryName)
-                        .WithAccessToken(session.AccessToken.Token)
                         .WithScorerUserId(scorerUserId)
+                        .WithAccessToken(session.AccessToken.Token)
                         .WithUniqueId(uniqueId),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzGetRankResult>(
@@ -249,7 +249,7 @@ namespace Gs2.Unity.Gs2Ranking
 		        GameSession session,
                 string namespaceName,
                 string categoryName,
-                int limit,
+                int? limit = null,
                 string pageToken = null,
                 long? startIndex = null
         )
@@ -262,8 +262,8 @@ namespace Gs2.Unity.Gs2Ranking
                         .WithNamespaceName(namespaceName)
                         .WithCategoryName(categoryName)
                         .WithAccessToken(session.AccessToken.Token)
-                        .WithPageToken(pageToken)
                         .WithLimit(limit)
+                        .WithPageToken(pageToken)
                         .WithStartIndex(startIndex),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzGetRankingResult>(
@@ -339,7 +339,7 @@ namespace Gs2.Unity.Gs2Ranking
                 string namespaceName,
                 string categoryName,
                 string scorerUserId,
-                int limit,
+                int? limit = null,
                 string pageToken = null
         )
 		{
@@ -350,10 +350,10 @@ namespace Gs2.Unity.Gs2Ranking
                     new Gs2.Gs2Ranking.Request.DescribeScoresRequest()
                         .WithNamespaceName(namespaceName)
                         .WithCategoryName(categoryName)
-                        .WithAccessToken(session.AccessToken.Token)
                         .WithScorerUserId(scorerUserId)
-                        .WithPageToken(pageToken)
-                        .WithLimit(limit),
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithLimit(limit)
+                        .WithPageToken(pageToken),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzListScoresResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Ranking.Result.EzListScoresResult.FromModel(r.Result),

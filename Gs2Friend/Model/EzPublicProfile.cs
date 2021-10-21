@@ -47,7 +47,7 @@ namespace Gs2.Unity.Gs2Friend.Model
         {
             return new EzPublicProfile {
                 UserId = model.UserId == null ? null : model.UserId,
-                PublicProfile = model.PublicProfile == null ? null : model.Value,
+                PublicProfile = model.Value == null ? null : model.Value,
             };
         }
     }

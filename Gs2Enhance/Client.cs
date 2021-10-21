@@ -76,7 +76,7 @@ namespace Gs2.Unity.Gs2Enhance
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _restClient.GetRateModel(
+                cb => _client.GetRateModel(
                     new Gs2.Gs2Enhance.Request.GetRateModelRequest()
                         .WithNamespaceName(namespaceName)
                         .WithRateName(rateName),
@@ -170,7 +170,7 @@ namespace Gs2.Unity.Gs2Enhance
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _restClient.GetProgress(
+                cb => _client.GetProgress(
                     new Gs2.Gs2Enhance.Request.GetProgressRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token),
