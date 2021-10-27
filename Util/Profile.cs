@@ -37,6 +37,7 @@ namespace Gs2.Unity.Util
             string clientId,
             string clientSecret,
             IReopener reopener,
+            Region region = Region.ApNortheast1,
             bool checkCertificateRevocation = true
         )
         {
@@ -46,6 +47,7 @@ namespace Gs2.Unity.Util
             );
             Gs2Session = new Gs2WebSocketSession(
                 credential,
+                region,
                 checkCertificateRevocation
             );
             Gs2RestSession = new Gs2RestSession(

@@ -28,6 +28,7 @@ using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Core.Exception;
 using Gs2.Unity.Util;
+using Gs2.Util.WebSocketSharp;
 using UnityEngine.Events;
 using UnityEngine.Networking;
 
@@ -57,9 +58,9 @@ namespace Gs2.Unity.Gs2Datastore
 			request.downloadHandler = new DownloadHandlerBuffer();
 			yield return request.SendWebRequest();
 
-			var result = new Gs2RestResponse(
-				!request.isNetworkError || request.isHttpError ? request.downloadHandler.text : request.error,
-				request.responseCode
+			var result = new RestResult(
+				(int) request.responseCode,
+				request.responseCode == 200 ? "{}" : string.IsNullOrEmpty(request.error) ? "{}" : request.error
 			);
 
 			if (result.Error == null)
@@ -102,9 +103,9 @@ namespace Gs2.Unity.Gs2Datastore
 			request.downloadHandler = new DownloadHandlerBuffer();
 			yield return request.SendWebRequest();
 			
-			var result = new Gs2RestResponse(
-				!request.isNetworkError || request.isHttpError ? null : request.error,
-				request.responseCode
+			var result = new RestResult(
+				(int) request.responseCode,
+				request.responseCode == 200 ? "{}" : string.IsNullOrEmpty(request.error) ? "{}" : request.error
 			);
 
 			if (result.Error == null)

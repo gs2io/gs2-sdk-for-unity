@@ -82,11 +82,11 @@ namespace Gs2.Unity.Gs2News
             request.downloadHandler = new DownloadHandlerBuffer();
             yield return request.SendWebRequest();
 
-            var result = new Gs2RestResponse(
-                !request.isNetworkError || request.isHttpError ? null : request.error,
-                request.responseCode
+            var result = new RestResult(
+                (int) request.responseCode,
+                request.responseCode == 200 ? "{}" : string.IsNullOrEmpty(request.error) ? "{}" : request.error
             );
-			
+
             if (result.Error != null)
             {
                 callback.Invoke(
