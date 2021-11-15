@@ -14,7 +14,6 @@ using Gs2.Unity.Util;
 using UnityEngine;
 using UnityEngine.Events;
 using Gs2.Util.WebSocketSharp;
-using UnityEditor.PackageManager;
 using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Realtime
