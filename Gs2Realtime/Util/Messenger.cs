@@ -1,13 +1,17 @@
 using System;
 using System.Collections;
+using System.ComponentModel;
 using System.IO;
 using System.Security.Cryptography;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 using Gs2.Gs2Realtime.Message;
+using UnityEditor.PackageManager;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Realtime.Util
 {
+    [Preserve]
     public class Messenger
     {
         private readonly HMACSHA256 _sha256;

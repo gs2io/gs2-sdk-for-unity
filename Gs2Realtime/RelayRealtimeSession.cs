@@ -12,12 +12,14 @@ using Gs2.Unity.Util;
 using UnityEngine;
 using UnityEngine.Events;
 using Gs2.Util.WebSocketSharp;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Realtime
 {
     public delegate void OnRelayMessageHandler(RelayBinaryMessage message);
     public delegate void OnRelayMessageWithMetadataHandler(RelayBinaryMessage message, MessageMetadata metadata);
     
+    [Preserve]
     public class RelayRealtimeSession : RealtimeSession
     {
         public event OnRelayMessageHandler OnRelayMessage;

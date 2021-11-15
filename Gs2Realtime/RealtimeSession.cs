@@ -14,6 +14,8 @@ using Gs2.Unity.Util;
 using UnityEngine;
 using UnityEngine.Events;
 using Gs2.Util.WebSocketSharp;
+using UnityEditor.PackageManager;
+using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Realtime
 {
@@ -30,6 +32,7 @@ namespace Gs2.Unity.Gs2Realtime
     public delegate void OnGeneralErrorHandler(ErrorEventArgs e);
     public delegate void OnCloseHandler(CloseEventArgs e);
     
+    [Preserve]
     public class RealtimeSession : IDisposable
     {
         protected readonly WebSocket _webSocket;
