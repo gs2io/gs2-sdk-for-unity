@@ -5,11 +5,9 @@ using System.Security.Cryptography;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 using Gs2.Gs2Realtime.Message;
-using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Realtime.Util
 {
-    [Preserve]
     public class Messenger
     {
         private readonly HMACSHA256 _sha256;
@@ -66,7 +64,11 @@ namespace Gs2.Unity.Gs2Realtime.Util
             return new Container
             {
                 MessageType = messageType.Value,
-                Payload = Any.Pack(payload),
+                Payload = new Any()
+                {
+                    TypeUrl = "type.googleapis.com",
+                    Value = payload.ToByteString()
+                },
                 Signature = ByteString.CopyFrom(
                     _sha256.ComputeHash(payload.ToByteArray())
                 )
@@ -98,23 +100,23 @@ namespace Gs2.Unity.Gs2Realtime.Util
             switch (messageType)
             {
                 case Container.Types.MessageType.HelloRequest:
-                    return payload.Unpack<HelloRequest>();
+                    return HelloRequest.Parser.ParseFrom(payload.Value);
                 case Container.Types.MessageType.HelloResult:
-                    return payload.Unpack<HelloResult>();
+                    return HelloResult.Parser.ParseFrom(payload.Value);
                 case Container.Types.MessageType.ByeRequest:
-                    return payload.Unpack<ByeRequest>();
+                    return ByeRequest.Parser.ParseFrom(payload.Value);
                 case Container.Types.MessageType.UpdateProfileRequest:
-                    return payload.Unpack<UpdateProfileRequest>();
+                    return UpdateProfileRequest.Parser.ParseFrom(payload.Value);
                 case Container.Types.MessageType.JoinNotification:
-                    return payload.Unpack<JoinNotification>();
+                    return JoinNotification.Parser.ParseFrom(payload.Value);
                 case Container.Types.MessageType.LeaveNotification:
-                    return payload.Unpack<LeaveNotification>();
+                    return LeaveNotification.Parser.ParseFrom(payload.Value);
                 case Container.Types.MessageType.UpdateProfileNotification:
-                    return payload.Unpack<UpdateProfileNotification>();
+                    return UpdateProfileNotification.Parser.ParseFrom(payload.Value);
                 case Container.Types.MessageType.BinaryMessage:
-                    return payload.Unpack<BinaryMessage>();
+                    return BinaryMessage.Parser.ParseFrom(payload.Value);
                 case Container.Types.MessageType.Error:
-                    return payload.Unpack<Error>();
+                    return Error.Parser.ParseFrom(payload.Value);
                 default:
                     throw new TypeAccessException("unknown message type.");
             }
