@@ -1,4 +1,4 @@
-#if UNITY_PURCHASING
+#if GS2_ENABLE_PURCHASING
 
 using System.Collections;
 using System.Collections.Generic;

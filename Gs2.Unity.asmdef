@@ -1,8 +1,10 @@
-﻿{
+{
     "name": "Gs2.Unity",
+    "rootNamespace": "",
     "references": [
         "Gs2",
-        "UnityEngine.Purchasing"
+        "UnityEngine.Purchasing",
+        "UnityEngine.Purchasing.Stores"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -11,5 +13,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": []
+    "versionDefines": [
+        {
+            "name": "com.unity.purchasing",
+            "expression": "",
+            "define": "GS2_ENABLE_PURCHASING"
+        }
+    ],
+    "noEngineReferences": false
 }
