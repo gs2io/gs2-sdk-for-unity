@@ -142,9 +142,9 @@ namespace Gs2.Unity.Gs2Experience
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Experience.Result.EzListStatusesResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                int limit,
                 string experienceName = null,
-                string pageToken = null
+                string pageToken = null,
+                int? limit = null
         )
 		{
             yield return _profile.Run(

@@ -165,8 +165,8 @@ namespace Gs2.Unity.Gs2Version
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Version.Result.EzListResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                int limit,
-                string pageToken = null
+                string pageToken = null,
+                int? limit = null
         )
 		{
             yield return _profile.Run(

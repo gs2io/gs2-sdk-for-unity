@@ -1,9 +1,10 @@
 {
     "name": "Gs2.Unity",
-    "rootNamespace": "",
     "references": [
         "Gs2",
-        "UnityEngine.Purchasing",
+        "UniTask",
+        "UniTask.Linq",
+        "UnityEngine.Purchasing.Stores",
         "UnityEngine.Purchasing.Stores"
     ],
     "includePlatforms": [],
@@ -18,6 +19,11 @@
             "name": "com.unity.purchasing",
             "expression": "",
             "define": "GS2_ENABLE_PURCHASING"
+        },
+        {
+            "name": "com.cysharp.unitask",
+            "expression": "",
+            "define": "GS2_ENABLE_UNITASK"
         }
     ],
     "noEngineReferences": false

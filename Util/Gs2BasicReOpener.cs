@@ -1,4 +1,7 @@
 using System.Collections;
+#if GS2_ENABLE_UNITASK
+using Cysharp.Threading.Tasks;
+#endif
 using Gs2.Core;
 using Gs2.Core.Net;
 using Gs2.Core.Result;
@@ -20,6 +23,23 @@ namespace Gs2.Unity.Util
     {
         public ReOpenEvent onReOpen = new ReOpenEvent();
 
+#if GS2_ENABLE_UNITASK
+        
+        public override async UniTask<OpenResult> ReOpenAsync(
+            Gs2WebSocketSession session, 
+            Gs2RestSession restSession
+        )
+        {
+            await session.OpenAsync();
+            var result = await restSession.OpenAsync();
+            
+            onReOpen.Invoke();
+
+            return result;
+        }
+
+#endif
+        
         public override IEnumerator ReOpen(
             Gs2WebSocketSession session, 
             Gs2RestSession restSession, 

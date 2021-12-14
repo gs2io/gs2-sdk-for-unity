@@ -14,7 +14,9 @@
  * permissions and limitations under the License.
  */
 
-using System.Collections;
+#if GS2_ENABLE_UNITASK
+using Cysharp.Threading.Tasks;
+#endif
 using Gs2.Core;
 using Gs2.Core.Exception;
 using Gs2.Core.Model;
@@ -22,6 +24,7 @@ using Gs2.Core.Net;
 using Gs2.Core.Result;
 using Gs2.Gs2Auth.Model;
 using JetBrains.Annotations;
+using System.Collections;
 using UnityEngine.Events;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -58,6 +61,17 @@ namespace Gs2.Unity.Util
             this.checkRevokeCertificate = checkCertificateRevocation;
         }
 
+#if GS2_ENABLE_UNITASK
+
+        public async UniTask InitializeAsync()
+        {
+            await _reopener.ReOpenAsync(
+                Gs2Session,
+                Gs2RestSession
+            );
+        }
+#endif
+
         public IEnumerator Initialize(
             UnityAction<AsyncResult<object>> callback
         )
@@ -88,12 +102,36 @@ namespace Gs2.Unity.Util
             );
         }
 
+#if GS2_ENABLE_UNITASK
+
+        public async UniTask FinalizeAsync()
+        {
+            await Gs2Session.CloseAsync();
+            await Gs2RestSession.CloseAsync();
+        }
+#endif
+
         public IEnumerator Finalize()
         {
             yield return Gs2Session.Close(() => {});
             yield return Gs2RestSession.Close(() => {});
         }
 
+#if GS2_ENABLE_UNITASK
+
+        public async UniTask<GameSession> LoginAsync(
+            IAuthenticator authenticator
+        )
+        {
+            _authenticator = authenticator;
+            var accessToken = await authenticator.AuthenticationAsync();
+            return new GameSession(
+                accessToken
+            );
+        }
+
+#endif
+        
         public IEnumerator Login(
             IAuthenticator authenticator,
             UnityAction<AsyncResult<GameSession>> callback
@@ -127,10 +165,6 @@ namespace Gs2.Unity.Util
                 }
             );
         }
-
-        public Gs2WebSocketSession Gs2Session { get; }
-        public Gs2RestSession Gs2RestSession { get; }
-
         
         public delegate IEnumerator RequestAction<T>(UnityAction<AsyncResult<T>> callback);
         
@@ -192,6 +226,9 @@ namespace Gs2.Unity.Util
             callback.Invoke(asyncResult);
         }
         
+        public Gs2WebSocketSession Gs2Session { get; }
+        public Gs2RestSession Gs2RestSession { get; }
+
         public bool checkRevokeCertificate { get; }
     }
 }

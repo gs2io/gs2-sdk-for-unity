@@ -30,10 +30,13 @@ namespace Gs2.Unity.Gs2Account.Result
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzDeleteTakeOverSettingResult
 	{
+		[SerializeField]
+		public Gs2.Unity.Gs2Account.Model.EzTakeOver Item;
 
         public static EzDeleteTakeOverSettingResult FromModel(Gs2.Gs2Account.Result.DeleteTakeOverResult model)
         {
             return new EzDeleteTakeOverSettingResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Account.Model.EzTakeOver.FromModel(model.Item),
             };
         }
     }

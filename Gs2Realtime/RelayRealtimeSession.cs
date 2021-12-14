@@ -2,6 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+#if GS2_ENABLE_UNITASK
+using Cysharp.Threading.Tasks;
+#endif
 using Google.Protobuf;
 using Google.Protobuf.Collections;
 using Gs2.Core;
@@ -90,7 +93,31 @@ namespace Gs2.Unity.Gs2Realtime
                 }
             }
         }
+#if GS2_ENABLE_UNITASK
+        
+        public async UniTask SendAsync(ByteString data, uint[] targetConnectionIds = null)
+        {
+            var relayBinaryMessage = new RelayBinaryMessage
+            {
+                Data = data
+            };
+            if (targetConnectionIds != null)
+            {
+                relayBinaryMessage.TargetConnectionId.AddRange(targetConnectionIds);
+            }
+            await SendAsync(
+                new BinaryMessage
+                {
+                    Data = relayBinaryMessage.ToByteString()
+                }
+            );
+        }
 
+        private new async UniTask SendAsync(BinaryMessage message)
+        {
+            await base.SendAsync(message);
+        }
+#endif
         public IEnumerator Send(UnityAction<AsyncResult<bool>> callback, ByteString data, uint[] targetConnectionIds = null)
         {
             var relayBinaryMessage = new RelayBinaryMessage

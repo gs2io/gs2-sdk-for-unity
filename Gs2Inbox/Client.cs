@@ -71,13 +71,13 @@ namespace Gs2.Unity.Gs2Inbox
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzDeleteResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string messageName
+                string messageName = null
         )
 		{
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _client.DeleteMessage(
+                cb => _restClient.DeleteMessage(
                     new Gs2.Gs2Inbox.Request.DeleteMessageRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
@@ -96,8 +96,8 @@ namespace Gs2.Unity.Gs2Inbox
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzListResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                int limit,
-                string pageToken = null
+                string pageToken = null,
+                int? limit = null
         )
 		{
             yield return _profile.Run(
@@ -123,7 +123,7 @@ namespace Gs2.Unity.Gs2Inbox
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzReadResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string messageName
+                string messageName = null
         )
 		{
             yield return _profile.Run(

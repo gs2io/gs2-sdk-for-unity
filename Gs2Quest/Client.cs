@@ -94,9 +94,9 @@ namespace Gs2.Unity.Gs2Quest
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Quest.Result.EzEndResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string transactionId,
                 bool isComplete,
                 List<Gs2.Unity.Gs2Quest.Model.EzReward> rewards = null,
+                string transactionId = null,
                 List<Gs2.Unity.Gs2Quest.Model.EzConfig> config = null
         )
 		{
@@ -154,7 +154,7 @@ namespace Gs2.Unity.Gs2Quest
                 string namespaceName,
                 string questGroupName,
                 string questName,
-                bool force,
+                bool? force = null,
                 List<Gs2.Unity.Gs2Quest.Model.EzConfig> config = null
         )
 		{
@@ -185,8 +185,8 @@ namespace Gs2.Unity.Gs2Quest
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Quest.Result.EzDescribeCompletedQuestListsResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                int limit,
-                string pageToken = null
+                string pageToken = null,
+                int? limit = null
         )
 		{
             yield return _profile.Run(

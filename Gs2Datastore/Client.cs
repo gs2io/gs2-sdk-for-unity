@@ -71,7 +71,7 @@ namespace Gs2.Unity.Gs2Datastore
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzDeleteDataObjectResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string dataObjectName
+                string dataObjectName = null
         )
 		{
             yield return _profile.Run(
@@ -96,7 +96,7 @@ namespace Gs2.Unity.Gs2Datastore
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzDoneUploadResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string dataObjectName
+                string dataObjectName = null
         )
 		{
             yield return _profile.Run(
@@ -121,9 +121,9 @@ namespace Gs2.Unity.Gs2Datastore
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzListMyDataObjectsResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                int limit,
                 string status = null,
-                string pageToken = null
+                string pageToken = null,
+                int? limit = null
         )
 		{
             yield return _profile.Run(
@@ -175,7 +175,7 @@ namespace Gs2.Unity.Gs2Datastore
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzPrepareDownloadByUserIdAndDataObjectNameResult>> callback,
                 string namespaceName,
                 string userId,
-                string dataObjectName
+                string dataObjectName = null
         )
 		{
             yield return _profile.Run(
@@ -200,7 +200,7 @@ namespace Gs2.Unity.Gs2Datastore
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzPrepareDownloadOwnDataResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string dataObjectName
+                string dataObjectName = null
         )
 		{
             yield return _profile.Run(
@@ -225,7 +225,7 @@ namespace Gs2.Unity.Gs2Datastore
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzPrepareReUploadResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string dataObjectName
+                string dataObjectName = null
         )
 		{
             yield return _profile.Run(
@@ -250,8 +250,8 @@ namespace Gs2.Unity.Gs2Datastore
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzPrepareUploadResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string scope,
                 string name = null,
+                string scope = null,
                 List<string> allowUserIds = null,
                 bool? updateIfExists = null
         )
@@ -306,7 +306,7 @@ namespace Gs2.Unity.Gs2Datastore
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzUpdateDataObjectResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string scope,
+                string scope = null,
                 List<string> allowUserIds = null
         )
 		{
@@ -335,9 +335,9 @@ namespace Gs2.Unity.Gs2Datastore
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzListDataObjectHistoriesResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string dataObjectName,
-                int limit,
-                string pageToken = null
+                string dataObjectName = null,
+                string pageToken = null,
+                int? limit = null
         )
 		{
             yield return _profile.Run(

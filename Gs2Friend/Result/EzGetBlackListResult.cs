@@ -32,6 +32,8 @@ namespace Gs2.Unity.Gs2Friend.Result
 	{
 		[SerializeField]
 		public List<string> Items;
+		[SerializeField]
+		public string NextPageToken;
 
         public static EzGetBlackListResult FromModel(Gs2.Gs2Friend.Result.DescribeBlackListResult model)
         {
@@ -39,6 +41,7 @@ namespace Gs2.Unity.Gs2Friend.Result
                 Items = model.Items == null ? new List<string>() : model.Items.Select(v => {
                     return v;
                 }).ToList(),
+                NextPageToken = model.NextPageToken == null ? null : model.NextPageToken,
             };
         }
     }

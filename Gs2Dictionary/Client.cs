@@ -167,7 +167,7 @@ namespace Gs2.Unity.Gs2Dictionary
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzListEntriesResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                int limit,
+                int? limit = null,
                 string pageToken = null
         )
 		{

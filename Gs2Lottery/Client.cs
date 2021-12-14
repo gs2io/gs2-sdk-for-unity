@@ -71,8 +71,8 @@ namespace Gs2.Unity.Gs2Lottery
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Lottery.Result.EzDescribeBoxesResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                int limit,
-                string pageToken = null
+                string pageToken = null,
+                int? limit = null
         )
 		{
             yield return _profile.Run(

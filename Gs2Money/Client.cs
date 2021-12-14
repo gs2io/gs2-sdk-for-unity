@@ -98,7 +98,7 @@ namespace Gs2.Unity.Gs2Money
                 string namespaceName,
                 int slot,
                 int count,
-                bool paidOnly
+                bool? paidOnly = null
         )
 		{
             yield return _profile.Run(

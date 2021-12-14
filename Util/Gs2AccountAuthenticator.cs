@@ -1,4 +1,7 @@
 using System.Collections;
+#if GS2_ENABLE_UNITASK
+using Cysharp.Threading.Tasks;
+#endif
 using Gs2.Core;
 using Gs2.Core.Net;
 using Gs2.Gs2Account;
@@ -33,6 +36,45 @@ namespace Gs2.Unity.Util
             _password = password;
         }
 
+#if GS2_ENABLE_UNITASK
+
+        public override async UniTask<AccessToken> AuthenticationAsync()
+        {
+            var accountClient = new Gs2AccountRestClient(_session);
+
+            string body = null;
+            string signature = null;
+            {
+                var result = await accountClient.AuthenticationAsync(
+                    new AuthenticationRequest()
+                        .WithNamespaceName(_accountNamespaceName)
+                        .WithUserId(_userId)
+                        .WithPassword(_password)
+                        .WithKeyId(_keyId)
+                );
+
+                body = result.Body;
+                signature = result.Signature;
+            }
+
+            var authClient = new Gs2AuthRestClient(_session);
+
+            var result2 = await authClient.LoginBySignatureAsync(
+                new LoginBySignatureRequest()
+                    .WithUserId(_userId)
+                    .WithKeyId(_keyId)
+                    .WithBody(body)
+                    .WithSignature(signature)
+            );
+
+            return new AccessToken()
+                .WithToken(result2.Token)
+                .WithUserId(result2.UserId)
+                .WithExpire(result2.Expire);
+        }
+
+#endif
+        
         public override IEnumerator Authentication(UnityAction<AsyncResult<AccessToken>> callback)
         {
             var accountClient = new Gs2AccountRestClient(_session);

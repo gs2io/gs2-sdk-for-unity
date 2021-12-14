@@ -190,8 +190,8 @@ namespace Gs2.Unity.Gs2Enhance
                 string namespaceName,
                 string rateName,
                 string targetItemSetId,
-                bool force,
                 List<Gs2.Unity.Gs2Enhance.Model.EzMaterial> materials = null,
+                bool? force = null,
                 List<Gs2.Unity.Gs2Enhance.Model.EzConfig> config = null
         )
 		{

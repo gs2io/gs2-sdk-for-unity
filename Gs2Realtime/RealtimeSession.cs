@@ -5,6 +5,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+#if GS2_ENABLE_UNITASK
+using Cysharp.Threading.Tasks;
+#endif
 using Google.Protobuf;
 using Gs2.Core;
 using Gs2.Gs2Realtime.Message;
@@ -157,7 +160,7 @@ namespace Gs2.Unity.Gs2Realtime
                     break;
             }
         }
-        
+         
         public IEnumerator Dispatch()
         {
             while (true)
@@ -265,6 +268,253 @@ namespace Gs2.Unity.Gs2Realtime
                 );
             }
         }
+
+#if GS2_ENABLE_UNITASK
+        
+        public async UniTask ConnectAsync(
+            MonoBehaviour monoBehaviour
+        )
+        {
+            _webSocket.OnMessage -= this.OnMessageHandler;
+            _webSocket.OnError -= this.OnErrorHandler;
+            
+            var done = false;
+            var success = false;
+            EventArgs args = null;
+            Player[] players = null;
+            var messageArgsList = new List<MessageEventArgs>();
+            
+            void OnOpenHandler(object sender, EventArgs e)
+            {
+                // 完了フラグ・成功フラグを立てる
+                Debug.Log("OnOpenHandler: " + e);
+                done = true;
+                success = true;
+            }
+            void OnErrorHandler(object sender, EventArgs e)
+            {
+                Debug.Log("OnErrorHandler: " + e);
+                // 失敗理由を記録
+                args = e;
+            }
+            void OnCloseHandler(object sender, EventArgs e)
+            {
+                Debug.Log("OnCloseHandler: " + e);
+                // 完了フラグを立てる
+                done = true;
+            }
+
+            try
+            {
+                _webSocket.OnOpen += OnOpenHandler;
+                _webSocket.OnError += OnErrorHandler;
+                _webSocket.OnClose += OnCloseHandler;
+                _webSocket.ConnectAsync();
+
+                await UniTask.WaitUntil(() => done).Timeout(TimeSpan.FromSeconds(30));
+
+                if (!success)
+                {
+                    // 失敗した場合は抜ける
+                    throw new ConnectionException(EventArgs.Empty);
+                }
+
+                success = false;
+                done = false;
+
+                Debug.Log("Hello");
+                HelloResult helloResult = null;
+                void OnMessageHandler(object sender, EventArgs e)
+                {
+                    // 認証処理の応答を処理するためのハンドラ
+                    Debug.Log("OnMessage: " + e.ToString());
+                    if (e is MessageEventArgs data)
+                    {
+                        var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data.RawData);
+                        var message = _messenger.Parse(messageType, payload);
+                        if (message is Error error)
+                        {
+                            _eventQueue.Enqueue(
+                                new OnErrorEvent(
+                                    error,
+                                    sequenceNumber,
+                                    lifeTimeMilliSeconds
+                                )
+                            );
+                            return;
+                        }
+                        else if (message is HelloResult)
+                        {
+                            helloResult = message as HelloResult;
+                            success = true;
+                        }
+                        else
+                        {
+                            messageArgsList.Add(data);
+                        }
+                    }
+                    else
+                    {
+                        args = e;
+                    }
+
+                    done = true;
+                }
+
+                try
+                {
+                    _webSocket.OnMessage += OnMessageHandler;
+                    
+                    Debug.Log("SendAsync");
+                    _webSocket.Send(
+                        _messenger.Pack(
+                            new HelloRequest
+                            {
+                                AccessToken = _accessToken,
+                                MyProfile = Profile,
+                            }
+                        )
+                    );
+                    
+                    await UniTask.WaitUntil(() => helloResult != null).Timeout(TimeSpan.FromSeconds(30));
+
+                    MyConnectionId = helloResult.MyProfile.ConnectionId;
+                    players = helloResult.Players.ToArray();
+
+                    Connected = true;
+                }
+                finally
+                {
+                    _webSocket.OnMessage -= OnMessageHandler;
+                }
+            }
+            finally
+            {
+                _webSocket.OnOpen -= OnOpenHandler;
+                _webSocket.OnError -= OnErrorHandler;
+                _webSocket.OnClose -= OnCloseHandler;
+            
+                if (players != null)
+                {
+                    foreach (var player in players)
+                    {
+                        _eventQueue.Enqueue(
+                            new OnJoinPlayerEvent(
+                                player,
+                                0,
+                                0
+                            )
+                        );
+                    }
+                }
+
+                foreach (var e in messageArgsList)
+                {
+                    this.OnMessageHandler(null, e);
+                }
+                
+                _webSocket.OnMessage += this.OnMessageHandler;
+                _webSocket.OnError += this.OnErrorHandler;
+            }
+
+            _monoBehaviour = monoBehaviour;
+            if (monoBehaviour != null)
+            {
+                _dispatchCoroutine = monoBehaviour.StartCoroutine(Dispatch());
+            }
+        }
+
+        public async UniTask SendAsync(BinaryMessage message)
+        {
+            if (!Connected)
+            {
+                throw new SendException(message);
+            }
+            
+            _webSocket.Send(
+                _messenger.Pack(
+                    message
+                )
+            );
+        }
+
+        public async UniTask UpdateProfileAsync(ByteString profile)
+        {
+            if (!Connected)
+            {
+                throw new UpdateProfileException(profile);
+            }
+
+            var success = false;
+            var done = false;
+            _webSocket.SendAsync(
+                _messenger.Pack(
+                    new UpdateProfileRequest
+                    {
+                        MyProfile = profile
+                    }
+                ), completed =>
+                {
+                    if (completed)
+                    {
+                        success = true;
+                    }
+                    done = true;
+                });
+            
+            await UniTask.WaitUntil(() => done).Timeout(TimeSpan.FromSeconds(30));
+
+            if (!success)
+            {
+                throw new UpdateProfileException(profile);
+            }
+            Profile = profile;
+        }
+        
+        public async UniTask CloseAsync()
+        {
+            if (!Connected)
+            {
+                return;
+            }
+            
+            var done = false;
+            void OnCloseHandler(object sender, EventArgs e)
+            {
+                done = true;
+            }
+            void OnErrorHandler(object sender, EventArgs e)
+            {
+                done = true;
+            }
+
+            try
+            {
+                _webSocket.OnClose += OnCloseHandler;
+                _webSocket.OnError += OnErrorHandler;
+                _webSocket.CloseAsync();
+
+                await UniTask.WaitUntil(() => done).Timeout(TimeSpan.FromSeconds(30));
+            }
+            finally
+            {
+                _webSocket.OnClose -= OnCloseHandler;
+                _webSocket.OnError -= OnErrorHandler;
+                
+                if (_dispatchCoroutine != null)
+                {
+                    if (_monoBehaviour != null)
+                    {
+                        _monoBehaviour.StopCoroutine(_dispatchCoroutine);
+                    }
+                    _dispatchCoroutine = null;
+                }
+
+                _monoBehaviour = null;
+            }
+        }
+
+#endif
         
         public IEnumerator Connect(
             MonoBehaviour monoBehaviour,

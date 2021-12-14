@@ -76,7 +76,7 @@ namespace Gs2.Unity.Gs2Inventory
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _restClient.GetInventoryModel(
+                cb => _client.GetInventoryModel(
                     new Gs2.Gs2Inventory.Request.GetInventoryModelRequest()
                         .WithNamespaceName(namespaceName)
                         .WithInventoryName(inventoryName),
@@ -188,8 +188,8 @@ namespace Gs2.Unity.Gs2Inventory
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListInventoriesResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                int limit,
-                string pageToken = null
+                string pageToken = null,
+                int? limit = null
         )
 		{
             yield return _profile.Run(
@@ -305,8 +305,8 @@ namespace Gs2.Unity.Gs2Inventory
 		        GameSession session,
                 string namespaceName,
                 string inventoryName,
-                int limit,
-                string pageToken = null
+                string pageToken = null,
+                int? limit = null
         )
 		{
             yield return _profile.Run(

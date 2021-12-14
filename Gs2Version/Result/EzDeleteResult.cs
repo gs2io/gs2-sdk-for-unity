@@ -30,10 +30,13 @@ namespace Gs2.Unity.Gs2Version.Result
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzDeleteResult
 	{
+		[SerializeField]
+		public Gs2.Unity.Gs2Version.Model.EzAcceptVersion Item;
 
         public static EzDeleteResult FromModel(Gs2.Gs2Version.Result.DeleteAcceptVersionResult model)
         {
             return new EzDeleteResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Version.Model.EzAcceptVersion.FromModel(model.Item),
             };
         }
     }

@@ -71,7 +71,7 @@ namespace Gs2.Unity.Gs2Gateway
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Gateway.Result.EzSetUserIdResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                bool allowConcurrentAccess
+                bool? allowConcurrentAccess = null
         )
 		{
             yield return _profile.Run(

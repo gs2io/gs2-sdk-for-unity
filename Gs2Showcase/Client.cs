@@ -72,7 +72,7 @@ namespace Gs2.Unity.Gs2Showcase
 		        GameSession session,
                 string namespaceName,
                 string showcaseName,
-                string displayItemId,
+                string displayItemId = null,
                 List<Gs2.Unity.Gs2Showcase.Model.EzConfig> config = null
         )
 		{

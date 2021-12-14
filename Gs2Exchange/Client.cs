@@ -72,7 +72,7 @@ namespace Gs2.Unity.Gs2Exchange
 		        GameSession session,
                 string namespaceName,
                 string rateName,
-                string awaitName
+                string awaitName = null
         )
 		{
             yield return _profile.Run(
@@ -99,7 +99,7 @@ namespace Gs2.Unity.Gs2Exchange
 		        GameSession session,
                 string namespaceName,
                 string rateName,
-                string awaitName
+                string awaitName = null
         )
 		{
             yield return _profile.Run(
@@ -126,7 +126,7 @@ namespace Gs2.Unity.Gs2Exchange
 		        GameSession session,
                 string namespaceName,
                 string rateName,
-                string awaitName
+                string awaitName = null
         )
 		{
             yield return _profile.Run(
@@ -180,7 +180,7 @@ namespace Gs2.Unity.Gs2Exchange
 		        GameSession session,
                 string namespaceName,
                 string rateName,
-                string awaitName
+                string awaitName = null
         )
 		{
             yield return _profile.Run(

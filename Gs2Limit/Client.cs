@@ -73,7 +73,7 @@ namespace Gs2.Unity.Gs2Limit
                 string namespaceName,
                 string limitName,
                 string counterName,
-                int countUpValue,
+                int? countUpValue = null,
                 int? maxValue = null
         )
 		{
@@ -129,9 +129,9 @@ namespace Gs2.Unity.Gs2Limit
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Limit.Result.EzListCountersResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                int limit,
                 string limitName = null,
-                string pageToken = null
+                string pageToken = null,
+                int? limit = null
         )
 		{
             yield return _profile.Run(

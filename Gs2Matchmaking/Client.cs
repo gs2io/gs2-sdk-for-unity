@@ -71,7 +71,7 @@ namespace Gs2.Unity.Gs2Matchmaking
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzCancelMatchmakingResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string gatheringName
+                string gatheringName = null
         )
 		{
             yield return _profile.Run(
@@ -97,8 +97,8 @@ namespace Gs2.Unity.Gs2Matchmaking
 		        GameSession session,
                 string namespaceName,
                 Gs2.Unity.Gs2Matchmaking.Model.EzPlayer player,
-                List<Gs2.Unity.Gs2Matchmaking.Model.EzCapacityOfRole> capacityOfRoles,
                 List<Gs2.Unity.Gs2Matchmaking.Model.EzAttributeRange> attributeRanges = null,
+                List<Gs2.Unity.Gs2Matchmaking.Model.EzCapacityOfRole> capacityOfRoles = null,
                 List<string> allowUserIds = null,
                 long? expiresAt = null
         )
@@ -161,7 +161,7 @@ namespace Gs2.Unity.Gs2Matchmaking
         public IEnumerator GetGathering(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzGetGatheringResult>> callback,
                 string namespaceName,
-                string gatheringName
+                string gatheringName = null
         )
 		{
             yield return _profile.Run(
@@ -185,7 +185,7 @@ namespace Gs2.Unity.Gs2Matchmaking
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzUpdateGatheringResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string gatheringName,
+                string gatheringName = null,
                 List<Gs2.Unity.Gs2Matchmaking.Model.EzAttributeRange> attributeRanges = null
         )
 		{
@@ -283,8 +283,8 @@ namespace Gs2.Unity.Gs2Matchmaking
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzListRatingsResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                int limit,
-                string pageToken = null
+                string pageToken = null,
+                int? limit = null
         )
 		{
             yield return _profile.Run(
@@ -299,33 +299,6 @@ namespace Gs2.Unity.Gs2Matchmaking
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzListRatingsResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Matchmaking.Result.EzListRatingsResult.FromModel(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
-        public IEnumerator CreateVote(
-		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzCreateVoteResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string ratingName,
-                string gatheringName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-		        session,
-                cb => _restClient.GetBallot(
-                    new Gs2.Gs2Matchmaking.Request.GetBallotRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithRatingName(ratingName)
-                        .WithGatheringName(gatheringName)
-                        .WithAccessToken(session.AccessToken.Token),
-                    r => cb.Invoke(
-                        new AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzCreateVoteResult>(
-                            r.Result == null ? null : Gs2.Unity.Gs2Matchmaking.Result.EzCreateVoteResult.FromModel(r.Result),
                             r.Error
                         )
                     )

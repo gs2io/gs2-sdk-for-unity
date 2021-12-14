@@ -71,7 +71,7 @@ namespace Gs2.Unity.Gs2Chat
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzCreateRoomResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string name,
+                string name = null,
                 string metadata = null,
                 string password = null,
                 List<string> whiteListUserIds = null
@@ -104,7 +104,7 @@ namespace Gs2.Unity.Gs2Chat
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzDeleteRoomResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string roomName
+                string roomName = null
         )
 		{
             yield return _profile.Run(
@@ -128,7 +128,7 @@ namespace Gs2.Unity.Gs2Chat
         public IEnumerator GetRoom(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzGetRoomResult>> callback,
                 string namespaceName,
-                string roomName
+                string roomName = null
         )
 		{
             yield return _profile.Run(
@@ -153,8 +153,8 @@ namespace Gs2.Unity.Gs2Chat
 		        GameSession session,
                 string namespaceName,
                 string roomName,
-                long startAt,
-                int limit,
+                long? startAt = null,
+                int? limit = null,
                 string password = null
         )
 		{
@@ -183,8 +183,8 @@ namespace Gs2.Unity.Gs2Chat
 		        GameSession session,
                 string namespaceName,
                 string roomName,
-                int category,
                 string metadata,
+                int? category = null,
                 string password = null
         )
 		{
@@ -213,8 +213,8 @@ namespace Gs2.Unity.Gs2Chat
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzListSubscribeRoomsResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                int limit,
-                string pageToken = null
+                string pageToken = null,
+                int? limit = null
         )
 		{
             yield return _profile.Run(

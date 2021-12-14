@@ -96,8 +96,8 @@ namespace Gs2.Unity.Gs2Mission
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Mission.Result.EzListCompletesResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                int limit,
-                string pageToken = null
+                string pageToken = null,
+                int? limit = null
         )
 		{
             yield return _profile.Run(
@@ -175,8 +175,8 @@ namespace Gs2.Unity.Gs2Mission
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Mission.Result.EzListCountersResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                int limit,
-                string pageToken = null
+                string pageToken = null,
+                int? limit = null
         )
 		{
             yield return _profile.Run(

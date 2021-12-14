@@ -30,10 +30,13 @@ namespace Gs2.Unity.Gs2Inbox.Result
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzDeleteResult
 	{
+		[SerializeField]
+		public Gs2.Unity.Gs2Inbox.Model.EzMessage Item;
 
         public static EzDeleteResult FromModel(Gs2.Gs2Inbox.Result.DeleteMessageResult model)
         {
             return new EzDeleteResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Inbox.Model.EzMessage.FromModel(model.Item),
             };
         }
     }
