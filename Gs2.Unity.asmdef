@@ -4,7 +4,7 @@
         "Gs2",
         "UniTask",
         "UniTask.Linq",
-        "UnityEngine.Purchasing.Stores",
+        "UnityEngine.Purchasing",
         "UnityEngine.Purchasing.Stores"
     ],
     "includePlatforms": [],
