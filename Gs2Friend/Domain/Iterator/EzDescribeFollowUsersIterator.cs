@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Iterator
     #if GS2_ENABLE_UNITASK
     public class EzDescribeFollowsIterator {
     #else
-    public class EzDescribeFollowsIterator : Gs2Iterator<EzGs2.Unity.Gs2Friend.Model.EzFollowUser> {
+    public class EzDescribeFollowsIterator : Gs2Iterator<Gs2.Unity.Gs2Friend.Model.EzFollowUser> {
     #endif
         private readonly Gs2.Gs2Friend.Domain.Iterator.DescribeFollowsIterator _iterator;
 
@@ -67,6 +67,13 @@ namespace Gs2.Unity.Gs2Friend.Domain.Iterator
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Friend.Model.EzFollowUser> GetAsyncEnumerator(
             CancellationToken cancellationToken = new CancellationToken()
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Friend.Model.EzFollowUser>(async (writer, token) =>
+            {
+            });
+        }
+
         #else
 
         public override bool HasNext()
@@ -76,12 +83,12 @@ namespace Gs2.Unity.Gs2Friend.Domain.Iterator
 
         protected override IEnumerator Next(
             Action<Gs2.Unity.Gs2Friend.Model.EzFollowUser> callback
-        #endif
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Friend.Model.EzFollowUser>(async (writer, token) =>
-            {
-            });
+            yield return _iterator;
+            callback.Invoke(Gs2.Unity.Gs2Friend.Model.EzFollowUser.FromModel(_iterator.Current));
         }
+
+        #endif
     }
 }

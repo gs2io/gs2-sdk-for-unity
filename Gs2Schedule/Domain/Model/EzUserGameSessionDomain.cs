@@ -65,10 +65,34 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Schedule.Model.EzTrigger> Triggers(
         #else
+        public class EzTriggersIterator : Gs2Iterator<Gs2.Unity.Gs2Schedule.Model.EzTrigger>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Schedule.Model.Trigger> _it;
+
+            public EzTriggersIterator(
+                Gs2Iterator<Gs2.Gs2Schedule.Model.Trigger> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Schedule.Model.EzTrigger> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Schedule.Model.EzTrigger.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Schedule.Model.EzTrigger> Triggers(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Schedule.Model.EzTrigger>(async (writer, token) =>
             {
                 var it = _domain.Triggers(
@@ -78,6 +102,10 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Schedule.Model.EzTrigger.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzTriggersIterator(_domain.Triggers(
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Schedule.Domain.Model.EzTriggerGameSessionDomain Trigger(
@@ -93,10 +121,34 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Schedule.Model.EzEvent> Events(
         #else
+        public class EzEventsIterator : Gs2Iterator<Gs2.Unity.Gs2Schedule.Model.EzEvent>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Schedule.Model.Event> _it;
+
+            public EzEventsIterator(
+                Gs2Iterator<Gs2.Gs2Schedule.Model.Event> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Schedule.Model.EzEvent> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Schedule.Model.EzEvent.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Schedule.Model.EzEvent> Events(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Schedule.Model.EzEvent>(async (writer, token) =>
             {
                 var it = _domain.Events(
@@ -106,6 +158,10 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Schedule.Model.EzEvent.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzEventsIterator(_domain.Events(
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Schedule.Domain.Model.EzEventGameSessionDomain Event(

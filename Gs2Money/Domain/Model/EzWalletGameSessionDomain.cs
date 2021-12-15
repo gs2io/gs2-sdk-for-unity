@@ -71,19 +71,37 @@ namespace Gs2.Unity.Gs2Money.Domain.Model
               int count,
               bool? paidOnly = null
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.WithdrawAsync(
                 new WithdrawRequest()
                     .WithCount(count)
                     .WithPaidOnly(paidOnly)
             );
             return new Gs2.Unity.Gs2Money.Domain.Model.EzWalletGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Money.Domain.Model.EzWalletGameSessionDomain> self)
+            {
+                var future = _domain.Withdraw(
+                    new WithdrawRequest()
+                        .WithCount(count)
+                        .WithPaidOnly(paidOnly)
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Money.Domain.Model.EzWalletGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Money.Domain.Model.EzWalletGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Money.Model.EzWallet> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Money.Model.EzWallet> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Money.Model.EzWallet> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -92,6 +110,29 @@ namespace Gs2.Unity.Gs2Money.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Money.Model.EzWallet> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Money.Model.EzWallet> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Money.Model.EzWallet.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Money.Model.EzWallet>(Impl);
+        }
+        #endif
 
     }
 }

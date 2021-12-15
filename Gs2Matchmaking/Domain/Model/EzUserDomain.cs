@@ -82,10 +82,34 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> Gatherings(
         #else
+        public class EzGatheringsIterator : Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzGathering>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Matchmaking.Model.Gathering> _it;
+
+            public EzGatheringsIterator(
+                Gs2Iterator<Gs2.Gs2Matchmaking.Model.Gathering> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Matchmaking.Model.EzGathering.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> Gatherings(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Matchmaking.Model.EzGathering>(async (writer, token) =>
             {
                 var it = _domain.Gatherings(
@@ -95,16 +119,44 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Matchmaking.Model.EzGathering.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzGatheringsIterator(_domain.Gatherings(
+            ));
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> DoMatchmakingByPlayer(
         #else
+        public class EzDoMatchmakingByPlayerIterator : Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzGathering>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Matchmaking.Model.Gathering> _it;
+
+            public EzDoMatchmakingByPlayerIterator(
+                Gs2Iterator<Gs2.Gs2Matchmaking.Model.Gathering> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Matchmaking.Model.EzGathering.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> DoMatchmakingByPlayer(
         #endif
               Gs2.Unity.Gs2Matchmaking.Model.EzPlayer player
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Matchmaking.Model.EzGathering>(async (writer, token) =>
             {
                 var it = _domain.DoMatchmakingByPlayer(
@@ -115,16 +167,45 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Matchmaking.Model.EzGathering.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzDoMatchmakingByPlayerIterator(_domain.DoMatchmakingByPlayer(
+               player.ToModel()
+            ));
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> DoMatchmaking(
         #else
+        public class EzDoMatchmakingIterator : Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzGathering>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Matchmaking.Model.Gathering> _it;
+
+            public EzDoMatchmakingIterator(
+                Gs2Iterator<Gs2.Gs2Matchmaking.Model.Gathering> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Matchmaking.Model.EzGathering.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> DoMatchmaking(
         #endif
               Gs2.Unity.Gs2Matchmaking.Model.EzPlayer player
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Matchmaking.Model.EzGathering>(async (writer, token) =>
             {
                 var it = _domain.DoMatchmaking(
@@ -135,6 +216,11 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Matchmaking.Model.EzGathering.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzDoMatchmakingIterator(_domain.DoMatchmaking(
+               player.ToModel()
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringDomain Gathering(
@@ -150,10 +236,34 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Matchmaking.Model.EzRating> Ratings(
         #else
+        public class EzRatingsIterator : Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzRating>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Matchmaking.Model.Rating> _it;
+
+            public EzRatingsIterator(
+                Gs2Iterator<Gs2.Gs2Matchmaking.Model.Rating> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Matchmaking.Model.EzRating> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Matchmaking.Model.EzRating.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzRating> Ratings(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Matchmaking.Model.EzRating>(async (writer, token) =>
             {
                 var it = _domain.Ratings(
@@ -163,6 +273,10 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Matchmaking.Model.EzRating.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzRatingsIterator(_domain.Ratings(
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzRatingDomain Rating(

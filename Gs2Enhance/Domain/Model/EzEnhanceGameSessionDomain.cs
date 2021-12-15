@@ -73,6 +73,7 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
               Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials = null,
               Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.DirectAsync(
                 new DirectEnhanceRequest()
                     .WithRateName(rateName)
@@ -81,6 +82,27 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
                     .WithConfig(config?.Select(v => v.ToModel()).ToArray())
             );
             return new Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain> self)
+            {
+                var future = _domain.Direct(
+                    new DirectEnhanceRequest()
+                        .WithRateName(rateName)
+                        .WithTargetItemSetId(targetItemSetId)
+                        .WithMaterials(materials?.Select(v => v.ToModel()).ToArray())
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain>(Impl);
+        #endif
         }
 
     }

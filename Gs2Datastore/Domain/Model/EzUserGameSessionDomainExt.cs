@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 #endif
 using Gs2.Core;
+using Gs2.Core.Domain;
 using Gs2.Gs2Datastore.Request;
 using Gs2.Unity.Gs2Datastore.Model;
 using Gs2.Unity.Gs2Datastore.Result;
@@ -14,7 +15,11 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
 
     public partial class EzUserGameSessionDomain {
 
-        public async UniTask<EzDataObjectGameSessionDomain> Upload(
+#if GS2_ENABLE_UNITASK
+        public async UniTask<EzDataObject> UploadAsync(
+#else
+        public Gs2Future<EzDataObject> Upload(
+#endif
             string scope,
             List<string> allowUserIds,
             byte[] data,
@@ -22,7 +27,8 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             bool? updateIfExists=null
         )
         {
-            return new EzDataObjectGameSessionDomain(
+#if GS2_ENABLE_UNITASK
+            return EzDataObject.FromModel(
                 await _domain.Upload(
                     scope,
                     allowUserIds,
@@ -31,6 +37,27 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                     updateIfExists
                 )
             );
+#else
+
+            IEnumerator Impl(Gs2Future<EzDataObject> self)
+            {
+                var future = _domain.Upload(
+                    scope,
+                    allowUserIds,
+                    data,
+                    name,
+                    updateIfExists
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(EzDataObject.FromModel(future.Result));
+            }
+            return new Gs2InlineFuture<EzDataObject>(Impl);
+#endif
         }
         
     }

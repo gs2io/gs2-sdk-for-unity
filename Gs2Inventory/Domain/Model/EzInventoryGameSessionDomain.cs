@@ -67,10 +67,34 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Inventory.Model.EzItemSet> ItemSets(
         #else
+        public class EzItemSetsIterator : Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzItemSet>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Inventory.Model.ItemSet> _it;
+
+            public EzItemSetsIterator(
+                Gs2Iterator<Gs2.Gs2Inventory.Model.ItemSet> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Inventory.Model.EzItemSet> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzItemSet> ItemSets(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Inventory.Model.EzItemSet>(async (writer, token) =>
             {
                 var it = _domain.ItemSets(
@@ -80,6 +104,10 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzItemSetsIterator(_domain.ItemSets(
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain ItemSet(
@@ -95,10 +123,8 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Inventory.Model.EzInventory> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Inventory.Model.EzInventory> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Inventory.Model.EzInventory> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -107,6 +133,29 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Inventory.Model.EzInventory> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Model.EzInventory> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Inventory.Model.EzInventory.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Inventory.Model.EzInventory>(Impl);
+        }
+        #endif
 
     }
 }

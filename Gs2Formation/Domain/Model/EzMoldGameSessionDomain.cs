@@ -66,10 +66,34 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Formation.Model.EzForm> Forms(
         #else
+        public class EzFormsIterator : Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzForm>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Formation.Model.Form> _it;
+
+            public EzFormsIterator(
+                Gs2Iterator<Gs2.Gs2Formation.Model.Form> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Formation.Model.EzForm> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Formation.Model.EzForm.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzForm> Forms(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Formation.Model.EzForm>(async (writer, token) =>
             {
                 var it = _domain.Forms(
@@ -79,6 +103,10 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Formation.Model.EzForm.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzFormsIterator(_domain.Forms(
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain Form(
@@ -92,10 +120,8 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Formation.Model.EzMold> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Formation.Model.EzMold> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Formation.Model.EzMold> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -104,6 +130,29 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Formation.Model.EzMold> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Model.EzMold> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Formation.Model.EzMold.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Model.EzMold>(Impl);
+        }
+        #endif
 
     }
 }

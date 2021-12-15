@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Iterator
     #if GS2_ENABLE_UNITASK
     public class EzDescribeSubscribesByCategoryNameIterator {
     #else
-    public class EzDescribeSubscribesByCategoryNameIterator : Gs2Iterator<EzGs2.Unity.Gs2Ranking.Model.EzSubscribeUser> {
+    public class EzDescribeSubscribesByCategoryNameIterator : Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> {
     #endif
         private readonly Gs2.Gs2Ranking.Domain.Iterator.DescribeSubscribesByCategoryNameIterator _iterator;
 
@@ -67,6 +67,13 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Iterator
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> GetAsyncEnumerator(
             CancellationToken cancellationToken = new CancellationToken()
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser>(async (writer, token) =>
+            {
+            });
+        }
+
         #else
 
         public override bool HasNext()
@@ -76,12 +83,12 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Iterator
 
         protected override IEnumerator Next(
             Action<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> callback
-        #endif
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser>(async (writer, token) =>
-            {
-            });
+            yield return _iterator;
+            callback.Invoke(Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser.FromModel(_iterator.Current));
         }
+
+        #endif
     }
 }

@@ -69,10 +69,34 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel> DistributorModels(
         #else
+        public class EzDistributorModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Distributor.Model.DistributorModel> _it;
+
+            public EzDistributorModelsIterator(
+                Gs2Iterator<Gs2.Gs2Distributor.Model.DistributorModel> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Distributor.Model.EzDistributorModel.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel> DistributorModels(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel>(async (writer, token) =>
             {
                 var it = _domain.DistributorModels(
@@ -82,6 +106,10 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Distributor.Model.EzDistributorModel.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzDistributorModelsIterator(_domain.DistributorModels(
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Distributor.Domain.Model.EzDistributorModelDomain DistributorModel(

@@ -71,6 +71,7 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
               string body,
               string signature
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.LoginBySignatureAsync(
                 new LoginBySignatureRequest()
                     .WithUserId(userId)
@@ -79,13 +80,32 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
                     .WithSignature(signature)
             );
             return new Gs2.Unity.Gs2Auth.Domain.Model.EzAccessTokenDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Auth.Domain.Model.EzAccessTokenDomain> self)
+            {
+                var future = _domain.LoginBySignature(
+                    new LoginBySignatureRequest()
+                        .WithUserId(userId)
+                        .WithKeyId(keyId)
+                        .WithBody(body)
+                        .WithSignature(signature)
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Auth.Domain.Model.EzAccessTokenDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Auth.Domain.Model.EzAccessTokenDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Auth.Model.EzAccessToken> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Auth.Model.EzAccessToken> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Auth.Model.EzAccessToken> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -94,6 +114,29 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Auth.Model.EzAccessToken> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Auth.Model.EzAccessToken> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Auth.Model.EzAccessToken.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Auth.Model.EzAccessToken>(Impl);
+        }
+        #endif
 
     }
 }

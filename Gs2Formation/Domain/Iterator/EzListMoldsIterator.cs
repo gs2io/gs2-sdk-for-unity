@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Iterator
     #if GS2_ENABLE_UNITASK
     public class EzDescribeMoldsIterator {
     #else
-    public class EzDescribeMoldsIterator : Gs2Iterator<EzGs2.Unity.Gs2Formation.Model.EzMold> {
+    public class EzDescribeMoldsIterator : Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzMold> {
     #endif
         private readonly Gs2.Gs2Formation.Domain.Iterator.DescribeMoldsIterator _iterator;
 
@@ -67,6 +67,13 @@ namespace Gs2.Unity.Gs2Formation.Domain.Iterator
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Formation.Model.EzMold> GetAsyncEnumerator(
             CancellationToken cancellationToken = new CancellationToken()
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Formation.Model.EzMold>(async (writer, token) =>
+            {
+            });
+        }
+
         #else
 
         public override bool HasNext()
@@ -76,12 +83,12 @@ namespace Gs2.Unity.Gs2Formation.Domain.Iterator
 
         protected override IEnumerator Next(
             Action<Gs2.Unity.Gs2Formation.Model.EzMold> callback
-        #endif
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Formation.Model.EzMold>(async (writer, token) =>
-            {
-            });
+            yield return _iterator;
+            callback.Invoke(Gs2.Unity.Gs2Formation.Model.EzMold.FromModel(_iterator.Current));
         }
+
+        #endif
     }
 }

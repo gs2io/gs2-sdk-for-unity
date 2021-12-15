@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Mission.Domain.Iterator
     #if GS2_ENABLE_UNITASK
     public class EzDescribeCounterModelsIterator {
     #else
-    public class EzDescribeCounterModelsIterator : Gs2Iterator<EzGs2.Unity.Gs2Mission.Model.EzCounterModel> {
+    public class EzDescribeCounterModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzCounterModel> {
     #endif
         private readonly Gs2.Gs2Mission.Domain.Iterator.DescribeCounterModelsIterator _iterator;
 
@@ -67,6 +67,13 @@ namespace Gs2.Unity.Gs2Mission.Domain.Iterator
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Mission.Model.EzCounterModel> GetAsyncEnumerator(
             CancellationToken cancellationToken = new CancellationToken()
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Mission.Model.EzCounterModel>(async (writer, token) =>
+            {
+            });
+        }
+
         #else
 
         public override bool HasNext()
@@ -76,12 +83,12 @@ namespace Gs2.Unity.Gs2Mission.Domain.Iterator
 
         protected override IEnumerator Next(
             Action<Gs2.Unity.Gs2Mission.Model.EzCounterModel> callback
-        #endif
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Mission.Model.EzCounterModel>(async (writer, token) =>
-            {
-            });
+            yield return _iterator;
+            callback.Invoke(Gs2.Unity.Gs2Mission.Model.EzCounterModel.FromModel(_iterator.Current));
         }
+
+        #endif
     }
 }

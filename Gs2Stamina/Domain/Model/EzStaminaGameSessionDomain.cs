@@ -70,18 +70,35 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         #endif
               int consumeValue
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.ConsumeAsync(
                 new ConsumeStaminaRequest()
                     .WithConsumeValue(consumeValue)
             );
             return new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
+            {
+                var future = _domain.Consume(
+                    new ConsumeStaminaRequest()
+                        .WithConsumeValue(consumeValue)
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Stamina.Model.EzStamina> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Stamina.Model.EzStamina> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Stamina.Model.EzStamina> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -90,6 +107,29 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Stamina.Model.EzStamina> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Model.EzStamina> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Stamina.Model.EzStamina.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Model.EzStamina>(Impl);
+        }
+        #endif
 
     }
 }

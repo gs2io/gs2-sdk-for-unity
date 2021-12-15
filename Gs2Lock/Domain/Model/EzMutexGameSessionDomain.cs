@@ -70,12 +70,32 @@ namespace Gs2.Unity.Gs2Lock.Domain.Model
               string transactionId,
               long ttl
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.LockAsync(
                 new LockRequest()
                     .WithTransactionId(transactionId)
                     .WithTtl(ttl)
             );
             return new Gs2.Unity.Gs2Lock.Domain.Model.EzMutexGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Lock.Domain.Model.EzMutexGameSessionDomain> self)
+            {
+                var future = _domain.Lock(
+                    new LockRequest()
+                        .WithTransactionId(transactionId)
+                        .WithTtl(ttl)
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Lock.Domain.Model.EzMutexGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Lock.Domain.Model.EzMutexGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
@@ -85,18 +105,35 @@ namespace Gs2.Unity.Gs2Lock.Domain.Model
         #endif
               string transactionId
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.UnlockAsync(
                 new UnlockRequest()
                     .WithTransactionId(transactionId)
             );
             return new Gs2.Unity.Gs2Lock.Domain.Model.EzMutexGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Lock.Domain.Model.EzMutexGameSessionDomain> self)
+            {
+                var future = _domain.Unlock(
+                    new UnlockRequest()
+                        .WithTransactionId(transactionId)
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Lock.Domain.Model.EzMutexGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Lock.Domain.Model.EzMutexGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Lock.Model.EzMutex> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Lock.Model.EzMutex> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Lock.Model.EzMutex> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -105,6 +142,29 @@ namespace Gs2.Unity.Gs2Lock.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Lock.Model.EzMutex> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Lock.Model.EzMutex> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Lock.Model.EzMutex.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Lock.Model.EzMutex>(Impl);
+        }
+        #endif
 
     }
 }

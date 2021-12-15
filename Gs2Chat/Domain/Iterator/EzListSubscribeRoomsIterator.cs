@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Iterator
     #if GS2_ENABLE_UNITASK
     public class EzDescribeSubscribesIterator {
     #else
-    public class EzDescribeSubscribesIterator : Gs2Iterator<EzGs2.Unity.Gs2Chat.Model.EzSubscribe> {
+    public class EzDescribeSubscribesIterator : Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzSubscribe> {
     #endif
         private readonly Gs2.Gs2Chat.Domain.Iterator.DescribeSubscribesIterator _iterator;
 
@@ -67,6 +67,13 @@ namespace Gs2.Unity.Gs2Chat.Domain.Iterator
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Chat.Model.EzSubscribe> GetAsyncEnumerator(
             CancellationToken cancellationToken = new CancellationToken()
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Chat.Model.EzSubscribe>(async (writer, token) =>
+            {
+            });
+        }
+
         #else
 
         public override bool HasNext()
@@ -76,12 +83,12 @@ namespace Gs2.Unity.Gs2Chat.Domain.Iterator
 
         protected override IEnumerator Next(
             Action<Gs2.Unity.Gs2Chat.Model.EzSubscribe> callback
-        #endif
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Chat.Model.EzSubscribe>(async (writer, token) =>
-            {
-            });
+            yield return _iterator;
+            callback.Invoke(Gs2.Unity.Gs2Chat.Model.EzSubscribe.FromModel(_iterator.Current));
         }
+
+        #endif
     }
 }

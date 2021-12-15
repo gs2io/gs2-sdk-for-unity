@@ -66,10 +66,34 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Chat.Model.EzMessage> Messages(
         #else
+        public class EzMessagesIterator : Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzMessage>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Chat.Model.Message> _it;
+
+            public EzMessagesIterator(
+                Gs2Iterator<Gs2.Gs2Chat.Model.Message> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Chat.Model.EzMessage> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Chat.Model.EzMessage.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzMessage> Messages(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Chat.Model.EzMessage>(async (writer, token) =>
             {
                 var it = _domain.Messages(
@@ -79,6 +103,10 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Chat.Model.EzMessage.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzMessagesIterator(_domain.Messages(
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Chat.Domain.Model.EzMessageDomain Message(
@@ -92,10 +120,8 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Chat.Model.EzRoom> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Chat.Model.EzRoom> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Chat.Model.EzRoom> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -104,6 +130,29 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Chat.Model.EzRoom> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Model.EzRoom> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Chat.Model.EzRoom.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Chat.Model.EzRoom>(Impl);
+        }
+        #endif
 
     }
 }

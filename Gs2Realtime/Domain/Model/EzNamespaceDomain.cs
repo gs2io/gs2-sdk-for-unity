@@ -65,10 +65,34 @@ namespace Gs2.Unity.Gs2Realtime.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Realtime.Model.EzRoom> Rooms(
         #else
+        public class EzRoomsIterator : Gs2Iterator<Gs2.Unity.Gs2Realtime.Model.EzRoom>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Realtime.Model.Room> _it;
+
+            public EzRoomsIterator(
+                Gs2Iterator<Gs2.Gs2Realtime.Model.Room> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Realtime.Model.EzRoom> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Realtime.Model.EzRoom.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Realtime.Model.EzRoom> Rooms(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Realtime.Model.EzRoom>(async (writer, token) =>
             {
                 var it = _domain.Rooms(
@@ -78,6 +102,10 @@ namespace Gs2.Unity.Gs2Realtime.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Realtime.Model.EzRoom.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzRoomsIterator(_domain.Rooms(
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Realtime.Domain.Model.EzRoomDomain Room(

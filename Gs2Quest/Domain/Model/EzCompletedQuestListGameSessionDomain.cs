@@ -63,10 +63,8 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -75,6 +73,29 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList>(Impl);
+        }
+        #endif
 
     }
 }

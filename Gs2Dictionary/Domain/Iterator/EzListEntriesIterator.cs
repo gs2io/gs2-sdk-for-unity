@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Iterator
     #if GS2_ENABLE_UNITASK
     public class EzDescribeEntriesIterator {
     #else
-    public class EzDescribeEntriesIterator : Gs2Iterator<EzGs2.Unity.Gs2Dictionary.Model.EzEntry> {
+    public class EzDescribeEntriesIterator : Gs2Iterator<Gs2.Unity.Gs2Dictionary.Model.EzEntry> {
     #endif
         private readonly Gs2.Gs2Dictionary.Domain.Iterator.DescribeEntriesIterator _iterator;
 
@@ -67,6 +67,13 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Iterator
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Dictionary.Model.EzEntry> GetAsyncEnumerator(
             CancellationToken cancellationToken = new CancellationToken()
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Dictionary.Model.EzEntry>(async (writer, token) =>
+            {
+            });
+        }
+
         #else
 
         public override bool HasNext()
@@ -76,12 +83,12 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Iterator
 
         protected override IEnumerator Next(
             Action<Gs2.Unity.Gs2Dictionary.Model.EzEntry> callback
-        #endif
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Dictionary.Model.EzEntry>(async (writer, token) =>
-            {
-            });
+            yield return _iterator;
+            callback.Invoke(Gs2.Unity.Gs2Dictionary.Model.EzEntry.FromModel(_iterator.Current));
         }
+
+        #endif
     }
 }

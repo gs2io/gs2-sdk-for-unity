@@ -69,11 +69,30 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #endif
               Gs2.Unity.Gs2Matchmaking.Model.EzAttributeRange[] attributeRanges = null
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.UpdateAsync(
                 new UpdateGatheringRequest()
                     .WithAttributeRanges(attributeRanges?.Select(v => v.ToModel()).ToArray())
             );
             return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> self)
+            {
+                var future = _domain.Update(
+                    new UpdateGatheringRequest()
+                        .WithAttributeRanges(attributeRanges?.Select(v => v.ToModel()).ToArray())
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
@@ -82,17 +101,33 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> CancelMatchmaking(
         #endif
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.CancelMatchmakingAsync(
                 new CancelMatchmakingRequest()
             );
             return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> self)
+            {
+                var future = _domain.CancelMatchmaking(
+                    new CancelMatchmakingRequest()
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -101,6 +136,29 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Matchmaking.Model.EzGathering.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Model.EzGathering>(Impl);
+        }
+        #endif
 
     }
 }

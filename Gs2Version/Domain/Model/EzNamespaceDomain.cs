@@ -65,10 +65,34 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Version.Model.EzVersionModel> VersionModels(
         #else
+        public class EzVersionModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Version.Model.EzVersionModel>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Version.Model.VersionModel> _it;
+
+            public EzVersionModelsIterator(
+                Gs2Iterator<Gs2.Gs2Version.Model.VersionModel> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Version.Model.EzVersionModel> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Version.Model.EzVersionModel.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Version.Model.EzVersionModel> VersionModels(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Version.Model.EzVersionModel>(async (writer, token) =>
             {
                 var it = _domain.VersionModels(
@@ -78,6 +102,10 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Version.Model.EzVersionModel.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzVersionModelsIterator(_domain.VersionModels(
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Version.Domain.Model.EzVersionModelDomain VersionModel(

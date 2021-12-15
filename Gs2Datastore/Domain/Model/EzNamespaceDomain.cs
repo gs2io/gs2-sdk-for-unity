@@ -68,11 +68,30 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #endif
               string dataObjectId
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.RestoreDataObjectAsync(
                 new RestoreDataObjectRequest()
                     .WithDataObjectId(dataObjectId)
             );
             return new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain> self)
+            {
+                var future = _domain.RestoreDataObject(
+                    new RestoreDataObjectRequest()
+                        .WithDataObjectId(dataObjectId)
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain>(Impl);
+        #endif
         }
 
         public Gs2.Unity.Gs2Datastore.Domain.Model.EzUserDomain User(

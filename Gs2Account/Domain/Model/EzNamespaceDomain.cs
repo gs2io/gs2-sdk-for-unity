@@ -68,10 +68,28 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> Create(
         #endif
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.CreateAccountAsync(
                 new CreateAccountRequest()
             );
             return new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
+            {
+                var future = _domain.CreateAccount(
+                    new CreateAccountRequest()
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
@@ -83,6 +101,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
               string userIdentifier,
               string password
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.DoTakeOverAsync(
                 new DoTakeOverRequest()
                     .WithType(type)
@@ -90,15 +109,59 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                     .WithPassword(password)
             );
             return new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
+            {
+                var future = _domain.DoTakeOver(
+                    new DoTakeOverRequest()
+                        .WithType(type)
+                        .WithUserIdentifier(userIdentifier)
+                        .WithPassword(password)
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Account.Model.EzAccount> Accounts(
         #else
+        public class EzAccountsIterator : Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzAccount>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Account.Model.Account> _it;
+
+            public EzAccountsIterator(
+                Gs2Iterator<Gs2.Gs2Account.Model.Account> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Account.Model.EzAccount> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Account.Model.EzAccount.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzAccount> Accounts(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Account.Model.EzAccount>(async (writer, token) =>
             {
                 var it = _domain.Accounts(
@@ -108,6 +171,10 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Account.Model.EzAccount.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzAccountsIterator(_domain.Accounts(
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain Account(

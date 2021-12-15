@@ -69,11 +69,30 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #endif
               string targetUserId
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.FollowAsync(
                 new FollowRequest()
                     .WithTargetUserId(targetUserId)
             );
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> self)
+            {
+                var future = _domain.Follow(
+                    new FollowRequest()
+                        .WithTargetUserId(targetUserId)
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain>(Impl);
+        #endif
         }
 
         public Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain FollowUser(

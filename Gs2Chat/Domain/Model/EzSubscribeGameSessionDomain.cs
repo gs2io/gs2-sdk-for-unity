@@ -69,11 +69,30 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #endif
               Gs2.Unity.Gs2Chat.Model.EzNotificationType[] notificationTypes = null
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.SubscribeAsync(
                 new SubscribeRequest()
                     .WithNotificationTypes(notificationTypes?.Select(v => v.ToModel()).ToArray())
             );
             return new Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> self)
+            {
+                var future = _domain.Subscribe(
+                    new SubscribeRequest()
+                        .WithNotificationTypes(notificationTypes?.Select(v => v.ToModel()).ToArray())
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
@@ -83,11 +102,30 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #endif
               Gs2.Unity.Gs2Chat.Model.EzNotificationType[] notificationTypes = null
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.UpdateNotificationTypeAsync(
                 new UpdateNotificationTypeRequest()
                     .WithNotificationTypes(notificationTypes?.Select(v => v.ToModel()).ToArray())
             );
             return new Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> self)
+            {
+                var future = _domain.UpdateNotificationType(
+                    new UpdateNotificationTypeRequest()
+                        .WithNotificationTypes(notificationTypes?.Select(v => v.ToModel()).ToArray())
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
@@ -96,17 +134,33 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> Unsubscribe(
         #endif
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.UnsubscribeAsync(
                 new UnsubscribeRequest()
             );
             return new Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> self)
+            {
+                var future = _domain.Unsubscribe(
+                    new UnsubscribeRequest()
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Chat.Model.EzSubscribe> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Chat.Model.EzSubscribe> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Chat.Model.EzSubscribe> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -115,6 +169,29 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Chat.Model.EzSubscribe> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Model.EzSubscribe> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Chat.Model.EzSubscribe.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Chat.Model.EzSubscribe>(Impl);
+        }
+        #endif
 
     }
 }

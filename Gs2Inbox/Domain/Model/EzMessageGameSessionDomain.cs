@@ -68,10 +68,28 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         public IFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> Read(
         #endif
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.ReadAsync(
                 new ReadMessageRequest()
             );
             return new Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> self)
+            {
+                var future = _domain.Read(
+                    new ReadMessageRequest()
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
@@ -80,17 +98,33 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         public IFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> Delete(
         #endif
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.DeleteAsync(
                 new DeleteMessageRequest()
             );
             return new Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> self)
+            {
+                var future = _domain.Delete(
+                    new DeleteMessageRequest()
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Inbox.Model.EzMessage> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Inbox.Model.EzMessage> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Inbox.Model.EzMessage> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -99,6 +133,29 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Inbox.Model.EzMessage> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inbox.Model.EzMessage> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Inbox.Model.EzMessage.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Inbox.Model.EzMessage>(Impl);
+        }
+        #endif
 
     }
 }

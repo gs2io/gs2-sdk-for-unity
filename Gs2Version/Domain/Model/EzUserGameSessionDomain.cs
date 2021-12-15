@@ -67,10 +67,34 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> AcceptVersions(
         #else
+        public class EzAcceptVersionsIterator : Gs2Iterator<Gs2.Unity.Gs2Version.Model.EzAcceptVersion>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Version.Model.AcceptVersion> _it;
+
+            public EzAcceptVersionsIterator(
+                Gs2Iterator<Gs2.Gs2Version.Model.AcceptVersion> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Version.Model.EzAcceptVersion.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> AcceptVersions(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Version.Model.EzAcceptVersion>(async (writer, token) =>
             {
                 var it = _domain.AcceptVersions(
@@ -80,6 +104,10 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Version.Model.EzAcceptVersion.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzAcceptVersionsIterator(_domain.AcceptVersions(
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain AcceptVersion(

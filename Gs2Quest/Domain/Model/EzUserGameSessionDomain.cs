@@ -72,6 +72,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
               bool? force = null,
               Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.StartAsync(
                 new StartRequest()
                     .WithQuestGroupName(questGroupName)
@@ -80,6 +81,27 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                     .WithConfig(config?.Select(v => v.ToModel()).ToArray())
             );
             return new Gs2.Unity.Gs2Quest.Domain.Model.EzUserGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Quest.Domain.Model.EzUserGameSessionDomain> self)
+            {
+                var future = _domain.Start(
+                    new StartRequest()
+                        .WithQuestGroupName(questGroupName)
+                        .WithQuestName(questName)
+                        .WithForce(force)
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Quest.Domain.Model.EzUserGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Quest.Domain.Model.EzUserGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
@@ -88,10 +110,28 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         public IFuture<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain> DeleteProgress(
         #endif
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.DeleteProgressAsync(
                 new DeleteProgressRequest()
             );
             return new Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain> self)
+            {
+                var future = _domain.DeleteProgress(
+                    new DeleteProgressRequest()
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain>(Impl);
+        #endif
         }
 
         public Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain Progress(
@@ -105,10 +145,34 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList> CompletedQuestLists(
         #else
+        public class EzCompletedQuestListsIterator : Gs2Iterator<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Quest.Model.CompletedQuestList> _it;
+
+            public EzCompletedQuestListsIterator(
+                Gs2Iterator<Gs2.Gs2Quest.Model.CompletedQuestList> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList> CompletedQuestLists(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList>(async (writer, token) =>
             {
                 var it = _domain.CompletedQuestLists(
@@ -118,6 +182,10 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzCompletedQuestListsIterator(_domain.CompletedQuestLists(
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Quest.Domain.Model.EzCompletedQuestListGameSessionDomain CompletedQuestList(

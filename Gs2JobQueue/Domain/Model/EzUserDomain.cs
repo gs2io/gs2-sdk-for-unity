@@ -66,10 +66,34 @@ namespace Gs2.Unity.Gs2JobQueue.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2JobQueue.Model.EzJob> Jobs(
         #else
+        public class EzJobsIterator : Gs2Iterator<Gs2.Unity.Gs2JobQueue.Model.EzJob>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2JobQueue.Model.Job> _it;
+
+            public EzJobsIterator(
+                Gs2Iterator<Gs2.Gs2JobQueue.Model.Job> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2JobQueue.Model.EzJob> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2JobQueue.Model.EzJob.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2JobQueue.Model.EzJob> Jobs(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2JobQueue.Model.EzJob>(async (writer, token) =>
             {
                 var it = _domain.Jobs(
@@ -79,6 +103,10 @@ namespace Gs2.Unity.Gs2JobQueue.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2JobQueue.Model.EzJob.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzJobsIterator(_domain.Jobs(
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2JobQueue.Domain.Model.EzJobDomain Job(

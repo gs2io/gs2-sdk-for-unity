@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Iterator
     #if GS2_ENABLE_UNITASK
     public class EzDescribeTakeOversIterator {
     #else
-    public class EzDescribeTakeOversIterator : Gs2Iterator<EzGs2.Unity.Gs2Account.Model.EzTakeOver> {
+    public class EzDescribeTakeOversIterator : Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzTakeOver> {
     #endif
         private readonly Gs2.Gs2Account.Domain.Iterator.DescribeTakeOversIterator _iterator;
 
@@ -67,6 +67,13 @@ namespace Gs2.Unity.Gs2Account.Domain.Iterator
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Account.Model.EzTakeOver> GetAsyncEnumerator(
             CancellationToken cancellationToken = new CancellationToken()
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Account.Model.EzTakeOver>(async (writer, token) =>
+            {
+            });
+        }
+
         #else
 
         public override bool HasNext()
@@ -76,12 +83,12 @@ namespace Gs2.Unity.Gs2Account.Domain.Iterator
 
         protected override IEnumerator Next(
             Action<Gs2.Unity.Gs2Account.Model.EzTakeOver> callback
-        #endif
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Account.Model.EzTakeOver>(async (writer, token) =>
-            {
-            });
+            yield return _iterator;
+            callback.Invoke(Gs2.Unity.Gs2Account.Model.EzTakeOver.FromModel(_iterator.Current));
         }
+
+        #endif
     }
 }

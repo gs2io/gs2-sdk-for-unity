@@ -71,6 +71,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
               string ballotSignature,
               Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.VoteAsync(
                 new VoteRequest()
                     .WithBallotBody(ballotBody)
@@ -78,6 +79,26 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())
             );
             return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> self)
+            {
+                var future = _domain.Vote(
+                    new VoteRequest()
+                        .WithBallotBody(ballotBody)
+                        .WithBallotSignature(ballotSignature)
+                        .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
@@ -88,12 +109,32 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
               Gs2.Unity.Gs2Matchmaking.Model.EzSignedBallot[] signedBallots = null,
               Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.VoteMultipleAsync(
                 new VoteMultipleRequest()
                     .WithSignedBallots(signedBallots?.Select(v => v.ToModel()).ToArray())
                     .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())
             );
             return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> self)
+            {
+                var future = _domain.VoteMultiple(
+                    new VoteMultipleRequest()
+                        .WithSignedBallots(signedBallots?.Select(v => v.ToModel()).ToArray())
+                        .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain>(Impl);
+        #endif
         }
 
         public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzUserDomain User(
@@ -119,10 +160,34 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel> RatingModels(
         #else
+        public class EzRatingModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Matchmaking.Model.RatingModel> _it;
+
+            public EzRatingModelsIterator(
+                Gs2Iterator<Gs2.Gs2Matchmaking.Model.RatingModel> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel> RatingModels(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel>(async (writer, token) =>
             {
                 var it = _domain.RatingModels(
@@ -132,6 +197,10 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzRatingModelsIterator(_domain.RatingModels(
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzRatingModelDomain RatingModel(

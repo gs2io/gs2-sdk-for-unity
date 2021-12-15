@@ -65,10 +65,34 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Limit.Model.EzLimitModel> LimitModels(
         #else
+        public class EzLimitModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Limit.Model.EzLimitModel>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Limit.Model.LimitModel> _it;
+
+            public EzLimitModelsIterator(
+                Gs2Iterator<Gs2.Gs2Limit.Model.LimitModel> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Limit.Model.EzLimitModel> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Limit.Model.EzLimitModel.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Limit.Model.EzLimitModel> LimitModels(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Limit.Model.EzLimitModel>(async (writer, token) =>
             {
                 var it = _domain.LimitModels(
@@ -78,6 +102,10 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Limit.Model.EzLimitModel.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzLimitModelsIterator(_domain.LimitModels(
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Limit.Domain.Model.EzLimitModelDomain LimitModel(

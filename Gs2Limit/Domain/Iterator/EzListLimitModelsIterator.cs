@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Limit.Domain.Iterator
     #if GS2_ENABLE_UNITASK
     public class EzDescribeLimitModelsIterator {
     #else
-    public class EzDescribeLimitModelsIterator : Gs2Iterator<EzGs2.Unity.Gs2Limit.Model.EzLimitModel> {
+    public class EzDescribeLimitModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Limit.Model.EzLimitModel> {
     #endif
         private readonly Gs2.Gs2Limit.Domain.Iterator.DescribeLimitModelsIterator _iterator;
 
@@ -67,6 +67,13 @@ namespace Gs2.Unity.Gs2Limit.Domain.Iterator
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Limit.Model.EzLimitModel> GetAsyncEnumerator(
             CancellationToken cancellationToken = new CancellationToken()
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Limit.Model.EzLimitModel>(async (writer, token) =>
+            {
+            });
+        }
+
         #else
 
         public override bool HasNext()
@@ -76,12 +83,12 @@ namespace Gs2.Unity.Gs2Limit.Domain.Iterator
 
         protected override IEnumerator Next(
             Action<Gs2.Unity.Gs2Limit.Model.EzLimitModel> callback
-        #endif
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Limit.Model.EzLimitModel>(async (writer, token) =>
-            {
-            });
+            yield return _iterator;
+            callback.Invoke(Gs2.Unity.Gs2Limit.Model.EzLimitModel.FromModel(_iterator.Current));
         }
+
+        #endif
     }
 }

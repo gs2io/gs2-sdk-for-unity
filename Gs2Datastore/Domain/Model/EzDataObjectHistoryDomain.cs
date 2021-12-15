@@ -64,10 +64,8 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -76,6 +74,29 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory>(Impl);
+        }
+        #endif
 
     }
 }

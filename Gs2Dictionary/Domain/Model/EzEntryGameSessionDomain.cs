@@ -71,18 +71,35 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
         #endif
               string keyId
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.GetWithSignatureAsync(
                 new GetEntryWithSignatureRequest()
                     .WithKeyId(keyId)
             );
             return new Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain> self)
+            {
+                var future = _domain.GetWithSignature(
+                    new GetEntryWithSignatureRequest()
+                        .WithKeyId(keyId)
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Dictionary.Model.EzEntry> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Dictionary.Model.EzEntry> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Dictionary.Model.EzEntry> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -91,6 +108,29 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Dictionary.Model.EzEntry> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Dictionary.Model.EzEntry> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Dictionary.Model.EzEntry.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Dictionary.Model.EzEntry>(Impl);
+        }
+        #endif
 
     }
 }

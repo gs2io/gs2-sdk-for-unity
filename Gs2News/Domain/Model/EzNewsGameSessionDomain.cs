@@ -69,17 +69,33 @@ namespace Gs2.Unity.Gs2News.Domain.Model
         public IFuture<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]> GetContentsUrl(
         #endif
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.WantGrantAsync(
                 new WantGrantRequest()
             );
             return result.Select(v => new Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain(v)).ToArray();
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]> self)
+            {
+                var future = _domain.WantGrant(
+                    new WantGrantRequest()
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(result.Select(v => new Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain(v)).ToArray());
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2News.Model.EzNews> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2News.Model.EzNews> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2News.Model.EzNews> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -88,6 +104,29 @@ namespace Gs2.Unity.Gs2News.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2News.Model.EzNews> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2News.Model.EzNews> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2News.Model.EzNews.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2News.Model.EzNews>(Impl);
+        }
+        #endif
 
     }
 }

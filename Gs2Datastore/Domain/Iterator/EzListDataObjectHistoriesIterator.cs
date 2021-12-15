@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Iterator
     #if GS2_ENABLE_UNITASK
     public class EzDescribeDataObjectHistoriesIterator {
     #else
-    public class EzDescribeDataObjectHistoriesIterator : Gs2Iterator<EzGs2.Unity.Gs2Datastore.Model.EzDataObjectHistory> {
+    public class EzDescribeDataObjectHistoriesIterator : Gs2Iterator<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory> {
     #endif
         private readonly Gs2.Gs2Datastore.Domain.Iterator.DescribeDataObjectHistoriesIterator _iterator;
 
@@ -67,6 +67,13 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Iterator
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory> GetAsyncEnumerator(
             CancellationToken cancellationToken = new CancellationToken()
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory>(async (writer, token) =>
+            {
+            });
+        }
+
         #else
 
         public override bool HasNext()
@@ -76,12 +83,12 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Iterator
 
         protected override IEnumerator Next(
             Action<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory> callback
-        #endif
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory>(async (writer, token) =>
-            {
-            });
+            yield return _iterator;
+            callback.Invoke(Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory.FromModel(_iterator.Current));
         }
+
+        #endif
     }
 }

@@ -68,10 +68,28 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
         public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> Accept(
         #endif
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.AcceptAsync(
                 new AcceptRequest()
             );
             return new Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> self)
+            {
+                var future = _domain.Accept(
+                    new AcceptRequest()
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
@@ -80,17 +98,33 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
         public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> Delete(
         #endif
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.DeleteAsync(
                 new DeleteAcceptVersionRequest()
             );
             return new Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> self)
+            {
+                var future = _domain.Delete(
+                    new DeleteAcceptVersionRequest()
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -99,6 +133,29 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Version.Model.EzAcceptVersion.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Version.Model.EzAcceptVersion>(Impl);
+        }
+        #endif
 
     }
 }

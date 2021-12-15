@@ -69,10 +69,28 @@ namespace Gs2.Unity.Gs2JobQueue.Domain.Model
         public IFuture<Gs2.Unity.Gs2JobQueue.Domain.Model.EzJobGameSessionDomain> Run(
         #endif
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.RunAsync(
                 new RunRequest()
             );
             return new Gs2.Unity.Gs2JobQueue.Domain.Model.EzJobGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2JobQueue.Domain.Model.EzJobGameSessionDomain> self)
+            {
+                var future = _domain.Run(
+                    new RunRequest()
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2JobQueue.Domain.Model.EzJobGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2JobQueue.Domain.Model.EzJobGameSessionDomain>(Impl);
+        #endif
         }
 
         public Gs2.Unity.Gs2JobQueue.Domain.Model.EzJobGameSessionDomain Job(

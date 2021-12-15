@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Experience.Domain.Iterator
     #if GS2_ENABLE_UNITASK
     public class EzDescribeExperienceModelsIterator {
     #else
-    public class EzDescribeExperienceModelsIterator : Gs2Iterator<EzGs2.Unity.Gs2Experience.Model.EzExperienceModel> {
+    public class EzDescribeExperienceModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Experience.Model.EzExperienceModel> {
     #endif
         private readonly Gs2.Gs2Experience.Domain.Iterator.DescribeExperienceModelsIterator _iterator;
 
@@ -67,6 +67,13 @@ namespace Gs2.Unity.Gs2Experience.Domain.Iterator
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Experience.Model.EzExperienceModel> GetAsyncEnumerator(
             CancellationToken cancellationToken = new CancellationToken()
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Experience.Model.EzExperienceModel>(async (writer, token) =>
+            {
+            });
+        }
+
         #else
 
         public override bool HasNext()
@@ -76,12 +83,12 @@ namespace Gs2.Unity.Gs2Experience.Domain.Iterator
 
         protected override IEnumerator Next(
             Action<Gs2.Unity.Gs2Experience.Model.EzExperienceModel> callback
-        #endif
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Experience.Model.EzExperienceModel>(async (writer, token) =>
-            {
-            });
+            yield return _iterator;
+            callback.Invoke(Gs2.Unity.Gs2Experience.Model.EzExperienceModel.FromModel(_iterator.Current));
         }
+
+        #endif
     }
 }

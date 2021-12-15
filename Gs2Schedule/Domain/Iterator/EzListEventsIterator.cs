@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Iterator
     #if GS2_ENABLE_UNITASK
     public class EzDescribeEventsIterator {
     #else
-    public class EzDescribeEventsIterator : Gs2Iterator<EzGs2.Unity.Gs2Schedule.Model.EzEvent> {
+    public class EzDescribeEventsIterator : Gs2Iterator<Gs2.Unity.Gs2Schedule.Model.EzEvent> {
     #endif
         private readonly Gs2.Gs2Schedule.Domain.Iterator.DescribeEventsIterator _iterator;
 
@@ -67,6 +67,13 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Iterator
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Schedule.Model.EzEvent> GetAsyncEnumerator(
             CancellationToken cancellationToken = new CancellationToken()
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Schedule.Model.EzEvent>(async (writer, token) =>
+            {
+            });
+        }
+
         #else
 
         public override bool HasNext()
@@ -76,12 +83,12 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Iterator
 
         protected override IEnumerator Next(
             Action<Gs2.Unity.Gs2Schedule.Model.EzEvent> callback
-        #endif
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Schedule.Model.EzEvent>(async (writer, token) =>
-            {
-            });
+            yield return _iterator;
+            callback.Invoke(Gs2.Unity.Gs2Schedule.Model.EzEvent.FromModel(_iterator.Current));
         }
+
+        #endif
     }
 }

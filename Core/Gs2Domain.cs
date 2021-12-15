@@ -14,9 +14,12 @@
  * permissions and limitations under the License.
  */
 
-using Cysharp.Threading.Tasks;
 using Gs2.Core.Net;
+using Gs2.Core.Domain;
 using Gs2.Unity.Util;
+#if GS2_ENABLE_UNITASK
+using Cysharp.Threading.Tasks;
+#endif
 
 namespace Gs2.Unity.Core
 {
@@ -95,6 +98,7 @@ namespace Gs2.Unity.Core
             _gs2.ClearCache();
         }
         
+#if GS2_ENABLE_UNITASK
         public async UniTask DispatchAsync(
             GameSession gameSession
         )
@@ -103,5 +107,15 @@ namespace Gs2.Unity.Core
                 gameSession.AccessToken
             );
         }
+#else
+        public Gs2Future Dispatch(
+            GameSession gameSession
+        )
+        {
+            return _gs2.Dispatch(
+                gameSession.AccessToken
+            );
+        }
+#endif
     }
 }

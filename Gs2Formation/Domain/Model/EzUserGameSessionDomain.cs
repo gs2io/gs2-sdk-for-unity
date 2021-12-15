@@ -65,10 +65,34 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Formation.Model.EzMold> Molds(
         #else
+        public class EzMoldsIterator : Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzMold>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Formation.Model.Mold> _it;
+
+            public EzMoldsIterator(
+                Gs2Iterator<Gs2.Gs2Formation.Model.Mold> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Formation.Model.EzMold> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Formation.Model.EzMold.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzMold> Molds(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Formation.Model.EzMold>(async (writer, token) =>
             {
                 var it = _domain.Molds(
@@ -78,6 +102,10 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Formation.Model.EzMold.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzMoldsIterator(_domain.Molds(
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Formation.Domain.Model.EzMoldGameSessionDomain Mold(

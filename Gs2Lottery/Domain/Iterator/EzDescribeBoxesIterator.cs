@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Iterator
     #if GS2_ENABLE_UNITASK
     public class EzDescribeBoxesIterator {
     #else
-    public class EzDescribeBoxesIterator : Gs2Iterator<EzGs2.Unity.Gs2Lottery.Model.EzBox> {
+    public class EzDescribeBoxesIterator : Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzBox> {
     #endif
         private readonly Gs2.Gs2Lottery.Domain.Iterator.DescribeBoxesIterator _iterator;
 
@@ -67,6 +67,13 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Iterator
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Lottery.Model.EzBox> GetAsyncEnumerator(
             CancellationToken cancellationToken = new CancellationToken()
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Lottery.Model.EzBox>(async (writer, token) =>
+            {
+            });
+        }
+
         #else
 
         public override bool HasNext()
@@ -76,12 +83,12 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Iterator
 
         protected override IEnumerator Next(
             Action<Gs2.Unity.Gs2Lottery.Model.EzBox> callback
-        #endif
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Lottery.Model.EzBox>(async (writer, token) =>
-            {
-            });
+            yield return _iterator;
+            callback.Invoke(Gs2.Unity.Gs2Lottery.Model.EzBox.FromModel(_iterator.Current));
         }
+
+        #endif
     }
 }

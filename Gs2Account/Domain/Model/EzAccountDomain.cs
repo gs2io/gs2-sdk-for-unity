@@ -72,21 +72,65 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
               string keyId,
               string password
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.AuthenticationAsync(
                 new AuthenticationRequest()
                     .WithKeyId(keyId)
                     .WithPassword(password)
             );
             return new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
+            {
+                var future = _domain.Authentication(
+                    new AuthenticationRequest()
+                        .WithKeyId(keyId)
+                        .WithPassword(password)
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Account.Model.EzTakeOver> TakeOvers(
         #else
+        public class EzTakeOversIterator : Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzTakeOver>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Account.Model.TakeOver> _it;
+
+            public EzTakeOversIterator(
+                Gs2Iterator<Gs2.Gs2Account.Model.TakeOver> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Account.Model.EzTakeOver> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Account.Model.EzTakeOver.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzTakeOver> TakeOvers(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Account.Model.EzTakeOver>(async (writer, token) =>
             {
                 var it = _domain.TakeOvers(
@@ -96,6 +140,10 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Account.Model.EzTakeOver.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzTakeOversIterator(_domain.TakeOvers(
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverDomain TakeOver(
@@ -109,10 +157,8 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Account.Model.EzAccount> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Account.Model.EzAccount> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Account.Model.EzAccount> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -121,6 +167,29 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Account.Model.EzAccount> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Model.EzAccount> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Account.Model.EzAccount.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Model.EzAccount>(Impl);
+        }
+        #endif
 
     }
 }

@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Mission.Domain.Iterator
     #if GS2_ENABLE_UNITASK
     public class EzDescribeCompletesIterator {
     #else
-    public class EzDescribeCompletesIterator : Gs2Iterator<EzGs2.Unity.Gs2Mission.Model.EzComplete> {
+    public class EzDescribeCompletesIterator : Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzComplete> {
     #endif
         private readonly Gs2.Gs2Mission.Domain.Iterator.DescribeCompletesIterator _iterator;
 
@@ -67,6 +67,13 @@ namespace Gs2.Unity.Gs2Mission.Domain.Iterator
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Mission.Model.EzComplete> GetAsyncEnumerator(
             CancellationToken cancellationToken = new CancellationToken()
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Mission.Model.EzComplete>(async (writer, token) =>
+            {
+            });
+        }
+
         #else
 
         public override bool HasNext()
@@ -76,12 +83,12 @@ namespace Gs2.Unity.Gs2Mission.Domain.Iterator
 
         protected override IEnumerator Next(
             Action<Gs2.Unity.Gs2Mission.Model.EzComplete> callback
-        #endif
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Mission.Model.EzComplete>(async (writer, token) =>
-            {
-            });
+            yield return _iterator;
+            callback.Invoke(Gs2.Unity.Gs2Mission.Model.EzComplete.FromModel(_iterator.Current));
         }
+
+        #endif
     }
 }

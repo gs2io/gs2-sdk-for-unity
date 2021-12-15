@@ -65,10 +65,34 @@ namespace Gs2.Unity.Gs2Lock.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Lock.Model.EzMutex> Mutexes(
         #else
+        public class EzMutexesIterator : Gs2Iterator<Gs2.Unity.Gs2Lock.Model.EzMutex>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Lock.Model.Mutex> _it;
+
+            public EzMutexesIterator(
+                Gs2Iterator<Gs2.Gs2Lock.Model.Mutex> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Lock.Model.EzMutex> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Lock.Model.EzMutex.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Lock.Model.EzMutex> Mutexes(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Lock.Model.EzMutex>(async (writer, token) =>
             {
                 var it = _domain.Mutexes(
@@ -78,6 +102,10 @@ namespace Gs2.Unity.Gs2Lock.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Lock.Model.EzMutex.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzMutexesIterator(_domain.Mutexes(
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Lock.Domain.Model.EzMutexGameSessionDomain Mutex(

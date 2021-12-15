@@ -74,6 +74,7 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
               bool? force = null,
               Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.StartAsync(
                 new StartRequest()
                     .WithRateName(rateName)
@@ -83,6 +84,28 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
                     .WithConfig(config?.Select(v => v.ToModel()).ToArray())
             );
             return new Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressGameSessionDomain> self)
+            {
+                var future = _domain.Start(
+                    new StartRequest()
+                        .WithRateName(rateName)
+                        .WithTargetItemSetId(targetItemSetId)
+                        .WithMaterials(materials?.Select(v => v.ToModel()).ToArray())
+                        .WithForce(force)
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
@@ -92,11 +115,30 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
         #endif
               Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.EndAsync(
                 new EndRequest()
                     .WithConfig(config?.Select(v => v.ToModel()).ToArray())
             );
             return new Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressGameSessionDomain> self)
+            {
+                var future = _domain.End(
+                    new EndRequest()
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
@@ -105,17 +147,33 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
         public IFuture<Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressGameSessionDomain> DeleteProgress(
         #endif
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.DeleteAsync(
                 new DeleteProgressRequest()
             );
             return new Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressGameSessionDomain> self)
+            {
+                var future = _domain.Delete(
+                    new DeleteProgressRequest()
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Enhance.Model.EzProgress> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Enhance.Model.EzProgress> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Enhance.Model.EzProgress> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -124,6 +182,29 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Enhance.Model.EzProgress> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Enhance.Model.EzProgress> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Enhance.Model.EzProgress.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Enhance.Model.EzProgress>(Impl);
+        }
+        #endif
 
     }
 }

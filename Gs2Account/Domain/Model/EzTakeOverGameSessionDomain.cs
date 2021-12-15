@@ -70,12 +70,32 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
               string userIdentifier,
               string password
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.CreateAsync(
                 new CreateTakeOverRequest()
                     .WithUserIdentifier(userIdentifier)
                     .WithPassword(password)
             );
             return new Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> self)
+            {
+                var future = _domain.Create(
+                    new CreateTakeOverRequest()
+                        .WithUserIdentifier(userIdentifier)
+                        .WithPassword(password)
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
@@ -86,12 +106,32 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
               string oldPassword,
               string password
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.UpdateAsync(
                 new UpdateTakeOverRequest()
                     .WithOldPassword(oldPassword)
                     .WithPassword(password)
             );
             return new Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> self)
+            {
+                var future = _domain.Update(
+                    new UpdateTakeOverRequest()
+                        .WithOldPassword(oldPassword)
+                        .WithPassword(password)
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
@@ -100,17 +140,33 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> DeleteTakeOverSetting(
         #endif
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.DeleteAsync(
                 new DeleteTakeOverRequest()
             );
             return new Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> self)
+            {
+                var future = _domain.Delete(
+                    new DeleteTakeOverRequest()
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Account.Model.EzTakeOver> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Account.Model.EzTakeOver> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Account.Model.EzTakeOver> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -119,6 +175,29 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Account.Model.EzTakeOver> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Model.EzTakeOver> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Account.Model.EzTakeOver.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Model.EzTakeOver>(Impl);
+        }
+        #endif
 
     }
 }

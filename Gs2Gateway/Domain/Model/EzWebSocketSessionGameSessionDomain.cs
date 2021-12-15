@@ -69,18 +69,35 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
         #endif
               bool? allowConcurrentAccess = null
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.SetUserIdAsync(
                 new SetUserIdRequest()
                     .WithAllowConcurrentAccess(allowConcurrentAccess)
             );
             return new Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain> self)
+            {
+                var future = _domain.SetUserId(
+                    new SetUserIdRequest()
+                        .WithAllowConcurrentAccess(allowConcurrentAccess)
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -89,6 +106,29 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession>(Impl);
+        }
+        #endif
 
     }
 }

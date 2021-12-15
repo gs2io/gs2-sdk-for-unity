@@ -75,6 +75,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
               string[] allowUserIds = null,
               bool? updateIfExists = null
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.PrepareUploadAsync(
                 new PrepareUploadRequest()
                     .WithName(name)
@@ -83,6 +84,27 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                     .WithUpdateIfExists(updateIfExists)
             );
             return new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
+            {
+                var future = _domain.PrepareUpload(
+                    new PrepareUploadRequest()
+                        .WithName(name)
+                        .WithScope(scope)
+                        .WithAllowUserIds(allowUserIds)
+                        .WithUpdateIfExists(updateIfExists)
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
@@ -92,21 +114,64 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #endif
               string dataObjectId
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.PrepareDownloadAsync(
                 new PrepareDownloadRequest()
                     .WithDataObjectId(dataObjectId)
             );
             return new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
+            {
+                var future = _domain.PrepareDownload(
+                    new PrepareDownloadRequest()
+                        .WithDataObjectId(dataObjectId)
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Datastore.Model.EzDataObject> DataObjects(
         #else
+        public class EzDataObjectsIterator : Gs2Iterator<Gs2.Unity.Gs2Datastore.Model.EzDataObject>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Datastore.Model.DataObject> _it;
+
+            public EzDataObjectsIterator(
+                Gs2Iterator<Gs2.Gs2Datastore.Model.DataObject> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Datastore.Model.EzDataObject> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Datastore.Model.EzDataObject.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Datastore.Model.EzDataObject> DataObjects(
         #endif
               string status = null
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Datastore.Model.EzDataObject>(async (writer, token) =>
             {
                 var it = _domain.DataObjects(
@@ -117,6 +182,11 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Datastore.Model.EzDataObject.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzDataObjectsIterator(_domain.DataObjects(
+               status
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain DataObject(

@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Iterator
     #if GS2_ENABLE_UNITASK
     public class EzDescribeQuestModelsIterator {
     #else
-    public class EzDescribeQuestModelsIterator : Gs2Iterator<EzGs2.Unity.Gs2Quest.Model.EzQuestModel> {
+    public class EzDescribeQuestModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Quest.Model.EzQuestModel> {
     #endif
         private readonly Gs2.Gs2Quest.Domain.Iterator.DescribeQuestModelsIterator _iterator;
 
@@ -67,6 +67,13 @@ namespace Gs2.Unity.Gs2Quest.Domain.Iterator
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Quest.Model.EzQuestModel> GetAsyncEnumerator(
             CancellationToken cancellationToken = new CancellationToken()
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Quest.Model.EzQuestModel>(async (writer, token) =>
+            {
+            });
+        }
+
         #else
 
         public override bool HasNext()
@@ -76,12 +83,12 @@ namespace Gs2.Unity.Gs2Quest.Domain.Iterator
 
         protected override IEnumerator Next(
             Action<Gs2.Unity.Gs2Quest.Model.EzQuestModel> callback
-        #endif
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Quest.Model.EzQuestModel>(async (writer, token) =>
-            {
-            });
+            yield return _iterator;
+            callback.Invoke(Gs2.Unity.Gs2Quest.Model.EzQuestModel.FromModel(_iterator.Current));
         }
+
+        #endif
     }
 }

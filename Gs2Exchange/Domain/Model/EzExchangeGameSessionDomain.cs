@@ -70,6 +70,7 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
               int count,
               Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.ExchangeAsync(
                 new ExchangeRequest()
                     .WithRateName(rateName)
@@ -77,6 +78,26 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                     .WithConfig(config?.Select(v => v.ToModel()).ToArray())
             );
             return new Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain> self)
+            {
+                var future = _domain.Exchange(
+                    new ExchangeRequest()
+                        .WithRateName(rateName)
+                        .WithCount(count)
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain>(Impl);
+        #endif
         }
 
     }

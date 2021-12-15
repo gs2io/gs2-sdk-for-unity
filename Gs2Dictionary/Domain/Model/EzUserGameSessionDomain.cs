@@ -65,10 +65,34 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Dictionary.Model.EzEntry> Entries(
         #else
+        public class EzEntriesIterator : Gs2Iterator<Gs2.Unity.Gs2Dictionary.Model.EzEntry>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Dictionary.Model.Entry> _it;
+
+            public EzEntriesIterator(
+                Gs2Iterator<Gs2.Gs2Dictionary.Model.Entry> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Dictionary.Model.EzEntry> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Dictionary.Model.EzEntry.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Dictionary.Model.EzEntry> Entries(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Dictionary.Model.EzEntry>(async (writer, token) =>
             {
                 var it = _domain.Entries(
@@ -78,6 +102,10 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Dictionary.Model.EzEntry.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzEntriesIterator(_domain.Entries(
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain Entry(

@@ -66,10 +66,34 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Stamina.Model.EzStamina> Staminas(
         #else
+        public class EzStaminasIterator : Gs2Iterator<Gs2.Unity.Gs2Stamina.Model.EzStamina>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Stamina.Model.Stamina> _it;
+
+            public EzStaminasIterator(
+                Gs2Iterator<Gs2.Gs2Stamina.Model.Stamina> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Stamina.Model.EzStamina> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(Gs2.Unity.Gs2Stamina.Model.EzStamina.FromModel(_it.Current));
+            }
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Stamina.Model.EzStamina> Staminas(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Stamina.Model.EzStamina>(async (writer, token) =>
             {
                 var it = _domain.Staminas(
@@ -79,6 +103,10 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
                     await writer.YieldAsync(Gs2.Unity.Gs2Stamina.Model.EzStamina.FromModel(it.Current));
                 }
             });
+        #else
+            return new EzStaminasIterator(_domain.Staminas(
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaDomain Stamina(

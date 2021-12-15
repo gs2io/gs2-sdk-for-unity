@@ -66,10 +66,8 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Formation.Model.EzForm> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Formation.Model.EzForm> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Formation.Model.EzForm> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -78,6 +76,29 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Formation.Model.EzForm> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Model.EzForm> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Formation.Model.EzForm.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Model.EzForm>(Impl);
+        }
+        #endif
 
     }
 }

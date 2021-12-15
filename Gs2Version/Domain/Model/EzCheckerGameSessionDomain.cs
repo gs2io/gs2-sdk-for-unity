@@ -73,11 +73,30 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
         #endif
               Gs2.Unity.Gs2Version.Model.EzTargetVersion[] targetVersions = null
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.CheckVersionAsync(
                 new CheckVersionRequest()
                     .WithTargetVersions(targetVersions?.Select(v => v.ToModel()).ToArray())
             );
             return new Gs2.Unity.Gs2Version.Domain.Model.EzCheckerGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Version.Domain.Model.EzCheckerGameSessionDomain> self)
+            {
+                var future = _domain.CheckVersion(
+                    new CheckVersionRequest()
+                        .WithTargetVersions(targetVersions?.Select(v => v.ToModel()).ToArray())
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Version.Domain.Model.EzCheckerGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Version.Domain.Model.EzCheckerGameSessionDomain>(Impl);
+        #endif
         }
 
     }

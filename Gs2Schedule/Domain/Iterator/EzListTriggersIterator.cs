@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Iterator
     #if GS2_ENABLE_UNITASK
     public class EzDescribeTriggersIterator {
     #else
-    public class EzDescribeTriggersIterator : Gs2Iterator<EzGs2.Unity.Gs2Schedule.Model.EzTrigger> {
+    public class EzDescribeTriggersIterator : Gs2Iterator<Gs2.Unity.Gs2Schedule.Model.EzTrigger> {
     #endif
         private readonly Gs2.Gs2Schedule.Domain.Iterator.DescribeTriggersIterator _iterator;
 
@@ -67,6 +67,13 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Iterator
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Schedule.Model.EzTrigger> GetAsyncEnumerator(
             CancellationToken cancellationToken = new CancellationToken()
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Schedule.Model.EzTrigger>(async (writer, token) =>
+            {
+            });
+        }
+
         #else
 
         public override bool HasNext()
@@ -76,12 +83,12 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Iterator
 
         protected override IEnumerator Next(
             Action<Gs2.Unity.Gs2Schedule.Model.EzTrigger> callback
-        #endif
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Schedule.Model.EzTrigger>(async (writer, token) =>
-            {
-            });
+            yield return _iterator;
+            callback.Invoke(Gs2.Unity.Gs2Schedule.Model.EzTrigger.FromModel(_iterator.Current));
         }
+
+        #endif
     }
 }

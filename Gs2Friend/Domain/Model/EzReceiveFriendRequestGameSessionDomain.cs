@@ -68,10 +68,28 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> Accept(
         #endif
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.AcceptAsync(
                 new AcceptRequestRequest()
             );
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> self)
+            {
+                var future = _domain.Accept(
+                    new AcceptRequestRequest()
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
@@ -80,10 +98,28 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> Reject(
         #endif
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.RejectAsync(
                 new RejectRequestRequest()
             );
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> self)
+            {
+                var future = _domain.Reject(
+                    new RejectRequestRequest()
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain>(Impl);
+        #endif
         }
 
     }

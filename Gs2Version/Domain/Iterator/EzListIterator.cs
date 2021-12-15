@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Version.Domain.Iterator
     #if GS2_ENABLE_UNITASK
     public class EzDescribeAcceptVersionsIterator {
     #else
-    public class EzDescribeAcceptVersionsIterator : Gs2Iterator<EzGs2.Unity.Gs2Version.Model.EzAcceptVersion> {
+    public class EzDescribeAcceptVersionsIterator : Gs2Iterator<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> {
     #endif
         private readonly Gs2.Gs2Version.Domain.Iterator.DescribeAcceptVersionsIterator _iterator;
 
@@ -67,6 +67,13 @@ namespace Gs2.Unity.Gs2Version.Domain.Iterator
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> GetAsyncEnumerator(
             CancellationToken cancellationToken = new CancellationToken()
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Version.Model.EzAcceptVersion>(async (writer, token) =>
+            {
+            });
+        }
+
         #else
 
         public override bool HasNext()
@@ -76,12 +83,12 @@ namespace Gs2.Unity.Gs2Version.Domain.Iterator
 
         protected override IEnumerator Next(
             Action<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> callback
-        #endif
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Version.Model.EzAcceptVersion>(async (writer, token) =>
-            {
-            });
+            yield return _iterator;
+            callback.Invoke(Gs2.Unity.Gs2Version.Model.EzAcceptVersion.FromModel(_iterator.Current));
         }
+
+        #endif
     }
 }

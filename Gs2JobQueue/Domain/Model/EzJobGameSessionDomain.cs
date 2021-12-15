@@ -15,7 +15,6 @@
  */
 
 using System.Linq;
-using Cysharp.Threading.Tasks;
 using Gs2.Unity.Util;
 
 namespace Gs2.Unity.Gs2JobQueue.Domain.Model

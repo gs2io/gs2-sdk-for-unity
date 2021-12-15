@@ -68,11 +68,30 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #endif
               string targetUserId
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.RegisterAsync(
                 new RegisterBlackListRequest()
                     .WithTargetUserId(targetUserId)
             );
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> self)
+            {
+                var future = _domain.Register(
+                    new RegisterBlackListRequest()
+                        .WithTargetUserId(targetUserId)
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
@@ -82,18 +101,35 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #endif
               string targetUserId
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.UnregisterAsync(
                 new UnregisterBlackListRequest()
                     .WithTargetUserId(targetUserId)
             );
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> self)
+            {
+                var future = _domain.Unregister(
+                    new UnregisterBlackListRequest()
+                        .WithTargetUserId(targetUserId)
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Friend.Model.EzBlackList> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Friend.Model.EzBlackList> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Friend.Model.EzBlackList> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -102,6 +138,29 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzBlackList> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzBlackList> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Friend.Model.EzBlackList.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Model.EzBlackList>(Impl);
+        }
+        #endif
 
     }
 }

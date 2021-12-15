@@ -69,18 +69,35 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         #endif
               string missionTaskName
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.CompleteAsync(
                 new CompleteRequest()
                     .WithMissionTaskName(missionTaskName)
             );
             return new Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain> self)
+            {
+                var future = _domain.Complete(
+                    new CompleteRequest()
+                        .WithMissionTaskName(missionTaskName)
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Mission.Model.EzComplete> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Mission.Model.EzComplete> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Mission.Model.EzComplete> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -89,6 +106,29 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Mission.Model.EzComplete> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Mission.Model.EzComplete> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Mission.Model.EzComplete.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Mission.Model.EzComplete>(Impl);
+        }
+        #endif
 
     }
 }

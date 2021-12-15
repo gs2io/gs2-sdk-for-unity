@@ -73,10 +73,34 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<string> BlackLists(
         #else
+        public class EzBlackListsIterator : Gs2Iterator<string>
+        {
+            private readonly Gs2Iterator<string> _it;
+
+            public EzBlackListsIterator(
+                Gs2Iterator<string> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<string> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(_it.Current);
+            }
+        }
+
         public Gs2Iterator<string> BlackLists(
         #endif
         )
         {
+        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<string>(async (writer, token) =>
             {
                 var it = _domain.BlackLists(
@@ -86,6 +110,10 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                     await writer.YieldAsync(it.Current);
                 }
             });
+        #else
+            return new EzBlackListsIterator(_domain.BlackLists(
+            ));
+        #endif
         }
 
         public Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListDomain BlackList(

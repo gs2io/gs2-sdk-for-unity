@@ -69,17 +69,33 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> Unsubscribe(
         #endif
         ) {
+        #if GS2_ENABLE_UNITASK
             var result = await _domain.UnsubscribeAsync(
                 new UnsubscribeRequest()
             );
             return new Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> self)
+            {
+                var future = _domain.Unsubscribe(
+                    new UnsubscribeRequest()
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain>(Impl);
+        #endif
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> Model() {
-        #else
-        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> Model() {
-        #endif
+        public async UniTask<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> Model()
+        {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
@@ -88,6 +104,29 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 item
             );
         }
+        #else
+        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> self)
+            {
+                var future = _domain.Model();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser>(Impl);
+        }
+        #endif
 
     }
 }

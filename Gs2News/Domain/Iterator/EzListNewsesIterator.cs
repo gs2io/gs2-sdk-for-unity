@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2News.Domain.Iterator
     #if GS2_ENABLE_UNITASK
     public class EzDescribeNewsIterator {
     #else
-    public class EzDescribeNewsIterator : Gs2Iterator<EzGs2.Unity.Gs2News.Model.EzNews> {
+    public class EzDescribeNewsIterator : Gs2Iterator<Gs2.Unity.Gs2News.Model.EzNews> {
     #endif
         private readonly Gs2.Gs2News.Domain.Iterator.DescribeNewsIterator _iterator;
 
@@ -67,6 +67,13 @@ namespace Gs2.Unity.Gs2News.Domain.Iterator
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2News.Model.EzNews> GetAsyncEnumerator(
             CancellationToken cancellationToken = new CancellationToken()
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2News.Model.EzNews>(async (writer, token) =>
+            {
+            });
+        }
+
         #else
 
         public override bool HasNext()
@@ -76,12 +83,12 @@ namespace Gs2.Unity.Gs2News.Domain.Iterator
 
         protected override IEnumerator Next(
             Action<Gs2.Unity.Gs2News.Model.EzNews> callback
-        #endif
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2News.Model.EzNews>(async (writer, token) =>
-            {
-            });
+            yield return _iterator;
+            callback.Invoke(Gs2.Unity.Gs2News.Model.EzNews.FromModel(_iterator.Current));
         }
+
+        #endif
     }
 }

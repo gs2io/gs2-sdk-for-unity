@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Iterator
     #if GS2_ENABLE_UNITASK
     public class EzDescribeBlackListIterator {
     #else
-    public class EzDescribeBlackListIterator : Gs2Iterator<Ezstring> {
+    public class EzDescribeBlackListIterator : Gs2Iterator<string> {
     #endif
         private readonly Gs2.Gs2Friend.Domain.Iterator.DescribeBlackListIterator _iterator;
 
@@ -67,6 +67,13 @@ namespace Gs2.Unity.Gs2Friend.Domain.Iterator
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<string> GetAsyncEnumerator(
             CancellationToken cancellationToken = new CancellationToken()
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<string>(async (writer, token) =>
+            {
+            });
+        }
+
         #else
 
         public override bool HasNext()
@@ -76,12 +83,12 @@ namespace Gs2.Unity.Gs2Friend.Domain.Iterator
 
         protected override IEnumerator Next(
             Action<string> callback
-        #endif
         )
         {
-            return UniTaskAsyncEnumerable.Create<string>(async (writer, token) =>
-            {
-            });
+            yield return _iterator;
+            callback.Invoke(_iterator.Current);
         }
+
+        #endif
     }
 }
