@@ -100,7 +100,8 @@ namespace Gs2.Unity.Gs2Matchmaking
                 List<Gs2.Unity.Gs2Matchmaking.Model.EzAttributeRange> attributeRanges = null,
                 List<Gs2.Unity.Gs2Matchmaking.Model.EzCapacityOfRole> capacityOfRoles = null,
                 List<string> allowUserIds = null,
-                long? expiresAt = null
+                long? expiresAt = null,
+                Gs2.Unity.Gs2Matchmaking.Model.EzTimeSpan expiresAtTimeSpan = null
         )
 		{
             yield return _profile.Run(
@@ -120,7 +121,8 @@ namespace Gs2.Unity.Gs2Matchmaking
                         .WithAllowUserIds(allowUserIds?.Select(v => {
                             return v;
                         }).ToArray())
-                        .WithExpiresAt(expiresAt),
+                        .WithExpiresAt(expiresAt)
+                        .WithExpiresAtTimeSpan(expiresAtTimeSpan?.ToModel()),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzCreateGatheringResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Matchmaking.Result.EzCreateGatheringResult.FromModel(r.Result),

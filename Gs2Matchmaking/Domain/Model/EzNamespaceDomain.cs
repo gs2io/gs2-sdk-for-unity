@@ -63,6 +63,26 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> Vote(
+              string ballotBody,
+              string ballotSignature,
+              Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> self)
+            {
+                yield return VoteAsync(
+                    ballotBody,
+                    ballotSignature,
+                    gameResults
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> VoteAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> Vote(
@@ -102,6 +122,24 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> VoteMultiple(
+              Gs2.Unity.Gs2Matchmaking.Model.EzSignedBallot[] signedBallots = null,
+              Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> self)
+            {
+                yield return VoteMultipleAsync(
+                    signedBallots,
+                    gameResults
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> VoteMultipleAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> VoteMultiple(
@@ -157,9 +195,6 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel> RatingModels(
-        #else
         public class EzRatingModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel>
         {
             private readonly Gs2Iterator<Gs2.Gs2Matchmaking.Model.RatingModel> _it;
@@ -179,10 +214,20 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel> RatingModels(
+        )
+        {
+            return new EzRatingModelsIterator(_domain.RatingModels(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel> RatingModelsAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel> RatingModels(
         #endif
         )
@@ -190,7 +235,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel>(async (writer, token) =>
             {
-                var it = _domain.RatingModels(
+                var it = _domain.RatingModelsAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {

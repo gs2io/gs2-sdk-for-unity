@@ -63,6 +63,22 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> UpdateGathering(
+              Gs2.Unity.Gs2Matchmaking.Model.EzAttributeRange[] attributeRanges = null
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> self)
+            {
+                yield return UpdateGatheringAsync(
+                    attributeRanges
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> UpdateGatheringAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> UpdateGathering(
@@ -96,6 +112,20 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> CancelMatchmaking(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> self)
+            {
+                yield return CancelMatchmakingAsync(
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> CancelMatchmakingAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> CancelMatchmaking(
@@ -126,7 +156,19 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> Model()
+        public IFuture<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Model.EzGathering>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {
