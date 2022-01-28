@@ -35,6 +35,10 @@ namespace Gs2.Unity.Gs2Exchange.Model
 		[SerializeField]
 		public string Metadata;
 		[SerializeField]
+		public string TimingType;
+		[SerializeField]
+		public int LockTime;
+		[SerializeField]
 		public List<Gs2.Unity.Gs2Exchange.Model.EzConsumeAction> ConsumeActions;
 		[SerializeField]
 		public List<Gs2.Unity.Gs2Exchange.Model.EzAcquireAction> AcquireActions;
@@ -44,6 +48,8 @@ namespace Gs2.Unity.Gs2Exchange.Model
             return new Gs2.Gs2Exchange.Model.RateModel {
                 Name = Name,
                 Metadata = Metadata,
+                TimingType = TimingType,
+                LockTime = LockTime,
                 ConsumeActions = ConsumeActions?.Select(v => {
                     return v.ToModel();
                 }).ToArray(),
@@ -58,6 +64,8 @@ namespace Gs2.Unity.Gs2Exchange.Model
             return new EzRateModel {
                 Name = model.Name == null ? null : model.Name,
                 Metadata = model.Metadata == null ? null : model.Metadata,
+                TimingType = model.TimingType == null ? null : model.TimingType,
+                LockTime = model.LockTime ?? 0,
                 ConsumeActions = model.ConsumeActions == null ? new List<Gs2.Unity.Gs2Exchange.Model.EzConsumeAction>() : model.ConsumeActions.Select(v => {
                     return Gs2.Unity.Gs2Exchange.Model.EzConsumeAction.FromModel(v);
                 }).ToList(),

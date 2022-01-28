@@ -32,11 +32,17 @@ namespace Gs2.Unity.Gs2Friend.Model
 	{
 		[SerializeField]
 		public string UserId;
+		[SerializeField]
+		public string PublicProfile;
+		[SerializeField]
+		public string FollowerProfile;
 
         public Gs2.Gs2Friend.Model.FollowUser ToModel()
         {
             return new Gs2.Gs2Friend.Model.FollowUser {
                 UserId = UserId,
+                PublicProfile = PublicProfile,
+                FollowerProfile = FollowerProfile,
             };
         }
 
@@ -44,6 +50,8 @@ namespace Gs2.Unity.Gs2Friend.Model
         {
             return new EzFollowUser {
                 UserId = model.UserId == null ? null : model.UserId,
+                PublicProfile = model.PublicProfile == null ? null : model.PublicProfile,
+                FollowerProfile = model.FollowerProfile == null ? null : model.FollowerProfile,
             };
         }
     }

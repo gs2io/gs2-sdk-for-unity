@@ -31,6 +31,8 @@ namespace Gs2.Unity.Gs2Chat.Model
 	public class EzMessage
 	{
 		[SerializeField]
+		public string Name;
+		[SerializeField]
 		public string RoomName;
 		[SerializeField]
 		public string UserId;
@@ -44,6 +46,7 @@ namespace Gs2.Unity.Gs2Chat.Model
         public Gs2.Gs2Chat.Model.Message ToModel()
         {
             return new Gs2.Gs2Chat.Model.Message {
+                Name = Name,
                 RoomName = RoomName,
                 UserId = UserId,
                 Category = Category,
@@ -55,6 +58,7 @@ namespace Gs2.Unity.Gs2Chat.Model
         public static EzMessage FromModel(Gs2.Gs2Chat.Model.Message model)
         {
             return new EzMessage {
+                Name = model.Name == null ? null : model.Name,
                 RoomName = model.RoomName == null ? null : model.RoomName,
                 UserId = model.UserId == null ? null : model.UserId,
                 Category = model.Category ?? 0,

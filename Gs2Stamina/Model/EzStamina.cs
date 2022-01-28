@@ -35,6 +35,8 @@ namespace Gs2.Unity.Gs2Stamina.Model
 		[SerializeField]
 		public int Value;
 		[SerializeField]
+		public int OverflowValue;
+		[SerializeField]
 		public int MaxValue;
 		[SerializeField]
 		public int RecoverIntervalMinutes;
@@ -48,6 +50,7 @@ namespace Gs2.Unity.Gs2Stamina.Model
             return new Gs2.Gs2Stamina.Model.Stamina {
                 StaminaName = StaminaName,
                 Value = Value,
+                OverflowValue = OverflowValue,
                 MaxValue = MaxValue,
                 RecoverIntervalMinutes = RecoverIntervalMinutes,
                 RecoverValue = RecoverValue,
@@ -60,6 +63,7 @@ namespace Gs2.Unity.Gs2Stamina.Model
             return new EzStamina {
                 StaminaName = model.StaminaName == null ? null : model.StaminaName,
                 Value = model.Value ?? 0,
+                OverflowValue = model.OverflowValue ?? 0,
                 MaxValue = model.MaxValue ?? 0,
                 RecoverIntervalMinutes = model.RecoverIntervalMinutes ?? 0,
                 RecoverValue = model.RecoverValue ?? 0,
