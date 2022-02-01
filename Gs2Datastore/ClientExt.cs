@@ -28,6 +28,7 @@ using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Core.Exception;
 using Gs2.Unity.Util;
+using Gs2.Util.LitJson;
 using Gs2.Util.WebSocketSharp;
 using UnityEngine.Events;
 using UnityEngine.Networking;
@@ -102,30 +103,49 @@ namespace Gs2.Unity.Gs2Datastore
 			}
 			request.downloadHandler = new DownloadHandlerBuffer();
 			yield return request.SendWebRequest();
-			
-			var result = new RestResult(
-				(int) request.responseCode,
-				request.responseCode == 200 ? "{}" : string.IsNullOrEmpty(request.error) ? "{}" : request.error
-			);
 
-			if (result.Error == null)
+			try
 			{
-				callback.Invoke(
-					new AsyncResult<EzDownloadImplResult>(
-						new EzDownloadImplResult(request.downloadHandler.data), 
-						result.Error
-					)
+				var result = new RestResult(
+					(int) request.responseCode,
+					request.responseCode == 200 ? "{}" : string.IsNullOrEmpty(request.error) ? "{}" : request.error
 				);
+
+				if (result.Error == null)
+				{
+					callback.Invoke(
+						new AsyncResult<EzDownloadImplResult>(
+							new EzDownloadImplResult(request.downloadHandler.data),
+							result.Error
+						)
+					);
+				}
+				else
+				{
+					callback.Invoke(
+						new AsyncResult<EzDownloadImplResult>(
+							null,
+							result.Error
+						)
+					);
+				}
 			}
-			else
+			catch (JsonException)
 			{
 				callback.Invoke(
 					new AsyncResult<EzDownloadImplResult>(
 						null,
-						result.Error
+						new BadGatewayException(new[]
+						{
+							new RequestError(
+								"Download",
+								request.error
+							)
+						})
 					)
 				);
 			}
+
 		}
 
 		/// <summary>
@@ -175,8 +195,8 @@ namespace Gs2.Unity.Gs2Datastore
 					},
 					session,
 					namespaceName,
-					name,
 					scope,
+					name,
 					allowUserIds,
 					updateIfExists
 				);
