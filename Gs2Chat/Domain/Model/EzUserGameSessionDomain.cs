@@ -63,6 +63,28 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> CreateRoom(
+              string name = null,
+              string metadata = null,
+              string password = null,
+              string[] whiteListUserIds = null
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> self)
+            {
+                yield return CreateRoomAsync(
+                    name,
+                    metadata,
+                    password,
+                    whiteListUserIds
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> CreateRoomAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> CreateRoom(
@@ -116,9 +138,6 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Chat.Model.EzSubscribe> Subscribes(
-        #else
         public class EzSubscribesIterator : Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzSubscribe>
         {
             private readonly Gs2Iterator<Gs2.Gs2Chat.Model.Subscribe> _it;
@@ -138,10 +157,20 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Chat.Model.EzSubscribe> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Chat.Model.EzSubscribe.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Chat.Model.EzSubscribe.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzSubscribe> Subscribes(
+        )
+        {
+            return new EzSubscribesIterator(_domain.Subscribes(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Chat.Model.EzSubscribe> SubscribesAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzSubscribe> Subscribes(
         #endif
         )
@@ -149,7 +178,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Chat.Model.EzSubscribe>(async (writer, token) =>
             {
-                var it = _domain.Subscribes(
+                var it = _domain.SubscribesAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {

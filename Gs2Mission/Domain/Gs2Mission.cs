@@ -36,11 +36,13 @@ using Gs2.Gs2Mission.Domain.Iterator;
 using Gs2.Gs2Mission.Domain.Model;
 using Gs2.Gs2Mission.Request;
 using Gs2.Gs2Mission.Result;
+using Gs2.Gs2Mission.Model;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using System.Collections;
+using UnityEngine.Events;
 using UnityEngine.Scripting;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
@@ -68,6 +70,12 @@ namespace Gs2.Unity.Gs2Mission.Domain
                     namespaceName
                 )
             );
+        }
+
+        public event UnityAction<CompleteNotification> OnCompleteNotification
+        {
+            add => _domain.OnCompleteNotification += value;
+            remove => _domain.OnCompleteNotification -= value;
         }
     }
 }

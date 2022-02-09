@@ -63,6 +63,24 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> Subscribe(
+              string categoryName,
+              string targetUserId
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> self)
+            {
+                yield return SubscribeAsync(
+                    categoryName,
+                    targetUserId
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> SubscribeAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> Subscribe(
@@ -98,9 +116,6 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> SubscribeUsers(
-        #else
         public class EzSubscribeUsersIterator : Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser>
         {
             private readonly Gs2Iterator<Gs2.Gs2Ranking.Model.SubscribeUser> _it;
@@ -120,10 +135,22 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> SubscribeUsers(
+              string categoryName
+        )
+        {
+            return new EzSubscribeUsersIterator(_domain.SubscribeUsers(
+               categoryName
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> SubscribeUsersAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> SubscribeUsers(
         #endif
               string categoryName
@@ -132,7 +159,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser>(async (writer, token) =>
             {
-                var it = _domain.SubscribeUsers(
+                var it = _domain.SubscribeUsersAsync(
                     categoryName
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
@@ -159,9 +186,6 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking.Model.EzRanking> Rankings(
-        #else
         public class EzRankingsIterator : Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzRanking>
         {
             private readonly Gs2Iterator<Gs2.Gs2Ranking.Model.Ranking> _it;
@@ -181,10 +205,22 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Ranking.Model.EzRanking> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzRanking> Rankings(
+              string categoryName
+        )
+        {
+            return new EzRankingsIterator(_domain.Rankings(
+               categoryName
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking.Model.EzRanking> RankingsAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzRanking> Rankings(
         #endif
               string categoryName
@@ -193,7 +229,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking.Model.EzRanking>(async (writer, token) =>
             {
-                var it = _domain.Rankings(
+                var it = _domain.RankingsAsync(
                     categoryName
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
@@ -218,9 +254,6 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking.Model.EzScore> Scores(
-        #else
         public class EzScoresIterator : Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzScore>
         {
             private readonly Gs2Iterator<Gs2.Gs2Ranking.Model.Score> _it;
@@ -240,10 +273,24 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Ranking.Model.EzScore> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Ranking.Model.EzScore.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzScore.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzScore> Scores(
+              string categoryName,
+              string scorerUserId
+        )
+        {
+            return new EzScoresIterator(_domain.Scores(
+               categoryName,
+               scorerUserId
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking.Model.EzScore> ScoresAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzScore> Scores(
         #endif
               string categoryName,
@@ -253,7 +300,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking.Model.EzScore>(async (writer, token) =>
             {
-                var it = _domain.Scores(
+                var it = _domain.ScoresAsync(
                     categoryName,
                     scorerUserId
                 ).GetAsyncEnumerator();

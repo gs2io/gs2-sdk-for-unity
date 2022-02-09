@@ -67,6 +67,24 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> UpdateDataObject(
+              string scope = null,
+              string[] allowUserIds = null
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
+            {
+                yield return UpdateDataObjectAsync(
+                    scope,
+                    allowUserIds
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> UpdateDataObjectAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> UpdateDataObject(
@@ -103,6 +121,20 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareReUpload(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
+            {
+                yield return PrepareReUploadAsync(
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareReUploadAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareReUpload(
@@ -133,6 +165,20 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> DoneUpload(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
+            {
+                yield return DoneUploadAsync(
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> DoneUploadAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> DoneUpload(
@@ -163,6 +209,20 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> DeleteDataObject(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
+            {
+                yield return DeleteDataObjectAsync(
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> DeleteDataObjectAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> DeleteDataObject(
@@ -193,6 +253,20 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareDownloadOwnData(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
+            {
+                yield return PrepareDownloadOwnDataAsync(
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareDownloadOwnDataAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareDownloadOwnData(
@@ -222,9 +296,6 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory> DataObjectHistories(
-        #else
         public class EzDataObjectHistoriesIterator : Gs2Iterator<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory>
         {
             private readonly Gs2Iterator<Gs2.Gs2Datastore.Model.DataObjectHistory> _it;
@@ -244,10 +315,20 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory> DataObjectHistories(
+        )
+        {
+            return new EzDataObjectHistoriesIterator(_domain.DataObjectHistories(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory> DataObjectHistoriesAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory> DataObjectHistories(
         #endif
         )
@@ -255,7 +336,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory>(async (writer, token) =>
             {
-                var it = _domain.DataObjectHistories(
+                var it = _domain.DataObjectHistoriesAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {
@@ -279,7 +360,19 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Datastore.Model.EzDataObject> Model()
+        public IFuture<Gs2.Unity.Gs2Datastore.Model.EzDataObject> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Model.EzDataObject> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Model.EzDataObject>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Datastore.Model.EzDataObject> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {

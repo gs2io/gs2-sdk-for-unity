@@ -36,11 +36,13 @@ using Gs2.Gs2Realtime.Domain.Iterator;
 using Gs2.Gs2Realtime.Domain.Model;
 using Gs2.Gs2Realtime.Request;
 using Gs2.Gs2Realtime.Result;
+using Gs2.Gs2Realtime.Model;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using System.Collections;
+using UnityEngine.Events;
 using UnityEngine.Scripting;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
@@ -68,6 +70,12 @@ namespace Gs2.Unity.Gs2Realtime.Domain
                     namespaceName
                 )
             );
+        }
+
+        public event UnityAction<CreateNotification> OnCreateNotification
+        {
+            add => _domain.OnCreateNotification += value;
+            remove => _domain.OnCreateNotification -= value;
         }
     }
 }

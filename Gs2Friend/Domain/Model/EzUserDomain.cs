@@ -70,9 +70,14 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<string> BlackLists(
-        #else
+        public Gs2.Unity.Gs2Friend.Domain.Model.EzPublicProfileDomain PublicProfile(
+        ) {
+            return new Gs2.Unity.Gs2Friend.Domain.Model.EzPublicProfileDomain(
+                _domain.PublicProfile(
+                )
+            );
+        }
+
         public class EzBlackListsIterator : Gs2Iterator<string>
         {
             private readonly Gs2Iterator<string> _it;
@@ -96,6 +101,16 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<string> BlackLists(
+        )
+        {
+            return new EzBlackListsIterator(_domain.BlackLists(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<string> BlackListsAsync(
+        #else
         public Gs2Iterator<string> BlackLists(
         #endif
         )
@@ -103,7 +118,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<string>(async (writer, token) =>
             {
-                var it = _domain.BlackLists(
+                var it = _domain.BlackListsAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {
@@ -120,6 +135,74 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         ) {
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListDomain(
                 _domain.BlackList(
+                )
+            );
+        }
+
+        public class EzFollowsIterator : Gs2Iterator<Gs2.Unity.Gs2Friend.Model.EzFollowUser>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Friend.Model.FollowUser> _it;
+
+            public EzFollowsIterator(
+                Gs2Iterator<Gs2.Gs2Friend.Model.FollowUser> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Friend.Model.EzFollowUser> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Friend.Model.EzFollowUser.FromModel(_it.Current));
+            }
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Friend.Model.EzFollowUser> Follows(
+              bool? withProfile = null
+        )
+        {
+            return new EzFollowsIterator(_domain.Follows(
+               withProfile
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Friend.Model.EzFollowUser> FollowsAsync(
+        #else
+        public Gs2Iterator<Gs2.Unity.Gs2Friend.Model.EzFollowUser> Follows(
+        #endif
+              bool? withProfile = null
+        )
+        {
+        #if GS2_ENABLE_UNITASK
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Friend.Model.EzFollowUser>(async (writer, token) =>
+            {
+                var it = _domain.FollowsAsync(
+                    withProfile
+                ).GetAsyncEnumerator();
+                while(await it.MoveNextAsync())
+                {
+                    await writer.YieldAsync(Gs2.Unity.Gs2Friend.Model.EzFollowUser.FromModel(it.Current));
+                }
+            });
+        #else
+            return new EzFollowsIterator(_domain.Follows(
+               withProfile
+            ));
+        #endif
+        }
+
+        public Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserDomain FollowUser(
+            string targetUserId
+        ) {
+            return new Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserDomain(
+                _domain.FollowUser(
+                    targetUserId
                 )
             );
         }

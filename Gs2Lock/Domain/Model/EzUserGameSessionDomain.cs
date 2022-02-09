@@ -62,9 +62,6 @@ namespace Gs2.Unity.Gs2Lock.Domain.Model
             this._domain = domain;
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Lock.Model.EzMutex> Mutexes(
-        #else
         public class EzMutexesIterator : Gs2Iterator<Gs2.Unity.Gs2Lock.Model.EzMutex>
         {
             private readonly Gs2Iterator<Gs2.Gs2Lock.Model.Mutex> _it;
@@ -84,10 +81,20 @@ namespace Gs2.Unity.Gs2Lock.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Lock.Model.EzMutex> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Lock.Model.EzMutex.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Lock.Model.EzMutex.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Lock.Model.EzMutex> Mutexes(
+        )
+        {
+            return new EzMutexesIterator(_domain.Mutexes(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Lock.Model.EzMutex> MutexesAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Lock.Model.EzMutex> Mutexes(
         #endif
         )
@@ -95,7 +102,7 @@ namespace Gs2.Unity.Gs2Lock.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Lock.Model.EzMutex>(async (writer, token) =>
             {
-                var it = _domain.Mutexes(
+                var it = _domain.MutexesAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {

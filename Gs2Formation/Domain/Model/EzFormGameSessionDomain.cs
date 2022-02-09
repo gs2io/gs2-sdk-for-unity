@@ -66,6 +66,22 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> GetFormWithSignature(
+              string keyId
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> self)
+            {
+                yield return GetFormWithSignatureAsync(
+                    keyId
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> GetFormWithSignatureAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> GetFormWithSignature(
@@ -99,6 +115,24 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> SetForm(
+              Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature[] slots,
+              string keyId
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> self)
+            {
+                yield return SetFormAsync(
+                    slots,
+                    keyId
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> SetFormAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> SetForm(
@@ -135,7 +169,19 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Formation.Model.EzForm> Model()
+        public IFuture<Gs2.Unity.Gs2Formation.Model.EzForm> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Model.EzForm> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Model.EzForm>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Formation.Model.EzForm> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {

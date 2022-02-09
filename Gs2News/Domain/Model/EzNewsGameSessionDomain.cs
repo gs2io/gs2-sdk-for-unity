@@ -64,6 +64,20 @@ namespace Gs2.Unity.Gs2News.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]> GetContentsUrl(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]> self)
+            {
+                yield return GetContentsUrlAsync(
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]> GetContentsUrlAsync(
         #else
         public IFuture<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]> GetContentsUrl(
@@ -94,7 +108,19 @@ namespace Gs2.Unity.Gs2News.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2News.Model.EzNews> Model()
+        public IFuture<Gs2.Unity.Gs2News.Model.EzNews> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2News.Model.EzNews> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2News.Model.EzNews>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2News.Model.EzNews> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {

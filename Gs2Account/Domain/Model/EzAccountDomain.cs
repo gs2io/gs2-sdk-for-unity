@@ -65,6 +65,24 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> Authentication(
+              string keyId,
+              string password
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
+            {
+                yield return AuthenticationAsync(
+                    keyId,
+                    password
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> AuthenticationAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> Authentication(
@@ -100,9 +118,6 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Account.Model.EzTakeOver> TakeOvers(
-        #else
         public class EzTakeOversIterator : Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzTakeOver>
         {
             private readonly Gs2Iterator<Gs2.Gs2Account.Model.TakeOver> _it;
@@ -122,10 +137,20 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Account.Model.EzTakeOver> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Account.Model.EzTakeOver.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Account.Model.EzTakeOver.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzTakeOver> TakeOvers(
+        )
+        {
+            return new EzTakeOversIterator(_domain.TakeOvers(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Account.Model.EzTakeOver> TakeOversAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzTakeOver> TakeOvers(
         #endif
         )
@@ -133,7 +158,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Account.Model.EzTakeOver>(async (writer, token) =>
             {
-                var it = _domain.TakeOvers(
+                var it = _domain.TakeOversAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {
@@ -157,7 +182,19 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Account.Model.EzAccount> Model()
+        public IFuture<Gs2.Unity.Gs2Account.Model.EzAccount> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Model.EzAccount> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Model.EzAccount>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Account.Model.EzAccount> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {

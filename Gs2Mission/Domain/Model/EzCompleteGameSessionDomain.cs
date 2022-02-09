@@ -63,6 +63,22 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain> ReceiveRewards(
+              string missionTaskName
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain> self)
+            {
+                yield return ReceiveRewardsAsync(
+                    missionTaskName
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain> ReceiveRewardsAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain> ReceiveRewards(
@@ -96,7 +112,19 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Mission.Model.EzComplete> Model()
+        public IFuture<Gs2.Unity.Gs2Mission.Model.EzComplete> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Mission.Model.EzComplete> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Mission.Model.EzComplete>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Mission.Model.EzComplete> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {

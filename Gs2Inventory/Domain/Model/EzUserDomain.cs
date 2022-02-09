@@ -62,9 +62,6 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             this._domain = domain;
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Inventory.Model.EzInventory> Inventories(
-        #else
         public class EzInventoriesIterator : Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzInventory>
         {
             private readonly Gs2Iterator<Gs2.Gs2Inventory.Model.Inventory> _it;
@@ -84,10 +81,20 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Inventory.Model.EzInventory> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Inventory.Model.EzInventory.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzInventory.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzInventory> Inventories(
+        )
+        {
+            return new EzInventoriesIterator(_domain.Inventories(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Inventory.Model.EzInventory> InventoriesAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzInventory> Inventories(
         #endif
         )
@@ -95,7 +102,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Inventory.Model.EzInventory>(async (writer, token) =>
             {
-                var it = _domain.Inventories(
+                var it = _domain.InventoriesAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {

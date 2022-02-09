@@ -66,9 +66,6 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
             this._domain = domain;
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel> DistributorModels(
-        #else
         public class EzDistributorModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel>
         {
             private readonly Gs2Iterator<Gs2.Gs2Distributor.Model.DistributorModel> _it;
@@ -88,10 +85,20 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Distributor.Model.EzDistributorModel.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Distributor.Model.EzDistributorModel.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel> DistributorModels(
+        )
+        {
+            return new EzDistributorModelsIterator(_domain.DistributorModels(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel> DistributorModelsAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel> DistributorModels(
         #endif
         )
@@ -99,7 +106,7 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel>(async (writer, token) =>
             {
-                var it = _domain.DistributorModels(
+                var it = _domain.DistributorModelsAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {

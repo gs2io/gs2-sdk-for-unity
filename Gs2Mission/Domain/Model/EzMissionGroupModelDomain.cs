@@ -61,9 +61,6 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             this._domain = domain;
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Mission.Model.EzMissionTaskModel> MissionTaskModels(
-        #else
         public class EzMissionTaskModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzMissionTaskModel>
         {
             private readonly Gs2Iterator<Gs2.Gs2Mission.Model.MissionTaskModel> _it;
@@ -83,10 +80,20 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Mission.Model.EzMissionTaskModel> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Mission.Model.EzMissionTaskModel.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Mission.Model.EzMissionTaskModel.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzMissionTaskModel> MissionTaskModels(
+        )
+        {
+            return new EzMissionTaskModelsIterator(_domain.MissionTaskModels(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Mission.Model.EzMissionTaskModel> MissionTaskModelsAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzMissionTaskModel> MissionTaskModels(
         #endif
         )
@@ -94,7 +101,7 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Mission.Model.EzMissionTaskModel>(async (writer, token) =>
             {
-                var it = _domain.MissionTaskModels(
+                var it = _domain.MissionTaskModelsAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {
@@ -118,7 +125,19 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel> Model()
+        public IFuture<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {

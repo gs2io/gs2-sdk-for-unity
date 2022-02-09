@@ -86,7 +86,7 @@ namespace Gs2.Unity.Gs2Limit.Domain.Iterator
         )
         {
             yield return _iterator;
-            callback.Invoke(Gs2.Unity.Gs2Limit.Model.EzCounter.FromModel(_iterator.Current));
+            callback.Invoke(_iterator.Current == null ? null : Gs2.Unity.Gs2Limit.Model.EzCounter.FromModel(_iterator.Current));
         }
 
         #endif

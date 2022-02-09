@@ -62,9 +62,6 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             this._domain = domain;
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Quest.Model.EzProgress> Progresses(
-        #else
         public class EzProgressesIterator : Gs2Iterator<Gs2.Unity.Gs2Quest.Model.EzProgress>
         {
             private readonly Gs2Iterator<Gs2.Gs2Quest.Model.Progress> _it;
@@ -84,10 +81,20 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Quest.Model.EzProgress> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Quest.Model.EzProgress.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Quest.Model.EzProgress.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Quest.Model.EzProgress> Progresses(
+        )
+        {
+            return new EzProgressesIterator(_domain.Progresses(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Quest.Model.EzProgress> ProgressesAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Quest.Model.EzProgress> Progresses(
         #endif
         )
@@ -95,7 +102,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Quest.Model.EzProgress>(async (writer, token) =>
             {
-                var it = _domain.Progresses(
+                var it = _domain.ProgressesAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {
@@ -116,9 +123,6 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList> CompletedQuestLists(
-        #else
         public class EzCompletedQuestListsIterator : Gs2Iterator<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList>
         {
             private readonly Gs2Iterator<Gs2.Gs2Quest.Model.CompletedQuestList> _it;
@@ -138,10 +142,20 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList> CompletedQuestLists(
+        )
+        {
+            return new EzCompletedQuestListsIterator(_domain.CompletedQuestLists(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList> CompletedQuestListsAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList> CompletedQuestLists(
         #endif
         )
@@ -149,7 +163,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList>(async (writer, token) =>
             {
-                var it = _domain.CompletedQuestLists(
+                var it = _domain.CompletedQuestListsAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {

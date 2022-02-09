@@ -62,6 +62,22 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain> RestoreDataObject(
+              string dataObjectId
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain> self)
+            {
+                yield return RestoreDataObjectAsync(
+                    dataObjectId
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain> RestoreDataObjectAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain> RestoreDataObject(

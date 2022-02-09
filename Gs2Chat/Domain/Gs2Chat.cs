@@ -36,11 +36,13 @@ using Gs2.Gs2Chat.Domain.Iterator;
 using Gs2.Gs2Chat.Domain.Model;
 using Gs2.Gs2Chat.Request;
 using Gs2.Gs2Chat.Result;
+using Gs2.Gs2Chat.Model;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using System.Collections;
+using UnityEngine.Events;
 using UnityEngine.Scripting;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
@@ -68,6 +70,12 @@ namespace Gs2.Unity.Gs2Chat.Domain
                     namespaceName
                 )
             );
+        }
+
+        public event UnityAction<PostNotification> OnPostNotification
+        {
+            add => _domain.OnPostNotification += value;
+            remove => _domain.OnPostNotification -= value;
         }
     }
 }

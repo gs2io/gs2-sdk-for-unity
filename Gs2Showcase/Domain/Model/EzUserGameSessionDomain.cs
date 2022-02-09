@@ -61,9 +61,6 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
             this._domain = domain;
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Showcase.Model.EzShowcase> Showcases(
-        #else
         public class EzShowcasesIterator : Gs2Iterator<Gs2.Unity.Gs2Showcase.Model.EzShowcase>
         {
             private readonly Gs2Iterator<Gs2.Gs2Showcase.Model.Showcase> _it;
@@ -83,10 +80,20 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Showcase.Model.EzShowcase> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Showcase.Model.EzShowcase.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Showcase.Model.EzShowcase.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Showcase.Model.EzShowcase> Showcases(
+        )
+        {
+            return new EzShowcasesIterator(_domain.Showcases(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Showcase.Model.EzShowcase> ShowcasesAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Showcase.Model.EzShowcase> Showcases(
         #endif
         )
@@ -94,7 +101,7 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Showcase.Model.EzShowcase>(async (writer, token) =>
             {
-                var it = _domain.Showcases(
+                var it = _domain.ShowcasesAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {

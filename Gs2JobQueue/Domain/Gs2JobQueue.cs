@@ -36,11 +36,13 @@ using Gs2.Gs2JobQueue.Domain.Iterator;
 using Gs2.Gs2JobQueue.Domain.Model;
 using Gs2.Gs2JobQueue.Request;
 using Gs2.Gs2JobQueue.Result;
+using Gs2.Gs2JobQueue.Model;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using System.Collections;
+using UnityEngine.Events;
 using UnityEngine.Scripting;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
@@ -68,6 +70,12 @@ namespace Gs2.Unity.Gs2JobQueue.Domain
                     namespaceName
                 )
             );
+        }
+
+        public event UnityAction<PushNotification> OnPushNotification
+        {
+            add => _domain.OnPushNotification += value;
+            remove => _domain.OnPushNotification -= value;
         }
     }
 }

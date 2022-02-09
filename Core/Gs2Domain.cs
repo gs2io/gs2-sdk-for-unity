@@ -14,9 +14,13 @@
  * permissions and limitations under the License.
  */
 
+using System;
 using Gs2.Core.Net;
 using Gs2.Core.Domain;
+using Gs2.Gs2Mission.Model;
 using Gs2.Unity.Util;
+using UnityEngine;
+using UnityEngine.Events;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
 #endif
@@ -33,6 +37,7 @@ namespace Gs2.Unity.Core
         public Gs2Datastore.Domain.Gs2Datastore Datastore;
         public Gs2Dictionary.Domain.Gs2Dictionary Dictionary;
         public Gs2Distributor.Domain.Gs2Distributor Distributor;
+        public Gs2Enhance.Domain.Gs2Enhance Enhance;
         public Gs2Exchange.Domain.Gs2Exchange Exchange;
         public Gs2Experience.Domain.Gs2Experience Experience;
         public Gs2Formation.Domain.Gs2Formation Formation;
@@ -54,14 +59,16 @@ namespace Gs2.Unity.Core
         public Gs2Showcase.Domain.Gs2Showcase Showcase;
         public Gs2Stamina.Domain.Gs2Stamina Stamina;
         public Gs2Version.Domain.Gs2Version Version;
-        
+
         public Gs2Domain(
-            Profile profile
+            Profile profile,
+            string distributorNamespaceName = null
         )
         {
             _gs2 = new Gs2.Core.Domain.Gs2(
                 profile.Gs2RestSession,
-                profile.Gs2Session
+                profile.Gs2Session,
+                distributorNamespaceName
             );
             
             Account = new Gs2Account.Domain.Gs2Account(_gs2.Account);
@@ -70,6 +77,7 @@ namespace Gs2.Unity.Core
             Datastore = new Gs2Datastore.Domain.Gs2Datastore(_gs2.Datastore);
             Dictionary = new Gs2Dictionary.Domain.Gs2Dictionary(_gs2.Dictionary);
             Distributor = new Gs2Distributor.Domain.Gs2Distributor(_gs2.Distributor);
+            Enhance = new Gs2Enhance.Domain.Gs2Enhance(_gs2.Enhance);
             Exchange = new Gs2Exchange.Domain.Gs2Exchange(_gs2.Exchange);
             Experience = new Gs2Experience.Domain.Gs2Experience(_gs2.Experience);
             Formation = new Gs2Formation.Domain.Gs2Formation(_gs2.Formation);

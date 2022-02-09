@@ -64,6 +64,20 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> Unsubscribe(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> self)
+            {
+                yield return UnsubscribeAsync(
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> UnsubscribeAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> Unsubscribe(
@@ -94,7 +108,19 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> Model()
+        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {

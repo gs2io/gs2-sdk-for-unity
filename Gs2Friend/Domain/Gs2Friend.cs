@@ -36,11 +36,13 @@ using Gs2.Gs2Friend.Domain.Iterator;
 using Gs2.Gs2Friend.Domain.Model;
 using Gs2.Gs2Friend.Request;
 using Gs2.Gs2Friend.Result;
+using Gs2.Gs2Friend.Model;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using System.Collections;
+using UnityEngine.Events;
 using UnityEngine.Scripting;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
@@ -68,6 +70,24 @@ namespace Gs2.Unity.Gs2Friend.Domain
                     namespaceName
                 )
             );
+        }
+
+        public event UnityAction<FollowNotification> OnFollowNotification
+        {
+            add => _domain.OnFollowNotification += value;
+            remove => _domain.OnFollowNotification -= value;
+        }
+
+        public event UnityAction<AcceptRequestNotification> OnAcceptRequestNotification
+        {
+            add => _domain.OnAcceptRequestNotification += value;
+            remove => _domain.OnAcceptRequestNotification -= value;
+        }
+
+        public event UnityAction<ReceiveRequestNotification> OnReceiveRequestNotification
+        {
+            add => _domain.OnReceiveRequestNotification += value;
+            remove => _domain.OnReceiveRequestNotification -= value;
         }
     }
 }

@@ -64,9 +64,6 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
             this._domain = domain;
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> AcceptVersions(
-        #else
         public class EzAcceptVersionsIterator : Gs2Iterator<Gs2.Unity.Gs2Version.Model.EzAcceptVersion>
         {
             private readonly Gs2Iterator<Gs2.Gs2Version.Model.AcceptVersion> _it;
@@ -86,10 +83,20 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Version.Model.EzAcceptVersion.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Version.Model.EzAcceptVersion.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> AcceptVersions(
+        )
+        {
+            return new EzAcceptVersionsIterator(_domain.AcceptVersions(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> AcceptVersionsAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> AcceptVersions(
         #endif
         )
@@ -97,7 +104,7 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Version.Model.EzAcceptVersion>(async (writer, token) =>
             {
-                var it = _domain.AcceptVersions(
+                var it = _domain.AcceptVersionsAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {

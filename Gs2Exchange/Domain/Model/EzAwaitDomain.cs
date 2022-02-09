@@ -65,7 +65,19 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Exchange.Model.EzAwait> Model()
+        public IFuture<Gs2.Unity.Gs2Exchange.Model.EzAwait> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Exchange.Model.EzAwait> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Exchange.Model.EzAwait>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Exchange.Model.EzAwait> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {

@@ -62,6 +62,26 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzProfileGameSessionDomain> UpdateProfile(
+              string publicProfile = null,
+              string followerProfile = null,
+              string friendProfile = null
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzProfileGameSessionDomain> self)
+            {
+                yield return UpdateProfileAsync(
+                    publicProfile,
+                    followerProfile,
+                    friendProfile
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzProfileGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzProfileGameSessionDomain> UpdateProfileAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzProfileGameSessionDomain> UpdateProfile(
@@ -101,7 +121,19 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Friend.Model.EzProfile> Model()
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzProfile> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzProfile> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Model.EzProfile>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Friend.Model.EzProfile> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {

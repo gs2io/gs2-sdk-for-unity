@@ -64,9 +64,6 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
             this._domain = domain;
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Enhance.Model.EzProgress> Progresses(
-        #else
         public class EzProgressesIterator : Gs2Iterator<Gs2.Unity.Gs2Enhance.Model.EzProgress>
         {
             private readonly Gs2Iterator<Gs2.Gs2Enhance.Model.Progress> _it;
@@ -86,10 +83,20 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Enhance.Model.EzProgress> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Enhance.Model.EzProgress.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Enhance.Model.EzProgress.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Enhance.Model.EzProgress> Progresses(
+        )
+        {
+            return new EzProgressesIterator(_domain.Progresses(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Enhance.Model.EzProgress> ProgressesAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Enhance.Model.EzProgress> Progresses(
         #endif
         )
@@ -97,7 +104,7 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Enhance.Model.EzProgress>(async (writer, token) =>
             {
-                var it = _domain.Progresses(
+                var it = _domain.ProgressesAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {

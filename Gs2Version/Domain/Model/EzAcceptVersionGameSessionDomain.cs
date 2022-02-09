@@ -63,6 +63,20 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> Accept(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> self)
+            {
+                yield return AcceptAsync(
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> AcceptAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> Accept(
@@ -93,6 +107,20 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> Delete(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> self)
+            {
+                yield return DeleteAsync(
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> DeleteAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> Delete(
@@ -123,7 +151,19 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> Model()
+        public IFuture<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Version.Model.EzAcceptVersion>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {

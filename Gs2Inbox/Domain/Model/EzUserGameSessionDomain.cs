@@ -63,6 +63,20 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain[]> ReceiveGlobalMessage(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain[]> self)
+            {
+                yield return ReceiveGlobalMessageAsync(
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain[]>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain[]> ReceiveGlobalMessageAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain[]> ReceiveGlobalMessage(
@@ -92,9 +106,6 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Inbox.Model.EzMessage> Messages(
-        #else
         public class EzMessagesIterator : Gs2Iterator<Gs2.Unity.Gs2Inbox.Model.EzMessage>
         {
             private readonly Gs2Iterator<Gs2.Gs2Inbox.Model.Message> _it;
@@ -114,10 +125,20 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Inbox.Model.EzMessage> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Inbox.Model.EzMessage.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Inbox.Model.EzMessage.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Inbox.Model.EzMessage> Messages(
+        )
+        {
+            return new EzMessagesIterator(_domain.Messages(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Inbox.Model.EzMessage> MessagesAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Inbox.Model.EzMessage> Messages(
         #endif
         )
@@ -125,7 +146,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Inbox.Model.EzMessage>(async (writer, token) =>
             {
-                var it = _domain.Messages(
+                var it = _domain.MessagesAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {

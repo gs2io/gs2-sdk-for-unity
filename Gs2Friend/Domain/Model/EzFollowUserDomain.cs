@@ -54,7 +54,6 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         private readonly Gs2.Gs2Friend.Domain.Model.FollowUserDomain _domain;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
-        public bool? WithProfile => _domain?.WithProfile;
         public string TargetUserId => _domain?.TargetUserId;
 
         public EzFollowUserDomain(
@@ -64,7 +63,19 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Friend.Model.EzFollowUser> Model()
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzFollowUser> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzFollowUser> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Model.EzFollowUser>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Friend.Model.EzFollowUser> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {

@@ -64,6 +64,20 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> DeleteRoom(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> self)
+            {
+                yield return DeleteRoomAsync(
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> DeleteRoomAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> DeleteRoom(
@@ -94,6 +108,24 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzMessageGameSessionDomain> Post(
+              string metadata,
+              int? category = null
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzMessageGameSessionDomain> self)
+            {
+                yield return PostAsync(
+                    metadata,
+                    category
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzMessageGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Chat.Domain.Model.EzMessageGameSessionDomain> PostAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzMessageGameSessionDomain> Post(
@@ -129,9 +161,6 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Chat.Model.EzMessage> Messages(
-        #else
         public class EzMessagesIterator : Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzMessage>
         {
             private readonly Gs2Iterator<Gs2.Gs2Chat.Model.Message> _it;
@@ -151,10 +180,20 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Chat.Model.EzMessage> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Chat.Model.EzMessage.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Chat.Model.EzMessage.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzMessage> Messages(
+        )
+        {
+            return new EzMessagesIterator(_domain.Messages(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Chat.Model.EzMessage> MessagesAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzMessage> Messages(
         #endif
         )
@@ -162,7 +201,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Chat.Model.EzMessage>(async (writer, token) =>
             {
-                var it = _domain.Messages(
+                var it = _domain.MessagesAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {
@@ -186,7 +225,19 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Chat.Model.EzRoom> Model()
+        public IFuture<Gs2.Unity.Gs2Chat.Model.EzRoom> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Model.EzRoom> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Chat.Model.EzRoom>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Chat.Model.EzRoom> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {

@@ -64,6 +64,28 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain> Enhance(
+              string rateName,
+              string targetItemSetId,
+              Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials = null,
+              Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain> self)
+            {
+                yield return EnhanceAsync(
+                    rateName,
+                    targetItemSetId,
+                    materials,
+                    config
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain> EnhanceAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain> Enhance(

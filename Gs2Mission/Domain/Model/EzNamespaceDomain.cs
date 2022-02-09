@@ -62,9 +62,6 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             this._domain = domain;
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel> MissionGroupModels(
-        #else
         public class EzMissionGroupModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel>
         {
             private readonly Gs2Iterator<Gs2.Gs2Mission.Model.MissionGroupModel> _it;
@@ -84,10 +81,20 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel> MissionGroupModels(
+        )
+        {
+            return new EzMissionGroupModelsIterator(_domain.MissionGroupModels(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel> MissionGroupModelsAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel> MissionGroupModels(
         #endif
         )
@@ -95,7 +102,7 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel>(async (writer, token) =>
             {
-                var it = _domain.MissionGroupModels(
+                var it = _domain.MissionGroupModelsAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {
@@ -118,9 +125,6 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Mission.Model.EzCounterModel> CounterModels(
-        #else
         public class EzCounterModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzCounterModel>
         {
             private readonly Gs2Iterator<Gs2.Gs2Mission.Model.CounterModel> _it;
@@ -140,10 +144,20 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Mission.Model.EzCounterModel> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Mission.Model.EzCounterModel.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Mission.Model.EzCounterModel.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzCounterModel> CounterModels(
+        )
+        {
+            return new EzCounterModelsIterator(_domain.CounterModels(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Mission.Model.EzCounterModel> CounterModelsAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzCounterModel> CounterModels(
         #endif
         )
@@ -151,7 +165,7 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Mission.Model.EzCounterModel>(async (writer, token) =>
             {
-                var it = _domain.CounterModels(
+                var it = _domain.CounterModelsAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {

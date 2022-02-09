@@ -36,11 +36,13 @@ using Gs2.Gs2Exchange.Domain.Iterator;
 using Gs2.Gs2Exchange.Domain.Model;
 using Gs2.Gs2Exchange.Request;
 using Gs2.Gs2Exchange.Result;
+using Gs2.Gs2Exchange.Model;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using System.Collections;
+using UnityEngine.Events;
 using UnityEngine.Scripting;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;

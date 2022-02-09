@@ -64,6 +64,24 @@ namespace Gs2.Unity.Gs2Money.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Money.Domain.Model.EzWalletGameSessionDomain> Withdraw(
+              int count,
+              bool? paidOnly = null
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Money.Domain.Model.EzWalletGameSessionDomain> self)
+            {
+                yield return WithdrawAsync(
+                    count,
+                    paidOnly
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Money.Domain.Model.EzWalletGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Money.Domain.Model.EzWalletGameSessionDomain> WithdrawAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Money.Domain.Model.EzWalletGameSessionDomain> Withdraw(
@@ -100,7 +118,19 @@ namespace Gs2.Unity.Gs2Money.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Money.Model.EzWallet> Model()
+        public IFuture<Gs2.Unity.Gs2Money.Model.EzWallet> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Money.Model.EzWallet> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Money.Model.EzWallet>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Money.Model.EzWallet> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {

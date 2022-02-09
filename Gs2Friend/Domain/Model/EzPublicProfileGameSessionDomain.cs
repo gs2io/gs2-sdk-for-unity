@@ -50,60 +50,63 @@ using System.Collections.Generic;
 namespace Gs2.Unity.Gs2Friend.Domain.Model
 {
 
-    public partial class EzFollowGameSessionDomain {
-        private readonly Gs2.Gs2Friend.Domain.Model.FollowAccessTokenDomain _domain;
+    public partial class EzPublicProfileGameSessionDomain {
+        private readonly Gs2.Gs2Friend.Domain.Model.PublicProfileAccessTokenDomain _domain;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
-        public bool? WithProfile => _domain?.WithProfile;
 
-        public EzFollowGameSessionDomain(
-            Gs2.Gs2Friend.Domain.Model.FollowAccessTokenDomain domain
+        public EzPublicProfileGameSessionDomain(
+            Gs2.Gs2Friend.Domain.Model.PublicProfileAccessTokenDomain domain
         ) {
             this._domain = domain;
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> FollowAsync(
-        #else
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> Follow(
-        #endif
-              string targetUserId
-        ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _domain.FollowAsync(
-                new FollowRequest()
-                    .WithTargetUserId(targetUserId)
-            );
-            return new Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain(result);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> self)
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzPublicProfile> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzPublicProfile> self)
             {
-                var future = _domain.Follow(
-                    new FollowRequest()
-                        .WithTargetUserId(targetUserId)
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Model.EzPublicProfile>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Friend.Model.EzPublicProfile> ModelAsync()
+        {
+            var item = await _domain.Model();
+            if (item == null) {
+                return null;
+            }
+            return Gs2.Unity.Gs2Friend.Model.EzPublicProfile.FromModel(
+                item
+            );
+        }
+        #else
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzPublicProfile> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzPublicProfile> self)
+            {
+                var future = _domain.Model();
                 yield return future;
-                if (future.Error != null)
-                {
+                if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
                 }
-                var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain(result));
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Friend.Model.EzPublicProfile.FromModel(
+                    item
+                ));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Model.EzPublicProfile>(Impl);
+        }
         #endif
-        }
-
-        public Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain FollowUser(
-            string targetUserId
-        ) {
-            return new Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain(
-                _domain.FollowUser(
-                    targetUserId
-                )
-            );
-        }
 
     }
 }

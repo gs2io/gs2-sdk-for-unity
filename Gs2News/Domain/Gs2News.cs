@@ -36,11 +36,13 @@ using Gs2.Gs2News.Domain.Iterator;
 using Gs2.Gs2News.Domain.Model;
 using Gs2.Gs2News.Request;
 using Gs2.Gs2News.Result;
+using Gs2.Gs2News.Model;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using System.Collections;
+using UnityEngine.Events;
 using UnityEngine.Scripting;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;

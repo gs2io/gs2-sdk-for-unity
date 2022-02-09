@@ -62,9 +62,6 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
             this._domain = domain;
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Limit.Model.EzCounter> Counters(
-        #else
         public class EzCountersIterator : Gs2Iterator<Gs2.Unity.Gs2Limit.Model.EzCounter>
         {
             private readonly Gs2Iterator<Gs2.Gs2Limit.Model.Counter> _it;
@@ -84,10 +81,22 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Limit.Model.EzCounter> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Limit.Model.EzCounter.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Limit.Model.EzCounter.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Limit.Model.EzCounter> Counters(
+              string limitName = null
+        )
+        {
+            return new EzCountersIterator(_domain.Counters(
+               limitName
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Limit.Model.EzCounter> CountersAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Limit.Model.EzCounter> Counters(
         #endif
               string limitName = null
@@ -96,7 +105,7 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Limit.Model.EzCounter>(async (writer, token) =>
             {
-                var it = _domain.Counters(
+                var it = _domain.CountersAsync(
                     limitName
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())

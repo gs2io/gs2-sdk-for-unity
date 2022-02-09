@@ -63,6 +63,20 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> Create(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
+            {
+                yield return CreateAsync(
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> CreateAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> Create(
@@ -93,6 +107,26 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOver(
+              int type,
+              string userIdentifier,
+              string password
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
+            {
+                yield return DoTakeOverAsync(
+                    type,
+                    userIdentifier,
+                    password
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOverAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOver(
@@ -131,9 +165,6 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Account.Model.EzAccount> Accounts(
-        #else
         public class EzAccountsIterator : Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzAccount>
         {
             private readonly Gs2Iterator<Gs2.Gs2Account.Model.Account> _it;
@@ -153,10 +184,20 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Account.Model.EzAccount> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Account.Model.EzAccount.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Account.Model.EzAccount.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzAccount> Accounts(
+        )
+        {
+            return new EzAccountsIterator(_domain.Accounts(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Account.Model.EzAccount> AccountsAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzAccount> Accounts(
         #endif
         )
@@ -164,7 +205,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Account.Model.EzAccount>(async (writer, token) =>
             {
-                var it = _domain.Accounts(
+                var it = _domain.AccountsAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {

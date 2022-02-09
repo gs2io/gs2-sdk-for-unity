@@ -63,9 +63,6 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
             this._domain = domain;
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> WebSocketSessions(
-        #else
         public class EzWebSocketSessionsIterator : Gs2Iterator<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession>
         {
             private readonly Gs2Iterator<Gs2.Gs2Gateway.Model.WebSocketSession> _it;
@@ -85,10 +82,20 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> WebSocketSessions(
+        )
+        {
+            return new EzWebSocketSessionsIterator(_domain.WebSocketSessions(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> WebSocketSessionsAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> WebSocketSessions(
         #endif
         )
@@ -96,7 +103,7 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession>(async (writer, token) =>
             {
-                var it = _domain.WebSocketSessions(
+                var it = _domain.WebSocketSessionsAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {

@@ -86,7 +86,7 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Iterator
         )
         {
             yield return _iterator;
-            callback.Invoke(Gs2.Unity.Gs2Enhance.Model.EzRateModel.FromModel(_iterator.Current));
+            callback.Invoke(_iterator.Current == null ? null : Gs2.Unity.Gs2Enhance.Model.EzRateModel.FromModel(_iterator.Current));
         }
 
         #endif

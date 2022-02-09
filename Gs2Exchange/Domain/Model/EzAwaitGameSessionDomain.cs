@@ -65,6 +65,20 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain> Acquire(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain> self)
+            {
+                yield return AcquireAsync(
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain> AcquireAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain> Acquire(
@@ -95,6 +109,20 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain> Skip(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain> self)
+            {
+                yield return SkipAsync(
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain> SkipAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain> Skip(
@@ -125,6 +153,20 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain> DeleteAwait(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain> self)
+            {
+                yield return DeleteAwaitAsync(
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain> DeleteAwaitAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain> DeleteAwait(
@@ -155,7 +197,19 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Exchange.Model.EzAwait> Model()
+        public IFuture<Gs2.Unity.Gs2Exchange.Model.EzAwait> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Exchange.Model.EzAwait> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Exchange.Model.EzAwait>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Exchange.Model.EzAwait> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {

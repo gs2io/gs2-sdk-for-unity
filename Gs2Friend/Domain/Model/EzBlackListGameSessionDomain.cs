@@ -62,6 +62,22 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> RegisterBlackList(
+              string targetUserId
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> self)
+            {
+                yield return RegisterBlackListAsync(
+                    targetUserId
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> RegisterBlackListAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> RegisterBlackList(
@@ -95,6 +111,22 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> UnregisterBlackList(
+              string targetUserId
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> self)
+            {
+                yield return UnregisterBlackListAsync(
+                    targetUserId
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> UnregisterBlackListAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> UnregisterBlackList(
@@ -128,7 +160,19 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Friend.Model.EzBlackList> Model()
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzBlackList> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzBlackList> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Model.EzBlackList>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Friend.Model.EzBlackList> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {

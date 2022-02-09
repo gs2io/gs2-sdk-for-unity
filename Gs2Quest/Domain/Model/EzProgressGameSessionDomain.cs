@@ -62,6 +62,26 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain> End(
+              bool isComplete,
+              Gs2.Unity.Gs2Quest.Model.EzReward[] rewards = null,
+              Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain> self)
+            {
+                yield return EndAsync(
+                    isComplete,
+                    rewards,
+                    config
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain> EndAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain> End(
@@ -101,7 +121,19 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Quest.Model.EzProgress> Model()
+        public IFuture<Gs2.Unity.Gs2Quest.Model.EzProgress> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Quest.Model.EzProgress> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Quest.Model.EzProgress>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Quest.Model.EzProgress> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {

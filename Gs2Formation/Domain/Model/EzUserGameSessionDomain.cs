@@ -62,9 +62,6 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             this._domain = domain;
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Formation.Model.EzMold> Molds(
-        #else
         public class EzMoldsIterator : Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzMold>
         {
             private readonly Gs2Iterator<Gs2.Gs2Formation.Model.Mold> _it;
@@ -84,10 +81,20 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Formation.Model.EzMold> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Formation.Model.EzMold.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzMold.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzMold> Molds(
+        )
+        {
+            return new EzMoldsIterator(_domain.Molds(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Formation.Model.EzMold> MoldsAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzMold> Molds(
         #endif
         )
@@ -95,7 +102,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Formation.Model.EzMold>(async (writer, token) =>
             {
-                var it = _domain.Molds(
+                var it = _domain.MoldsAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {

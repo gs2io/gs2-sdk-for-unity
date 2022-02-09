@@ -62,9 +62,6 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
             this._domain = domain;
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Lottery.Model.EzBox> Boxes(
-        #else
         public class EzBoxesIterator : Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzBox>
         {
             private readonly Gs2Iterator<Gs2.Gs2Lottery.Model.Box> _it;
@@ -84,10 +81,20 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Lottery.Model.EzBox> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Lottery.Model.EzBox.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Lottery.Model.EzBox.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzBox> Boxes(
+        )
+        {
+            return new EzBoxesIterator(_domain.Boxes(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Lottery.Model.EzBox> BoxesAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzBox> Boxes(
         #endif
         )
@@ -95,7 +102,7 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Lottery.Model.EzBox>(async (writer, token) =>
             {
-                var it = _domain.Boxes(
+                var it = _domain.BoxesAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {

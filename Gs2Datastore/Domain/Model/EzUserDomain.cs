@@ -65,9 +65,6 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             this._domain = domain;
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Datastore.Model.EzDataObject> DataObjects(
-        #else
         public class EzDataObjectsIterator : Gs2Iterator<Gs2.Unity.Gs2Datastore.Model.EzDataObject>
         {
             private readonly Gs2Iterator<Gs2.Gs2Datastore.Model.DataObject> _it;
@@ -87,10 +84,22 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Datastore.Model.EzDataObject> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Datastore.Model.EzDataObject.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Datastore.Model.EzDataObject.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Datastore.Model.EzDataObject> DataObjects(
+              string status = null
+        )
+        {
+            return new EzDataObjectsIterator(_domain.DataObjects(
+               status
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Datastore.Model.EzDataObject> DataObjectsAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Datastore.Model.EzDataObject> DataObjects(
         #endif
               string status = null
@@ -99,7 +108,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Datastore.Model.EzDataObject>(async (writer, token) =>
             {
-                var it = _domain.DataObjects(
+                var it = _domain.DataObjectsAsync(
                     status
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())

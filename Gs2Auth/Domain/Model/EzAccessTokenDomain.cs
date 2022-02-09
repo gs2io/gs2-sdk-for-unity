@@ -62,6 +62,28 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Auth.Domain.Model.EzAccessTokenDomain> Login(
+              string userId,
+              string keyId,
+              string body,
+              string signature
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Auth.Domain.Model.EzAccessTokenDomain> self)
+            {
+                yield return LoginAsync(
+                    userId,
+                    keyId,
+                    body,
+                    signature
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Auth.Domain.Model.EzAccessTokenDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Auth.Domain.Model.EzAccessTokenDomain> LoginAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Auth.Domain.Model.EzAccessTokenDomain> Login(
@@ -104,7 +126,19 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Auth.Model.EzAccessToken> Model()
+        public IFuture<Gs2.Unity.Gs2Auth.Model.EzAccessToken> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Auth.Model.EzAccessToken> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Auth.Model.EzAccessToken>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Auth.Model.EzAccessToken> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {

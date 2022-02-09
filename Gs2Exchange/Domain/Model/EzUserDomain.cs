@@ -63,9 +63,6 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
             this._domain = domain;
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Exchange.Model.EzAwait> Awaits(
-        #else
         public class EzAwaitsIterator : Gs2Iterator<Gs2.Unity.Gs2Exchange.Model.EzAwait>
         {
             private readonly Gs2Iterator<Gs2.Gs2Exchange.Model.Await> _it;
@@ -85,10 +82,22 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Exchange.Model.EzAwait> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Exchange.Model.EzAwait.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Exchange.Model.EzAwait.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Exchange.Model.EzAwait> Awaits(
+              string rateName = null
+        )
+        {
+            return new EzAwaitsIterator(_domain.Awaits(
+               rateName
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Exchange.Model.EzAwait> AwaitsAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Exchange.Model.EzAwait> Awaits(
         #endif
               string rateName = null
@@ -97,7 +106,7 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Exchange.Model.EzAwait>(async (writer, token) =>
             {
-                var it = _domain.Awaits(
+                var it = _domain.AwaitsAsync(
                     rateName
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())

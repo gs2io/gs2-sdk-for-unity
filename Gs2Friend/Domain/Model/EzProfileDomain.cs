@@ -62,37 +62,19 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzPublicProfileDomain> GetPublicProfileAsync(
-        #else
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzPublicProfileDomain> GetPublicProfile(
-        #endif
-        ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _domain.GetPublicAsync(
-                new GetPublicProfileRequest()
-            );
-            return new Gs2.Unity.Gs2Friend.Domain.Model.EzPublicProfileDomain(result);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzPublicProfileDomain> self)
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzProfile> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzProfile> self)
             {
-                var future = _domain.GetPublic(
-                    new GetPublicProfileRequest()
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
-                yield return future;
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzPublicProfileDomain(result));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzPublicProfileDomain>(Impl);
-        #endif
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Model.EzProfile>(Impl);
         }
 
-        #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Friend.Model.EzProfile> Model()
+        public async UniTask<Gs2.Unity.Gs2Friend.Model.EzProfile> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {

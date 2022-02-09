@@ -54,7 +54,6 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         private readonly Gs2.Gs2Friend.Domain.Model.FollowUserAccessTokenDomain _domain;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
-        public bool? WithProfile => _domain?.WithProfile;
         public string TargetUserId => _domain?.TargetUserId;
 
         public EzFollowUserGameSessionDomain(
@@ -64,6 +63,64 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> Follow(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> self)
+            {
+                yield return FollowAsync(
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> FollowAsync(
+        #else
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> Follow(
+        #endif
+        ) {
+        #if GS2_ENABLE_UNITASK
+            var result = await _domain.FollowAsync(
+                new FollowRequest()
+            );
+            return new Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> self)
+            {
+                var future = _domain.Follow(
+                    new FollowRequest()
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain>(Impl);
+        #endif
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> Unfollow(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> self)
+            {
+                yield return UnfollowAsync(
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> UnfollowAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> Unfollow(
@@ -94,7 +151,19 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Friend.Model.EzFollowUser> Model()
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzFollowUser> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzFollowUser> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Model.EzFollowUser>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Friend.Model.EzFollowUser> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {

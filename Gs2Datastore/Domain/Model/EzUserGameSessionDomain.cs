@@ -66,6 +66,28 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareUpload(
+              string name = null,
+              string scope = null,
+              string[] allowUserIds = null,
+              bool? updateIfExists = null
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
+            {
+                yield return PrepareUploadAsync(
+                    name,
+                    scope,
+                    allowUserIds,
+                    updateIfExists
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareUploadAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareUpload(
@@ -108,6 +130,22 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareDownload(
+              string dataObjectId
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
+            {
+                yield return PrepareDownloadAsync(
+                    dataObjectId
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareDownloadAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareDownload(
@@ -140,9 +178,6 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Datastore.Model.EzDataObject> DataObjects(
-        #else
         public class EzDataObjectsIterator : Gs2Iterator<Gs2.Unity.Gs2Datastore.Model.EzDataObject>
         {
             private readonly Gs2Iterator<Gs2.Gs2Datastore.Model.DataObject> _it;
@@ -162,10 +197,22 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Datastore.Model.EzDataObject> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Datastore.Model.EzDataObject.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Datastore.Model.EzDataObject.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Datastore.Model.EzDataObject> DataObjects(
+              string status = null
+        )
+        {
+            return new EzDataObjectsIterator(_domain.DataObjects(
+               status
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Datastore.Model.EzDataObject> DataObjectsAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Datastore.Model.EzDataObject> DataObjects(
         #endif
               string status = null
@@ -174,7 +221,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Datastore.Model.EzDataObject>(async (writer, token) =>
             {
-                var it = _domain.DataObjects(
+                var it = _domain.DataObjectsAsync(
                     status
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())

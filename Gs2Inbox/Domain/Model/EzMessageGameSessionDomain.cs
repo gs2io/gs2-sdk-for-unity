@@ -63,6 +63,20 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> Read(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> self)
+            {
+                yield return ReadAsync(
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> ReadAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> Read(
@@ -93,6 +107,20 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> Delete(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> self)
+            {
+                yield return DeleteAsync(
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> DeleteAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> Delete(
@@ -123,7 +151,19 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Inbox.Model.EzMessage> Model()
+        public IFuture<Gs2.Unity.Gs2Inbox.Model.EzMessage> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inbox.Model.EzMessage> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Inbox.Model.EzMessage>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Inbox.Model.EzMessage> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {

@@ -63,9 +63,6 @@ namespace Gs2.Unity.Gs2Money.Domain.Model
             this._domain = domain;
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Money.Model.EzWallet> Wallets(
-        #else
         public class EzWalletsIterator : Gs2Iterator<Gs2.Unity.Gs2Money.Model.EzWallet>
         {
             private readonly Gs2Iterator<Gs2.Gs2Money.Model.Wallet> _it;
@@ -85,10 +82,20 @@ namespace Gs2.Unity.Gs2Money.Domain.Model
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Money.Model.EzWallet> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(Gs2.Unity.Gs2Money.Model.EzWallet.FromModel(_it.Current));
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Money.Model.EzWallet.FromModel(_it.Current));
             }
         }
 
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Money.Model.EzWallet> Wallets(
+        )
+        {
+            return new EzWalletsIterator(_domain.Wallets(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Money.Model.EzWallet> WalletsAsync(
+        #else
         public Gs2Iterator<Gs2.Unity.Gs2Money.Model.EzWallet> Wallets(
         #endif
         )
@@ -96,7 +103,7 @@ namespace Gs2.Unity.Gs2Money.Domain.Model
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Money.Model.EzWallet>(async (writer, token) =>
             {
-                var it = _domain.Wallets(
+                var it = _domain.WalletsAsync(
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {

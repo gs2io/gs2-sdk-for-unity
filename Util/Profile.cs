@@ -25,6 +25,7 @@ using Gs2.Core.Result;
 using Gs2.Gs2Auth.Model;
 using JetBrains.Annotations;
 using System.Collections;
+using Gs2.Core.Domain;
 using UnityEngine.Events;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -72,34 +73,36 @@ namespace Gs2.Unity.Util
         }
 #endif
 
+        public Gs2Future Initialize()
+        {
+            IEnumerator Impl(Gs2Future self)
+            {
+                yield return _reopener.ReOpen(
+                    Gs2Session,
+                    Gs2RestSession,
+                    r => {
+                        if (r.Error != null)
+                        {
+                            self.OnError(r.Error);
+                        }
+                        else
+                        {
+                            self.OnComplete(null);
+                        }
+                    }
+                );
+            }
+
+            return new Gs2InlineFuture(Impl);
+        }
+        
         public IEnumerator Initialize(
             UnityAction<AsyncResult<object>> callback
         )
         {
-            yield return _reopener.ReOpen(
-                Gs2Session,
-                Gs2RestSession,
-                r => {
-                    if (r.Error != null)
-                    {
-                        callback.Invoke(
-                            new AsyncResult<object>(
-                                null,
-                                r.Error
-                            )
-                        );
-                    }
-                    else
-                    {
-                        callback.Invoke(
-                            new AsyncResult<object>(
-                                null,
-                                r.Error
-                            )
-                        );
-                    }
-                }
-            );
+            var future = Initialize();
+            yield return future;
+            callback.Invoke(new AsyncResult<object>(future.Result, future.Error));
         }
 
 #if GS2_ENABLE_UNITASK

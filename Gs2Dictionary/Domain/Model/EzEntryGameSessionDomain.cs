@@ -65,6 +65,22 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain> GetEntryWithSignature(
+              string keyId
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain> self)
+            {
+                yield return GetEntryWithSignatureAsync(
+                    keyId
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain>(Impl);
+        }
+
         public async UniTask<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain> GetEntryWithSignatureAsync(
         #else
         public IFuture<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain> GetEntryWithSignature(
@@ -98,7 +114,19 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Dictionary.Model.EzEntry> Model()
+        public IFuture<Gs2.Unity.Gs2Dictionary.Model.EzEntry> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Dictionary.Model.EzEntry> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Dictionary.Model.EzEntry>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Dictionary.Model.EzEntry> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {
