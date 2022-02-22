@@ -55,7 +55,9 @@ namespace Gs2.Unity.Util
                 checkCertificateRevocation
             );
             Gs2RestSession = new Gs2RestSession(
-                credential
+                credential,
+                region,
+                checkCertificateRevocation
             );
             _reopener = reopener;
             _authenticator = null;
