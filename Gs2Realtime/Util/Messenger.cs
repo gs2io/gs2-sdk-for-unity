@@ -1,3 +1,5 @@
+#define DISABLE_SIGNATURE_CHECK
+
 using System;
 using System.Collections;
 using System.IO;
@@ -78,12 +80,14 @@ namespace Gs2.Unity.Gs2Realtime.Util
         public Tuple<Container.Types.MessageType, Any, uint, uint> Unpack(byte[] data)
         {
             var container = Container.Parser.ParseFrom(data);
+            #if !DISABLE_SIGNATURE_CHECK
             _sha256.Initialize();
             var hash = _sha256.ComputeHash(container.Payload.Value.ToByteArray());
             if (!StructuralComparisons.StructuralEqualityComparer.Equals(hash, container.Signature.ToByteArray()))
             {
                 throw new InvalidDataException("invalid signature.");
             }
+            #endif
             return new Tuple<Container.Types.MessageType, Any, uint, uint>(
                 container.MessageType,
                 container.Payload,
