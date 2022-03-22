@@ -62,26 +62,6 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
             this._domain = domain;
         }
 
-        public Gs2.Unity.Gs2Enhance.Domain.Model.EzUserDomain User(
-            string userId
-        ) {
-            return new Gs2.Unity.Gs2Enhance.Domain.Model.EzUserDomain(
-                _domain.User(
-                    userId
-                )
-            );
-        }
-
-        public EzUserGameSessionDomain Me(
-            Gs2.Unity.Util.GameSession gameSession
-        ) {
-            return new EzUserGameSessionDomain(
-                _domain.AccessToken(
-                    gameSession.AccessToken
-                )
-            );
-        }
-
         public class EzRateModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Enhance.Model.EzRateModel>
         {
             private readonly Gs2Iterator<Gs2.Gs2Enhance.Model.RateModel> _it;
@@ -141,6 +121,26 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
             return new Gs2.Unity.Gs2Enhance.Domain.Model.EzRateModelDomain(
                 _domain.RateModel(
                     rateName
+                )
+            );
+        }
+
+        public Gs2.Unity.Gs2Enhance.Domain.Model.EzUserDomain User(
+            string userId
+        ) {
+            return new Gs2.Unity.Gs2Enhance.Domain.Model.EzUserDomain(
+                _domain.User(
+                    userId
+                )
+            );
+        }
+
+        public EzUserGameSessionDomain Me(
+            Gs2.Unity.Util.GameSession gameSession
+        ) {
+            return new EzUserGameSessionDomain(
+                _domain.AccessToken(
+                    gameSession.AccessToken
                 )
             );
         }
