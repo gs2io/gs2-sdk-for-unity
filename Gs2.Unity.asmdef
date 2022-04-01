@@ -1,0 +1,30 @@
+{
+    "name": "Gs2.Unity",
+    "references": [
+        "Gs2",
+        "UniTask",
+        "UniTask.Linq",
+        "UnityEngine.Purchasing",
+        "UnityEngine.Purchasing.Stores"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.purchasing",
+            "expression": "",
+            "define": "GS2_ENABLE_PURCHASING"
+        },
+        {
+            "name": "com.cysharp.unitask",
+            "expression": "",
+            "define": "GS2_ENABLE_UNITASK"
+        }
+    ],
+    "noEngineReferences": false
+}
