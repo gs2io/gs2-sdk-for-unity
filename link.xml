@@ -1,3 +1,3 @@
 <linker>
-    <assembly fullname="Gs2.Unity" preserve="all"/>
+    <assembly fullname="Gs2.Unity.UiKit" preserve="all"/>
 </linker>

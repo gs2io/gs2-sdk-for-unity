@@ -1,0 +1,31 @@
+{
+    "name": "Gs2.Unity.UIKit",
+    "rootNamespace": "",
+    "references": [
+        "Gs2",
+        "Gs2.Unity",
+        "UniTask",
+        "UniTask.Linq",
+        "AppleAuth"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.lupidan.apple-signin-unity",
+            "expression": "",
+            "define": "ENABLE_SIGN_IN_WITH_APPLE"
+        },
+        {
+            "name": "com.cysharp.unitask",
+            "expression": "",
+            "define": "GS2_ENABLE_UNITASK"
+        }
+    ],
+    "noEngineReferences": false
+}
