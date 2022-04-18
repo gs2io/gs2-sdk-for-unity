@@ -1,4 +1,5 @@
 // #define DISABLE_COROUTINE
+// #define ENABLE_DEBUGLOG
 
 using System;
 using System.Collections;
@@ -185,7 +186,9 @@ namespace Gs2.Unity.Gs2Realtime
             ByteString profile = null
         )
         {
+#if ENABLE_DEBUGLOG
             Debug.Log(string.Format("ws://{0}:{1}/", ipAddress, port));
+#endif
             _webSocket = new WebSocket(string.Format("ws://{0}:{1}/", ipAddress, port));
             _messenger = new Messenger(encryptionKey);
             _accessToken = accessToken;
@@ -287,19 +290,25 @@ namespace Gs2.Unity.Gs2Realtime
             void OnOpenHandler(object sender, EventArgs e)
             {
                 // 完了フラグ・成功フラグを立てる
+#if ENABLE_DEBUGLOG
                 Debug.Log("OnOpenHandler: " + e);
+#endif
                 done = true;
                 success = true;
             }
             void OnErrorHandler(object sender, EventArgs e)
             {
+#if ENABLE_DEBUGLOG
                 Debug.Log("OnErrorHandler: " + e);
+#endif
                 // 失敗理由を記録
                 args = e;
             }
             void OnCloseHandler(object sender, EventArgs e)
             {
+#if ENABLE_DEBUGLOG
                 Debug.Log("OnCloseHandler: " + e);
+#endif
                 // 完了フラグを立てる
                 done = true;
             }
@@ -322,12 +331,16 @@ namespace Gs2.Unity.Gs2Realtime
                 success = false;
                 done = false;
 
+#if ENABLE_DEBUGLOG
                 Debug.Log("Hello");
+#endif
                 HelloResult helloResult = null;
                 void OnMessageHandler(object sender, EventArgs e)
                 {
                     // 認証処理の応答を処理するためのハンドラ
+#if ENABLE_DEBUGLOG
                     Debug.Log("OnMessage: " + e.ToString());
+#endif
                     if (e is MessageEventArgs data)
                     {
                         var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data.RawData);
@@ -365,7 +378,9 @@ namespace Gs2.Unity.Gs2Realtime
                 {
                     _webSocket.OnMessage += OnMessageHandler;
                     
+#if ENABLE_DEBUGLOG
                     Debug.Log("SendAsync");
+#endif
                     _webSocket.Send(
                         _messenger.Pack(
                             new HelloRequest
@@ -533,19 +548,25 @@ namespace Gs2.Unity.Gs2Realtime
             void OnOpenHandler(object sender, EventArgs e)
             {
                 // 完了フラグ・成功フラグを立てる
+#if ENABLE_DEBUGLOG
                 Debug.Log("OnOpenHandler: " + e);
+#endif
                 done = true;
                 success = true;
             }
             void OnErrorHandler(object sender, EventArgs e)
             {
+#if ENABLE_DEBUGLOG
                 Debug.Log("OnErrorHandler: " + e);
+#endif
                 // 失敗理由を記録
                 args = e;
             }
             void OnCloseHandler(object sender, EventArgs e)
             {
+#if ENABLE_DEBUGLOG
                 Debug.Log("OnCloseHandler: " + e);
+#endif
                 // 完了フラグを立てる
                 done = true;
             }
@@ -574,13 +595,16 @@ namespace Gs2.Unity.Gs2Realtime
 
                 success = false;
                 done = false;
-
+#if ENABLE_DEBUGLOG
                 Debug.Log("Hello");
+#endif
                 HelloResult helloResult = null;
                 void OnMessageHandler(object sender, EventArgs e)
                 {
                     // 認証処理の応答を処理するためのハンドラ
+#if ENABLE_DEBUGLOG
                     Debug.Log("OnMessage: " + e.ToString());
+#endif
                     if (e is MessageEventArgs data)
                     {
                         var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data.RawData);
@@ -618,7 +642,9 @@ namespace Gs2.Unity.Gs2Realtime
                 {
                     _webSocket.OnMessage += OnMessageHandler;
                     
+#if ENABLE_DEBUGLOG
                     Debug.Log("SendAsync");
+#endif 
                     _webSocket.SendAsync(
                         _messenger.Pack(
                             new HelloRequest
