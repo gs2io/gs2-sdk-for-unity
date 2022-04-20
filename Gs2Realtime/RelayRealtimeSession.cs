@@ -45,9 +45,33 @@ namespace Gs2.Unity.Gs2Realtime
             
         }
 
-        protected override void OnMessageHandler(object sender, EventArgs e) 
+#if UNITY_WEBGL && !UNITY_EDITOR
+        protected override void OnMessageHandler(byte[] data)
+#else
+        protected override void OnMessageHandler(object sender, EventArgs e)
+#endif
         {
-            
+#if UNITY_WEBGL && !UNITY_EDITOR
+            var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data);
+            var message = _messenger.Parse(messageType, payload);
+            if (message is BinaryMessage binaryMessage)
+            {
+                _eventQueue.Enqueue(
+                    new OnRelayMessageWithMetadataEvent(
+                        RelayBinaryMessage.Parser.ParseFrom(binaryMessage.Data),
+                        new MessageMetadata
+                        {
+                            SequenceNumber = sequenceNumber,
+                            LifeTimeMilliSeconds = lifeTimeMilliSeconds,
+                        }
+                    )
+                );
+            }
+            else
+            {
+                base.OnMessageHandler(data);
+            }
+#else
             if (!(e is MessageEventArgs data)) return;
             
             var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data.RawData);
@@ -68,7 +92,8 @@ namespace Gs2.Unity.Gs2Realtime
             else
             {
                 base.OnMessageHandler(sender, e);
-            }
+            }   
+#endif
         }
 
         protected override void EventHandler(RealtimeEvent @event)

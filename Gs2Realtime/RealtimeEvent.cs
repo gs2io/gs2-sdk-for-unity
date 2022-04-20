@@ -1,5 +1,9 @@
 using Gs2.Gs2Realtime.Message;
+#if UNITY_WEBGL && !UNITY_EDITOR
+using Gs2.HybridWebSocket;
+#else
 using Gs2.Util.WebSocketSharp;
+#endif
 using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Realtime
