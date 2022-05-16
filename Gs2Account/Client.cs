@@ -70,7 +70,6 @@ namespace Gs2.Unity.Gs2Account
         public IEnumerator Authentication(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzAuthenticationResult>> callback,
                 string namespaceName,
-                string userId,
                 string keyId,
                 string password
         )
@@ -81,7 +80,6 @@ namespace Gs2.Unity.Gs2Account
                 cb => _restClient.Authentication(
                     new Gs2.Gs2Account.Request.AuthenticationRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithUserId(userId)
                         .WithKeyId(keyId)
                         .WithPassword(password),
                     r => cb.Invoke(

@@ -63,7 +63,6 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Auth.Domain.Model.EzAccessTokenDomain> Login(
-              string userId,
               string keyId,
               string body,
               string signature
@@ -72,7 +71,6 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Auth.Domain.Model.EzAccessTokenDomain> self)
             {
                 yield return LoginAsync(
-                    userId,
                     keyId,
                     body,
                     signature
@@ -88,7 +86,6 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
         #else
         public IFuture<Gs2.Unity.Gs2Auth.Domain.Model.EzAccessTokenDomain> Login(
         #endif
-              string userId,
               string keyId,
               string body,
               string signature
@@ -96,7 +93,6 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
         #if GS2_ENABLE_UNITASK
             var result = await _domain.LoginBySignatureAsync(
                 new LoginBySignatureRequest()
-                    .WithUserId(userId)
                     .WithKeyId(keyId)
                     .WithBody(body)
                     .WithSignature(signature)
@@ -107,7 +103,6 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
             {
                 var future = _domain.LoginBySignature(
                     new LoginBySignatureRequest()
-                        .WithUserId(userId)
                         .WithKeyId(keyId)
                         .WithBody(body)
                         .WithSignature(signature)

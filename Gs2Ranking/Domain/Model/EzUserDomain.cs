@@ -53,6 +53,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Ranking.Domain.Model.UserDomain _domain;
         public string NextPageToken => _domain.NextPageToken;
+        public bool? Processing => _domain.Processing;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 

@@ -69,7 +69,6 @@ namespace Gs2.Unity.Gs2Auth
 
         public IEnumerator Login(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Auth.Result.EzLoginResult>> callback,
-                string userId,
                 string keyId,
                 string body,
                 string signature
@@ -80,7 +79,6 @@ namespace Gs2.Unity.Gs2Auth
                 null,
                 cb => _restClient.LoginBySignature(
                     new Gs2.Gs2Auth.Request.LoginBySignatureRequest()
-                        .WithUserId(userId)
                         .WithKeyId(keyId)
                         .WithBody(body)
                         .WithSignature(signature),

@@ -26,41 +26,50 @@
 #pragma warning disable 1998
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
-using Gs2.Gs2Lottery.Domain.Iterator;
-using Gs2.Gs2Lottery.Request;
-using Gs2.Gs2Lottery.Result;
+using Gs2.Core.Util;
+using Gs2.Gs2Key.Domain.Iterator;
+using Gs2.Gs2Key.Domain.Model;
+using Gs2.Gs2Key.Request;
+using Gs2.Gs2Key.Result;
+using Gs2.Gs2Key.Model;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
-using Gs2.Core.Util;
-using UnityEngine.Scripting;
 using System.Collections;
+using UnityEngine.Events;
+using UnityEngine.Scripting;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
-using System.Collections.Generic;
 #endif
 
-namespace Gs2.Unity.Gs2Lottery.Domain.Model
+namespace Gs2.Unity.Gs2Key.Domain
 {
 
-    public partial class EzUserDomain {
-        private readonly Gs2.Gs2Lottery.Domain.Model.UserDomain _domain;
-        public string NextPageToken => _domain.NextPageToken;
-        public string NamespaceName => _domain?.NamespaceName;
-        public string UserId => _domain?.UserId;
+    public class Gs2Key {
+        private readonly Gs2.Gs2Key.Domain.Gs2Key _domain;
 
-        public EzUserDomain(
-            Gs2.Gs2Lottery.Domain.Model.UserDomain domain
+        public Gs2Key(
+            Gs2.Gs2Key.Domain.Gs2Key domain
         ) {
             this._domain = domain;
         }
 
+        public Gs2.Unity.Gs2Key.Domain.Model.EzNamespaceDomain Namespace(
+            string namespaceName
+        ) {
+            return new Gs2.Unity.Gs2Key.Domain.Model.EzNamespaceDomain(
+                _domain.Namespace(
+                    namespaceName
+                )
+            );
+        }
     }
 }

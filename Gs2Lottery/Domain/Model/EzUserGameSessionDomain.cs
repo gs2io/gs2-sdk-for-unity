@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -60,6 +62,104 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
             Gs2.Gs2Lottery.Domain.Model.UserAccessTokenDomain domain
         ) {
             this._domain = domain;
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> GetBox(
+              string prizeTableName
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> self)
+            {
+                yield return GetBoxAsync(
+                    prizeTableName
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Lottery.Model.EzBoxItems>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> GetBoxAsync(
+        #else
+        public IFuture<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> GetBox(
+        #endif
+              string prizeTableName
+        ) {
+        #if GS2_ENABLE_UNITASK
+            var result = await _domain.GetBoxAsync(
+                new GetBoxRequest()
+                    .WithPrizeTableName(prizeTableName)
+            );
+            return Gs2.Unity.Gs2Lottery.Model.EzBoxItems.FromModel(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> self)
+            {
+                var future = _domain.GetBox(
+                    new GetBoxRequest()
+                        .WithPrizeTableName(prizeTableName)
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Lottery.Model.EzBoxItems(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Lottery.Model.EzBoxItems>(Impl);
+        #endif
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Lottery.Domain.Model.EzUserGameSessionDomain> ResetBox(
+              string prizeTableName
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Lottery.Domain.Model.EzUserGameSessionDomain> self)
+            {
+                yield return ResetBoxAsync(
+                    prizeTableName
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Lottery.Domain.Model.EzUserGameSessionDomain>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Lottery.Domain.Model.EzUserGameSessionDomain> ResetBoxAsync(
+        #else
+        public IFuture<Gs2.Unity.Gs2Lottery.Domain.Model.EzUserGameSessionDomain> ResetBox(
+        #endif
+              string prizeTableName
+        ) {
+        #if GS2_ENABLE_UNITASK
+            var result = await _domain.ResetBoxAsync(
+                new ResetBoxRequest()
+                    .WithPrizeTableName(prizeTableName)
+            );
+            return new Gs2.Unity.Gs2Lottery.Domain.Model.EzUserGameSessionDomain(result);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Lottery.Domain.Model.EzUserGameSessionDomain> self)
+            {
+                var future = _domain.ResetBox(
+                    new ResetBoxRequest()
+                        .WithPrizeTableName(prizeTableName)
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Lottery.Domain.Model.EzUserGameSessionDomain(result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Lottery.Domain.Model.EzUserGameSessionDomain>(Impl);
+        #endif
         }
 
         public class EzProbabilitiesIterator : Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzProbability>
@@ -182,7 +282,8 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
         }
 
         public Gs2.Unity.Gs2Lottery.Domain.Model.EzBoxGameSessionDomain Box(
-            string prizeTableName
+            string prizeTableName,
+            string index
         ) {
             return new Gs2.Unity.Gs2Lottery.Domain.Model.EzBoxGameSessionDomain(
                 _domain.Box(

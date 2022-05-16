@@ -61,7 +61,6 @@ namespace Gs2.Unity.Util
 
             var result2 = await authClient.LoginBySignatureAsync(
                 new LoginBySignatureRequest()
-                    .WithUserId(_userId)
                     .WithKeyId(_keyId)
                     .WithBody(body)
                     .WithSignature(signature)
@@ -116,7 +115,6 @@ namespace Gs2.Unity.Util
 
             yield return authClient.LoginBySignature(
                 new LoginBySignatureRequest()
-                    .WithUserId(_userId)
                     .WithKeyId(_keyId)
                     .WithBody(body)
                     .WithSignature(signature),

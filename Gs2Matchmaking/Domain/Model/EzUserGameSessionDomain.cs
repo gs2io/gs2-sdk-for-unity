@@ -137,22 +137,6 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #endif
         }
 
-        public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotGameSessionDomain Ballot(
-            string ratingName,
-            string gatheringName,
-            int numberOfPlayer,
-            string keyId
-        ) {
-            return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotGameSessionDomain(
-                _domain.Ballot(
-                    ratingName,
-                    gatheringName,
-                    numberOfPlayer,
-                    keyId
-                )
-            );
-        }
-
         public class EzDoMatchmakingIterator : Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzGathering>
         {
             private readonly Gs2Iterator<Gs2.Gs2Matchmaking.Model.Gathering> _it;
@@ -217,6 +201,22 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain(
                 _domain.Gathering(
                     gatheringName
+                )
+            );
+        }
+
+        public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotGameSessionDomain Ballot(
+            string ratingName,
+            string gatheringName,
+            int numberOfPlayer,
+            string keyId
+        ) {
+            return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotGameSessionDomain(
+                _domain.Ballot(
+                    ratingName,
+                    gatheringName,
+                    numberOfPlayer,
+                    keyId
                 )
             );
         }
