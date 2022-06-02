@@ -55,11 +55,14 @@ namespace Gs2.Unity.Gs2Formation.Domain
 
     public class Gs2Formation {
         private readonly Gs2.Gs2Formation.Domain.Gs2Formation _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
 
         public Gs2Formation(
-            Gs2.Gs2Formation.Domain.Gs2Formation domain
+            Gs2.Gs2Formation.Domain.Gs2Formation domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public Gs2.Unity.Gs2Formation.Domain.Model.EzNamespaceDomain Namespace(
@@ -68,7 +71,8 @@ namespace Gs2.Unity.Gs2Formation.Domain
             return new Gs2.Unity.Gs2Formation.Domain.Model.EzNamespaceDomain(
                 _domain.Namespace(
                     namespaceName
-                )
+                ),
+                _profile
             );
         }
     }

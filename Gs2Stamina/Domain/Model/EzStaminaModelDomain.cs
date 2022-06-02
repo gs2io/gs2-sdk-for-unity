@@ -52,13 +52,16 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
 
     public partial class EzStaminaModelDomain {
         private readonly Gs2.Gs2Stamina.Domain.Model.StaminaModelDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string StaminaName => _domain?.StaminaName;
 
         public EzStaminaModelDomain(
-            Gs2.Gs2Stamina.Domain.Model.StaminaModelDomain domain
+            Gs2.Gs2Stamina.Domain.Model.StaminaModelDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

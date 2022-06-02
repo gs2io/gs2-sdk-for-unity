@@ -52,6 +52,7 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
 
     public partial class EzEntryGameSessionDomain {
         private readonly Gs2.Gs2Dictionary.Domain.Model.EntryAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string Body => _domain.Body;
         public string Signature => _domain.Signature;
         public string NamespaceName => _domain?.NamespaceName;
@@ -59,9 +60,11 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
         public string EntryModelName => _domain?.EntryModelName;
 
         public EzEntryGameSessionDomain(
-            Gs2.Gs2Dictionary.Domain.Model.EntryAccessTokenDomain domain
+            Gs2.Gs2Dictionary.Domain.Model.EntryAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -88,26 +91,37 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
               string keyId
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.GetWithSignatureAsync(
-                new GetEntryWithSignatureRequest()
-                    .WithKeyId(keyId)
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.GetWithSignatureAsync(
+                        new GetEntryWithSignatureRequest()
+                            .WithKeyId(keyId)
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain> self)
             {
                 var future = _domain.GetWithSignature(
                     new GetEntryWithSignatureRequest()
                         .WithKeyId(keyId)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain>(Impl);
         #endif

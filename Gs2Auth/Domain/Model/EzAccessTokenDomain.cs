@@ -51,14 +51,17 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
 
     public partial class EzAccessTokenDomain {
         private readonly Gs2.Gs2Auth.Domain.Model.AccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string Token => _domain.Token;
         public string UserId => _domain.UserId;
         public long? Expire => _domain.Expire;
 
         public EzAccessTokenDomain(
-            Gs2.Gs2Auth.Domain.Model.AccessTokenDomain domain
+            Gs2.Gs2Auth.Domain.Model.AccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -91,13 +94,19 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
               string signature
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.LoginBySignatureAsync(
-                new LoginBySignatureRequest()
-                    .WithKeyId(keyId)
-                    .WithBody(body)
-                    .WithSignature(signature)
+            var result = await _profile.RunAsync(
+                null,
+                async () =>
+                {
+                    return await _domain.LoginBySignatureAsync(
+                        new LoginBySignatureRequest()
+                            .WithKeyId(keyId)
+                            .WithBody(body)
+                            .WithSignature(signature)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Auth.Domain.Model.EzAccessTokenDomain(result);
+            return new Gs2.Unity.Gs2Auth.Domain.Model.EzAccessTokenDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Auth.Domain.Model.EzAccessTokenDomain> self)
             {
@@ -107,14 +116,17 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
                         .WithBody(body)
                         .WithSignature(signature)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    null,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Auth.Domain.Model.EzAccessTokenDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Auth.Domain.Model.EzAccessTokenDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Auth.Domain.Model.EzAccessTokenDomain>(Impl);
         #endif

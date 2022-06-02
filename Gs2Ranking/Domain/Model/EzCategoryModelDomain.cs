@@ -52,13 +52,16 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
 
     public partial class EzCategoryModelDomain {
         private readonly Gs2.Gs2Ranking.Domain.Model.CategoryModelDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string CategoryName => _domain?.CategoryName;
 
         public EzCategoryModelDomain(
-            Gs2.Gs2Ranking.Domain.Model.CategoryModelDomain domain
+            Gs2.Gs2Ranking.Domain.Model.CategoryModelDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

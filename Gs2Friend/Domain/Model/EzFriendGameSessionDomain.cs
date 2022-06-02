@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
 
     public partial class EzFriendGameSessionDomain {
         private readonly Gs2.Gs2Friend.Domain.Model.FriendAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public bool? WithProfile => _domain?.WithProfile;
 
         public EzFriendGameSessionDomain(
-            Gs2.Gs2Friend.Domain.Model.FriendAccessTokenDomain domain
+            Gs2.Gs2Friend.Domain.Model.FriendAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserGameSessionDomain FriendUser(
@@ -68,7 +71,8 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserGameSessionDomain(
                 _domain.FriendUser(
                     targetUserId
-                )
+                ),
+                _profile
             );
         }
 

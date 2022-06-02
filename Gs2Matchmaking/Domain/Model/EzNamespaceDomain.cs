@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
 
     public partial class EzNamespaceDomain {
         private readonly Gs2.Gs2Matchmaking.Domain.Model.NamespaceDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string Status => _domain.Status;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
 
         public EzNamespaceDomain(
-            Gs2.Gs2Matchmaking.Domain.Model.NamespaceDomain domain
+            Gs2.Gs2Matchmaking.Domain.Model.NamespaceDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -92,13 +95,19 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
               Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.VoteAsync(
-                new VoteRequest()
-                    .WithBallotBody(ballotBody)
-                    .WithBallotSignature(ballotSignature)
-                    .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())
+            var result = await _profile.RunAsync(
+                null,
+                async () =>
+                {
+                    return await _domain.VoteAsync(
+                        new VoteRequest()
+                            .WithBallotBody(ballotBody)
+                            .WithBallotSignature(ballotSignature)
+                            .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain(result);
+            return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> self)
             {
@@ -108,14 +117,17 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                         .WithBallotSignature(ballotSignature)
                         .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    null,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain>(Impl);
         #endif
@@ -148,12 +160,18 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
               Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.VoteMultipleAsync(
-                new VoteMultipleRequest()
-                    .WithSignedBallots(signedBallots?.Select(v => v.ToModel()).ToArray())
-                    .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())
+            var result = await _profile.RunAsync(
+                null,
+                async () =>
+                {
+                    return await _domain.VoteMultipleAsync(
+                        new VoteMultipleRequest()
+                            .WithSignedBallots(signedBallots?.Select(v => v.ToModel()).ToArray())
+                            .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain(result);
+            return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> self)
             {
@@ -162,14 +180,17 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                         .WithSignedBallots(signedBallots?.Select(v => v.ToModel()).ToArray())
                         .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    null,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain>(Impl);
         #endif
@@ -181,7 +202,8 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzUserDomain(
                 _domain.User(
                     userId
-                )
+                ),
+                _profile
             );
         }
 
@@ -191,7 +213,8 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             return new EzUserGameSessionDomain(
                 _domain.AccessToken(
                     gameSession.AccessToken
-                )
+                ),
+                _profile
             );
         }
 
@@ -254,7 +277,8 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzRatingModelDomain(
                 _domain.RatingModel(
                     ratingName
-                )
+                ),
+                _profile
             );
         }
 

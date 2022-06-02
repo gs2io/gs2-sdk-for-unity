@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
 
     public partial class EzEventGameSessionDomain {
         private readonly Gs2.Gs2Schedule.Domain.Model.EventAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string EventName => _domain?.EventName;
 
         public EzEventGameSessionDomain(
-            Gs2.Gs2Schedule.Domain.Model.EventAccessTokenDomain domain
+            Gs2.Gs2Schedule.Domain.Model.EventAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

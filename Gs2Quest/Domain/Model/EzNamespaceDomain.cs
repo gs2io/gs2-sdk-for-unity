@@ -52,34 +52,17 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
 
     public partial class EzNamespaceDomain {
         private readonly Gs2.Gs2Quest.Domain.Model.NamespaceDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string Status => _domain.Status;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
 
         public EzNamespaceDomain(
-            Gs2.Gs2Quest.Domain.Model.NamespaceDomain domain
+            Gs2.Gs2Quest.Domain.Model.NamespaceDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
-        }
-
-        public Gs2.Unity.Gs2Quest.Domain.Model.EzUserDomain User(
-            string userId
-        ) {
-            return new Gs2.Unity.Gs2Quest.Domain.Model.EzUserDomain(
-                _domain.User(
-                    userId
-                )
-            );
-        }
-
-        public EzUserGameSessionDomain Me(
-            Gs2.Unity.Util.GameSession gameSession
-        ) {
-            return new EzUserGameSessionDomain(
-                _domain.AccessToken(
-                    gameSession.AccessToken
-                )
-            );
+            this._profile = profile;
         }
 
         public class EzQuestGroupModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel>
@@ -141,7 +124,30 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             return new Gs2.Unity.Gs2Quest.Domain.Model.EzQuestGroupModelDomain(
                 _domain.QuestGroupModel(
                     questGroupName
-                )
+                ),
+                _profile
+            );
+        }
+
+        public Gs2.Unity.Gs2Quest.Domain.Model.EzUserDomain User(
+            string userId
+        ) {
+            return new Gs2.Unity.Gs2Quest.Domain.Model.EzUserDomain(
+                _domain.User(
+                    userId
+                ),
+                _profile
+            );
+        }
+
+        public EzUserGameSessionDomain Me(
+            Gs2.Unity.Util.GameSession gameSession
+        ) {
+            return new EzUserGameSessionDomain(
+                _domain.AccessToken(
+                    gameSession.AccessToken
+                ),
+                _profile
             );
         }
 

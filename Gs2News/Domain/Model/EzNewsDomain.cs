@@ -52,15 +52,18 @@ namespace Gs2.Unity.Gs2News.Domain.Model
 
     public partial class EzNewsDomain {
         private readonly Gs2.Gs2News.Domain.Model.NewsDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string BrowserUrl => _domain.BrowserUrl;
         public string ZipUrl => _domain.ZipUrl;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzNewsDomain(
-            Gs2.Gs2News.Domain.Model.NewsDomain domain
+            Gs2.Gs2News.Domain.Model.NewsDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

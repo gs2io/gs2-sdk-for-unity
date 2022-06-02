@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
 
     public partial class EzUserGameSessionDomain {
         private readonly Gs2.Gs2Schedule.Domain.Model.UserAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserGameSessionDomain(
-            Gs2.Gs2Schedule.Domain.Model.UserAccessTokenDomain domain
+            Gs2.Gs2Schedule.Domain.Model.UserAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzTriggersIterator : Gs2Iterator<Gs2.Unity.Gs2Schedule.Model.EzTrigger>
@@ -121,7 +124,8 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
             return new Gs2.Unity.Gs2Schedule.Domain.Model.EzTriggerGameSessionDomain(
                 _domain.Trigger(
                     triggerName
-                )
+                ),
+                _profile
             );
         }
 
@@ -184,7 +188,8 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
             return new Gs2.Unity.Gs2Schedule.Domain.Model.EzEventGameSessionDomain(
                 _domain.Event(
                     eventName
-                )
+                ),
+                _profile
             );
         }
 

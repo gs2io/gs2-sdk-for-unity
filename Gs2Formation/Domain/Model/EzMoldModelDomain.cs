@@ -52,13 +52,16 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
 
     public partial class EzMoldModelDomain {
         private readonly Gs2.Gs2Formation.Domain.Model.MoldModelDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string MoldName => _domain?.MoldName;
 
         public EzMoldModelDomain(
-            Gs2.Gs2Formation.Domain.Model.MoldModelDomain domain
+            Gs2.Gs2Formation.Domain.Model.MoldModelDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

@@ -52,6 +52,7 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
 
     public partial class EzNamespaceDomain {
         private readonly Gs2.Gs2Distributor.Domain.Model.NamespaceDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string Status => _domain.Status;
         public string Result => _domain.Result;
         public string ContextStack => _domain.ContextStack;
@@ -61,9 +62,11 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
         public string NamespaceName => _domain?.NamespaceName;
 
         public EzNamespaceDomain(
-            Gs2.Gs2Distributor.Domain.Model.NamespaceDomain domain
+            Gs2.Gs2Distributor.Domain.Model.NamespaceDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzDistributorModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel>
@@ -125,7 +128,8 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
             return new Gs2.Unity.Gs2Distributor.Domain.Model.EzDistributorModelDomain(
                 _domain.DistributorModel(
                     distributorName
-                )
+                ),
+                _profile
             );
         }
 

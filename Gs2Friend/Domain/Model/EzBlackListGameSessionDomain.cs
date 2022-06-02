@@ -52,13 +52,16 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
 
     public partial class EzBlackListGameSessionDomain {
         private readonly Gs2.Gs2Friend.Domain.Model.BlackListAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzBlackListGameSessionDomain(
-            Gs2.Gs2Friend.Domain.Model.BlackListAccessTokenDomain domain
+            Gs2.Gs2Friend.Domain.Model.BlackListAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -85,26 +88,37 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
               string targetUserId
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.RegisterAsync(
-                new RegisterBlackListRequest()
-                    .WithTargetUserId(targetUserId)
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.RegisterAsync(
+                        new RegisterBlackListRequest()
+                            .WithTargetUserId(targetUserId)
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> self)
             {
                 var future = _domain.Register(
                     new RegisterBlackListRequest()
                         .WithTargetUserId(targetUserId)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain>(Impl);
         #endif
@@ -134,26 +148,37 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
               string targetUserId
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.UnregisterAsync(
-                new UnregisterBlackListRequest()
-                    .WithTargetUserId(targetUserId)
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.UnregisterAsync(
+                        new UnregisterBlackListRequest()
+                            .WithTargetUserId(targetUserId)
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> self)
             {
                 var future = _domain.Unregister(
                     new UnregisterBlackListRequest()
                         .WithTargetUserId(targetUserId)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain>(Impl);
         #endif

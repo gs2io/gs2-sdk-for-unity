@@ -55,11 +55,14 @@ namespace Gs2.Unity.Gs2Dictionary.Domain
 
     public class Gs2Dictionary {
         private readonly Gs2.Gs2Dictionary.Domain.Gs2Dictionary _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
 
         public Gs2Dictionary(
-            Gs2.Gs2Dictionary.Domain.Gs2Dictionary domain
+            Gs2.Gs2Dictionary.Domain.Gs2Dictionary domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public Gs2.Unity.Gs2Dictionary.Domain.Model.EzNamespaceDomain Namespace(
@@ -68,7 +71,8 @@ namespace Gs2.Unity.Gs2Dictionary.Domain
             return new Gs2.Unity.Gs2Dictionary.Domain.Model.EzNamespaceDomain(
                 _domain.Namespace(
                     namespaceName
-                )
+                ),
+                _profile
             );
         }
     }

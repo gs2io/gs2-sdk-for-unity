@@ -52,13 +52,16 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
 
     public partial class EzMissionGroupModelDomain {
         private readonly Gs2.Gs2Mission.Domain.Model.MissionGroupModelDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string MissionGroupName => _domain?.MissionGroupName;
 
         public EzMissionGroupModelDomain(
-            Gs2.Gs2Mission.Domain.Model.MissionGroupModelDomain domain
+            Gs2.Gs2Mission.Domain.Model.MissionGroupModelDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzMissionTaskModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzMissionTaskModel>
@@ -120,7 +123,8 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             return new Gs2.Unity.Gs2Mission.Domain.Model.EzMissionTaskModelDomain(
                 _domain.MissionTaskModel(
                     missionTaskName
-                )
+                ),
+                _profile
             );
         }
 

@@ -55,11 +55,14 @@ namespace Gs2.Unity.Gs2Lock.Domain
 
     public class Gs2Lock {
         private readonly Gs2.Gs2Lock.Domain.Gs2Lock _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
 
         public Gs2Lock(
-            Gs2.Gs2Lock.Domain.Gs2Lock domain
+            Gs2.Gs2Lock.Domain.Gs2Lock domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public Gs2.Unity.Gs2Lock.Domain.Model.EzNamespaceDomain Namespace(
@@ -68,7 +71,8 @@ namespace Gs2.Unity.Gs2Lock.Domain
             return new Gs2.Unity.Gs2Lock.Domain.Model.EzNamespaceDomain(
                 _domain.Namespace(
                     namespaceName
-                )
+                ),
+                _profile
             );
         }
     }

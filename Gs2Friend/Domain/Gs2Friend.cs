@@ -55,11 +55,14 @@ namespace Gs2.Unity.Gs2Friend.Domain
 
     public class Gs2Friend {
         private readonly Gs2.Gs2Friend.Domain.Gs2Friend _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
 
         public Gs2Friend(
-            Gs2.Gs2Friend.Domain.Gs2Friend domain
+            Gs2.Gs2Friend.Domain.Gs2Friend domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public Gs2.Unity.Gs2Friend.Domain.Model.EzNamespaceDomain Namespace(
@@ -68,7 +71,8 @@ namespace Gs2.Unity.Gs2Friend.Domain
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzNamespaceDomain(
                 _domain.Namespace(
                     namespaceName
-                )
+                ),
+                _profile
             );
         }
 

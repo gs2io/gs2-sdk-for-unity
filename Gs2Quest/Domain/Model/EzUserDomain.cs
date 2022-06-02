@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
 
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Quest.Domain.Model.UserDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserDomain(
-            Gs2.Gs2Quest.Domain.Model.UserDomain domain
+            Gs2.Gs2Quest.Domain.Model.UserDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzProgressesIterator : Gs2Iterator<Gs2.Unity.Gs2Quest.Model.EzProgress>
@@ -119,7 +122,8 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         ) {
             return new Gs2.Unity.Gs2Quest.Domain.Model.EzProgressDomain(
                 _domain.Progress(
-                )
+                ),
+                _profile
             );
         }
 
@@ -182,7 +186,8 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             return new Gs2.Unity.Gs2Quest.Domain.Model.EzCompletedQuestListDomain(
                 _domain.CompletedQuestList(
                     questGroupName
-                )
+                ),
+                _profile
             );
         }
 

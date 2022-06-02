@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Lock.Domain.Model
 
     public partial class EzMutexGameSessionDomain {
         private readonly Gs2.Gs2Lock.Domain.Model.MutexAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string PropertyId => _domain?.PropertyId;
 
         public EzMutexGameSessionDomain(
-            Gs2.Gs2Lock.Domain.Model.MutexAccessTokenDomain domain
+            Gs2.Gs2Lock.Domain.Model.MutexAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -89,12 +92,19 @@ namespace Gs2.Unity.Gs2Lock.Domain.Model
               long ttl
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.LockAsync(
-                new LockRequest()
-                    .WithTransactionId(transactionId)
-                    .WithTtl(ttl)
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.LockAsync(
+                        new LockRequest()
+                            .WithTransactionId(transactionId)
+                            .WithTtl(ttl)
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Lock.Domain.Model.EzMutexGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Lock.Domain.Model.EzMutexGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Lock.Domain.Model.EzMutexGameSessionDomain> self)
             {
@@ -102,15 +112,19 @@ namespace Gs2.Unity.Gs2Lock.Domain.Model
                     new LockRequest()
                         .WithTransactionId(transactionId)
                         .WithTtl(ttl)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Lock.Domain.Model.EzMutexGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Lock.Domain.Model.EzMutexGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Lock.Domain.Model.EzMutexGameSessionDomain>(Impl);
         #endif
@@ -140,26 +154,37 @@ namespace Gs2.Unity.Gs2Lock.Domain.Model
               string transactionId
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.UnlockAsync(
-                new UnlockRequest()
-                    .WithTransactionId(transactionId)
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.UnlockAsync(
+                        new UnlockRequest()
+                            .WithTransactionId(transactionId)
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Lock.Domain.Model.EzMutexGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Lock.Domain.Model.EzMutexGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Lock.Domain.Model.EzMutexGameSessionDomain> self)
             {
                 var future = _domain.Unlock(
                     new UnlockRequest()
                         .WithTransactionId(transactionId)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Lock.Domain.Model.EzMutexGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Lock.Domain.Model.EzMutexGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Lock.Domain.Model.EzMutexGameSessionDomain>(Impl);
         #endif

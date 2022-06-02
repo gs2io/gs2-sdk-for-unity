@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
 
     public partial class EzSendFriendRequestDomain {
         private readonly Gs2.Gs2Friend.Domain.Model.SendFriendRequestDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string TargetUserId => _domain?.TargetUserId;
 
         public EzSendFriendRequestDomain(
-            Gs2.Gs2Friend.Domain.Model.SendFriendRequestDomain domain
+            Gs2.Gs2Friend.Domain.Model.SendFriendRequestDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
     }

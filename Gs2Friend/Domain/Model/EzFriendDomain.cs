@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
 
     public partial class EzFriendDomain {
         private readonly Gs2.Gs2Friend.Domain.Model.FriendDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public bool? WithProfile => _domain?.WithProfile;
 
         public EzFriendDomain(
-            Gs2.Gs2Friend.Domain.Model.FriendDomain domain
+            Gs2.Gs2Friend.Domain.Model.FriendDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserDomain FriendUser(
@@ -68,7 +71,8 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserDomain(
                 _domain.FriendUser(
                     targetUserId
-                )
+                ),
+                _profile
             );
         }
 

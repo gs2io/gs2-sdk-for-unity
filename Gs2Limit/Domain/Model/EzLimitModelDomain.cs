@@ -52,13 +52,16 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
 
     public partial class EzLimitModelDomain {
         private readonly Gs2.Gs2Limit.Domain.Model.LimitModelDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string LimitName => _domain?.LimitName;
 
         public EzLimitModelDomain(
-            Gs2.Gs2Limit.Domain.Model.LimitModelDomain domain
+            Gs2.Gs2Limit.Domain.Model.LimitModelDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

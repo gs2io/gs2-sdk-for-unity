@@ -54,12 +54,14 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
 
     public partial class EzUserGameSessionDomain {
         private readonly Gs2.Gs2Lottery.Domain.Model.UserAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserGameSessionDomain(
-            Gs2.Gs2Lottery.Domain.Model.UserAccessTokenDomain domain
+            Gs2.Gs2Lottery.Domain.Model.UserAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
         }
@@ -107,7 +109,7 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Lottery.Model.EzBoxItems(result));
+                self.OnComplete(new Gs2.Unity.Gs2Lottery.Model.EzBoxItems()); // TODO:
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Lottery.Model.EzBoxItems>(Impl);
         #endif
@@ -141,7 +143,7 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
                 new ResetBoxRequest()
                     .WithPrizeTableName(prizeTableName)
             );
-            return new Gs2.Unity.Gs2Lottery.Domain.Model.EzUserGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Lottery.Domain.Model.EzUserGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Lottery.Domain.Model.EzUserGameSessionDomain> self)
             {
@@ -156,7 +158,7 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Lottery.Domain.Model.EzUserGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Lottery.Domain.Model.EzUserGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Lottery.Domain.Model.EzUserGameSessionDomain>(Impl);
         #endif
@@ -223,8 +225,7 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
         public Gs2.Unity.Gs2Lottery.Domain.Model.EzProbabilityGameSessionDomain Probability(
         ) {
             return new Gs2.Unity.Gs2Lottery.Domain.Model.EzProbabilityGameSessionDomain(
-                _domain.Probability(
-                )
+                _domain.Probability(), _profile
             );
         }
 

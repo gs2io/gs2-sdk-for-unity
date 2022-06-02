@@ -55,11 +55,14 @@ namespace Gs2.Unity.Gs2JobQueue.Domain
 
     public class Gs2JobQueue {
         private readonly Gs2.Gs2JobQueue.Domain.Gs2JobQueue _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
 
         public Gs2JobQueue(
-            Gs2.Gs2JobQueue.Domain.Gs2JobQueue domain
+            Gs2.Gs2JobQueue.Domain.Gs2JobQueue domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public Gs2.Unity.Gs2JobQueue.Domain.Model.EzNamespaceDomain Namespace(
@@ -68,7 +71,8 @@ namespace Gs2.Unity.Gs2JobQueue.Domain
             return new Gs2.Unity.Gs2JobQueue.Domain.Model.EzNamespaceDomain(
                 _domain.Namespace(
                     namespaceName
-                )
+                ),
+                _profile
             );
         }
 

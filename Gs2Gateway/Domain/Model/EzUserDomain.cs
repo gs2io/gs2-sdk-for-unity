@@ -52,15 +52,18 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
 
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Gateway.Domain.Model.UserDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string Protocol => _domain.Protocol;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserDomain(
-            Gs2.Gs2Gateway.Domain.Model.UserDomain domain
+            Gs2.Gs2Gateway.Domain.Model.UserDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzWebSocketSessionsIterator : Gs2Iterator<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession>
@@ -120,7 +123,8 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
         ) {
             return new Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionDomain(
                 _domain.WebSocketSession(
-                )
+                ),
+                _profile
             );
         }
 

@@ -52,6 +52,7 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
 
     public partial class EzCheckerGameSessionDomain {
         private readonly Gs2.Gs2Version.Domain.Model.CheckerAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string ProjectToken => _domain.ProjectToken;
         public Gs2.Unity.Gs2Version.Model.EzStatus[] Warnings => _domain.Warnings.Select(Gs2.Unity.Gs2Version.Model.EzStatus.FromModel).ToArray();
         public Gs2.Unity.Gs2Version.Model.EzStatus[] Errors => _domain.Errors.Select(Gs2.Unity.Gs2Version.Model.EzStatus.FromModel).ToArray();
@@ -61,9 +62,11 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
         public string UserId => _domain?.UserId;
 
         public EzCheckerGameSessionDomain(
-            Gs2.Gs2Version.Domain.Model.CheckerAccessTokenDomain domain
+            Gs2.Gs2Version.Domain.Model.CheckerAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -90,26 +93,37 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
               Gs2.Unity.Gs2Version.Model.EzTargetVersion[] targetVersions = null
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.CheckVersionAsync(
-                new CheckVersionRequest()
-                    .WithTargetVersions(targetVersions?.Select(v => v.ToModel()).ToArray())
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.CheckVersionAsync(
+                        new CheckVersionRequest()
+                            .WithTargetVersions(targetVersions?.Select(v => v.ToModel()).ToArray())
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Version.Domain.Model.EzCheckerGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Version.Domain.Model.EzCheckerGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Version.Domain.Model.EzCheckerGameSessionDomain> self)
             {
                 var future = _domain.CheckVersion(
                     new CheckVersionRequest()
                         .WithTargetVersions(targetVersions?.Select(v => v.ToModel()).ToArray())
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Version.Domain.Model.EzCheckerGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Version.Domain.Model.EzCheckerGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Version.Domain.Model.EzCheckerGameSessionDomain>(Impl);
         #endif

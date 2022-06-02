@@ -52,15 +52,18 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
 
     public partial class EzFriendUserDomain {
         private readonly Gs2.Gs2Friend.Domain.Model.FriendUserDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public bool? WithProfile => _domain?.WithProfile;
         public string TargetUserId => _domain?.TargetUserId;
 
         public EzFriendUserDomain(
-            Gs2.Gs2Friend.Domain.Model.FriendUserDomain domain
+            Gs2.Gs2Friend.Domain.Model.FriendUserDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

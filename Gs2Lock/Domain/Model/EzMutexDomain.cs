@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Lock.Domain.Model
 
     public partial class EzMutexDomain {
         private readonly Gs2.Gs2Lock.Domain.Model.MutexDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string PropertyId => _domain?.PropertyId;
 
         public EzMutexDomain(
-            Gs2.Gs2Lock.Domain.Model.MutexDomain domain
+            Gs2.Gs2Lock.Domain.Model.MutexDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

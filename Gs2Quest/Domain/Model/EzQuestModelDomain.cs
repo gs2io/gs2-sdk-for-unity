@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
 
     public partial class EzQuestModelDomain {
         private readonly Gs2.Gs2Quest.Domain.Model.QuestModelDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string QuestGroupName => _domain?.QuestGroupName;
         public string QuestName => _domain?.QuestName;
 
         public EzQuestModelDomain(
-            Gs2.Gs2Quest.Domain.Model.QuestModelDomain domain
+            Gs2.Gs2Quest.Domain.Model.QuestModelDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

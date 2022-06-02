@@ -156,7 +156,7 @@ namespace Gs2.Unity.Gs2Mission
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _restClient.GetCounter(
+                cb => _client.GetCounter(
                     new Gs2.Gs2Mission.Request.GetCounterRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)

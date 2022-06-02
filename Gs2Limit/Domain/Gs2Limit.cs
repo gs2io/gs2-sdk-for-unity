@@ -55,11 +55,14 @@ namespace Gs2.Unity.Gs2Limit.Domain
 
     public class Gs2Limit {
         private readonly Gs2.Gs2Limit.Domain.Gs2Limit _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
 
         public Gs2Limit(
-            Gs2.Gs2Limit.Domain.Gs2Limit domain
+            Gs2.Gs2Limit.Domain.Gs2Limit domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public Gs2.Unity.Gs2Limit.Domain.Model.EzNamespaceDomain Namespace(
@@ -68,7 +71,8 @@ namespace Gs2.Unity.Gs2Limit.Domain
             return new Gs2.Unity.Gs2Limit.Domain.Model.EzNamespaceDomain(
                 _domain.Namespace(
                     namespaceName
-                )
+                ),
+                _profile
             );
         }
     }

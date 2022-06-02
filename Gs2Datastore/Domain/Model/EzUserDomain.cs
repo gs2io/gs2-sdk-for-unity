@@ -52,6 +52,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
 
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Datastore.Domain.Model.UserDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string UploadUrl => _domain.UploadUrl;
         public string FileUrl => _domain.FileUrl;
         public long? ContentLength => _domain.ContentLength;
@@ -60,9 +61,11 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         public string UserId => _domain?.UserId;
 
         public EzUserDomain(
-            Gs2.Gs2Datastore.Domain.Model.UserDomain domain
+            Gs2.Gs2Datastore.Domain.Model.UserDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzDataObjectsIterator : Gs2Iterator<Gs2.Unity.Gs2Datastore.Model.EzDataObject>
@@ -129,7 +132,8 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             return new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain(
                 _domain.DataObject(
                     dataObjectName
-                )
+                ),
+                _profile
             );
         }
 

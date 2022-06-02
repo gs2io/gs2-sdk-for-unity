@@ -52,15 +52,18 @@ namespace Gs2.Unity.Gs2News.Domain.Model
 
     public partial class EzUserGameSessionDomain {
         private readonly Gs2.Gs2News.Domain.Model.UserAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string ContentHash => _domain.ContentHash;
         public string TemplateHash => _domain.TemplateHash;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserGameSessionDomain(
-            Gs2.Gs2News.Domain.Model.UserAccessTokenDomain domain
+            Gs2.Gs2News.Domain.Model.UserAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzNewsesIterator : Gs2Iterator<Gs2.Unity.Gs2News.Model.EzNews>
@@ -120,7 +123,8 @@ namespace Gs2.Unity.Gs2News.Domain.Model
         ) {
             return new Gs2.Unity.Gs2News.Domain.Model.EzNewsGameSessionDomain(
                 _domain.News(
-                )
+                ),
+                _profile
             );
         }
 

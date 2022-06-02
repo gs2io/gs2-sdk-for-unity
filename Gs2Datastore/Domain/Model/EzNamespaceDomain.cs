@@ -52,13 +52,16 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
 
     public partial class EzNamespaceDomain {
         private readonly Gs2.Gs2Datastore.Domain.Model.NamespaceDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string Status => _domain.Status;
         public string NamespaceName => _domain?.NamespaceName;
 
         public EzNamespaceDomain(
-            Gs2.Gs2Datastore.Domain.Model.NamespaceDomain domain
+            Gs2.Gs2Datastore.Domain.Model.NamespaceDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -85,11 +88,17 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
               string dataObjectId
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.RestoreDataObjectAsync(
-                new RestoreDataObjectRequest()
-                    .WithDataObjectId(dataObjectId)
+            var result = await _profile.RunAsync(
+                null,
+                async () =>
+                {
+                    return await _domain.RestoreDataObjectAsync(
+                        new RestoreDataObjectRequest()
+                            .WithDataObjectId(dataObjectId)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain(result);
+            return new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain> self)
             {
@@ -97,14 +106,17 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                     new RestoreDataObjectRequest()
                         .WithDataObjectId(dataObjectId)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    null,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain>(Impl);
         #endif
@@ -116,7 +128,8 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             return new Gs2.Unity.Gs2Datastore.Domain.Model.EzUserDomain(
                 _domain.User(
                     userId
-                )
+                ),
+                _profile
             );
         }
 
@@ -126,7 +139,8 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             return new EzUserGameSessionDomain(
                 _domain.AccessToken(
                     gameSession.AccessToken
-                )
+                ),
+                _profile
             );
         }
 

@@ -55,11 +55,14 @@ namespace Gs2.Unity.Gs2Realtime.Domain
 
     public class Gs2Realtime {
         private readonly Gs2.Gs2Realtime.Domain.Gs2Realtime _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
 
         public Gs2Realtime(
-            Gs2.Gs2Realtime.Domain.Gs2Realtime domain
+            Gs2.Gs2Realtime.Domain.Gs2Realtime domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public Gs2.Unity.Gs2Realtime.Domain.Model.EzNamespaceDomain Namespace(
@@ -68,7 +71,8 @@ namespace Gs2.Unity.Gs2Realtime.Domain
             return new Gs2.Unity.Gs2Realtime.Domain.Model.EzNamespaceDomain(
                 _domain.Namespace(
                     namespaceName
-                )
+                ),
+                _profile
             );
         }
 

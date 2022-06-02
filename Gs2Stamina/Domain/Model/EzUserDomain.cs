@@ -52,15 +52,18 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
 
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Stamina.Domain.Model.UserDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public long? OverflowValue => _domain.OverflowValue;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserDomain(
-            Gs2.Gs2Stamina.Domain.Model.UserDomain domain
+            Gs2.Gs2Stamina.Domain.Model.UserDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzStaminasIterator : Gs2Iterator<Gs2.Unity.Gs2Stamina.Model.EzStamina>
@@ -122,7 +125,8 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
             return new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaDomain(
                 _domain.Stamina(
                     staminaName
-                )
+                ),
+                _profile
             );
         }
 

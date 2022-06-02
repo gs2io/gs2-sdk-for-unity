@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
 
     public partial class EzNamespaceDomain {
         private readonly Gs2.Gs2Exchange.Domain.Model.NamespaceDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string Status => _domain.Status;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
 
         public EzNamespaceDomain(
-            Gs2.Gs2Exchange.Domain.Model.NamespaceDomain domain
+            Gs2.Gs2Exchange.Domain.Model.NamespaceDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzRateModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Exchange.Model.EzRateModel>
@@ -121,7 +124,8 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
             return new Gs2.Unity.Gs2Exchange.Domain.Model.EzRateModelDomain(
                 _domain.RateModel(
                     rateName
-                )
+                ),
+                _profile
             );
         }
 
@@ -131,7 +135,8 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
             return new EzUserGameSessionDomain(
                 _domain.AccessToken(
                     gameSession.AccessToken
-                )
+                ),
+                _profile
             );
         }
 

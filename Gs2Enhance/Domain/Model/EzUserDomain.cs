@@ -52,6 +52,7 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
 
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Enhance.Domain.Model.UserDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public long? AcquireExperience => _domain.AcquireExperience;
         public float? BonusRate => _domain.BonusRate;
         public string NextPageToken => _domain.NextPageToken;
@@ -59,9 +60,11 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
         public string UserId => _domain?.UserId;
 
         public EzUserDomain(
-            Gs2.Gs2Enhance.Domain.Model.UserDomain domain
+            Gs2.Gs2Enhance.Domain.Model.UserDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzProgressesIterator : Gs2Iterator<Gs2.Unity.Gs2Enhance.Model.EzProgress>
@@ -118,10 +121,15 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
         }
 
         public Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressDomain Progress(
+            string rateName,
+            string progressName
         ) {
             return new Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressDomain(
                 _domain.Progress(
-                )
+                    rateName,
+                    progressName
+                ),
+                _profile
             );
         }
 

@@ -52,6 +52,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
 
     public partial class EzDataObjectDomain {
         private readonly Gs2.Gs2Datastore.Domain.Model.DataObjectDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string UploadUrl => _domain.UploadUrl;
         public string FileUrl => _domain.FileUrl;
         public long? ContentLength => _domain.ContentLength;
@@ -61,9 +62,11 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         public string DataObjectName => _domain?.DataObjectName;
 
         public EzDataObjectDomain(
-            Gs2.Gs2Datastore.Domain.Model.DataObjectDomain domain
+            Gs2.Gs2Datastore.Domain.Model.DataObjectDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -87,24 +90,33 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.PrepareDownloadByUserIdAndNameAsync(
-                new PrepareDownloadByUserIdAndDataObjectNameRequest()
+            var result = await _profile.RunAsync(
+                null,
+                async () =>
+                {
+                    return await _domain.PrepareDownloadByUserIdAndNameAsync(
+                        new PrepareDownloadByUserIdAndDataObjectNameRequest()
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain(result);
+            return new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain> self)
             {
                 var future = _domain.PrepareDownloadByUserIdAndName(
                     new PrepareDownloadByUserIdAndDataObjectNameRequest()
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    null,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain>(Impl);
         #endif
@@ -169,7 +181,8 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             return new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectHistoryDomain(
                 _domain.DataObjectHistory(
                     generation
-                )
+                ),
+                _profile
             );
         }
 

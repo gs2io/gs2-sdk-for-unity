@@ -52,13 +52,16 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
 
     public partial class EzExchangeDomain {
         private readonly Gs2.Gs2Exchange.Domain.Model.ExchangeDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzExchangeDomain(
-            Gs2.Gs2Exchange.Domain.Model.ExchangeDomain domain
+            Gs2.Gs2Exchange.Domain.Model.ExchangeDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
     }

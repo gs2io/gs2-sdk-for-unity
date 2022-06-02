@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -52,6 +54,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
     public partial class EzItemSetGameSessionDomain {
         private readonly Gs2.Gs2Inventory.Domain.Model.ItemSetAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string Body => _domain.Body;
         public string Signature => _domain.Signature;
         public long? OverflowCount => _domain.OverflowCount;
@@ -62,9 +65,11 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         public string ItemSetName => _domain?.ItemSetName;
 
         public EzItemSetGameSessionDomain(
-            Gs2.Gs2Inventory.Domain.Model.ItemSetAccessTokenDomain domain
+            Gs2.Gs2Inventory.Domain.Model.ItemSetAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -91,26 +96,37 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
               string keyId
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.GetItemWithSignatureAsync(
-                new GetItemWithSignatureRequest()
-                    .WithKeyId(keyId)
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.GetItemWithSignatureAsync(
+                        new GetItemWithSignatureRequest()
+                            .WithKeyId(keyId)
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain> self)
             {
                 var future = _domain.GetItemWithSignature(
                     new GetItemWithSignatureRequest()
                         .WithKeyId(keyId)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain>(Impl);
         #endif
@@ -140,53 +156,62 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
               long consumeCount
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.ConsumeAsync(
-                new ConsumeItemSetRequest()
-                    .WithConsumeCount(consumeCount)
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.ConsumeAsync(
+                        new ConsumeItemSetRequest()
+                            .WithConsumeCount(consumeCount)
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain> self)
             {
                 var future = _domain.Consume(
                     new ConsumeItemSetRequest()
                         .WithConsumeCount(consumeCount)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain>(Impl);
         #endif
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Inventory.Model.EzItemSet> Model()
+        public IFuture<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]> Model()
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Model.EzItemSet> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]> self)
             {
                 yield return ModelAsync().ToCoroutine(
                     self.OnComplete,
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Inventory.Model.EzItemSet>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2Inventory.Model.EzItemSet> ModelAsync()
+        public async UniTask<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]> ModelAsync()
         {
             var item = await _domain.Model();
             if (item == null) {
                 return null;
             }
-            return Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel(
-                item
-            );
+            return item.Select(Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel).ToArray();
         }
         #else
         public IFuture<Gs2.Unity.Gs2Inventory.Model.EzItemSet> Model()

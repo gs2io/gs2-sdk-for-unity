@@ -52,15 +52,18 @@ namespace Gs2.Unity.Gs2Money.Domain.Model
 
     public partial class EzUserGameSessionDomain {
         private readonly Gs2.Gs2Money.Domain.Model.UserAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public float? Price => _domain.Price;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserGameSessionDomain(
-            Gs2.Gs2Money.Domain.Model.UserAccessTokenDomain domain
+            Gs2.Gs2Money.Domain.Model.UserAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzWalletsIterator : Gs2Iterator<Gs2.Unity.Gs2Money.Model.EzWallet>
@@ -122,7 +125,8 @@ namespace Gs2.Unity.Gs2Money.Domain.Model
             return new Gs2.Unity.Gs2Money.Domain.Model.EzWalletGameSessionDomain(
                 _domain.Wallet(
                     slot
-                )
+                ),
+                _profile
             );
         }
 

@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
 
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Formation.Domain.Model.UserDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserDomain(
-            Gs2.Gs2Formation.Domain.Model.UserDomain domain
+            Gs2.Gs2Formation.Domain.Model.UserDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzMoldsIterator : Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzMold>
@@ -121,7 +124,8 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             return new Gs2.Unity.Gs2Formation.Domain.Model.EzMoldDomain(
                 _domain.Mold(
                     moldName
-                )
+                ),
+                _profile
             );
         }
 

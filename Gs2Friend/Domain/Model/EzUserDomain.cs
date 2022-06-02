@@ -52,21 +52,25 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
 
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Friend.Domain.Model.UserDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserDomain(
-            Gs2.Gs2Friend.Domain.Model.UserDomain domain
+            Gs2.Gs2Friend.Domain.Model.UserDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public Gs2.Unity.Gs2Friend.Domain.Model.EzProfileDomain Profile(
         ) {
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzProfileDomain(
                 _domain.Profile(
-                )
+                ),
+                _profile
             );
         }
 
@@ -74,7 +78,8 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         ) {
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzPublicProfileDomain(
                 _domain.PublicProfile(
-                )
+                ),
+                _profile
             );
         }
 
@@ -135,7 +140,8 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         ) {
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListDomain(
                 _domain.BlackList(
-                )
+                ),
+                _profile
             );
         }
 
@@ -198,12 +204,15 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
 
         public Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserDomain FollowUser(
-            string targetUserId
+            string targetUserId,
+            bool withProfile
         ) {
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserDomain(
                 _domain.FollowUser(
-                    targetUserId
-                )
+                    targetUserId,
+                    withProfile
+                ),
+                _profile
             );
         }
 

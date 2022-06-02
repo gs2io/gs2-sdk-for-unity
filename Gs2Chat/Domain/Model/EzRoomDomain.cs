@@ -52,15 +52,18 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
 
     public partial class EzRoomDomain {
         private readonly Gs2.Gs2Chat.Domain.Model.RoomDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string RoomName => _domain?.RoomName;
         public string Password => _domain?.Password;
 
         public EzRoomDomain(
-            Gs2.Gs2Chat.Domain.Model.RoomDomain domain
+            Gs2.Gs2Chat.Domain.Model.RoomDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzMessagesIterator : Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzMessage>
@@ -122,7 +125,8 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
             return new Gs2.Unity.Gs2Chat.Domain.Model.EzMessageDomain(
                 _domain.Message(
                     messageName
-                )
+                ),
+                _profile
             );
         }
 

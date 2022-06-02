@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
 
     public partial class EzAcceptVersionDomain {
         private readonly Gs2.Gs2Version.Domain.Model.AcceptVersionDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string VersionName => _domain?.VersionName;
 
         public EzAcceptVersionDomain(
-            Gs2.Gs2Version.Domain.Model.AcceptVersionDomain domain
+            Gs2.Gs2Version.Domain.Model.AcceptVersionDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

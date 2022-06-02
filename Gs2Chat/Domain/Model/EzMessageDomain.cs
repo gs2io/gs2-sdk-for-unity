@@ -52,6 +52,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
 
     public partial class EzMessageDomain {
         private readonly Gs2.Gs2Chat.Domain.Model.MessageDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string RoomName => _domain?.RoomName;
@@ -59,9 +60,11 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         public string MessageName => _domain?.MessageName;
 
         public EzMessageDomain(
-            Gs2.Gs2Chat.Domain.Model.MessageDomain domain
+            Gs2.Gs2Chat.Domain.Model.MessageDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

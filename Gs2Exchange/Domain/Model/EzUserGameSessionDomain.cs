@@ -52,22 +52,26 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
 
     public partial class EzUserGameSessionDomain {
         private readonly Gs2.Gs2Exchange.Domain.Model.UserAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public long? UnlockAt => _domain.UnlockAt;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserGameSessionDomain(
-            Gs2.Gs2Exchange.Domain.Model.UserAccessTokenDomain domain
+            Gs2.Gs2Exchange.Domain.Model.UserAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain Exchange(
         ) {
             return new Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain(
                 _domain.Exchange(
-                )
+                ),
+                _profile
             );
         }
 
@@ -137,7 +141,8 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                 _domain.Await(
                     awaitName,
                     rateName
-                )
+                ),
+                _profile
             );
         }
 

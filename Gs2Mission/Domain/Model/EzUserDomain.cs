@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
 
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Mission.Domain.Model.UserDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserDomain(
-            Gs2.Gs2Mission.Domain.Model.UserDomain domain
+            Gs2.Gs2Mission.Domain.Model.UserDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzCountersIterator : Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzCounter>
@@ -121,7 +124,8 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             return new Gs2.Unity.Gs2Mission.Domain.Model.EzCounterDomain(
                 _domain.Counter(
                     counterName
-                )
+                ),
+                _profile
             );
         }
 
@@ -184,7 +188,8 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             return new Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteDomain(
                 _domain.Complete(
                     missionGroupName
-                )
+                ),
+                _profile
             );
         }
 

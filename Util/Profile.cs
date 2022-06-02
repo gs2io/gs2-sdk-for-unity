@@ -17,6 +17,7 @@
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
 #endif
+using System;
 using Gs2.Core;
 using Gs2.Core.Exception;
 using Gs2.Core.Model;
@@ -171,6 +172,126 @@ namespace Gs2.Unity.Util
             );
         }
         
+#if GS2_ENABLE_UNITASK
+
+        public async UniTask<T> RunAsync<T>(
+            [CanBeNull] AccessToken accessToken,
+            Func<UniTask<T>> requestActionAsync)
+        {
+            bool isReopenTried = false;
+            bool isAuthenticationTried = false;
+
+            while (true)
+            {
+                try
+                {
+                    return await requestActionAsync.Invoke();
+                }
+                catch (UnauthorizedException e)
+                {
+                    var authenticator = _authenticator;
+                    if (accessToken != null && authenticator != null && !isAuthenticationTried)
+                    {
+                        isAuthenticationTried = true;
+
+                        var asyncAuthenticationResult = await authenticator.AuthenticationAsync();
+
+                        if (asyncAuthenticationResult != null)
+                        {
+                            accessToken.Token = asyncAuthenticationResult.Token;
+                            accessToken.UserId = asyncAuthenticationResult.UserId;
+                            accessToken.Expire = asyncAuthenticationResult.Expire;
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                catch (SessionNotOpenException e)
+                {
+                    if (_reopener != null && !isReopenTried)
+                    {
+                        isReopenTried = true;
+
+                        var asyncOpenResult = await _reopener.ReOpenAsync(Gs2Session, Gs2RestSession);
+
+                        if (asyncOpenResult != null)
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                break;
+            }
+
+            return default(T);
+        }
+#else
+        
+        public delegate IEnumerator RequestActionFuture<T>(IFuture<AsyncResult<T>> callback);
+        
+        public IEnumerator RunFuture<T>(
+            [CanBeNull] AccessToken accessToken,
+            IFuture<T> requestAction)
+        {
+            bool isReopenTried = false;
+            bool isAuthenticationTried = false;
+
+            AsyncResult<T> asyncResult = null;
+
+            while (true)
+            {
+                yield return requestAction;
+
+                if (requestAction.Error is SessionNotOpenException && !isReopenTried)
+                {
+                    isReopenTried = true;
+
+                    AsyncResult<OpenResult> asyncOpenResult = null;
+
+                    yield return _reopener.ReOpen(Gs2Session, Gs2RestSession, aor => asyncOpenResult = aor);
+
+                    _reopener.Callback?.Invoke(asyncOpenResult);
+
+                    if (asyncOpenResult.Error == null)
+                    {
+                        continue;
+                    }
+                }
+
+                var authenticator = _authenticator;
+                if (accessToken != null && authenticator != null && requestAction.Error is UnauthorizedException && !isAuthenticationTried)
+                {
+                    isAuthenticationTried = true;
+
+                    AsyncResult<AccessToken> asyncAuthenticationResult = null;
+
+                    yield return authenticator.Authentication(aar => asyncAuthenticationResult = aar);
+
+                    if (asyncAuthenticationResult.Error == null)
+                    {
+                        accessToken = asyncAuthenticationResult.Result;
+                    }
+
+                    authenticator.Callback?.Invoke(asyncAuthenticationResult);
+
+                    if (asyncAuthenticationResult.Error == null)
+                    {
+                        continue;
+                    }
+                }
+
+                break;
+            }
+        }
+#endif
         public delegate IEnumerator RequestAction<T>(UnityAction<AsyncResult<T>> callback);
         
         public IEnumerator Run<T>(

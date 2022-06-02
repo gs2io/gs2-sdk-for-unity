@@ -55,11 +55,14 @@ namespace Gs2.Unity.Gs2Ranking.Domain
 
     public class Gs2Ranking {
         private readonly Gs2.Gs2Ranking.Domain.Gs2Ranking _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
 
         public Gs2Ranking(
-            Gs2.Gs2Ranking.Domain.Gs2Ranking domain
+            Gs2.Gs2Ranking.Domain.Gs2Ranking domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public Gs2.Unity.Gs2Ranking.Domain.Model.EzNamespaceDomain Namespace(
@@ -68,7 +71,8 @@ namespace Gs2.Unity.Gs2Ranking.Domain
             return new Gs2.Unity.Gs2Ranking.Domain.Model.EzNamespaceDomain(
                 _domain.Namespace(
                     namespaceName
-                )
+                ),
+                _profile
             );
         }
     }

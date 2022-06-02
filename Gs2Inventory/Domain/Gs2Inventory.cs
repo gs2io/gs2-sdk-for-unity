@@ -55,11 +55,14 @@ namespace Gs2.Unity.Gs2Inventory.Domain
 
     public class Gs2Inventory {
         private readonly Gs2.Gs2Inventory.Domain.Gs2Inventory _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
 
         public Gs2Inventory(
-            Gs2.Gs2Inventory.Domain.Gs2Inventory domain
+            Gs2.Gs2Inventory.Domain.Gs2Inventory domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzNamespaceDomain Namespace(
@@ -68,7 +71,8 @@ namespace Gs2.Unity.Gs2Inventory.Domain
             return new Gs2.Unity.Gs2Inventory.Domain.Model.EzNamespaceDomain(
                 _domain.Namespace(
                     namespaceName
-                )
+                ),
+                _profile
             );
         }
     }

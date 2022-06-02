@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
 
     public partial class EzRatingDomain {
         private readonly Gs2.Gs2Matchmaking.Domain.Model.RatingDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string RatingName => _domain?.RatingName;
 
         public EzRatingDomain(
-            Gs2.Gs2Matchmaking.Domain.Model.RatingDomain domain
+            Gs2.Gs2Matchmaking.Domain.Model.RatingDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

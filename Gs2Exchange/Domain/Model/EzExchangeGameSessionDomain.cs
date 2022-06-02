@@ -52,13 +52,16 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
 
     public partial class EzExchangeGameSessionDomain {
         private readonly Gs2.Gs2Exchange.Domain.Model.ExchangeAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzExchangeGameSessionDomain(
-            Gs2.Gs2Exchange.Domain.Model.ExchangeAccessTokenDomain domain
+            Gs2.Gs2Exchange.Domain.Model.ExchangeAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -91,13 +94,20 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
               Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.ExchangeAsync(
-                new ExchangeRequest()
-                    .WithRateName(rateName)
-                    .WithCount(count)
-                    .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.ExchangeAsync(
+                        new ExchangeRequest()
+                            .WithRateName(rateName)
+                            .WithCount(count)
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain> self)
             {
@@ -106,15 +116,19 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                         .WithRateName(rateName)
                         .WithCount(count)
                         .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain>(Impl);
         #endif

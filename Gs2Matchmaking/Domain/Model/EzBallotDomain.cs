@@ -23,11 +23,14 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
     public partial class EzBallotDomain {
 
         private Gs2.Gs2Matchmaking.Domain.Model.BallotDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
 
         public EzBallotDomain(
-            Gs2.Gs2Matchmaking.Domain.Model.BallotDomain domain
+            Gs2.Gs2Matchmaking.Domain.Model.BallotDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
-            _domain = domain;
+            this._domain = domain;
+            this._profile = profile;
         }
     }
 }

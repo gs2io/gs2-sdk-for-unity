@@ -54,18 +54,22 @@ namespace Gs2.Unity.Gs2Auth.Domain
 
     public class Gs2Auth {
         private readonly Gs2.Gs2Auth.Domain.Gs2Auth _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
 
         public Gs2Auth(
-            Gs2.Gs2Auth.Domain.Gs2Auth domain
+            Gs2.Gs2Auth.Domain.Gs2Auth domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public Gs2.Unity.Gs2Auth.Domain.Model.EzAccessTokenDomain AccessToken(
         ) {
             return new Gs2.Unity.Gs2Auth.Domain.Model.EzAccessTokenDomain(
                 _domain.AccessToken(
-                )
+                ),
+                _profile
             );
         }
     }

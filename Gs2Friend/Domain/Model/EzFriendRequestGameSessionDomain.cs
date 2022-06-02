@@ -23,11 +23,14 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
     public partial class EzFriendRequestGameSessionDomain {
 
         private Gs2.Gs2Friend.Domain.Model.FriendRequestAccessTokenDomain _domain;
-
+        private readonly Gs2.Unity.Util.Profile _profile;
+        
         public EzFriendRequestGameSessionDomain(
-            Gs2.Gs2Friend.Domain.Model.FriendRequestAccessTokenDomain domain
+            Gs2.Gs2Friend.Domain.Model.FriendRequestAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
-            _domain = domain;
+            this._domain = domain;
+            this._profile = profile;
         }
     }
 }

@@ -55,11 +55,14 @@ namespace Gs2.Unity.Gs2Experience.Domain
 
     public class Gs2Experience {
         private readonly Gs2.Gs2Experience.Domain.Gs2Experience _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
 
         public Gs2Experience(
-            Gs2.Gs2Experience.Domain.Gs2Experience domain
+            Gs2.Gs2Experience.Domain.Gs2Experience domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public Gs2.Unity.Gs2Experience.Domain.Model.EzNamespaceDomain Namespace(
@@ -68,7 +71,8 @@ namespace Gs2.Unity.Gs2Experience.Domain
             return new Gs2.Unity.Gs2Experience.Domain.Model.EzNamespaceDomain(
                 _domain.Namespace(
                     namespaceName
-                )
+                ),
+                _profile
             );
         }
     }

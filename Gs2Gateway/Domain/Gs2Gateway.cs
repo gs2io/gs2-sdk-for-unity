@@ -55,11 +55,14 @@ namespace Gs2.Unity.Gs2Gateway.Domain
 
     public class Gs2Gateway {
         private readonly Gs2.Gs2Gateway.Domain.Gs2Gateway _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
 
         public Gs2Gateway(
-            Gs2.Gs2Gateway.Domain.Gs2Gateway domain
+            Gs2.Gs2Gateway.Domain.Gs2Gateway domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public Gs2.Unity.Gs2Gateway.Domain.Model.EzNamespaceDomain Namespace(
@@ -68,7 +71,8 @@ namespace Gs2.Unity.Gs2Gateway.Domain
             return new Gs2.Unity.Gs2Gateway.Domain.Model.EzNamespaceDomain(
                 _domain.Namespace(
                     namespaceName
-                )
+                ),
+                _profile
             );
         }
     }

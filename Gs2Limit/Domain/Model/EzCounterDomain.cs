@@ -52,15 +52,18 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
 
     public partial class EzCounterDomain {
         private readonly Gs2.Gs2Limit.Domain.Model.CounterDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string LimitName => _domain?.LimitName;
         public string CounterName => _domain?.CounterName;
 
         public EzCounterDomain(
-            Gs2.Gs2Limit.Domain.Model.CounterDomain domain
+            Gs2.Gs2Limit.Domain.Model.CounterDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

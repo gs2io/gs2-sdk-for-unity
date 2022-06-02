@@ -55,11 +55,14 @@ namespace Gs2.Unity.Gs2News.Domain
 
     public class Gs2News {
         private readonly Gs2.Gs2News.Domain.Gs2News _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
 
         public Gs2News(
-            Gs2.Gs2News.Domain.Gs2News domain
+            Gs2.Gs2News.Domain.Gs2News domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public Gs2.Unity.Gs2News.Domain.Model.EzNamespaceDomain Namespace(
@@ -68,7 +71,8 @@ namespace Gs2.Unity.Gs2News.Domain
             return new Gs2.Unity.Gs2News.Domain.Model.EzNamespaceDomain(
                 _domain.Namespace(
                     namespaceName
-                )
+                ),
+                _profile
             );
         }
     }

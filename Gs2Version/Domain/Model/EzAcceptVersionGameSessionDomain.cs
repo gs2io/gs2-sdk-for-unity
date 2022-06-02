@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
 
     public partial class EzAcceptVersionGameSessionDomain {
         private readonly Gs2.Gs2Version.Domain.Model.AcceptVersionAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string VersionName => _domain?.VersionName;
 
         public EzAcceptVersionGameSessionDomain(
-            Gs2.Gs2Version.Domain.Model.AcceptVersionAccessTokenDomain domain
+            Gs2.Gs2Version.Domain.Model.AcceptVersionAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -83,24 +86,35 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.AcceptAsync(
-                new AcceptRequest()
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.AcceptAsync(
+                        new AcceptRequest()
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> self)
             {
                 var future = _domain.Accept(
                     new AcceptRequest()
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain>(Impl);
         #endif
@@ -127,24 +141,35 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.DeleteAsync(
-                new DeleteAcceptVersionRequest()
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.DeleteAsync(
+                        new DeleteAcceptVersionRequest()
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> self)
             {
                 var future = _domain.Delete(
                     new DeleteAcceptVersionRequest()
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain>(Impl);
         #endif

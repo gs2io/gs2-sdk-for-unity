@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
 
     public partial class EzNamespaceDomain {
         private readonly Gs2.Gs2Ranking.Domain.Model.NamespaceDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string Status => _domain.Status;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
 
         public EzNamespaceDomain(
-            Gs2.Gs2Ranking.Domain.Model.NamespaceDomain domain
+            Gs2.Gs2Ranking.Domain.Model.NamespaceDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzCategoryModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzCategoryModel>
@@ -121,7 +124,8 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             return new Gs2.Unity.Gs2Ranking.Domain.Model.EzCategoryModelDomain(
                 _domain.CategoryModel(
                     categoryName
-                )
+                ),
+                _profile
             );
         }
 
@@ -131,7 +135,8 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             return new Gs2.Unity.Gs2Ranking.Domain.Model.EzUserDomain(
                 _domain.User(
                     userId
-                )
+                ),
+                _profile
             );
         }
 
@@ -141,7 +146,8 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             return new EzUserGameSessionDomain(
                 _domain.AccessToken(
                     gameSession.AccessToken
-                )
+                ),
+                _profile
             );
         }
 

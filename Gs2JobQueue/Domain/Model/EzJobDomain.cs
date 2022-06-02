@@ -23,11 +23,14 @@ namespace Gs2.Unity.Gs2JobQueue.Domain.Model
     public partial class EzJobDomain {
 
         private Gs2.Gs2JobQueue.Domain.Model.JobDomain _domain;
-
+        private readonly Gs2.Unity.Util.Profile _profile;
+        
         public EzJobDomain(
-            Gs2.Gs2JobQueue.Domain.Model.JobDomain domain
+            Gs2.Gs2JobQueue.Domain.Model.JobDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
-            _domain = domain;
+            this._domain = domain;
+            this._profile = profile;
         }
     }
 }

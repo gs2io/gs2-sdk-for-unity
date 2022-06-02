@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Realtime.Domain.Model
 
     public partial class EzNamespaceDomain {
         private readonly Gs2.Gs2Realtime.Domain.Model.NamespaceDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string Status => _domain.Status;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
 
         public EzNamespaceDomain(
-            Gs2.Gs2Realtime.Domain.Model.NamespaceDomain domain
+            Gs2.Gs2Realtime.Domain.Model.NamespaceDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzRoomsIterator : Gs2Iterator<Gs2.Unity.Gs2Realtime.Model.EzRoom>
@@ -121,7 +124,8 @@ namespace Gs2.Unity.Gs2Realtime.Domain.Model
             return new Gs2.Unity.Gs2Realtime.Domain.Model.EzRoomDomain(
                 _domain.Room(
                     roomName
-                )
+                ),
+                _profile
             );
         }
 

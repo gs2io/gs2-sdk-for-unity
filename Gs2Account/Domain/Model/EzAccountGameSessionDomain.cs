@@ -52,6 +52,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
 
     public partial class EzAccountGameSessionDomain {
         private readonly Gs2.Gs2Account.Domain.Model.AccountAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string Body => _domain.Body;
         public string Signature => _domain.Signature;
         public string NextPageToken => _domain.NextPageToken;
@@ -59,9 +60,11 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         public string UserId => _domain?.UserId;
 
         public EzAccountGameSessionDomain(
-            Gs2.Gs2Account.Domain.Model.AccountAccessTokenDomain domain
+            Gs2.Gs2Account.Domain.Model.AccountAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzTakeOversIterator : Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzTakeOver>
@@ -123,7 +126,8 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             return new Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain(
                 _domain.TakeOver(
                     type
-                )
+                ),
+                _profile
             );
         }
 

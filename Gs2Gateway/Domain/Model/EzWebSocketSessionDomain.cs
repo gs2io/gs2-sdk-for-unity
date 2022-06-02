@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
 
     public partial class EzWebSocketSessionDomain {
         private readonly Gs2.Gs2Gateway.Domain.Model.WebSocketSessionDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string Protocol => _domain.Protocol;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzWebSocketSessionDomain(
-            Gs2.Gs2Gateway.Domain.Model.WebSocketSessionDomain domain
+            Gs2.Gs2Gateway.Domain.Model.WebSocketSessionDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

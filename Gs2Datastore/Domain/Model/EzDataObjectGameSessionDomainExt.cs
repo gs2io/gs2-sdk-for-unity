@@ -52,7 +52,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         {
 #if GS2_ENABLE_UNITASK
             return new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain(
-                await _domain.ReUpload(data)
+                await _domain.ReUpload(data), _profile
             );
 #else
 

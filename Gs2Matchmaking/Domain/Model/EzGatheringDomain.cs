@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
 
     public partial class EzGatheringDomain {
         private readonly Gs2.Gs2Matchmaking.Domain.Model.GatheringDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string GatheringName => _domain?.GatheringName;
 
         public EzGatheringDomain(
-            Gs2.Gs2Matchmaking.Domain.Model.GatheringDomain domain
+            Gs2.Gs2Matchmaking.Domain.Model.GatheringDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

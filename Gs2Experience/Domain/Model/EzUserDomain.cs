@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
 
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Experience.Domain.Model.UserDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserDomain(
-            Gs2.Gs2Experience.Domain.Model.UserDomain domain
+            Gs2.Gs2Experience.Domain.Model.UserDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzStatusesIterator : Gs2Iterator<Gs2.Unity.Gs2Experience.Model.EzStatus>
@@ -128,7 +131,8 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
                 _domain.Status(
                     experienceName,
                     propertyId
-                )
+                ),
+                _profile
             );
         }
 

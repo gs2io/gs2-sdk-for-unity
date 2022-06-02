@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
 
     public partial class EzGatheringGameSessionDomain {
         private readonly Gs2.Gs2Matchmaking.Domain.Model.GatheringAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string GatheringName => _domain?.GatheringName;
 
         public EzGatheringGameSessionDomain(
-            Gs2.Gs2Matchmaking.Domain.Model.GatheringAccessTokenDomain domain
+            Gs2.Gs2Matchmaking.Domain.Model.GatheringAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -86,26 +89,37 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
               Gs2.Unity.Gs2Matchmaking.Model.EzAttributeRange[] attributeRanges = null
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.UpdateAsync(
-                new UpdateGatheringRequest()
-                    .WithAttributeRanges(attributeRanges?.Select(v => v.ToModel()).ToArray())
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.UpdateAsync(
+                        new UpdateGatheringRequest()
+                            .WithAttributeRanges(attributeRanges?.Select(v => v.ToModel()).ToArray())
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> self)
             {
                 var future = _domain.Update(
                     new UpdateGatheringRequest()
                         .WithAttributeRanges(attributeRanges?.Select(v => v.ToModel()).ToArray())
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain>(Impl);
         #endif
@@ -132,24 +146,35 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.CancelMatchmakingAsync(
-                new CancelMatchmakingRequest()
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.CancelMatchmakingAsync(
+                        new CancelMatchmakingRequest()
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> self)
             {
                 var future = _domain.CancelMatchmaking(
                     new CancelMatchmakingRequest()
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain>(Impl);
         #endif

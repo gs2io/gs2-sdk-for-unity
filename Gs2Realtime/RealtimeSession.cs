@@ -4,6 +4,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using System.Threading;
 #if GS2_ENABLE_UNITASK
@@ -42,6 +43,8 @@ namespace Gs2.Unity.Gs2Realtime
     [Preserve]
     public class RealtimeSession : IDisposable
     {
+        public static bool NotUseWaitForSeconds = false;
+
 #if UNITY_WEBGL && !UNITY_EDITOR
         protected readonly HybridWebSocket.WebSocket _webSocket;
 #else
@@ -719,7 +722,15 @@ namespace Gs2.Unity.Gs2Realtime
 #if DISABLE_COROUTINE
                     yield return null;
 #else
-                    yield return new WaitForSeconds(1);
+                    if (NotUseWaitForSeconds)
+                    {
+                        Thread.Sleep(1000);
+                        yield return null;
+                    }
+                    else
+                    {
+                        yield return new WaitForSeconds(1);
+                    }
 #endif
                 }
 
@@ -835,7 +846,15 @@ namespace Gs2.Unity.Gs2Realtime
 #if DISABLE_COROUTINE
                         yield return null;
 #else
-                        yield return new WaitForSeconds(1);
+                        if (NotUseWaitForSeconds)
+                        {
+                            Thread.Sleep(1000);
+                            yield return null;
+                        }
+                        else
+                        {
+                            yield return new WaitForSeconds(1);
+                        }
 #endif
                     }
                     
@@ -876,7 +895,15 @@ namespace Gs2.Unity.Gs2Realtime
 #if DISABLE_COROUTINE
                         yield return null;
 #else
-                        yield return new WaitForSeconds(1);
+                        if (NotUseWaitForSeconds)
+                        {
+                            Thread.Sleep(1000);
+                            yield return null;
+                        }
+                        else
+                        {
+                            yield return new WaitForSeconds(1);
+                        }
 #endif
                     }
 
@@ -1003,7 +1030,15 @@ namespace Gs2.Unity.Gs2Realtime
 #if DISABLE_COROUTINE
                 yield return null;
 #else
-                yield return new WaitForSeconds(1);
+                if (NotUseWaitForSeconds)
+                {
+                    Thread.Sleep(1000);
+                    yield return null;
+                }
+                else
+                {
+                    yield return new WaitForSeconds(1);
+                }
 #endif
             }
             
@@ -1058,7 +1093,14 @@ namespace Gs2.Unity.Gs2Realtime
 #if DISABLE_COROUTINE
                 yield return null;
 #else
-                yield return new WaitForSeconds(1);
+                if (NotUseWaitForSeconds)
+                {
+                    yield return null;
+                }
+                else
+                {
+                    yield return new WaitForSeconds(1);
+                }
 #endif
             }
 
@@ -1112,7 +1154,14 @@ namespace Gs2.Unity.Gs2Realtime
 #if DISABLE_COROUTINE
                     yield return null;
 #else
-                    yield return new WaitForSeconds(1);
+                    if (NotUseWaitForSeconds)
+                    {
+                        yield return null;
+                    }
+                    else
+                    {
+                        yield return new WaitForSeconds(1);
+                    }
 #endif
                 }
             }

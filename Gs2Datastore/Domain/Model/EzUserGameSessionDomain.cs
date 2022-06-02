@@ -52,6 +52,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
 
     public partial class EzUserGameSessionDomain {
         private readonly Gs2.Gs2Datastore.Domain.Model.UserAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string UploadUrl => _domain.UploadUrl;
         public string FileUrl => _domain.FileUrl;
         public long? ContentLength => _domain.ContentLength;
@@ -60,9 +61,11 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         public string UserId => _domain?.UserId;
 
         public EzUserGameSessionDomain(
-            Gs2.Gs2Datastore.Domain.Model.UserAccessTokenDomain domain
+            Gs2.Gs2Datastore.Domain.Model.UserAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -98,14 +101,21 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
               bool? updateIfExists = null
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.PrepareUploadAsync(
-                new PrepareUploadRequest()
-                    .WithName(name)
-                    .WithScope(scope)
-                    .WithAllowUserIds(allowUserIds)
-                    .WithUpdateIfExists(updateIfExists)
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.PrepareUploadAsync(
+                        new PrepareUploadRequest()
+                            .WithName(name)
+                            .WithScope(scope)
+                            .WithAllowUserIds(allowUserIds)
+                            .WithUpdateIfExists(updateIfExists)
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
             {
@@ -115,15 +125,19 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                         .WithScope(scope)
                         .WithAllowUserIds(allowUserIds)
                         .WithUpdateIfExists(updateIfExists)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain>(Impl);
         #endif
@@ -153,26 +167,37 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
               string dataObjectId
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.PrepareDownloadAsync(
-                new PrepareDownloadRequest()
-                    .WithDataObjectId(dataObjectId)
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.PrepareDownloadAsync(
+                        new PrepareDownloadRequest()
+                            .WithDataObjectId(dataObjectId)
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
             {
                 var future = _domain.PrepareDownload(
                     new PrepareDownloadRequest()
                         .WithDataObjectId(dataObjectId)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain>(Impl);
         #endif
@@ -242,7 +267,8 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             return new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain(
                 _domain.DataObject(
                     dataObjectName
-                )
+                ),
+                _profile
             );
         }
 

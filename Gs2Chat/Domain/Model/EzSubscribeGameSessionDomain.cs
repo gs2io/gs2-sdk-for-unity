@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
 
     public partial class EzSubscribeGameSessionDomain {
         private readonly Gs2.Gs2Chat.Domain.Model.SubscribeAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string RoomName => _domain?.RoomName;
 
         public EzSubscribeGameSessionDomain(
-            Gs2.Gs2Chat.Domain.Model.SubscribeAccessTokenDomain domain
+            Gs2.Gs2Chat.Domain.Model.SubscribeAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -86,26 +89,37 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
               Gs2.Unity.Gs2Chat.Model.EzNotificationType[] notificationTypes = null
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.SubscribeAsync(
-                new SubscribeRequest()
-                    .WithNotificationTypes(notificationTypes?.Select(v => v.ToModel()).ToArray())
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.SubscribeAsync(
+                        new SubscribeRequest()
+                            .WithNotificationTypes(notificationTypes?.Select(v => v.ToModel()).ToArray())
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> self)
             {
                 var future = _domain.Subscribe(
                     new SubscribeRequest()
                         .WithNotificationTypes(notificationTypes?.Select(v => v.ToModel()).ToArray())
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain>(Impl);
         #endif
@@ -135,26 +149,37 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
               Gs2.Unity.Gs2Chat.Model.EzNotificationType[] notificationTypes = null
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.UpdateNotificationTypeAsync(
-                new UpdateNotificationTypeRequest()
-                    .WithNotificationTypes(notificationTypes?.Select(v => v.ToModel()).ToArray())
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.UpdateNotificationTypeAsync(
+                        new UpdateNotificationTypeRequest()
+                            .WithNotificationTypes(notificationTypes?.Select(v => v.ToModel()).ToArray())
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> self)
             {
                 var future = _domain.UpdateNotificationType(
                     new UpdateNotificationTypeRequest()
                         .WithNotificationTypes(notificationTypes?.Select(v => v.ToModel()).ToArray())
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain>(Impl);
         #endif
@@ -181,24 +206,35 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.UnsubscribeAsync(
-                new UnsubscribeRequest()
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.UnsubscribeAsync(
+                        new UnsubscribeRequest()
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> self)
             {
                 var future = _domain.Unsubscribe(
                     new UnsubscribeRequest()
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain>(Impl);
         #endif

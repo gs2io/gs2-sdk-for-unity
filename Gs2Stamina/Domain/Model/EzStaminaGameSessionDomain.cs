@@ -52,15 +52,18 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
 
     public partial class EzStaminaGameSessionDomain {
         private readonly Gs2.Gs2Stamina.Domain.Model.StaminaAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public long? OverflowValue => _domain.OverflowValue;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string StaminaName => _domain?.StaminaName;
 
         public EzStaminaGameSessionDomain(
-            Gs2.Gs2Stamina.Domain.Model.StaminaAccessTokenDomain domain
+            Gs2.Gs2Stamina.Domain.Model.StaminaAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -87,26 +90,37 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
               int consumeValue
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.ConsumeAsync(
-                new ConsumeStaminaRequest()
-                    .WithConsumeValue(consumeValue)
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.ConsumeAsync(
+                        new ConsumeStaminaRequest()
+                            .WithConsumeValue(consumeValue)
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
             {
                 var future = _domain.Consume(
                     new ConsumeStaminaRequest()
                         .WithConsumeValue(consumeValue)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
         #endif

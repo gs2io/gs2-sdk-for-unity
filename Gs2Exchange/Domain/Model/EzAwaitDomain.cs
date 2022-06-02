@@ -52,6 +52,7 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
 
     public partial class EzAwaitDomain {
         private readonly Gs2.Gs2Exchange.Domain.Model.AwaitDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public long? UnlockAt => _domain.UnlockAt;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
@@ -59,9 +60,11 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         public string RateName => _domain?.RateName;
 
         public EzAwaitDomain(
-            Gs2.Gs2Exchange.Domain.Model.AwaitDomain domain
+            Gs2.Gs2Exchange.Domain.Model.AwaitDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

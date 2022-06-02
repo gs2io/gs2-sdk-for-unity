@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
     public partial class EzItemModelDomain {
         private readonly Gs2.Gs2Inventory.Domain.Model.ItemModelDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string InventoryName => _domain?.InventoryName;
         public string ItemName => _domain?.ItemName;
 
         public EzItemModelDomain(
-            Gs2.Gs2Inventory.Domain.Model.ItemModelDomain domain
+            Gs2.Gs2Inventory.Domain.Model.ItemModelDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

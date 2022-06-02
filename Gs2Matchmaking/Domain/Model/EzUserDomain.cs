@@ -52,15 +52,18 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
 
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Matchmaking.Domain.Model.UserDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NextPageToken => _domain.NextPageToken;
         public string MatchmakingContextToken => _domain.MatchmakingContextToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserDomain(
-            Gs2.Gs2Matchmaking.Domain.Model.UserDomain domain
+            Gs2.Gs2Matchmaking.Domain.Model.UserDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzGatheringsIterator : Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzGathering>
@@ -238,7 +241,8 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringDomain(
                 _domain.Gathering(
                     gatheringName
-                )
+                ),
+                _profile
             );
         }
 
@@ -254,7 +258,8 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     gatheringName,
                     numberOfPlayer,
                     keyId
-                )
+                ),
+                _profile
             );
         }
 
@@ -317,7 +322,8 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzRatingDomain(
                 _domain.Rating(
                     ratingName
-                )
+                ),
+                _profile
             );
         }
 

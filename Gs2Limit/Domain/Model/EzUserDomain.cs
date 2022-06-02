@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
 
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Limit.Domain.Model.UserDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserDomain(
-            Gs2.Gs2Limit.Domain.Model.UserDomain domain
+            Gs2.Gs2Limit.Domain.Model.UserDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzCountersIterator : Gs2Iterator<Gs2.Unity.Gs2Limit.Model.EzCounter>
@@ -128,7 +131,8 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
                 _domain.Counter(
                     limitName,
                     counterName
-                )
+                ),
+                _profile
             );
         }
 

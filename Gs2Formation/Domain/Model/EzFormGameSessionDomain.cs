@@ -52,6 +52,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
 
     public partial class EzFormGameSessionDomain {
         private readonly Gs2.Gs2Formation.Domain.Model.FormAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string Body => _domain.Body;
         public string Signature => _domain.Signature;
         public string NamespaceName => _domain?.NamespaceName;
@@ -60,9 +61,11 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         public int? Index => _domain?.Index;
 
         public EzFormGameSessionDomain(
-            Gs2.Gs2Formation.Domain.Model.FormAccessTokenDomain domain
+            Gs2.Gs2Formation.Domain.Model.FormAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -89,26 +92,37 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
               string keyId
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.GetWithSignatureAsync(
-                new GetFormWithSignatureRequest()
-                    .WithKeyId(keyId)
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.GetWithSignatureAsync(
+                        new GetFormWithSignatureRequest()
+                            .WithKeyId(keyId)
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> self)
             {
                 var future = _domain.GetWithSignature(
                     new GetFormWithSignatureRequest()
                         .WithKeyId(keyId)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain>(Impl);
         #endif
@@ -141,12 +155,19 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
               string keyId
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.SetWithSignatureAsync(
-                new SetFormWithSignatureRequest()
-                    .WithSlots(slots?.Select(v => v.ToModel()).ToArray())
-                    .WithKeyId(keyId)
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.SetWithSignatureAsync(
+                        new SetFormWithSignatureRequest()
+                            .WithSlots(slots?.Select(v => v.ToModel()).ToArray())
+                            .WithKeyId(keyId)
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> self)
             {
@@ -154,15 +175,19 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                     new SetFormWithSignatureRequest()
                         .WithSlots(slots?.Select(v => v.ToModel()).ToArray())
                         .WithKeyId(keyId)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain>(Impl);
         #endif

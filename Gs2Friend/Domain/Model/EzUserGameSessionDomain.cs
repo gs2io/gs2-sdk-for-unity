@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
 
     public partial class EzUserGameSessionDomain {
         private readonly Gs2.Gs2Friend.Domain.Model.UserAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserGameSessionDomain(
-            Gs2.Gs2Friend.Domain.Model.UserAccessTokenDomain domain
+            Gs2.Gs2Friend.Domain.Model.UserAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -86,26 +89,37 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
               string targetUserId
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.SendRequestAsync(
-                new SendRequestRequest()
-                    .WithTargetUserId(targetUserId)
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.SendRequestAsync(
+                        new SendRequestRequest()
+                            .WithTargetUserId(targetUserId)
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> self)
             {
                 var future = _domain.SendRequest(
                     new SendRequestRequest()
                         .WithTargetUserId(targetUserId)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain>(Impl);
         #endif
@@ -115,7 +129,8 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         ) {
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzProfileGameSessionDomain(
                 _domain.Profile(
-                )
+                ),
+                _profile
             );
         }
 
@@ -123,7 +138,8 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         ) {
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzPublicProfileGameSessionDomain(
                 _domain.PublicProfile(
-                )
+                ),
+                _profile
             );
         }
 
@@ -184,7 +200,8 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         ) {
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain(
                 _domain.BlackList(
-                )
+                ),
+                _profile
             );
         }
 
@@ -247,12 +264,15 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
 
         public Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain FollowUser(
-            string targetUserId
+            string targetUserId,
+            bool withProfile
         ) {
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain(
                 _domain.FollowUser(
-                    targetUserId
-                )
+                    targetUserId,
+                    withProfile
+                ),
+                _profile
             );
         }
 
@@ -320,7 +340,8 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendGameSessionDomain(
                 _domain.Friend(
                     withProfile
-                )
+                ),
+                _profile
             );
         }
 
@@ -383,7 +404,8 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain(
                 _domain.SendFriendRequest(
                     targetUserId
-                )
+                ),
+                _profile
             );
         }
 
@@ -446,7 +468,8 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzReceiveFriendRequestGameSessionDomain(
                 _domain.ReceiveFriendRequest(
                     fromUserId
-                )
+                ),
+                _profile
             );
         }
 

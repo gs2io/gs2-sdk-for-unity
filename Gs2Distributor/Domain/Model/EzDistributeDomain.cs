@@ -52,6 +52,7 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
 
     public partial class EzDistributeDomain {
         private readonly Gs2.Gs2Distributor.Domain.Model.DistributeDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string InboxNamespaceId => _domain.InboxNamespaceId;
         public string Result => _domain.Result;
         public string ContextStack => _domain.ContextStack;
@@ -60,9 +61,11 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
         public string NamespaceName => _domain?.NamespaceName;
 
         public EzDistributeDomain(
-            Gs2.Gs2Distributor.Domain.Model.DistributeDomain domain
+            Gs2.Gs2Distributor.Domain.Model.DistributeDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
     }

@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
 
     public partial class EzTakeOverDomain {
         private readonly Gs2.Gs2Account.Domain.Model.TakeOverDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public int? Type => _domain?.Type;
 
         public EzTakeOverDomain(
-            Gs2.Gs2Account.Domain.Model.TakeOverDomain domain
+            Gs2.Gs2Account.Domain.Model.TakeOverDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

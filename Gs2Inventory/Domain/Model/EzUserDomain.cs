@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Inventory.Domain.Model.UserDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserDomain(
-            Gs2.Gs2Inventory.Domain.Model.UserDomain domain
+            Gs2.Gs2Inventory.Domain.Model.UserDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzInventoriesIterator : Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzInventory>
@@ -121,7 +124,8 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             return new Gs2.Unity.Gs2Inventory.Domain.Model.EzInventoryDomain(
                 _domain.Inventory(
                     inventoryName
-                )
+                ),
+                _profile
             );
         }
 

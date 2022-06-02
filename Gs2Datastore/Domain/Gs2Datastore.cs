@@ -55,11 +55,14 @@ namespace Gs2.Unity.Gs2Datastore.Domain
 
     public class Gs2Datastore {
         private readonly Gs2.Gs2Datastore.Domain.Gs2Datastore _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
 
         public Gs2Datastore(
-            Gs2.Gs2Datastore.Domain.Gs2Datastore domain
+            Gs2.Gs2Datastore.Domain.Gs2Datastore domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public Gs2.Unity.Gs2Datastore.Domain.Model.EzNamespaceDomain Namespace(
@@ -68,7 +71,8 @@ namespace Gs2.Unity.Gs2Datastore.Domain
             return new Gs2.Unity.Gs2Datastore.Domain.Model.EzNamespaceDomain(
                 _domain.Namespace(
                     namespaceName
-                )
+                ),
+                _profile
             );
         }
     }

@@ -52,13 +52,16 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
 
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Showcase.Domain.Model.UserDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserDomain(
-            Gs2.Gs2Showcase.Domain.Model.UserDomain domain
+            Gs2.Gs2Showcase.Domain.Model.UserDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzShowcasesIterator : Gs2Iterator<Gs2.Unity.Gs2Showcase.Model.EzShowcase>
@@ -120,7 +123,8 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
             return new Gs2.Unity.Gs2Showcase.Domain.Model.EzShowcaseDomain(
                 _domain.Showcase(
                     showcaseName
-                )
+                ),
+                _profile
             );
         }
 

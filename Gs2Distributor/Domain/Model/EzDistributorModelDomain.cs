@@ -52,13 +52,16 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
 
     public partial class EzDistributorModelDomain {
         private readonly Gs2.Gs2Distributor.Domain.Model.DistributorModelDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string DistributorName => _domain?.DistributorName;
 
         public EzDistributorModelDomain(
-            Gs2.Gs2Distributor.Domain.Model.DistributorModelDomain domain
+            Gs2.Gs2Distributor.Domain.Model.DistributorModelDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

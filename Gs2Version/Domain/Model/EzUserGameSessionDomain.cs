@@ -52,6 +52,7 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
 
     public partial class EzUserGameSessionDomain {
         private readonly Gs2.Gs2Version.Domain.Model.UserAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string Body => _domain.Body;
         public string Signature => _domain.Signature;
         public string NextPageToken => _domain.NextPageToken;
@@ -59,9 +60,11 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
         public string UserId => _domain?.UserId;
 
         public EzUserGameSessionDomain(
-            Gs2.Gs2Version.Domain.Model.UserAccessTokenDomain domain
+            Gs2.Gs2Version.Domain.Model.UserAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzAcceptVersionsIterator : Gs2Iterator<Gs2.Unity.Gs2Version.Model.EzAcceptVersion>
@@ -123,7 +126,8 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
             return new Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain(
                 _domain.AcceptVersion(
                     versionName
-                )
+                ),
+                _profile
             );
         }
 

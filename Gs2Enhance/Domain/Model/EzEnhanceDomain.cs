@@ -52,15 +52,18 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
 
     public partial class EzEnhanceDomain {
         private readonly Gs2.Gs2Enhance.Domain.Model.EnhanceDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public long? AcquireExperience => _domain.AcquireExperience;
         public float? BonusRate => _domain.BonusRate;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzEnhanceDomain(
-            Gs2.Gs2Enhance.Domain.Model.EnhanceDomain domain
+            Gs2.Gs2Enhance.Domain.Model.EnhanceDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
     }

@@ -52,15 +52,18 @@ namespace Gs2.Unity.Gs2Money.Domain.Model
 
     public partial class EzWalletDomain {
         private readonly Gs2.Gs2Money.Domain.Model.WalletDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public float? Price => _domain.Price;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public int? Slot => _domain?.Slot;
 
         public EzWalletDomain(
-            Gs2.Gs2Money.Domain.Model.WalletDomain domain
+            Gs2.Gs2Money.Domain.Model.WalletDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

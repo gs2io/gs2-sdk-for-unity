@@ -52,13 +52,16 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
 
     public partial class EzRateModelDomain {
         private readonly Gs2.Gs2Exchange.Domain.Model.RateModelDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string RateName => _domain?.RateName;
 
         public EzRateModelDomain(
-            Gs2.Gs2Exchange.Domain.Model.RateModelDomain domain
+            Gs2.Gs2Exchange.Domain.Model.RateModelDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

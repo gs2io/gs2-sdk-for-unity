@@ -52,6 +52,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
 
     public partial class EzFormDomain {
         private readonly Gs2.Gs2Formation.Domain.Model.FormDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string Body => _domain.Body;
         public string Signature => _domain.Signature;
         public string NamespaceName => _domain?.NamespaceName;
@@ -60,9 +61,11 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         public int? Index => _domain?.Index;
 
         public EzFormDomain(
-            Gs2.Gs2Formation.Domain.Model.FormDomain domain
+            Gs2.Gs2Formation.Domain.Model.FormDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

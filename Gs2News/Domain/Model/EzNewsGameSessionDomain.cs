@@ -52,15 +52,18 @@ namespace Gs2.Unity.Gs2News.Domain.Model
 
     public partial class EzNewsGameSessionDomain {
         private readonly Gs2.Gs2News.Domain.Model.NewsAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string BrowserUrl => _domain.BrowserUrl;
         public string ZipUrl => _domain.ZipUrl;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzNewsGameSessionDomain(
-            Gs2.Gs2News.Domain.Model.NewsAccessTokenDomain domain
+            Gs2.Gs2News.Domain.Model.NewsAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -84,24 +87,35 @@ namespace Gs2.Unity.Gs2News.Domain.Model
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.WantGrantAsync(
-                new WantGrantRequest()
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.WantGrantAsync(
+                        new WantGrantRequest()
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return result.Select(v => new Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain(v)).ToArray();
+            return result.Select(v => new Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain(v, _profile)).ToArray();
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]> self)
             {
                 var future = _domain.WantGrant(
                     new WantGrantRequest()
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(result.Select(v => new Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain(v)).ToArray());
+                self.OnComplete(result.Select(v => new Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain(v, _profile)).ToArray());
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]>(Impl);
         #endif

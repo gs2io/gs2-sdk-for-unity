@@ -52,22 +52,27 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
 
     public partial class EzRankingDomain {
         private readonly Gs2.Gs2Ranking.Domain.Model.RankingDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string CategoryName => _domain?.CategoryName;
 
         public EzRankingDomain(
-            Gs2.Gs2Ranking.Domain.Model.RankingDomain domain
+            Gs2.Gs2Ranking.Domain.Model.RankingDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> Model()
+        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> Model(
+            string scorerUserId
+        )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Model.EzRanking> self)
             {
-                yield return ModelAsync().ToCoroutine(
+                yield return ModelAsync(scorerUserId).ToCoroutine(
                     self.OnComplete,
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
@@ -75,9 +80,11 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2Ranking.Model.EzRanking> ModelAsync()
+        public async UniTask<Gs2.Unity.Gs2Ranking.Model.EzRanking> ModelAsync(
+            string scorerUserId
+        )
         {
-            var item = await _domain.Model();
+            var item = await _domain.Model(scorerUserId);
             if (item == null) {
                 return null;
             }

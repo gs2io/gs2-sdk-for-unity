@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
 
     public partial class EzMessageGameSessionDomain {
         private readonly Gs2.Gs2Inbox.Domain.Model.MessageAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string MessageName => _domain?.MessageName;
 
         public EzMessageGameSessionDomain(
-            Gs2.Gs2Inbox.Domain.Model.MessageAccessTokenDomain domain
+            Gs2.Gs2Inbox.Domain.Model.MessageAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -83,24 +86,35 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.ReadAsync(
-                new ReadMessageRequest()
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.ReadAsync(
+                        new ReadMessageRequest()
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> self)
             {
                 var future = _domain.Read(
                     new ReadMessageRequest()
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain>(Impl);
         #endif
@@ -127,24 +141,35 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.DeleteAsync(
-                new DeleteMessageRequest()
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.DeleteAsync(
+                        new DeleteMessageRequest()
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> self)
             {
                 var future = _domain.Delete(
                     new DeleteMessageRequest()
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain>(Impl);
         #endif

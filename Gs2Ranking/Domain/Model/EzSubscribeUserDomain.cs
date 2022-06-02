@@ -52,15 +52,18 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
 
     public partial class EzSubscribeUserDomain {
         private readonly Gs2.Gs2Ranking.Domain.Model.SubscribeUserDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string CategoryName => _domain?.CategoryName;
         public string TargetUserId => _domain?.TargetUserId;
 
         public EzSubscribeUserDomain(
-            Gs2.Gs2Ranking.Domain.Model.SubscribeUserDomain domain
+            Gs2.Gs2Ranking.Domain.Model.SubscribeUserDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

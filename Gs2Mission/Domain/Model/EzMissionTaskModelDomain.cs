@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
 
     public partial class EzMissionTaskModelDomain {
         private readonly Gs2.Gs2Mission.Domain.Model.MissionTaskModelDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string MissionGroupName => _domain?.MissionGroupName;
         public string MissionTaskName => _domain?.MissionTaskName;
 
         public EzMissionTaskModelDomain(
-            Gs2.Gs2Mission.Domain.Model.MissionTaskModelDomain domain
+            Gs2.Gs2Mission.Domain.Model.MissionTaskModelDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

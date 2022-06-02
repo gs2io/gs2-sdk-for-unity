@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
 
     public partial class EzRankingGameSessionDomain {
         private readonly Gs2.Gs2Ranking.Domain.Model.RankingAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string CategoryName => _domain?.CategoryName;
 
         public EzRankingGameSessionDomain(
-            Gs2.Gs2Ranking.Domain.Model.RankingAccessTokenDomain domain
+            Gs2.Gs2Ranking.Domain.Model.RankingAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -89,12 +92,19 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
               string metadata = null
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.PutScoreAsync(
-                new PutScoreRequest()
-                    .WithScore(score)
-                    .WithMetadata(metadata)
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.PutScoreAsync(
+                        new PutScoreRequest()
+                            .WithScore(score)
+                            .WithMetadata(metadata)
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain> self)
             {
@@ -102,26 +112,32 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                     new PutScoreRequest()
                         .WithScore(score)
                         .WithMetadata(metadata)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain>(Impl);
         #endif
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> Model()
+        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> Model(
+            string scorerUserId
+        )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Model.EzRanking> self)
             {
-                yield return ModelAsync().ToCoroutine(
+                yield return ModelAsync(scorerUserId).ToCoroutine(
                     self.OnComplete,
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
@@ -129,9 +145,11 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2Ranking.Model.EzRanking> ModelAsync()
+        public async UniTask<Gs2.Unity.Gs2Ranking.Model.EzRanking> ModelAsync(
+            string scorerUserId
+        )
         {
-            var item = await _domain.Model();
+            var item = await _domain.Model(scorerUserId);
             if (item == null) {
                 return null;
             }

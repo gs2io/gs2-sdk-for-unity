@@ -52,15 +52,18 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
 
     public partial class EzDataObjectHistoryDomain {
         private readonly Gs2.Gs2Datastore.Domain.Model.DataObjectHistoryDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string DataObjectName => _domain?.DataObjectName;
         public string Generation => _domain?.Generation;
 
         public EzDataObjectHistoryDomain(
-            Gs2.Gs2Datastore.Domain.Model.DataObjectHistoryDomain domain
+            Gs2.Gs2Datastore.Domain.Model.DataObjectHistoryDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

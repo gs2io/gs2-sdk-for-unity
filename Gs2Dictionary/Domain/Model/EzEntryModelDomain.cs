@@ -52,13 +52,16 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
 
     public partial class EzEntryModelDomain {
         private readonly Gs2.Gs2Dictionary.Domain.Model.EntryModelDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string EntryName => _domain?.EntryName;
 
         public EzEntryModelDomain(
-            Gs2.Gs2Dictionary.Domain.Model.EntryModelDomain domain
+            Gs2.Gs2Dictionary.Domain.Model.EntryModelDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

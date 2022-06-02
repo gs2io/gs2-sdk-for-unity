@@ -52,6 +52,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
     public partial class EzInventoryDomain {
         private readonly Gs2.Gs2Inventory.Domain.Model.InventoryDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public long? OverflowCount => _domain.OverflowCount;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
@@ -59,9 +60,11 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         public string InventoryName => _domain?.InventoryName;
 
         public EzInventoryDomain(
-            Gs2.Gs2Inventory.Domain.Model.InventoryDomain domain
+            Gs2.Gs2Inventory.Domain.Model.InventoryDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzItemSetsIterator : Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzItemSet>
@@ -125,7 +128,8 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
                 _domain.ItemSet(
                     itemName,
                     itemSetName
-                )
+                ),
+                _profile
             );
         }
 

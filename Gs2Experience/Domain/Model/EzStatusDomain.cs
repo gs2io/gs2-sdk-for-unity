@@ -52,6 +52,7 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
 
     public partial class EzStatusDomain {
         private readonly Gs2.Gs2Experience.Domain.Model.StatusDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string Body => _domain.Body;
         public string Signature => _domain.Signature;
         public string NamespaceName => _domain?.NamespaceName;
@@ -60,9 +61,11 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
         public string PropertyId => _domain?.PropertyId;
 
         public EzStatusDomain(
-            Gs2.Gs2Experience.Domain.Model.StatusDomain domain
+            Gs2.Gs2Experience.Domain.Model.StatusDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK

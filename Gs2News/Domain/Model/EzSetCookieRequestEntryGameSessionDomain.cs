@@ -23,11 +23,14 @@ namespace Gs2.Unity.Gs2News.Domain.Model
     public partial class EzSetCookieRequestEntryGameSessionDomain {
 
         private Gs2.Gs2News.Domain.Model.SetCookieRequestEntryAccessTokenDomain _domain;
-
+        private readonly Gs2.Unity.Util.Profile _profile;
+        
         public EzSetCookieRequestEntryGameSessionDomain(
-            Gs2.Gs2News.Domain.Model.SetCookieRequestEntryAccessTokenDomain domain
+            Gs2.Gs2News.Domain.Model.SetCookieRequestEntryAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             _domain = domain;
+            this._profile = profile;
         }
     }
 }

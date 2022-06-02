@@ -52,15 +52,18 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
 
     public partial class EzEnhanceGameSessionDomain {
         private readonly Gs2.Gs2Enhance.Domain.Model.EnhanceAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public long? AcquireExperience => _domain.AcquireExperience;
         public float? BonusRate => _domain.BonusRate;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzEnhanceGameSessionDomain(
-            Gs2.Gs2Enhance.Domain.Model.EnhanceAccessTokenDomain domain
+            Gs2.Gs2Enhance.Domain.Model.EnhanceAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -96,14 +99,21 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
               Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.DirectAsync(
-                new DirectEnhanceRequest()
-                    .WithRateName(rateName)
-                    .WithTargetItemSetId(targetItemSetId)
-                    .WithMaterials(materials?.Select(v => v.ToModel()).ToArray())
-                    .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.DirectAsync(
+                        new DirectEnhanceRequest()
+                            .WithRateName(rateName)
+                            .WithTargetItemSetId(targetItemSetId)
+                            .WithMaterials(materials?.Select(v => v.ToModel()).ToArray())
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain(result);
+            return new Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain> self)
             {
@@ -113,15 +123,19 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
                         .WithTargetItemSetId(targetItemSetId)
                         .WithMaterials(materials?.Select(v => v.ToModel()).ToArray())
                         .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain>(Impl);
         #endif

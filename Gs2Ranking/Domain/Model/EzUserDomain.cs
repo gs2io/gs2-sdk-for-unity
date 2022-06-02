@@ -52,15 +52,18 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
 
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Ranking.Domain.Model.UserDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NextPageToken => _domain.NextPageToken;
         public bool? Processing => _domain.Processing;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserDomain(
-            Gs2.Gs2Ranking.Domain.Model.UserDomain domain
+            Gs2.Gs2Ranking.Domain.Model.UserDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public class EzSubscribesByCategoryNameIterator : Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser>
@@ -129,7 +132,8 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 _domain.SubscribeUser(
                     categoryName,
                     targetUserId
-                )
+                ),
+                _profile
             );
         }
 
@@ -260,7 +264,8 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             return new Gs2.Unity.Gs2Ranking.Domain.Model.EzRankingDomain(
                 _domain.Ranking(
                     categoryName
-                )
+                ),
+                _profile
             );
         }
 
@@ -337,7 +342,8 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                     categoryName,
                     scorerUserId,
                     uniqueId
-                )
+                ),
+                _profile
             );
         }
 

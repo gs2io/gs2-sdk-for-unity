@@ -52,14 +52,17 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
 
     public partial class EzNamespaceDomain {
         private readonly Gs2.Gs2Account.Domain.Model.NamespaceDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string Status => _domain.Status;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
 
         public EzNamespaceDomain(
-            Gs2.Gs2Account.Domain.Model.NamespaceDomain domain
+            Gs2.Gs2Account.Domain.Model.NamespaceDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -83,24 +86,33 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.CreateAccountAsync(
-                new CreateAccountRequest()
+            var result = await _profile.RunAsync(
+                null,
+                async () =>
+                {
+                    return await _domain.CreateAccountAsync(
+                        new CreateAccountRequest()
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(result);
+            return new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
             {
                 var future = _domain.CreateAccount(
                     new CreateAccountRequest()
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    null,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
         #endif
@@ -136,13 +148,19 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
               string password
         ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _domain.DoTakeOverAsync(
-                new DoTakeOverRequest()
-                    .WithType(type)
-                    .WithUserIdentifier(userIdentifier)
-                    .WithPassword(password)
+            var result = await _profile.RunAsync(
+                null,
+                async () =>
+                {
+                    return await _domain.DoTakeOverAsync(
+                        new DoTakeOverRequest()
+                            .WithType(type)
+                            .WithUserIdentifier(userIdentifier)
+                            .WithPassword(password)
+                    );
+                }
             );
-            return new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(result);
+            return new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(result, _profile);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
             {
@@ -152,14 +170,17 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                         .WithUserIdentifier(userIdentifier)
                         .WithPassword(password)
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    null,
+                    future
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(result));
+                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
         #endif
@@ -224,7 +245,8 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             return new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(
                 _domain.Account(
                     userId
-                )
+                ),
+                _profile
             );
         }
 
@@ -234,7 +256,8 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             return new EzAccountGameSessionDomain(
                 _domain.AccessToken(
                     gameSession.AccessToken
-                )
+                ),
+                _profile
             );
         }
 

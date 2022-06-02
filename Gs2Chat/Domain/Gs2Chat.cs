@@ -55,11 +55,14 @@ namespace Gs2.Unity.Gs2Chat.Domain
 
     public class Gs2Chat {
         private readonly Gs2.Gs2Chat.Domain.Gs2Chat _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
 
         public Gs2Chat(
-            Gs2.Gs2Chat.Domain.Gs2Chat domain
+            Gs2.Gs2Chat.Domain.Gs2Chat domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public Gs2.Unity.Gs2Chat.Domain.Model.EzNamespaceDomain Namespace(
@@ -68,7 +71,8 @@ namespace Gs2.Unity.Gs2Chat.Domain
             return new Gs2.Unity.Gs2Chat.Domain.Model.EzNamespaceDomain(
                 _domain.Namespace(
                     namespaceName
-                )
+                ),
+                _profile
             );
         }
 

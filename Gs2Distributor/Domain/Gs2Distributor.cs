@@ -55,11 +55,14 @@ namespace Gs2.Unity.Gs2Distributor.Domain
 
     public class Gs2Distributor {
         private readonly Gs2.Gs2Distributor.Domain.Gs2Distributor _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
 
         public Gs2Distributor(
-            Gs2.Gs2Distributor.Domain.Gs2Distributor domain
+            Gs2.Gs2Distributor.Domain.Gs2Distributor domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         public Gs2.Unity.Gs2Distributor.Domain.Model.EzNamespaceDomain Namespace(
@@ -68,7 +71,8 @@ namespace Gs2.Unity.Gs2Distributor.Domain
             return new Gs2.Unity.Gs2Distributor.Domain.Model.EzNamespaceDomain(
                 _domain.Namespace(
                     namespaceName
-                )
+                ),
+                _profile
             );
         }
     }
