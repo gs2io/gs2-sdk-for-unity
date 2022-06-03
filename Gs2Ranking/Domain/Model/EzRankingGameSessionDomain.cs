@@ -158,11 +158,13 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> Model()
+        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> Model(
+            string scorerUserId
+        )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Model.EzRanking> self)
             {
-                var future = _domain.Model();
+                var future = _domain.Model(scorerUserId);
                 yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);

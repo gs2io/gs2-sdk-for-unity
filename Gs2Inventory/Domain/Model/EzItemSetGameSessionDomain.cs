@@ -214,9 +214,9 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             return item.Select(Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel).ToArray();
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Inventory.Model.EzItemSet> Model()
+        public IFuture<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]> Model()
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Model.EzItemSet> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]> self)
             {
                 var future = _domain.Model();
                 yield return future;
@@ -229,11 +229,9 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
                     self.OnComplete(null);
                     yield break;
                 }
-                self.OnComplete(Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel(
-                    item
-                ));
+                self.OnComplete(item.Select(Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel).ToArray());
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Inventory.Model.EzItemSet>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]>(Impl);
         }
         #endif
 
