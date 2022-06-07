@@ -137,7 +137,32 @@ namespace Gs2.Unity.Util
         }
 
 #endif
-        
+
+        public Gs2Future<GameSession> LoginFuture(
+            IAuthenticator authenticator
+        )
+        {
+            _authenticator = authenticator;
+            
+            IEnumerator Impl(Gs2Future<GameSession> self)
+            {
+                yield return authenticator.Authentication(
+                    r =>
+                    {
+                        if (r.Error != null)
+                        {
+                            self.OnError(r.Error);
+                        }
+                        else
+                        {
+                            self.OnComplete(new GameSession(r.Result));
+                        }
+                    }
+                );
+            }
+            return new Gs2InlineFuture<GameSession>(Impl);
+        }
+
         public IEnumerator Login(
             IAuthenticator authenticator,
             UnityAction<AsyncResult<GameSession>> callback

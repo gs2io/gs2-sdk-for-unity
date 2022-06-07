@@ -33,16 +33,22 @@ namespace Gs2.Unity.Gs2Inbox.Result
 		[SerializeField]
 		public Gs2.Unity.Gs2Inbox.Model.EzMessage Item;
 		[SerializeField]
+		public string TransactionId;
+		[SerializeField]
 		public string StampSheet;
 		[SerializeField]
 		public string StampSheetEncryptionKeyId;
+		[SerializeField]
+		public bool AutoRunStampSheet;
 
         public static EzReadResult FromModel(Gs2.Gs2Inbox.Result.ReadMessageResult model)
         {
             return new EzReadResult {
                 Item = model.Item == null ? null : Gs2.Unity.Gs2Inbox.Model.EzMessage.FromModel(model.Item),
+                TransactionId = model.TransactionId == null ? null : model.TransactionId,
                 StampSheet = model.StampSheet == null ? null : model.StampSheet,
                 StampSheetEncryptionKeyId = model.StampSheetEncryptionKeyId == null ? null : model.StampSheetEncryptionKeyId,
+                AutoRunStampSheet = model.AutoRunStampSheet ?? false,
             };
         }
     }

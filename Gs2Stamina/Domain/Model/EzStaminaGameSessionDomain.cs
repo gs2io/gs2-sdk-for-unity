@@ -141,7 +141,13 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Stamina.Model.EzStamina> ModelAsync()
         {
-            var item = await _domain.Model();
+            var item = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.Model();
+                }
+            );
             if (item == null) {
                 return null;
             }
@@ -155,7 +161,10 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Model.EzStamina> self)
             {
                 var future = _domain.Model();
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;

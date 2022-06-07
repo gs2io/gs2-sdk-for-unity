@@ -75,5 +75,11 @@ namespace Gs2.Unity.Gs2Distributor.Domain
                 _profile
             );
         }
+
+        public event UnityAction<AutoRunStampSheetNotification> OnAutoRunStampSheetNotification
+        {
+            add => _domain.OnAutoRunStampSheetNotification += value;
+            remove => _domain.OnAutoRunStampSheetNotification -= value;
+        }
     }
 }

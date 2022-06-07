@@ -109,7 +109,7 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Lottery.Model.EzBoxItems()); // TODO:
+                self.OnComplete(new Gs2.Unity.Gs2Lottery.Model.EzBoxItems());
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Lottery.Model.EzBoxItems>(Impl);
         #endif
@@ -289,7 +289,8 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
             return new Gs2.Unity.Gs2Lottery.Domain.Model.EzBoxGameSessionDomain(
                 _domain.Box(
                     prizeTableName
-                )
+                ),
+                _profile
             );
         }
 

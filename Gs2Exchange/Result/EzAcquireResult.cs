@@ -33,16 +33,22 @@ namespace Gs2.Unity.Gs2Exchange.Result
 		[SerializeField]
 		public Gs2.Unity.Gs2Exchange.Model.EzAwait Item;
 		[SerializeField]
+		public string TransactionId;
+		[SerializeField]
 		public string StampSheet;
 		[SerializeField]
 		public string StampSheetEncryptionKeyId;
+		[SerializeField]
+		public bool AutoRunStampSheet;
 
         public static EzAcquireResult FromModel(Gs2.Gs2Exchange.Result.AcquireResult model)
         {
             return new EzAcquireResult {
                 Item = model.Item == null ? null : Gs2.Unity.Gs2Exchange.Model.EzAwait.FromModel(model.Item),
+                TransactionId = model.TransactionId == null ? null : model.TransactionId,
                 StampSheet = model.StampSheet == null ? null : model.StampSheet,
                 StampSheetEncryptionKeyId = model.StampSheetEncryptionKeyId == null ? null : model.StampSheetEncryptionKeyId,
+                AutoRunStampSheet = model.AutoRunStampSheet ?? false,
             };
         }
     }

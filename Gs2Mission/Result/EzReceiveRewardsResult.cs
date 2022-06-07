@@ -31,15 +31,21 @@ namespace Gs2.Unity.Gs2Mission.Result
 	public class EzReceiveRewardsResult
 	{
 		[SerializeField]
+		public string TransactionId;
+		[SerializeField]
 		public string StampSheet;
 		[SerializeField]
 		public string StampSheetEncryptionKeyId;
+		[SerializeField]
+		public bool AutoRunStampSheet;
 
         public static EzReceiveRewardsResult FromModel(Gs2.Gs2Mission.Result.CompleteResult model)
         {
             return new EzReceiveRewardsResult {
+                TransactionId = model.TransactionId == null ? null : model.TransactionId,
                 StampSheet = model.StampSheet == null ? null : model.StampSheet,
                 StampSheetEncryptionKeyId = model.StampSheetEncryptionKeyId == null ? null : model.StampSheetEncryptionKeyId,
+                AutoRunStampSheet = model.AutoRunStampSheet ?? false,
             };
         }
     }

@@ -262,5 +262,29 @@ namespace Gs2.Unity.Gs2Distributor
                 )
             );
 		}
+
+        public IEnumerator GetStampSheetResult(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzGetStampSheetResultResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string transactionId
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.GetStampSheetResult(
+                    new Gs2.Gs2Distributor.Request.GetStampSheetResultRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithTransactionId(transactionId),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzGetStampSheetResultResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Distributor.Result.EzGetStampSheetResultResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
     }
 }

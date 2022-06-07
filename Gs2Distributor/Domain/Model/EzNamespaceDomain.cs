@@ -133,5 +133,27 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
             );
         }
 
+        public Gs2.Unity.Gs2Distributor.Domain.Model.EzUserDomain User(
+            string userId
+        ) {
+            return new Gs2.Unity.Gs2Distributor.Domain.Model.EzUserDomain(
+                _domain.User(
+                    userId
+                ),
+                _profile
+            );
+        }
+
+        public EzUserGameSessionDomain Me(
+            Gs2.Unity.Util.GameSession gameSession
+        ) {
+            return new EzUserGameSessionDomain(
+                _domain.AccessToken(
+                    gameSession.AccessToken
+                ),
+                _profile
+            );
+        }
+
     }
 }

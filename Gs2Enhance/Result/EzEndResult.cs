@@ -33,9 +33,13 @@ namespace Gs2.Unity.Gs2Enhance.Result
 		[SerializeField]
 		public Gs2.Unity.Gs2Enhance.Model.EzProgress Item;
 		[SerializeField]
+		public string TransactionId;
+		[SerializeField]
 		public string StampSheet;
 		[SerializeField]
 		public string StampSheetEncryptionKeyId;
+		[SerializeField]
+		public bool AutoRunStampSheet;
 		[SerializeField]
 		public long AcquireExperience;
 		[SerializeField]
@@ -45,8 +49,10 @@ namespace Gs2.Unity.Gs2Enhance.Result
         {
             return new EzEndResult {
                 Item = model.Item == null ? null : Gs2.Unity.Gs2Enhance.Model.EzProgress.FromModel(model.Item),
+                TransactionId = model.TransactionId == null ? null : model.TransactionId,
                 StampSheet = model.StampSheet == null ? null : model.StampSheet,
                 StampSheetEncryptionKeyId = model.StampSheetEncryptionKeyId == null ? null : model.StampSheetEncryptionKeyId,
+                AutoRunStampSheet = model.AutoRunStampSheet ?? false,
                 AcquireExperience = model.AcquireExperience ?? 0,
                 BonusRate = model.BonusRate ?? 0,
             };

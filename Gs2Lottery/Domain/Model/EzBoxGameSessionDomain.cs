@@ -54,14 +54,17 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
 
     public partial class EzBoxGameSessionDomain {
         private readonly Gs2.Gs2Lottery.Domain.Model.BoxAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string PrizeTableName => _domain?.PrizeTableName;
 
         public EzBoxGameSessionDomain(
-            Gs2.Gs2Lottery.Domain.Model.BoxAccessTokenDomain domain
+            Gs2.Gs2Lottery.Domain.Model.BoxAccessTokenDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -79,7 +82,13 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> ModelAsync()
         {
-            var item = await _domain.Model();
+            var item = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.Model();
+                }
+            );
             if (item == null) {
                 return null;
             }
@@ -93,7 +102,10 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> self)
             {
                 var future = _domain.Model();
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future
+                );
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;

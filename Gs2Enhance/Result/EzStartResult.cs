@@ -31,15 +31,21 @@ namespace Gs2.Unity.Gs2Enhance.Result
 	public class EzStartResult
 	{
 		[SerializeField]
+		public string TransactionId;
+		[SerializeField]
 		public string StampSheet;
 		[SerializeField]
 		public string StampSheetEncryptionKeyId;
+		[SerializeField]
+		public bool AutoRunStampSheet;
 
         public static EzStartResult FromModel(Gs2.Gs2Enhance.Result.StartResult model)
         {
             return new EzStartResult {
+                TransactionId = model.TransactionId == null ? null : model.TransactionId,
                 StampSheet = model.StampSheet == null ? null : model.StampSheet,
                 StampSheetEncryptionKeyId = model.StampSheetEncryptionKeyId == null ? null : model.StampSheetEncryptionKeyId,
+                AutoRunStampSheet = model.AutoRunStampSheet ?? false,
             };
         }
     }

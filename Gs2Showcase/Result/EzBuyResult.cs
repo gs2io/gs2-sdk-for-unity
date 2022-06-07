@@ -33,16 +33,22 @@ namespace Gs2.Unity.Gs2Showcase.Result
 		[SerializeField]
 		public Gs2.Unity.Gs2Showcase.Model.EzSalesItem Item;
 		[SerializeField]
+		public string TransactionId;
+		[SerializeField]
 		public string StampSheet;
 		[SerializeField]
 		public string StampSheetEncryptionKeyId;
+		[SerializeField]
+		public bool AutoRunStampSheet;
 
         public static EzBuyResult FromModel(Gs2.Gs2Showcase.Result.BuyResult model)
         {
             return new EzBuyResult {
                 Item = model.Item == null ? null : Gs2.Unity.Gs2Showcase.Model.EzSalesItem.FromModel(model.Item),
+                TransactionId = model.TransactionId == null ? null : model.TransactionId,
                 StampSheet = model.StampSheet == null ? null : model.StampSheet,
                 StampSheetEncryptionKeyId = model.StampSheetEncryptionKeyId == null ? null : model.StampSheetEncryptionKeyId,
+                AutoRunStampSheet = model.AutoRunStampSheet ?? false,
             };
         }
     }

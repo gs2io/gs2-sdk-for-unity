@@ -33,16 +33,22 @@ namespace Gs2.Unity.Gs2Quest.Result
 		[SerializeField]
 		public Gs2.Unity.Gs2Quest.Model.EzProgress Item;
 		[SerializeField]
+		public string TransactionId;
+		[SerializeField]
 		public string StampSheet;
 		[SerializeField]
 		public string StampSheetEncryptionKeyId;
+		[SerializeField]
+		public bool AutoRunStampSheet;
 
         public static EzEndResult FromModel(Gs2.Gs2Quest.Result.EndResult model)
         {
             return new EzEndResult {
                 Item = model.Item == null ? null : Gs2.Unity.Gs2Quest.Model.EzProgress.FromModel(model.Item),
+                TransactionId = model.TransactionId == null ? null : model.TransactionId,
                 StampSheet = model.StampSheet == null ? null : model.StampSheet,
                 StampSheetEncryptionKeyId = model.StampSheetEncryptionKeyId == null ? null : model.StampSheetEncryptionKeyId,
+                AutoRunStampSheet = model.AutoRunStampSheet ?? false,
             };
         }
     }
