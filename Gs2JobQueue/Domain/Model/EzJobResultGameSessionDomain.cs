@@ -30,9 +30,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
-using Gs2.Gs2Showcase.Domain.Iterator;
-using Gs2.Gs2Showcase.Request;
-using Gs2.Gs2Showcase.Result;
+using Gs2.Gs2JobQueue.Domain.Iterator;
+using Gs2.Gs2JobQueue.Request;
+using Gs2.Gs2JobQueue.Result;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using Gs2.Core;
@@ -47,20 +47,19 @@ using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
 #endif
 
-namespace Gs2.Unity.Gs2Showcase.Domain.Model
+namespace Gs2.Unity.Gs2JobQueue.Domain.Model
 {
 
-    public partial class EzShowcaseDomain {
-        private readonly Gs2.Gs2Showcase.Domain.Model.ShowcaseDomain _domain;
+    public partial class EzJobResultGameSessionDomain {
+        private readonly Gs2.Gs2JobQueue.Domain.Model.JobResultAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
-        public string TransactionId => _domain.TransactionId;
-        public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
-        public string ShowcaseName => _domain?.ShowcaseName;
+        public string JobName => _domain?.JobName;
+        public string TryNumber => _domain?.TryNumber;
 
-        public EzShowcaseDomain(
-            Gs2.Gs2Showcase.Domain.Model.ShowcaseDomain domain,
+        public EzJobResultGameSessionDomain(
+            Gs2.Gs2JobQueue.Domain.Model.JobResultAccessTokenDomain domain,
             Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
@@ -68,22 +67,22 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Showcase.Model.EzShowcase> Model()
+        public IFuture<Gs2.Unity.Gs2JobQueue.Model.EzJobResult> Model()
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Showcase.Model.EzShowcase> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2JobQueue.Model.EzJobResult> self)
             {
                 yield return ModelAsync().ToCoroutine(
                     self.OnComplete,
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Showcase.Model.EzShowcase>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Gs2JobQueue.Model.EzJobResult>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2Showcase.Model.EzShowcase> ModelAsync()
+        public async UniTask<Gs2.Unity.Gs2JobQueue.Model.EzJobResult> ModelAsync()
         {
             var item = await _profile.RunAsync(
-                null,
+                _domain.AccessToken,
                 async () =>
                 {
                     return await _domain.Model();
@@ -92,18 +91,18 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
             if (item == null) {
                 return null;
             }
-            return Gs2.Unity.Gs2Showcase.Model.EzShowcase.FromModel(
+            return Gs2.Unity.Gs2JobQueue.Model.EzJobResult.FromModel(
                 item
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Showcase.Model.EzShowcase> Model()
+        public IFuture<Gs2.Unity.Gs2JobQueue.Model.EzJobResult> Model()
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Showcase.Model.EzShowcase> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2JobQueue.Model.EzJobResult> self)
             {
                 var future = _domain.Model();
                 yield return _profile.RunFuture(
-                    null,
+                    _domain.AccessToken,
                     future
                 );
                 if (future.Error != null) {
@@ -115,11 +114,11 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
                     self.OnComplete(null);
                     yield break;
                 }
-                self.OnComplete(Gs2.Unity.Gs2Showcase.Model.EzShowcase.FromModel(
+                self.OnComplete(Gs2.Unity.Gs2JobQueue.Model.EzJobResult.FromModel(
                     item
                 ));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Showcase.Model.EzShowcase>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Gs2JobQueue.Model.EzJobResult>(Impl);
         }
         #endif
 

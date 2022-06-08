@@ -81,5 +81,11 @@ namespace Gs2.Unity.Gs2JobQueue.Domain
             add => _domain.OnPushNotification += value;
             remove => _domain.OnPushNotification -= value;
         }
+
+        public event UnityAction<RunNotification> OnRunNotification
+        {
+            add => _domain.OnRunNotification += value;
+            remove => _domain.OnRunNotification -= value;
+        }
     }
 }

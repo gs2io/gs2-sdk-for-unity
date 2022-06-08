@@ -53,6 +53,8 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
     public partial class EzCompleteGameSessionDomain {
         private readonly Gs2.Gs2Mission.Domain.Model.CompleteAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
+        public string TransactionId => _domain.TransactionId;
+        public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string MissionGroupName => _domain?.MissionGroupName;

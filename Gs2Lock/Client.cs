@@ -67,6 +67,31 @@ namespace Gs2.Unity.Gs2Lock
 			}
 		}
 
+        public IEnumerator Get(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Lock.Result.EzGetResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string propertyId
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetMutex(
+                    new Gs2.Gs2Lock.Request.GetMutexRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithPropertyId(propertyId)
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Lock.Result.EzGetResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Lock.Result.EzGetResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator Lock(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Lock.Result.EzLockResult>> callback,
 		        GameSession session,

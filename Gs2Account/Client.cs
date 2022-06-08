@@ -196,6 +196,31 @@ namespace Gs2.Unity.Gs2Account
             );
 		}
 
+        public IEnumerator Get(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzGetResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                int type
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetTakeOver(
+                    new Gs2.Gs2Account.Request.GetTakeOverRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithType(type),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Account.Result.EzGetResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Account.Result.EzGetResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator ListTakeOverSettings(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzListTakeOverSettingsResult>> callback,
 		        GameSession session,

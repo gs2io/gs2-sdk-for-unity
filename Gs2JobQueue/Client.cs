@@ -89,5 +89,30 @@ namespace Gs2.Unity.Gs2JobQueue
                 )
             );
 		}
+
+        public IEnumerator GetResult(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2JobQueue.Result.EzGetResultResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string jobName = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.GetJobResult(
+                    new Gs2.Gs2JobQueue.Request.GetJobResultRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithJobName(jobName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2JobQueue.Result.EzGetResultResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2JobQueue.Result.EzGetResultResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
     }
 }

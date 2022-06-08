@@ -53,6 +53,8 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
     public partial class EzShowcaseGameSessionDomain {
         private readonly Gs2.Gs2Showcase.Domain.Model.ShowcaseAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
+        public string TransactionId => _domain.TransactionId;
+        public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string ShowcaseName => _domain?.ShowcaseName;

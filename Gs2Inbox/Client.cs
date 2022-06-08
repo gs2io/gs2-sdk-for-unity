@@ -92,6 +92,31 @@ namespace Gs2.Unity.Gs2Inbox
             );
 		}
 
+        public IEnumerator Get(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzGetResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string messageName = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.GetMessage(
+                    new Gs2.Gs2Inbox.Request.GetMessageRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithMessageName(messageName)
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzGetResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inbox.Result.EzGetResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator List(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzListResult>> callback,
 		        GameSession session,

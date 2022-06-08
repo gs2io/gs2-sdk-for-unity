@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -84,13 +86,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             string scorerUserId
         )
         {
-            var item = await _profile.RunAsync(
-                null,
-                async () =>
-                {
-                    return await _domain.Model(scorerUserId);
-                }
-            );
+            var item = await _domain.Model(scorerUserId);
             if (item == null) {
                 return null;
             }
@@ -106,10 +102,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Model.EzRanking> self)
             {
                 var future = _domain.Model(scorerUserId);
-                yield return _profile.RunFuture(
-                    null,
-                    future
-                );
+                yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;

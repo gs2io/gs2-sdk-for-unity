@@ -53,6 +53,8 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Exchange.Domain.Model.UserDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
+        public string TransactionId => _domain.TransactionId;
+        public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public long? UnlockAt => _domain.UnlockAt;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;

@@ -53,6 +53,8 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
     public partial class EzProgressGameSessionDomain {
         private readonly Gs2.Gs2Quest.Domain.Model.ProgressAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
+        public string TransactionId => _domain.TransactionId;
+        public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
