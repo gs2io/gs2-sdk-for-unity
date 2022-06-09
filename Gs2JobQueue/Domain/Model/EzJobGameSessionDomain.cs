@@ -53,6 +53,7 @@ namespace Gs2.Unity.Gs2JobQueue.Domain.Model
     public partial class EzJobGameSessionDomain {
         private readonly Gs2.Gs2JobQueue.Domain.Model.JobAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
+        public bool? AutoRun => _domain.AutoRun;
         public bool? IsLastJob => _domain.IsLastJob;
         public bool? NeedRetry => _domain.NeedRetry;
         public string NamespaceName => _domain?.NamespaceName;
