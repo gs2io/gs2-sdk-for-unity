@@ -33,6 +33,10 @@ namespace Gs2.Unity.Gs2Distributor.Model
 		[SerializeField]
 		public string TransactionId;
 		[SerializeField]
+		public List<Gs2.Unity.Gs2Showcase.Model.EzConsumeAction> TaskRequests;
+		[SerializeField]
+		public Gs2.Unity.Gs2Showcase.Model.EzAcquireAction SheetRequest;
+		[SerializeField]
 		public List<string> TaskResults;
 		[SerializeField]
 		public string SheetResult;
@@ -41,6 +45,10 @@ namespace Gs2.Unity.Gs2Distributor.Model
         {
             return new Gs2.Gs2Distributor.Model.StampSheetResult {
                 TransactionId = TransactionId,
+                TaskRequests = TaskRequests?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
+                SheetRequest = SheetRequest?.ToModel(),
                 TaskResults = TaskResults?.Select(v => {
                     return v;
                 }).ToArray(),
@@ -52,6 +60,10 @@ namespace Gs2.Unity.Gs2Distributor.Model
         {
             return new EzStampSheetResult {
                 TransactionId = model.TransactionId == null ? null : model.TransactionId,
+                TaskRequests = model.TaskRequests == null ? new List<Gs2.Unity.Gs2Showcase.Model.EzConsumeAction>() : model.TaskRequests.Select(v => {
+                    return Gs2.Unity.Gs2Showcase.Model.EzConsumeAction.FromModel(v);
+                }).ToList(),
+                SheetRequest = model.SheetRequest == null ? null : Gs2.Unity.Gs2Showcase.Model.EzAcquireAction.FromModel(model.SheetRequest),
                 TaskResults = model.TaskResults == null ? new List<string>() : model.TaskResults.Select(v => {
                     return v;
                 }).ToList(),
