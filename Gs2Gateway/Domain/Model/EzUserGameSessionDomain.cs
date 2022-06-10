@@ -128,5 +128,14 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
             );
         }
 
+        public Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain FirebaseToken(
+        ) {
+            return new Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain(
+                _domain.FirebaseToken(
+                ),
+                _profile
+            );
+        }
+
     }
 }

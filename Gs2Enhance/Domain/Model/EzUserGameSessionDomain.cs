@@ -162,5 +162,14 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
             );
         }
 
+        public Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain Enhance(
+        ) {
+            return new Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain(
+                _domain.Enhance(
+                ),
+                _profile
+            );
+        }
+
     }
 }

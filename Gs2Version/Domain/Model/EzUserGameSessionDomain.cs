@@ -131,5 +131,14 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
             );
         }
 
+        public Gs2.Unity.Gs2Version.Domain.Model.EzCheckerGameSessionDomain Checker(
+        ) {
+            return new Gs2.Unity.Gs2Version.Domain.Model.EzCheckerGameSessionDomain(
+                _domain.Checker(
+                ),
+                _profile
+            );
+        }
+
     }
 }

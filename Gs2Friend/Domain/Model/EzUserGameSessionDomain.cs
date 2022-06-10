@@ -134,15 +134,6 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             );
         }
 
-        public Gs2.Unity.Gs2Friend.Domain.Model.EzPublicProfileGameSessionDomain PublicProfile(
-        ) {
-            return new Gs2.Unity.Gs2Friend.Domain.Model.EzPublicProfileGameSessionDomain(
-                _domain.PublicProfile(
-                ),
-                _profile
-            );
-        }
-
         public class EzBlackListsIterator : Gs2Iterator<string>
         {
             private readonly Gs2Iterator<string> _it;
