@@ -276,6 +276,7 @@ namespace Gs2.Unity.Gs2Distributor
                 cb => _restClient.GetStampSheetResult(
                     new Gs2.Gs2Distributor.Request.GetStampSheetResultRequest()
                         .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
                         .WithTransactionId(transactionId),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzGetStampSheetResultResult>(
