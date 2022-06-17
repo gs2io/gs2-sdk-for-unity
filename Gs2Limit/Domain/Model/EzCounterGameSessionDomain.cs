@@ -117,7 +117,16 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future
+                    future,
+                    () =>
+        			{
+                		return future = _domain.CountUp(
+                    		new CountUpRequest()
+                	        .WithCountUpValue(countUpValue)
+                	        .WithMaxValue(maxValue)
+                    	    .WithAccessToken(_domain.AccessToken.Token)
+        		        );
+        			}
                 );
                 if (future.Error != null)
                 {
@@ -168,7 +177,10 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
                 var future = _domain.Model();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future
+                    future,
+                    () => {
+                    	return future = _domain.Model();
+                    }
                 );
                 if (future.Error != null) {
                     self.OnError(future.Error);

@@ -113,7 +113,15 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future
+                    future,
+                    () =>
+        			{
+                		return future = _domain.GetWithSignature(
+                    		new GetEntryWithSignatureRequest()
+                	        .WithKeyId(keyId)
+                    	    .WithAccessToken(_domain.AccessToken.Token)
+        		        );
+        			}
                 );
                 if (future.Error != null)
                 {
@@ -164,7 +172,10 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
                 var future = _domain.Model();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future
+                    future,
+                    () => {
+                    	return future = _domain.Model();
+                    }
                 );
                 if (future.Error != null) {
                     self.OnError(future.Error);

@@ -111,7 +111,15 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future
+                    future,
+                    () =>
+        			{
+                		return future = _domain.Update(
+                    		new UpdateGatheringRequest()
+        	                .WithAttributeRanges(attributeRanges?.Select(v => v.ToModel()).ToArray())
+                    	    .WithAccessToken(_domain.AccessToken.Token)
+        		        );
+        			}
                 );
                 if (future.Error != null)
                 {
@@ -166,7 +174,14 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future
+                    future,
+                    () =>
+        			{
+                		return future = _domain.CancelMatchmaking(
+                    		new CancelMatchmakingRequest()
+                    	    .WithAccessToken(_domain.AccessToken.Token)
+        		        );
+        			}
                 );
                 if (future.Error != null)
                 {
@@ -217,7 +232,10 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                 var future = _domain.Model();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future
+                    future,
+                    () => {
+                    	return future = _domain.Model();
+                    }
                 );
                 if (future.Error != null) {
                     self.OnError(future.Error);

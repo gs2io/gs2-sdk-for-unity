@@ -119,7 +119,16 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     null,
-                    future
+                    future,
+                    () =>
+        			{
+                		return future = _domain.Vote(
+                    		new VoteRequest()
+                	        .WithBallotBody(ballotBody)
+                	        .WithBallotSignature(ballotSignature)
+        	                .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())
+        		        );
+        			}
                 );
                 if (future.Error != null)
                 {
@@ -182,7 +191,15 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     null,
-                    future
+                    future,
+                    () =>
+        			{
+                		return future = _domain.VoteMultiple(
+                    		new VoteMultipleRequest()
+        	                .WithSignedBallots(signedBallots?.Select(v => v.ToModel()).ToArray())
+        	                .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())
+        		        );
+        			}
                 );
                 if (future.Error != null)
                 {

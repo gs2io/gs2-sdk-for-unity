@@ -118,7 +118,16 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     null,
-                    future
+                    future,
+                    () =>
+        			{
+                		return future = _domain.LoginBySignature(
+                    		new LoginBySignatureRequest()
+                	        .WithKeyId(keyId)
+                	        .WithBody(body)
+                	        .WithSignature(signature)
+        		        );
+        			}
                 );
                 if (future.Error != null)
                 {
@@ -169,7 +178,10 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
                 var future = _domain.Model();
                 yield return _profile.RunFuture(
                     null,
-                    future
+                    future,
+                    () => {
+                    	return future = _domain.Model();
+                    }
                 );
                 if (future.Error != null) {
                     self.OnError(future.Error);
