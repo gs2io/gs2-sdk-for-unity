@@ -117,16 +117,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.Subscribe(
-                    		new SubscribeRequest()
-                	        .WithCategoryName(categoryName)
-                	        .WithTargetUserId(targetUserId)
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {

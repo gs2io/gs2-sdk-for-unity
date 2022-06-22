@@ -104,10 +104,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                 var future = _domain.Model();
                 yield return _profile.RunFuture(
                     null,
-                    future,
-                    () => {
-                    	return future = _domain.Model();
-                    }
+                    future
                 );
                 if (future.Error != null) {
                     self.OnError(future.Error);

@@ -116,15 +116,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     null,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.Authentication(
-                    		new AuthenticationRequest()
-                	        .WithKeyId(keyId)
-                	        .WithPassword(password)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {
@@ -239,10 +231,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                 var future = _domain.Model();
                 yield return _profile.RunFuture(
                     null,
-                    future,
-                    () => {
-                    	return future = _domain.Model();
-                    }
+                    future
                 );
                 if (future.Error != null) {
                     self.OnError(future.Error);

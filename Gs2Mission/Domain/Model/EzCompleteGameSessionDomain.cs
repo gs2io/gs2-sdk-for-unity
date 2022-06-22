@@ -113,15 +113,7 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.Complete(
-                    		new CompleteRequest()
-                	        .WithMissionTaskName(missionTaskName)
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {
@@ -172,10 +164,7 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                 var future = _domain.Model();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () => {
-                    	return future = _domain.Model();
-                    }
+                    future
                 );
                 if (future.Error != null) {
                     self.OnError(future.Error);

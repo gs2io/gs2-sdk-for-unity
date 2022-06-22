@@ -163,6 +163,50 @@ namespace Gs2.Unity.Gs2Formation
             );
 		}
 
+        public IEnumerator GetFormModel(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetFormModelResult>> callback,
+                string namespaceName,
+                string formModelName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetFormModel(
+                    new Gs2.Gs2Formation.Request.GetFormModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithFormModelName(formModelName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetFormModelResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Formation.Result.EzGetFormModelResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListFormModels(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzListFormModelsResult>> callback,
+                string namespaceName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeFormModels(
+                    new Gs2.Gs2Formation.Request.DescribeFormModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Formation.Result.EzListFormModelsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Formation.Result.EzListFormModelsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator GetForm(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetFormResult>> callback,
 		        GameSession session,

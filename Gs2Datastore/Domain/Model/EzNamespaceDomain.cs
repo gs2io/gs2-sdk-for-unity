@@ -108,14 +108,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     null,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.RestoreDataObject(
-                    		new RestoreDataObjectRequest()
-                	        .WithDataObjectId(dataObjectId)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {

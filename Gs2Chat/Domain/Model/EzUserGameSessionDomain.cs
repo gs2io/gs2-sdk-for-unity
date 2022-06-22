@@ -126,18 +126,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.CreateRoom(
-                    		new CreateRoomRequest()
-                	        .WithName(name)
-                	        .WithMetadata(metadata)
-                	        .WithPassword(password)
-                	        .WithWhiteListUserIds(whiteListUserIds)
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {

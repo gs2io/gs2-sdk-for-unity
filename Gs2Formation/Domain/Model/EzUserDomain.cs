@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -53,6 +55,8 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Formation.Domain.Model.UserDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
+        public string TransactionId => _domain.TransactionId;
+        public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
@@ -129,5 +133,62 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             );
         }
 
+        public class EzPropertyFormsIterator : Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzPropertyForm>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Formation.Model.PropertyForm> _it;
+
+            public EzPropertyFormsIterator(
+                Gs2Iterator<Gs2.Gs2Formation.Model.PropertyForm> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Formation.Model.EzPropertyForm> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzPropertyForm.FromModel(_it.Current));
+            }
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzPropertyForm> PropertyForms(
+              string formModelName
+        )
+        {
+            return new EzPropertyFormsIterator(_domain.PropertyForms(
+               formModelName
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Formation.Model.EzPropertyForm> PropertyFormsAsync(
+        #else
+        public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzPropertyForm> PropertyForms(
+        #endif
+              string formModelName
+        )
+        {
+        #if GS2_ENABLE_UNITASK
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Formation.Model.EzPropertyForm>(async (writer, token) =>
+            {
+                var it = _domain.PropertyFormsAsync(
+                    formModelName
+                ).GetAsyncEnumerator();
+                while(await it.MoveNextAsync())
+                {
+                    await writer.YieldAsync(Gs2.Unity.Gs2Formation.Model.EzPropertyForm.FromModel(it.Current));
+                }
+            });
+        #else
+            return new EzPropertyFormsIterator(_domain.PropertyForms(
+               formModelName
+            ));
+        #endif
+        }
     }
 }

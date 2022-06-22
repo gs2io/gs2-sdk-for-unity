@@ -112,15 +112,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.Consume(
-                    		new ConsumeStaminaRequest()
-                	        .WithConsumeValue(consumeValue)
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {
@@ -171,10 +163,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
                 var future = _domain.Model();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () => {
-                    	return future = _domain.Model();
-                    }
+                    future
                 );
                 if (future.Error != null) {
                     self.OnError(future.Error);

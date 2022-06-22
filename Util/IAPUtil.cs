@@ -1,13 +1,17 @@
 #if GS2_ENABLE_PURCHASING
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using Cysharp.Threading.Tasks;
 using Gs2.Core;
 using Gs2.Core.Exception;
 using Gs2.Core.Model;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Purchasing;
+using UnityEngine.Purchasing.Extension;
 
 namespace Gs2.Unity.Util
 {
@@ -61,7 +65,11 @@ namespace Gs2.Unity.Util
             _receipt = null;
             _status = Status.Initializing;
             
+#if UNITY_INCLUDE_TESTS
+            var builder = ConfigurationBuilder.Instance(new TestingPurchasingModule());
+#else
             var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
+#endif
             var ids = new IDs {{contentsId, contentsId}};
             builder.AddProduct(contentsId, ProductType.Consumable, ids);
             UnityPurchasing.Initialize(new Gs2StoreListener(this), builder);
@@ -89,6 +97,53 @@ namespace Gs2.Unity.Util
                     product=_controller.products.WithID(contentsId),
                 }, _exception));
         }
+        
+#if GS2_ENABLE_UNITASK
+        
+        public async UniTask<PurchaseParameters> BuyAsync(
+            string contentsId
+        )
+        {
+            if (_status != Status.None)
+            {
+                return null;
+            }
+            _exception = null;
+            _receipt = null;
+            _status = Status.Initializing;
+            
+#if UNITY_INCLUDE_TESTS
+            var builder = ConfigurationBuilder.Instance(new TestingPurchasingModule());
+#else
+            var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
+#endif
+            var ids = new IDs {{contentsId, contentsId}};
+            builder.AddProduct(contentsId, ProductType.Consumable, ids);
+            UnityPurchasing.Initialize(new Gs2StoreListener(this), builder);
+            while (_status == Status.Initializing)
+            {
+                await UniTask.Delay(TimeSpan.FromMilliseconds(100));
+            }
+            if (_status == Status.InitializeFailed)
+            {
+                throw new Exception();
+            }
+             
+            _status = Status.Purchasing;
+            _controller.InitiatePurchase(_controller.products.WithID(contentsId));
+            while (_status == Status.Purchasing)
+            {
+                await UniTask.Delay(TimeSpan.FromMilliseconds(100));
+            }
+
+            return new PurchaseParameters
+            {
+                receipt = _receipt,
+                controller = _controller,
+                product = _controller.products.WithID(contentsId),
+            };
+        }
+#endif
 
         private class Gs2StoreListener : IStoreListener
         {
@@ -125,6 +180,20 @@ namespace Gs2.Unity.Util
             }
         }
     }
+    
+#if UNITY_INCLUDE_TESTS
+    
+    class TestingPurchasingModule : AbstractPurchasingModule
+    {
+        public override void Configure()
+        {
+            var assembly = typeof( StandardPurchasingModule ).Assembly;
+            var type = assembly.GetType("UnityEngine.Purchasing.FakeStore");
+            var store = type.GetConstructor(new Type[] { })?.Invoke(new object[] { });
+            RegisterStore("fake", (IStore) store);
+        }
+    }
+#endif
 }
 
 #endif

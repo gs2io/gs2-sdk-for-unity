@@ -129,18 +129,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.PrepareUpload(
-                    		new PrepareUploadRequest()
-                	        .WithName(name)
-                	        .WithScope(scope)
-                	        .WithAllowUserIds(allowUserIds)
-                	        .WithUpdateIfExists(updateIfExists)
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {
@@ -200,15 +189,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.PrepareDownload(
-                    		new PrepareDownloadRequest()
-                	        .WithDataObjectId(dataObjectId)
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {

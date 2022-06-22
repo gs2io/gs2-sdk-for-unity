@@ -111,15 +111,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.Subscribe(
-                    		new SubscribeRequest()
-        	                .WithNotificationTypes(notificationTypes?.Select(v => v.ToModel()).ToArray())
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {
@@ -179,15 +171,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.UpdateNotificationType(
-                    		new UpdateNotificationTypeRequest()
-        	                .WithNotificationTypes(notificationTypes?.Select(v => v.ToModel()).ToArray())
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {
@@ -242,14 +226,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.Unsubscribe(
-                    		new UnsubscribeRequest()
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {
@@ -300,10 +277,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                 var future = _domain.Model();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () => {
-                    	return future = _domain.Model();
-                    }
+                    future
                 );
                 if (future.Error != null) {
                     self.OnError(future.Error);

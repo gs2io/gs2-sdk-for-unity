@@ -106,14 +106,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.Follow(
-                    		new FollowRequest()
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {
@@ -168,14 +161,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.Unfollow(
-                    		new UnfollowRequest()
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {
@@ -226,10 +212,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                 var future = _domain.Model();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () => {
-                    	return future = _domain.Model();
-                    }
+                    future
                 );
                 if (future.Error != null) {
                     self.OnError(future.Error);

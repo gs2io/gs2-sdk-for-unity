@@ -122,17 +122,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.End(
-                    		new EndRequest()
-        	                .WithRewards(rewards?.Select(v => v.ToModel()).ToArray())
-                	        .WithIsComplete(isComplete)
-        	                .WithConfig(config?.Select(v => v.ToModel()).ToArray())
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {
@@ -183,10 +173,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                 var future = _domain.Model();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () => {
-                    	return future = _domain.Model();
-                    }
+                    future
                 );
                 if (future.Error != null) {
                     self.OnError(future.Error);

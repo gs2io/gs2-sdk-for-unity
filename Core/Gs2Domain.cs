@@ -52,6 +52,7 @@ namespace Gs2.Unity.Core
         public Gs2Matchmaking.Domain.Gs2Matchmaking Matchmaking;
         public Gs2Mission.Domain.Gs2Mission Mission;
         public Gs2Money.Domain.Gs2Money Money;
+        public Gs2News.Domain.Gs2News News;
         public Gs2Quest.Domain.Gs2Quest Quest;
         public Gs2Ranking.Domain.Gs2Ranking Ranking;
         public Gs2Realtime.Domain.Gs2Realtime Realtime;
@@ -92,6 +93,7 @@ namespace Gs2.Unity.Core
             Matchmaking = new Gs2Matchmaking.Domain.Gs2Matchmaking(_gs2.Matchmaking, profile);
             Mission = new Gs2Mission.Domain.Gs2Mission(_gs2.Mission, profile);
             Money = new Gs2Money.Domain.Gs2Money(_gs2.Money, profile);
+            News = new Gs2News.Domain.Gs2News(_gs2.News, profile);
             Quest = new Gs2Quest.Domain.Gs2Quest(_gs2.Quest, profile);
             Ranking = new Gs2Ranking.Domain.Gs2Ranking(_gs2.Ranking, profile);
             Realtime = new Gs2Realtime.Domain.Gs2Realtime(_gs2.Realtime, profile);
@@ -125,5 +127,10 @@ namespace Gs2.Unity.Core
             );
         }
 #endif
+
+        public async UniTask Disconnect()
+        {
+            await _gs2.Disconnect();
+        }
     }
 }

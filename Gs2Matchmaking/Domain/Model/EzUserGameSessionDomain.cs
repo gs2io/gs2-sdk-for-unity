@@ -137,20 +137,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.CreateGathering(
-                    		new CreateGatheringRequest()
-            	            .WithPlayer(player?.ToModel())
-        	                .WithAttributeRanges(attributeRanges?.Select(v => v.ToModel()).ToArray())
-        	                .WithCapacityOfRoles(capacityOfRoles?.Select(v => v.ToModel()).ToArray())
-                	        .WithAllowUserIds(allowUserIds)
-                	        .WithExpiresAt(expiresAt)
-            	            .WithExpiresAtTimeSpan(expiresAtTimeSpan?.ToModel())
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {

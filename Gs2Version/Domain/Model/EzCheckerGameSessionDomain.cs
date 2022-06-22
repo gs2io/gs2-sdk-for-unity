@@ -115,15 +115,7 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.CheckVersion(
-                    		new CheckVersionRequest()
-        	                .WithTargetVersions(targetVersions?.Select(v => v.ToModel()).ToArray())
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {

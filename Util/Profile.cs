@@ -258,24 +258,24 @@ namespace Gs2.Unity.Util
 
             return default(T);
         }
-
 #else
-
-        public delegate IFuture<T> RetryAction<T>();
+        
+        public delegate IEnumerator RequestActionFuture<T>(IFuture<AsyncResult<T>> callback);
         
         public IEnumerator RunFuture<T>(
             [CanBeNull] AccessToken accessToken,
-            IFuture<T> requestFuture,
-            RetryAction<T> retryAction)
+            IFuture<T> requestAction)
         {
             bool isReopenTried = false;
             bool isAuthenticationTried = false;
 
+            AsyncResult<T> asyncResult = null;
+
             while (true)
             {
-                yield return requestFuture;
-                
-                if (requestFuture.Error is SessionNotOpenException && !isReopenTried)
+                yield return requestAction;
+
+                if (requestAction.Error is SessionNotOpenException && !isReopenTried)
                 {
                     isReopenTried = true;
 
@@ -292,7 +292,7 @@ namespace Gs2.Unity.Util
                 }
 
                 var authenticator = _authenticator;
-                if (accessToken != null && authenticator != null && requestFuture.Error is UnauthorizedException && !isAuthenticationTried)
+                if (accessToken != null && authenticator != null && requestAction.Error is UnauthorizedException && !isAuthenticationTried)
                 {
                     isAuthenticationTried = true;
 
@@ -302,17 +302,13 @@ namespace Gs2.Unity.Util
 
                     if (asyncAuthenticationResult.Error == null)
                     {
-                        accessToken.Token = asyncAuthenticationResult.Result.Token;
-                        accessToken.UserId = asyncAuthenticationResult.Result.UserId;
-                        accessToken.Expire = asyncAuthenticationResult.Result.Expire;
+                        accessToken = asyncAuthenticationResult.Result;
                     }
 
                     authenticator.Callback?.Invoke(asyncAuthenticationResult);
 
                     if (asyncAuthenticationResult.Error == null)
                     {
-                        requestFuture = retryAction.Invoke();
-                        
                         continue;
                     }
                 }

@@ -65,6 +65,70 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             this._profile = profile;
         }
 
+        public class EzFormModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzFormModel>
+        {
+            private readonly Gs2Iterator<Gs2.Gs2Formation.Model.FormModel> _it;
+
+            public EzFormModelsIterator(
+                Gs2Iterator<Gs2.Gs2Formation.Model.FormModel> it
+            )
+            {
+                _it = it;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Formation.Model.EzFormModel> callback)
+            {
+                yield return _it.Next();
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzFormModel.FromModel(_it.Current));
+            }
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzFormModel> FormModels(
+        )
+        {
+            return new EzFormModelsIterator(_domain.FormModels(
+            ));
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Formation.Model.EzFormModel> FormModelsAsync(
+        #else
+        public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzFormModel> FormModels(
+        #endif
+        )
+        {
+        #if GS2_ENABLE_UNITASK
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Formation.Model.EzFormModel>(async (writer, token) =>
+            {
+                var it = _domain.FormModelsAsync(
+                ).GetAsyncEnumerator();
+                while(await it.MoveNextAsync())
+                {
+                    await writer.YieldAsync(Gs2.Unity.Gs2Formation.Model.EzFormModel.FromModel(it.Current));
+                }
+            });
+        #else
+            return new EzFormModelsIterator(_domain.FormModels(
+            ));
+        #endif
+        }
+
+        public Gs2.Unity.Gs2Formation.Domain.Model.EzFormModelDomain FormModel(
+            string formModelName
+        ) {
+            return new Gs2.Unity.Gs2Formation.Domain.Model.EzFormModelDomain(
+                _domain.FormModel(
+                    formModelName
+                ),
+                _profile
+            );
+        }
+
         public class EzMoldModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzMoldModel>
         {
             private readonly Gs2Iterator<Gs2.Gs2Formation.Model.MoldModel> _it;

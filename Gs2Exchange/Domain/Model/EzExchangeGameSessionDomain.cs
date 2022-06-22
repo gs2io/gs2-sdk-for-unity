@@ -122,17 +122,7 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.Exchange(
-                    		new ExchangeRequest()
-                	        .WithRateName(rateName)
-                	        .WithCount(count)
-        	                .WithConfig(config?.Select(v => v.ToModel()).ToArray())
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {

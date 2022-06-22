@@ -120,16 +120,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.Update(
-                    		new UpdateDataObjectRequest()
-                	        .WithScope(scope)
-                	        .WithAllowUserIds(allowUserIds)
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {
@@ -184,14 +175,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.PrepareReUpload(
-                    		new PrepareReUploadRequest()
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {
@@ -246,14 +230,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.DoneUpload(
-                    		new DoneUploadRequest()
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {
@@ -308,14 +285,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.Delete(
-                    		new DeleteDataObjectRequest()
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {
@@ -370,14 +340,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.PrepareDownloadOwnData(
-                    		new PrepareDownloadOwnDataRequest()
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
+                    future
                 );
                 if (future.Error != null)
                 {
@@ -492,10 +455,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 var future = _domain.Model();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future,
-                    () => {
-                    	return future = _domain.Model();
-                    }
+                    future
                 );
                 if (future.Error != null) {
                     self.OnError(future.Error);
