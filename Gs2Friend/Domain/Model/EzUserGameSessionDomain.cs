@@ -111,7 +111,15 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future
+                    future,
+                    () =>
+        			{
+                		return future = _domain.SendRequest(
+                    		new SendRequestRequest()
+                	        .WithTargetUserId(targetUserId)
+                    	    .WithAccessToken(_domain.AccessToken.Token)
+        		        );
+        			}
                 );
                 if (future.Error != null)
                 {

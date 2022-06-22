@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using Cysharp.Threading.Tasks;
 using Gs2.Core;
 using Gs2.Core.Exception;
 using Gs2.Core.Model;
@@ -12,6 +11,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
+#if GS2_ENABLE_UNITASK
+using Cysharp.Threading.Tasks;
+#endif
 
 namespace Gs2.Unity.Util
 {

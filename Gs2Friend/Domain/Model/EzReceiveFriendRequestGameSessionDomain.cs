@@ -106,7 +106,14 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future
+                    future,
+                    () =>
+        			{
+                		return future = _domain.Accept(
+                    		new AcceptRequestRequest()
+                    	    .WithAccessToken(_domain.AccessToken.Token)
+        		        );
+        			}
                 );
                 if (future.Error != null)
                 {
@@ -161,7 +168,14 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future
+                    future,
+                    () =>
+        			{
+                		return future = _domain.Reject(
+                    		new RejectRequestRequest()
+                    	    .WithAccessToken(_domain.AccessToken.Token)
+        		        );
+        			}
                 );
                 if (future.Error != null)
                 {

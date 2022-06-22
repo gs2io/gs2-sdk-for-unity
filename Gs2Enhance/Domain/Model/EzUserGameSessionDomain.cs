@@ -135,7 +135,19 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future
+                    future,
+                    () =>
+        			{
+                		return future = _domain.Start(
+                    		new StartRequest()
+                	        .WithRateName(rateName)
+                	        .WithTargetItemSetId(targetItemSetId)
+        	                .WithMaterials(materials?.Select(v => v.ToModel()).ToArray())
+                	        .WithForce(force)
+        	                .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                    	    .WithAccessToken(_domain.AccessToken.Token)
+        		        );
+        			}
                 );
                 if (future.Error != null)
                 {

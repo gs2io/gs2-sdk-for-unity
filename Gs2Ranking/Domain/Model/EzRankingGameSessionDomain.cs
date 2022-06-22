@@ -118,7 +118,15 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future
+                    future,
+                    () => {
+                        return _domain.PutScore(
+                            new PutScoreRequest()
+                                .WithScore(score)
+                                .WithMetadata(metadata)
+                                .WithAccessToken(_domain.AccessToken.Token)
+                        );
+                    }
                 );
                 if (future.Error != null)
                 {

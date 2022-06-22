@@ -104,7 +104,13 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     null,
-                    future
+                    future,
+                    () =>
+        			{
+                		return future = _domain.CreateAccount(
+                    		new CreateAccountRequest()
+        		        );
+        			}
                 );
                 if (future.Error != null)
                 {
@@ -172,7 +178,16 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     null,
-                    future
+                    future,
+                    () =>
+        			{
+                		return future = _domain.DoTakeOver(
+                    		new DoTakeOverRequest()
+                	        .WithType(type)
+                	        .WithUserIdentifier(userIdentifier)
+                	        .WithPassword(password)
+        		        );
+        			}
                 );
                 if (future.Error != null)
                 {

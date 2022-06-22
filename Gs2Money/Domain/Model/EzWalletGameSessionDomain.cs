@@ -117,7 +117,16 @@ namespace Gs2.Unity.Gs2Money.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future
+                    future,
+                    () =>
+        			{
+                		return future = _domain.Withdraw(
+                    		new WithdrawRequest()
+                	        .WithCount(count)
+                	        .WithPaidOnly(paidOnly)
+                    	    .WithAccessToken(_domain.AccessToken.Token)
+        		        );
+        			}
                 );
                 if (future.Error != null)
                 {
@@ -168,7 +177,10 @@ namespace Gs2.Unity.Gs2Money.Domain.Model
                 var future = _domain.Model();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future
+                    future,
+                    () => {
+                    	return future = _domain.Model();
+                    }
                 );
                 if (future.Error != null) {
                     self.OnError(future.Error);

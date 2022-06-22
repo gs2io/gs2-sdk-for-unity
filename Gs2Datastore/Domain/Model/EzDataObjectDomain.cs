@@ -108,7 +108,13 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     null,
-                    future
+                    future,
+                    () =>
+        			{
+                		return future = _domain.PrepareDownloadByUserIdAndName(
+                    		new PrepareDownloadByUserIdAndDataObjectNameRequest()
+        		        );
+        			}
                 );
                 if (future.Error != null)
                 {
@@ -223,7 +229,10 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 var future = _domain.Model();
                 yield return _profile.RunFuture(
                     null,
-                    future
+                    future,
+                    () => {
+                    	return future = _domain.Model();
+                    }
                 );
                 if (future.Error != null) {
                     self.OnError(future.Error);

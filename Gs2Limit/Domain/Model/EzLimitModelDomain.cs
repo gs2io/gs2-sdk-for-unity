@@ -101,7 +101,10 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
                 var future = _domain.Model();
                 yield return _profile.RunFuture(
                     null,
-                    future
+                    future,
+                    () => {
+                    	return future = _domain.Model();
+                    }
                 );
                 if (future.Error != null) {
                     self.OnError(future.Error);

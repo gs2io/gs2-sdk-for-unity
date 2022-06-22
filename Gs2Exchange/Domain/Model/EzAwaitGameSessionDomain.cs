@@ -110,7 +110,14 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future
+                    future,
+                    () =>
+        			{
+                		return future = _domain.Acquire(
+                    		new AcquireRequest()
+                    	    .WithAccessToken(_domain.AccessToken.Token)
+        		        );
+        			}
                 );
                 if (future.Error != null)
                 {
@@ -165,7 +172,14 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future
+                    future,
+                    () =>
+        			{
+                		return future = _domain.Skip(
+                    		new SkipRequest()
+                    	    .WithAccessToken(_domain.AccessToken.Token)
+        		        );
+        			}
                 );
                 if (future.Error != null)
                 {
@@ -220,7 +234,14 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                 );
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future
+                    future,
+                    () =>
+        			{
+                		return future = _domain.Delete(
+                    		new DeleteAwaitRequest()
+                    	    .WithAccessToken(_domain.AccessToken.Token)
+        		        );
+        			}
                 );
                 if (future.Error != null)
                 {
@@ -271,7 +292,10 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                 var future = _domain.Model();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
-                    future
+                    future,
+                    () => {
+                    	return future = _domain.Model();
+                    }
                 );
                 if (future.Error != null) {
                     self.OnError(future.Error);

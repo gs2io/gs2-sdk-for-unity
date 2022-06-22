@@ -128,9 +128,11 @@ namespace Gs2.Unity.Core
         }
 #endif
 
+#if GS2_ENABLE_UNITASK
         public async UniTask Disconnect()
         {
             await _gs2.Disconnect();
         }
+#endif
     }
 }
