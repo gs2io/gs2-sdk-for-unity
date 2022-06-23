@@ -18,7 +18,7 @@ namespace Gs2.Unity.Util
     {
         
     }
-    
+
     public class Gs2BasicReopener : IReopener
     {
         public ReOpenEvent onReOpen = new ReOpenEvent();
@@ -46,8 +46,8 @@ namespace Gs2.Unity.Util
             UnityAction<AsyncResult<OpenResult>> callback
         )
         {
-            yield return session.Open(callback);
-            yield return restSession.Open(callback);
+            yield return session.ReOpen(callback);
+            yield return restSession.ReOpen(callback);
             
             onReOpen.Invoke();
         }
