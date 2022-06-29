@@ -67,11 +67,7 @@ namespace Gs2.Unity.Util
             _receipt = null;
             _status = Status.Initializing;
             
-#if UNITY_INCLUDE_TESTS
-            var builder = ConfigurationBuilder.Instance(new TestingPurchasingModule());
-#else
             var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-#endif
             var ids = new IDs {{contentsId, contentsId}};
             builder.AddProduct(contentsId, ProductType.Consumable, ids);
             UnityPurchasing.Initialize(new Gs2StoreListener(this), builder);
@@ -114,11 +110,7 @@ namespace Gs2.Unity.Util
             _receipt = null;
             _status = Status.Initializing;
             
-#if UNITY_INCLUDE_TESTS
-            var builder = ConfigurationBuilder.Instance(new TestingPurchasingModule());
-#else
             var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-#endif
             var ids = new IDs {{contentsId, contentsId}};
             builder.AddProduct(contentsId, ProductType.Consumable, ids);
             UnityPurchasing.Initialize(new Gs2StoreListener(this), builder);
@@ -182,20 +174,6 @@ namespace Gs2.Unity.Util
             }
         }
     }
-    
-#if UNITY_INCLUDE_TESTS
-    
-    class TestingPurchasingModule : AbstractPurchasingModule
-    {
-        public override void Configure()
-        {
-            var assembly = typeof( StandardPurchasingModule ).Assembly;
-            var type = assembly.GetType("UnityEngine.Purchasing.FakeStore");
-            var store = type.GetConstructor(new Type[] { })?.Invoke(new object[] { });
-            RegisterStore("fake", (IStore) store);
-        }
-    }
-#endif
 }
 
 #endif

@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 namespace Gs2.Unity.Gs2Formation.ScriptableObject
@@ -7,5 +8,25 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
     {
         public Namespace Namespace;
         public string moldName;
+        
+        public static Mold Load(
+            string assetPath
+        )
+        {
+            return Instantiate(
+                AssetDatabase.LoadAssetAtPath<Mold>(assetPath));
+        }
+        
+        public static Mold New(
+            Namespace Namespace,
+            string moldName
+        )
+        {
+            var instance = CreateInstance<Mold>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            instance.moldName = moldName;
+            return instance;
+        }
     }
 }

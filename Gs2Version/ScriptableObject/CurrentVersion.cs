@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 namespace Gs2.Unity.Gs2Version.ScriptableObject
@@ -11,5 +12,33 @@ namespace Gs2.Unity.Gs2Version.ScriptableObject
         public int micro;
         public string body;
         public string signature;
+        
+        public static CurrentVersion Load(
+            string assetPath
+        )
+        {
+            return Instantiate(
+                AssetDatabase.LoadAssetAtPath<CurrentVersion>(assetPath));
+        }
+        
+        public static CurrentVersion New(
+            Version version,
+            int major,
+            int minor,
+            int micro,
+            string body = null,
+            string signature = null
+        )
+        {
+            var instance = CreateInstance<CurrentVersion>();
+            instance.name = "Runtime";
+            instance.version = version;
+            instance.major = major;
+            instance.minor = minor;
+            instance.micro = micro;
+            instance.body = body;
+            instance.signature = signature;
+            return instance;
+        }
     }
 }

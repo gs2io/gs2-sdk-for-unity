@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 namespace Gs2.Unity.Gs2Inventory.ScriptableObject
@@ -7,5 +8,25 @@ namespace Gs2.Unity.Gs2Inventory.ScriptableObject
     {
         public Inventory inventory;
         public string itemName;
+        
+        public static Item Load(
+            string assetPath
+        )
+        {
+            return Instantiate(
+                AssetDatabase.LoadAssetAtPath<Item>(assetPath));
+        }
+        
+        public static Item New(
+            Inventory inventory,
+            string itemName
+        )
+        {
+            var instance = CreateInstance<Item>();
+            instance.name = "Runtime";
+            instance.inventory = inventory;
+            instance.itemName = itemName;
+            return instance;
+        }
     }
 }

@@ -13,9 +13,39 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+// ReSharper disable RedundantNameQualifier
+// ReSharper disable RedundantUsingDirective
+// ReSharper disable CheckNamespace
+// ReSharper disable PartialTypeWithSinglePart
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable UseObjectOrCollectionInitializer
+// ReSharper disable ArrangeThisQualifier
+// ReSharper disable NotAccessedField.Local
 
+#pragma warning disable 1998
+
+using System;
 using System.Linq;
-using Gs2.Unity.Util;
+using System.Text.RegularExpressions;
+using Gs2.Core.Model;
+using Gs2.Core.Net;
+using Gs2.Gs2Friend.Domain.Iterator;
+using Gs2.Gs2Friend.Request;
+using Gs2.Gs2Friend.Result;
+using Gs2.Gs2Auth.Model;
+using Gs2.Util.LitJson;
+using Gs2.Core;
+using Gs2.Core.Domain;
+using Gs2.Core.Util;
+using UnityEngine.Scripting;
+using System.Collections;
+#if GS2_ENABLE_UNITASK
+using Cysharp.Threading;
+using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Linq;
+using System.Collections.Generic;
+#endif
 
 namespace Gs2.Unity.Gs2Friend.Domain.Model
 {
@@ -24,6 +54,9 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
 
         private Gs2.Gs2Friend.Domain.Model.FriendRequestAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
+        public string NamespaceName => _domain?.NamespaceName;
+        public string UserId => _domain?.UserId;
+        public string TargetUserId => _domain?.TargetUserId;
         
         public EzFriendRequestGameSessionDomain(
             Gs2.Gs2Friend.Domain.Model.FriendRequestAccessTokenDomain domain,
@@ -32,5 +65,65 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             this._domain = domain;
             this._profile = profile;
         }
+        
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> self)
+            {
+                yield return ModelAsync().ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Model.EzFriendRequest>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> ModelAsync()
+        {
+            var item = await _profile.RunAsync(
+                null,
+                async () =>
+                {
+                    return await _domain.Model();
+                }
+            );
+            if (item == null) {
+                return null;
+            }
+            return Gs2.Unity.Gs2Friend.Model.EzFriendRequest.FromModel(
+                item
+            );
+        }
+        #else
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> Model()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> self)
+            {
+                var future = _domain.Model();
+                yield return _profile.RunFuture(
+                    null,
+                    future,
+                    () => {
+                    	return future = _domain.Model();
+                    }
+                );
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Friend.Model.EzFriendRequest.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Model.EzFriendRequest>(Impl);
+        }
+        #endif
+        
     }
 }

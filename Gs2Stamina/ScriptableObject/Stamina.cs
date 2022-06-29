@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 namespace Gs2.Unity.Gs2Stamina.ScriptableObject
@@ -7,5 +8,25 @@ namespace Gs2.Unity.Gs2Stamina.ScriptableObject
     {
         public Namespace Namespace;
         public string staminaName;
+        
+        public static Stamina Load(
+            string assetPath
+        )
+        {
+            return Instantiate(
+                AssetDatabase.LoadAssetAtPath<Stamina>(assetPath));
+        }
+        
+        public static Stamina New(
+            Namespace Namespace,
+            string staminaName
+        )
+        {
+            var instance = CreateInstance<Stamina>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            instance.staminaName = staminaName;
+            return instance;
+        }
     }
 }

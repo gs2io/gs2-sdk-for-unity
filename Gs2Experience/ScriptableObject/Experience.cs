@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 namespace Gs2.Unity.Gs2Experience.ScriptableObject
@@ -7,5 +8,25 @@ namespace Gs2.Unity.Gs2Experience.ScriptableObject
     {
         public Namespace Namespace;
         public string experienceName;
+        
+        public static Experience Load(
+            string assetPath
+        )
+        {
+            return Instantiate(
+                AssetDatabase.LoadAssetAtPath<Experience>(assetPath));
+        }
+        
+        public static Experience New(
+            Namespace Namespace,
+            string experienceName
+        )
+        {
+            var instance = CreateInstance<Experience>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            instance.experienceName = experienceName;
+            return instance;
+        }
     }
 }

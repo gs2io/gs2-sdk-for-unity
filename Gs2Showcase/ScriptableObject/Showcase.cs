@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 namespace Gs2.Unity.Gs2Showcase.ScriptableObject
@@ -7,5 +8,25 @@ namespace Gs2.Unity.Gs2Showcase.ScriptableObject
     {
         public Namespace Namespace;
         public string showcaseName;
+        
+        public static Showcase Load(
+            string assetPath
+        )
+        {
+            return Instantiate(
+                AssetDatabase.LoadAssetAtPath<Showcase>(assetPath));
+        }
+        
+        public static Showcase New(
+            Namespace Namespace,
+            string showcaseName
+        )
+        {
+            var instance = CreateInstance<Showcase>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            instance.showcaseName = showcaseName;
+            return instance;
+        }
     }
 }

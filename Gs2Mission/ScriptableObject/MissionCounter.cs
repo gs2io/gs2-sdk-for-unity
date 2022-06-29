@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 namespace Gs2.Unity.Gs2Mission.ScriptableObject
@@ -7,5 +8,25 @@ namespace Gs2.Unity.Gs2Mission.ScriptableObject
     {
         public Namespace Namespace;
         public string missionCounterName;
+        
+        public static MissionCounter Load(
+            string assetPath
+        )
+        {
+            return Instantiate(
+                AssetDatabase.LoadAssetAtPath<MissionCounter>(assetPath));
+        }
+        
+        public static MissionCounter New(
+            Namespace Namespace,
+            string missionCounterName
+        )
+        {
+            var instance = CreateInstance<MissionCounter>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            instance.missionCounterName = missionCounterName;
+            return instance;
+        }
     }
 }
