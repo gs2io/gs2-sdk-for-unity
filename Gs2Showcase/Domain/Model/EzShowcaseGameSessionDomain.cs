@@ -70,6 +70,7 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Showcase.Domain.Model.EzShowcaseGameSessionDomain> Buy(
               string displayItemId = null,
+              int? quantity = null,
               Gs2.Unity.Gs2Showcase.Model.EzConfig[] config = null
         )
         {
@@ -77,6 +78,7 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
             {
                 yield return BuyAsync(
                     displayItemId,
+                    quantity,
                     config
                 ).ToCoroutine(
                     self.OnComplete,
@@ -91,6 +93,7 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
         public IFuture<Gs2.Unity.Gs2Showcase.Domain.Model.EzShowcaseGameSessionDomain> Buy(
         #endif
               string displayItemId = null,
+              int? quantity = null,
               Gs2.Unity.Gs2Showcase.Model.EzConfig[] config = null
         ) {
         #if GS2_ENABLE_UNITASK
@@ -101,6 +104,7 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
                     return await _domain.BuyAsync(
                         new BuyRequest()
                             .WithDisplayItemId(displayItemId)
+                            .WithQuantity(quantity)
                             .WithConfig(config?.Select(v => v.ToModel()).ToArray())
                             .WithAccessToken(_domain.AccessToken.Token)
                     );
@@ -113,6 +117,7 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
                 var future = _domain.Buy(
                     new BuyRequest()
                         .WithDisplayItemId(displayItemId)
+                        .WithQuantity(quantity)
                         .WithConfig(config?.Select(v => v.ToModel()).ToArray())
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
@@ -124,6 +129,7 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
                 		return future = _domain.Buy(
                     		new BuyRequest()
                 	        .WithDisplayItemId(displayItemId)
+                	        .WithQuantity(quantity)
         	                .WithConfig(config?.Select(v => v.ToModel()).ToArray())
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );

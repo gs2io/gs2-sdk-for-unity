@@ -73,6 +73,7 @@ namespace Gs2.Unity.Gs2Showcase
                 string namespaceName,
                 string showcaseName,
                 string displayItemId = null,
+                int? quantity = null,
                 List<Gs2.Unity.Gs2Showcase.Model.EzConfig> config = null
         )
 		{
@@ -85,6 +86,7 @@ namespace Gs2.Unity.Gs2Showcase
                         .WithShowcaseName(showcaseName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithDisplayItemId(displayItemId)
+                        .WithQuantity(quantity)
                         .WithConfig(config?.Select(v => {
                             return v?.ToModel();
                         }).ToArray()),
