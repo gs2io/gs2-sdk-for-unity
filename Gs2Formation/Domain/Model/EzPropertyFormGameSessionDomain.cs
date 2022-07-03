@@ -71,6 +71,148 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> GetPropertyFormWithSignature(
+              string keyId
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> self)
+            {
+                yield return GetPropertyFormWithSignatureAsync(
+                    keyId
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> GetPropertyFormWithSignatureAsync(
+        #else
+        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> GetPropertyFormWithSignature(
+        #endif
+              string keyId
+        ) {
+        #if GS2_ENABLE_UNITASK
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.GetWithSignatureAsync(
+                        new GetPropertyFormWithSignatureRequest()
+                            .WithKeyId(keyId)
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
+            );
+            return new Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain(result, _profile);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> self)
+            {
+                var future = _domain.GetWithSignature(
+                    new GetPropertyFormWithSignatureRequest()
+                        .WithKeyId(keyId)
+                        .WithAccessToken(_domain.AccessToken.Token)
+                );
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future,
+                    () =>
+        			{
+                		return future = _domain.GetWithSignature(
+                    		new GetPropertyFormWithSignatureRequest()
+                	        .WithKeyId(keyId)
+                    	    .WithAccessToken(_domain.AccessToken.Token)
+        		        );
+        			}
+                );
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain(result, _profile));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain>(Impl);
+        #endif
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> SetPropertyForm(
+              Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature[] slots,
+              string keyId
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> self)
+            {
+                yield return SetPropertyFormAsync(
+                    slots,
+                    keyId
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> SetPropertyFormAsync(
+        #else
+        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> SetPropertyForm(
+        #endif
+              Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature[] slots,
+              string keyId
+        ) {
+        #if GS2_ENABLE_UNITASK
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.SetWithSignatureAsync(
+                        new SetPropertyFormWithSignatureRequest()
+                            .WithSlots(slots?.Select(v => v.ToModel()).ToArray())
+                            .WithKeyId(keyId)
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
+            );
+            return new Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain(result, _profile);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> self)
+            {
+                var future = _domain.SetWithSignature(
+                    new SetPropertyFormWithSignatureRequest()
+                        .WithSlots(slots?.Select(v => v.ToModel()).ToArray())
+                        .WithKeyId(keyId)
+                        .WithAccessToken(_domain.AccessToken.Token)
+                );
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future,
+                    () =>
+        			{
+                		return future = _domain.SetWithSignature(
+                    		new SetPropertyFormWithSignatureRequest()
+        	                .WithSlots(slots?.Select(v => v.ToModel()).ToArray())
+                	        .WithKeyId(keyId)
+                    	    .WithAccessToken(_domain.AccessToken.Token)
+        		        );
+        			}
+                );
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain(result, _profile));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain>(Impl);
+        #endif
+        }
+
+        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Formation.Model.EzPropertyForm> Model()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Model.EzPropertyForm> self)

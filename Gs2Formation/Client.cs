@@ -324,5 +324,123 @@ namespace Gs2.Unity.Gs2Formation
                 )
             );
 		}
+
+        public IEnumerator GetPropertyForm(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetPropertyFormResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string formModelName,
+                string propertyId
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.GetPropertyForm(
+                    new Gs2.Gs2Formation.Request.GetPropertyFormRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithFormModelName(formModelName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithPropertyId(propertyId),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetPropertyFormResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Formation.Result.EzGetPropertyFormResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator GetPropertyFormWithSignature(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetPropertyFormWithSignatureResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string formModelName,
+                string propertyId,
+                string keyId
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.GetPropertyFormWithSignature(
+                    new Gs2.Gs2Formation.Request.GetPropertyFormWithSignatureRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithFormModelName(formModelName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithPropertyId(propertyId)
+                        .WithKeyId(keyId),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetPropertyFormWithSignatureResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Formation.Result.EzGetPropertyFormWithSignatureResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListPropertyForms(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzListPropertyFormsResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string formModelName,
+                string pageToken = null,
+                int? limit = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribePropertyForms(
+                    new Gs2.Gs2Formation.Request.DescribePropertyFormsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithFormModelName(formModelName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Formation.Result.EzListPropertyFormsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Formation.Result.EzListPropertyFormsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator SetPropertyForm(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzSetPropertyFormResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string formModelName,
+                string propertyId,
+                List<Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature> slots,
+                string keyId
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.SetPropertyFormWithSignature(
+                    new Gs2.Gs2Formation.Request.SetPropertyFormWithSignatureRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithFormModelName(formModelName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithPropertyId(propertyId)
+                        .WithSlots(slots?.Select(v => {
+                            return v?.ToModel();
+                        }).ToArray())
+                        .WithKeyId(keyId),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Formation.Result.EzSetPropertyFormResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Formation.Result.EzSetPropertyFormResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
     }
 }
