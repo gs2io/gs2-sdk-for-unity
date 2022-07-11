@@ -1,4 +1,6 @@
+#if UNITY_INCLUDE_TESTS
 using UnityEditor;
+#endif
 
 namespace Gs2.Unity.Gs2Inventory.ScriptableObject
 {
@@ -10,6 +12,7 @@ namespace Gs2.Unity.Gs2Inventory.ScriptableObject
         
         public string Grn => $"grn:gs2:{{region}}:{{ownerId}}:inventory:{item.inventory.Namespace.namespaceName}:user:{userId}:inventory:{item.inventory.inventoryName}:item:{item.itemName}:itemSet:{itemSetName}";
 
+#if UNITY_INCLUDE_TESTS
         public static ItemSet Load(
             string assetPath
         )
@@ -31,5 +34,6 @@ namespace Gs2.Unity.Gs2Inventory.ScriptableObject
             instance.itemSetName = itemSetName;
             return instance;
         }
+#endif
     }
 }

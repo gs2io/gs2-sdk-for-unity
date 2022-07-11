@@ -1,4 +1,6 @@
+#if UNITY_INCLUDE_TESTS
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace Gs2.Unity.Gs2Quest.ScriptableObject
@@ -9,6 +11,7 @@ namespace Gs2.Unity.Gs2Quest.ScriptableObject
         public Namespace Namespace;
         public string questGroupName;
         
+#if UNITY_INCLUDE_TESTS
         public static QuestGroup Load(
             string assetPath
         )
@@ -28,5 +31,6 @@ namespace Gs2.Unity.Gs2Quest.ScriptableObject
             instance.questGroupName = questGroupName;
             return instance;
         }
+#endif
     }
 }

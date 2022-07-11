@@ -1,4 +1,6 @@
+#if UNITY_INCLUDE_TESTS
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace Gs2.Unity.Gs2Limit.ScriptableObject
@@ -9,6 +11,7 @@ namespace Gs2.Unity.Gs2Limit.ScriptableObject
         public Namespace Namespace;
         public string limitName;
         
+#if UNITY_INCLUDE_TESTS
         public static Limit Load(
             string assetPath
         )
@@ -28,5 +31,6 @@ namespace Gs2.Unity.Gs2Limit.ScriptableObject
             instance.limitName = limitName;
             return instance;
         }
+#endif
     }
 }

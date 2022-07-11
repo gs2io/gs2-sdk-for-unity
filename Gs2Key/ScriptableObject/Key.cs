@@ -1,4 +1,6 @@
+#if UNITY_INCLUDE_TESTS
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace Gs2.Unity.Gs2Key.ScriptableObject
@@ -11,6 +13,7 @@ namespace Gs2.Unity.Gs2Key.ScriptableObject
 
         public string Grn => $"grn:gs2:{{region}}:{{ownerId}}:key:{Namespace.namespaceName}:key:{keyName}";
         
+#if UNITY_INCLUDE_TESTS
         public static Key Load(
             string assetPath
         )
@@ -30,5 +33,6 @@ namespace Gs2.Unity.Gs2Key.ScriptableObject
             instance.keyName = keyName;
             return instance;
         }
+#endif
     }
 }

@@ -1,4 +1,6 @@
+#if UNITY_INCLUDE_TESTS
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace Gs2.Unity.Gs2Showcase.ScriptableObject
@@ -9,6 +11,7 @@ namespace Gs2.Unity.Gs2Showcase.ScriptableObject
         public Showcase showcase;
         public string displayItemId;
         
+#if UNITY_INCLUDE_TESTS
         public static DisplayItem Load(
             string assetPath
         )
@@ -28,5 +31,6 @@ namespace Gs2.Unity.Gs2Showcase.ScriptableObject
             instance.displayItemId = displayItemId;
             return instance;
         }
+#endif
     }
 }

@@ -1,4 +1,6 @@
+#if UNITY_INCLUDE_TESTS
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace Gs2.Unity.Gs2Formation.ScriptableObject
@@ -9,6 +11,7 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
         public Namespace Namespace;
         public string formName;
         
+#if UNITY_INCLUDE_TESTS
         public static PropertyForm Load(
             string assetPath
         )
@@ -28,5 +31,6 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
             instance.formName = formName;
             return instance;
         }
+#endif
     }
 }

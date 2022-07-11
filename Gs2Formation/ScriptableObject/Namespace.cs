@@ -1,4 +1,6 @@
+#if UNITY_INCLUDE_TESTS
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace Gs2.Unity.Gs2Formation.ScriptableObject
@@ -8,6 +10,7 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
     {
         public string namespaceName;
         
+#if UNITY_INCLUDE_TESTS
         public static Namespace Load(
             string assetPath
         )
@@ -25,5 +28,6 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
             instance.namespaceName = namespaceName;
             return instance;
         }
+#endif
     }
 }

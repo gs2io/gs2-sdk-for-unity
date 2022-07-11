@@ -1,4 +1,6 @@
+#if UNITY_INCLUDE_TESTS
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace Gs2.Unity.Gs2Version.ScriptableObject
@@ -13,6 +15,7 @@ namespace Gs2.Unity.Gs2Version.ScriptableObject
         public string body;
         public string signature;
         
+#if UNITY_INCLUDE_TESTS
         public static CurrentVersion Load(
             string assetPath
         )
@@ -40,5 +43,6 @@ namespace Gs2.Unity.Gs2Version.ScriptableObject
             instance.signature = signature;
             return instance;
         }
+#endif
     }
 }

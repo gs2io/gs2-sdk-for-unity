@@ -1,4 +1,6 @@
+#if UNITY_INCLUDE_TESTS
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace Gs2.Unity.Gs2Experience.ScriptableObject
@@ -9,6 +11,7 @@ namespace Gs2.Unity.Gs2Experience.ScriptableObject
         public Namespace Namespace;
         public string experienceName;
         
+#if UNITY_INCLUDE_TESTS
         public static Experience Load(
             string assetPath
         )
@@ -28,5 +31,6 @@ namespace Gs2.Unity.Gs2Experience.ScriptableObject
             instance.experienceName = experienceName;
             return instance;
         }
+#endif
     }
 }

@@ -1,4 +1,6 @@
+#if UNITY_INCLUDE_TESTS
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace Gs2.Unity.Gs2Stamina.ScriptableObject
@@ -9,6 +11,7 @@ namespace Gs2.Unity.Gs2Stamina.ScriptableObject
         public Namespace Namespace;
         public string staminaName;
         
+#if UNITY_INCLUDE_TESTS
         public static Stamina Load(
             string assetPath
         )
@@ -28,5 +31,6 @@ namespace Gs2.Unity.Gs2Stamina.ScriptableObject
             instance.staminaName = staminaName;
             return instance;
         }
+#endif
     }
 }

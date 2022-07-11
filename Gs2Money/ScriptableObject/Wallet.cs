@@ -1,4 +1,6 @@
+#if UNITY_INCLUDE_TESTS
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace Gs2.Unity.Gs2Money.ScriptableObject
@@ -9,6 +11,7 @@ namespace Gs2.Unity.Gs2Money.ScriptableObject
         public Namespace Namespace;
         public int slot;
         
+#if UNITY_INCLUDE_TESTS
         public static Wallet Load(
             string assetPath
         )
@@ -28,5 +31,6 @@ namespace Gs2.Unity.Gs2Money.ScriptableObject
             instance.slot = slot;
             return instance;
         }
+#endif
     }
 }

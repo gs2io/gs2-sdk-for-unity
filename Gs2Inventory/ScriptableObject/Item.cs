@@ -1,4 +1,6 @@
+#if UNITY_INCLUDE_TESTS
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace Gs2.Unity.Gs2Inventory.ScriptableObject
@@ -9,6 +11,7 @@ namespace Gs2.Unity.Gs2Inventory.ScriptableObject
         public Inventory inventory;
         public string itemName;
         
+#if UNITY_INCLUDE_TESTS
         public static Item Load(
             string assetPath
         )
@@ -28,5 +31,6 @@ namespace Gs2.Unity.Gs2Inventory.ScriptableObject
             instance.itemName = itemName;
             return instance;
         }
+#endif
     }
 }

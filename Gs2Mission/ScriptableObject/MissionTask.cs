@@ -1,4 +1,6 @@
+#if UNITY_INCLUDE_TESTS
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace Gs2.Unity.Gs2Mission.ScriptableObject
@@ -9,6 +11,7 @@ namespace Gs2.Unity.Gs2Mission.ScriptableObject
         public MissionGroup missionGroup;
         public string missionTaskName;
         
+#if UNITY_INCLUDE_TESTS
         public static MissionTask Load(
             string assetPath
         )
@@ -28,5 +31,6 @@ namespace Gs2.Unity.Gs2Mission.ScriptableObject
             instance.missionTaskName = missionTaskName;
             return instance;
         }
+#endif
     }
 }
