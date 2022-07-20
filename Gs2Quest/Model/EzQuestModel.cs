@@ -41,6 +41,8 @@ namespace Gs2.Unity.Gs2Quest.Model
 		[SerializeField]
 		public string ChallengePeriodEventId;
 		[SerializeField]
+		public List<Gs2.Unity.Gs2Quest.Model.EzAcquireAction> FirstCompleteAcquireActions;
+		[SerializeField]
 		public List<Gs2.Unity.Gs2Quest.Model.EzConsumeAction> ConsumeActions;
 		[SerializeField]
 		public List<Gs2.Unity.Gs2Quest.Model.EzAcquireAction> FailedAcquireActions;
@@ -57,6 +59,9 @@ namespace Gs2.Unity.Gs2Quest.Model
                     return v.ToModel();
                 }).ToArray(),
                 ChallengePeriodEventId = ChallengePeriodEventId,
+                FirstCompleteAcquireActions = FirstCompleteAcquireActions?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
                 ConsumeActions = ConsumeActions?.Select(v => {
                     return v.ToModel();
                 }).ToArray(),
@@ -79,6 +84,9 @@ namespace Gs2.Unity.Gs2Quest.Model
                     return Gs2.Unity.Gs2Quest.Model.EzContents.FromModel(v);
                 }).ToList(),
                 ChallengePeriodEventId = model.ChallengePeriodEventId == null ? null : model.ChallengePeriodEventId,
+                FirstCompleteAcquireActions = model.FirstCompleteAcquireActions == null ? new List<Gs2.Unity.Gs2Quest.Model.EzAcquireAction>() : model.FirstCompleteAcquireActions.Select(v => {
+                    return Gs2.Unity.Gs2Quest.Model.EzAcquireAction.FromModel(v);
+                }).ToList(),
                 ConsumeActions = model.ConsumeActions == null ? new List<Gs2.Unity.Gs2Quest.Model.EzConsumeAction>() : model.ConsumeActions.Select(v => {
                     return Gs2.Unity.Gs2Quest.Model.EzConsumeAction.FromModel(v);
                 }).ToList(),
