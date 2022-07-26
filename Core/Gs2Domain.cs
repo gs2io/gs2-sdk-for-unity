@@ -15,9 +15,9 @@
  */
 
 using System;
+using System.Collections;
 using Gs2.Core.Net;
 using Gs2.Core.Domain;
-using Gs2.Gs2Mission.Model;
 using Gs2.Unity.Util;
 using UnityEngine;
 using UnityEngine.Events;
@@ -118,7 +118,7 @@ namespace Gs2.Unity.Core
             );
         }
 #else
-        public Gs2Future Dispatch(
+        public Gs2Future<bool> Dispatch(
             GameSession gameSession
         )
         {
@@ -132,6 +132,11 @@ namespace Gs2.Unity.Core
         public async UniTask Disconnect()
         {
             await _gs2.Disconnect();
+        }
+#else
+        public IEnumerator Disconnect()
+        {
+            yield return _gs2.Disconnect();
         }
 #endif
     }
