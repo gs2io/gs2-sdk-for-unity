@@ -19,6 +19,7 @@ namespace Gs2.Unity.Gs2Showcase.ScriptableObject
             return Instantiate(
                 AssetDatabase.LoadAssetAtPath<DisplayItem>(assetPath));
         }
+#endif
         
         public static DisplayItem New(
             Showcase showcase,
@@ -31,6 +32,14 @@ namespace Gs2.Unity.Gs2Showcase.ScriptableObject
             instance.displayItemId = displayItemId;
             return instance;
         }
-#endif
+
+        public DisplayItem Clone()
+        {
+            var instance = CreateInstance<DisplayItem>();
+            instance.name = "Runtime";
+            instance.showcase = showcase;
+            instance.displayItemId = displayItemId;
+            return instance;
+        }
     }
 }

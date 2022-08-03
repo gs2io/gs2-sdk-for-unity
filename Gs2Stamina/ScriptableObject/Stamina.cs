@@ -19,6 +19,7 @@ namespace Gs2.Unity.Gs2Stamina.ScriptableObject
             return Instantiate(
                 AssetDatabase.LoadAssetAtPath<Stamina>(assetPath));
         }
+#endif
         
         public static Stamina New(
             Namespace Namespace,
@@ -31,6 +32,14 @@ namespace Gs2.Unity.Gs2Stamina.ScriptableObject
             instance.staminaName = staminaName;
             return instance;
         }
-#endif
+
+        public Stamina Clone()
+        {
+            var instance = CreateInstance<Stamina>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            instance.staminaName = staminaName;
+            return instance;
+        }
     }
 }

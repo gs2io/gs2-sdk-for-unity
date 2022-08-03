@@ -19,6 +19,7 @@ namespace Gs2.Unity.Gs2Mission.ScriptableObject
             return Instantiate(
                 AssetDatabase.LoadAssetAtPath<MissionCounter>(assetPath));
         }
+#endif
         
         public static MissionCounter New(
             Namespace Namespace,
@@ -31,6 +32,14 @@ namespace Gs2.Unity.Gs2Mission.ScriptableObject
             instance.missionCounterName = missionCounterName;
             return instance;
         }
-#endif
+
+        public MissionCounter Clone()
+        {
+            var instance = CreateInstance<MissionCounter>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            instance.missionCounterName = missionCounterName;
+            return instance;
+        }
     }
 }

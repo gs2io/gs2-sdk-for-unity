@@ -19,6 +19,7 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
             return Instantiate(
                 AssetDatabase.LoadAssetAtPath<PropertyForm>(assetPath));
         }
+#endif
         
         public static PropertyForm New(
             Namespace Namespace,
@@ -31,6 +32,14 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
             instance.formName = formName;
             return instance;
         }
-#endif
+
+        public PropertyForm Clone()
+        {
+            var instance = CreateInstance<PropertyForm>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            instance.formName = formName;
+            return instance;
+        }
     }
 }

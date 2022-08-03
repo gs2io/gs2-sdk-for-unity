@@ -18,6 +18,7 @@ namespace Gs2.Unity.Gs2Enhance.ScriptableObject
             return Instantiate(
                 AssetDatabase.LoadAssetAtPath<Material>(assetPath));
         }
+#endif
 
         public static Material New(
             ItemSet material,
@@ -30,6 +31,14 @@ namespace Gs2.Unity.Gs2Enhance.ScriptableObject
             instance.count = count;
             return instance;
         }
-#endif
+
+        public Material Clone()
+        {
+            var instance = CreateInstance<Material>();
+            instance.name = "Runtime";
+            instance.material = material;
+            instance.count = count;
+            return instance;
+        }
     }
 }

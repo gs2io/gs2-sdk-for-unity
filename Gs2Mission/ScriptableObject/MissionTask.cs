@@ -19,6 +19,7 @@ namespace Gs2.Unity.Gs2Mission.ScriptableObject
             return Instantiate(
                 AssetDatabase.LoadAssetAtPath<MissionTask>(assetPath));
         }
+#endif
         
         public static MissionTask New(
             MissionGroup missionGroup,
@@ -31,6 +32,14 @@ namespace Gs2.Unity.Gs2Mission.ScriptableObject
             instance.missionTaskName = missionTaskName;
             return instance;
         }
-#endif
+
+        public MissionTask Clone()
+        {
+            var instance = CreateInstance<MissionTask>();
+            instance.name = "Runtime";
+            instance.missionGroup = missionGroup;
+            instance.missionTaskName = missionTaskName;
+            return instance;
+        }
     }
 }

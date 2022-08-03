@@ -19,6 +19,7 @@ namespace Gs2.Unity.Gs2Mission.ScriptableObject
             return Instantiate(
                 AssetDatabase.LoadAssetAtPath<MissionGroup>(assetPath));
         }
+#endif
         
         public static MissionGroup New(
             Namespace Namespace,
@@ -31,6 +32,14 @@ namespace Gs2.Unity.Gs2Mission.ScriptableObject
             instance.missionGroupName = missionGroupName;
             return instance;
         }
-#endif
+
+        public MissionGroup Clone()
+        {
+            var instance = CreateInstance<MissionGroup>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            instance.missionGroupName = missionGroupName;
+            return instance;
+        }
     }
 }

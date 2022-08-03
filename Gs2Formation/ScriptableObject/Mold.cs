@@ -19,6 +19,7 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
             return Instantiate(
                 AssetDatabase.LoadAssetAtPath<Mold>(assetPath));
         }
+#endif
         
         public static Mold New(
             Namespace Namespace,
@@ -31,6 +32,14 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
             instance.moldName = moldName;
             return instance;
         }
-#endif
+
+        public Mold Clone()
+        {
+            var instance = CreateInstance<Mold>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            instance.moldName = moldName;
+            return instance;
+        }
     }
 }

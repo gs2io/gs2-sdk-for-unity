@@ -18,6 +18,7 @@ namespace Gs2.Unity.Gs2Inbox.ScriptableObject
             return Instantiate(
                 AssetDatabase.LoadAssetAtPath<Namespace>(assetPath));
         }
+#endif
         
         public static Message New(
             Namespace Namespace,
@@ -30,6 +31,14 @@ namespace Gs2.Unity.Gs2Inbox.ScriptableObject
             instance.messageName = messageName;
             return instance;
         }
-#endif
+
+        public Message Clone()
+        {
+            var instance = CreateInstance<Message>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            instance.messageName = messageName;
+            return instance;
+        }
     }
 }

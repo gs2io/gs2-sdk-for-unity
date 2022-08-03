@@ -61,6 +61,8 @@ namespace Gs2.Unity.Core
         public Gs2Stamina.Domain.Gs2Stamina Stamina;
         public Gs2Version.Domain.Gs2Version Version;
 
+        public Gs2.Core.Domain.Gs2 Super => _gs2;
+
         public Gs2Domain(
             Profile profile,
             string distributorNamespaceName = null

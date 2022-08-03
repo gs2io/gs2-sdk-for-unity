@@ -23,6 +23,7 @@ namespace Gs2.Unity.Gs2Version.ScriptableObject
             return Instantiate(
                 AssetDatabase.LoadAssetAtPath<CurrentVersion>(assetPath));
         }
+#endif
         
         public static CurrentVersion New(
             Version version,
@@ -43,6 +44,18 @@ namespace Gs2.Unity.Gs2Version.ScriptableObject
             instance.signature = signature;
             return instance;
         }
-#endif
+
+        public CurrentVersion Clone()
+        {
+            var instance = CreateInstance<CurrentVersion>();
+            instance.name = "Runtime";
+            instance.version = version;
+            instance.major = major;
+            instance.minor = minor;
+            instance.micro = micro;
+            instance.body = body;
+            instance.signature = signature;
+            return instance;
+        }
     }
 }

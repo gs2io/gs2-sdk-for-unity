@@ -19,6 +19,7 @@ namespace Gs2.Unity.Gs2Showcase.ScriptableObject
             return Instantiate(
                 AssetDatabase.LoadAssetAtPath<Showcase>(assetPath));
         }
+#endif
         
         public static Showcase New(
             Namespace Namespace,
@@ -31,6 +32,14 @@ namespace Gs2.Unity.Gs2Showcase.ScriptableObject
             instance.showcaseName = showcaseName;
             return instance;
         }
-#endif
+
+        public Showcase Clone()
+        {
+            var instance = CreateInstance<Showcase>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            instance.showcaseName = showcaseName;
+            return instance;
+        }
     }
 }

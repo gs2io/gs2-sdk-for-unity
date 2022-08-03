@@ -19,6 +19,7 @@ namespace Gs2.Unity.Gs2Limit.ScriptableObject
             return Instantiate(
                 AssetDatabase.LoadAssetAtPath<Limit>(assetPath));
         }
+#endif
         
         public static Limit New(
             Namespace Namespace,
@@ -31,6 +32,14 @@ namespace Gs2.Unity.Gs2Limit.ScriptableObject
             instance.limitName = limitName;
             return instance;
         }
-#endif
+
+        public Limit Clone()
+        {
+            var instance = CreateInstance<Limit>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            instance.limitName = limitName;
+            return instance;
+        }
     }
 }

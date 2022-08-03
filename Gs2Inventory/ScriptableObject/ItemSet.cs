@@ -1,3 +1,5 @@
+
+using Gs2.Util.WebSocketSharp;
 #if UNITY_INCLUDE_TESTS
 using UnityEditor;
 #endif
@@ -20,6 +22,7 @@ namespace Gs2.Unity.Gs2Inventory.ScriptableObject
             return Instantiate(
                 AssetDatabase.LoadAssetAtPath<ItemSet>(assetPath));
         }
+#endif
 
         public static ItemSet New(
             Item item,
@@ -34,6 +37,29 @@ namespace Gs2.Unity.Gs2Inventory.ScriptableObject
             instance.itemSetName = itemSetName;
             return instance;
         }
-#endif
+
+        public ItemSet Clone()
+        {
+            var instance = CreateInstance<ItemSet>();
+            instance.name = "Runtime";
+            instance.item = item;
+            instance.userId = userId;
+            instance.itemSetName = itemSetName;
+            return instance;
+        }
+
+        public bool MatchGrn(string itemSetId)
+        {
+            var elements1 = Grn.Split(':');
+            var elements2 = itemSetId.Split(':');
+            for (var i = 4; i < elements1.Length; i++)
+            {
+                if (elements1[i] != elements2[i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

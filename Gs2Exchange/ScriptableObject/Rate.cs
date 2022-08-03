@@ -19,6 +19,7 @@ namespace Gs2.Unity.Gs2Exchange.ScriptableObject
             return Instantiate(
                 AssetDatabase.LoadAssetAtPath<Rate>(assetPath));
         }
+#endif
         
         public static Rate New(
             Namespace Namespace,
@@ -31,6 +32,14 @@ namespace Gs2.Unity.Gs2Exchange.ScriptableObject
             instance.rateName = rateName;
             return instance;
         }
-#endif
+
+        public Rate Clone()
+        {
+            var instance = CreateInstance<Rate>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            instance.rateName = rateName;
+            return instance;
+        }
     }
 }

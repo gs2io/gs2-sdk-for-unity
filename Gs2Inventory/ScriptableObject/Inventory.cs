@@ -19,6 +19,7 @@ namespace Gs2.Unity.Gs2Inventory.ScriptableObject
             return Instantiate(
                 AssetDatabase.LoadAssetAtPath<Inventory>(assetPath));
         }
+#endif
         
         public static Inventory New(
             Namespace Namespace,
@@ -31,6 +32,14 @@ namespace Gs2.Unity.Gs2Inventory.ScriptableObject
             instance.inventoryName = inventoryName;
             return instance;
         }
-#endif
+
+        public Inventory Clone()
+        {
+            var instance = CreateInstance<Inventory>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            instance.inventoryName = inventoryName;
+            return instance;
+        }
     }
 }

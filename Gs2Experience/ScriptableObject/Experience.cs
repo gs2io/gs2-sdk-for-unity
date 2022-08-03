@@ -19,6 +19,7 @@ namespace Gs2.Unity.Gs2Experience.ScriptableObject
             return Instantiate(
                 AssetDatabase.LoadAssetAtPath<Experience>(assetPath));
         }
+#endif
         
         public static Experience New(
             Namespace Namespace,
@@ -31,6 +32,14 @@ namespace Gs2.Unity.Gs2Experience.ScriptableObject
             instance.experienceName = experienceName;
             return instance;
         }
-#endif
+
+        public Experience Clone()
+        {
+            var instance = CreateInstance<Experience>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            instance.experienceName = experienceName;
+            return instance;
+        }
     }
 }

@@ -19,6 +19,7 @@ namespace Gs2.Unity.Gs2Money.ScriptableObject
             return Instantiate(
                 AssetDatabase.LoadAssetAtPath<Wallet>(assetPath));
         }
+#endif
         
         public static Wallet New(
             Namespace Namespace,
@@ -31,6 +32,14 @@ namespace Gs2.Unity.Gs2Money.ScriptableObject
             instance.slot = slot;
             return instance;
         }
-#endif
+
+        public Wallet Clone()
+        {
+            var instance = CreateInstance<Wallet>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            instance.slot = slot;
+            return instance;
+        }
     }
 }

@@ -32,5 +32,14 @@ namespace Gs2.Unity.Gs2Limit.ScriptableObject
             instance.counterName = counterName;
             return instance;
         }
+
+        public Counter Clone()
+        {
+            var instance = CreateInstance<Counter>();
+            instance.name = "Runtime";
+            instance.limit = limit;
+            instance.counterName = counterName;
+            return instance;
+        }
     }
 }

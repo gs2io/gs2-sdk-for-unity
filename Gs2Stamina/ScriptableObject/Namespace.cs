@@ -18,6 +18,7 @@ namespace Gs2.Unity.Gs2Stamina.ScriptableObject
             return Instantiate(
                 AssetDatabase.LoadAssetAtPath<Namespace>(assetPath));
         }
+#endif
         
         public static Namespace New(
             string namespaceName
@@ -28,6 +29,13 @@ namespace Gs2.Unity.Gs2Stamina.ScriptableObject
             instance.namespaceName = namespaceName;
             return instance;
         }
-#endif
+
+        public Namespace Clone()
+        {
+            var instance = CreateInstance<Namespace>();
+            instance.name = "Runtime";
+            instance.namespaceName = namespaceName;
+            return instance;
+        }
     }
 }

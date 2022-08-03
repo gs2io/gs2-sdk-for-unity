@@ -19,6 +19,7 @@ namespace Gs2.Unity.Gs2Quest.ScriptableObject
             return Instantiate(
                 AssetDatabase.LoadAssetAtPath<Quest>(assetPath));
         }
+#endif
         
         public static Quest New(
             QuestGroup questGroup,
@@ -31,6 +32,14 @@ namespace Gs2.Unity.Gs2Quest.ScriptableObject
             instance.questName = questName;
             return instance;
         }
-#endif
+
+        public Quest Clone()
+        {
+            var instance = CreateInstance<Quest>();
+            instance.name = "Runtime";
+            instance.questGroup = questGroup;
+            instance.questName = questName;
+            return instance;
+        }
     }
 }

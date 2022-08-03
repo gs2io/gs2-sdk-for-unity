@@ -21,6 +21,7 @@ namespace Gs2.Unity.Gs2Key.ScriptableObject
             return Instantiate(
                 AssetDatabase.LoadAssetAtPath<Key>(assetPath));
         }
+#endif
         
         public static Key New(
             Namespace Namespace,
@@ -33,6 +34,14 @@ namespace Gs2.Unity.Gs2Key.ScriptableObject
             instance.keyName = keyName;
             return instance;
         }
-#endif
+
+        public Key Clone()
+        {
+            var instance = CreateInstance<Key>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            instance.keyName = keyName;
+            return instance;
+        }
     }
 }
