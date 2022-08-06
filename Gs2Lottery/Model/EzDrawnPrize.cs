@@ -31,11 +31,14 @@ namespace Gs2.Unity.Gs2Lottery.Model
 	public class EzDrawnPrize
 	{
 		[SerializeField]
+		public string PrizeId;
+		[SerializeField]
 		public List<Gs2.Unity.Gs2Lottery.Model.EzAcquireAction> AcquireActions;
 
         public Gs2.Gs2Lottery.Model.DrawnPrize ToModel()
         {
             return new Gs2.Gs2Lottery.Model.DrawnPrize {
+                PrizeId = PrizeId,
                 AcquireActions = AcquireActions?.Select(v => {
                     return v.ToModel();
                 }).ToArray(),
@@ -45,6 +48,7 @@ namespace Gs2.Unity.Gs2Lottery.Model
         public static EzDrawnPrize FromModel(Gs2.Gs2Lottery.Model.DrawnPrize model)
         {
             return new EzDrawnPrize {
+                PrizeId = model.PrizeId == null ? null : model.PrizeId,
                 AcquireActions = model.AcquireActions == null ? new List<Gs2.Unity.Gs2Lottery.Model.EzAcquireAction>() : model.AcquireActions.Select(v => {
                     return Gs2.Unity.Gs2Lottery.Model.EzAcquireAction.FromModel(v);
                 }).ToList(),
