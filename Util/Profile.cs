@@ -117,6 +117,12 @@ namespace Gs2.Unity.Util
         }
 #endif
 
+        public void UpdateProjectToken(string projectToken)
+        {
+            Gs2Session.Credential.ProjectToken = projectToken;
+            Gs2RestSession.Credential.ProjectToken = projectToken;
+        }
+
         public IEnumerator Finalize()
         {
             yield return Gs2Session.Close(() => {});
