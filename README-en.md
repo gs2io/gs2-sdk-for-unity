@@ -3,6 +3,7 @@
 # GS2 SDK for Unity
 
 SDK to use Game Server Services(https://gs2.io) in Unity.
+GS2 SDK for Unity consists of GS2-CSharp-SDK (for C# environment) and GS2 SDK for Unity (for Unity environment).
 
 ## What is Game Server Services?
 
