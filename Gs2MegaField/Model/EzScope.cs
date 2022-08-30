@@ -31,7 +31,7 @@ namespace Gs2.Unity.Gs2MegaField.Model
 	public class EzScope
 	{
 		[SerializeField]
-		public double R;
+		public float R;
 		[SerializeField]
 		public int Limit;
 

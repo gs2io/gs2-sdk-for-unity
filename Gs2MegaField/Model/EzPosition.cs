@@ -31,11 +31,11 @@ namespace Gs2.Unity.Gs2MegaField.Model
 	public class EzPosition
 	{
 		[SerializeField]
-		public double X;
+		public float X;
 		[SerializeField]
-		public double Y;
+		public float Y;
 		[SerializeField]
-		public double Z;
+		public float Z;
 
         public Gs2.Gs2MegaField.Model.Position ToModel()
         {
