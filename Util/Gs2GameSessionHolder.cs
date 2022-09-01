@@ -87,9 +87,9 @@ namespace Gs2.Unity.Util
             }
         }
 
-        public void UpdateAccessToken(EzAccessToken accessToken)
+        public void UpdateAccessToken(GameSession gameSession)
         {
-            GameSession = new GameSession(accessToken.ToModel());
+            GameSession = gameSession;
         }
 
         public void Logout()

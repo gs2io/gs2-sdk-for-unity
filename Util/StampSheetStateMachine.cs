@@ -38,7 +38,7 @@ namespace Gs2.Unity.Util
 	}
 
 	[Serializable]
-	public class ErrorEvent : UnityEvent<Gs2Exception>
+	public class ErrorEvent : UnityEvent<Gs2Exception, Func<IEnumerator>>
 	{
 			
 	}
@@ -96,7 +96,7 @@ namespace Gs2.Unity.Util
 		}
 
 		public IEnumerator Execute(
-			UnityEvent<Gs2Exception> onError
+			UnityEvent<Gs2Exception, Func<IEnumerator>> onError
 		)
 		{
 			if (_running)
@@ -121,7 +121,7 @@ namespace Gs2.Unity.Util
 						{
 							if (onError != null)
 							{
-								onError.Invoke(r.Error);
+								onError.Invoke(r.Error, null);
 							}
 
 							error = true;
@@ -154,7 +154,7 @@ namespace Gs2.Unity.Util
 					{
 						if (onError != null)
 						{
-							onError.Invoke(r.Error);
+							onError.Invoke(r.Error, null);
 						}
 					}
 					else

@@ -44,7 +44,7 @@ namespace Gs2.Unity.Util
         [SerializeField]
         internal ErrorEvent onError = new ErrorEvent();
         
-        public event UnityAction<Gs2Exception> OnError
+        public event UnityAction<Gs2Exception, Func<IEnumerator>> OnError
         {
             add => onError.AddListener(value);
             remove => onError.RemoveListener(value);
@@ -94,7 +94,7 @@ namespace Gs2.Unity.Util
             yield return initializeFuture;
             if (initializeFuture.Error != null)
             {
-                onError.Invoke(initializeFuture.Error);
+                onError.Invoke(initializeFuture.Error, null);
                 yield break;
             }
             

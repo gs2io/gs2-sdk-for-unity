@@ -142,19 +142,19 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Auth.Model.EzAccessToken> Model()
+        public IFuture<Gs2.Unity.Util.GameSession> Model()
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Auth.Model.EzAccessToken> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Util.GameSession> self)
             {
                 yield return ModelAsync().ToCoroutine(
                     self.OnComplete,
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Auth.Model.EzAccessToken>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Util.GameSession>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2Auth.Model.EzAccessToken> ModelAsync()
+        public async UniTask<Gs2.Unity.Util.GameSession> ModelAsync()
         {
             var item = await _profile.RunAsync(
                 null,
@@ -166,14 +166,14 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
             if (item == null) {
                 return null;
             }
-            return Gs2.Unity.Gs2Auth.Model.EzAccessToken.FromModel(
+            return new Gs2.Unity.Util.GameSession(
                 item
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Auth.Model.EzAccessToken> Model()
+        public IFuture<Gs2.Unity.Util.GameSession> Model()
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Auth.Model.EzAccessToken> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Util.GameSession> self)
             {
                 var future = _domain.Model();
                 yield return _profile.RunFuture(
@@ -192,11 +192,11 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
                     self.OnComplete(null);
                     yield break;
                 }
-                self.OnComplete(Gs2.Unity.Gs2Auth.Model.EzAccessToken.FromModel(
+                self.OnComplete(new Gs2.Unity.Util.GameSession(
                     item
                 ));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Auth.Model.EzAccessToken>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Util.GameSession>(Impl);
         }
         #endif
 

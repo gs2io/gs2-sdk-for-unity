@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -67,12 +69,12 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialGameSessionDomain[]> Update(
+        public IFuture<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]> Update(
               Gs2.Unity.Gs2MegaField.Model.EzMyPosition position,
               Gs2.Unity.Gs2MegaField.Model.EzScope[] scopes = null
         )
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialGameSessionDomain[]> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]> self)
             {
                 yield return UpdateAsync(
                     position,
@@ -82,12 +84,12 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialGameSessionDomain[]>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialGameSessionDomain[]> UpdateAsync(
+        public async UniTask<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]> UpdateAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialGameSessionDomain[]> Update(
+        public IFuture<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]> Update(
         #endif
               Gs2.Unity.Gs2MegaField.Model.EzMyPosition position,
               Gs2.Unity.Gs2MegaField.Model.EzScope[] scopes = null
@@ -105,9 +107,9 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
                     );
                 }
             );
-            return result.Select(v => new Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialGameSessionDomain(v, _profile)).ToArray();
+            return result.Select(v => new Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain(v, _profile)).ToArray();
         #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialGameSessionDomain[]> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]> self)
             {
                 var future = _domain.Action(
                     new ActionRequest()
@@ -134,9 +136,9 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(result.Select(v => new Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialGameSessionDomain(v, _profile)).ToArray());
+                self.OnComplete(result.Select(v => new Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain(v, _profile)).ToArray());
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialGameSessionDomain[]>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]>(Impl);
         #endif
         }
 

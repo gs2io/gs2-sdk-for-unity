@@ -14,22 +14,21 @@
  * permissions and limitations under the License.
  */
 
-#if GS2_ENABLE_UNITASK
-using Cysharp.Threading.Tasks;
-#endif
+
 using System;
+using System.Collections;
 using Gs2.Core;
+using Gs2.Core.Domain;
 using Gs2.Core.Exception;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Core.Result;
 using Gs2.Gs2Auth.Model;
 using JetBrains.Annotations;
-using System.Collections;
-using Gs2.Core.Domain;
 using UnityEngine.Events;
-using UnityEngine;
-using UnityEngine.Networking;
+#if GS2_ENABLE_UNITASK
+using Cysharp.Threading.Tasks;
+#endif
 
 namespace Gs2.Unity.Util
 {
@@ -218,7 +217,7 @@ namespace Gs2.Unity.Util
                 {
                     return await requestActionAsync.Invoke();
                 }
-                catch (UnauthorizedException e)
+                catch (UnauthorizedException)
                 {
                     var authenticator = _authenticator;
                     if (accessToken != null && authenticator != null && !isAuthenticationTried)
@@ -240,7 +239,7 @@ namespace Gs2.Unity.Util
                         throw;
                     }
                 }
-                catch (SessionNotOpenException e)
+                catch (SessionNotOpenException)
                 {
                     if (_reopener != null && !isReopenTried)
                     {

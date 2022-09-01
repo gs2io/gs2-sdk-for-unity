@@ -50,6 +50,7 @@ namespace Gs2.Unity.Core
         public Gs2Lock.Domain.Gs2Lock Lock;
         public Gs2Lottery.Domain.Gs2Lottery Lottery;
         public Gs2Matchmaking.Domain.Gs2Matchmaking Matchmaking;
+        public Gs2MegaField.Domain.Gs2MegaField MegaField;
         public Gs2Mission.Domain.Gs2Mission Mission;
         public Gs2Money.Domain.Gs2Money Money;
         public Gs2News.Domain.Gs2News News;
@@ -93,6 +94,7 @@ namespace Gs2.Unity.Core
             Lock = new Gs2Lock.Domain.Gs2Lock(_gs2.Lock, profile);
             Lottery = new Gs2Lottery.Domain.Gs2Lottery(_gs2.Lottery, profile);
             Matchmaking = new Gs2Matchmaking.Domain.Gs2Matchmaking(_gs2.Matchmaking, profile);
+            MegaField = new Gs2MegaField.Domain.Gs2MegaField(_gs2.MegaField, profile);
             Mission = new Gs2Mission.Domain.Gs2Mission(_gs2.Mission, profile);
             Money = new Gs2Money.Domain.Gs2Money(_gs2.Money, profile);
             News = new Gs2News.Domain.Gs2News(_gs2.News, profile);
