@@ -118,7 +118,7 @@ namespace Gs2.Unity.Gs2MegaField
                 string areaModelName,
                 string layerModelName,
                 Gs2.Unity.Gs2MegaField.Model.EzMyPosition position,
-                Gs2.Unity.Gs2MegaField.Model.EzScope scope
+                List<Gs2.Unity.Gs2MegaField.Model.EzScope> scopes = null
         )
 		{
             yield return _profile.Run(
@@ -130,7 +130,9 @@ namespace Gs2.Unity.Gs2MegaField
                         .WithAreaModelName(areaModelName)
                         .WithLayerModelName(layerModelName)
                         .WithPosition(position?.ToModel())
-                        .WithScope(scope?.ToModel())
+                        .WithScopes(scopes?.Select(v => {
+                            return v?.ToModel();
+                        }).ToArray())
                         .WithAccessToken(session.AccessToken.Token),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2MegaField.Result.EzUpdateResult>(

@@ -69,14 +69,14 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialGameSessionDomain[]> Update(
               Gs2.Unity.Gs2MegaField.Model.EzMyPosition position,
-              Gs2.Unity.Gs2MegaField.Model.EzScope scope
+              Gs2.Unity.Gs2MegaField.Model.EzScope[] scopes = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialGameSessionDomain[]> self)
             {
                 yield return UpdateAsync(
                     position,
-                    scope
+                    scopes
                 ).ToCoroutine(
                     self.OnComplete,
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
@@ -90,7 +90,7 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
         public IFuture<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialGameSessionDomain[]> Update(
         #endif
               Gs2.Unity.Gs2MegaField.Model.EzMyPosition position,
-              Gs2.Unity.Gs2MegaField.Model.EzScope scope
+              Gs2.Unity.Gs2MegaField.Model.EzScope[] scopes = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -100,7 +100,7 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
                     return await _domain.ActionAsync(
                         new ActionRequest()
                             .WithPosition(position?.ToModel())
-                            .WithScope(scope?.ToModel())
+                            .WithScopes(scopes?.Select(v => v.ToModel()).ToArray())
                             .WithAccessToken(_domain.AccessToken.Token)
                     );
                 }
@@ -112,7 +112,7 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
                 var future = _domain.Action(
                     new ActionRequest()
                         .WithPosition(position?.ToModel())
-                        .WithScope(scope?.ToModel())
+                        .WithScopes(scopes?.Select(v => v.ToModel()).ToArray())
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
                 yield return _profile.RunFuture(
@@ -123,7 +123,7 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
                 		return future = _domain.Action(
                     		new ActionRequest()
             	            .WithPosition(position?.ToModel())
-            	            .WithScope(scope?.ToModel())
+        	                .WithScopes(scopes?.Select(v => v.ToModel()).ToArray())
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );
         			}
