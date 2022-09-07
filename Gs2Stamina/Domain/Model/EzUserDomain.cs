@@ -110,7 +110,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {
-                    await writer.YieldAsync(Gs2.Unity.Gs2Stamina.Model.EzStamina.FromModel(it.Current));
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Stamina.Model.EzStamina.FromModel(it.Current));
                 }
             });
         #else

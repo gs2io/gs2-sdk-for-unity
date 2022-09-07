@@ -111,7 +111,7 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {
-                    await writer.YieldAsync(Gs2.Unity.Gs2Version.Model.EzAcceptVersion.FromModel(it.Current));
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Version.Model.EzAcceptVersion.FromModel(it.Current));
                 }
             });
         #else

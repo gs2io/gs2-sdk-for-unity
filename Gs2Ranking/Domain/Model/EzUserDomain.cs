@@ -114,7 +114,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {
-                    await writer.YieldAsync(Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser.FromModel(it.Current));
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser.FromModel(it.Current));
                 }
             });
         #else
@@ -185,7 +185,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {
-                    await writer.YieldAsync(Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(it.Current));
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(it.Current));
                 }
             });
         #else
@@ -247,7 +247,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {
-                    await writer.YieldAsync(Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(it.Current));
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(it.Current));
                 }
             });
         #else
@@ -321,7 +321,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {
-                    await writer.YieldAsync(Gs2.Unity.Gs2Ranking.Model.EzScore.FromModel(it.Current));
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzScore.FromModel(it.Current));
                 }
             });
         #else

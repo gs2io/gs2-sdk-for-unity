@@ -111,7 +111,7 @@ namespace Gs2.Unity.Gs2JobQueue.Domain.Model
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {
-                    await writer.YieldAsync(Gs2.Unity.Gs2JobQueue.Model.EzJob.FromModel(it.Current));
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2JobQueue.Model.EzJob.FromModel(it.Current));
                 }
             });
         #else

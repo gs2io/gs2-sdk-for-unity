@@ -108,7 +108,7 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {
-                    await writer.YieldAsync(Gs2.Unity.Gs2Showcase.Model.EzShowcase.FromModel(it.Current));
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Showcase.Model.EzShowcase.FromModel(it.Current));
                 }
             });
         #else
