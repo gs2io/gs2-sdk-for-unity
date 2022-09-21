@@ -54,6 +54,7 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
         private readonly Gs2.Gs2SerialKey.Domain.Model.NamespaceDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
         public string Status => _domain.Status;
+        public string Url => _domain.Url;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
 
@@ -129,12 +130,12 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
             );
         }
 
-        public class EzSerialCodesIterator : Gs2Iterator<string>
+        public class EzSerialKeysIterator : Gs2Iterator<Gs2.Unity.Gs2SerialKey.Model.EzSerialKey>
         {
-            private readonly Gs2Iterator<string> _it;
+            private readonly Gs2Iterator<Gs2.Gs2SerialKey.Model.SerialKey> _it;
 
-            public EzSerialCodesIterator(
-                Gs2Iterator<string> it
+            public EzSerialKeysIterator(
+                Gs2Iterator<Gs2.Gs2SerialKey.Model.SerialKey> it
             )
             {
                 _it = it;
@@ -145,47 +146,47 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
                 return _it.HasNext();
             }
 
-            protected override IEnumerator Next(Action<string> callback)
+            protected override IEnumerator Next(Action<Gs2.Unity.Gs2SerialKey.Model.EzSerialKey> callback)
             {
                 yield return _it.Next();
-                callback.Invoke(_it.Current);
+                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2SerialKey.Model.EzSerialKey.FromModel(_it.Current));
             }
         }
 
         #if GS2_ENABLE_UNITASK
-        public Gs2Iterator<string> SerialCodes(
+        public Gs2Iterator<Gs2.Unity.Gs2SerialKey.Model.EzSerialKey> SerialKeys(
               string campaignModelName,
               string issueJobName = null
         )
         {
-            return new EzSerialCodesIterator(_domain.SerialCodes(
+            return new EzSerialKeysIterator(_domain.SerialKeys(
                campaignModelName,
                issueJobName
             ));
         }
 
-        public IUniTaskAsyncEnumerable<string> SerialCodesAsync(
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2SerialKey.Model.EzSerialKey> SerialKeysAsync(
         #else
-        public Gs2Iterator<string> SerialCodes(
+        public Gs2Iterator<Gs2.Unity.Gs2SerialKey.Model.EzSerialKey> SerialKeys(
         #endif
               string campaignModelName,
               string issueJobName = null
         )
         {
         #if GS2_ENABLE_UNITASK
-            return UniTaskAsyncEnumerable.Create<string>(async (writer, token) =>
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2SerialKey.Model.EzSerialKey>(async (writer, token) =>
             {
-                var it = _domain.SerialCodesAsync(
+                var it = _domain.SerialKeysAsync(
                     campaignModelName,
                     issueJobName
                 ).GetAsyncEnumerator();
                 while(await it.MoveNextAsync())
                 {
-                    await writer.YieldAsync(it.Current);
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2SerialKey.Model.EzSerialKey.FromModel(it.Current));
                 }
             });
         #else
-            return new EzSerialCodesIterator(_domain.SerialCodes(
+            return new EzSerialKeysIterator(_domain.SerialKeys(
                campaignModelName,
                issueJobName
             ));
