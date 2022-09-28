@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 
 using Gs2.Gs2Realtime;
@@ -65,6 +67,25 @@ namespace Gs2.Unity.Gs2Realtime
 			{
 				_restClient = new Gs2RealtimeRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
 			}
+		}
+
+        public IEnumerator Now(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Realtime.Result.EzNowResult>> callback
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.Now(
+                    new Gs2.Gs2Realtime.Request.NowRequest(),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Realtime.Result.EzNowResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Realtime.Result.EzNowResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
 		}
 
         public IEnumerator GetRoom(
