@@ -11,11 +11,11 @@ namespace Gs2.Unity.Util
 {
     public abstract class IReopener
     {
+        public UnityAction<AsyncResult<OpenResult>> Callback { get; set; }
+        
 #if GS2_ENABLE_UNITASK
         public abstract UniTask<OpenResult> ReOpenAsync(Gs2WebSocketSession session, Gs2RestSession restSession);
 #endif
-        public UnityAction<AsyncResult<OpenResult>> Callback { get; set; }
-
         public abstract IEnumerator ReOpen(Gs2WebSocketSession session, Gs2RestSession restSession, UnityAction<AsyncResult<OpenResult>> callback);
     }
 }

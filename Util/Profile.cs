@@ -24,7 +24,6 @@ using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Core.Result;
 using Gs2.Gs2Auth.Model;
-using JetBrains.Annotations;
 using UnityEngine.Events;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
@@ -73,6 +72,7 @@ namespace Gs2.Unity.Util
                 Gs2RestSession
             );
         }
+
 #endif
 
         public Gs2Future Initialize()
@@ -108,7 +108,6 @@ namespace Gs2.Unity.Util
         }
 
 #if GS2_ENABLE_UNITASK
-
         public async UniTask FinalizeAsync()
         {
             await Gs2Session.CloseAsync();
@@ -129,7 +128,6 @@ namespace Gs2.Unity.Util
         }
 
 #if GS2_ENABLE_UNITASK
-
         public async UniTask<GameSession> LoginAsync(
             IAuthenticator authenticator
         )
@@ -140,7 +138,6 @@ namespace Gs2.Unity.Util
                 accessToken
             );
         }
-
 #endif
 
         public Gs2Future<GameSession> LoginFuture(
@@ -201,11 +198,11 @@ namespace Gs2.Unity.Util
                 }
             );
         }
-        
+
 #if GS2_ENABLE_UNITASK
 
         public async UniTask<T> RunAsync<T>(
-            [CanBeNull] AccessToken accessToken,
+            AccessToken accessToken,
             Func<UniTask<T>> requestActionAsync)
         {
             bool isReopenTried = false;
@@ -269,7 +266,7 @@ namespace Gs2.Unity.Util
         public delegate IFuture<T> RetryAction<T>();
         
         public IEnumerator RunFuture<T>(
-            [CanBeNull] AccessToken accessToken,
+            AccessToken accessToken,
             IFuture<T> requestFuture,
             RetryAction<T> retryAction)
         {
@@ -292,6 +289,8 @@ namespace Gs2.Unity.Util
 
                     if (asyncOpenResult.Error == null)
                     {
+                        requestFuture = retryAction.Invoke();
+                        
                         continue;
                     }
                 }
@@ -330,7 +329,7 @@ namespace Gs2.Unity.Util
         
         public IEnumerator Run<T>(
             UnityAction<AsyncResult<T>> callback,
-            [CanBeNull] GameSession gameSession,
+            GameSession gameSession,
             RequestAction<T> requestAction)
         {
             bool isReopenTried = false;
