@@ -76,7 +76,7 @@ namespace Gs2.Unity.Gs2Inventory
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.GetInventoryModel(
+                cb => _restClient.GetInventoryModel(
                     new Gs2.Gs2Inventory.Request.GetInventoryModelRequest()
                         .WithNamespaceName(namespaceName)
                         .WithInventoryName(inventoryName),
