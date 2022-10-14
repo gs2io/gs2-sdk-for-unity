@@ -308,6 +308,33 @@ namespace Gs2.Unity.Gs2Matchmaking
             );
 		}
 
+        public IEnumerator CreateVote(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzCreateVoteResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string ratingName,
+                string gatheringName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.GetBallot(
+                    new Gs2.Gs2Matchmaking.Request.GetBallotRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRatingName(ratingName)
+                        .WithGatheringName(gatheringName)
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzCreateVoteResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Matchmaking.Result.EzCreateVoteResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator Vote(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzVoteResult>> callback,
                 string namespaceName,

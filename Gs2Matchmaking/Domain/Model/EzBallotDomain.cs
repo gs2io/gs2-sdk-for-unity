@@ -51,7 +51,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
 {
 
     public partial class EzBallotDomain {
-        private Gs2.Gs2Matchmaking.Domain.Model.BallotDomain _domain;
+        private readonly Gs2.Gs2Matchmaking.Domain.Model.BallotDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
         public string Body => _domain.Body;
         public string Signature => _domain.Signature;
@@ -61,7 +61,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         public string GatheringName => _domain?.GatheringName;
         public int? NumberOfPlayer => _domain?.NumberOfPlayer;
         public string KeyId => _domain?.KeyId;
-        
+
         public EzBallotDomain(
             Gs2.Gs2Matchmaking.Domain.Model.BallotDomain domain,
             Gs2.Unity.Util.Profile profile
@@ -69,6 +69,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             this._domain = domain;
             this._profile = profile;
         }
+
         #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Matchmaking.Model.EzBallot> Model()
         {
@@ -76,10 +77,9 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             {
                 yield return ModelAsync().ToCoroutine(
                     self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception) e)
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
             }
-
             return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Model.EzBallot>(Impl);
         }
 
@@ -87,13 +87,14 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         {
             var item = await _profile.RunAsync(
                 null,
-                async () => { return await _domain.Model(); }
+                async () =>
+                {
+                    return await _domain.Model();
+                }
             );
-            if (item == null)
-            {
+            if (item == null) {
                 return null;
             }
-
             return Gs2.Unity.Gs2Matchmaking.Model.EzBallot.FromModel(
                 item
             );
