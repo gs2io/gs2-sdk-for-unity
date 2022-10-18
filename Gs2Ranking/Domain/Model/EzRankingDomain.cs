@@ -102,7 +102,13 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Model.EzRanking> self)
             {
                 var future = _domain.Model(scorerUserId);
-                yield return future;
+                yield return _profile.RunFuture(
+                    null,
+                    future,
+                    () => {
+                        return future = _domain.Model(scorerUserId);
+                    }
+                );
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;

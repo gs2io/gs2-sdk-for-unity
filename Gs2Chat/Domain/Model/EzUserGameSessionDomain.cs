@@ -166,13 +166,25 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
 
         public class EzSubscribesIterator : Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzSubscribe>
         {
-            private readonly Gs2Iterator<Gs2.Gs2Chat.Model.Subscribe> _it;
+            private Gs2Iterator<Gs2.Gs2Chat.Model.Subscribe> _it;
+        #if !GS2_ENABLE_UNITASK
+            private readonly Gs2.Gs2Chat.Domain.Model.UserAccessTokenDomain _domain;
+        #endif
+            private readonly Gs2.Unity.Util.Profile _profile;
 
             public EzSubscribesIterator(
-                Gs2Iterator<Gs2.Gs2Chat.Model.Subscribe> it
+                Gs2Iterator<Gs2.Gs2Chat.Model.Subscribe> it,
+        #if !GS2_ENABLE_UNITASK
+                Gs2.Gs2Chat.Domain.Model.UserAccessTokenDomain domain,
+        #endif
+                Gs2.Unity.Util.Profile profile
             )
             {
                 _it = it;
+        #if !GS2_ENABLE_UNITASK
+                _domain = domain;
+        #endif
+                _profile = profile;
             }
 
             public override bool HasNext()
@@ -182,7 +194,19 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
 
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Chat.Model.EzSubscribe> callback)
             {
+        #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
+        #else
+                yield return _profile.RunIterator(
+                    _domain.AccessToken,
+                    _it,
+                    () =>
+                    {
+                        _it = _domain.Subscribes(
+                        );
+                    }
+                );
+        #endif
                 callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Chat.Model.EzSubscribe.FromModel(_it.Current));
             }
         }
@@ -191,8 +215,11 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         public Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzSubscribe> Subscribes(
         )
         {
-            return new EzSubscribesIterator(_domain.Subscribes(
-            ));
+            return new EzSubscribesIterator(
+                _domain.Subscribes(
+                ),
+                _profile
+            );
         }
 
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Chat.Model.EzSubscribe> SubscribesAsync(
@@ -206,14 +233,30 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
             {
                 var it = _domain.SubscribesAsync(
                 ).GetAsyncEnumerator();
-                while(await it.MoveNextAsync())
+                while(
+                    await _profile.RunIteratorAsync(
+                        _domain.AccessToken,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.SubscribesAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
                 {
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Chat.Model.EzSubscribe.FromModel(it.Current));
                 }
             });
         #else
-            return new EzSubscribesIterator(_domain.Subscribes(
-            ));
+            return new EzSubscribesIterator(
+                _domain.Subscribes(
+                ),
+                _domain,
+                _profile
+            );
         #endif
         }
 

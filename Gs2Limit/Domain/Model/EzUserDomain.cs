@@ -67,13 +67,28 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
 
         public class EzCountersIterator : Gs2Iterator<Gs2.Unity.Gs2Limit.Model.EzCounter>
         {
-            private readonly Gs2Iterator<Gs2.Gs2Limit.Model.Counter> _it;
+            private Gs2Iterator<Gs2.Gs2Limit.Model.Counter> _it;
+        #if !GS2_ENABLE_UNITASK
+            private readonly string _limitName;
+            private readonly Gs2.Gs2Limit.Domain.Model.UserDomain _domain;
+        #endif
+            private readonly Gs2.Unity.Util.Profile _profile;
 
             public EzCountersIterator(
-                Gs2Iterator<Gs2.Gs2Limit.Model.Counter> it
+                Gs2Iterator<Gs2.Gs2Limit.Model.Counter> it,
+        #if !GS2_ENABLE_UNITASK
+                string limitName,
+                Gs2.Gs2Limit.Domain.Model.UserDomain domain,
+        #endif
+                Gs2.Unity.Util.Profile profile
             )
             {
                 _it = it;
+        #if !GS2_ENABLE_UNITASK
+                _limitName = limitName;
+                _domain = domain;
+        #endif
+                _profile = profile;
             }
 
             public override bool HasNext()
@@ -83,7 +98,20 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
 
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Limit.Model.EzCounter> callback)
             {
+        #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
+        #else
+                yield return _profile.RunIterator(
+                    null,
+                    _it,
+                    () =>
+                    {
+                        _it = _domain.Counters(
+                            _limitName
+                        );
+                    }
+                );
+        #endif
                 callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Limit.Model.EzCounter.FromModel(_it.Current));
             }
         }
@@ -93,9 +121,12 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
               string limitName = null
         )
         {
-            return new EzCountersIterator(_domain.Counters(
-               limitName
-            ));
+            return new EzCountersIterator(
+                _domain.Counters(
+                    limitName
+                ),
+                _profile
+            );
         }
 
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Limit.Model.EzCounter> CountersAsync(
@@ -111,15 +142,33 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
                 var it = _domain.CountersAsync(
                     limitName
                 ).GetAsyncEnumerator();
-                while(await it.MoveNextAsync())
+                while(
+                    await _profile.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.CountersAsync(
+                                limitName
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
                 {
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Limit.Model.EzCounter.FromModel(it.Current));
                 }
             });
         #else
-            return new EzCountersIterator(_domain.Counters(
-               limitName
-            ));
+            return new EzCountersIterator(
+                _domain.Counters(
+                    limitName
+                ),
+                limitName,
+                _domain,
+                _profile
+            );
         #endif
         }
 

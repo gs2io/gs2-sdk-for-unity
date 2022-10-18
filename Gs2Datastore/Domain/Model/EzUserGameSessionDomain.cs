@@ -224,13 +224,28 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
 
         public class EzDataObjectsIterator : Gs2Iterator<Gs2.Unity.Gs2Datastore.Model.EzDataObject>
         {
-            private readonly Gs2Iterator<Gs2.Gs2Datastore.Model.DataObject> _it;
+            private Gs2Iterator<Gs2.Gs2Datastore.Model.DataObject> _it;
+        #if !GS2_ENABLE_UNITASK
+            private readonly string _status;
+            private readonly Gs2.Gs2Datastore.Domain.Model.UserAccessTokenDomain _domain;
+        #endif
+            private readonly Gs2.Unity.Util.Profile _profile;
 
             public EzDataObjectsIterator(
-                Gs2Iterator<Gs2.Gs2Datastore.Model.DataObject> it
+                Gs2Iterator<Gs2.Gs2Datastore.Model.DataObject> it,
+        #if !GS2_ENABLE_UNITASK
+                string status,
+                Gs2.Gs2Datastore.Domain.Model.UserAccessTokenDomain domain,
+        #endif
+                Gs2.Unity.Util.Profile profile
             )
             {
                 _it = it;
+        #if !GS2_ENABLE_UNITASK
+                _status = status;
+                _domain = domain;
+        #endif
+                _profile = profile;
             }
 
             public override bool HasNext()
@@ -240,7 +255,20 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
 
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Datastore.Model.EzDataObject> callback)
             {
+        #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
+        #else
+                yield return _profile.RunIterator(
+                    _domain.AccessToken,
+                    _it,
+                    () =>
+                    {
+                        _it = _domain.DataObjects(
+                            _status
+                        );
+                    }
+                );
+        #endif
                 callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Datastore.Model.EzDataObject.FromModel(_it.Current));
             }
         }
@@ -250,9 +278,12 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
               string status = null
         )
         {
-            return new EzDataObjectsIterator(_domain.DataObjects(
-               status
-            ));
+            return new EzDataObjectsIterator(
+                _domain.DataObjects(
+                    status
+                ),
+                _profile
+            );
         }
 
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Datastore.Model.EzDataObject> DataObjectsAsync(
@@ -268,15 +299,33 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 var it = _domain.DataObjectsAsync(
                     status
                 ).GetAsyncEnumerator();
-                while(await it.MoveNextAsync())
+                while(
+                    await _profile.RunIteratorAsync(
+                        _domain.AccessToken,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.DataObjectsAsync(
+                                status
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
                 {
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Datastore.Model.EzDataObject.FromModel(it.Current));
                 }
             });
         #else
-            return new EzDataObjectsIterator(_domain.DataObjects(
-               status
-            ));
+            return new EzDataObjectsIterator(
+                _domain.DataObjects(
+                    status
+                ),
+                status,
+                _domain,
+                _profile
+            );
         #endif
         }
 

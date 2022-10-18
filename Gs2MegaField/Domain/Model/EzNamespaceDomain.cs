@@ -67,13 +67,25 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
 
         public class EzAreaModelsIterator : Gs2Iterator<Gs2.Unity.Gs2MegaField.Model.EzAreaModel>
         {
-            private readonly Gs2Iterator<Gs2.Gs2MegaField.Model.AreaModel> _it;
+            private Gs2Iterator<Gs2.Gs2MegaField.Model.AreaModel> _it;
+        #if !GS2_ENABLE_UNITASK
+            private readonly Gs2.Gs2MegaField.Domain.Model.NamespaceDomain _domain;
+        #endif
+            private readonly Gs2.Unity.Util.Profile _profile;
 
             public EzAreaModelsIterator(
-                Gs2Iterator<Gs2.Gs2MegaField.Model.AreaModel> it
+                Gs2Iterator<Gs2.Gs2MegaField.Model.AreaModel> it,
+        #if !GS2_ENABLE_UNITASK
+                Gs2.Gs2MegaField.Domain.Model.NamespaceDomain domain,
+        #endif
+                Gs2.Unity.Util.Profile profile
             )
             {
                 _it = it;
+        #if !GS2_ENABLE_UNITASK
+                _domain = domain;
+        #endif
+                _profile = profile;
             }
 
             public override bool HasNext()
@@ -83,7 +95,19 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
 
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2MegaField.Model.EzAreaModel> callback)
             {
+        #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
+        #else
+                yield return _profile.RunIterator(
+                    null,
+                    _it,
+                    () =>
+                    {
+                        _it = _domain.AreaModels(
+                        );
+                    }
+                );
+        #endif
                 callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2MegaField.Model.EzAreaModel.FromModel(_it.Current));
             }
         }
@@ -92,8 +116,11 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
         public Gs2Iterator<Gs2.Unity.Gs2MegaField.Model.EzAreaModel> AreaModels(
         )
         {
-            return new EzAreaModelsIterator(_domain.AreaModels(
-            ));
+            return new EzAreaModelsIterator(
+                _domain.AreaModels(
+                ),
+                _profile
+            );
         }
 
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2MegaField.Model.EzAreaModel> AreaModelsAsync(
@@ -107,14 +134,30 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
             {
                 var it = _domain.AreaModelsAsync(
                 ).GetAsyncEnumerator();
-                while(await it.MoveNextAsync())
+                while(
+                    await _profile.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.AreaModelsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
                 {
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2MegaField.Model.EzAreaModel.FromModel(it.Current));
                 }
             });
         #else
-            return new EzAreaModelsIterator(_domain.AreaModels(
-            ));
+            return new EzAreaModelsIterator(
+                _domain.AreaModels(
+                ),
+                _domain,
+                _profile
+            );
         #endif
         }
 

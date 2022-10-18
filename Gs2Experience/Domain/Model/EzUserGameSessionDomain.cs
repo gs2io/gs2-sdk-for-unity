@@ -67,13 +67,28 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
 
         public class EzStatusesIterator : Gs2Iterator<Gs2.Unity.Gs2Experience.Model.EzStatus>
         {
-            private readonly Gs2Iterator<Gs2.Gs2Experience.Model.Status> _it;
+            private Gs2Iterator<Gs2.Gs2Experience.Model.Status> _it;
+        #if !GS2_ENABLE_UNITASK
+            private readonly string _experienceName;
+            private readonly Gs2.Gs2Experience.Domain.Model.UserAccessTokenDomain _domain;
+        #endif
+            private readonly Gs2.Unity.Util.Profile _profile;
 
             public EzStatusesIterator(
-                Gs2Iterator<Gs2.Gs2Experience.Model.Status> it
+                Gs2Iterator<Gs2.Gs2Experience.Model.Status> it,
+        #if !GS2_ENABLE_UNITASK
+                string experienceName,
+                Gs2.Gs2Experience.Domain.Model.UserAccessTokenDomain domain,
+        #endif
+                Gs2.Unity.Util.Profile profile
             )
             {
                 _it = it;
+        #if !GS2_ENABLE_UNITASK
+                _experienceName = experienceName;
+                _domain = domain;
+        #endif
+                _profile = profile;
             }
 
             public override bool HasNext()
@@ -83,7 +98,20 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
 
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Experience.Model.EzStatus> callback)
             {
+        #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
+        #else
+                yield return _profile.RunIterator(
+                    _domain.AccessToken,
+                    _it,
+                    () =>
+                    {
+                        _it = _domain.Statuses(
+                            _experienceName
+                        );
+                    }
+                );
+        #endif
                 callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Experience.Model.EzStatus.FromModel(_it.Current));
             }
         }
@@ -93,9 +121,12 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
               string experienceName = null
         )
         {
-            return new EzStatusesIterator(_domain.Statuses(
-               experienceName
-            ));
+            return new EzStatusesIterator(
+                _domain.Statuses(
+                    experienceName
+                ),
+                _profile
+            );
         }
 
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Experience.Model.EzStatus> StatusesAsync(
@@ -111,15 +142,33 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
                 var it = _domain.StatusesAsync(
                     experienceName
                 ).GetAsyncEnumerator();
-                while(await it.MoveNextAsync())
+                while(
+                    await _profile.RunIteratorAsync(
+                        _domain.AccessToken,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.StatusesAsync(
+                                experienceName
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
                 {
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Experience.Model.EzStatus.FromModel(it.Current));
                 }
             });
         #else
-            return new EzStatusesIterator(_domain.Statuses(
-               experienceName
-            ));
+            return new EzStatusesIterator(
+                _domain.Statuses(
+                    experienceName
+                ),
+                experienceName,
+                _domain,
+                _profile
+            );
         #endif
         }
 

@@ -67,13 +67,25 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
 
         public class EzCountersIterator : Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzCounter>
         {
-            private readonly Gs2Iterator<Gs2.Gs2Mission.Model.Counter> _it;
+            private Gs2Iterator<Gs2.Gs2Mission.Model.Counter> _it;
+        #if !GS2_ENABLE_UNITASK
+            private readonly Gs2.Gs2Mission.Domain.Model.UserAccessTokenDomain _domain;
+        #endif
+            private readonly Gs2.Unity.Util.Profile _profile;
 
             public EzCountersIterator(
-                Gs2Iterator<Gs2.Gs2Mission.Model.Counter> it
+                Gs2Iterator<Gs2.Gs2Mission.Model.Counter> it,
+        #if !GS2_ENABLE_UNITASK
+                Gs2.Gs2Mission.Domain.Model.UserAccessTokenDomain domain,
+        #endif
+                Gs2.Unity.Util.Profile profile
             )
             {
                 _it = it;
+        #if !GS2_ENABLE_UNITASK
+                _domain = domain;
+        #endif
+                _profile = profile;
             }
 
             public override bool HasNext()
@@ -83,7 +95,19 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
 
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Mission.Model.EzCounter> callback)
             {
+        #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
+        #else
+                yield return _profile.RunIterator(
+                    _domain.AccessToken,
+                    _it,
+                    () =>
+                    {
+                        _it = _domain.Counters(
+                        );
+                    }
+                );
+        #endif
                 callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Mission.Model.EzCounter.FromModel(_it.Current));
             }
         }
@@ -92,8 +116,11 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         public Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzCounter> Counters(
         )
         {
-            return new EzCountersIterator(_domain.Counters(
-            ));
+            return new EzCountersIterator(
+                _domain.Counters(
+                ),
+                _profile
+            );
         }
 
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Mission.Model.EzCounter> CountersAsync(
@@ -107,14 +134,30 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             {
                 var it = _domain.CountersAsync(
                 ).GetAsyncEnumerator();
-                while(await it.MoveNextAsync())
+                while(
+                    await _profile.RunIteratorAsync(
+                        _domain.AccessToken,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.CountersAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
                 {
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Mission.Model.EzCounter.FromModel(it.Current));
                 }
             });
         #else
-            return new EzCountersIterator(_domain.Counters(
-            ));
+            return new EzCountersIterator(
+                _domain.Counters(
+                ),
+                _domain,
+                _profile
+            );
         #endif
         }
 
@@ -131,13 +174,25 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
 
         public class EzCompletesIterator : Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzComplete>
         {
-            private readonly Gs2Iterator<Gs2.Gs2Mission.Model.Complete> _it;
+            private Gs2Iterator<Gs2.Gs2Mission.Model.Complete> _it;
+        #if !GS2_ENABLE_UNITASK
+            private readonly Gs2.Gs2Mission.Domain.Model.UserAccessTokenDomain _domain;
+        #endif
+            private readonly Gs2.Unity.Util.Profile _profile;
 
             public EzCompletesIterator(
-                Gs2Iterator<Gs2.Gs2Mission.Model.Complete> it
+                Gs2Iterator<Gs2.Gs2Mission.Model.Complete> it,
+        #if !GS2_ENABLE_UNITASK
+                Gs2.Gs2Mission.Domain.Model.UserAccessTokenDomain domain,
+        #endif
+                Gs2.Unity.Util.Profile profile
             )
             {
                 _it = it;
+        #if !GS2_ENABLE_UNITASK
+                _domain = domain;
+        #endif
+                _profile = profile;
             }
 
             public override bool HasNext()
@@ -147,7 +202,19 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
 
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Mission.Model.EzComplete> callback)
             {
+        #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
+        #else
+                yield return _profile.RunIterator(
+                    _domain.AccessToken,
+                    _it,
+                    () =>
+                    {
+                        _it = _domain.Completes(
+                        );
+                    }
+                );
+        #endif
                 callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Mission.Model.EzComplete.FromModel(_it.Current));
             }
         }
@@ -156,8 +223,11 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         public Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzComplete> Completes(
         )
         {
-            return new EzCompletesIterator(_domain.Completes(
-            ));
+            return new EzCompletesIterator(
+                _domain.Completes(
+                ),
+                _profile
+            );
         }
 
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Mission.Model.EzComplete> CompletesAsync(
@@ -171,14 +241,30 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             {
                 var it = _domain.CompletesAsync(
                 ).GetAsyncEnumerator();
-                while(await it.MoveNextAsync())
+                while(
+                    await _profile.RunIteratorAsync(
+                        _domain.AccessToken,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.CompletesAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
                 {
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Mission.Model.EzComplete.FromModel(it.Current));
                 }
             });
         #else
-            return new EzCompletesIterator(_domain.Completes(
-            ));
+            return new EzCompletesIterator(
+                _domain.Completes(
+                ),
+                _domain,
+                _profile
+            );
         #endif
         }
 

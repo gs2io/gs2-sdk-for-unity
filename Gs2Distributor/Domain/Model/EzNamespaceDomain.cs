@@ -71,13 +71,25 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
 
         public class EzDistributorModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel>
         {
-            private readonly Gs2Iterator<Gs2.Gs2Distributor.Model.DistributorModel> _it;
+            private Gs2Iterator<Gs2.Gs2Distributor.Model.DistributorModel> _it;
+        #if !GS2_ENABLE_UNITASK
+            private readonly Gs2.Gs2Distributor.Domain.Model.NamespaceDomain _domain;
+        #endif
+            private readonly Gs2.Unity.Util.Profile _profile;
 
             public EzDistributorModelsIterator(
-                Gs2Iterator<Gs2.Gs2Distributor.Model.DistributorModel> it
+                Gs2Iterator<Gs2.Gs2Distributor.Model.DistributorModel> it,
+        #if !GS2_ENABLE_UNITASK
+                Gs2.Gs2Distributor.Domain.Model.NamespaceDomain domain,
+        #endif
+                Gs2.Unity.Util.Profile profile
             )
             {
                 _it = it;
+        #if !GS2_ENABLE_UNITASK
+                _domain = domain;
+        #endif
+                _profile = profile;
             }
 
             public override bool HasNext()
@@ -87,7 +99,19 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
 
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel> callback)
             {
+        #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
+        #else
+                yield return _profile.RunIterator(
+                    null,
+                    _it,
+                    () =>
+                    {
+                        _it = _domain.DistributorModels(
+                        );
+                    }
+                );
+        #endif
                 callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Distributor.Model.EzDistributorModel.FromModel(_it.Current));
             }
         }
@@ -96,8 +120,11 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
         public Gs2Iterator<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel> DistributorModels(
         )
         {
-            return new EzDistributorModelsIterator(_domain.DistributorModels(
-            ));
+            return new EzDistributorModelsIterator(
+                _domain.DistributorModels(
+                ),
+                _profile
+            );
         }
 
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel> DistributorModelsAsync(
@@ -111,14 +138,30 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
             {
                 var it = _domain.DistributorModelsAsync(
                 ).GetAsyncEnumerator();
-                while(await it.MoveNextAsync())
+                while(
+                    await _profile.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.DistributorModelsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
                 {
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Distributor.Model.EzDistributorModel.FromModel(it.Current));
                 }
             });
         #else
-            return new EzDistributorModelsIterator(_domain.DistributorModels(
-            ));
+            return new EzDistributorModelsIterator(
+                _domain.DistributorModels(
+                ),
+                _domain,
+                _profile
+            );
         #endif
         }
 

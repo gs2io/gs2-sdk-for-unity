@@ -120,7 +120,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                     _domain.AccessToken,
                     future,
                     () => {
-                        return _domain.PutScore(
+                        return future = _domain.PutScore(
                             new PutScoreRequest()
                                 .WithScore(score)
                                 .WithMetadata(metadata)
@@ -175,7 +175,13 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Model.EzRanking> self)
             {
                 var future = _domain.Model(scorerUserId);
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future,
+                    () => {
+                        return future = _domain.Model(scorerUserId);
+                    }
+                );
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;

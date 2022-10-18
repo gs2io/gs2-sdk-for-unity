@@ -67,13 +67,25 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
 
         public class EzExperienceModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Experience.Model.EzExperienceModel>
         {
-            private readonly Gs2Iterator<Gs2.Gs2Experience.Model.ExperienceModel> _it;
+            private Gs2Iterator<Gs2.Gs2Experience.Model.ExperienceModel> _it;
+        #if !GS2_ENABLE_UNITASK
+            private readonly Gs2.Gs2Experience.Domain.Model.NamespaceDomain _domain;
+        #endif
+            private readonly Gs2.Unity.Util.Profile _profile;
 
             public EzExperienceModelsIterator(
-                Gs2Iterator<Gs2.Gs2Experience.Model.ExperienceModel> it
+                Gs2Iterator<Gs2.Gs2Experience.Model.ExperienceModel> it,
+        #if !GS2_ENABLE_UNITASK
+                Gs2.Gs2Experience.Domain.Model.NamespaceDomain domain,
+        #endif
+                Gs2.Unity.Util.Profile profile
             )
             {
                 _it = it;
+        #if !GS2_ENABLE_UNITASK
+                _domain = domain;
+        #endif
+                _profile = profile;
             }
 
             public override bool HasNext()
@@ -83,7 +95,19 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
 
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Experience.Model.EzExperienceModel> callback)
             {
+        #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
+        #else
+                yield return _profile.RunIterator(
+                    null,
+                    _it,
+                    () =>
+                    {
+                        _it = _domain.ExperienceModels(
+                        );
+                    }
+                );
+        #endif
                 callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Experience.Model.EzExperienceModel.FromModel(_it.Current));
             }
         }
@@ -92,8 +116,11 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
         public Gs2Iterator<Gs2.Unity.Gs2Experience.Model.EzExperienceModel> ExperienceModels(
         )
         {
-            return new EzExperienceModelsIterator(_domain.ExperienceModels(
-            ));
+            return new EzExperienceModelsIterator(
+                _domain.ExperienceModels(
+                ),
+                _profile
+            );
         }
 
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Experience.Model.EzExperienceModel> ExperienceModelsAsync(
@@ -107,14 +134,30 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
             {
                 var it = _domain.ExperienceModelsAsync(
                 ).GetAsyncEnumerator();
-                while(await it.MoveNextAsync())
+                while(
+                    await _profile.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.ExperienceModelsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
                 {
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Experience.Model.EzExperienceModel.FromModel(it.Current));
                 }
             });
         #else
-            return new EzExperienceModelsIterator(_domain.ExperienceModels(
-            ));
+            return new EzExperienceModelsIterator(
+                _domain.ExperienceModels(
+                ),
+                _domain,
+                _profile
+            );
         #endif
         }
 

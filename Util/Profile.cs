@@ -261,6 +261,71 @@ namespace Gs2.Unity.Util
             return default(T);
         }
 
+        public async UniTask<bool> RunIteratorAsync(
+            AccessToken accessToken,
+            Func<UniTask<bool>> requestActionAsync,
+            RetryIterator retryIterator)
+        {
+            bool isReopenTried = false;
+            bool isAuthenticationTried = false;
+
+            while (true)
+            {
+                try
+                {
+                    return await requestActionAsync.Invoke();
+                }
+                catch (UnauthorizedException)
+                {
+                    var authenticator = _authenticator;
+                    if (accessToken != null && authenticator != null && !isAuthenticationTried)
+                    {
+                        isAuthenticationTried = true;
+
+                        var asyncAuthenticationResult = await authenticator.AuthenticationAsync();
+
+                        if (asyncAuthenticationResult != null)
+                        {
+                            accessToken.Token = asyncAuthenticationResult.Token;
+                            accessToken.UserId = asyncAuthenticationResult.UserId;
+                            accessToken.Expire = asyncAuthenticationResult.Expire;
+                            
+                            retryIterator?.Invoke();
+                            
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                catch (SessionNotOpenException)
+                {
+                    if (_reopener != null && !isReopenTried)
+                    {
+                        isReopenTried = true;
+
+                        var asyncOpenResult = await _reopener.ReOpenAsync(Gs2Session, Gs2RestSession);
+
+                        if (asyncOpenResult != null)
+                        {
+                            retryIterator?.Invoke();
+                            
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                break;
+            }
+
+            return false;
+        }
 #else
 
         public delegate IFuture<T> RetryAction<T>();
@@ -324,7 +389,70 @@ namespace Gs2.Unity.Util
                 break;
             }
         }
+
 #endif
+        public delegate void RetryIterator();
+
+        public IEnumerator RunIterator<T>(
+            AccessToken accessToken,
+            Gs2Iterator<T> requestIterator,
+            RetryIterator retryIterator)
+        {
+            bool isReopenTried = false;
+            bool isAuthenticationTried = false;
+
+            while (true)
+            {
+                yield return requestIterator.Next();
+
+                if (requestIterator.Error is SessionNotOpenException && !isReopenTried)
+                {
+                    isReopenTried = true;
+
+                    AsyncResult<OpenResult> asyncOpenResult = null;
+
+                    yield return _reopener.ReOpen(Gs2Session, Gs2RestSession, aor => asyncOpenResult = aor);
+
+                    _reopener.Callback?.Invoke(asyncOpenResult);
+
+                    if (asyncOpenResult.Error == null)
+                    {
+                        retryIterator?.Invoke();
+                        
+                        continue;
+                    }
+                }
+
+                var authenticator = _authenticator;
+                if (accessToken != null && authenticator != null && requestIterator.Error is UnauthorizedException && !isAuthenticationTried)
+                {
+                    isAuthenticationTried = true;
+
+                    AsyncResult<AccessToken> asyncAuthenticationResult = null;
+
+                    yield return authenticator.Authentication(aar => asyncAuthenticationResult = aar);
+
+                    if (asyncAuthenticationResult.Error == null)
+                    {
+                        accessToken.Token = asyncAuthenticationResult.Result.Token;
+                        accessToken.UserId = asyncAuthenticationResult.Result.UserId;
+                        accessToken.Expire = asyncAuthenticationResult.Result.Expire;
+                    }
+
+                    authenticator.Callback?.Invoke(asyncAuthenticationResult);
+
+                    if (asyncAuthenticationResult.Error == null)
+                    {
+                        retryIterator?.Invoke();
+                        
+                        continue;
+                    }
+                }
+
+                break;
+            }
+        }
+
         public delegate IEnumerator RequestAction<T>(UnityAction<AsyncResult<T>> callback);
         
         public IEnumerator Run<T>(

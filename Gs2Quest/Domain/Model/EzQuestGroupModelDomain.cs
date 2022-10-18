@@ -66,13 +66,25 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
 
         public class EzQuestModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Quest.Model.EzQuestModel>
         {
-            private readonly Gs2Iterator<Gs2.Gs2Quest.Model.QuestModel> _it;
+            private Gs2Iterator<Gs2.Gs2Quest.Model.QuestModel> _it;
+        #if !GS2_ENABLE_UNITASK
+            private readonly Gs2.Gs2Quest.Domain.Model.QuestGroupModelDomain _domain;
+        #endif
+            private readonly Gs2.Unity.Util.Profile _profile;
 
             public EzQuestModelsIterator(
-                Gs2Iterator<Gs2.Gs2Quest.Model.QuestModel> it
+                Gs2Iterator<Gs2.Gs2Quest.Model.QuestModel> it,
+        #if !GS2_ENABLE_UNITASK
+                Gs2.Gs2Quest.Domain.Model.QuestGroupModelDomain domain,
+        #endif
+                Gs2.Unity.Util.Profile profile
             )
             {
                 _it = it;
+        #if !GS2_ENABLE_UNITASK
+                _domain = domain;
+        #endif
+                _profile = profile;
             }
 
             public override bool HasNext()
@@ -82,7 +94,19 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
 
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Quest.Model.EzQuestModel> callback)
             {
+        #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
+        #else
+                yield return _profile.RunIterator(
+                    null,
+                    _it,
+                    () =>
+                    {
+                        _it = _domain.QuestModels(
+                        );
+                    }
+                );
+        #endif
                 callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Quest.Model.EzQuestModel.FromModel(_it.Current));
             }
         }
@@ -91,8 +115,11 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         public Gs2Iterator<Gs2.Unity.Gs2Quest.Model.EzQuestModel> QuestModels(
         )
         {
-            return new EzQuestModelsIterator(_domain.QuestModels(
-            ));
+            return new EzQuestModelsIterator(
+                _domain.QuestModels(
+                ),
+                _profile
+            );
         }
 
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Quest.Model.EzQuestModel> QuestModelsAsync(
@@ -106,14 +133,30 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             {
                 var it = _domain.QuestModelsAsync(
                 ).GetAsyncEnumerator();
-                while(await it.MoveNextAsync())
+                while(
+                    await _profile.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.QuestModelsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
                 {
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Quest.Model.EzQuestModel.FromModel(it.Current));
                 }
             });
         #else
-            return new EzQuestModelsIterator(_domain.QuestModels(
-            ));
+            return new EzQuestModelsIterator(
+                _domain.QuestModels(
+                ),
+                _domain,
+                _profile
+            );
         #endif
         }
 

@@ -54,14 +54,17 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
 
     public partial class EzBoxDomain {
         private readonly Gs2.Gs2Lottery.Domain.Model.BoxDomain _domain;
+        private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string PrizeTableName => _domain?.PrizeTableName;
 
         public EzBoxDomain(
-            Gs2.Gs2Lottery.Domain.Model.BoxDomain domain
+            Gs2.Gs2Lottery.Domain.Model.BoxDomain domain,
+            Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
+            this._profile = profile;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -93,7 +96,13 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> self)
             {
                 var future = _domain.Model();
-                yield return future;
+                yield return _profile.RunFuture(
+                    null,
+                    future,
+                    () => {
+                        return future = _domain.Model();
+                    }
+                );
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;

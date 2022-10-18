@@ -66,13 +66,25 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
         public class EzItemModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzItemModel>
         {
-            private readonly Gs2Iterator<Gs2.Gs2Inventory.Model.ItemModel> _it;
+            private Gs2Iterator<Gs2.Gs2Inventory.Model.ItemModel> _it;
+        #if !GS2_ENABLE_UNITASK
+            private readonly Gs2.Gs2Inventory.Domain.Model.InventoryModelDomain _domain;
+        #endif
+            private readonly Gs2.Unity.Util.Profile _profile;
 
             public EzItemModelsIterator(
-                Gs2Iterator<Gs2.Gs2Inventory.Model.ItemModel> it
+                Gs2Iterator<Gs2.Gs2Inventory.Model.ItemModel> it,
+        #if !GS2_ENABLE_UNITASK
+                Gs2.Gs2Inventory.Domain.Model.InventoryModelDomain domain,
+        #endif
+                Gs2.Unity.Util.Profile profile
             )
             {
                 _it = it;
+        #if !GS2_ENABLE_UNITASK
+                _domain = domain;
+        #endif
+                _profile = profile;
             }
 
             public override bool HasNext()
@@ -82,7 +94,19 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Inventory.Model.EzItemModel> callback)
             {
+        #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
+        #else
+                yield return _profile.RunIterator(
+                    null,
+                    _it,
+                    () =>
+                    {
+                        _it = _domain.ItemModels(
+                        );
+                    }
+                );
+        #endif
                 callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzItemModel.FromModel(_it.Current));
             }
         }
@@ -91,8 +115,11 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzItemModel> ItemModels(
         )
         {
-            return new EzItemModelsIterator(_domain.ItemModels(
-            ));
+            return new EzItemModelsIterator(
+                _domain.ItemModels(
+                ),
+                _profile
+            );
         }
 
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Inventory.Model.EzItemModel> ItemModelsAsync(
@@ -106,14 +133,30 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             {
                 var it = _domain.ItemModelsAsync(
                 ).GetAsyncEnumerator();
-                while(await it.MoveNextAsync())
+                while(
+                    await _profile.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.ItemModelsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
                 {
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzItemModel.FromModel(it.Current));
                 }
             });
         #else
-            return new EzItemModelsIterator(_domain.ItemModels(
-            ));
+            return new EzItemModelsIterator(
+                _domain.ItemModels(
+                ),
+                _domain,
+                _profile
+            );
         #endif
         }
 

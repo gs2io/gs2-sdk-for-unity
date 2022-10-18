@@ -66,13 +66,25 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
 
         public class EzShowcasesIterator : Gs2Iterator<Gs2.Unity.Gs2Showcase.Model.EzShowcase>
         {
-            private readonly Gs2Iterator<Gs2.Gs2Showcase.Model.Showcase> _it;
+            private Gs2Iterator<Gs2.Gs2Showcase.Model.Showcase> _it;
+        #if !GS2_ENABLE_UNITASK
+            private readonly Gs2.Gs2Showcase.Domain.Model.UserAccessTokenDomain _domain;
+        #endif
+            private readonly Gs2.Unity.Util.Profile _profile;
 
             public EzShowcasesIterator(
-                Gs2Iterator<Gs2.Gs2Showcase.Model.Showcase> it
+                Gs2Iterator<Gs2.Gs2Showcase.Model.Showcase> it,
+        #if !GS2_ENABLE_UNITASK
+                Gs2.Gs2Showcase.Domain.Model.UserAccessTokenDomain domain,
+        #endif
+                Gs2.Unity.Util.Profile profile
             )
             {
                 _it = it;
+        #if !GS2_ENABLE_UNITASK
+                _domain = domain;
+        #endif
+                _profile = profile;
             }
 
             public override bool HasNext()
@@ -82,7 +94,19 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
 
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Showcase.Model.EzShowcase> callback)
             {
+        #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
+        #else
+                yield return _profile.RunIterator(
+                    _domain.AccessToken,
+                    _it,
+                    () =>
+                    {
+                        _it = _domain.Showcases(
+                        );
+                    }
+                );
+        #endif
                 callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Showcase.Model.EzShowcase.FromModel(_it.Current));
             }
         }
@@ -91,8 +115,11 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
         public Gs2Iterator<Gs2.Unity.Gs2Showcase.Model.EzShowcase> Showcases(
         )
         {
-            return new EzShowcasesIterator(_domain.Showcases(
-            ));
+            return new EzShowcasesIterator(
+                _domain.Showcases(
+                ),
+                _profile
+            );
         }
 
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Showcase.Model.EzShowcase> ShowcasesAsync(
@@ -106,14 +133,30 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
             {
                 var it = _domain.ShowcasesAsync(
                 ).GetAsyncEnumerator();
-                while(await it.MoveNextAsync())
+                while(
+                    await _profile.RunIteratorAsync(
+                        _domain.AccessToken,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.ShowcasesAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
                 {
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Showcase.Model.EzShowcase.FromModel(it.Current));
                 }
             });
         #else
-            return new EzShowcasesIterator(_domain.Showcases(
-            ));
+            return new EzShowcasesIterator(
+                _domain.Showcases(
+                ),
+                _domain,
+                _profile
+            );
         #endif
         }
 

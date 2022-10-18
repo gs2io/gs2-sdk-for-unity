@@ -393,13 +393,25 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
 
         public class EzDataObjectHistoriesIterator : Gs2Iterator<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory>
         {
-            private readonly Gs2Iterator<Gs2.Gs2Datastore.Model.DataObjectHistory> _it;
+            private Gs2Iterator<Gs2.Gs2Datastore.Model.DataObjectHistory> _it;
+        #if !GS2_ENABLE_UNITASK
+            private readonly Gs2.Gs2Datastore.Domain.Model.DataObjectAccessTokenDomain _domain;
+        #endif
+            private readonly Gs2.Unity.Util.Profile _profile;
 
             public EzDataObjectHistoriesIterator(
-                Gs2Iterator<Gs2.Gs2Datastore.Model.DataObjectHistory> it
+                Gs2Iterator<Gs2.Gs2Datastore.Model.DataObjectHistory> it,
+        #if !GS2_ENABLE_UNITASK
+                Gs2.Gs2Datastore.Domain.Model.DataObjectAccessTokenDomain domain,
+        #endif
+                Gs2.Unity.Util.Profile profile
             )
             {
                 _it = it;
+        #if !GS2_ENABLE_UNITASK
+                _domain = domain;
+        #endif
+                _profile = profile;
             }
 
             public override bool HasNext()
@@ -409,7 +421,19 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
 
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory> callback)
             {
+        #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
+        #else
+                yield return _profile.RunIterator(
+                    _domain.AccessToken,
+                    _it,
+                    () =>
+                    {
+                        _it = _domain.DataObjectHistories(
+                        );
+                    }
+                );
+        #endif
                 callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory.FromModel(_it.Current));
             }
         }
@@ -418,8 +442,11 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         public Gs2Iterator<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory> DataObjectHistories(
         )
         {
-            return new EzDataObjectHistoriesIterator(_domain.DataObjectHistories(
-            ));
+            return new EzDataObjectHistoriesIterator(
+                _domain.DataObjectHistories(
+                ),
+                _profile
+            );
         }
 
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory> DataObjectHistoriesAsync(
@@ -433,14 +460,30 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             {
                 var it = _domain.DataObjectHistoriesAsync(
                 ).GetAsyncEnumerator();
-                while(await it.MoveNextAsync())
+                while(
+                    await _profile.RunIteratorAsync(
+                        _domain.AccessToken,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.DataObjectHistoriesAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
                 {
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory.FromModel(it.Current));
                 }
             });
         #else
-            return new EzDataObjectHistoriesIterator(_domain.DataObjectHistories(
-            ));
+            return new EzDataObjectHistoriesIterator(
+                _domain.DataObjectHistories(
+                ),
+                _domain,
+                _profile
+            );
         #endif
         }
 

@@ -68,13 +68,25 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
 
         public class EzLayerModelsIterator : Gs2Iterator<Gs2.Unity.Gs2MegaField.Model.EzLayerModel>
         {
-            private readonly Gs2Iterator<Gs2.Gs2MegaField.Model.LayerModel> _it;
-
+            private Gs2Iterator<Gs2.Gs2MegaField.Model.LayerModel> _it;
+#if !GS2_ENABLE_UNITASK
+            private readonly Gs2.Gs2MegaField.Domain.Model.AreaModelDomain _domain;
+#endif
+            private readonly Gs2.Unity.Util.Profile _profile;
+            
             public EzLayerModelsIterator(
-                Gs2Iterator<Gs2.Gs2MegaField.Model.LayerModel> it
+                Gs2Iterator<Gs2.Gs2MegaField.Model.LayerModel> it,
+#if !GS2_ENABLE_UNITASK
+                Gs2.Gs2MegaField.Domain.Model.AreaModelDomain domain,
+#endif
+                Gs2.Unity.Util.Profile profile
             )
             {
                 _it = it;
+#if !GS2_ENABLE_UNITASK
+                _domain = domain;
+#endif
+                _profile = profile;
             }
 
             public override bool HasNext()
@@ -84,7 +96,18 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
 
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2MegaField.Model.EzLayerModel> callback)
             {
+#if GS2_ENABLE_UNITASK
                 yield return _it.Next();
+#else
+                yield return _profile.RunIterator(
+                    null,
+                    _it,
+                    () =>
+                    {
+                        _it = _domain.LayerModels();
+                    }
+                );
+#endif
                 callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2MegaField.Model.EzLayerModel.FromModel(_it.Current));
             }
         }
@@ -93,8 +116,11 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
         public Gs2Iterator<Gs2.Unity.Gs2MegaField.Model.EzLayerModel> LayerModels(
         )
         {
-            return new EzLayerModelsIterator(_domain.LayerModels(
-            ));
+            return new EzLayerModelsIterator(
+                _domain.LayerModels(
+                ),
+                _profile
+            );
         }
 
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2MegaField.Model.EzLayerModel> LayerModelsAsync(
@@ -114,8 +140,12 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
                 }
             });
         #else
-            return new EzLayerModelsIterator(_domain.LayerModels(
-            ));
+            return new EzLayerModelsIterator(
+                _domain.LayerModels(
+                ),
+                _domain,
+                _profile
+            );
         #endif
         }
 

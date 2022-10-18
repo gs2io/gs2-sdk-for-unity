@@ -67,13 +67,25 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
 
         public class EzCategoryModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzCategoryModel>
         {
-            private readonly Gs2Iterator<Gs2.Gs2Ranking.Model.CategoryModel> _it;
+            private Gs2Iterator<Gs2.Gs2Ranking.Model.CategoryModel> _it;
+        #if !GS2_ENABLE_UNITASK
+            private readonly Gs2.Gs2Ranking.Domain.Model.NamespaceDomain _domain;
+        #endif
+            private readonly Gs2.Unity.Util.Profile _profile;
 
             public EzCategoryModelsIterator(
-                Gs2Iterator<Gs2.Gs2Ranking.Model.CategoryModel> it
+                Gs2Iterator<Gs2.Gs2Ranking.Model.CategoryModel> it,
+        #if !GS2_ENABLE_UNITASK
+                Gs2.Gs2Ranking.Domain.Model.NamespaceDomain domain,
+        #endif
+                Gs2.Unity.Util.Profile profile
             )
             {
                 _it = it;
+        #if !GS2_ENABLE_UNITASK
+                _domain = domain;
+        #endif
+                _profile = profile;
             }
 
             public override bool HasNext()
@@ -83,7 +95,19 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
 
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Ranking.Model.EzCategoryModel> callback)
             {
+        #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
+        #else
+                yield return _profile.RunIterator(
+                    null,
+                    _it,
+                    () =>
+                    {
+                        _it = _domain.CategoryModels(
+                        );
+                    }
+                );
+        #endif
                 callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzCategoryModel.FromModel(_it.Current));
             }
         }
@@ -92,8 +116,11 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         public Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzCategoryModel> CategoryModels(
         )
         {
-            return new EzCategoryModelsIterator(_domain.CategoryModels(
-            ));
+            return new EzCategoryModelsIterator(
+                _domain.CategoryModels(
+                ),
+                _profile
+            );
         }
 
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking.Model.EzCategoryModel> CategoryModelsAsync(
@@ -107,14 +134,30 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             {
                 var it = _domain.CategoryModelsAsync(
                 ).GetAsyncEnumerator();
-                while(await it.MoveNextAsync())
+                while(
+                    await _profile.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.CategoryModelsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
                 {
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzCategoryModel.FromModel(it.Current));
                 }
             });
         #else
-            return new EzCategoryModelsIterator(_domain.CategoryModels(
-            ));
+            return new EzCategoryModelsIterator(
+                _domain.CategoryModels(
+                ),
+                _domain,
+                _profile
+            );
         #endif
         }
 

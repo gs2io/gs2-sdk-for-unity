@@ -67,13 +67,25 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
 
         public class EzFormModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzFormModel>
         {
-            private readonly Gs2Iterator<Gs2.Gs2Formation.Model.FormModel> _it;
+            private Gs2Iterator<Gs2.Gs2Formation.Model.FormModel> _it;
+        #if !GS2_ENABLE_UNITASK
+            private readonly Gs2.Gs2Formation.Domain.Model.NamespaceDomain _domain;
+        #endif
+            private readonly Gs2.Unity.Util.Profile _profile;
 
             public EzFormModelsIterator(
-                Gs2Iterator<Gs2.Gs2Formation.Model.FormModel> it
+                Gs2Iterator<Gs2.Gs2Formation.Model.FormModel> it,
+        #if !GS2_ENABLE_UNITASK
+                Gs2.Gs2Formation.Domain.Model.NamespaceDomain domain,
+        #endif
+                Gs2.Unity.Util.Profile profile
             )
             {
                 _it = it;
+        #if !GS2_ENABLE_UNITASK
+                _domain = domain;
+        #endif
+                _profile = profile;
             }
 
             public override bool HasNext()
@@ -83,7 +95,19 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
 
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Formation.Model.EzFormModel> callback)
             {
+        #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
+        #else
+                yield return _profile.RunIterator(
+                    null,
+                    _it,
+                    () =>
+                    {
+                        _it = _domain.FormModels(
+                        );
+                    }
+                );
+        #endif
                 callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzFormModel.FromModel(_it.Current));
             }
         }
@@ -92,8 +116,11 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzFormModel> FormModels(
         )
         {
-            return new EzFormModelsIterator(_domain.FormModels(
-            ));
+            return new EzFormModelsIterator(
+                _domain.FormModels(
+                ),
+                _profile
+            );
         }
 
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Formation.Model.EzFormModel> FormModelsAsync(
@@ -107,14 +134,30 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             {
                 var it = _domain.FormModelsAsync(
                 ).GetAsyncEnumerator();
-                while(await it.MoveNextAsync())
+                while(
+                    await _profile.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.FormModelsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
                 {
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzFormModel.FromModel(it.Current));
                 }
             });
         #else
-            return new EzFormModelsIterator(_domain.FormModels(
-            ));
+            return new EzFormModelsIterator(
+                _domain.FormModels(
+                ),
+                _domain,
+                _profile
+            );
         #endif
         }
 
@@ -131,13 +174,25 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
 
         public class EzMoldModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzMoldModel>
         {
-            private readonly Gs2Iterator<Gs2.Gs2Formation.Model.MoldModel> _it;
+            private Gs2Iterator<Gs2.Gs2Formation.Model.MoldModel> _it;
+        #if !GS2_ENABLE_UNITASK
+            private readonly Gs2.Gs2Formation.Domain.Model.NamespaceDomain _domain;
+        #endif
+            private readonly Gs2.Unity.Util.Profile _profile;
 
             public EzMoldModelsIterator(
-                Gs2Iterator<Gs2.Gs2Formation.Model.MoldModel> it
+                Gs2Iterator<Gs2.Gs2Formation.Model.MoldModel> it,
+        #if !GS2_ENABLE_UNITASK
+                Gs2.Gs2Formation.Domain.Model.NamespaceDomain domain,
+        #endif
+                Gs2.Unity.Util.Profile profile
             )
             {
                 _it = it;
+        #if !GS2_ENABLE_UNITASK
+                _domain = domain;
+        #endif
+                _profile = profile;
             }
 
             public override bool HasNext()
@@ -147,7 +202,19 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
 
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Formation.Model.EzMoldModel> callback)
             {
+        #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
+        #else
+                yield return _profile.RunIterator(
+                    null,
+                    _it,
+                    () =>
+                    {
+                        _it = _domain.MoldModels(
+                        );
+                    }
+                );
+        #endif
                 callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzMoldModel.FromModel(_it.Current));
             }
         }
@@ -156,8 +223,11 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzMoldModel> MoldModels(
         )
         {
-            return new EzMoldModelsIterator(_domain.MoldModels(
-            ));
+            return new EzMoldModelsIterator(
+                _domain.MoldModels(
+                ),
+                _profile
+            );
         }
 
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Formation.Model.EzMoldModel> MoldModelsAsync(
@@ -171,14 +241,30 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             {
                 var it = _domain.MoldModelsAsync(
                 ).GetAsyncEnumerator();
-                while(await it.MoveNextAsync())
+                while(
+                    await _profile.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.MoldModelsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
                 {
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzMoldModel.FromModel(it.Current));
                 }
             });
         #else
-            return new EzMoldModelsIterator(_domain.MoldModels(
-            ));
+            return new EzMoldModelsIterator(
+                _domain.MoldModels(
+                ),
+                _domain,
+                _profile
+            );
         #endif
         }
 

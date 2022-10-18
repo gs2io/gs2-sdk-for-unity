@@ -79,13 +79,28 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
 
         public class EzAwaitsIterator : Gs2Iterator<Gs2.Unity.Gs2Exchange.Model.EzAwait>
         {
-            private readonly Gs2Iterator<Gs2.Gs2Exchange.Model.Await> _it;
+            private Gs2Iterator<Gs2.Gs2Exchange.Model.Await> _it;
+        #if !GS2_ENABLE_UNITASK
+            private readonly string _rateName;
+            private readonly Gs2.Gs2Exchange.Domain.Model.UserAccessTokenDomain _domain;
+        #endif
+            private readonly Gs2.Unity.Util.Profile _profile;
 
             public EzAwaitsIterator(
-                Gs2Iterator<Gs2.Gs2Exchange.Model.Await> it
+                Gs2Iterator<Gs2.Gs2Exchange.Model.Await> it,
+        #if !GS2_ENABLE_UNITASK
+                string rateName,
+                Gs2.Gs2Exchange.Domain.Model.UserAccessTokenDomain domain,
+        #endif
+                Gs2.Unity.Util.Profile profile
             )
             {
                 _it = it;
+        #if !GS2_ENABLE_UNITASK
+                _rateName = rateName;
+                _domain = domain;
+        #endif
+                _profile = profile;
             }
 
             public override bool HasNext()
@@ -95,7 +110,20 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
 
             protected override IEnumerator Next(Action<Gs2.Unity.Gs2Exchange.Model.EzAwait> callback)
             {
+        #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
+        #else
+                yield return _profile.RunIterator(
+                    _domain.AccessToken,
+                    _it,
+                    () =>
+                    {
+                        _it = _domain.Awaits(
+                            _rateName
+                        );
+                    }
+                );
+        #endif
                 callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Exchange.Model.EzAwait.FromModel(_it.Current));
             }
         }
@@ -105,9 +133,12 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
               string rateName = null
         )
         {
-            return new EzAwaitsIterator(_domain.Awaits(
-               rateName
-            ));
+            return new EzAwaitsIterator(
+                _domain.Awaits(
+                    rateName
+                ),
+                _profile
+            );
         }
 
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Exchange.Model.EzAwait> AwaitsAsync(
@@ -123,15 +154,33 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                 var it = _domain.AwaitsAsync(
                     rateName
                 ).GetAsyncEnumerator();
-                while(await it.MoveNextAsync())
+                while(
+                    await _profile.RunIteratorAsync(
+                        _domain.AccessToken,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.AwaitsAsync(
+                                rateName
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
                 {
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Exchange.Model.EzAwait.FromModel(it.Current));
                 }
             });
         #else
-            return new EzAwaitsIterator(_domain.Awaits(
-               rateName
-            ));
+            return new EzAwaitsIterator(
+                _domain.Awaits(
+                    rateName
+                ),
+                rateName,
+                _domain,
+                _profile
+            );
         #endif
         }
 
