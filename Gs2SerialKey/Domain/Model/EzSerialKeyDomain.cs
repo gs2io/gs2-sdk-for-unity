@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -55,7 +57,7 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
         private readonly Gs2.Unity.Util.Profile _profile;
         public string Url => _domain.Url;
         public string NamespaceName => _domain?.NamespaceName;
-        public string SerialKeyCode => _domain?.SerialKeyCode;
+        public string SerialKeyCode => _domain?.Code;
 
         public EzSerialKeyDomain(
             Gs2.Gs2SerialKey.Domain.Model.SerialKeyDomain domain,
