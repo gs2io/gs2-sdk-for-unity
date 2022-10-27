@@ -292,11 +292,11 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
         }
 
         public Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyDomain SerialKey(
-            string serialKeyCode
+            string code
         ) {
             return new Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyDomain(
                 _domain.SerialKey(
-                    serialKeyCode
+                    code
                 ),
                 _profile
             );
