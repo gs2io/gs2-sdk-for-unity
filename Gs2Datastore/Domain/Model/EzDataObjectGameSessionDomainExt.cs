@@ -45,7 +45,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
 #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> ReUploadAsync(
 #else
-        public Gs2Future<Gs2.Gs2Datastore.Domain.Model.DataObjectAccessTokenDomain> ReUpload(
+        public Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> ReUpload(
 #endif
             byte[] data
         )
@@ -55,8 +55,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 await _domain.ReUpload(data), _profile
             );
 #else
-
-            IEnumerator Impl(Gs2Future<Gs2.Gs2Datastore.Domain.Model.DataObjectAccessTokenDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
             {
                 var future = _domain.ReUpload(
                     data
@@ -67,9 +66,10 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(future.Result);
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain(result, _profile));
             }
-            return new Gs2InlineFuture<Gs2.Gs2Datastore.Domain.Model.DataObjectAccessTokenDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain>(Impl);
 #endif
         }
 
