@@ -30,9 +30,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
-using Gs2.Gs2JobQueue.Domain.Iterator;
-using Gs2.Gs2JobQueue.Request;
-using Gs2.Gs2JobQueue.Result;
+using Gs2.Gs2Lottery.Domain.Iterator;
+using Gs2.Gs2Lottery.Request;
+using Gs2.Gs2Lottery.Result;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using Gs2.Core;
@@ -47,55 +47,40 @@ using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
 #endif
 
-namespace Gs2.Unity.Gs2JobQueue.Domain.Model
+namespace Gs2.Unity.Gs2Lottery.Domain.Model
 {
 
-    public partial class EzJobGameSessionDomain {
-        private readonly Gs2.Gs2JobQueue.Domain.Model.JobAccessTokenDomain _domain;
+    public partial class EzLotteryModelDomain {
+        private readonly Gs2.Gs2Lottery.Domain.Model.LotteryModelDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
-        public bool? AutoRun => _domain.AutoRun;
-        public bool? IsLastJob => _domain.IsLastJob;
-        public bool? NeedRetry => _domain.NeedRetry;
         public string NamespaceName => _domain?.NamespaceName;
-        public string UserId => _domain?.UserId;
-        public string JobName => _domain?.JobName;
+        public string LotteryName => _domain?.LotteryName;
 
-        public EzJobGameSessionDomain(
-            Gs2.Gs2JobQueue.Domain.Model.JobAccessTokenDomain domain,
+        public EzLotteryModelDomain(
+            Gs2.Gs2Lottery.Domain.Model.LotteryModelDomain domain,
             Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
             this._profile = profile;
         }
 
-        public Gs2.Unity.Gs2JobQueue.Domain.Model.EzJobResultGameSessionDomain JobResult(
-            int tryNumber
-        ) {
-            return new Gs2.Unity.Gs2JobQueue.Domain.Model.EzJobResultGameSessionDomain(
-                _domain.JobResult(
-                    tryNumber
-                ),
-                _profile
-            );
-        }
-
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2JobQueue.Model.EzJob> Model()
+        public IFuture<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel> Model()
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2JobQueue.Model.EzJob> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel> self)
             {
                 yield return ModelAsync().ToCoroutine(
                     self.OnComplete,
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2JobQueue.Model.EzJob>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2JobQueue.Model.EzJob> ModelAsync()
+        public async UniTask<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel> ModelAsync()
         {
             var item = await _profile.RunAsync(
-                _domain.AccessToken,
+                null,
                 async () =>
                 {
                     return await _domain.Model();
@@ -104,18 +89,18 @@ namespace Gs2.Unity.Gs2JobQueue.Domain.Model
             if (item == null) {
                 return null;
             }
-            return Gs2.Unity.Gs2JobQueue.Model.EzJob.FromModel(
+            return Gs2.Unity.Gs2Lottery.Model.EzLotteryModel.FromModel(
                 item
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2JobQueue.Model.EzJob> Model()
+        public IFuture<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel> Model()
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2JobQueue.Model.EzJob> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel> self)
             {
                 var future = _domain.Model();
                 yield return _profile.RunFuture(
-                    _domain.AccessToken,
+                    null,
                     future,
                     () => {
                     	return future = _domain.Model();
@@ -130,11 +115,11 @@ namespace Gs2.Unity.Gs2JobQueue.Domain.Model
                     self.OnComplete(null);
                     yield break;
                 }
-                self.OnComplete(Gs2.Unity.Gs2JobQueue.Model.EzJob.FromModel(
+                self.OnComplete(Gs2.Unity.Gs2Lottery.Model.EzLotteryModel.FromModel(
                     item
                 ));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2JobQueue.Model.EzJob>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel>(Impl);
         }
         #endif
 

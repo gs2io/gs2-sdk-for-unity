@@ -52,24 +52,24 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Iterator
 {
 
     #if GS2_ENABLE_UNITASK
-    public class EzDescribeBoxesIterator {
+    public class EzDescribeLotteryModelsIterator {
     #else
-    public class EzDescribeBoxesIterator : Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> {
+    public class EzDescribeLotteryModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel> {
     #endif
-        private readonly Gs2.Gs2Lottery.Domain.Iterator.DescribeBoxesIterator _iterator;
+        private readonly Gs2.Gs2Lottery.Domain.Iterator.DescribeLotteryModelsIterator _iterator;
 
-        public EzDescribeBoxesIterator(
-            Gs2.Gs2Lottery.Domain.Iterator.DescribeBoxesIterator iterator
+        public EzDescribeLotteryModelsIterator(
+            Gs2.Gs2Lottery.Domain.Iterator.DescribeLotteryModelsIterator iterator
         ) {
             this._iterator = iterator;
         }
 
         #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> GetAsyncEnumerator(
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel> GetAsyncEnumerator(
             CancellationToken cancellationToken = new CancellationToken()
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Lottery.Model.EzBoxItems>(async (writer, token) =>
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel>(async (writer, token) =>
             {
             });
         }
@@ -82,11 +82,11 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Iterator
         }
 
         protected override IEnumerator Next(
-            Action<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> callback
+            Action<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel> callback
         )
         {
             yield return _iterator;
-            callback.Invoke(_iterator.Current == null ? null : Gs2.Unity.Gs2Lottery.Model.EzBoxItems.FromModel(_iterator.Current));
+            callback.Invoke(_iterator.Current == null ? null : Gs2.Unity.Gs2Lottery.Model.EzLotteryModel.FromModel(_iterator.Current));
         }
 
         #endif

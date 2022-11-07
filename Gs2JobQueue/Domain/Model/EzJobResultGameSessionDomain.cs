@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2JobQueue.Domain.Model
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string JobName => _domain?.JobName;
-        public string TryNumber => _domain?.TryNumber;
+        public int? TryNumber => _domain?.TryNumber;
 
         public EzJobResultGameSessionDomain(
             Gs2.Gs2JobQueue.Domain.Model.JobResultAccessTokenDomain domain,

@@ -23,25 +23,39 @@ using UnityEngine;
 using UnityEngine.Scripting;
 
 // ReSharper disable once CheckNamespace
-namespace Gs2.Unity.Gs2Lottery.Result
+namespace Gs2.Unity.Gs2Lottery.Model
 {
 	[Preserve]
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
-	public class EzDescribeBoxesResult
+	public class EzLotteryModel
 	{
 		[SerializeField]
-		public List<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> Items;
+		public string Name;
 		[SerializeField]
-		public string NextPageToken;
+		public string Metadata;
+		[SerializeField]
+		public string Mode;
+		[SerializeField]
+		public string PrizeTableName;
 
-        public static EzDescribeBoxesResult FromModel(Gs2.Gs2Lottery.Result.DescribeBoxesResult model)
+        public Gs2.Gs2Lottery.Model.LotteryModel ToModel()
         {
-            return new EzDescribeBoxesResult {
-                Items = model.Items == null ? new List<Gs2.Unity.Gs2Lottery.Model.EzBoxItems>() : model.Items.Select(v => {
-                    return Gs2.Unity.Gs2Lottery.Model.EzBoxItems.FromModel(v);
-                }).ToList(),
-                NextPageToken = model.NextPageToken == null ? null : model.NextPageToken,
+            return new Gs2.Gs2Lottery.Model.LotteryModel {
+                Name = Name,
+                Metadata = Metadata,
+                Mode = Mode,
+                PrizeTableName = PrizeTableName,
+            };
+        }
+
+        public static EzLotteryModel FromModel(Gs2.Gs2Lottery.Model.LotteryModel model)
+        {
+            return new EzLotteryModel {
+                Name = model.Name == null ? null : model.Name,
+                Metadata = model.Metadata == null ? null : model.Metadata,
+                Mode = model.Mode == null ? null : model.Mode,
+                PrizeTableName = model.PrizeTableName == null ? null : model.PrizeTableName,
             };
         }
     }

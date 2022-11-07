@@ -69,7 +69,7 @@ namespace Gs2.Unity.Gs2JobQueue.Domain.Model
         }
 
         public Gs2.Unity.Gs2JobQueue.Domain.Model.EzJobResultDomain JobResult(
-            string tryNumber
+            int tryNumber
         ) {
             return new Gs2.Unity.Gs2JobQueue.Domain.Model.EzJobResultDomain(
                 _domain.JobResult(

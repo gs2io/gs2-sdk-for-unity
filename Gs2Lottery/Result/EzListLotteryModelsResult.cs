@@ -28,20 +28,17 @@ namespace Gs2.Unity.Gs2Lottery.Result
 	[Preserve]
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
-	public class EzDescribeBoxesResult
+	public class EzListLotteryModelsResult
 	{
 		[SerializeField]
-		public List<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> Items;
-		[SerializeField]
-		public string NextPageToken;
+		public List<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel> Items;
 
-        public static EzDescribeBoxesResult FromModel(Gs2.Gs2Lottery.Result.DescribeBoxesResult model)
+        public static EzListLotteryModelsResult FromModel(Gs2.Gs2Lottery.Result.DescribeLotteryModelsResult model)
         {
-            return new EzDescribeBoxesResult {
-                Items = model.Items == null ? new List<Gs2.Unity.Gs2Lottery.Model.EzBoxItems>() : model.Items.Select(v => {
-                    return Gs2.Unity.Gs2Lottery.Model.EzBoxItems.FromModel(v);
+            return new EzListLotteryModelsResult {
+                Items = model.Items == null ? new List<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel>() : model.Items.Select(v => {
+                    return Gs2.Unity.Gs2Lottery.Model.EzLotteryModel.FromModel(v);
                 }).ToList(),
-                NextPageToken = model.NextPageToken == null ? null : model.NextPageToken,
             };
         }
     }

@@ -168,5 +168,49 @@ namespace Gs2.Unity.Gs2Lottery
                 )
             );
 		}
+
+        public IEnumerator GetLotteryModel(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Lottery.Result.EzGetLotteryModelResult>> callback,
+                string namespaceName,
+                string lotteryName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetLotteryModel(
+                    new Gs2.Gs2Lottery.Request.GetLotteryModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithLotteryName(lotteryName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Lottery.Result.EzGetLotteryModelResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Lottery.Result.EzGetLotteryModelResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListLotteryModels(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Lottery.Result.EzListLotteryModelsResult>> callback,
+                string namespaceName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeLotteryModels(
+                    new Gs2.Gs2Lottery.Request.DescribeLotteryModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Lottery.Result.EzListLotteryModelsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Lottery.Result.EzListLotteryModelsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
     }
 }
