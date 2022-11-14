@@ -86,7 +86,13 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             string scorerUserId
         )
         {
-            var item = await _domain.Model(scorerUserId);
+            var item = await _profile.RunAsync(
+                null,
+                async () =>
+                {
+                    return await _domain.Model(scorerUserId);
+                }
+            );
             if (item == null) {
                 return null;
             }

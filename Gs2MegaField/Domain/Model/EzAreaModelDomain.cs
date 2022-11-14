@@ -134,9 +134,21 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
             {
                 var it = _domain.LayerModelsAsync(
                 ).GetAsyncEnumerator();
-                while(await it.MoveNextAsync())
+                while(
+                    await _profile.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.LayerModelsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
                 {
-                    await writer.YieldAsync(Gs2.Unity.Gs2MegaField.Model.EzLayerModel.FromModel(it.Current));
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2MegaField.Model.EzLayerModel.FromModel(it.Current));
                 }
             });
         #else

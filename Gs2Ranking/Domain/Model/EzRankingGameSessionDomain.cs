@@ -119,14 +119,15 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
                     future,
-                    () => {
-                        return future = _domain.PutScore(
-                            new PutScoreRequest()
-                                .WithScore(score)
-                                .WithMetadata(metadata)
-                                .WithAccessToken(_domain.AccessToken.Token)
-                        );
-                    }
+                    () =>
+        			{
+                		return future = _domain.PutScore(
+                    		new PutScoreRequest()
+                	        .WithScore(score)
+                	        .WithMetadata(metadata)
+                    	    .WithAccessToken(_domain.AccessToken.Token)
+        		        );
+        			}
                 );
                 if (future.Error != null)
                 {
@@ -159,7 +160,13 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             string scorerUserId
         )
         {
-            var item = await _domain.Model(scorerUserId);
+            var item = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.Model(scorerUserId);
+                }
+            );
             if (item == null) {
                 return null;
             }
