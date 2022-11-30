@@ -57,7 +57,6 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public long? AcquireExperience => _domain.AcquireExperience;
         public float? BonusRate => _domain.BonusRate;
-        public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
@@ -69,110 +68,10 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
             this._profile = profile;
         }
 
-        public class EzProgressesIterator : Gs2Iterator<Gs2.Unity.Gs2Enhance.Model.EzProgress>
-        {
-            private Gs2Iterator<Gs2.Gs2Enhance.Model.Progress> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2Enhance.Domain.Model.UserDomain _domain;
-        #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
-
-            public EzProgressesIterator(
-                Gs2Iterator<Gs2.Gs2Enhance.Model.Progress> it,
-        #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2Enhance.Domain.Model.UserDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Enhance.Model.EzProgress> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    null,
-                    _it,
-                    () =>
-                    {
-                        _it = _domain.Progresses(
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Enhance.Model.EzProgress.FromModel(_it.Current));
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public Gs2Iterator<Gs2.Unity.Gs2Enhance.Model.EzProgress> Progresses(
-        )
-        {
-            return new EzProgressesIterator(
-                _domain.Progresses(
-                ),
-                _profile
-            );
-        }
-
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Enhance.Model.EzProgress> ProgressesAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2Enhance.Model.EzProgress> Progresses(
-        #endif
-        )
-        {
-        #if GS2_ENABLE_UNITASK
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Enhance.Model.EzProgress>(async (writer, token) =>
-            {
-                var it = _domain.ProgressesAsync(
-                ).GetAsyncEnumerator();
-                while(
-                    await _profile.RunIteratorAsync(
-                        null,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.ProgressesAsync(
-                            ).GetAsyncEnumerator();
-                        }
-                    )
-                )
-                {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Enhance.Model.EzProgress.FromModel(it.Current));
-                }
-            });
-        #else
-            return new EzProgressesIterator(
-                _domain.Progresses(
-                ),
-                _domain,
-                _profile
-            );
-        #endif
-        }
-
         public Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressDomain Progress(
-            string rateName,
-            string progressName
         ) {
             return new Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressDomain(
                 _domain.Progress(
-                    rateName,
-                    progressName
                 ),
                 _profile
             );

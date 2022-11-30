@@ -32,14 +32,11 @@ namespace Gs2.Unity.Gs2Enhance.Result
 	{
 		[SerializeField]
 		public Gs2.Unity.Gs2Enhance.Model.EzProgress Item;
-		[SerializeField]
-		public Gs2.Unity.Gs2Enhance.Model.EzRateModel RateModel;
 
         public static EzGetProgressResult FromModel(Gs2.Gs2Enhance.Result.GetProgressResult model)
         {
             return new EzGetProgressResult {
                 Item = model.Item == null ? null : Gs2.Unity.Gs2Enhance.Model.EzProgress.FromModel(model.Item),
-                RateModel = model.RateModel == null ? null : Gs2.Unity.Gs2Enhance.Model.EzRateModel.FromModel(model.RateModel),
             };
         }
     }

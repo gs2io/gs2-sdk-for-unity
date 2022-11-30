@@ -59,8 +59,6 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
         public float? BonusRate => _domain.BonusRate;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
-        public string RateName => _domain?.RateName;
-        public string ProgressName => _domain?.ProgressName;
 
         public EzProgressDomain(
             Gs2.Gs2Enhance.Domain.Model.ProgressDomain domain,

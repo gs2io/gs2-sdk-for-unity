@@ -31,7 +31,7 @@ namespace Gs2.Unity.Gs2Enhance.Model
 	public class EzProgress
 	{
 		[SerializeField]
-		public string ProgressId;
+		public string Name;
 		[SerializeField]
 		public string RateName;
 		[SerializeField]
@@ -44,7 +44,7 @@ namespace Gs2.Unity.Gs2Enhance.Model
         public Gs2.Gs2Enhance.Model.Progress ToModel()
         {
             return new Gs2.Gs2Enhance.Model.Progress {
-                ProgressId = ProgressId,
+                Name = Name,
                 RateName = RateName,
                 PropertyId = PropertyId,
                 ExperienceValue = ExperienceValue,
@@ -55,7 +55,7 @@ namespace Gs2.Unity.Gs2Enhance.Model
         public static EzProgress FromModel(Gs2.Gs2Enhance.Model.Progress model)
         {
             return new EzProgress {
-                ProgressId = model.ProgressId == null ? null : model.ProgressId,
+                Name = model.Name == null ? null : model.Name,
                 RateName = model.RateName == null ? null : model.RateName,
                 PropertyId = model.PropertyId == null ? null : model.PropertyId,
                 ExperienceValue = model.ExperienceValue ?? 0,
