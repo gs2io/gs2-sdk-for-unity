@@ -68,6 +68,77 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyDomain> UseSerialCode(
+            string accessToken
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyDomain> self)
+            {
+                yield return UseSerialCodeAsync(
+                    accessToken
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyDomain>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyDomain> UseSerialCodeAsync(
+        #else
+        public IFuture<Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyDomain> UseSerialCode(
+        #endif
+              string userId
+        ) {
+        #if GS2_ENABLE_UNITASK
+            var result = await _profile.RunAsync(
+                null,
+                async () =>
+                {
+                    return await _domain.UseAsync(
+                        new UseByUserIdRequest()
+                            .WithNamespaceName(NamespaceName)
+                            .WithUserId(userId)
+                            .WithCode(SerialKeyCode)
+                    );
+                }
+            );
+            return new Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyDomain(result, _profile);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyDomain> self)
+            {
+                var future = _domain.Use(
+                    new UseByUserIdRequest()
+                        .WithNamespaceName(NamespaceName)
+                        .WithUserId(userId)
+                        .WithCode(SerialKeyCode)
+                );
+                yield return _profile.RunFuture(
+                    null,
+                    future,
+                    () =>
+        			{
+                		return future = _domain.Use(
+                            new UseByUserIdRequest()
+                                .WithNamespaceName(NamespaceName)
+                                .WithUserId(userId)
+                                .WithCode(SerialKeyCode)
+        		        );
+        			}
+                );
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyDomain(result, _profile));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyDomain>(Impl);
+        #endif
+        }
+
+        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2SerialKey.Model.EzSerialKey> Model()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2SerialKey.Model.EzSerialKey> self)

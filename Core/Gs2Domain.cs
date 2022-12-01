@@ -58,6 +58,7 @@ namespace Gs2.Unity.Core
         public Gs2Ranking.Domain.Gs2Ranking Ranking;
         public Gs2Realtime.Domain.Gs2Realtime Realtime;
         public Gs2Schedule.Domain.Gs2Schedule Schedule;
+        public Gs2SerialKey.Domain.Gs2SerialKey SerialKey;
         public Gs2Showcase.Domain.Gs2Showcase Showcase;
         public Gs2Stamina.Domain.Gs2Stamina Stamina;
         public Gs2Version.Domain.Gs2Version Version;
@@ -102,6 +103,7 @@ namespace Gs2.Unity.Core
             Ranking = new Gs2Ranking.Domain.Gs2Ranking(_gs2.Ranking, profile);
             Realtime = new Gs2Realtime.Domain.Gs2Realtime(_gs2.Realtime, profile);
             Schedule = new Gs2Schedule.Domain.Gs2Schedule(_gs2.Schedule, profile);
+            SerialKey = new Gs2SerialKey.Domain.Gs2SerialKey(_gs2.SerialKey, profile);
             Showcase = new Gs2Showcase.Domain.Gs2Showcase(_gs2.Showcase, profile);
             Stamina = new Gs2Stamina.Domain.Gs2Stamina(_gs2.Stamina, profile);
             Version = new Gs2Version.Domain.Gs2Version(_gs2.Version, profile);
