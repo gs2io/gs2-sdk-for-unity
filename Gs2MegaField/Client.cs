@@ -111,6 +111,54 @@ namespace Gs2.Unity.Gs2MegaField
             );
 		}
 
+        public IEnumerator DescribeLayerModels(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2MegaField.Result.EzDescribeLayerModelsResult>> callback,
+                string namespaceName,
+                string areaModelName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeLayerModels(
+                    new Gs2.Gs2MegaField.Request.DescribeLayerModelsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAreaModelName(areaModelName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2MegaField.Result.EzDescribeLayerModelsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2MegaField.Result.EzDescribeLayerModelsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator GetLayerModel(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2MegaField.Result.EzGetLayerModelResult>> callback,
+                string namespaceName,
+                string areaModelName,
+                string layerModelName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetLayerModel(
+                    new Gs2.Gs2MegaField.Request.GetLayerModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAreaModelName(areaModelName)
+                        .WithLayerModelName(layerModelName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2MegaField.Result.EzGetLayerModelResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2MegaField.Result.EzGetLayerModelResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator Update(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2MegaField.Result.EzUpdateResult>> callback,
 		        GameSession session,
