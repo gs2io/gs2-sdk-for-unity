@@ -72,6 +72,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareUpload(
               string name = null,
               string scope = null,
+              string contentType = null,
               string[] allowUserIds = null,
               bool? updateIfExists = null
         )
@@ -81,6 +82,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 yield return PrepareUploadAsync(
                     name,
                     scope,
+                    contentType,
                     allowUserIds,
                     updateIfExists
                 ).ToCoroutine(
@@ -97,6 +99,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #endif
               string name = null,
               string scope = null,
+              string contentType = null,
               string[] allowUserIds = null,
               bool? updateIfExists = null
         ) {
@@ -109,6 +112,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                         new PrepareUploadRequest()
                             .WithName(name)
                             .WithScope(scope)
+                            .WithContentType(contentType)
                             .WithAllowUserIds(allowUserIds)
                             .WithUpdateIfExists(updateIfExists)
                             .WithAccessToken(_domain.AccessToken.Token)
@@ -123,6 +127,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                     new PrepareUploadRequest()
                         .WithName(name)
                         .WithScope(scope)
+                        .WithContentType(contentType)
                         .WithAllowUserIds(allowUserIds)
                         .WithUpdateIfExists(updateIfExists)
                         .WithAccessToken(_domain.AccessToken.Token)
@@ -136,6 +141,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                     		new PrepareUploadRequest()
                 	        .WithName(name)
                 	        .WithScope(scope)
+                	        .WithContentType(contentType)
                 	        .WithAllowUserIds(allowUserIds)
                 	        .WithUpdateIfExists(updateIfExists)
                     	    .WithAccessToken(_domain.AccessToken.Token)

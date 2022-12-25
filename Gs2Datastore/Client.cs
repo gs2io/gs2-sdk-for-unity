@@ -225,7 +225,8 @@ namespace Gs2.Unity.Gs2Datastore
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzPrepareReUploadResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string dataObjectName = null
+                string dataObjectName = null,
+                string contentType = null
         )
 		{
             yield return _profile.Run(
@@ -235,7 +236,8 @@ namespace Gs2.Unity.Gs2Datastore
                     new Gs2.Gs2Datastore.Request.PrepareReUploadRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
-                        .WithDataObjectName(dataObjectName),
+                        .WithDataObjectName(dataObjectName)
+                        .WithContentType(contentType),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzPrepareReUploadResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Datastore.Result.EzPrepareReUploadResult.FromModel(r.Result),
@@ -252,6 +254,7 @@ namespace Gs2.Unity.Gs2Datastore
                 string namespaceName,
                 string name = null,
                 string scope = null,
+                string contentType = null,
                 List<string> allowUserIds = null,
                 bool? updateIfExists = null
         )
@@ -265,6 +268,7 @@ namespace Gs2.Unity.Gs2Datastore
                         .WithAccessToken(session.AccessToken.Token)
                         .WithName(name)
                         .WithScope(scope)
+                        .WithContentType(contentType)
                         .WithAllowUserIds(allowUserIds?.Select(v => {
                             return v;
                         }).ToArray())

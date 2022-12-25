@@ -169,6 +169,7 @@ namespace Gs2.Unity.Gs2Datastore
 			List<string> allowUserIds,
 			byte[] data,
 			string name=null,
+			string contentType=null,
 			bool? updateIfExists=null
 		)
 		{
@@ -197,6 +198,7 @@ namespace Gs2.Unity.Gs2Datastore
 					namespaceName,
 					name,
 					scope,
+					contentType,
 					allowUserIds,
 					updateIfExists
 				);

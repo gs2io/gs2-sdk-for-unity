@@ -145,11 +145,13 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareReUpload(
+              string contentType = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
             {
                 yield return PrepareReUploadAsync(
+                    contentType
                 ).ToCoroutine(
                     self.OnComplete,
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
@@ -162,6 +164,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #else
         public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareReUpload(
         #endif
+              string contentType = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -170,6 +173,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 {
                     return await _domain.PrepareReUploadAsync(
                         new PrepareReUploadRequest()
+                            .WithContentType(contentType)
                             .WithAccessToken(_domain.AccessToken.Token)
                     );
                 }
@@ -180,6 +184,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             {
                 var future = _domain.PrepareReUpload(
                     new PrepareReUploadRequest()
+                        .WithContentType(contentType)
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
                 yield return _profile.RunFuture(
@@ -189,6 +194,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         			{
                 		return future = _domain.PrepareReUpload(
                     		new PrepareReUploadRequest()
+                	        .WithContentType(contentType)
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );
         			}
