@@ -97,7 +97,7 @@ namespace Gs2.Unity.Gs2MegaField
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.GetAreaModel(
+                cb => _restClient.GetAreaModel(
                     new Gs2.Gs2MegaField.Request.GetAreaModelRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAreaModelName(areaModelName),

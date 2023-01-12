@@ -72,7 +72,7 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
         public IFuture<Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain> Enhance(
               string rateName,
               string targetItemSetId,
-              Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials = null,
+              Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials,
               Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
         )
         {
@@ -97,7 +97,7 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
         #endif
               string rateName,
               string targetItemSetId,
-              Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials = null,
+              Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials,
               Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
         ) {
         #if GS2_ENABLE_UNITASK

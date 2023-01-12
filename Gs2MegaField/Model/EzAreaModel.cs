@@ -34,12 +34,17 @@ namespace Gs2.Unity.Gs2MegaField.Model
 		public string Name;
 		[SerializeField]
 		public string Metadata;
+		[SerializeField]
+		public List<Gs2.Unity.Gs2MegaField.Model.EzLayerModel> LayerModels;
 
         public Gs2.Gs2MegaField.Model.AreaModel ToModel()
         {
             return new Gs2.Gs2MegaField.Model.AreaModel {
                 Name = Name,
                 Metadata = Metadata,
+                LayerModels = LayerModels?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
             };
         }
 
@@ -48,6 +53,9 @@ namespace Gs2.Unity.Gs2MegaField.Model
             return new EzAreaModel {
                 Name = model.Name == null ? null : model.Name,
                 Metadata = model.Metadata == null ? null : model.Metadata,
+                LayerModels = model.LayerModels == null ? new List<Gs2.Unity.Gs2MegaField.Model.EzLayerModel>() : model.LayerModels.Select(v => {
+                    return Gs2.Unity.Gs2MegaField.Model.EzLayerModel.FromModel(v);
+                }).ToList(),
             };
         }
     }

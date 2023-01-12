@@ -227,7 +227,7 @@ namespace Gs2.Unity.Gs2Enhance
                 string namespaceName,
                 string rateName,
                 string targetItemSetId,
-                List<Gs2.Unity.Gs2Enhance.Model.EzMaterial> materials = null,
+                List<Gs2.Unity.Gs2Enhance.Model.EzMaterial> materials,
                 List<Gs2.Unity.Gs2Enhance.Model.EzConfig> config = null
         )
 		{
