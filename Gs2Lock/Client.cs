@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2Lock
 		{
 			_profile = profile;
 			_client = new Gs2LockWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
+			if (profile.CheckRevokeCertificate)
 			{
 				_restClient = new Gs2LockRestClient(profile.Gs2RestSession);
 			}

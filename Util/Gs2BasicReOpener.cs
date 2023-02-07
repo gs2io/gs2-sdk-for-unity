@@ -1,8 +1,12 @@
 using System.Collections;
+using System.Linq;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
 #endif
 using Gs2.Core;
+using Gs2.Core.Domain;
+using Gs2.Core.Exception;
+using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Core.Result;
 using Gs2.Gs2Account;
@@ -10,6 +14,10 @@ using Gs2.Gs2Account.Request;
 using Gs2.Gs2Auth;
 using Gs2.Gs2Auth.Model;
 using Gs2.Gs2Auth.Request;
+using Gs2.Gs2Gateway;
+using Gs2.Gs2Gateway.Request;
+using Gs2.Gs2Version;
+using Gs2.Gs2Version.Request;
 using UnityEngine.Events;
 
 namespace Gs2.Unity.Util
@@ -19,12 +27,46 @@ namespace Gs2.Unity.Util
         
     }
 
+    public class DetectVersionUpEvent : UnityEvent
+    {
+        
+    }
+
     public class Gs2BasicReopener : IReopener
     {
+        private GatewaySetting _gatewaySetting;
+        private VersionSetting _versionSetting;
+        
+        private IAuthenticator _authenticator;
+        private string _userId;
+        private string _password;
+        private GameSession _gameSession;
+        
         public ReOpenEvent onReOpen = new ReOpenEvent();
+        public DetectVersionUpEvent onDetectVersionUp = new DetectVersionUpEvent();
+
+        public Gs2BasicReopener(
+            GatewaySetting gatewaySetting = null,
+            VersionSetting versionSetting = null
+        ) {
+            this._gatewaySetting = gatewaySetting;
+            this._versionSetting = versionSetting;
+        }
+
+        public override void SetAuthenticator(
+            IAuthenticator authenticator,
+            string userId,
+            string password,
+            GameSession gameSession
+        ) {
+            this._authenticator = authenticator;
+            this._userId = userId;
+            this._password = password;
+            this._gameSession = gameSession;
+        }
 
 #if GS2_ENABLE_UNITASK
-        
+
         public override async UniTask<OpenResult> ReOpenAsync(
             Gs2WebSocketSession session, 
             Gs2RestSession restSession
@@ -33,6 +75,46 @@ namespace Gs2.Unity.Util
             await session.OpenAsync();
             var result = await restSession.OpenAsync();
             
+            if (this._authenticator != null && this._userId != null && this._password != null) {
+                var accessToken = await this._authenticator.AuthenticationAsync();
+                this._gameSession.AccessToken = accessToken;
+            }
+            if (this._gatewaySetting != null) {
+                await new Gs2GatewayWebSocketClient(session).SetUserIdAsync(
+                    new SetUserIdRequest()
+                        .WithNamespaceName(this._gatewaySetting.gatewayNamespaceName)
+                        .WithAccessToken(this._gameSession.AccessToken.Token)
+                        .WithAllowConcurrentAccess(this._gatewaySetting.allowConcurrentAccess)
+                );
+            }
+            if (this._versionSetting != null) {
+                var checkVersionResult = await new Gs2VersionRestClient(restSession).CheckVersionAsync(
+                    new CheckVersionRequest()
+                        .WithNamespaceName(this._versionSetting.versionNamespaceName)
+                        .WithAccessToken(this._gameSession.AccessToken.Token)
+                        .WithTargetVersions(this._versionSetting.targetVersions.Select(
+                            v => v.ToModel()
+                        ).ToArray()
+                    )
+                );
+                if (checkVersionResult.ProjectToken != null) {
+                    restSession.Credential.ProjectToken = checkVersionResult.ProjectToken;
+                    session.Credential.ProjectToken = checkVersionResult.ProjectToken;
+                }
+                if (checkVersionResult.Errors.Length > 0) {
+                    onDetectVersionUp.Invoke();
+                    
+                    throw new UnauthorizedException(
+                        new[] {
+                            new RequestError {
+                                Component = "version",
+                                Message = "version.version.check.error.failed",
+                            }
+                        }
+                    );
+                }
+            }
+            
             onReOpen.Invoke();
 
             return result;
@@ -40,16 +122,91 @@ namespace Gs2.Unity.Util
 
 #endif
         
+        public override Gs2Future<OpenResult> ReOpenFuture(
+            Gs2WebSocketSession session, 
+            Gs2RestSession restSession
+        )
+        {
+            IEnumerator Impl(Gs2Future<OpenResult> result) {
+                yield return session.ReOpenFuture();
+                yield return restSession.ReOpenFuture();
+
+                if (this._authenticator != null && this._userId != null && this._password != null) {
+                    var future = this._authenticator.AuthenticationFuture();
+                    yield return future;
+                    if (future.Error != null) {
+                        result.OnError(future.Error);
+                        yield break;
+                    }
+                    this._gameSession.AccessToken = future.Result;
+                }
+                if (this._gatewaySetting != null) {
+                    var future = new Gs2GatewayWebSocketClient(session).SetUserIdFuture(
+                        new SetUserIdRequest()
+                            .WithNamespaceName(this._gatewaySetting.gatewayNamespaceName)
+                            .WithAccessToken(this._gameSession.AccessToken.Token)
+                            .WithAllowConcurrentAccess(this._gatewaySetting.allowConcurrentAccess)
+                    );
+                    yield return future;
+                    if (future.Error != null) {
+                        result.OnError(future.Error);
+                        yield break;
+                    }
+                }
+                if (this._versionSetting != null) {
+                    var future = new Gs2VersionRestClient(restSession).CheckVersionFuture(
+                        new CheckVersionRequest()
+                            .WithNamespaceName(this._versionSetting.versionNamespaceName)
+                            .WithAccessToken(this._gameSession.AccessToken.Token)
+                            .WithTargetVersions(this._versionSetting.targetVersions.Select(
+                                    v => v.ToModel()
+                                ).ToArray()
+                            )
+                    );
+                    yield return future;
+                    if (future.Error != null) {
+                        result.OnError(future.Error);
+                        yield break;
+                    }
+                    var checkVersionResult = future.Result;
+                    if (checkVersionResult.ProjectToken != null) {
+                        restSession.Credential.ProjectToken = checkVersionResult.ProjectToken;
+                        session.Credential.ProjectToken = checkVersionResult.ProjectToken;
+                    }
+                    if (checkVersionResult.Errors.Length > 0) {
+                        onDetectVersionUp.Invoke();
+
+                        result.OnError(
+                            new UnauthorizedException(
+                                new[] {
+                                    new RequestError {
+                                        Component = "version",
+                                        Message = "version.version.check.error.failed",
+                                    }
+                                }
+                            )
+                        );
+                        yield break;
+                    }
+                }
+
+                onReOpen.Invoke();
+            }
+
+            return new Gs2InlineFuture<OpenResult>(Impl);
+        }
+        
         public override IEnumerator ReOpen(
             Gs2WebSocketSession session, 
             Gs2RestSession restSession, 
             UnityAction<AsyncResult<OpenResult>> callback
-        )
-        {
-            yield return session.ReOpen(callback);
-            yield return restSession.ReOpen(callback);
-            
-            onReOpen.Invoke();
+        ) {
+            var future = ReOpenFuture(session, restSession);
+            yield return future;
+            callback.Invoke(new AsyncResult<OpenResult>(
+                future.Result,
+                future.Error
+            ));
         }
     }
 }

@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2Quest
 		{
 			_profile = profile;
 			_client = new Gs2QuestWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
+			if (profile.CheckRevokeCertificate)
 			{
 				_restClient = new Gs2QuestRestClient(profile.Gs2RestSession);
 			}

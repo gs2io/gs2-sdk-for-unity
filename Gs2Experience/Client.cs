@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2Experience
 		{
 			_profile = profile;
 			_client = new Gs2ExperienceWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
+			if (profile.CheckRevokeCertificate)
 			{
 				_restClient = new Gs2ExperienceRestClient(profile.Gs2RestSession);
 			}

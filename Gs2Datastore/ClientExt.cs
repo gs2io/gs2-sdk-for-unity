@@ -52,7 +52,7 @@ namespace Gs2.Unity.Gs2Datastore
 		)
 		{
 			var request = UnityWebRequest.Put(uploadUrl, data);
-			if (!_profile.checkRevokeCertificate)
+			if (!_profile.CheckRevokeCertificate)
 			{
 				request.certificateHandler = new DisabledCertificateHandler();
 			}
@@ -97,7 +97,7 @@ namespace Gs2.Unity.Gs2Datastore
 		)
 		{
 			var request = UnityWebRequest.Get(downloadUrl);
-			if (!_profile.checkRevokeCertificate)
+			if (!_profile.CheckRevokeCertificate)
 			{
 				request.certificateHandler = new DisabledCertificateHandler();
 			}

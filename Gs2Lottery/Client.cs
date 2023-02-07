@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2Lottery
 		{
 			_profile = profile;
 			_client = new Gs2LotteryWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
+			if (profile.CheckRevokeCertificate)
 			{
 				_restClient = new Gs2LotteryRestClient(profile.Gs2RestSession);
 			}

@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2Version
 		{
 			_profile = profile;
 			_client = new Gs2VersionWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
+			if (profile.CheckRevokeCertificate)
 			{
 				_restClient = new Gs2VersionRestClient(profile.Gs2RestSession);
 			}

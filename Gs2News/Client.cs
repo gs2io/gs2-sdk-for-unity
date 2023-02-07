@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2News
 		{
 			_profile = profile;
 			_client = new Gs2NewsWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
+			if (profile.CheckRevokeCertificate)
 			{
 				_restClient = new Gs2NewsRestClient(profile.Gs2RestSession);
 			}

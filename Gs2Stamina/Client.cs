@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2Stamina
 		{
 			_profile = profile;
 			_client = new Gs2StaminaWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
+			if (profile.CheckRevokeCertificate)
 			{
 				_restClient = new Gs2StaminaRestClient(profile.Gs2RestSession);
 			}

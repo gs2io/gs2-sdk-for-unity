@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2Dictionary
 		{
 			_profile = profile;
 			_client = new Gs2DictionaryWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
+			if (profile.CheckRevokeCertificate)
 			{
 				_restClient = new Gs2DictionaryRestClient(profile.Gs2RestSession);
 			}

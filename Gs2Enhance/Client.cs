@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2Enhance
 		{
 			_profile = profile;
 			_client = new Gs2EnhanceWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
+			if (profile.CheckRevokeCertificate)
 			{
 				_restClient = new Gs2EnhanceRestClient(profile.Gs2RestSession);
 			}

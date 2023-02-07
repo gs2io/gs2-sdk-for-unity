@@ -88,9 +88,10 @@ namespace Gs2.Unity.Util
                 environment.clientId,
                 environment.clientSecret,
                 new Gs2BasicReopener(),
-                environment.region
+                environment.region,
+                distributorNamespace?.namespaceName
             );
-            var initializeFuture = _profile.Initialize();
+            var initializeFuture = _profile.InitializeFuture();
             yield return initializeFuture;
             if (initializeFuture.Error != null)
             {
@@ -98,10 +99,7 @@ namespace Gs2.Unity.Util
                 yield break;
             }
             
-            Gs2 = new Gs2Domain(
-                _profile,
-                distributorNamespace?.namespaceName
-            );
+            Gs2 = initializeFuture.Result;
             
             onInitialized.Invoke();
         }

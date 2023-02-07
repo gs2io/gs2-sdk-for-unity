@@ -3,6 +3,7 @@ using System.Collections;
 using Cysharp.Threading.Tasks;
 #endif
 using Gs2.Core;
+using Gs2.Core.Domain;
 using Gs2.Gs2Auth.Model;
 using UnityEngine.Events;
 
@@ -15,6 +16,7 @@ namespace Gs2.Unity.Util
 #if GS2_ENABLE_UNITASK
         public abstract UniTask<AccessToken> AuthenticationAsync();
 #endif
+        public abstract Gs2Future<AccessToken> AuthenticationFuture();
         public abstract IEnumerator Authentication(UnityAction<AsyncResult<AccessToken>> callback);
     }
 }

@@ -24,9 +24,11 @@ using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Core.Result;
 using Gs2.Gs2Auth.Model;
+using Gs2.Unity.Core;
 using UnityEngine.Events;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
+using Gs2.Unity.Core;
 #endif
 
 namespace Gs2.Unity.Util
@@ -35,12 +37,14 @@ namespace Gs2.Unity.Util
     {
         private readonly IReopener _reopener;
         private IAuthenticator _authenticator;
+        private string _distributorNamespaceName;
 
         public Profile(
             string clientId,
             string clientSecret,
             IReopener reopener,
             Region region = Region.ApNortheast1,
+            string distributorNamespaceName = null,
             bool checkCertificateRevocation = true
         )
         {
@@ -60,51 +64,54 @@ namespace Gs2.Unity.Util
             );
             _reopener = reopener;
             _authenticator = null;
-            this.checkRevokeCertificate = checkCertificateRevocation;
+            _distributorNamespaceName = distributorNamespaceName;
+            CheckRevokeCertificate = checkCertificateRevocation;
         }
 
 #if GS2_ENABLE_UNITASK
 
-        public async UniTask InitializeAsync()
+        public async UniTask<Gs2Domain> InitializeAsync()
         {
             await _reopener.ReOpenAsync(
                 Gs2Session,
                 Gs2RestSession
             );
+
+            return new Gs2Domain(this, _distributorNamespaceName);
         }
 
 #endif
 
-        public Gs2Future Initialize()
+        public Gs2Future<Gs2Domain> InitializeFuture()
         {
-            IEnumerator Impl(Gs2Future self)
+            IEnumerator Impl(Gs2Future<Gs2Domain> self)
             {
-                yield return _reopener.ReOpen(
+                var future = _reopener.ReOpenFuture(
                     Gs2Session,
-                    Gs2RestSession,
-                    r => {
-                        if (r.Error != null)
-                        {
-                            self.OnError(r.Error);
-                        }
-                        else
-                        {
-                            self.OnComplete(null);
-                        }
-                    }
+                    Gs2RestSession
+                );
+                yield return future;
+                
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(
+                    new Gs2Domain(this, _distributorNamespaceName)
                 );
             }
 
-            return new Gs2InlineFuture(Impl);
+            return new Gs2InlineFuture<Gs2Domain>(Impl);
         }
         
         public IEnumerator Initialize(
-            UnityAction<AsyncResult<object>> callback
+            UnityAction<AsyncResult<Gs2Domain>> callback
         )
         {
-            var future = Initialize();
+            var future = InitializeFuture();
             yield return future;
-            callback.Invoke(new AsyncResult<object>(future.Result, future.Error));
+            callback.Invoke(new AsyncResult<Gs2Domain>(future.Result, future.Error));
         }
 
 #if GS2_ENABLE_UNITASK
@@ -121,10 +128,15 @@ namespace Gs2.Unity.Util
             Gs2RestSession.Credential.ProjectToken = projectToken;
         }
 
-        public IEnumerator Finalize()
+        public Gs2Future Finalize()
         {
-            yield return Gs2Session.Close(() => {});
-            yield return Gs2RestSession.Close(() => {});
+            IEnumerator Impl(Gs2Future self)
+            {
+                yield return Gs2Session.Close(() => {});
+                yield return Gs2RestSession.Close(() => {});
+            }
+
+            return new Gs2InlineFuture(Impl);
         }
 
 #if GS2_ENABLE_UNITASK
@@ -516,6 +528,6 @@ namespace Gs2.Unity.Util
         public Gs2WebSocketSession Gs2Session { get; }
         public Gs2RestSession Gs2RestSession { get; }
 
-        public bool checkRevokeCertificate { get; }
+        public bool CheckRevokeCertificate { get; }
     }
 }

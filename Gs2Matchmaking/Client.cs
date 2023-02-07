@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2Matchmaking
 		{
 			_profile = profile;
 			_client = new Gs2MatchmakingWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
+			if (profile.CheckRevokeCertificate)
 			{
 				_restClient = new Gs2MatchmakingRestClient(profile.Gs2RestSession);
 			}

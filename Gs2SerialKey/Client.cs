@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2SerialKey
 		{
 			_profile = profile;
 			_client = new Gs2SerialKeyWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
+			if (profile.CheckRevokeCertificate)
 			{
 				_restClient = new Gs2SerialKeyRestClient(profile.Gs2RestSession);
 			}
@@ -90,20 +90,22 @@ namespace Gs2.Unity.Gs2SerialKey
             );
 		}
 
-        public IEnumerator ListCampaignModels(
-		        UnityAction<AsyncResult<Gs2.Unity.Gs2SerialKey.Result.EzListCampaignModelsResult>> callback,
-                string namespaceName
+        public IEnumerator Get(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2SerialKey.Result.EzGetResult>> callback,
+                string namespaceName,
+                string code
         )
 		{
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _restClient.DescribeCampaignModels(
-                    new Gs2.Gs2SerialKey.Request.DescribeCampaignModelsRequest()
-                        .WithNamespaceName(namespaceName),
+                cb => _client.GetSerialKey(
+                    new Gs2.Gs2SerialKey.Request.GetSerialKeyRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithCode(code),
                     r => cb.Invoke(
-                        new AsyncResult<Gs2.Unity.Gs2SerialKey.Result.EzListCampaignModelsResult>(
-                            r.Result == null ? null : Gs2.Unity.Gs2SerialKey.Result.EzListCampaignModelsResult.FromModel(r.Result),
+                        new AsyncResult<Gs2.Unity.Gs2SerialKey.Result.EzGetResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2SerialKey.Result.EzGetResult.FromModel(r.Result),
                             r.Error
                         )
                     )
