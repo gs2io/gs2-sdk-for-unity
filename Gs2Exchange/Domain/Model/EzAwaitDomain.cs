@@ -59,7 +59,6 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string AwaitName => _domain?.AwaitName;
-        public string RateName => _domain?.RateName;
 
         public EzAwaitDomain(
             Gs2.Gs2Exchange.Domain.Model.AwaitDomain domain,

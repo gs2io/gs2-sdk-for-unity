@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2Inventory
 		{
 			_profile = profile;
 			_client = new Gs2InventoryWebSocketClient(profile.Gs2Session);
-			if (profile.CheckRevokeCertificate)
+			if (profile.checkRevokeCertificate)
 			{
 				_restClient = new Gs2InventoryRestClient(profile.Gs2RestSession);
 			}

@@ -19,7 +19,6 @@ namespace Gs2.Unity
         public readonly Gs2Inventory.Client Inventory;
         public readonly Gs2JobQueue.Client JobQueue;
         public readonly Gs2Limit.Client Limit;
-        public readonly Gs2Lock.Client Lock;
         public readonly Gs2Lottery.Client Lottery;
         public readonly Gs2Matchmaking.Client Matchmaking;
         public readonly Gs2Mission.Client Mission;
@@ -55,7 +54,6 @@ namespace Gs2.Unity
             Inventory = new Gs2Inventory.Client(profile);
             JobQueue = new Gs2JobQueue.Client(profile);
             Limit = new Gs2Limit.Client(profile);
-            Lock = new Gs2Lock.Client(profile);
             Lottery = new Gs2Lottery.Client(profile);
             Matchmaking = new Gs2Matchmaking.Client(profile);
             Mission = new Gs2Mission.Client(profile);

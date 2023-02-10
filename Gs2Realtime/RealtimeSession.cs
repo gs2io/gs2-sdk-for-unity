@@ -737,6 +737,12 @@ namespace Gs2.Unity.Gs2Realtime
                 if (!success)
                 {
                     // 失敗した場合は抜ける
+                    callback.Invoke(new AsyncResult<bool>(
+                        success,
+                        success ? null : new SendException(new BinaryMessage {
+                            Data = ByteString.CopyFromUtf8(args == null ? "Unknown" : args.ToString())
+                        })
+                    ));
                     yield break;
                 }
 
@@ -803,6 +809,7 @@ namespace Gs2.Unity.Gs2Realtime
                         {
                             helloResult = message as HelloResult;
                             success = true;
+                            done = true;
                         }
                         else
                         {
@@ -813,8 +820,6 @@ namespace Gs2.Unity.Gs2Realtime
                     {
                         args = e;
                     }
-
-                    done = true;
                 }
 #endif // UNITY_WEBGL && !UNITY_EDITOR
 
@@ -861,6 +866,12 @@ namespace Gs2.Unity.Gs2Realtime
                     if (!success || helloResult == null)
                     {
                         // 失敗した場合は抜ける
+                        callback.Invoke(new AsyncResult<bool>(
+                            success,
+                            success ? null : new SendException(new BinaryMessage {
+                                Data = ByteString.CopyFromUtf8(args == null ? "Unknown" : args.ToString())
+                            })
+                        ));
                         yield break;
                     }
 
@@ -910,6 +921,12 @@ namespace Gs2.Unity.Gs2Realtime
                     if (!success || helloResult == null)
                     {
                         // 失敗した場合は抜ける
+                        callback.Invoke(new AsyncResult<bool>(
+                            success,
+                            success ? null : new SendException(new BinaryMessage {
+                                Data = ByteString.CopyFromUtf8(args == null ? "Unknown" : args.ToString())
+                            })
+                        ));
                         yield break;
                     }
 

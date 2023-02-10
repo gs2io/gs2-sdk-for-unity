@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2Limit
 		{
 			_profile = profile;
 			_client = new Gs2LimitWebSocketClient(profile.Gs2Session);
-			if (profile.CheckRevokeCertificate)
+			if (profile.checkRevokeCertificate)
 			{
 				_restClient = new Gs2LimitRestClient(profile.Gs2RestSession);
 			}

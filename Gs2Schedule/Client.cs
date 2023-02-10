@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2Schedule
 		{
 			_profile = profile;
 			_client = new Gs2ScheduleWebSocketClient(profile.Gs2Session);
-			if (profile.CheckRevokeCertificate)
+			if (profile.checkRevokeCertificate)
 			{
 				_restClient = new Gs2ScheduleRestClient(profile.Gs2RestSession);
 			}

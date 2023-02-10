@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2Exchange
 		{
 			_profile = profile;
 			_client = new Gs2ExchangeWebSocketClient(profile.Gs2Session);
-			if (profile.CheckRevokeCertificate)
+			if (profile.checkRevokeCertificate)
 			{
 				_restClient = new Gs2ExchangeRestClient(profile.Gs2RestSession);
 			}
@@ -71,7 +71,6 @@ namespace Gs2.Unity.Gs2Exchange
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzAcquireResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string rateName,
                 string awaitName = null
         )
 		{
@@ -82,7 +81,6 @@ namespace Gs2.Unity.Gs2Exchange
                     new Gs2.Gs2Exchange.Request.AcquireRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
-                        .WithRateName(rateName)
                         .WithAwaitName(awaitName),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzAcquireResult>(
@@ -98,7 +96,6 @@ namespace Gs2.Unity.Gs2Exchange
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzDeleteAwaitResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string rateName,
                 string awaitName = null
         )
 		{
@@ -109,7 +106,6 @@ namespace Gs2.Unity.Gs2Exchange
                     new Gs2.Gs2Exchange.Request.DeleteAwaitRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
-                        .WithRateName(rateName)
                         .WithAwaitName(awaitName),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzDeleteAwaitResult>(
@@ -125,7 +121,6 @@ namespace Gs2.Unity.Gs2Exchange
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzGetAwaitResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string rateName,
                 string awaitName = null
         )
 		{
@@ -136,7 +131,6 @@ namespace Gs2.Unity.Gs2Exchange
                     new Gs2.Gs2Exchange.Request.GetAwaitRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
-                        .WithRateName(rateName)
                         .WithAwaitName(awaitName),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzGetAwaitResult>(
@@ -179,7 +173,6 @@ namespace Gs2.Unity.Gs2Exchange
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzSkipResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string rateName,
                 string awaitName = null
         )
 		{
@@ -190,7 +183,6 @@ namespace Gs2.Unity.Gs2Exchange
                     new Gs2.Gs2Exchange.Request.SkipRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
-                        .WithRateName(rateName)
                         .WithAwaitName(awaitName),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzSkipResult>(

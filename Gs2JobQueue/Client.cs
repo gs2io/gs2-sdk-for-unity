@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2JobQueue
 		{
 			_profile = profile;
 			_client = new Gs2JobQueueWebSocketClient(profile.Gs2Session);
-			if (profile.CheckRevokeCertificate)
+			if (profile.checkRevokeCertificate)
 			{
 				_restClient = new Gs2JobQueueRestClient(profile.Gs2RestSession);
 			}

@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2Formation
 		{
 			_profile = profile;
 			_client = new Gs2FormationWebSocketClient(profile.Gs2Session);
-			if (profile.CheckRevokeCertificate)
+			if (profile.checkRevokeCertificate)
 			{
 				_restClient = new Gs2FormationRestClient(profile.Gs2RestSession);
 			}

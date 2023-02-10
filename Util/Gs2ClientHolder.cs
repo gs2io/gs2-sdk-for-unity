@@ -1,13 +1,18 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Gs2.Core.Exception;
+using Gs2.Core.Model;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
 #endif
 using Gs2.Unity.Core;
+using Gs2.Unity.Core.Exception;
 using Gs2.Unity.Core.ScriptableObject;
 using Gs2.Unity.Gs2Distributor.ScriptableObject;
 using Gs2.Unity.Util;
+using Gs2.Util.LitJson;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -23,7 +28,7 @@ namespace Gs2.Unity.Util
         public bool Initialized => Gs2 != null;
         
         public string activeEnvironmentName;
-        public Gs2Environment environment;
+        public List<Gs2Environment> environments;
         public Namespace distributorNamespace;
 
         [Serializable]
@@ -82,8 +87,21 @@ namespace Gs2.Unity.Util
             }
         }
 
-        public IEnumerator Start()
-        {
+        public IEnumerator Start() {
+            var environment = environments.FirstOrDefault(
+                v => v.name == this.activeEnvironmentName
+            );
+            if (environment == null) {
+                onError.Invoke(new CanIgnoreException(
+                    new UnknownException(new [] {
+                        new RequestError(
+                            "environment",
+                            "prefab.GS2ClientHolder.activeEnvironmentName.error.notFound"
+                        )
+                    })
+                ), null);
+                yield break;
+            }
             _profile = new Profile(
                 environment.clientId,
                 environment.clientSecret,
@@ -107,6 +125,20 @@ namespace Gs2.Unity.Util
 #if GS2_ENABLE_UNITASK
         public async UniTask StartAsync()
         {
+            var environment = environments.FirstOrDefault(
+                v => v.name == this.activeEnvironmentName
+            );
+            if (environment == null) {
+                onError.Invoke(new CanIgnoreException(
+                    new UnknownException(new [] {
+                        new RequestError(
+                            "environment",
+                            "prefab.GS2ClientHolder.activeEnvironmentName.error.notFound"
+                        )
+                    })
+                ), null);
+                return;
+            }
             _profile = new Profile(
                 environment.clientId,
                 environment.clientSecret,
@@ -123,5 +155,9 @@ namespace Gs2.Unity.Util
             onInitialized.Invoke();
         }
 #endif
+
+        public void DebugErrorHandler(Gs2Exception e, Func<IEnumerator> retry) {
+            Debug.LogError($"{JsonMapper.ToJson(e)} : Retryable={retry != null}");
+        }
     }
 }

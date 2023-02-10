@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2Datastore
 		{
 			_profile = profile;
 			_client = new Gs2DatastoreWebSocketClient(profile.Gs2Session);
-			if (profile.CheckRevokeCertificate)
+			if (profile.checkRevokeCertificate)
 			{
 				_restClient = new Gs2DatastoreRestClient(profile.Gs2RestSession);
 			}

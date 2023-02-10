@@ -176,13 +176,11 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         }
 
         public Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitDomain Await(
-            string awaitName,
-            string rateName
+            string awaitName
         ) {
             return new Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitDomain(
                 _domain.Await(
-                    awaitName,
-                    rateName
+                    awaitName
                 ),
                 _profile
             );

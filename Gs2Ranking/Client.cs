@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2Ranking
 		{
 			_profile = profile;
 			_client = new Gs2RankingWebSocketClient(profile.Gs2Session);
-			if (profile.CheckRevokeCertificate)
+			if (profile.checkRevokeCertificate)
 			{
 				_restClient = new Gs2RankingRestClient(profile.Gs2RestSession);
 			}

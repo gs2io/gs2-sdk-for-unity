@@ -62,10 +62,10 @@ namespace Gs2.Unity.Util
                 region,
                 checkCertificateRevocation
             );
-            _reopener = reopener;
-            _authenticator = null;
-            _distributorNamespaceName = distributorNamespaceName;
-            CheckRevokeCertificate = checkCertificateRevocation;
+            this._reopener = reopener;
+            this._authenticator = null;
+            this._distributorNamespaceName = distributorNamespaceName;
+            this.checkRevokeCertificate = checkCertificateRevocation;
         }
 
 #if GS2_ENABLE_UNITASK
@@ -528,6 +528,6 @@ namespace Gs2.Unity.Util
         public Gs2WebSocketSession Gs2Session { get; }
         public Gs2RestSession Gs2RestSession { get; }
 
-        public bool CheckRevokeCertificate { get; }
+        public bool checkRevokeCertificate { get; }
     }
 }

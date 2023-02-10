@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2Inbox
 		{
 			_profile = profile;
 			_client = new Gs2InboxWebSocketClient(profile.Gs2Session);
-			if (profile.CheckRevokeCertificate)
+			if (profile.checkRevokeCertificate)
 			{
 				_restClient = new Gs2InboxRestClient(profile.Gs2RestSession);
 			}

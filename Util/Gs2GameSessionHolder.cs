@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Gs2.Unity.Util
 {
-    [AddComponentMenu("GS2 UIKit/Core/Gs2GameSessionHolder")]
+    [AddComponentMenu("GS2/Core/Gs2GameSessionHolder")]
     public class Gs2GameSessionHolder : MonoBehaviour
     {
         public GameSession GameSession { get; private set; }

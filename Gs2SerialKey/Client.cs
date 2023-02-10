@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2SerialKey
 		{
 			_profile = profile;
 			_client = new Gs2SerialKeyWebSocketClient(profile.Gs2Session);
-			if (profile.CheckRevokeCertificate)
+			if (profile.checkRevokeCertificate)
 			{
 				_restClient = new Gs2SerialKeyRestClient(profile.Gs2RestSession);
 			}

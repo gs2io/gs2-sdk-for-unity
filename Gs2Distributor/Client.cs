@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2Distributor
 		{
 			_profile = profile;
 			_client = new Gs2DistributorWebSocketClient(profile.Gs2Session);
-			if (profile.CheckRevokeCertificate)
+			if (profile.checkRevokeCertificate)
 			{
 				_restClient = new Gs2DistributorRestClient(profile.Gs2RestSession);
 			}

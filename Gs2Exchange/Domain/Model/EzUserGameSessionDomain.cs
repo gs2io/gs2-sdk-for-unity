@@ -185,13 +185,11 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         }
 
         public Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain Await(
-            string awaitName,
-            string rateName
+            string awaitName
         ) {
             return new Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain(
                 _domain.Await(
-                    awaitName,
-                    rateName
+                    awaitName
                 ),
                 _profile
             );

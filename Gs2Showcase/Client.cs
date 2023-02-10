@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2Showcase
 		{
 			_profile = profile;
 			_client = new Gs2ShowcaseWebSocketClient(profile.Gs2Session);
-			if (profile.CheckRevokeCertificate)
+			if (profile.checkRevokeCertificate)
 			{
 				_restClient = new Gs2ShowcaseRestClient(profile.Gs2RestSession);
 			}
