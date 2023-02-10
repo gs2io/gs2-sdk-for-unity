@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Exception;
@@ -24,7 +25,12 @@ using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Core.Result;
 using Gs2.Gs2Auth.Model;
+using Gs2.Gs2Gateway;
+using Gs2.Gs2Gateway.Request;
+using Gs2.Gs2Version;
+using Gs2.Gs2Version.Request;
 using Gs2.Unity.Core;
+using Gs2.Unity.Gs2Version.Model;
 using UnityEngine.Events;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
@@ -38,6 +44,10 @@ namespace Gs2.Unity.Util
         private readonly IReopener _reopener;
         private IAuthenticator _authenticator;
         private string _distributorNamespaceName;
+        public Gs2.Unity.Gs2Gateway.ScriptableObject.Namespace _gatewayNamespace;
+        public bool _allowConcurrentAccess;
+        public Gs2.Unity.Gs2Version.ScriptableObject.Namespace _versionNamespace;
+        public List<EzTargetVersion> _targetVersions;
 
         public Profile(
             string clientId,
@@ -160,19 +170,13 @@ namespace Gs2.Unity.Util
             
             IEnumerator Impl(Gs2Future<GameSession> self)
             {
-                yield return authenticator.Authentication(
-                    r =>
-                    {
-                        if (r.Error != null)
-                        {
-                            self.OnError(r.Error);
-                        }
-                        else
-                        {
-                            self.OnComplete(new GameSession(r.Result));
-                        }
-                    }
-                );
+                var authenticationFuture = authenticator.AuthenticationFuture();
+                yield return authenticationFuture;
+                if (authenticationFuture.Error != null)
+                {
+                    self.OnError(authenticationFuture.Error);
+                }
+                self.OnComplete(new GameSession(authenticationFuture.Result));
             }
             return new Gs2InlineFuture<GameSession>(Impl);
         }

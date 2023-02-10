@@ -34,24 +34,12 @@ namespace Gs2.Unity.Util
 
     public class Gs2BasicReopener : IReopener
     {
-        private GatewaySetting _gatewaySetting;
-        private VersionSetting _versionSetting;
-        
         private IAuthenticator _authenticator;
         private string _userId;
         private string _password;
         private GameSession _gameSession;
         
         public ReOpenEvent onReOpen = new ReOpenEvent();
-        public DetectVersionUpEvent onDetectVersionUp = new DetectVersionUpEvent();
-
-        public Gs2BasicReopener(
-            GatewaySetting gatewaySetting = null,
-            VersionSetting versionSetting = null
-        ) {
-            this._gatewaySetting = gatewaySetting;
-            this._versionSetting = versionSetting;
-        }
 
         public override void SetAuthenticator(
             IAuthenticator authenticator,
@@ -79,41 +67,6 @@ namespace Gs2.Unity.Util
                 var accessToken = await this._authenticator.AuthenticationAsync();
                 this._gameSession.AccessToken = accessToken;
             }
-            if (this._gatewaySetting != null) {
-                await new Gs2GatewayWebSocketClient(session).SetUserIdAsync(
-                    new SetUserIdRequest()
-                        .WithNamespaceName(this._gatewaySetting.gatewayNamespaceName)
-                        .WithAccessToken(this._gameSession.AccessToken.Token)
-                        .WithAllowConcurrentAccess(this._gatewaySetting.allowConcurrentAccess)
-                );
-            }
-            if (this._versionSetting != null) {
-                var checkVersionResult = await new Gs2VersionRestClient(restSession).CheckVersionAsync(
-                    new CheckVersionRequest()
-                        .WithNamespaceName(this._versionSetting.versionNamespaceName)
-                        .WithAccessToken(this._gameSession.AccessToken.Token)
-                        .WithTargetVersions(this._versionSetting.targetVersions.Select(
-                            v => v.ToModel()
-                        ).ToArray()
-                    )
-                );
-                if (checkVersionResult.ProjectToken != null) {
-                    restSession.Credential.ProjectToken = checkVersionResult.ProjectToken;
-                    session.Credential.ProjectToken = checkVersionResult.ProjectToken;
-                }
-                if (checkVersionResult.Errors.Length > 0) {
-                    onDetectVersionUp.Invoke();
-                    
-                    throw new UnauthorizedException(
-                        new[] {
-                            new RequestError {
-                                Component = "version",
-                                Message = "version.version.check.error.failed",
-                            }
-                        }
-                    );
-                }
-            }
             
             onReOpen.Invoke();
 
@@ -139,55 +92,6 @@ namespace Gs2.Unity.Util
                         yield break;
                     }
                     this._gameSession.AccessToken = future.Result;
-                }
-                if (this._gatewaySetting != null) {
-                    var future = new Gs2GatewayWebSocketClient(session).SetUserIdFuture(
-                        new SetUserIdRequest()
-                            .WithNamespaceName(this._gatewaySetting.gatewayNamespaceName)
-                            .WithAccessToken(this._gameSession.AccessToken.Token)
-                            .WithAllowConcurrentAccess(this._gatewaySetting.allowConcurrentAccess)
-                    );
-                    yield return future;
-                    if (future.Error != null) {
-                        result.OnError(future.Error);
-                        yield break;
-                    }
-                }
-                if (this._versionSetting != null) {
-                    var future = new Gs2VersionRestClient(restSession).CheckVersionFuture(
-                        new CheckVersionRequest()
-                            .WithNamespaceName(this._versionSetting.versionNamespaceName)
-                            .WithAccessToken(this._gameSession.AccessToken.Token)
-                            .WithTargetVersions(this._versionSetting.targetVersions.Select(
-                                    v => v.ToModel()
-                                ).ToArray()
-                            )
-                    );
-                    yield return future;
-                    if (future.Error != null) {
-                        result.OnError(future.Error);
-                        yield break;
-                    }
-                    var checkVersionResult = future.Result;
-                    if (checkVersionResult.ProjectToken != null) {
-                        restSession.Credential.ProjectToken = checkVersionResult.ProjectToken;
-                        session.Credential.ProjectToken = checkVersionResult.ProjectToken;
-                    }
-                    if (checkVersionResult.Errors.Length > 0) {
-                        onDetectVersionUp.Invoke();
-
-                        result.OnError(
-                            new UnauthorizedException(
-                                new[] {
-                                    new RequestError {
-                                        Component = "version",
-                                        Message = "version.version.check.error.failed",
-                                    }
-                                }
-                            )
-                        );
-                        yield break;
-                    }
                 }
 
                 onReOpen.Invoke();

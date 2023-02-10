@@ -458,6 +458,7 @@ namespace Gs2.Unity.Gs2Realtime
                         {
                             helloResult = message as HelloResult;
                             success = true;
+                            done = true;
                         }
                         else
                         {
@@ -468,8 +469,6 @@ namespace Gs2.Unity.Gs2Realtime
                     {
                         args = e;
                     }
-
-                    done = true;
                 }
 
                 try
@@ -680,7 +679,7 @@ namespace Gs2.Unity.Gs2Realtime
                 // 完了フラグを立てる
                 done = true;
             }
-#else // UNITY_WEBGL && !UNITY_EDITOR
+#else // UNITY_WEBGL
             void OnOpenHandler(object sender, EventArgs e)
             {
                 // 完了フラグ・成功フラグを立てる
@@ -737,12 +736,6 @@ namespace Gs2.Unity.Gs2Realtime
                 if (!success)
                 {
                     // 失敗した場合は抜ける
-                    callback.Invoke(new AsyncResult<bool>(
-                        success,
-                        success ? null : new SendException(new BinaryMessage {
-                            Data = ByteString.CopyFromUtf8(args == null ? "Unknown" : args.ToString())
-                        })
-                    ));
                     yield break;
                 }
 
@@ -768,11 +761,12 @@ namespace Gs2.Unity.Gs2Realtime
                                     lifeTimeMilliSeconds
                                 )
                             );
-                            return;
+                            done = true;
                         }
                         else if (message is HelloResult)
                         {
                             helloResult = message as HelloResult;
+                            done = true;
                             success = true;
                         }
                         else
@@ -780,10 +774,8 @@ namespace Gs2.Unity.Gs2Realtime
                             messageList.Add(data);
                         }
                     }
-
-                    done = true;
                 }
-#else // UNITY_WEBGL && !UNITY_EDITOR
+#else // UNITY_WEBGL
                 void OnMessageHandler(object sender, EventArgs e)
                 {
                     // 認証処理の応答を処理するためのハンドラ
@@ -803,7 +795,7 @@ namespace Gs2.Unity.Gs2Realtime
                                     lifeTimeMilliSeconds
                                 )
                             );
-                            return;
+                            done = true;
                         }
                         else if (message is HelloResult)
                         {
@@ -866,12 +858,6 @@ namespace Gs2.Unity.Gs2Realtime
                     if (!success || helloResult == null)
                     {
                         // 失敗した場合は抜ける
-                        callback.Invoke(new AsyncResult<bool>(
-                            success,
-                            success ? null : new SendException(new BinaryMessage {
-                                Data = ByteString.CopyFromUtf8(args == null ? "Unknown" : args.ToString())
-                            })
-                        ));
                         yield break;
                     }
 
@@ -879,54 +865,43 @@ namespace Gs2.Unity.Gs2Realtime
                     players = helloResult.Players.ToArray();
 
                     Connected = true;
-#else // UNITY_WEBGL && !UNITY_EDITOR
+#else // UNITY_WEBGL
 #if ENABLE_DEBUGLOG
                     Debug.Log("SendAsync");
-#endif 
-                    _webSocket.SendAsync(
-                        _messenger.Pack(
-                            new HelloRequest
-                            {
-                                AccessToken = _accessToken,
-                                MyProfile = Profile,
-                            }
-                        ), completed =>
-                        {
-                            if (completed)
-                            {
-                                success = true;
-                            }
-
-                            done = true;
-                        }
-                    );
-                    
-                    for (var i=0; i<30 && !done; i++)
+#endif
                     {
+                        bool sendDone = false;
+                        _webSocket.SendAsync(
+                            _messenger.Pack(
+                                new HelloRequest {
+                                    AccessToken = _accessToken,
+                                    MyProfile = Profile,
+                                }
+                            ),
+                            completed =>
+                            {
+                                sendDone = true;
+                            }
+                        );
+
+                        for (var i = 0; i < 30 && !sendDone; i++) {
 #if DISABLE_COROUTINE
                         yield return null;
 #else
-                        if (NotUseWaitForSeconds)
-                        {
-                            Thread.Sleep(1000);
-                            yield return null;
-                        }
-                        else
-                        {
-                            yield return new WaitForSeconds(1);
-                        }
+                            if (NotUseWaitForSeconds) {
+                                Thread.Sleep(1000);
+                                yield return null;
+                            }
+                            else {
+                                yield return new WaitForSeconds(1);
+                            }
 #endif
+                        }
                     }
 
                     if (!success || helloResult == null)
                     {
                         // 失敗した場合は抜ける
-                        callback.Invoke(new AsyncResult<bool>(
-                            success,
-                            success ? null : new SendException(new BinaryMessage {
-                                Data = ByteString.CopyFromUtf8(args == null ? "Unknown" : args.ToString())
-                            })
-                        ));
                         yield break;
                     }
 
@@ -1029,7 +1004,7 @@ namespace Gs2.Unity.Gs2Realtime
                 success ? null : new SendException(message)
             ));
 
-#else // UNITY_WEBGL && !UNITY_EDITOR
+#else // UNITY_WEBGL
             _webSocket.SendAsync(
                 _messenger.Pack(
                     message
@@ -1089,7 +1064,7 @@ namespace Gs2.Unity.Gs2Realtime
             _webSocket.Send(data);
             success = true;
             Profile = profile;
-#else // UNITY_WEBGL && !UNITY_EDITOR
+#else // UNITY_WEBGL
             _webSocket.SendAsync(
                 _messenger.Pack(
                     new UpdateProfileRequest
@@ -1146,7 +1121,7 @@ namespace Gs2.Unity.Gs2Realtime
             {
                 done = true;
             }
-#else // UNITY_WEBGL && !UNITY_EDITOR
+#else // UNITY_WEBGL
             void OnCloseHandler(object sender, EventArgs e)
             {
                 done = true;

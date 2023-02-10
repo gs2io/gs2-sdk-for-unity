@@ -10,7 +10,7 @@ using Cysharp.Threading.Tasks;
 using Gs2.Unity.Core;
 using Gs2.Unity.Core.Exception;
 using Gs2.Unity.Core.ScriptableObject;
-using Gs2.Unity.Gs2Distributor.ScriptableObject;
+using Gs2.Unity.Gs2Version.Model;
 using Gs2.Unity.Util;
 using Gs2.Util.LitJson;
 using UnityEngine;
@@ -29,7 +29,7 @@ namespace Gs2.Unity.Util
         
         public string activeEnvironmentName;
         public List<Gs2Environment> environments;
-        public Namespace distributorNamespace;
+        public Gs2.Unity.Gs2Distributor.ScriptableObject.Namespace distributorNamespace;
 
         [Serializable]
         private class InitializedEvent : UnityEvent
@@ -107,7 +107,7 @@ namespace Gs2.Unity.Util
                 environment.clientSecret,
                 new Gs2BasicReopener(),
                 environment.region,
-                distributorNamespace?.namespaceName
+                distributorNamespace == null ? null : distributorNamespace.NamespaceName
             );
             var initializeFuture = _profile.InitializeFuture();
             yield return initializeFuture;
@@ -118,7 +118,7 @@ namespace Gs2.Unity.Util
             }
             
             Gs2 = initializeFuture.Result;
-            
+
             onInitialized.Invoke();
         }
         
