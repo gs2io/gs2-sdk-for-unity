@@ -870,7 +870,6 @@ namespace Gs2.Unity.Gs2Realtime
                     Debug.Log("SendAsync");
 #endif
                     {
-                        bool sendDone = false;
                         _webSocket.SendAsync(
                             _messenger.Pack(
                                 new HelloRequest {
@@ -880,11 +879,11 @@ namespace Gs2.Unity.Gs2Realtime
                             ),
                             completed =>
                             {
-                                sendDone = true;
+                                
                             }
                         );
 
-                        for (var i = 0; i < 30 && !sendDone; i++) {
+                        for (var i = 0; i < 30 && !done; i++) {
 #if DISABLE_COROUTINE
                         yield return null;
 #else
