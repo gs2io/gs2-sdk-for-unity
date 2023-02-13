@@ -23,11 +23,10 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
     [CreateAssetMenu(fileName = "FormModel", menuName = "Game Server Services/Gs2Formation/FormModel")]
     public class FormModel : UnityEngine.ScriptableObject
     {
-        public MoldModel MoldModel;
+        public Namespace Namespace;
         public string formModelName;
 
-        public string NamespaceName => this.MoldModel.NamespaceName;
-        public string MoldName => this.MoldModel.MoldName;
+        public string NamespaceName => this.Namespace.NamespaceName;
         public string FormModelName => this.formModelName;
 
 #if UNITY_INCLUDE_TESTS
@@ -42,13 +41,13 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
 #endif
 
         public static FormModel New(
-            MoldModel MoldModel,
+            Namespace Namespace,
             string formModelName
         )
         {
             var instance = CreateInstance<FormModel>();
             instance.name = "Runtime";
-            instance.MoldModel = MoldModel;
+            instance.Namespace = Namespace;
             instance.formModelName = formModelName;
             return instance;
         }
@@ -57,7 +56,7 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
         {
             var instance = CreateInstance<FormModel>();
             instance.name = "Runtime";
-            instance.MoldModel = MoldModel;
+            instance.Namespace = Namespace;
             instance.formModelName = formModelName;
             return instance;
         }
