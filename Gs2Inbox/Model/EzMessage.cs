@@ -14,6 +14,7 @@
  * permissions and limitations under the License.
  */
 
+using System;
 using Gs2.Gs2Inbox.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -25,6 +26,7 @@ using UnityEngine.Scripting;
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Inbox.Model
 {
+
 	[Preserve]
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -39,7 +41,7 @@ namespace Gs2.Unity.Gs2Inbox.Model
 		[SerializeField]
 		public bool IsRead;
 		[SerializeField]
-		public List<Gs2.Unity.Gs2Inbox.Model.EzAcquireAction> ReadAcquireActions;
+		public List<Gs2.Unity.Core.Model.EzAcquireAction> ReadAcquireActions;
 		[SerializeField]
 		public long ReceivedAt;
 		[SerializeField]
@@ -70,8 +72,8 @@ namespace Gs2.Unity.Gs2Inbox.Model
                 Name = model.Name == null ? null : model.Name,
                 Metadata = model.Metadata == null ? null : model.Metadata,
                 IsRead = model.IsRead ?? false,
-                ReadAcquireActions = model.ReadAcquireActions == null ? new List<Gs2.Unity.Gs2Inbox.Model.EzAcquireAction>() : model.ReadAcquireActions.Select(v => {
-                    return Gs2.Unity.Gs2Inbox.Model.EzAcquireAction.FromModel(v);
+                ReadAcquireActions = model.ReadAcquireActions == null ? new List<Gs2.Unity.Core.Model.EzAcquireAction>() : model.ReadAcquireActions.Select(v => {
+                    return Gs2.Unity.Core.Model.EzAcquireAction.FromModel(v);
                 }).ToList(),
                 ReceivedAt = model.ReceivedAt ?? 0,
                 ReadAt = model.ReadAt ?? 0,

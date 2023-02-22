@@ -93,7 +93,7 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
                 return _it.HasNext();
             }
 
-            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Schedule.Model.EzTrigger> callback)
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Schedule.Model.EzTrigger>> callback)
             {
         #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
@@ -108,7 +108,12 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
                     }
                 );
         #endif
-                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Schedule.Model.EzTrigger.FromModel(_it.Current));
+                callback.Invoke(
+                    new AsyncResult<Gs2.Unity.Gs2Schedule.Model.EzTrigger>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2Schedule.Model.EzTrigger.FromModel(_it.Current),
+                        _it.Error
+                    )
+                );
             }
         }
 
@@ -200,7 +205,7 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
                 return _it.HasNext();
             }
 
-            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Schedule.Model.EzEvent> callback)
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Schedule.Model.EzEvent>> callback)
             {
         #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
@@ -215,7 +220,12 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
                     }
                 );
         #endif
-                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Schedule.Model.EzEvent.FromModel(_it.Current));
+                callback.Invoke(
+                    new AsyncResult<Gs2.Unity.Gs2Schedule.Model.EzEvent>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2Schedule.Model.EzEvent.FromModel(_it.Current),
+                        _it.Error
+                    )
+                );
             }
         }
 

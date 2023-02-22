@@ -29,6 +29,7 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Gs2.Core;
 using Gs2.Core.Model;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
@@ -44,7 +45,6 @@ using Cysharp.Threading.Tasks.Linq;
 #else
 using System.Collections;
 using UnityEngine.Events;
-using Gs2.Core;
 using Gs2.Core.Exception;
 #endif
 
@@ -82,11 +82,14 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Iterator
         }
 
         protected override IEnumerator Next(
-            Action<Gs2.Unity.Gs2Inventory.Model.EzItemSet> callback
+            Action<AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzItemSet>> callback
         )
         {
             yield return _iterator;
-            callback.Invoke(_iterator.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel(_iterator.Current));
+            callback.Invoke(new AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzItemSet>(
+                _iterator.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel(_iterator.Current),
+                _iterator.Error
+            ));
         }
 
         #endif

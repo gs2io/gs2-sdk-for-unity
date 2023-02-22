@@ -14,6 +14,7 @@
  * permissions and limitations under the License.
  */
 
+using System;
 using Gs2.Gs2Formation.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -25,6 +26,7 @@ using UnityEngine.Scripting;
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Formation.Model
 {
+
 	[Preserve]
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]

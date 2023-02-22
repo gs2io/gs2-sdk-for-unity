@@ -192,7 +192,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                 return _it.HasNext();
             }
 
-            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Chat.Model.EzSubscribe> callback)
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Chat.Model.EzSubscribe>> callback)
             {
         #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
@@ -207,7 +207,12 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                     }
                 );
         #endif
-                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Chat.Model.EzSubscribe.FromModel(_it.Current));
+                callback.Invoke(
+                    new AsyncResult<Gs2.Unity.Gs2Chat.Model.EzSubscribe>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2Chat.Model.EzSubscribe.FromModel(_it.Current),
+                        _it.Error
+                    )
+                );
             }
         }
 

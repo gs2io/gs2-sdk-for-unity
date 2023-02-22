@@ -92,7 +92,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                 return _it.HasNext();
             }
 
-            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Quest.Model.EzQuestModel> callback)
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Quest.Model.EzQuestModel>> callback)
             {
         #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
@@ -107,7 +107,12 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                     }
                 );
         #endif
-                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Quest.Model.EzQuestModel.FromModel(_it.Current));
+                callback.Invoke(
+                    new AsyncResult<Gs2.Unity.Gs2Quest.Model.EzQuestModel>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2Quest.Model.EzQuestModel.FromModel(_it.Current),
+                        _it.Error
+                    )
+                );
             }
         }
 

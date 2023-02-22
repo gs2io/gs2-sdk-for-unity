@@ -95,7 +95,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
                 return _it.HasNext();
             }
 
-            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Inventory.Model.EzItemSet> callback)
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzItemSet>> callback)
             {
         #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
@@ -110,7 +110,12 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
                     }
                 );
         #endif
-                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel(_it.Current));
+                callback.Invoke(
+                    new AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzItemSet>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel(_it.Current),
+                        _it.Error
+                    )
+                );
             }
         }
 

@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 #if UNITY_INCLUDE_TESTS
 using UnityEditor;
@@ -24,12 +26,12 @@ namespace Gs2.Unity.Gs2Ranking.ScriptableObject
     public class SubscribeUser : UnityEngine.ScriptableObject
     {
         public User User;
-        public string categoryName;
+        public CategoryModel CategoryModel;
         public string targetUserId;
 
         public string NamespaceName => this.User.NamespaceName;
         public string UserId => this.User.UserId;
-        public string CategoryName => this.categoryName;
+        public string CategoryName => this.CategoryModel.CategoryName;
         public string TargetUserId => this.targetUserId;
 
 #if UNITY_INCLUDE_TESTS
@@ -45,14 +47,14 @@ namespace Gs2.Unity.Gs2Ranking.ScriptableObject
 
         public static SubscribeUser New(
             User User,
-            string categoryName,
+            CategoryModel CategoryModel,
             string targetUserId
         )
         {
             var instance = CreateInstance<SubscribeUser>();
             instance.name = "Runtime";
             instance.User = User;
-            instance.categoryName = categoryName;
+            instance.CategoryModel = CategoryModel;
             instance.targetUserId = targetUserId;
             return instance;
         }
@@ -62,7 +64,7 @@ namespace Gs2.Unity.Gs2Ranking.ScriptableObject
             var instance = CreateInstance<SubscribeUser>();
             instance.name = "Runtime";
             instance.User = User;
-            instance.categoryName = categoryName;
+            instance.CategoryModel = CategoryModel;
             instance.targetUserId = targetUserId;
             return instance;
         }

@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 #if UNITY_INCLUDE_TESTS
 using UnityEditor;
@@ -23,11 +25,10 @@ namespace Gs2.Unity.Gs2Showcase.ScriptableObject
     [CreateAssetMenu(fileName = "Showcase", menuName = "Game Server Services/Gs2Showcase/Showcase")]
     public class Showcase : UnityEngine.ScriptableObject
     {
-        public User User;
+        public Namespace Namespace;
         public string showcaseName;
 
-        public string NamespaceName => this.User.NamespaceName;
-        public string UserId => this.User.UserId;
+        public string NamespaceName => this.Namespace.NamespaceName;
         public string ShowcaseName => this.showcaseName;
 
 #if UNITY_INCLUDE_TESTS
@@ -42,13 +43,13 @@ namespace Gs2.Unity.Gs2Showcase.ScriptableObject
 #endif
 
         public static Showcase New(
-            User User,
+            Namespace Namespace,
             string showcaseName
         )
         {
             var instance = CreateInstance<Showcase>();
             instance.name = "Runtime";
-            instance.User = User;
+            instance.Namespace = Namespace;
             instance.showcaseName = showcaseName;
             return instance;
         }
@@ -57,7 +58,7 @@ namespace Gs2.Unity.Gs2Showcase.ScriptableObject
         {
             var instance = CreateInstance<Showcase>();
             instance.name = "Runtime";
-            instance.User = User;
+            instance.Namespace = Namespace;
             instance.showcaseName = showcaseName;
             return instance;
         }

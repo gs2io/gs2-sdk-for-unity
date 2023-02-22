@@ -78,7 +78,7 @@ namespace Gs2.Unity.Gs2News
                 yield break;
             }
 			
-            var request = UnityWebRequest.Get(zipUrl);
+            using var request = UnityWebRequest.Get(zipUrl);
             request.downloadHandler = new DownloadHandlerBuffer();
             yield return request.SendWebRequest();
 

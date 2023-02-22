@@ -259,7 +259,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 return _it.HasNext();
             }
 
-            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Datastore.Model.EzDataObject> callback)
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Datastore.Model.EzDataObject>> callback)
             {
         #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
@@ -275,7 +275,12 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                     }
                 );
         #endif
-                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Datastore.Model.EzDataObject.FromModel(_it.Current));
+                callback.Invoke(
+                    new AsyncResult<Gs2.Unity.Gs2Datastore.Model.EzDataObject>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2Datastore.Model.EzDataObject.FromModel(_it.Current),
+                        _it.Error
+                    )
+                );
             }
         }
 

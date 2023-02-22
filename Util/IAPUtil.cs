@@ -7,6 +7,7 @@ using System.Reflection;
 using Gs2.Core;
 using Gs2.Core.Exception;
 using Gs2.Core.Model;
+using Gs2.Core.Domain;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Purchasing;
@@ -46,54 +47,68 @@ namespace Gs2.Unity.Util
         public IEnumerator Buy(
             UnityAction<AsyncResult<PurchaseParameters>> callback,
             string contentsId
+        ) {
+            var future = BuyFuture(contentsId);
+            yield return future;
+            callback.Invoke(new AsyncResult<PurchaseParameters>(
+                future.Result,
+                future.Error
+            ));
+        }
+        
+        public Gs2Future<PurchaseParameters> BuyFuture(
+            string contentsId
         )
         {
-            if (_status != Status.None)
-            {
-                callback.Invoke(
-                    new AsyncResult<PurchaseParameters>(
-                        null, 
+            IEnumerator Impl(Gs2Future<PurchaseParameters> result) {
+                
+                if (_status != Status.None)
+                {
+                    result.OnError(
                         new ConflictException(
-                            new RequestError[]
+                            new[]
                             {
                                 new RequestError("state", "money.state.state.error.running")
                             }
                         )
-                    )
-                );
-                yield break;
-            }
-            _exception = null;
-            _receipt = null;
-            _status = Status.Initializing;
+                    );
+                    yield break;
+                }
+                _exception = null;
+                _receipt = null;
+                _status = Status.Initializing;
             
-            var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-            var ids = new IDs {{contentsId, contentsId}};
-            builder.AddProduct(contentsId, ProductType.Consumable, ids);
-            UnityPurchasing.Initialize(new Gs2StoreListener(this), builder);
-            while (_status == Status.Initializing)
-            {
-                yield return new WaitForSeconds(1);
-            }
-            if (_status == Status.InitializeFailed)
-            {
-                callback.Invoke(new AsyncResult<PurchaseParameters>(null, _exception));
-                yield break;
-            }
+                var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
+                var ids = new IDs {{contentsId, contentsId}};
+                builder.AddProduct(contentsId, ProductType.Consumable, ids);
+                UnityPurchasing.Initialize(new Gs2StoreListener(this), builder);
+                while (_status == Status.Initializing)
+                {
+                    yield return new WaitForSeconds(1);
+                }
+                if (_status == Status.InitializeFailed)
+                {
+                    result.OnError(_exception);
+                    yield break;
+                }
              
-            _status = Status.Purchasing;
-            _controller.InitiatePurchase(_controller.products.WithID(contentsId));
-            while (_status == Status.Purchasing)
-            {
-                yield return new WaitForSeconds(1);
-            }
+                _status = Status.Purchasing;
+                _controller.InitiatePurchase(_controller.products.WithID(contentsId));
+                while (_status == Status.Purchasing)
+                {
+                    yield return new WaitForSeconds(1);
+                }
             
-            callback.Invoke(new AsyncResult<PurchaseParameters>(
-                new PurchaseParameters {
-                    receipt=_receipt,
-                    controller=_controller,
-                    product=_controller.products.WithID(contentsId),
-                }, _exception));
+                result.OnComplete(
+                    new PurchaseParameters {
+                        receipt = _receipt,
+                        controller = _controller,
+                        product = _controller.products.WithID(contentsId),
+                    }
+                );
+            }
+
+            return new Gs2InlineFuture<PurchaseParameters>(Impl);
         }
         
 #if GS2_ENABLE_UNITASK

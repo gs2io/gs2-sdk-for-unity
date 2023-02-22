@@ -14,6 +14,7 @@
  * permissions and limitations under the License.
  */
 
+using System;
 using Gs2.Gs2Distributor.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -25,6 +26,7 @@ using UnityEngine.Scripting;
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Distributor.Model
 {
+
 	[Preserve]
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -33,9 +35,9 @@ namespace Gs2.Unity.Gs2Distributor.Model
 		[SerializeField]
 		public string TransactionId;
 		[SerializeField]
-		public List<Gs2.Unity.Gs2Distributor.Model.EzConsumeAction> TaskRequests;
+		public List<Gs2.Unity.Core.Model.EzConsumeAction> TaskRequests;
 		[SerializeField]
-		public Gs2.Unity.Gs2Distributor.Model.EzAcquireAction SheetRequest;
+		public Gs2.Unity.Core.Model.EzAcquireAction SheetRequest;
 		[SerializeField]
 		public List<string> TaskResults;
 		[SerializeField]
@@ -60,10 +62,10 @@ namespace Gs2.Unity.Gs2Distributor.Model
         {
             return new EzStampSheetResult {
                 TransactionId = model.TransactionId == null ? null : model.TransactionId,
-                TaskRequests = model.TaskRequests == null ? new List<Gs2.Unity.Gs2Distributor.Model.EzConsumeAction>() : model.TaskRequests.Select(v => {
-                    return Gs2.Unity.Gs2Distributor.Model.EzConsumeAction.FromModel(v);
+                TaskRequests = model.TaskRequests == null ? new List<Gs2.Unity.Core.Model.EzConsumeAction>() : model.TaskRequests.Select(v => {
+                    return Gs2.Unity.Core.Model.EzConsumeAction.FromModel(v);
                 }).ToList(),
-                SheetRequest = model.SheetRequest == null ? null : Gs2.Unity.Gs2Distributor.Model.EzAcquireAction.FromModel(model.SheetRequest),
+                SheetRequest = model.SheetRequest == null ? null : Gs2.Unity.Core.Model.EzAcquireAction.FromModel(model.SheetRequest),
                 TaskResults = model.TaskResults == null ? new List<string>() : model.TaskResults.Select(v => {
                     return v;
                 }).ToList(),

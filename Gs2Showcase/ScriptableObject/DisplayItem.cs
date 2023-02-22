@@ -44,12 +44,14 @@ namespace Gs2.Unity.Gs2Showcase.ScriptableObject
 #endif
 
         public static DisplayItem New(
-            Showcase Showcase
+            Showcase Showcase,
+            string displayItemId
         )
         {
             var instance = CreateInstance<DisplayItem>();
             instance.name = "Runtime";
             instance.Showcase = Showcase;
+            instance.displayItemId = displayItemId;
             return instance;
         }
 
@@ -58,6 +60,7 @@ namespace Gs2.Unity.Gs2Showcase.ScriptableObject
             var instance = CreateInstance<DisplayItem>();
             instance.name = "Runtime";
             instance.Showcase = Showcase;
+            instance.displayItemId = displayItemId;
             return instance;
         }
     }

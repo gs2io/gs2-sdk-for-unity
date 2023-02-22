@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -97,7 +95,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                 return _it.HasNext();
             }
 
-            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Formation.Model.EzMold> callback)
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Formation.Model.EzMold>> callback)
             {
         #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
@@ -112,7 +110,12 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                     }
                 );
         #endif
-                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzMold.FromModel(_it.Current));
+                callback.Invoke(
+                    new AsyncResult<Gs2.Unity.Gs2Formation.Model.EzMold>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzMold.FromModel(_it.Current),
+                        _it.Error
+                    )
+                );
             }
         }
 
@@ -207,7 +210,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                 return _it.HasNext();
             }
 
-            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Formation.Model.EzPropertyForm> callback)
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Formation.Model.EzPropertyForm>> callback)
             {
         #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
@@ -223,7 +226,12 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                     }
                 );
         #endif
-                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzPropertyForm.FromModel(_it.Current));
+                callback.Invoke(
+                    new AsyncResult<Gs2.Unity.Gs2Formation.Model.EzPropertyForm>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzPropertyForm.FromModel(_it.Current),
+                        _it.Error
+                    )
+                );
             }
         }
 

@@ -93,7 +93,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                 return _it.HasNext();
             }
 
-            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Formation.Model.EzMoldModel> callback)
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Formation.Model.EzMoldModel>> callback)
             {
         #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
@@ -108,7 +108,12 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                     }
                 );
         #endif
-                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzMoldModel.FromModel(_it.Current));
+                callback.Invoke(
+                    new AsyncResult<Gs2.Unity.Gs2Formation.Model.EzMoldModel>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzMoldModel.FromModel(_it.Current),
+                        _it.Error
+                    )
+                );
             }
         }
 
@@ -200,7 +205,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                 return _it.HasNext();
             }
 
-            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Formation.Model.EzFormModel> callback)
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Formation.Model.EzFormModel>> callback)
             {
         #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
@@ -215,7 +220,12 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                     }
                 );
         #endif
-                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzFormModel.FromModel(_it.Current));
+                callback.Invoke(
+                    new AsyncResult<Gs2.Unity.Gs2Formation.Model.EzFormModel>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzFormModel.FromModel(_it.Current),
+                        _it.Error
+                    )
+                );
             }
         }
 

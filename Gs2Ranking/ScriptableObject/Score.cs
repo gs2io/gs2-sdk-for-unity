@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 #if UNITY_INCLUDE_TESTS
 using UnityEditor;
@@ -24,14 +26,12 @@ namespace Gs2.Unity.Gs2Ranking.ScriptableObject
     public class Score : UnityEngine.ScriptableObject
     {
         public User User;
-        public string categoryName;
-        public string scorerUserId;
+        public CategoryModel CategoryModel;
         public string uniqueId;
 
         public string NamespaceName => this.User.NamespaceName;
         public string UserId => this.User.UserId;
-        public string CategoryName => this.categoryName;
-        public string ScorerUserId => this.scorerUserId;
+        public string CategoryName => this.CategoryModel.CategoryName;
         public string UniqueId => this.uniqueId;
 
 #if UNITY_INCLUDE_TESTS
@@ -47,16 +47,14 @@ namespace Gs2.Unity.Gs2Ranking.ScriptableObject
 
         public static Score New(
             User User,
-            string categoryName,
-            string scorerUserId,
+            CategoryModel CategoryModel,
             string uniqueId
         )
         {
             var instance = CreateInstance<Score>();
             instance.name = "Runtime";
             instance.User = User;
-            instance.categoryName = categoryName;
-            instance.scorerUserId = scorerUserId;
+            instance.CategoryModel = CategoryModel;
             instance.uniqueId = uniqueId;
             return instance;
         }
@@ -66,8 +64,7 @@ namespace Gs2.Unity.Gs2Ranking.ScriptableObject
             var instance = CreateInstance<Score>();
             instance.name = "Runtime";
             instance.User = User;
-            instance.categoryName = categoryName;
-            instance.scorerUserId = scorerUserId;
+            instance.CategoryModel = CategoryModel;
             instance.uniqueId = uniqueId;
             return instance;
         }

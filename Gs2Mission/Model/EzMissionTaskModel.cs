@@ -14,6 +14,7 @@
  * permissions and limitations under the License.
  */
 
+using System;
 using Gs2.Gs2Mission.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -25,6 +26,7 @@ using UnityEngine.Scripting;
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Mission.Model
 {
+
 	[Preserve]
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -39,7 +41,7 @@ namespace Gs2.Unity.Gs2Mission.Model
 		[SerializeField]
 		public long TargetValue;
 		[SerializeField]
-		public List<Gs2.Unity.Gs2Mission.Model.EzAcquireAction> CompleteAcquireActions;
+		public List<Gs2.Unity.Core.Model.EzAcquireAction> CompleteAcquireActions;
 		[SerializeField]
 		public string ChallengePeriodEventId;
 		[SerializeField]
@@ -67,8 +69,8 @@ namespace Gs2.Unity.Gs2Mission.Model
                 Metadata = model.Metadata == null ? null : model.Metadata,
                 CounterName = model.CounterName == null ? null : model.CounterName,
                 TargetValue = model.TargetValue ?? 0,
-                CompleteAcquireActions = model.CompleteAcquireActions == null ? new List<Gs2.Unity.Gs2Mission.Model.EzAcquireAction>() : model.CompleteAcquireActions.Select(v => {
-                    return Gs2.Unity.Gs2Mission.Model.EzAcquireAction.FromModel(v);
+                CompleteAcquireActions = model.CompleteAcquireActions == null ? new List<Gs2.Unity.Core.Model.EzAcquireAction>() : model.CompleteAcquireActions.Select(v => {
+                    return Gs2.Unity.Core.Model.EzAcquireAction.FromModel(v);
                 }).ToList(),
                 ChallengePeriodEventId = model.ChallengePeriodEventId == null ? null : model.ChallengePeriodEventId,
                 PremiseMissionTaskName = model.PremiseMissionTaskName == null ? null : model.PremiseMissionTaskName,

@@ -14,6 +14,7 @@
  * permissions and limitations under the License.
  */
 
+using System;
 using Gs2.Gs2Quest.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -25,6 +26,7 @@ using UnityEngine.Scripting;
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Quest.Model
 {
+
 	[Preserve]
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -41,11 +43,11 @@ namespace Gs2.Unity.Gs2Quest.Model
 		[SerializeField]
 		public string ChallengePeriodEventId;
 		[SerializeField]
-		public List<Gs2.Unity.Gs2Quest.Model.EzAcquireAction> FirstCompleteAcquireActions;
+		public List<Gs2.Unity.Core.Model.EzAcquireAction> FirstCompleteAcquireActions;
 		[SerializeField]
-		public List<Gs2.Unity.Gs2Quest.Model.EzConsumeAction> ConsumeActions;
+		public List<Gs2.Unity.Core.Model.EzConsumeAction> ConsumeActions;
 		[SerializeField]
-		public List<Gs2.Unity.Gs2Quest.Model.EzAcquireAction> FailedAcquireActions;
+		public List<Gs2.Unity.Core.Model.EzAcquireAction> FailedAcquireActions;
 		[SerializeField]
 		public List<string> PremiseQuestNames;
 
@@ -84,14 +86,14 @@ namespace Gs2.Unity.Gs2Quest.Model
                     return Gs2.Unity.Gs2Quest.Model.EzContents.FromModel(v);
                 }).ToList(),
                 ChallengePeriodEventId = model.ChallengePeriodEventId == null ? null : model.ChallengePeriodEventId,
-                FirstCompleteAcquireActions = model.FirstCompleteAcquireActions == null ? new List<Gs2.Unity.Gs2Quest.Model.EzAcquireAction>() : model.FirstCompleteAcquireActions.Select(v => {
-                    return Gs2.Unity.Gs2Quest.Model.EzAcquireAction.FromModel(v);
+                FirstCompleteAcquireActions = model.FirstCompleteAcquireActions == null ? new List<Gs2.Unity.Core.Model.EzAcquireAction>() : model.FirstCompleteAcquireActions.Select(v => {
+                    return Gs2.Unity.Core.Model.EzAcquireAction.FromModel(v);
                 }).ToList(),
-                ConsumeActions = model.ConsumeActions == null ? new List<Gs2.Unity.Gs2Quest.Model.EzConsumeAction>() : model.ConsumeActions.Select(v => {
-                    return Gs2.Unity.Gs2Quest.Model.EzConsumeAction.FromModel(v);
+                ConsumeActions = model.ConsumeActions == null ? new List<Gs2.Unity.Core.Model.EzConsumeAction>() : model.ConsumeActions.Select(v => {
+                    return Gs2.Unity.Core.Model.EzConsumeAction.FromModel(v);
                 }).ToList(),
-                FailedAcquireActions = model.FailedAcquireActions == null ? new List<Gs2.Unity.Gs2Quest.Model.EzAcquireAction>() : model.FailedAcquireActions.Select(v => {
-                    return Gs2.Unity.Gs2Quest.Model.EzAcquireAction.FromModel(v);
+                FailedAcquireActions = model.FailedAcquireActions == null ? new List<Gs2.Unity.Core.Model.EzAcquireAction>() : model.FailedAcquireActions.Select(v => {
+                    return Gs2.Unity.Core.Model.EzAcquireAction.FromModel(v);
                 }).ToList(),
                 PremiseQuestNames = model.PremiseQuestNames == null ? new List<string>() : model.PremiseQuestNames.Select(v => {
                     return v;

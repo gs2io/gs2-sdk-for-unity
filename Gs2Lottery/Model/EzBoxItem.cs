@@ -14,6 +14,7 @@
  * permissions and limitations under the License.
  */
 
+using System;
 using Gs2.Gs2Lottery.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -25,13 +26,14 @@ using UnityEngine.Scripting;
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Lottery.Model
 {
+
 	[Preserve]
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzBoxItem
 	{
 		[SerializeField]
-		public List<Gs2.Unity.Gs2Lottery.Model.EzAcquireAction> AcquireActions;
+		public List<Gs2.Unity.Core.Model.EzAcquireAction> AcquireActions;
 		[SerializeField]
 		public int Remaining;
 		[SerializeField]
@@ -51,8 +53,8 @@ namespace Gs2.Unity.Gs2Lottery.Model
         public static EzBoxItem FromModel(Gs2.Gs2Lottery.Model.BoxItem model)
         {
             return new EzBoxItem {
-                AcquireActions = model.AcquireActions == null ? new List<Gs2.Unity.Gs2Lottery.Model.EzAcquireAction>() : model.AcquireActions.Select(v => {
-                    return Gs2.Unity.Gs2Lottery.Model.EzAcquireAction.FromModel(v);
+                AcquireActions = model.AcquireActions == null ? new List<Gs2.Unity.Core.Model.EzAcquireAction>() : model.AcquireActions.Select(v => {
+                    return Gs2.Unity.Core.Model.EzAcquireAction.FromModel(v);
                 }).ToList(),
                 Remaining = model.Remaining ?? 0,
                 Initial = model.Initial ?? 0,

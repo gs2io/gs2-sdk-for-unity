@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -69,23 +67,23 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
         public class EzLayerModelsIterator : Gs2Iterator<Gs2.Unity.Gs2MegaField.Model.EzLayerModel>
         {
             private Gs2Iterator<Gs2.Gs2MegaField.Model.LayerModel> _it;
-#if !GS2_ENABLE_UNITASK
+        #if !GS2_ENABLE_UNITASK
             private readonly Gs2.Gs2MegaField.Domain.Model.AreaModelDomain _domain;
-#endif
+        #endif
             private readonly Gs2.Unity.Util.Profile _profile;
-            
+
             public EzLayerModelsIterator(
                 Gs2Iterator<Gs2.Gs2MegaField.Model.LayerModel> it,
-#if !GS2_ENABLE_UNITASK
+        #if !GS2_ENABLE_UNITASK
                 Gs2.Gs2MegaField.Domain.Model.AreaModelDomain domain,
-#endif
+        #endif
                 Gs2.Unity.Util.Profile profile
             )
             {
                 _it = it;
-#if !GS2_ENABLE_UNITASK
+        #if !GS2_ENABLE_UNITASK
                 _domain = domain;
-#endif
+        #endif
                 _profile = profile;
             }
 
@@ -94,21 +92,27 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
                 return _it.HasNext();
             }
 
-            protected override IEnumerator Next(Action<Gs2.Unity.Gs2MegaField.Model.EzLayerModel> callback)
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2MegaField.Model.EzLayerModel>> callback)
             {
-#if GS2_ENABLE_UNITASK
+        #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
-#else
+        #else
                 yield return _profile.RunIterator(
                     null,
                     _it,
                     () =>
                     {
-                        _it = _domain.LayerModels();
+                        _it = _domain.LayerModels(
+                        );
                     }
                 );
-#endif
-                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2MegaField.Model.EzLayerModel.FromModel(_it.Current));
+        #endif
+                callback.Invoke(
+                    new AsyncResult<Gs2.Unity.Gs2MegaField.Model.EzLayerModel>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2MegaField.Model.EzLayerModel.FromModel(_it.Current),
+                        _it.Error
+                    )
+                );
             }
         }
 
@@ -159,6 +163,17 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
                 _profile
             );
         #endif
+        }
+
+        public Gs2.Unity.Gs2MegaField.Domain.Model.EzLayerModelDomain LayerModel(
+            string layerModelName
+        ) {
+            return new Gs2.Unity.Gs2MegaField.Domain.Model.EzLayerModelDomain(
+                _domain.LayerModel(
+                    layerModelName
+                ),
+                _profile
+            );
         }
 
         #if GS2_ENABLE_UNITASK

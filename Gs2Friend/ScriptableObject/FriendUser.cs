@@ -26,9 +26,11 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
     public class FriendUser : UnityEngine.ScriptableObject
     {
         public Friend Friend;
+        public bool withProfile;
 
         public string NamespaceName => this.Friend.NamespaceName;
         public string UserId => this.Friend.UserId;
+        public bool WithProfile => this.withProfile;
 
 #if UNITY_INCLUDE_TESTS
         public static FriendUser Load(
@@ -42,12 +44,14 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
 #endif
 
         public static FriendUser New(
-            Friend Friend
+            Friend Friend,
+            bool withProfile
         )
         {
             var instance = CreateInstance<FriendUser>();
             instance.name = "Runtime";
             instance.Friend = Friend;
+            instance.withProfile = withProfile;
             return instance;
         }
 
@@ -56,6 +60,7 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
             var instance = CreateInstance<FriendUser>();
             instance.name = "Runtime";
             instance.Friend = Friend;
+            instance.withProfile = withProfile;
             return instance;
         }
     }

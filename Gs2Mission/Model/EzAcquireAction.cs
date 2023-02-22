@@ -14,6 +14,7 @@
  * permissions and limitations under the License.
  */
 
+using System;
 using Gs2.Gs2Mission.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -25,30 +26,13 @@ using UnityEngine.Scripting;
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Mission.Model
 {
+
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
-	[System.Serializable]
-	[SuppressMessage("ReSharper", "InconsistentNaming")]
-	public class EzAcquireAction
+#endif
+	[Obsolete("To Gs2.Unity.Core.Model.EzAcquireAction")]
+	public class EzAcquireAction : Gs2.Unity.Core.Model.EzAcquireAction
 	{
-		[SerializeField]
-		public string Action;
-		[SerializeField]
-		public string Request;
 
-        public Gs2.Gs2Mission.Model.AcquireAction ToModel()
-        {
-            return new Gs2.Gs2Mission.Model.AcquireAction {
-                Action = Action,
-                Request = Request,
-            };
-        }
-
-        public static EzAcquireAction FromModel(Gs2.Gs2Mission.Model.AcquireAction model)
-        {
-            return new EzAcquireAction {
-                Action = model.Action == null ? null : model.Action,
-                Request = model.Request == null ? null : model.Request,
-            };
-        }
-    }
+	}
 }

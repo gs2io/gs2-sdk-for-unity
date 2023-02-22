@@ -27,10 +27,12 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
     {
         public User User;
         public string targetUserId;
+        public bool withProfile;
 
         public string NamespaceName => this.User.NamespaceName;
         public string UserId => this.User.UserId;
         public string TargetUserId => this.targetUserId;
+        public bool WithProfile => this.withProfile;
 
 #if UNITY_INCLUDE_TESTS
         public static FollowUser Load(
@@ -45,13 +47,15 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
 
         public static FollowUser New(
             User User,
-            string targetUserId
+            string targetUserId,
+            bool withProfile
         )
         {
             var instance = CreateInstance<FollowUser>();
             instance.name = "Runtime";
             instance.User = User;
             instance.targetUserId = targetUserId;
+            instance.withProfile = withProfile;
             return instance;
         }
 
@@ -61,6 +65,7 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
             instance.name = "Runtime";
             instance.User = User;
             instance.targetUserId = targetUserId;
+            instance.withProfile = withProfile;
             return instance;
         }
     }

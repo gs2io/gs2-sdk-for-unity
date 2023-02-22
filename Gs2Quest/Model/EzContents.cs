@@ -14,6 +14,7 @@
  * permissions and limitations under the License.
  */
 
+using System;
 using Gs2.Gs2Quest.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -25,6 +26,7 @@ using UnityEngine.Scripting;
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Quest.Model
 {
+
 	[Preserve]
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -33,7 +35,7 @@ namespace Gs2.Unity.Gs2Quest.Model
 		[SerializeField]
 		public string Metadata;
 		[SerializeField]
-		public List<Gs2.Unity.Gs2Quest.Model.EzAcquireAction> CompleteAcquireActions;
+		public List<Gs2.Unity.Core.Model.EzAcquireAction> CompleteAcquireActions;
 
         public Gs2.Gs2Quest.Model.Contents ToModel()
         {
@@ -49,8 +51,8 @@ namespace Gs2.Unity.Gs2Quest.Model
         {
             return new EzContents {
                 Metadata = model.Metadata == null ? null : model.Metadata,
-                CompleteAcquireActions = model.CompleteAcquireActions == null ? new List<Gs2.Unity.Gs2Quest.Model.EzAcquireAction>() : model.CompleteAcquireActions.Select(v => {
-                    return Gs2.Unity.Gs2Quest.Model.EzAcquireAction.FromModel(v);
+                CompleteAcquireActions = model.CompleteAcquireActions == null ? new List<Gs2.Unity.Core.Model.EzAcquireAction>() : model.CompleteAcquireActions.Select(v => {
+                    return Gs2.Unity.Core.Model.EzAcquireAction.FromModel(v);
                 }).ToList(),
             };
         }

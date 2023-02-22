@@ -14,6 +14,7 @@
  * permissions and limitations under the License.
  */
 
+using System;
 using Gs2.Gs2Showcase.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -25,6 +26,7 @@ using UnityEngine.Scripting;
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Showcase.Model
 {
+
 	[Preserve]
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -35,9 +37,9 @@ namespace Gs2.Unity.Gs2Showcase.Model
 		[SerializeField]
 		public string Metadata;
 		[SerializeField]
-		public List<Gs2.Unity.Gs2Showcase.Model.EzConsumeAction> ConsumeActions;
+		public List<Gs2.Unity.Core.Model.EzConsumeAction> ConsumeActions;
 		[SerializeField]
-		public List<Gs2.Unity.Gs2Showcase.Model.EzAcquireAction> AcquireActions;
+		public List<Gs2.Unity.Core.Model.EzAcquireAction> AcquireActions;
 
         public Gs2.Gs2Showcase.Model.SalesItem ToModel()
         {
@@ -58,11 +60,11 @@ namespace Gs2.Unity.Gs2Showcase.Model
             return new EzSalesItem {
                 Name = model.Name == null ? null : model.Name,
                 Metadata = model.Metadata == null ? null : model.Metadata,
-                ConsumeActions = model.ConsumeActions == null ? new List<Gs2.Unity.Gs2Showcase.Model.EzConsumeAction>() : model.ConsumeActions.Select(v => {
-                    return Gs2.Unity.Gs2Showcase.Model.EzConsumeAction.FromModel(v);
+                ConsumeActions = model.ConsumeActions == null ? new List<Gs2.Unity.Core.Model.EzConsumeAction>() : model.ConsumeActions.Select(v => {
+                    return Gs2.Unity.Core.Model.EzConsumeAction.FromModel(v);
                 }).ToList(),
-                AcquireActions = model.AcquireActions == null ? new List<Gs2.Unity.Gs2Showcase.Model.EzAcquireAction>() : model.AcquireActions.Select(v => {
-                    return Gs2.Unity.Gs2Showcase.Model.EzAcquireAction.FromModel(v);
+                AcquireActions = model.AcquireActions == null ? new List<Gs2.Unity.Core.Model.EzAcquireAction>() : model.AcquireActions.Select(v => {
+                    return Gs2.Unity.Core.Model.EzAcquireAction.FromModel(v);
                 }).ToList(),
             };
         }

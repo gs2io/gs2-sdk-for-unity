@@ -157,7 +157,7 @@ namespace Gs2.Unity.Util
 #endif
 
         public void DebugErrorHandler(Gs2Exception e, Func<IEnumerator> retry) {
-            Debug.LogError($"{JsonMapper.ToJson(e)} : Retryable={retry != null}");
+            Debug.LogError($"{e.Message} : Retryable={retry != null}");
         }
     }
 }

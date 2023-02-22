@@ -97,7 +97,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 return _it.HasNext();
             }
 
-            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> callback)
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser>> callback)
             {
         #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
@@ -113,7 +113,12 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                     }
                 );
         #endif
-                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser.FromModel(_it.Current));
+                callback.Invoke(
+                    new AsyncResult<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser.FromModel(_it.Current),
+                        _it.Error
+                    )
+                );
             }
         }
 
@@ -217,7 +222,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 return _it.HasNext();
             }
 
-            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Ranking.Model.EzRanking> callback)
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Ranking.Model.EzRanking>> callback)
             {
         #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
@@ -233,7 +238,12 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                     }
                 );
         #endif
-                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(_it.Current));
+                callback.Invoke(
+                    new AsyncResult<Gs2.Unity.Gs2Ranking.Model.EzRanking>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(_it.Current),
+                        _it.Error
+                    )
+                );
             }
         }
 
@@ -327,7 +337,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 return _it.HasNext();
             }
 
-            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Ranking.Model.EzRanking> callback)
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Ranking.Model.EzRanking>> callback)
             {
         #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
@@ -344,7 +354,12 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                     }
                 );
         #endif
-                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(_it.Current));
+                callback.Invoke(
+                    new AsyncResult<Gs2.Unity.Gs2Ranking.Model.EzRanking>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(_it.Current),
+                        _it.Error
+                    )
+                );
             }
         }
 
@@ -456,7 +471,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 return _it.HasNext();
             }
 
-            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Ranking.Model.EzScore> callback)
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Ranking.Model.EzScore>> callback)
             {
         #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
@@ -473,7 +488,12 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                     }
                 );
         #endif
-                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzScore.FromModel(_it.Current));
+                callback.Invoke(
+                    new AsyncResult<Gs2.Unity.Gs2Ranking.Model.EzScore>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzScore.FromModel(_it.Current),
+                        _it.Error
+                    )
+                );
             }
         }
 

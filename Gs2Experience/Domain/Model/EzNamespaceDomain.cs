@@ -93,7 +93,7 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
                 return _it.HasNext();
             }
 
-            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Experience.Model.EzExperienceModel> callback)
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Experience.Model.EzExperienceModel>> callback)
             {
         #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
@@ -108,7 +108,12 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
                     }
                 );
         #endif
-                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Experience.Model.EzExperienceModel.FromModel(_it.Current));
+                callback.Invoke(
+                    new AsyncResult<Gs2.Unity.Gs2Experience.Model.EzExperienceModel>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2Experience.Model.EzExperienceModel.FromModel(_it.Current),
+                        _it.Error
+                    )
+                );
             }
         }
 

@@ -99,7 +99,7 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                 return _it.HasNext();
             }
 
-            protected override IEnumerator Next(Action<Gs2.Unity.Gs2Exchange.Model.EzAwait> callback)
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Exchange.Model.EzAwait>> callback)
             {
         #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
@@ -115,7 +115,12 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                     }
                 );
         #endif
-                callback.Invoke(_it.Current == null ? null : Gs2.Unity.Gs2Exchange.Model.EzAwait.FromModel(_it.Current));
+                callback.Invoke(
+                    new AsyncResult<Gs2.Unity.Gs2Exchange.Model.EzAwait>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2Exchange.Model.EzAwait.FromModel(_it.Current),
+                        _it.Error
+                    )
+                );
             }
         }
 
