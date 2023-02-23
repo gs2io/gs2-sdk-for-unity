@@ -1,5 +1,6 @@
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
+using Gs2.Core.Exception;
 #else
 using System.Collections;
 #endif
@@ -31,11 +32,20 @@ namespace Gs2.Unity.Util
             {
                 await UniTask.WaitUntil(() => Initialized);
 
+                var retryWaitSecond = 1;
                 while (true)
                 {
-                    await Gs2ClientHolder.Instance.Gs2.DispatchAsync(GameSession);
+                    try {
+                        await Gs2ClientHolder.Instance.Gs2.DispatchAsync(GameSession);
 
-                    await UniTask.Yield();
+                        await UniTask.Yield();
+
+                        retryWaitSecond = 1;
+                    } catch (Gs2Exception e) {
+                        Debug.LogError(e.Message);
+                        await UniTask.Delay(retryWaitSecond);
+                        retryWaitSecond *= 2;
+                    }
                 }
             }
 
@@ -48,19 +58,18 @@ namespace Gs2.Unity.Util
                     yield return null;
                 }
 
+                var retryWaitSecond = 1;
                 while (true)
                 {
                     var future = Gs2ClientHolder.Instance.Gs2.Dispatch(GameSession);
                     yield return future;
-                    if (future != null)
-                    {
-                        yield break;
+                    if (future.Error != null) {
+                        Debug.LogError(future.Error.Message);
+                        yield return new WaitForSeconds(retryWaitSecond);
+                        retryWaitSecond *= 2;
+                        continue;
                     }
-                    if (future.Result)
-                    {
-                        break;
-                    }
-                    yield return null;
+                    retryWaitSecond = 1;
                 }
             }
             StartCoroutine(Impl());
