@@ -27,7 +27,7 @@ namespace Gs2.Unity.Gs2Matchmaking.ScriptableObject
         public string ratingName;
         public string gatheringName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string RatingName => this.ratingName;
         public string GatheringName => this.gatheringName;
 

@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2Matchmaking.ScriptableObject
         public Namespace Namespace;
         public string ratingName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string RatingName => this.ratingName;
 
 #if UNITY_INCLUDE_TESTS

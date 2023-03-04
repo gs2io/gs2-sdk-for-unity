@@ -26,8 +26,8 @@ namespace Gs2.Unity.Gs2Matchmaking.ScriptableObject
         public User User;
         public string gatheringName;
 
-        public string NamespaceName => this.User.NamespaceName;
-        public string UserId => this.User.UserId;
+        public string NamespaceName => this.User?.NamespaceName;
+        public string UserId => this.User?.UserId;
         public string GatheringName => this.gatheringName;
 
 #if UNITY_INCLUDE_TESTS

@@ -93,5 +93,11 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain
             add => _domain.OnCompleteNotification += value;
             remove => _domain.OnCompleteNotification -= value;
         }
+
+        public event UnityAction<ChangeRatingNotification> OnChangeRatingNotification
+        {
+            add => _domain.OnChangeRatingNotification += value;
+            remove => _domain.OnChangeRatingNotification -= value;
+        }
     }
 }
