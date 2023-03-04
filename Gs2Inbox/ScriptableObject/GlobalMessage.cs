@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2Inbox.ScriptableObject
         public Namespace Namespace;
         public string globalMessageName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string GlobalMessageName => this.globalMessageName;
 
 #if UNITY_INCLUDE_TESTS

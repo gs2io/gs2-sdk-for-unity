@@ -26,8 +26,8 @@ namespace Gs2.Unity.Gs2Inbox.ScriptableObject
         public User User;
         public string messageName;
 
-        public string NamespaceName => this.User.NamespaceName;
-        public string UserId => this.User.UserId;
+        public string NamespaceName => this.User?.NamespaceName;
+        public string UserId => this.User?.UserId;
         public string MessageName => this.messageName;
 
 #if UNITY_INCLUDE_TESTS

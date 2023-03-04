@@ -75,5 +75,11 @@ namespace Gs2.Unity.Gs2Inbox.Domain
                 _profile
             );
         }
+
+        public event UnityAction<ReceiveNotification> OnReceiveNotification
+        {
+            add => _domain.OnReceiveNotification += value;
+            remove => _domain.OnReceiveNotification -= value;
+        }
     }
 }
