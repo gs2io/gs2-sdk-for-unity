@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2Inventory.ScriptableObject
         public Namespace Namespace;
         public string inventoryName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string InventoryName => this.inventoryName;
 
 #if UNITY_INCLUDE_TESTS

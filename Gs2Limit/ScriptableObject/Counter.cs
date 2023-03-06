@@ -27,8 +27,8 @@ namespace Gs2.Unity.Gs2Limit.ScriptableObject
         public string limitName;
         public string counterName;
 
-        public string NamespaceName => this.User.NamespaceName;
-        public string UserId => this.User.UserId;
+        public string NamespaceName => this.User?.NamespaceName;
+        public string UserId => this.User?.UserId;
         public string LimitName => this.limitName;
         public string CounterName => this.counterName;
 

@@ -26,8 +26,8 @@ namespace Gs2.Unity.Gs2Mission.ScriptableObject
         public User User;
         public string missionGroupName;
 
-        public string NamespaceName => this.User.NamespaceName;
-        public string UserId => this.User.UserId;
+        public string NamespaceName => this.User?.NamespaceName;
+        public string UserId => this.User?.UserId;
         public string MissionGroupName => this.missionGroupName;
 
 #if UNITY_INCLUDE_TESTS

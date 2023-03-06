@@ -26,8 +26,8 @@ namespace Gs2.Unity.Gs2SerialKey.ScriptableObject
         public User User;
         public string code;
 
-        public string NamespaceName => this.User.NamespaceName;
-        public string UserId => this.User.UserId;
+        public string NamespaceName => this.User?.NamespaceName;
+        public string UserId => this.User?.UserId;
         public string Code => this.code;
 
 #if UNITY_INCLUDE_TESTS

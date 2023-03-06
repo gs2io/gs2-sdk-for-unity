@@ -26,8 +26,8 @@ namespace Gs2.Unity.Gs2Chat.ScriptableObject
         public User User;
         public string roomName;
 
-        public string NamespaceName => this.User.NamespaceName;
-        public string UserId => this.User.UserId;
+        public string NamespaceName => this.User?.NamespaceName;
+        public string UserId => this.User?.UserId;
         public string RoomName => this.roomName;
 
 #if UNITY_INCLUDE_TESTS

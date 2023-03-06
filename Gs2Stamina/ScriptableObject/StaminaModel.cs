@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2Stamina.ScriptableObject
         public Namespace Namespace;
         public string staminaName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string StaminaName => this.staminaName;
 
 #if UNITY_INCLUDE_TESTS

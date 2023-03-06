@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2SerialKey.ScriptableObject
         public Namespace Namespace;
         public string campaignModelName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string CampaignModelName => this.campaignModelName;
 
 #if UNITY_INCLUDE_TESTS

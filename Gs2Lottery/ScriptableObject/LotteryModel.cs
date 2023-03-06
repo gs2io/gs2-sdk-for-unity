@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2Lottery.ScriptableObject
         public Namespace Namespace;
         public string lotteryName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string LotteryName => this.lotteryName;
 
 #if UNITY_INCLUDE_TESTS

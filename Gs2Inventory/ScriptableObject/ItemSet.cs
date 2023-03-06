@@ -27,8 +27,8 @@ namespace Gs2.Unity.Gs2Inventory.ScriptableObject
         public string itemName;
         public string itemSetName;
 
-        public string NamespaceName => this.Inventory.NamespaceName;
-        public string InventoryName => this.Inventory.InventoryName;
+        public string NamespaceName => this.Inventory?.NamespaceName;
+        public string InventoryName => this.Inventory?.InventoryName;
         public string ItemName => this.itemName;
         public string ItemSetName => this.itemSetName;
 

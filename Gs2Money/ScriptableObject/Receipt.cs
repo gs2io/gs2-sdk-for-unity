@@ -26,8 +26,8 @@ namespace Gs2.Unity.Gs2Money.ScriptableObject
         public User User;
         public string transactionId;
 
-        public string NamespaceName => this.User.NamespaceName;
-        public string UserId => this.User.UserId;
+        public string NamespaceName => this.User?.NamespaceName;
+        public string UserId => this.User?.UserId;
         public string TransactionId => this.transactionId;
 
 #if UNITY_INCLUDE_TESTS

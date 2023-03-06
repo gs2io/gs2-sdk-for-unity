@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2Quest.ScriptableObject
         public Namespace Namespace;
         public string questGroupName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string QuestGroupName => this.questGroupName;
 
 #if UNITY_INCLUDE_TESTS

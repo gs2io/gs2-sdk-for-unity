@@ -27,7 +27,7 @@ namespace Gs2.Unity.Gs2Account.ScriptableObject
         public int type;
         public string userIdentifier;
 
-        public string NamespaceName => this.Account.NamespaceName;
+        public string NamespaceName => this.Account?.NamespaceName;
         public int Type => this.type;
         public string UserIdentifier => this.userIdentifier;
 

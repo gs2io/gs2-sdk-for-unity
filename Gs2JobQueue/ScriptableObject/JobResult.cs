@@ -26,8 +26,8 @@ namespace Gs2.Unity.Gs2JobQueue.ScriptableObject
         public Job Job;
         public int tryNumber;
 
-        public string NamespaceName => this.Job.NamespaceName;
-        public string JobName => this.Job.JobName;
+        public string NamespaceName => this.Job?.NamespaceName;
+        public string JobName => this.Job?.JobName;
         public int TryNumber => this.tryNumber;
 
 #if UNITY_INCLUDE_TESTS

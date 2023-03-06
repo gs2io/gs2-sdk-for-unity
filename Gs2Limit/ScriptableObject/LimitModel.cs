@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2Limit.ScriptableObject
         public Namespace Namespace;
         public string limitName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string LimitName => this.limitName;
 
 #if UNITY_INCLUDE_TESTS

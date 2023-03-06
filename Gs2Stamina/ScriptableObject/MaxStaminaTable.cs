@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2Stamina.ScriptableObject
         public Namespace Namespace;
         public string maxStaminaTableName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string MaxStaminaTableName => this.maxStaminaTableName;
 
 #if UNITY_INCLUDE_TESTS

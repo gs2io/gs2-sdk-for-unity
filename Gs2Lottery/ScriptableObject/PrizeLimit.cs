@@ -26,8 +26,8 @@ namespace Gs2.Unity.Gs2Lottery.ScriptableObject
         public PrizeTable PrizeTable;
         public string prizeId;
 
-        public string NamespaceName => this.PrizeTable.NamespaceName;
-        public string PrizeTableName => this.PrizeTable.PrizeTableName;
+        public string NamespaceName => this.PrizeTable?.NamespaceName;
+        public string PrizeTableName => this.PrizeTable?.PrizeTableName;
         public string PrizeId => this.prizeId;
 
 #if UNITY_INCLUDE_TESTS

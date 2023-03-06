@@ -26,8 +26,8 @@ namespace Gs2.Unity.Gs2Datastore.ScriptableObject
         public DataObject DataObject;
         public string generation;
 
-        public string NamespaceName => this.DataObject.NamespaceName;
-        public string DataObjectName => this.DataObject.DataObjectName;
+        public string NamespaceName => this.DataObject?.NamespaceName;
+        public string DataObjectName => this.DataObject?.DataObjectName;
         public string Generation => this.generation;
 
 #if UNITY_INCLUDE_TESTS

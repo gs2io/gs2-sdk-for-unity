@@ -26,8 +26,8 @@ namespace Gs2.Unity.Gs2JobQueue.ScriptableObject
         public User User;
         public string deadLetterJobName;
 
-        public string NamespaceName => this.User.NamespaceName;
-        public string UserId => this.User.UserId;
+        public string NamespaceName => this.User?.NamespaceName;
+        public string UserId => this.User?.UserId;
         public string DeadLetterJobName => this.deadLetterJobName;
 
 #if UNITY_INCLUDE_TESTS

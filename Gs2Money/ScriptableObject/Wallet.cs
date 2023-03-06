@@ -26,8 +26,8 @@ namespace Gs2.Unity.Gs2Money.ScriptableObject
         public User User;
         public int slot;
 
-        public string NamespaceName => this.User.NamespaceName;
-        public string UserId => this.User.UserId;
+        public string NamespaceName => this.User?.NamespaceName;
+        public string UserId => this.User?.UserId;
         public int Slot => this.slot;
 
 #if UNITY_INCLUDE_TESTS

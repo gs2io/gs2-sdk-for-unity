@@ -26,8 +26,8 @@ namespace Gs2.Unity.Gs2Datastore.ScriptableObject
         public User User;
         public string dataObjectName;
 
-        public string NamespaceName => this.User.NamespaceName;
-        public string UserId => this.User.UserId;
+        public string NamespaceName => this.User?.NamespaceName;
+        public string UserId => this.User?.UserId;
         public string DataObjectName => this.dataObjectName;
 
 #if UNITY_INCLUDE_TESTS

@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2Account.ScriptableObject
         public Account Account;
         public string dataOwnerName;
 
-        public string NamespaceName => this.Account.NamespaceName;
+        public string NamespaceName => this.Account?.NamespaceName;
         public string DataOwnerName => this.dataOwnerName;
 
 #if UNITY_INCLUDE_TESTS
