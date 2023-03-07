@@ -26,8 +26,8 @@ namespace Gs2.Unity.Gs2MegaField.ScriptableObject
         public AreaModel AreaModel;
         public string layerModelName;
 
-        public string NamespaceName => this.AreaModel.NamespaceName;
-        public string AreaModelName => this.AreaModel.AreaModelName;
+        public string NamespaceName => this.AreaModel?.NamespaceName;
+        public string AreaModelName => this.AreaModel?.AreaModelName;
         public string LayerModelName => this.layerModelName;
 
 #if UNITY_INCLUDE_TESTS

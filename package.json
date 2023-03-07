@@ -1,7 +1,7 @@
 {
   "name": "io.gs2.unity.sdk",
   "displayName": "GS2 SDK for Unity",
-  "version": "2023.3.2",
+  "version": "2023.3.3",
   "unity": "2019.2",
   "description": "Game Server Services SDK for Unity.",
   "keywords": ["GS2", "Game Server Services", "BaaS", "mBaaS", "Server"],

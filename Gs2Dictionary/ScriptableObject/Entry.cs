@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2Dictionary.ScriptableObject
         public Namespace Namespace;
         public string entryModelName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string EntryModelName => this.entryModelName;
 
 #if UNITY_INCLUDE_TESTS

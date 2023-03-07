@@ -26,8 +26,8 @@ namespace Gs2.Unity.Gs2Gateway.ScriptableObject
         public User User;
         public string connectionId;
 
-        public string NamespaceName => this.User.NamespaceName;
-        public string UserId => this.User.UserId;
+        public string NamespaceName => this.User?.NamespaceName;
+        public string UserId => this.User?.UserId;
         public string ConnectionId => this.connectionId;
 
 #if UNITY_INCLUDE_TESTS

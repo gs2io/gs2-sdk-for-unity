@@ -27,8 +27,8 @@ namespace Gs2.Unity.Gs2Experience.ScriptableObject
         public string experienceName;
         public string propertyId;
 
-        public string NamespaceName => this.User.NamespaceName;
-        public string UserId => this.User.UserId;
+        public string NamespaceName => this.User?.NamespaceName;
+        public string UserId => this.User?.UserId;
         public string ExperienceName => this.experienceName;
         public string PropertyId => this.propertyId;
 

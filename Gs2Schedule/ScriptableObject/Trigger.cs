@@ -26,8 +26,8 @@ namespace Gs2.Unity.Gs2Schedule.ScriptableObject
         public User User;
         public string triggerName;
 
-        public string NamespaceName => this.User.NamespaceName;
-        public string UserId => this.User.UserId;
+        public string NamespaceName => this.User?.NamespaceName;
+        public string UserId => this.User?.UserId;
         public string TriggerName => this.triggerName;
 
 #if UNITY_INCLUDE_TESTS

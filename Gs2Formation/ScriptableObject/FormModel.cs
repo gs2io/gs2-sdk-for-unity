@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
         public Namespace Namespace;
         public string formModelName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string FormModelName => this.formModelName;
 
 #if UNITY_INCLUDE_TESTS

@@ -18,46 +18,46 @@ using UnityEditor;
 #endif
 using UnityEngine;
 
-namespace Gs2.Unity.Gs2MegaField.ScriptableObject
+namespace Gs2.Unity.Gs2News.ScriptableObject
 {
-    [CreateAssetMenu(fileName = "AreaModel", menuName = "Game Server Services/Gs2MegaField/AreaModel")]
-    public class AreaModel : UnityEngine.ScriptableObject
+    [CreateAssetMenu(fileName = "Progress", menuName = "Game Server Services/Gs2News/Progress")]
+    public class Progress : UnityEngine.ScriptableObject
     {
         public Namespace Namespace;
-        public string areaModelName;
+        public string uploadToken;
 
         public string NamespaceName => this.Namespace?.NamespaceName;
-        public string AreaModelName => this.areaModelName;
+        public string UploadToken => this.uploadToken;
 
 #if UNITY_INCLUDE_TESTS
-        public static AreaModel Load(
+        public static Progress Load(
             string assetPath
         )
         {
             return Instantiate(
-                AssetDatabase.LoadAssetAtPath<AreaModel>(assetPath)
+                AssetDatabase.LoadAssetAtPath<Progress>(assetPath)
             );
         }
 #endif
 
-        public static AreaModel New(
+        public static Progress New(
             Namespace Namespace,
-            string areaModelName
+            string uploadToken
         )
         {
-            var instance = CreateInstance<AreaModel>();
+            var instance = CreateInstance<Progress>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
-            instance.areaModelName = areaModelName;
+            instance.uploadToken = uploadToken;
             return instance;
         }
 
-        public AreaModel Clone()
+        public Progress Clone()
         {
-            var instance = CreateInstance<AreaModel>();
+            var instance = CreateInstance<Progress>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
-            instance.areaModelName = areaModelName;
+            instance.uploadToken = uploadToken;
             return instance;
         }
     }

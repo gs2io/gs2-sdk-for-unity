@@ -26,8 +26,8 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
         public Mold Mold;
         public int index;
 
-        public string NamespaceName => this.Mold.NamespaceName;
-        public string MoldName => this.Mold.MoldName;
+        public string NamespaceName => this.Mold?.NamespaceName;
+        public string MoldName => this.Mold?.MoldName;
         public int Index => this.index;
 
 #if UNITY_INCLUDE_TESTS

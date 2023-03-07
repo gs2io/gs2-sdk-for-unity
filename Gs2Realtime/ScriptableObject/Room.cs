@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2Realtime.ScriptableObject
         public Namespace Namespace;
         public string roomName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string RoomName => this.roomName;
 
 #if UNITY_INCLUDE_TESTS

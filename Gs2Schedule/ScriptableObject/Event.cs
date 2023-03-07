@@ -26,8 +26,8 @@ namespace Gs2.Unity.Gs2Schedule.ScriptableObject
         public User User;
         public string eventName;
 
-        public string NamespaceName => this.User.NamespaceName;
-        public string UserId => this.User.UserId;
+        public string NamespaceName => this.User?.NamespaceName;
+        public string UserId => this.User?.UserId;
         public string EventName => this.eventName;
 
 #if UNITY_INCLUDE_TESTS

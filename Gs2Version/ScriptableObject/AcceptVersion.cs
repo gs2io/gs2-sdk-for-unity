@@ -26,8 +26,8 @@ namespace Gs2.Unity.Gs2Version.ScriptableObject
         public User User;
         public string versionName;
 
-        public string NamespaceName => this.User.NamespaceName;
-        public string UserId => this.User.UserId;
+        public string NamespaceName => this.User?.NamespaceName;
+        public string UserId => this.User?.UserId;
         public string VersionName => this.versionName;
 
 #if UNITY_INCLUDE_TESTS

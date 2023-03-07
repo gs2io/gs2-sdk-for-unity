@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2Version.ScriptableObject
         public Namespace Namespace;
         public string versionName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string VersionName => this.versionName;
 
 #if UNITY_INCLUDE_TESTS

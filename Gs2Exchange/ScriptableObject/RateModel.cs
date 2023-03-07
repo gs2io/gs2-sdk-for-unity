@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2Exchange.ScriptableObject
         public Namespace Namespace;
         public string rateName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string RateName => this.rateName;
 
 #if UNITY_INCLUDE_TESTS

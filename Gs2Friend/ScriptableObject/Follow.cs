@@ -25,8 +25,8 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
     {
         public User User;
 
-        public string NamespaceName => this.User.NamespaceName;
-        public string UserId => this.User.UserId;
+        public string NamespaceName => this.User?.NamespaceName;
+        public string UserId => this.User?.UserId;
 
 #if UNITY_INCLUDE_TESTS
         public static Follow Load(

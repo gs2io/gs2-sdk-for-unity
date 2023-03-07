@@ -26,8 +26,8 @@ namespace Gs2.Unity.Gs2Exchange.ScriptableObject
         public User User;
         public string awaitName;
 
-        public string NamespaceName => this.User.NamespaceName;
-        public string UserId => this.User.UserId;
+        public string NamespaceName => this.User?.NamespaceName;
+        public string UserId => this.User?.UserId;
         public string AwaitName => this.awaitName;
 
 #if UNITY_INCLUDE_TESTS

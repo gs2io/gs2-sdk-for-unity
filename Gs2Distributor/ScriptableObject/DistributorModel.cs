@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2Distributor.ScriptableObject
         public Namespace Namespace;
         public string distributorName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string DistributorName => this.distributorName;
 
 #if UNITY_INCLUDE_TESTS

@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2Experience.ScriptableObject
         public Namespace Namespace;
         public string experienceName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string ExperienceName => this.experienceName;
 
 #if UNITY_INCLUDE_TESTS

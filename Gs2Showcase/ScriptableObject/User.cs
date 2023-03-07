@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2Showcase.ScriptableObject
         public Namespace Namespace;
         public string userId;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string UserId => this.userId;
 
 #if UNITY_INCLUDE_TESTS

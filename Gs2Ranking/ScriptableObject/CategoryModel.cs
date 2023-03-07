@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2Ranking.ScriptableObject
         public Namespace Namespace;
         public string categoryName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string CategoryName => this.categoryName;
 
 #if UNITY_INCLUDE_TESTS

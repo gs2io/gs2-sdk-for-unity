@@ -26,7 +26,7 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
         public Namespace Namespace;
         public string moldName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string MoldName => this.moldName;
 
 #if UNITY_INCLUDE_TESTS

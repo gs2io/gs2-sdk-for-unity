@@ -27,8 +27,8 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
         public string formModelName;
         public string propertyId;
 
-        public string NamespaceName => this.User.NamespaceName;
-        public string UserId => this.User.UserId;
+        public string NamespaceName => this.User?.NamespaceName;
+        public string UserId => this.User?.UserId;
         public string FormModelName => this.formModelName;
         public string PropertyId => this.propertyId;
 

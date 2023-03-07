@@ -18,46 +18,47 @@ using UnityEditor;
 #endif
 using UnityEngine;
 
-namespace Gs2.Unity.Gs2MegaField.ScriptableObject
+namespace Gs2.Unity.Gs2News.ScriptableObject
 {
-    [CreateAssetMenu(fileName = "AreaModel", menuName = "Game Server Services/Gs2MegaField/AreaModel")]
-    public class AreaModel : UnityEngine.ScriptableObject
+    [CreateAssetMenu(fileName = "Output", menuName = "Game Server Services/Gs2News/Output")]
+    public class Output : UnityEngine.ScriptableObject
     {
-        public Namespace Namespace;
-        public string areaModelName;
+        public Progress Progress;
+        public string outputName;
 
-        public string NamespaceName => this.Namespace?.NamespaceName;
-        public string AreaModelName => this.areaModelName;
+        public string NamespaceName => this.Progress?.NamespaceName;
+        public string UploadToken => this.Progress?.UploadToken;
+        public string OutputName => this.outputName;
 
 #if UNITY_INCLUDE_TESTS
-        public static AreaModel Load(
+        public static Output Load(
             string assetPath
         )
         {
             return Instantiate(
-                AssetDatabase.LoadAssetAtPath<AreaModel>(assetPath)
+                AssetDatabase.LoadAssetAtPath<Output>(assetPath)
             );
         }
 #endif
 
-        public static AreaModel New(
-            Namespace Namespace,
-            string areaModelName
+        public static Output New(
+            Progress Progress,
+            string outputName
         )
         {
-            var instance = CreateInstance<AreaModel>();
+            var instance = CreateInstance<Output>();
             instance.name = "Runtime";
-            instance.Namespace = Namespace;
-            instance.areaModelName = areaModelName;
+            instance.Progress = Progress;
+            instance.outputName = outputName;
             return instance;
         }
 
-        public AreaModel Clone()
+        public Output Clone()
         {
-            var instance = CreateInstance<AreaModel>();
+            var instance = CreateInstance<Output>();
             instance.name = "Runtime";
-            instance.Namespace = Namespace;
-            instance.areaModelName = areaModelName;
+            instance.Progress = Progress;
+            instance.outputName = outputName;
             return instance;
         }
     }
