@@ -76,7 +76,7 @@ namespace Gs2.Unity.Gs2Ranking
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.GetCategoryModel(
+                cb => _restClient.GetCategoryModel(
                     new Gs2.Gs2Ranking.Request.GetCategoryModelRequest()
                         .WithNamespaceName(namespaceName)
                         .WithCategoryName(categoryName),
