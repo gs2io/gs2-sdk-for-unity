@@ -157,7 +157,10 @@ namespace Gs2.Unity.Util
 #endif
 
         public void DebugErrorHandler(Gs2Exception e, Func<IEnumerator> retry) {
-            Debug.LogError($"{e.Message} : Retryable={retry != null}");
+            if (e is CanIgnoreException) {
+                return;
+            }
+            Debug.LogError($"{e.GetType()}{string.Join(",", e.Errors.Select(v => v.Message))} : Retryable={retry != null}");
         }
     }
 }
