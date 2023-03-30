@@ -169,6 +169,15 @@ namespace Gs2.Unity.Util
                 _client._status = Status.Initialized;
             }
  
+#if GS2_IAP_4_6_0_OR_NEWER
+            public void OnInitializeFailed(InitializationFailureReason error, string? message)
+            {
+                _client._exception = new BadGatewayException(error.ToString() + " " + message);
+                _client._status = Status.InitializeFailed;
+            }
+
+            [Obsolete]
+#endif
             public void OnInitializeFailed(InitializationFailureReason error)
             {
                 _client._exception = new BadGatewayException(error.ToString());

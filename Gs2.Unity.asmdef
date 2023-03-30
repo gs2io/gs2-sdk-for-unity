@@ -21,6 +21,11 @@
             "define": "GS2_ENABLE_PURCHASING"
         },
         {
+            "name": "com.unity.purchasing",
+            "expression": "4.6.0",
+            "define": "GS2_IAP_4_6_0_OR_NEWER"
+        },
+        {
             "name": "com.cysharp.unitask",
             "expression": "",
             "define": "GS2_ENABLE_UNITASK"
