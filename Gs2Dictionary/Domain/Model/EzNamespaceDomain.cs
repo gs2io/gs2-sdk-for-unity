@@ -103,7 +103,7 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.EntryModels(
+                        return _it = _domain.EntryModels(
                         );
                     }
                 );

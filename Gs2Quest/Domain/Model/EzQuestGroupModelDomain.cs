@@ -102,7 +102,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.QuestModels(
+                        return _it = _domain.QuestModels(
                         );
                     }
                 );

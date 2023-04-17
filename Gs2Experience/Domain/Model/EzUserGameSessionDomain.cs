@@ -106,7 +106,7 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Statuses(
+                        return _it = _domain.Statuses(
                             _experienceName
                         );
                     }

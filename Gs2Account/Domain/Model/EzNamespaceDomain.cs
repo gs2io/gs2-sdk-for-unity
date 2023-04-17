@@ -239,7 +239,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Accounts(
+                        return _it = _domain.Accounts(
                         );
                     }
                 );

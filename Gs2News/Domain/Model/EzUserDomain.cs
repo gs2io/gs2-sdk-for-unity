@@ -104,7 +104,7 @@ namespace Gs2.Unity.Gs2News.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Newses(
+                        return _it = _domain.Newses(
                         );
                     }
                 );

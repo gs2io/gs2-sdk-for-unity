@@ -105,7 +105,7 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.AcceptVersions(
+                        return _it = _domain.AcceptVersions(
                         );
                     }
                 );

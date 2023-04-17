@@ -103,7 +103,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.MoldModels(
+                        return _it = _domain.MoldModels(
                         );
                     }
                 );
@@ -215,7 +215,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.FormModels(
+                        return _it = _domain.FormModels(
                         );
                     }
                 );

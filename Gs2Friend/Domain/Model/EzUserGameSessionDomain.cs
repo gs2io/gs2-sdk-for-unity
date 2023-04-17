@@ -182,7 +182,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.BlackLists(
+                        return _it = _domain.BlackLists(
                         );
                     }
                 );
@@ -295,7 +295,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Follows(
+                        return _it = _domain.Follows(
                             _withProfile
                         );
                     }
@@ -420,7 +420,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Friends(
+                        return _it = _domain.Friends(
                             _withProfile
                         );
                     }
@@ -540,7 +540,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.SendRequests(
+                        return _it = _domain.SendRequests(
                         );
                     }
                 );
@@ -652,7 +652,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.ReceiveRequests(
+                        return _it = _domain.ReceiveRequests(
                         );
                     }
                 );

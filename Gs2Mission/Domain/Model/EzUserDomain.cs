@@ -103,7 +103,7 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Counters(
+                        return _it = _domain.Counters(
                         );
                     }
                 );
@@ -215,7 +215,7 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Completes(
+                        return _it = _domain.Completes(
                         );
                     }
                 );

@@ -104,7 +104,7 @@ namespace Gs2.Unity.Gs2Money.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Wallets(
+                        return _it = _domain.Wallets(
                         );
                     }
                 );

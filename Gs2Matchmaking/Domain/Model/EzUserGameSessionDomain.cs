@@ -205,7 +205,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.DoMatchmaking(
+                        return _it = _domain.DoMatchmaking(
                             _player.ToModel()
                         );
                     }
@@ -342,7 +342,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Ratings(
+                        return _it = _domain.Ratings(
                         );
                     }
                 );

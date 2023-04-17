@@ -285,7 +285,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.RatingModels(
+                        return _it = _domain.RatingModels(
                         );
                     }
                 );

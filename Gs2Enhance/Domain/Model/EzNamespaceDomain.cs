@@ -103,7 +103,7 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.RateModels(
+                        return _it = _domain.RateModels(
                         );
                     }
                 );

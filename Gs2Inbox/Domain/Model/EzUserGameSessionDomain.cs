@@ -165,7 +165,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Messages(
+                        return _it = _domain.Messages(
                         );
                     }
                 );

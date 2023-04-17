@@ -104,7 +104,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Staminas(
+                        return _it = _domain.Staminas(
                         );
                     }
                 );

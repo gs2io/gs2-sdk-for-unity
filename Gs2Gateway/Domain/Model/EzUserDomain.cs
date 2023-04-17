@@ -104,7 +104,7 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.WebSocketSessions(
+                        return _it = _domain.WebSocketSessions(
                         );
                     }
                 );

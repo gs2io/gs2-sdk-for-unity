@@ -103,7 +103,7 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.AreaModels(
+                        return _it = _domain.AreaModels(
                         );
                     }
                 );

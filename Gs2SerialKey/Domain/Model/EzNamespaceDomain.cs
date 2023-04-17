@@ -103,7 +103,7 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.CampaignModels(
+                        return _it = _domain.CampaignModels(
                         );
                     }
                 );

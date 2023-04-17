@@ -103,7 +103,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.CategoryModels(
+                        return _it = _domain.CategoryModels(
                         );
                     }
                 );

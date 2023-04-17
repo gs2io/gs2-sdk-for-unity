@@ -277,10 +277,12 @@ namespace Gs2.Unity.Util
             return default(T);
         }
 
+        public delegate void RetryAction();
+        
         public async UniTask<bool> RunIteratorAsync(
             AccessToken accessToken,
             Func<UniTask<bool>> requestActionAsync,
-            RetryIterator retryIterator)
+            RetryAction retryAction)
         {
             bool isReopenTried = false;
             bool isAuthenticationTried = false;
@@ -306,7 +308,7 @@ namespace Gs2.Unity.Util
                             accessToken.UserId = asyncAuthenticationResult.UserId;
                             accessToken.Expire = asyncAuthenticationResult.Expire;
                             
-                            retryIterator?.Invoke();
+                            retryAction?.Invoke();
                             
                             continue;
                         }
@@ -326,7 +328,7 @@ namespace Gs2.Unity.Util
 
                         if (asyncOpenResult != null)
                         {
-                            retryIterator?.Invoke();
+                            retryAction?.Invoke();
                             
                             continue;
                         }
@@ -407,12 +409,12 @@ namespace Gs2.Unity.Util
         }
 
 #endif
-        public delegate void RetryIterator();
+        public delegate Gs2Iterator<T> RetryIterator<T>();
 
         public IEnumerator RunIterator<T>(
             AccessToken accessToken,
             Gs2Iterator<T> requestIterator,
-            RetryIterator retryIterator)
+            RetryIterator<T> retryIterator)
         {
             bool isReopenTried = false;
             bool isAuthenticationTried = false;
@@ -433,8 +435,7 @@ namespace Gs2.Unity.Util
 
                     if (asyncOpenResult.Error == null)
                     {
-                        retryIterator?.Invoke();
-                        requestIterator.Error = null;
+                        requestIterator = retryIterator?.Invoke();
                         
                         continue;
                     }
@@ -460,7 +461,7 @@ namespace Gs2.Unity.Util
 
                     if (asyncAuthenticationResult.Error == null)
                     {
-                        retryIterator?.Invoke();
+                        requestIterator = retryIterator?.Invoke();
                         
                         continue;
                     }

@@ -105,7 +105,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Molds(
+                        return _it = _domain.Molds(
                         );
                     }
                 );
@@ -220,7 +220,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.PropertyForms(
+                        return _it = _domain.PropertyForms(
                             _formModelName
                         );
                     }

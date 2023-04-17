@@ -104,7 +104,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Gatherings(
+                        return _it = _domain.Gatherings(
                         );
                     }
                 );
@@ -208,7 +208,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.DoMatchmakingByPlayer(
+                        return _it = _domain.DoMatchmakingByPlayer(
                             _player.ToModel()
                         );
                     }
@@ -320,7 +320,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.DoMatchmaking(
+                        return _it = _domain.DoMatchmaking(
                             _player.ToModel()
                         );
                     }
@@ -457,7 +457,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Ratings(
+                        return _it = _domain.Ratings(
                         );
                     }
                 );

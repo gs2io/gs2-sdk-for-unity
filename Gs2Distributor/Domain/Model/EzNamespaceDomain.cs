@@ -107,7 +107,7 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.DistributorModels(
+                        return _it = _domain.DistributorModels(
                         );
                     }
                 );

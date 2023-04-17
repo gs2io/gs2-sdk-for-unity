@@ -105,7 +105,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Progresses(
+                        return _it = _domain.Progresses(
                         );
                     }
                 );
@@ -215,7 +215,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.CompletedQuestLists(
+                        return _it = _domain.CompletedQuestLists(
                         );
                     }
                 );

@@ -202,7 +202,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Subscribes(
+                        return _it = _domain.Subscribes(
                         );
                     }
                 );

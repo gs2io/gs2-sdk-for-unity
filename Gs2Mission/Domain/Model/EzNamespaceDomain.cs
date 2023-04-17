@@ -103,7 +103,7 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.MissionGroupModels(
+                        return _it = _domain.MissionGroupModels(
                         );
                     }
                 );
@@ -215,7 +215,7 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.CounterModels(
+                        return _it = _domain.CounterModels(
                         );
                     }
                 );

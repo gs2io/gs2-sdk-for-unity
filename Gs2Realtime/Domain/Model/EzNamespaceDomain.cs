@@ -104,7 +104,7 @@ namespace Gs2.Unity.Gs2Realtime.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Rooms(
+                        return _it = _domain.Rooms(
                         );
                     }
                 );

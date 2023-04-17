@@ -107,7 +107,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.SubscribesByCategoryName(
+                        return _it = _domain.SubscribesByCategoryName(
                             _categoryName
                         );
                     }
@@ -232,7 +232,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Rankings(
+                        return _it = _domain.Rankings(
                             _categoryName
                         );
                     }
@@ -347,7 +347,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.NearRankings(
+                        return _it = _domain.NearRankings(
                             _categoryName,
                             _score
                         );
@@ -481,7 +481,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Scores(
+                        return _it = _domain.Scores(
                             _categoryName,
                             _scorerUserId
                         );

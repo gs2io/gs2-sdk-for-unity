@@ -102,7 +102,7 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Showcases(
+                        return _it = _domain.Showcases(
                         );
                     }
                 );

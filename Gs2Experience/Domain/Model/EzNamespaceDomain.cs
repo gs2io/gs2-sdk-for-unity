@@ -103,7 +103,7 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.ExperienceModels(
+                        return _it = _domain.ExperienceModels(
                         );
                     }
                 );

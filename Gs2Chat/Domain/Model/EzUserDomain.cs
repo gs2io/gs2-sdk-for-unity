@@ -103,7 +103,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Rooms(
+                        return _it = _domain.Rooms(
                         );
                     }
                 );
@@ -217,7 +217,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Subscribes(
+                        return _it = _domain.Subscribes(
                         );
                     }
                 );
@@ -321,7 +321,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.SubscribesByRoomName(
+                        return _it = _domain.SubscribesByRoomName(
                             _roomName
                         );
                     }

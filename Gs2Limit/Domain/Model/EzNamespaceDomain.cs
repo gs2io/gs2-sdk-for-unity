@@ -103,7 +103,7 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.LimitModels(
+                        return _it = _domain.LimitModels(
                         );
                     }
                 );

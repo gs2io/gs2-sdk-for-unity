@@ -106,7 +106,7 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Counters(
+                        return _it = _domain.Counters(
                             _limitName
                         );
                     }

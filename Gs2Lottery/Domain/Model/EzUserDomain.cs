@@ -105,7 +105,7 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Boxes(
+                        return _it = _domain.Boxes(
                         );
                     }
                 );

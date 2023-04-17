@@ -103,7 +103,7 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.VersionModels(
+                        return _it = _domain.VersionModels(
                         );
                     }
                 );

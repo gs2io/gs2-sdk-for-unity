@@ -103,7 +103,7 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Triggers(
+                        return _it = _domain.Triggers(
                         );
                     }
                 );
@@ -215,7 +215,7 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Events(
+                        return _it = _domain.Events(
                         );
                     }
                 );

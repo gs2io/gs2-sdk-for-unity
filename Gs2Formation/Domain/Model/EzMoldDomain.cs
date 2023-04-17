@@ -106,7 +106,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Forms(
+                        return _it = _domain.Forms(
                         );
                     }
                 );

@@ -105,7 +105,7 @@ namespace Gs2.Unity.Gs2JobQueue.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Jobs(
+                        return _it = _domain.Jobs(
                         );
                     }
                 );

@@ -103,7 +103,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.Inventories(
+                        return _it = _domain.Inventories(
                         );
                     }
                 );

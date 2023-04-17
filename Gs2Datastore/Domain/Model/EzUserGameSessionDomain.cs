@@ -269,7 +269,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                     _it,
                     () =>
                     {
-                        _it = _domain.DataObjects(
+                        return _it = _domain.DataObjects(
                             _status
                         );
                     }
