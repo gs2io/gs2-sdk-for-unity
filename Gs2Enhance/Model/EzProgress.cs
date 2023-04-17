@@ -39,7 +39,7 @@ namespace Gs2.Unity.Gs2Enhance.Model
 		[SerializeField]
 		public string PropertyId;
 		[SerializeField]
-		public int ExperienceValue;
+		public long ExperienceValue;
 		[SerializeField]
 		public float Rate;
 

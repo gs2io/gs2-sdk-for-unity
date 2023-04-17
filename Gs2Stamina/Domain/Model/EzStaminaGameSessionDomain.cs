@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
     public partial class EzStaminaGameSessionDomain {
         private readonly Gs2.Gs2Stamina.Domain.Model.StaminaAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
-        public long? OverflowValue => _domain.OverflowValue;
+        public int? OverflowValue => _domain.OverflowValue;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string StaminaName => _domain?.StaminaName;

@@ -69,6 +69,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> Vote(
               string ballotBody,
               string ballotSignature,
+              string keyId,
               Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null
         )
         {
@@ -77,6 +78,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                 yield return VoteAsync(
                     ballotBody,
                     ballotSignature,
+                    keyId,
                     gameResults
                 ).ToCoroutine(
                     self.OnComplete,
@@ -92,6 +94,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #endif
               string ballotBody,
               string ballotSignature,
+              string keyId,
               Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null
         ) {
         #if GS2_ENABLE_UNITASK
@@ -104,6 +107,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                             .WithBallotBody(ballotBody)
                             .WithBallotSignature(ballotSignature)
                             .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())
+                            .WithKeyId(keyId)
                     );
                 }
             );
@@ -116,6 +120,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                         .WithBallotBody(ballotBody)
                         .WithBallotSignature(ballotSignature)
                         .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())
+                        .WithKeyId(keyId)
                 );
                 yield return _profile.RunFuture(
                     null,
@@ -127,6 +132,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                 	        .WithBallotBody(ballotBody)
                 	        .WithBallotSignature(ballotSignature)
         	                .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())
+                	        .WithKeyId(keyId)
         		        );
         			}
                 );
@@ -144,6 +150,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> VoteMultiple(
+              string keyId,
               Gs2.Unity.Gs2Matchmaking.Model.EzSignedBallot[] signedBallots = null,
               Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null
         )
@@ -151,6 +158,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> self)
             {
                 yield return VoteMultipleAsync(
+                    keyId,
                     signedBallots,
                     gameResults
                 ).ToCoroutine(
@@ -165,6 +173,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #else
         public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> VoteMultiple(
         #endif
+              string keyId,
               Gs2.Unity.Gs2Matchmaking.Model.EzSignedBallot[] signedBallots = null,
               Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null
         ) {
@@ -177,6 +186,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                         new VoteMultipleRequest()
                             .WithSignedBallots(signedBallots?.Select(v => v.ToModel()).ToArray())
                             .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())
+                            .WithKeyId(keyId)
                     );
                 }
             );
@@ -188,6 +198,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     new VoteMultipleRequest()
                         .WithSignedBallots(signedBallots?.Select(v => v.ToModel()).ToArray())
                         .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())
+                        .WithKeyId(keyId)
                 );
                 yield return _profile.RunFuture(
                     null,
@@ -198,6 +209,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     		new VoteMultipleRequest()
         	                .WithSignedBallots(signedBallots?.Select(v => v.ToModel()).ToArray())
         	                .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())
+                	        .WithKeyId(keyId)
         		        );
         			}
                 );

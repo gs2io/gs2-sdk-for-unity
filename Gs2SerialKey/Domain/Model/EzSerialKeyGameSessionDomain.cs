@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
         public string Url => _domain.Url;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
-        public string Code => _domain?.Code;
+        public string SerialKeyCode => _domain?.SerialKeyCode;
 
         public EzSerialKeyGameSessionDomain(
             Gs2.Gs2SerialKey.Domain.Model.SerialKeyAccessTokenDomain domain,
@@ -68,11 +68,13 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyGameSessionDomain> UseSerialCode(
+              string code
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyGameSessionDomain> self)
             {
                 yield return UseSerialCodeAsync(
+                    code
                 ).ToCoroutine(
                     self.OnComplete,
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
@@ -85,6 +87,7 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
         #else
         public IFuture<Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyGameSessionDomain> UseSerialCode(
         #endif
+              string code
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -93,6 +96,7 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
                 {
                     return await _domain.UseAsync(
                         new UseRequest()
+                            .WithCode(code)
                             .WithAccessToken(_domain.AccessToken.Token)
                     );
                 }
@@ -103,6 +107,7 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
             {
                 var future = _domain.Use(
                     new UseRequest()
+                        .WithCode(code)
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
                 yield return _profile.RunFuture(
@@ -112,6 +117,7 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
         			{
                 		return future = _domain.Use(
                     		new UseRequest()
+                	        .WithCode(code)
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );
         			}

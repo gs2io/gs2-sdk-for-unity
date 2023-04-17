@@ -153,68 +153,6 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain> DeleteProgress(
-        )
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain> self)
-            {
-                yield return DeleteProgressAsync(
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain>(Impl);
-        }
-
-        public async UniTask<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain> DeleteProgressAsync(
-        #else
-        public IFuture<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain> DeleteProgress(
-        #endif
-        ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.DeleteProgressAsync(
-                        new DeleteProgressRequest()
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
-            );
-            return new Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain(result, _profile);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain> self)
-            {
-                var future = _domain.DeleteProgress(
-                    new DeleteProgressRequest()
-                        .WithAccessToken(_domain.AccessToken.Token)
-                );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.DeleteProgress(
-                    		new DeleteProgressRequest()
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain(result, _profile));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain>(Impl);
-        #endif
-        }
-
         public Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain Progress(
         ) {
             return new Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain(

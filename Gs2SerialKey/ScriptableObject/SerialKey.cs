@@ -24,11 +24,11 @@ namespace Gs2.Unity.Gs2SerialKey.ScriptableObject
     public class SerialKey : UnityEngine.ScriptableObject
     {
         public User User;
-        public string code;
+        public string serialKeyCode;
 
         public string NamespaceName => this.User?.NamespaceName;
         public string UserId => this.User?.UserId;
-        public string Code => this.code;
+        public string SerialKeyCode => this.serialKeyCode;
 
 #if UNITY_INCLUDE_TESTS
         public static SerialKey Load(
@@ -43,13 +43,13 @@ namespace Gs2.Unity.Gs2SerialKey.ScriptableObject
 
         public static SerialKey New(
             User User,
-            string code
+            string serialKeyCode
         )
         {
             var instance = CreateInstance<SerialKey>();
             instance.name = "Runtime";
             instance.User = User;
-            instance.code = code;
+            instance.serialKeyCode = serialKeyCode;
             return instance;
         }
 
@@ -58,7 +58,7 @@ namespace Gs2.Unity.Gs2SerialKey.ScriptableObject
             var instance = CreateInstance<SerialKey>();
             instance.name = "Runtime";
             instance.User = User;
-            instance.code = code;
+            instance.serialKeyCode = serialKeyCode;
             return instance;
         }
     }

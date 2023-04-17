@@ -434,6 +434,7 @@ namespace Gs2.Unity.Util
                     if (asyncOpenResult.Error == null)
                     {
                         retryIterator?.Invoke();
+                        requestIterator.Error = null;
                         
                         continue;
                     }

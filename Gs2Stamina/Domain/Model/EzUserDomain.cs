@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Stamina.Domain.Model.UserDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
-        public long? OverflowValue => _domain.OverflowValue;
+        public int? OverflowValue => _domain.OverflowValue;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;

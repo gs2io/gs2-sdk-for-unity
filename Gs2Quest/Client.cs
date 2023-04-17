@@ -96,7 +96,6 @@ namespace Gs2.Unity.Gs2Quest
                 string namespaceName,
                 bool isComplete,
                 List<Gs2.Unity.Gs2Quest.Model.EzReward> rewards = null,
-                string transactionId = null,
                 List<Gs2.Unity.Gs2Quest.Model.EzConfig> config = null
         )
 		{
@@ -110,7 +109,6 @@ namespace Gs2.Unity.Gs2Quest
                         .WithRewards(rewards?.Select(v => {
                             return v?.ToModel();
                         }).ToArray())
-                        .WithTransactionId(transactionId)
                         .WithIsComplete(isComplete)
                         .WithConfig(config?.Select(v => {
                             return v?.ToModel();

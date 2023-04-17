@@ -67,11 +67,11 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
         }
 
         public Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyGameSessionDomain SerialKey(
-            string code
+            string serialKeyCode
         ) {
             return new Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyGameSessionDomain(
                 _domain.SerialKey(
-                    code
+                    serialKeyCode
                 ),
                 _profile
             );

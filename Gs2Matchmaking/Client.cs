@@ -340,6 +340,7 @@ namespace Gs2.Unity.Gs2Matchmaking
                 string namespaceName,
                 string ballotBody,
                 string ballotSignature,
+                string keyId,
                 List<Gs2.Unity.Gs2Matchmaking.Model.EzGameResult> gameResults = null
         )
 		{
@@ -353,7 +354,8 @@ namespace Gs2.Unity.Gs2Matchmaking
                         .WithBallotSignature(ballotSignature)
                         .WithGameResults(gameResults?.Select(v => {
                             return v?.ToModel();
-                        }).ToArray()),
+                        }).ToArray())
+                        .WithKeyId(keyId),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzVoteResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Matchmaking.Result.EzVoteResult.FromModel(r.Result),
@@ -367,6 +369,7 @@ namespace Gs2.Unity.Gs2Matchmaking
         public IEnumerator VoteMultiple(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzVoteMultipleResult>> callback,
                 string namespaceName,
+                string keyId,
                 List<Gs2.Unity.Gs2Matchmaking.Model.EzSignedBallot> signedBallots = null,
                 List<Gs2.Unity.Gs2Matchmaking.Model.EzGameResult> gameResults = null
         )
@@ -382,7 +385,8 @@ namespace Gs2.Unity.Gs2Matchmaking
                         }).ToArray())
                         .WithGameResults(gameResults?.Select(v => {
                             return v?.ToModel();
-                        }).ToArray()),
+                        }).ToArray())
+                        .WithKeyId(keyId),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzVoteMultipleResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Matchmaking.Result.EzVoteMultipleResult.FromModel(r.Result),
