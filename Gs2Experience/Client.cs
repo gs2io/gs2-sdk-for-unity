@@ -138,6 +138,35 @@ namespace Gs2.Unity.Gs2Experience
             );
 		}
 
+        public IEnumerator GetStatusWithSignature(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Experience.Result.EzGetStatusWithSignatureResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string experienceName,
+                string propertyId,
+                string keyId
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.GetStatusWithSignature(
+                    new Gs2.Gs2Experience.Request.GetStatusWithSignatureRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithExperienceName(experienceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithPropertyId(propertyId)
+                        .WithKeyId(keyId),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Experience.Result.EzGetStatusWithSignatureResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Experience.Result.EzGetStatusWithSignatureResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator ListStatuses(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Experience.Result.EzListStatusesResult>> callback,
 		        GameSession session,

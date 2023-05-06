@@ -69,6 +69,74 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Experience.Domain.Model.EzStatusGameSessionDomain> GetStatusWithSignature(
+              string keyId
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Experience.Domain.Model.EzStatusGameSessionDomain> self)
+            {
+                yield return GetStatusWithSignatureAsync(
+                    keyId
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Experience.Domain.Model.EzStatusGameSessionDomain>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Experience.Domain.Model.EzStatusGameSessionDomain> GetStatusWithSignatureAsync(
+        #else
+        public IFuture<Gs2.Unity.Gs2Experience.Domain.Model.EzStatusGameSessionDomain> GetStatusWithSignature(
+        #endif
+              string keyId
+        ) {
+        #if GS2_ENABLE_UNITASK
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.GetWithSignatureAsync(
+                        new GetStatusWithSignatureRequest()
+                            .WithKeyId(keyId)
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
+            );
+            return new Gs2.Unity.Gs2Experience.Domain.Model.EzStatusGameSessionDomain(result, _profile);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Experience.Domain.Model.EzStatusGameSessionDomain> self)
+            {
+                var future = _domain.GetWithSignature(
+                    new GetStatusWithSignatureRequest()
+                        .WithKeyId(keyId)
+                        .WithAccessToken(_domain.AccessToken.Token)
+                );
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future,
+                    () =>
+        			{
+                		return future = _domain.GetWithSignature(
+                    		new GetStatusWithSignatureRequest()
+                	        .WithKeyId(keyId)
+                    	    .WithAccessToken(_domain.AccessToken.Token)
+        		        );
+        			}
+                );
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Experience.Domain.Model.EzStatusGameSessionDomain(result, _profile));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Experience.Domain.Model.EzStatusGameSessionDomain>(Impl);
+        #endif
+        }
+
+        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Experience.Model.EzStatus> Model()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Experience.Model.EzStatus> self)
