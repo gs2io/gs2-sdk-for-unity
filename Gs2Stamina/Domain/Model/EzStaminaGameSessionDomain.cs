@@ -135,6 +135,246 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetMaxValue(
+              string keyId,
+              string signedStatusBody,
+              string signedStatusSignature
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
+            {
+                yield return SetMaxValueAsync(
+                    keyId,
+                    signedStatusBody,
+                    signedStatusSignature
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetMaxValueAsync(
+        #else
+        public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetMaxValue(
+        #endif
+              string keyId,
+              string signedStatusBody,
+              string signedStatusSignature
+        ) {
+        #if GS2_ENABLE_UNITASK
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.SetMaxValueByStatusAsync(
+                        new SetMaxValueByStatusRequest()
+                            .WithKeyId(keyId)
+                            .WithSignedStatusBody(signedStatusBody)
+                            .WithSignedStatusSignature(signedStatusSignature)
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
+            );
+            return new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(result, _profile);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
+            {
+                var future = _domain.SetMaxValueByStatus(
+                    new SetMaxValueByStatusRequest()
+                        .WithKeyId(keyId)
+                        .WithSignedStatusBody(signedStatusBody)
+                        .WithSignedStatusSignature(signedStatusSignature)
+                        .WithAccessToken(_domain.AccessToken.Token)
+                );
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future,
+                    () =>
+        			{
+                		return future = _domain.SetMaxValueByStatus(
+                    		new SetMaxValueByStatusRequest()
+                	        .WithKeyId(keyId)
+                	        .WithSignedStatusBody(signedStatusBody)
+                	        .WithSignedStatusSignature(signedStatusSignature)
+                    	    .WithAccessToken(_domain.AccessToken.Token)
+        		        );
+        			}
+                );
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(result, _profile));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
+        #endif
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverInterval(
+              string keyId,
+              string signedStatusBody,
+              string signedStatusSignature
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
+            {
+                yield return SetRecoverIntervalAsync(
+                    keyId,
+                    signedStatusBody,
+                    signedStatusSignature
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverIntervalAsync(
+        #else
+        public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverInterval(
+        #endif
+              string keyId,
+              string signedStatusBody,
+              string signedStatusSignature
+        ) {
+        #if GS2_ENABLE_UNITASK
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.SetRecoverIntervalByStatusAsync(
+                        new SetRecoverIntervalByStatusRequest()
+                            .WithKeyId(keyId)
+                            .WithSignedStatusBody(signedStatusBody)
+                            .WithSignedStatusSignature(signedStatusSignature)
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
+            );
+            return new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(result, _profile);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
+            {
+                var future = _domain.SetRecoverIntervalByStatus(
+                    new SetRecoverIntervalByStatusRequest()
+                        .WithKeyId(keyId)
+                        .WithSignedStatusBody(signedStatusBody)
+                        .WithSignedStatusSignature(signedStatusSignature)
+                        .WithAccessToken(_domain.AccessToken.Token)
+                );
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future,
+                    () =>
+        			{
+                		return future = _domain.SetRecoverIntervalByStatus(
+                    		new SetRecoverIntervalByStatusRequest()
+                	        .WithKeyId(keyId)
+                	        .WithSignedStatusBody(signedStatusBody)
+                	        .WithSignedStatusSignature(signedStatusSignature)
+                    	    .WithAccessToken(_domain.AccessToken.Token)
+        		        );
+        			}
+                );
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(result, _profile));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
+        #endif
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverValue(
+              string keyId,
+              string signedStatusBody,
+              string signedStatusSignature
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
+            {
+                yield return SetRecoverValueAsync(
+                    keyId,
+                    signedStatusBody,
+                    signedStatusSignature
+                ).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
+        }
+
+        public async UniTask<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverValueAsync(
+        #else
+        public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverValue(
+        #endif
+              string keyId,
+              string signedStatusBody,
+              string signedStatusSignature
+        ) {
+        #if GS2_ENABLE_UNITASK
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.SetRecoverValueByStatusAsync(
+                        new SetRecoverValueByStatusRequest()
+                            .WithKeyId(keyId)
+                            .WithSignedStatusBody(signedStatusBody)
+                            .WithSignedStatusSignature(signedStatusSignature)
+                            .WithAccessToken(_domain.AccessToken.Token)
+                    );
+                }
+            );
+            return new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(result, _profile);
+        #else
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
+            {
+                var future = _domain.SetRecoverValueByStatus(
+                    new SetRecoverValueByStatusRequest()
+                        .WithKeyId(keyId)
+                        .WithSignedStatusBody(signedStatusBody)
+                        .WithSignedStatusSignature(signedStatusSignature)
+                        .WithAccessToken(_domain.AccessToken.Token)
+                );
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future,
+                    () =>
+        			{
+                		return future = _domain.SetRecoverValueByStatus(
+                    		new SetRecoverValueByStatusRequest()
+                	        .WithKeyId(keyId)
+                	        .WithSignedStatusBody(signedStatusBody)
+                	        .WithSignedStatusSignature(signedStatusSignature)
+                    	    .WithAccessToken(_domain.AccessToken.Token)
+        		        );
+        			}
+                );
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var result = future.Result;
+                self.OnComplete(new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(result, _profile));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
+        #endif
+        }
+
+        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Stamina.Model.EzStamina> Model()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Model.EzStamina> self)

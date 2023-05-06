@@ -162,5 +162,98 @@ namespace Gs2.Unity.Gs2Stamina
                 )
             );
 		}
+
+        public IEnumerator SetMaxValue(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Stamina.Result.EzSetMaxValueResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string staminaName,
+                string keyId,
+                string signedStatusBody,
+                string signedStatusSignature
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.SetMaxValueByStatus(
+                    new Gs2.Gs2Stamina.Request.SetMaxValueByStatusRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithStaminaName(staminaName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithKeyId(keyId)
+                        .WithSignedStatusBody(signedStatusBody)
+                        .WithSignedStatusSignature(signedStatusSignature),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Stamina.Result.EzSetMaxValueResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Stamina.Result.EzSetMaxValueResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator SetRecoverInterval(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Stamina.Result.EzSetRecoverIntervalResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string staminaName,
+                string keyId,
+                string signedStatusBody,
+                string signedStatusSignature
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.SetRecoverIntervalByStatus(
+                    new Gs2.Gs2Stamina.Request.SetRecoverIntervalByStatusRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithStaminaName(staminaName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithKeyId(keyId)
+                        .WithSignedStatusBody(signedStatusBody)
+                        .WithSignedStatusSignature(signedStatusSignature),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Stamina.Result.EzSetRecoverIntervalResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Stamina.Result.EzSetRecoverIntervalResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator SetRecoverValue(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Stamina.Result.EzSetRecoverValueResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string staminaName,
+                string keyId,
+                string signedStatusBody,
+                string signedStatusSignature
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.SetRecoverValueByStatus(
+                    new Gs2.Gs2Stamina.Request.SetRecoverValueByStatusRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithStaminaName(staminaName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithKeyId(keyId)
+                        .WithSignedStatusBody(signedStatusBody)
+                        .WithSignedStatusSignature(signedStatusSignature),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Stamina.Result.EzSetRecoverValueResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Stamina.Result.EzSetRecoverValueResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
     }
 }
