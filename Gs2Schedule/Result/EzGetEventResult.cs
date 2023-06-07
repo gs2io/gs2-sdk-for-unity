@@ -32,11 +32,14 @@ namespace Gs2.Unity.Gs2Schedule.Result
 	{
 		[SerializeField]
 		public Gs2.Unity.Gs2Schedule.Model.EzEvent Item;
+		[SerializeField]
+		public int RepeatCount;
 
         public static EzGetEventResult FromModel(Gs2.Gs2Schedule.Result.GetEventResult model)
         {
             return new EzGetEventResult {
                 Item = model.Item == null ? null : Gs2.Unity.Gs2Schedule.Model.EzEvent.FromModel(model.Item),
+                RepeatCount = model.RepeatCount ?? 0,
             };
         }
     }

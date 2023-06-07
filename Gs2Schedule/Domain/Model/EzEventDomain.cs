@@ -53,6 +53,7 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
     public partial class EzEventDomain {
         private readonly Gs2.Gs2Schedule.Domain.Model.EventDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
+        public int? RepeatCount => _domain.RepeatCount;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string EventName => _domain?.EventName;
