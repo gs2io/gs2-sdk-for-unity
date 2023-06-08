@@ -206,5 +206,71 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         }
         #endif
 
+#if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> Model(
+            string scorerUserId,
+            long index
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Model.EzRanking> self)
+            {
+                yield return ModelAsync(scorerUserId, index).ToCoroutine(
+                    self.OnComplete,
+                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                );
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking>(Impl);
+        }
+        public async UniTask<Gs2.Unity.Gs2Ranking.Model.EzRanking> ModelAsync(
+            string scorerUserId,
+            long index
+        )
+        {
+            var item = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.Model(scorerUserId, index);
+                }
+            );
+            if (item == null) {
+                return null;
+            }
+            return Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(
+                item
+            );
+        }
+#else
+        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> Model(
+            string scorerUserId,
+            long index
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Model.EzRanking> self)
+            {
+                var future = _domain.Model(scorerUserId, index);
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future,
+                    () => {
+                        return future = _domain.Model(scorerUserId);
+                    }
+                );
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking>(Impl);
+        }
+#endif
     }
 }

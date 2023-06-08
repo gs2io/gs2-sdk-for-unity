@@ -160,7 +160,7 @@ namespace Gs2.Unity.Util
             if (e is CanIgnoreException) {
                 return;
             }
-            Debug.LogError($"{e.GetType()}{string.Join(",", e.Errors.Select(v => v.Message))} : Retryable={retry != null}");
+            Debug.LogError($"{e.GetType()} {string.Join(",", e.Errors.Select(v => v.Message))} : Retryable={retry != null}");
         }
     }
 }

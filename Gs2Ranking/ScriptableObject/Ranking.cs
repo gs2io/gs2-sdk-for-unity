@@ -48,7 +48,7 @@ namespace Gs2.Unity.Gs2Ranking.ScriptableObject
         public static Ranking New(
             User User,
             CategoryModel CategoryModel,
-            int index
+            long index
         )
         {
             var instance = CreateInstance<Ranking>();

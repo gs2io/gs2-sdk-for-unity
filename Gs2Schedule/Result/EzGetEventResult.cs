@@ -33,9 +33,11 @@ namespace Gs2.Unity.Gs2Schedule.Result
 		[SerializeField]
 		public Gs2.Unity.Gs2Schedule.Model.EzEvent Item;
 		[SerializeField]
-		public int RepeatCount;
-		[SerializeField]
 		public bool InSchedule;
+		[SerializeField]
+		public long ScheduleStartAt;
+		[SerializeField]
+		public long ScheduleEndAt;
 		[SerializeField]
 		public Gs2.Unity.Gs2Schedule.Model.EzRepeatSchedule RepeatSchedule;
 
@@ -43,8 +45,9 @@ namespace Gs2.Unity.Gs2Schedule.Result
         {
             return new EzGetEventResult {
                 Item = model.Item == null ? null : Gs2.Unity.Gs2Schedule.Model.EzEvent.FromModel(model.Item),
-                RepeatCount = model.RepeatCount ?? 0,
                 InSchedule = model.InSchedule ?? false,
+                ScheduleStartAt = model.ScheduleStartAt ?? 0,
+                ScheduleEndAt = model.ScheduleEndAt ?? 0,
                 RepeatSchedule = model.RepeatSchedule == null ? null : Gs2.Unity.Gs2Schedule.Model.EzRepeatSchedule.FromModel(model.RepeatSchedule),
             };
         }
