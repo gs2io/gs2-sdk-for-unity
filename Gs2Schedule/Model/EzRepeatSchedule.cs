@@ -14,6 +14,7 @@
  * permissions and limitations under the License.
  */
 
+using System;
 using Gs2.Gs2Schedule.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -23,29 +24,44 @@ using UnityEngine;
 using UnityEngine.Scripting;
 
 // ReSharper disable once CheckNamespace
-namespace Gs2.Unity.Gs2Schedule.Result
+namespace Gs2.Unity.Gs2Schedule.Model
 {
+
 	[Preserve]
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
-	public class EzGetEventResult
+	public class EzRepeatSchedule
 	{
-		[SerializeField]
-		public Gs2.Unity.Gs2Schedule.Model.EzEvent Item;
 		[SerializeField]
 		public int RepeatCount;
 		[SerializeField]
-		public bool InSchedule;
+		public long CurrentRepeatStartAt;
 		[SerializeField]
-		public Gs2.Unity.Gs2Schedule.Model.EzRepeatSchedule RepeatSchedule;
+		public long CurrentRepeatEndAt;
+		[SerializeField]
+		public long LastRepeatEndAt;
+		[SerializeField]
+		public long NextRepeatStartAt;
 
-        public static EzGetEventResult FromModel(Gs2.Gs2Schedule.Result.GetEventResult model)
+        public Gs2.Gs2Schedule.Model.RepeatSchedule ToModel()
         {
-            return new EzGetEventResult {
-                Item = model.Item == null ? null : Gs2.Unity.Gs2Schedule.Model.EzEvent.FromModel(model.Item),
+            return new Gs2.Gs2Schedule.Model.RepeatSchedule {
+                RepeatCount = RepeatCount,
+                CurrentRepeatStartAt = CurrentRepeatStartAt,
+                CurrentRepeatEndAt = CurrentRepeatEndAt,
+                LastRepeatEndAt = LastRepeatEndAt,
+                NextRepeatStartAt = NextRepeatStartAt,
+            };
+        }
+
+        public static EzRepeatSchedule FromModel(Gs2.Gs2Schedule.Model.RepeatSchedule model)
+        {
+            return new EzRepeatSchedule {
                 RepeatCount = model.RepeatCount ?? 0,
-                InSchedule = model.InSchedule ?? false,
-                RepeatSchedule = model.RepeatSchedule == null ? null : Gs2.Unity.Gs2Schedule.Model.EzRepeatSchedule.FromModel(model.RepeatSchedule),
+                CurrentRepeatStartAt = model.CurrentRepeatStartAt ?? 0,
+                CurrentRepeatEndAt = model.CurrentRepeatEndAt ?? 0,
+                LastRepeatEndAt = model.LastRepeatEndAt ?? 0,
+                NextRepeatStartAt = model.NextRepeatStartAt ?? 0,
             };
         }
     }

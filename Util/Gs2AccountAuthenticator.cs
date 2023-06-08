@@ -91,12 +91,20 @@ namespace Gs2.Unity.Util
                 .WithExpire(result2.Expire);
             
             if (this._gatewaySetting != null) {
-                await new Gs2GatewayWebSocketClient(this._session).SetUserIdAsync(
-                    new SetUserIdRequest()
-                        .WithNamespaceName(this._gatewaySetting.gatewayNamespaceName)
-                        .WithAccessToken(accessToken.Token)
-                        .WithAllowConcurrentAccess(this._gatewaySetting.allowConcurrentAccess)
-                );
+                try {
+                    await new Gs2GatewayWebSocketClient(this._session).SetUserIdAsync(
+                        new SetUserIdRequest()
+                            .WithNamespaceName(this._gatewaySetting.gatewayNamespaceName)
+                            .WithAccessToken(accessToken.Token)
+                            .WithAllowConcurrentAccess(this._gatewaySetting.allowConcurrentAccess)
+                    );
+                }
+                catch (ConflictException) {
+                }
+                catch (SessionNotOpenException) {
+                    await this._session.ReOpenFuture();
+                    throw;
+                }
             }
             if (this._versionSetting != null) {
                 var checkVersionResult = await new Gs2VersionRestClient(_restSession).CheckVersionAsync(
@@ -185,8 +193,17 @@ namespace Gs2.Unity.Util
                     );
                     yield return future;
                     if (future.Error != null) {
-                        result.OnError(future.Error);
-                        yield break;
+                        if (future.Error is ConflictException) {
+                        }
+                        else if (future.Error is SessionNotOpenException) {
+                            yield return this._session.ReOpenFuture();
+                            result.OnError(future.Error);
+                            yield break;
+                        }
+                        else {
+                            result.OnError(future.Error);
+                            yield break;
+                        }
                     }
                 }
                 if (this._versionSetting != null) {

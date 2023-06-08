@@ -67,6 +67,15 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
             this._profile = profile;
         }
 
+        public Gs2.Unity.Gs2Lottery.Domain.Model.EzLotteryGameSessionDomain Lottery(
+        ) {
+            return new Gs2.Unity.Gs2Lottery.Domain.Model.EzLotteryGameSessionDomain(
+                _domain.Lottery(
+                ),
+                _profile
+            );
+        }
+
         public class EzBoxesIterator : Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzBoxItems>
         {
             private Gs2Iterator<Gs2.Gs2Lottery.Model.BoxItems> _it;

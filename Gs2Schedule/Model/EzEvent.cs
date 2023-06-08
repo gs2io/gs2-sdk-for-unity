@@ -58,8 +58,6 @@ namespace Gs2.Unity.Gs2Schedule.Model
 		public int RepeatEndHour;
 		[SerializeField]
 		public string RelativeTriggerName;
-		[SerializeField]
-		public int RelativeDuration;
 
         public Gs2.Gs2Schedule.Model.Event ToModel()
         {
@@ -77,7 +75,6 @@ namespace Gs2.Unity.Gs2Schedule.Model
                 RepeatBeginHour = RepeatBeginHour,
                 RepeatEndHour = RepeatEndHour,
                 RelativeTriggerName = RelativeTriggerName,
-                RelativeDuration = RelativeDuration,
             };
         }
 
@@ -97,7 +94,6 @@ namespace Gs2.Unity.Gs2Schedule.Model
                 RepeatBeginHour = model.RepeatBeginHour ?? 0,
                 RepeatEndHour = model.RepeatEndHour ?? 0,
                 RelativeTriggerName = model.RelativeTriggerName == null ? null : model.RelativeTriggerName,
-                RelativeDuration = model.RelativeDuration ?? 0,
             };
         }
     }
