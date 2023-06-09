@@ -43,6 +43,7 @@ namespace Gs2.Unity.Core
         public Gs2Formation.Domain.Gs2Formation Formation;
         public Gs2Friend.Domain.Gs2Friend Friend;
         public Gs2Gateway.Domain.Gs2Gateway Gateway;
+        public Gs2Idle.Domain.Gs2Idle Idle;
         public Gs2Inbox.Domain.Gs2Inbox Inbox;
         public Gs2Inventory.Domain.Gs2Inventory Inventory;
         public Gs2JobQueue.Domain.Gs2JobQueue JobQueue;
@@ -87,6 +88,7 @@ namespace Gs2.Unity.Core
             Formation = new Gs2Formation.Domain.Gs2Formation(_gs2.Formation, profile);
             Friend = new Gs2Friend.Domain.Gs2Friend(_gs2.Friend, profile);
             Gateway = new Gs2Gateway.Domain.Gs2Gateway(_gs2.Gateway, profile);
+            Idle = new Gs2Idle.Domain.Gs2Idle(_gs2.Idle, profile);
             Inbox = new Gs2Inbox.Domain.Gs2Inbox(_gs2.Inbox, profile);
             Inventory = new Gs2Inventory.Domain.Gs2Inventory(_gs2.Inventory, profile);
             JobQueue = new Gs2JobQueue.Domain.Gs2JobQueue(_gs2.JobQueue, profile);
