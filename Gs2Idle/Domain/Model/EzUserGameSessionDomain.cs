@@ -69,7 +69,6 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
         {
             private Gs2Iterator<Gs2.Gs2Idle.Model.Status> _it;
         #if !GS2_ENABLE_UNITASK
-            private readonly string _categoryName;
             private readonly Gs2.Gs2Idle.Domain.Model.UserAccessTokenDomain _domain;
         #endif
             private readonly Gs2.Unity.Util.Profile _profile;
@@ -77,7 +76,6 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
             public EzStatusesIterator(
                 Gs2Iterator<Gs2.Gs2Idle.Model.Status> it,
         #if !GS2_ENABLE_UNITASK
-                string categoryName,
                 Gs2.Gs2Idle.Domain.Model.UserAccessTokenDomain domain,
         #endif
                 Gs2.Unity.Util.Profile profile
@@ -85,7 +83,6 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
             {
                 _it = it;
         #if !GS2_ENABLE_UNITASK
-                _categoryName = categoryName;
                 _domain = domain;
         #endif
                 _profile = profile;
@@ -107,7 +104,6 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
                     () =>
                     {
                         return _it = _domain.Statuses(
-                            _categoryName
                         );
                     }
                 );
@@ -123,12 +119,10 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public Gs2Iterator<Gs2.Unity.Gs2Idle.Model.EzStatus> Statuses(
-              string categoryName = null
         )
         {
             return new EzStatusesIterator(
                 _domain.Statuses(
-                    categoryName
                 ),
                 _profile
             );
@@ -138,14 +132,12 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
         #else
         public Gs2Iterator<Gs2.Unity.Gs2Idle.Model.EzStatus> Statuses(
         #endif
-              string categoryName = null
         )
         {
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Idle.Model.EzStatus>(async (writer, token) =>
             {
                 var it = _domain.StatusesAsync(
-                    categoryName
                 ).GetAsyncEnumerator();
                 while(
                     await _profile.RunIteratorAsync(
@@ -156,7 +148,6 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
                         },
                         () => {
                             it = _domain.StatusesAsync(
-                                categoryName
                             ).GetAsyncEnumerator();
                         }
                     )
@@ -168,9 +159,7 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
         #else
             return new EzStatusesIterator(
                 _domain.Statuses(
-                    categoryName
                 ),
-                categoryName,
                 _domain,
                 _profile
             );

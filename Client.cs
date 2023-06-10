@@ -15,6 +15,7 @@ namespace Gs2.Unity
         public readonly Gs2Formation.Client Formation;
         public readonly Gs2Friend.Client Friend;
         public readonly Gs2Gateway.Client Gateway;
+        public readonly Gs2Idle.Client Idle;
         public readonly Gs2Inbox.Client Inbox;
         public readonly Gs2Inventory.Client Inventory;
         public readonly Gs2JobQueue.Client JobQueue;
@@ -50,6 +51,7 @@ namespace Gs2.Unity
             Formation = new Gs2Formation.Client(profile);
             Friend = new Gs2Friend.Client(profile);
             Gateway = new Gs2Gateway.Client(profile);
+            Idle = new Gs2Idle.Client(profile);
             Inbox = new Gs2Inbox.Client(profile);
             Inventory = new Gs2Inventory.Client(profile);
             JobQueue = new Gs2JobQueue.Client(profile);

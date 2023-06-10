@@ -30,34 +30,26 @@ namespace Gs2.Unity.Gs2Idle.Model
 	[Preserve]
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
-	public class EzStatus
+	public class EzAcquireActionList
 	{
 		[SerializeField]
-		public string CategoryName;
-		[SerializeField]
-		public long RandomSeed;
-		[SerializeField]
-		public int IdleMinutes;
-		[SerializeField]
-		public int MaximumIdleMinutes;
+		public List<Gs2.Unity.Core.Model.EzAcquireAction> AcquireActions;
 
-        public Gs2.Gs2Idle.Model.Status ToModel()
+        public Gs2.Gs2Idle.Model.AcquireActionList ToModel()
         {
-            return new Gs2.Gs2Idle.Model.Status {
-                CategoryName = CategoryName,
-                RandomSeed = RandomSeed,
-                IdleMinutes = IdleMinutes,
-                MaximumIdleMinutes = MaximumIdleMinutes,
+            return new Gs2.Gs2Idle.Model.AcquireActionList {
+                AcquireActions = AcquireActions?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
             };
         }
 
-        public static EzStatus FromModel(Gs2.Gs2Idle.Model.Status model)
+        public static EzAcquireActionList FromModel(Gs2.Gs2Idle.Model.AcquireActionList model)
         {
-            return new EzStatus {
-                CategoryName = model.CategoryName == null ? null : model.CategoryName,
-                RandomSeed = model.RandomSeed ?? 0,
-                IdleMinutes = model.IdleMinutes ?? 0,
-                MaximumIdleMinutes = model.MaximumIdleMinutes ?? 0,
+            return new EzAcquireActionList {
+                AcquireActions = model.AcquireActions == null ? new List<Gs2.Unity.Core.Model.EzAcquireAction>() : model.AcquireActions.Select(v => {
+                    return Gs2.Unity.Core.Model.EzAcquireAction.FromModel(v);
+                }).ToList(),
             };
         }
     }

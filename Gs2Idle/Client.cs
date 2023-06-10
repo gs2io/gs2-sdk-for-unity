@@ -140,7 +140,6 @@ namespace Gs2.Unity.Gs2Idle
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Idle.Result.EzListStatusesResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string categoryName = null,
                 string pageToken = null,
                 int? limit = null
         )
@@ -151,7 +150,6 @@ namespace Gs2.Unity.Gs2Idle
                 cb => _restClient.DescribeStatuses(
                     new Gs2.Gs2Idle.Request.DescribeStatusesRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithCategoryName(categoryName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithPageToken(pageToken)
                         .WithLimit(limit),

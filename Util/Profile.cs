@@ -49,6 +49,8 @@ namespace Gs2.Unity.Util
         public Gs2.Unity.Gs2Version.ScriptableObject.Namespace _versionNamespace;
         public List<EzTargetVersion> _targetVersions;
 
+        public string DistributorNamespaceName => _distributorNamespaceName;
+        
         public Profile(
             string clientId,
             string clientSecret,

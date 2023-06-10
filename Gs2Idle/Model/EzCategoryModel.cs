@@ -39,6 +39,10 @@ namespace Gs2.Unity.Gs2Idle.Model
 		[SerializeField]
 		public int RewardIntervalMinutes;
 		[SerializeField]
+		public int DefaultMaximumIdleMinutes;
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Idle.Model.EzAcquireActionList> AcquireActions;
+		[SerializeField]
 		public string IdlePeriodScheduleId;
 		[SerializeField]
 		public string ReceivePeriodScheduleId;
@@ -49,6 +53,10 @@ namespace Gs2.Unity.Gs2Idle.Model
                 Name = Name,
                 Metadata = Metadata,
                 RewardIntervalMinutes = RewardIntervalMinutes,
+                DefaultMaximumIdleMinutes = DefaultMaximumIdleMinutes,
+                AcquireActions = AcquireActions?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
                 IdlePeriodScheduleId = IdlePeriodScheduleId,
                 ReceivePeriodScheduleId = ReceivePeriodScheduleId,
             };
@@ -60,6 +68,10 @@ namespace Gs2.Unity.Gs2Idle.Model
                 Name = model.Name == null ? null : model.Name,
                 Metadata = model.Metadata == null ? null : model.Metadata,
                 RewardIntervalMinutes = model.RewardIntervalMinutes ?? 0,
+                DefaultMaximumIdleMinutes = model.DefaultMaximumIdleMinutes ?? 0,
+                AcquireActions = model.AcquireActions == null ? new List<Gs2.Unity.Gs2Idle.Model.EzAcquireActionList>() : model.AcquireActions.Select(v => {
+                    return Gs2.Unity.Gs2Idle.Model.EzAcquireActionList.FromModel(v);
+                }).ToList(),
                 IdlePeriodScheduleId = model.IdlePeriodScheduleId == null ? null : model.IdlePeriodScheduleId,
                 ReceivePeriodScheduleId = model.ReceivePeriodScheduleId == null ? null : model.ReceivePeriodScheduleId,
             };
