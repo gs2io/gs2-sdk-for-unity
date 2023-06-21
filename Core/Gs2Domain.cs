@@ -113,7 +113,15 @@ namespace Gs2.Unity.Core
         {
             _gs2.ClearCache();
         }
-        
+
+        public void ClearCache<TKind>(
+            string parentKey,
+            string key
+        )
+        {
+            _gs2.ClearCache<TKind>(parentKey, key);
+        }
+
 #if GS2_ENABLE_UNITASK
         public async UniTask DispatchAsync(
             GameSession gameSession
