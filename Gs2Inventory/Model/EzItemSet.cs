@@ -46,6 +46,8 @@ namespace Gs2.Unity.Gs2Inventory.Model
 		public int SortValue;
 		[SerializeField]
 		public long ExpiresAt;
+		[SerializeField]
+		public List<string> ReferenceOf;
 
         public Gs2.Gs2Inventory.Model.ItemSet ToModel()
         {
@@ -57,6 +59,9 @@ namespace Gs2.Unity.Gs2Inventory.Model
                 Count = Count,
                 SortValue = SortValue,
                 ExpiresAt = ExpiresAt,
+                ReferenceOf = ReferenceOf?.Select(v => {
+                    return v;
+                }).ToArray(),
             };
         }
 
@@ -70,6 +75,9 @@ namespace Gs2.Unity.Gs2Inventory.Model
                 Count = model.Count ?? 0,
                 SortValue = model.SortValue ?? 0,
                 ExpiresAt = model.ExpiresAt ?? 0,
+                ReferenceOf = model.ReferenceOf == null ? new List<string>() : model.ReferenceOf.Select(v => {
+                    return v;
+                }).ToList(),
             };
         }
     }
