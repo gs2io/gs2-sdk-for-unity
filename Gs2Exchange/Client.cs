@@ -238,6 +238,50 @@ namespace Gs2.Unity.Gs2Exchange
             );
 		}
 
+        public IEnumerator GetIncrementalRateModel(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzGetIncrementalRateModelResult>> callback,
+                string namespaceName,
+                string rateName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.GetIncrementalRateModel(
+                    new Gs2.Gs2Exchange.Request.GetIncrementalRateModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRateName(rateName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzGetIncrementalRateModelResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Exchange.Result.EzGetIncrementalRateModelResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListIncrementalRateModels(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzListIncrementalRateModelsResult>> callback,
+                string namespaceName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeIncrementalRateModels(
+                    new Gs2.Gs2Exchange.Request.DescribeIncrementalRateModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzListIncrementalRateModelsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Exchange.Result.EzListIncrementalRateModelsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator Exchange(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzExchangeResult>> callback,
 		        GameSession session,
