@@ -50,33 +50,34 @@ using System.Collections.Generic;
 namespace Gs2.Unity.Gs2Inventory.Domain.Model
 {
 
-    public partial class EzUserGameSessionDomain {
-        private readonly Gs2.Gs2Inventory.Domain.Model.UserAccessTokenDomain _domain;
+    public partial class EzSimpleInventoryDomain {
+        private readonly Gs2.Gs2Inventory.Domain.Model.SimpleInventoryDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
+        public string InventoryName => _domain?.InventoryName;
 
-        public EzUserGameSessionDomain(
-            Gs2.Gs2Inventory.Domain.Model.UserAccessTokenDomain domain,
+        public EzSimpleInventoryDomain(
+            Gs2.Gs2Inventory.Domain.Model.SimpleInventoryDomain domain,
             Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
             this._profile = profile;
         }
 
-        public class EzInventoriesIterator : Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzInventory>
+        public class EzSimpleItemsIterator : Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem>
         {
-            private Gs2Iterator<Gs2.Gs2Inventory.Model.Inventory> _it;
+            private Gs2Iterator<Gs2.Gs2Inventory.Model.SimpleItem> _it;
         #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2Inventory.Domain.Model.UserAccessTokenDomain _domain;
+            private readonly Gs2.Gs2Inventory.Domain.Model.SimpleInventoryDomain _domain;
         #endif
             private readonly Gs2.Unity.Util.Profile _profile;
 
-            public EzInventoriesIterator(
-                Gs2Iterator<Gs2.Gs2Inventory.Model.Inventory> it,
+            public EzSimpleItemsIterator(
+                Gs2Iterator<Gs2.Gs2Inventory.Model.SimpleItem> it,
         #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2Inventory.Domain.Model.UserAccessTokenDomain domain,
+                Gs2.Gs2Inventory.Domain.Model.SimpleInventoryDomain domain,
         #endif
                 Gs2.Unity.Util.Profile profile
             )
@@ -93,24 +94,24 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
                 return _it.HasNext();
             }
 
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzInventory>> callback)
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem>> callback)
             {
         #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
         #else
                 yield return _profile.RunIterator(
-                    _domain.AccessToken,
+                    null,
                     _it,
                     () =>
                     {
-                        return _it = _domain.Inventories(
+                        return _it = _domain.SimpleItems(
                         );
                     }
                 );
         #endif
                 callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzInventory>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzInventory.FromModel(_it.Current),
+                    new AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzSimpleItem.FromModel(_it.Current),
                         _it.Error
                     )
                 );
@@ -118,47 +119,47 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzInventory> Inventories(
+        public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem> SimpleItems(
         )
         {
-            return new EzInventoriesIterator(
-                _domain.Inventories(
+            return new EzSimpleItemsIterator(
+                _domain.SimpleItems(
                 ),
                 _profile
             );
         }
 
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Inventory.Model.EzInventory> InventoriesAsync(
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem> SimpleItemsAsync(
         #else
-        public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzInventory> Inventories(
+        public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem> SimpleItems(
         #endif
         )
         {
         #if GS2_ENABLE_UNITASK
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Inventory.Model.EzInventory>(async (writer, token) =>
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem>(async (writer, token) =>
             {
-                var it = _domain.InventoriesAsync(
+                var it = _domain.SimpleItemsAsync(
                 ).GetAsyncEnumerator();
                 while(
                     await _profile.RunIteratorAsync(
-                        _domain.AccessToken,
+                        null,
                         async () =>
                         {
                             return await it.MoveNextAsync();
                         },
                         () => {
-                            it = _domain.InventoriesAsync(
+                            it = _domain.SimpleItemsAsync(
                             ).GetAsyncEnumerator();
                         }
                     )
                 )
                 {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzInventory.FromModel(it.Current));
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzSimpleItem.FromModel(it.Current));
                 }
             });
         #else
-            return new EzInventoriesIterator(
-                _domain.Inventories(
+            return new EzSimpleItemsIterator(
+                _domain.SimpleItems(
                 ),
                 _domain,
                 _profile
@@ -166,23 +167,12 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         #endif
         }
 
-        public Gs2.Unity.Gs2Inventory.Domain.Model.EzInventoryGameSessionDomain Inventory(
-            string inventoryName
+        public Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemDomain SimpleItem(
+            string itemName
         ) {
-            return new Gs2.Unity.Gs2Inventory.Domain.Model.EzInventoryGameSessionDomain(
-                _domain.Inventory(
-                    inventoryName
-                ),
-                _profile
-            );
-        }
-
-        public Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleInventoryGameSessionDomain SimpleInventory(
-            string inventoryName
-        ) {
-            return new Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleInventoryGameSessionDomain(
-                _domain.SimpleInventory(
-                    inventoryName
+            return new Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemDomain(
+                _domain.SimpleItem(
+                    itemName
                 ),
                 _profile
             );

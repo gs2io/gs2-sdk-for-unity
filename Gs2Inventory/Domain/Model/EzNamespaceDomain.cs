@@ -199,5 +199,117 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             );
         }
 
+        public class EzSimpleInventoryModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzSimpleInventoryModel>
+        {
+            private Gs2Iterator<Gs2.Gs2Inventory.Model.SimpleInventoryModel> _it;
+        #if !GS2_ENABLE_UNITASK
+            private readonly Gs2.Gs2Inventory.Domain.Model.NamespaceDomain _domain;
+        #endif
+            private readonly Gs2.Unity.Util.Profile _profile;
+
+            public EzSimpleInventoryModelsIterator(
+                Gs2Iterator<Gs2.Gs2Inventory.Model.SimpleInventoryModel> it,
+        #if !GS2_ENABLE_UNITASK
+                Gs2.Gs2Inventory.Domain.Model.NamespaceDomain domain,
+        #endif
+                Gs2.Unity.Util.Profile profile
+            )
+            {
+                _it = it;
+        #if !GS2_ENABLE_UNITASK
+                _domain = domain;
+        #endif
+                _profile = profile;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzSimpleInventoryModel>> callback)
+            {
+        #if GS2_ENABLE_UNITASK
+                yield return _it.Next();
+        #else
+                yield return _profile.RunIterator(
+                    null,
+                    _it,
+                    () =>
+                    {
+                        return _it = _domain.SimpleInventoryModels(
+                        );
+                    }
+                );
+        #endif
+                callback.Invoke(
+                    new AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzSimpleInventoryModel>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzSimpleInventoryModel.FromModel(_it.Current),
+                        _it.Error
+                    )
+                );
+            }
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzSimpleInventoryModel> SimpleInventoryModels(
+        )
+        {
+            return new EzSimpleInventoryModelsIterator(
+                _domain.SimpleInventoryModels(
+                ),
+                _profile
+            );
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Inventory.Model.EzSimpleInventoryModel> SimpleInventoryModelsAsync(
+        #else
+        public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzSimpleInventoryModel> SimpleInventoryModels(
+        #endif
+        )
+        {
+        #if GS2_ENABLE_UNITASK
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Inventory.Model.EzSimpleInventoryModel>(async (writer, token) =>
+            {
+                var it = _domain.SimpleInventoryModelsAsync(
+                ).GetAsyncEnumerator();
+                while(
+                    await _profile.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.SimpleInventoryModelsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzSimpleInventoryModel.FromModel(it.Current));
+                }
+            });
+        #else
+            return new EzSimpleInventoryModelsIterator(
+                _domain.SimpleInventoryModels(
+                ),
+                _domain,
+                _profile
+            );
+        #endif
+        }
+
+        public Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleInventoryModelDomain SimpleInventoryModel(
+            string inventoryName
+        ) {
+            return new Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleInventoryModelDomain(
+                _domain.SimpleInventoryModel(
+                    inventoryName
+                ),
+                _profile
+            );
+        }
+
     }
 }

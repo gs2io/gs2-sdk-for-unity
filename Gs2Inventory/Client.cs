@@ -328,5 +328,211 @@ namespace Gs2.Unity.Gs2Inventory
                 )
             );
 		}
+
+        public IEnumerator GetSimpleInventoryModel(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetSimpleInventoryModelResult>> callback,
+                string namespaceName,
+                string inventoryName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.GetSimpleInventoryModel(
+                    new Gs2.Gs2Inventory.Request.GetSimpleInventoryModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetSimpleInventoryModelResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzGetSimpleInventoryModelResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListSimpleInventoryModels(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListSimpleInventoryModelsResult>> callback,
+                string namespaceName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeSimpleInventoryModels(
+                    new Gs2.Gs2Inventory.Request.DescribeSimpleInventoryModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListSimpleInventoryModelsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzListSimpleInventoryModelsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator GetSimpleItemModel(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetSimpleItemModelResult>> callback,
+                string namespaceName,
+                string inventoryName,
+                string itemName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetSimpleItemModel(
+                    new Gs2.Gs2Inventory.Request.GetSimpleItemModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName)
+                        .WithItemName(itemName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetSimpleItemModelResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzGetSimpleItemModelResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListSimpleItemModels(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListSimpleItemModelsResult>> callback,
+                string namespaceName,
+                string inventoryName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeSimpleItemModels(
+                    new Gs2.Gs2Inventory.Request.DescribeSimpleItemModelsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListSimpleItemModelsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzListSimpleItemModelsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ConsumeSimpleItems(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzConsumeSimpleItemsResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string inventoryName,
+                List<Gs2.Unity.Gs2Inventory.Model.EzConsumeCount> consumeCounts
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.ConsumeSimpleItems(
+                    new Gs2.Gs2Inventory.Request.ConsumeSimpleItemsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithConsumeCounts(consumeCounts?.Select(v => {
+                            return v?.ToModel();
+                        }).ToArray()),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzConsumeSimpleItemsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzConsumeSimpleItemsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator GetSimpleItem(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetSimpleItemResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string inventoryName,
+                string itemName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetSimpleItem(
+                    new Gs2.Gs2Inventory.Request.GetSimpleItemRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName)
+                        .WithItemName(itemName)
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetSimpleItemResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzGetSimpleItemResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator GetSimpleItemWithSignature(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetSimpleItemWithSignatureResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string inventoryName,
+                string itemName,
+                string keyId
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.GetSimpleItemWithSignature(
+                    new Gs2.Gs2Inventory.Request.GetSimpleItemWithSignatureRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName)
+                        .WithItemName(itemName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithKeyId(keyId),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetSimpleItemWithSignatureResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzGetSimpleItemWithSignatureResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListSimpleItems(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListSimpleItemsResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string inventoryName,
+                string pageToken = null,
+                int? limit = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribeSimpleItems(
+                    new Gs2.Gs2Inventory.Request.DescribeSimpleItemsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListSimpleItemsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzListSimpleItemsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
     }
 }
