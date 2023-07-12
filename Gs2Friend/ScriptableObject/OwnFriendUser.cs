@@ -25,11 +25,11 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
     [CreateAssetMenu(fileName = "OwnFriendUser", menuName = "Game Server Services/Gs2Friend/OwnFriendUser")]
     public class OwnFriendUser : UnityEngine.ScriptableObject
     {
-        public Friend Friend;
+        public Namespace Namespace;
         public string targetUserId;
         public bool withProfile;
 
-        public string NamespaceName => this.Friend.NamespaceName;
+        public string NamespaceName => this.Namespace.NamespaceName;
         public string TargetUserId => this.targetUserId;
         public bool WithProfile => this.withProfile;
 
@@ -45,13 +45,13 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
 #endif
 
         public static OwnFriendUser New(
-            Friend Friend,
+            Namespace Namespace,
             string targetUserId
         )
         {
             var instance = CreateInstance<OwnFriendUser>();
             instance.name = "Runtime";
-            instance.Friend = Friend;
+            instance.Namespace = Namespace;
             instance.targetUserId = targetUserId;
             return instance;
         }
@@ -60,7 +60,7 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
         {
             var instance = CreateInstance<OwnFriendUser>();
             instance.name = "Runtime";
-            instance.Friend = Friend;
+            instance.Namespace = Namespace;
             instance.targetUserId = targetUserId;
             return instance;
         }

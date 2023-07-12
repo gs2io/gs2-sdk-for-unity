@@ -12,49 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
-#if UNITY_INCLUDE_TESTS
-using UnityEditor;
-#endif
-using UnityEngine;
-
-namespace Gs2.Unity.Gs2Friend.ScriptableObject
-{
-    [CreateAssetMenu(fileName = "Follow", menuName = "Game Server Services/Gs2Friend/Follow")]
-    public class Follow : UnityEngine.ScriptableObject
-    {
-        public User User;
-
-        public string NamespaceName => this.User?.NamespaceName;
-        public string UserId => this.User?.UserId;
-
-#if UNITY_INCLUDE_TESTS
-        public static Follow Load(
-            string assetPath
-        )
-        {
-            return Instantiate(
-                AssetDatabase.LoadAssetAtPath<Follow>(assetPath)
-            );
-        }
-#endif
-
-        public static Follow New(
-            User User
-        )
-        {
-            var instance = CreateInstance<Follow>();
-            instance.name = "Runtime";
-            instance.User = User;
-            return instance;
-        }
-
-        public Follow Clone()
-        {
-            var instance = CreateInstance<Follow>();
-            instance.name = "Runtime";
-            instance.User = User;
-            return instance;
-        }
-    }
-}

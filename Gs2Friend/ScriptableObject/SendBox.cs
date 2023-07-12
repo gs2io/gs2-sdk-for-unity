@@ -12,49 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
-#if UNITY_INCLUDE_TESTS
-using UnityEditor;
-#endif
-using UnityEngine;
-
-namespace Gs2.Unity.Gs2Friend.ScriptableObject
-{
-    [CreateAssetMenu(fileName = "SendBox", menuName = "Game Server Services/Gs2Friend/SendBox")]
-    public class SendBox : UnityEngine.ScriptableObject
-    {
-        public User User;
-
-        public string NamespaceName => this.User?.NamespaceName;
-        public string UserId => this.User?.UserId;
-
-#if UNITY_INCLUDE_TESTS
-        public static SendBox Load(
-            string assetPath
-        )
-        {
-            return Instantiate(
-                AssetDatabase.LoadAssetAtPath<SendBox>(assetPath)
-            );
-        }
-#endif
-
-        public static SendBox New(
-            User User
-        )
-        {
-            var instance = CreateInstance<SendBox>();
-            instance.name = "Runtime";
-            instance.User = User;
-            return instance;
-        }
-
-        public SendBox Clone()
-        {
-            var instance = CreateInstance<SendBox>();
-            instance.name = "Runtime";
-            instance.User = User;
-            return instance;
-        }
-    }
-}
