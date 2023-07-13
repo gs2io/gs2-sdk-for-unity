@@ -54,8 +54,6 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
         private readonly Gs2.Gs2Lottery.Domain.Model.ProbabilityAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
-        public string LotteryName => _domain?.LotteryName;
-        public string PrizeId => _domain?.PrizeId;
         public string UserId => _domain?.UserId;
 
         public EzProbabilityGameSessionDomain(
