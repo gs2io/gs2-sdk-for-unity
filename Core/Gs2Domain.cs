@@ -48,6 +48,7 @@ namespace Gs2.Unity.Core
         public Gs2Inventory.Domain.Gs2Inventory Inventory;
         public Gs2JobQueue.Domain.Gs2JobQueue JobQueue;
         public Gs2Limit.Domain.Gs2Limit Limit;
+        public Gs2LoginReward.Domain.Gs2LoginReward LoginReward;
         public Gs2Lottery.Domain.Gs2Lottery Lottery;
         public Gs2Matchmaking.Domain.Gs2Matchmaking Matchmaking;
         public Gs2MegaField.Domain.Gs2MegaField MegaField;
@@ -93,6 +94,7 @@ namespace Gs2.Unity.Core
             Inventory = new Gs2Inventory.Domain.Gs2Inventory(_gs2.Inventory, profile);
             JobQueue = new Gs2JobQueue.Domain.Gs2JobQueue(_gs2.JobQueue, profile);
             Limit = new Gs2Limit.Domain.Gs2Limit(_gs2.Limit, profile);
+            LoginReward = new Gs2LoginReward.Domain.Gs2LoginReward(_gs2.LoginReward, profile);
             Lottery = new Gs2Lottery.Domain.Gs2Lottery(_gs2.Lottery, profile);
             Matchmaking = new Gs2Matchmaking.Domain.Gs2Matchmaking(_gs2.Matchmaking, profile);
             MegaField = new Gs2MegaField.Domain.Gs2MegaField(_gs2.MegaField, profile);
