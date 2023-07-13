@@ -184,7 +184,8 @@ namespace Gs2.Unity.Gs2LoginReward
                 cb => _restClient.GetReceiveStatus(
                     new Gs2.Gs2LoginReward.Request.GetReceiveStatusRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithBonusModelName(bonusModelName),
+                        .WithBonusModelName(bonusModelName)
+                        .WithAccessToken(session.AccessToken.Token),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2LoginReward.Result.EzGetReceiveStatusResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2LoginReward.Result.EzGetReceiveStatusResult.FromModel(r.Result),
@@ -206,7 +207,8 @@ namespace Gs2.Unity.Gs2LoginReward
 		        session,
                 cb => _restClient.DescribeReceiveStatuses(
                     new Gs2.Gs2LoginReward.Request.DescribeReceiveStatusesRequest()
-                        .WithNamespaceName(namespaceName),
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2LoginReward.Result.EzListReceiveStatussResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2LoginReward.Result.EzListReceiveStatussResult.FromModel(r.Result),

@@ -37,9 +37,13 @@ namespace Gs2.Unity.Gs2LoginReward.Model
 		[SerializeField]
 		public string Metadata;
 		[SerializeField]
+		public string Mode;
+		[SerializeField]
 		public string PeriodEventId;
 		[SerializeField]
 		public int ResetHour;
+		[SerializeField]
+		public string Repeat;
 		[SerializeField]
 		public List<Gs2.Unity.Gs2LoginReward.Model.EzReward> Rewards;
 		[SerializeField]
@@ -52,8 +56,10 @@ namespace Gs2.Unity.Gs2LoginReward.Model
             return new Gs2.Gs2LoginReward.Model.BonusModel {
                 Name = Name,
                 Metadata = Metadata,
+                Mode = Mode,
                 PeriodEventId = PeriodEventId,
                 ResetHour = ResetHour,
+                Repeat = Repeat,
                 Rewards = Rewards?.Select(v => {
                     return v.ToModel();
                 }).ToArray(),
@@ -69,8 +75,10 @@ namespace Gs2.Unity.Gs2LoginReward.Model
             return new EzBonusModel {
                 Name = model.Name == null ? null : model.Name,
                 Metadata = model.Metadata == null ? null : model.Metadata,
+                Mode = model.Mode == null ? null : model.Mode,
                 PeriodEventId = model.PeriodEventId == null ? null : model.PeriodEventId,
                 ResetHour = model.ResetHour ?? 0,
+                Repeat = model.Repeat == null ? null : model.Repeat,
                 Rewards = model.Rewards == null ? new List<Gs2.Unity.Gs2LoginReward.Model.EzReward>() : model.Rewards.Select(v => {
                     return Gs2.Unity.Gs2LoginReward.Model.EzReward.FromModel(v);
                 }).ToList(),
