@@ -23,14 +23,29 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         )
         {
 #if GS2_ENABLE_UNITASK
-            return await _domain.Download();
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.Download(
+                    );
+                }
+            );
+            return result;
 #else
 
             IEnumerator Impl(Gs2Future<byte[]> self)
             {
                 var future = _domain.Download(
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    _domain.AccessToken,
+                    future,
+                    () => {
+                        return future = _domain.Download(
+                        );
+                    }
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);
@@ -51,8 +66,17 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         )
         {
 #if GS2_ENABLE_UNITASK
+            var result = await _profile.RunAsync(
+                _domain.AccessToken,
+                async () =>
+                {
+                    return await _domain.ReUpload(
+                        data
+                    );
+                }
+            );
             return new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain(
-                await _domain.ReUpload(data), _profile
+                result, _profile
             );
 #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
@@ -60,7 +84,15 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 var future = _domain.ReUpload(
                     data
                 );
-                yield return future;
+                yield return _profile.RunFuture(
+                    null,
+                    future,
+                    () => {
+                        return future = _domain.ReUpload(
+                            data
+                        );
+                    }
+                );
                 if (future.Error != null)
                 {
                     self.OnError(future.Error);

@@ -28,13 +28,20 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         )
         {
 #if GS2_ENABLE_UNITASK
-            return await _domain.Upload(
-                scope,
-                allowUserIds,
-                data,
-                name,
-                updateIfExists
+            var result = await _profile.RunAsync(
+                null,
+                async () =>
+                {
+                    return await _domain.Upload(
+                        scope,
+                        allowUserIds,
+                        data,
+                        name,
+                        updateIfExists
+                    );
+                }
             );
+            return result;
 #else
 
             IEnumerator Impl(Gs2Future<Gs2.Gs2Datastore.Domain.Model.DataObjectDomain> self)
@@ -45,6 +52,19 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                     data,
                     name,
                     updateIfExists
+                );
+                yield return _profile.RunFuture(
+                    null,
+                    future,
+                    () => {
+                        return future = _domain.Upload(
+                            scope,
+                            allowUserIds,
+                            data,
+                            name,
+                            updateIfExists
+                        );
+                    }
                 );
                 yield return future;
                 if (future.Error != null)

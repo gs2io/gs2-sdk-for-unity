@@ -82,7 +82,13 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> ModelAsync()
         {
-            var item = await _domain.Model();
+            var item = await _profile.RunAsync(
+                null,
+                async () =>
+                {
+                    return await _domain.Model();
+                }
+            );
             if (item == null) {
                 return null;
             }
