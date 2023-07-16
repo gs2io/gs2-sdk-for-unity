@@ -124,5 +124,90 @@ namespace Gs2.Unity.Gs2Showcase
                 )
             );
 		}
+
+        public IEnumerator GetRandomShowcaseDisplayItem(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Showcase.Result.EzGetRandomShowcaseDisplayItemResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string showcaseName,
+                string displayItemName = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.GetRandomShowcaseSalesItem(
+                    new Gs2.Gs2Showcase.Request.GetRandomShowcaseSalesItemRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithShowcaseName(showcaseName)
+                        .WithDisplayItemName(displayItemName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Showcase.Result.EzGetRandomShowcaseDisplayItemResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Showcase.Result.EzGetRandomShowcaseDisplayItemResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListRandomShowcaseDisplayItems(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Showcase.Result.EzListRandomShowcaseDisplayItemsResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string showcaseName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribeRandomShowcaseSalesItems(
+                    new Gs2.Gs2Showcase.Request.DescribeRandomShowcaseSalesItemsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithShowcaseName(showcaseName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Showcase.Result.EzListRandomShowcaseDisplayItemsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Showcase.Result.EzListRandomShowcaseDisplayItemsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator RandomShowcaseBuy(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Showcase.Result.EzRandomShowcaseBuyResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string showcaseName,
+                string displayItemName = null,
+                int? quantity = null,
+                List<Gs2.Unity.Gs2Showcase.Model.EzConfig> config = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.RandomShowcaseBuy(
+                    new Gs2.Gs2Showcase.Request.RandomShowcaseBuyRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithShowcaseName(showcaseName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithDisplayItemName(displayItemName)
+                        .WithQuantity(quantity)
+                        .WithConfig(config?.Select(v => {
+                            return v?.ToModel();
+                        }).ToArray()),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Showcase.Result.EzRandomShowcaseBuyResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Showcase.Result.EzRandomShowcaseBuyResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
     }
 }

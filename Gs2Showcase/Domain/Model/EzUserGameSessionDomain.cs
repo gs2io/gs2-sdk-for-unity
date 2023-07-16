@@ -64,6 +64,17 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
             this._profile = profile;
         }
 
+        public Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomShowcaseGameSessionDomain RandomShowcase(
+            string showcaseName
+        ) {
+            return new Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomShowcaseGameSessionDomain(
+                _domain.RandomShowcase(
+                    showcaseName
+                ),
+                _profile
+            );
+        }
+
         public class EzShowcasesIterator : Gs2Iterator<Gs2.Unity.Gs2Showcase.Model.EzShowcase>
         {
             private Gs2Iterator<Gs2.Gs2Showcase.Model.Showcase> _it;
