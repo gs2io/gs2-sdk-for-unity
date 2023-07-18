@@ -65,71 +65,104 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomDisplayItemGameSessionDomain> GetRandomShowcaseDisplayItem(
-              string displayItemName = null
-        )
+        public class EzRandomDisplayItemsIterator : Gs2Iterator<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem>
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomDisplayItemGameSessionDomain> self)
+            private Gs2Iterator<Gs2.Gs2Showcase.Model.RandomDisplayItem> _it;
+        #if !GS2_ENABLE_UNITASK
+            private readonly Gs2.Gs2Showcase.Domain.Model.RandomShowcaseAccessTokenDomain _domain;
+        #endif
+            private readonly Gs2.Unity.Util.Profile _profile;
+
+            public EzRandomDisplayItemsIterator(
+                Gs2Iterator<Gs2.Gs2Showcase.Model.RandomDisplayItem> it,
+        #if !GS2_ENABLE_UNITASK
+                Gs2.Gs2Showcase.Domain.Model.RandomShowcaseAccessTokenDomain domain,
+        #endif
+                Gs2.Unity.Util.Profile profile
+            )
             {
-                yield return GetRandomShowcaseDisplayItemAsync(
-                    displayItemName
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                _it = it;
+        #if !GS2_ENABLE_UNITASK
+                _domain = domain;
+        #endif
+                _profile = profile;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem>> callback)
+            {
+        #if GS2_ENABLE_UNITASK
+                yield return _it.Next();
+        #else
+                yield return _profile.RunIterator(
+                    _domain.AccessToken,
+                    _it,
+                    () =>
+                    {
+                        return _it = _domain.RandomDisplayItems(
+                        );
+                    }
+                );
+        #endif
+                callback.Invoke(
+                    new AsyncResult<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem.FromModel(_it.Current),
+                        _it.Error
+                    )
                 );
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomDisplayItemGameSessionDomain>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomDisplayItemGameSessionDomain> GetRandomShowcaseDisplayItemAsync(
-        #else
-        public IFuture<Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomDisplayItemGameSessionDomain> GetRandomShowcaseDisplayItem(
-        #endif
-              string displayItemName = null
-        ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.GetSalesItemAsync(
-                        new GetRandomShowcaseSalesItemRequest()
-                            .WithDisplayItemName(displayItemName)
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
+        public Gs2Iterator<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem> RandomDisplayItems(
+        )
+        {
+            return new EzRandomDisplayItemsIterator(
+                _domain.RandomDisplayItems(
+                ),
+                _profile
             );
-            return new Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomDisplayItemGameSessionDomain(result, _profile);
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem> RandomDisplayItemsAsync(
         #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomDisplayItemGameSessionDomain> self)
+        public Gs2Iterator<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem> RandomDisplayItems(
+        #endif
+        )
+        {
+        #if GS2_ENABLE_UNITASK
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem>(async (writer, token) =>
             {
-                var future = _domain.GetSalesItem(
-                    new GetRandomShowcaseSalesItemRequest()
-                        .WithDisplayItemName(displayItemName)
-                        .WithAccessToken(_domain.AccessToken.Token)
-                );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.GetSalesItem(
-                    		new GetRandomShowcaseSalesItemRequest()
-                	        .WithDisplayItemName(displayItemName)
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
+                var it = _domain.RandomDisplayItemsAsync(
+                ).GetAsyncEnumerator();
+                while(
+                    await _profile.RunIteratorAsync(
+                        _domain.AccessToken,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.RandomDisplayItemsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
                 {
-                    self.OnError(future.Error);
-                    yield break;
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem.FromModel(it.Current));
                 }
-                var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomDisplayItemGameSessionDomain(result, _profile));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomDisplayItemGameSessionDomain>(Impl);
+            });
+        #else
+            return new EzRandomDisplayItemsIterator(
+                _domain.RandomDisplayItems(
+                ),
+                _domain,
+                _profile
+            );
         #endif
         }
 

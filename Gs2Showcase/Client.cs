@@ -136,8 +136,8 @@ namespace Gs2.Unity.Gs2Showcase
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _restClient.GetRandomShowcaseSalesItem(
-                    new Gs2.Gs2Showcase.Request.GetRandomShowcaseSalesItemRequest()
+                cb => _restClient.GetRandomDisplayItem(
+                    new Gs2.Gs2Showcase.Request.GetRandomDisplayItemRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithShowcaseName(showcaseName)
@@ -162,8 +162,8 @@ namespace Gs2.Unity.Gs2Showcase
             yield return _profile.Run(
                 callback,
 		        session,
-                cb => _restClient.DescribeRandomShowcaseSalesItems(
-                    new Gs2.Gs2Showcase.Request.DescribeRandomShowcaseSalesItemsRequest()
+                cb => _restClient.DescribeRandomDisplayItems(
+                    new Gs2.Gs2Showcase.Request.DescribeRandomDisplayItemsRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithShowcaseName(showcaseName),

@@ -52,14 +52,14 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Iterator
 {
 
     #if GS2_ENABLE_UNITASK
-    public class EzDescribeRandomShowcaseSalesItemsIterator {
+    public class EzDescribeRandomDisplayItemsIterator {
     #else
-    public class EzDescribeRandomShowcaseSalesItemsIterator : Gs2Iterator<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem> {
+    public class EzDescribeRandomDisplayItemsIterator : Gs2Iterator<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem> {
     #endif
-        private readonly Gs2.Gs2Showcase.Domain.Iterator.DescribeRandomShowcaseSalesItemsIterator _iterator;
+        private readonly Gs2.Gs2Showcase.Domain.Iterator.DescribeRandomDisplayItemsIterator _iterator;
 
-        public EzDescribeRandomShowcaseSalesItemsIterator(
-            Gs2.Gs2Showcase.Domain.Iterator.DescribeRandomShowcaseSalesItemsIterator iterator
+        public EzDescribeRandomDisplayItemsIterator(
+            Gs2.Gs2Showcase.Domain.Iterator.DescribeRandomDisplayItemsIterator iterator
         ) {
             this._iterator = iterator;
         }

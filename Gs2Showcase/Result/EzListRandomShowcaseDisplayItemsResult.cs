@@ -33,7 +33,7 @@ namespace Gs2.Unity.Gs2Showcase.Result
 		[SerializeField]
 		public List<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem> Items;
 
-        public static EzListRandomShowcaseDisplayItemsResult FromModel(Gs2.Gs2Showcase.Result.DescribeRandomShowcaseSalesItemsResult model)
+        public static EzListRandomShowcaseDisplayItemsResult FromModel(Gs2.Gs2Showcase.Result.DescribeRandomDisplayItemsResult model)
         {
             return new EzListRandomShowcaseDisplayItemsResult {
                 Items = model.Items == null ? new List<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem>() : model.Items.Select(v => {
