@@ -37,6 +37,7 @@ namespace Gs2.Unity.Core
         public Gs2Datastore.Domain.Gs2Datastore Datastore;
         public Gs2Dictionary.Domain.Gs2Dictionary Dictionary;
         public Gs2Distributor.Domain.Gs2Distributor Distributor;
+        public Gs2Enchant.Domain.Gs2Enchant Enchant;
         public Gs2Enhance.Domain.Gs2Enhance Enhance;
         public Gs2Exchange.Domain.Gs2Exchange Exchange;
         public Gs2Experience.Domain.Gs2Experience Experience;
@@ -83,6 +84,7 @@ namespace Gs2.Unity.Core
             Datastore = new Gs2Datastore.Domain.Gs2Datastore(_gs2.Datastore, profile);
             Dictionary = new Gs2Dictionary.Domain.Gs2Dictionary(_gs2.Dictionary, profile);
             Distributor = new Gs2Distributor.Domain.Gs2Distributor(_gs2.Distributor, profile);
+            Enchant = new Gs2Enchant.Domain.Gs2Enchant(_gs2.Enchant, profile);
             Enhance = new Gs2Enhance.Domain.Gs2Enhance(_gs2.Enhance, profile);
             Exchange = new Gs2Exchange.Domain.Gs2Exchange(_gs2.Exchange, profile);
             Experience = new Gs2Experience.Domain.Gs2Experience(_gs2.Experience, profile);
