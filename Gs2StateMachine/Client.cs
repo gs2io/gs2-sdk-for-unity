@@ -71,8 +71,8 @@ namespace Gs2.Unity.Gs2StateMachine
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2StateMachine.Result.EzEmitResult>> callback,
 		        GameSession session,
                 string namespaceName,
+                string statusName,
                 string eventName,
-                string statusName = null,
                 string args = null
         )
 		{
@@ -100,7 +100,7 @@ namespace Gs2.Unity.Gs2StateMachine
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2StateMachine.Result.EzExitResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string statusName = null
+                string statusName
         )
 		{
             yield return _profile.Run(
@@ -125,7 +125,7 @@ namespace Gs2.Unity.Gs2StateMachine
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2StateMachine.Result.EzGetStatusResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string statusName = null
+                string statusName
         )
 		{
             yield return _profile.Run(
