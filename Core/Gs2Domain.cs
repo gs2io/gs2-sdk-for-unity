@@ -63,6 +63,7 @@ namespace Gs2.Unity.Core
         public Gs2SerialKey.Domain.Gs2SerialKey SerialKey;
         public Gs2Showcase.Domain.Gs2Showcase Showcase;
         public Gs2Stamina.Domain.Gs2Stamina Stamina;
+        public Gs2StateMachine.Domain.Gs2StateMachine StateMachine;
         public Gs2Version.Domain.Gs2Version Version;
 
         public Gs2.Core.Domain.Gs2 Super => _gs2;
@@ -110,6 +111,7 @@ namespace Gs2.Unity.Core
             SerialKey = new Gs2SerialKey.Domain.Gs2SerialKey(_gs2.SerialKey, profile);
             Showcase = new Gs2Showcase.Domain.Gs2Showcase(_gs2.Showcase, profile);
             Stamina = new Gs2Stamina.Domain.Gs2Stamina(_gs2.Stamina, profile);
+            StateMachine = new Gs2StateMachine.Domain.Gs2StateMachine(_gs2.StateMachine, profile);
             Version = new Gs2Version.Domain.Gs2Version(_gs2.Version, profile);
         }
 
