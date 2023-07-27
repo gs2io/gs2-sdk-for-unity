@@ -60,8 +60,8 @@ namespace Gs2.Unity.Util
             Gs2RestSession restSession
         )
         {
-            await session.OpenAsync();
-            var result = await restSession.OpenAsync();
+            await session.ReOpenAsync();
+            var result = await restSession.ReOpenAsync();
             
             if (this._authenticator != null && this._userId != null && this._password != null) {
                 var accessToken = await this._authenticator.AuthenticationAsync();
