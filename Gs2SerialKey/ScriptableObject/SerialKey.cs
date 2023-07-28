@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 #if UNITY_INCLUDE_TESTS
 using UnityEditor;
@@ -23,11 +25,10 @@ namespace Gs2.Unity.Gs2SerialKey.ScriptableObject
     [CreateAssetMenu(fileName = "SerialKey", menuName = "Game Server Services/Gs2SerialKey/SerialKey")]
     public class SerialKey : UnityEngine.ScriptableObject
     {
-        public User User;
+        public Namespace Namespace;
         public string serialKeyCode;
 
-        public string NamespaceName => this.User?.NamespaceName;
-        public string UserId => this.User?.UserId;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string SerialKeyCode => this.serialKeyCode;
 
 #if UNITY_INCLUDE_TESTS
@@ -42,13 +43,13 @@ namespace Gs2.Unity.Gs2SerialKey.ScriptableObject
 #endif
 
         public static SerialKey New(
-            User User,
+            Namespace Namespace,
             string serialKeyCode
         )
         {
             var instance = CreateInstance<SerialKey>();
             instance.name = "Runtime";
-            instance.User = User;
+            instance.Namespace = Namespace;
             instance.serialKeyCode = serialKeyCode;
             return instance;
         }
@@ -57,7 +58,7 @@ namespace Gs2.Unity.Gs2SerialKey.ScriptableObject
         {
             var instance = CreateInstance<SerialKey>();
             instance.name = "Runtime";
-            instance.User = User;
+            instance.Namespace = Namespace;
             instance.serialKeyCode = serialKeyCode;
             return instance;
         }
