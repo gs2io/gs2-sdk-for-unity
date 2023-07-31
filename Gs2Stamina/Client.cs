@@ -163,6 +163,33 @@ namespace Gs2.Unity.Gs2Stamina
             );
 		}
 
+        public IEnumerator ListStaminas(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Stamina.Result.EzListStaminasResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string pageToken = null,
+                int? limit = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribeStaminas(
+                    new Gs2.Gs2Stamina.Request.DescribeStaminasRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Stamina.Result.EzListStaminasResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Stamina.Result.EzListStaminasResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator SetMaxValue(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Stamina.Result.EzSetMaxValueResult>> callback,
 		        GameSession session,
