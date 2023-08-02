@@ -281,7 +281,7 @@ namespace Gs2.Unity.Core.Model
 						yield break;
 					}
 				}
-				result.OnComplete(false);
+				result.OnComplete(true);
 				yield return null;
 			}
 
