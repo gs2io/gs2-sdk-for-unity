@@ -53,6 +53,8 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
     public partial class EzUserGameSessionDomain {
         private readonly Gs2.Gs2Experience.Domain.Model.UserAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
+        public string TransactionId => _domain.TransactionId;
+        public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;

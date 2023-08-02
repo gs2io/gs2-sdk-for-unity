@@ -76,7 +76,7 @@ namespace Gs2.Unity.Gs2Experience
             yield return _profile.Run(
                 callback,
                 null,
-                cb => _client.GetExperienceModel(
+                cb => _restClient.GetExperienceModel(
                     new Gs2.Gs2Experience.Request.GetExperienceModelRequest()
                         .WithNamespaceName(namespaceName)
                         .WithExperienceName(experienceName),
