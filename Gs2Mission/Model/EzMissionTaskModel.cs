@@ -39,6 +39,8 @@ namespace Gs2.Unity.Gs2Mission.Model
 		[SerializeField]
 		public string CounterName;
 		[SerializeField]
+		public string TargetResetType;
+		[SerializeField]
 		public long TargetValue;
 		[SerializeField]
 		public List<Gs2.Unity.Core.Model.EzAcquireAction> CompleteAcquireActions;
@@ -53,6 +55,7 @@ namespace Gs2.Unity.Gs2Mission.Model
                 Name = Name,
                 Metadata = Metadata,
                 CounterName = CounterName,
+                TargetResetType = TargetResetType,
                 TargetValue = TargetValue,
                 CompleteAcquireActions = CompleteAcquireActions?.Select(v => {
                     return v.ToModel();
@@ -68,6 +71,7 @@ namespace Gs2.Unity.Gs2Mission.Model
                 Name = model.Name == null ? null : model.Name,
                 Metadata = model.Metadata == null ? null : model.Metadata,
                 CounterName = model.CounterName == null ? null : model.CounterName,
+                TargetResetType = model.TargetResetType == null ? null : model.TargetResetType,
                 TargetValue = model.TargetValue ?? 0,
                 CompleteAcquireActions = model.CompleteAcquireActions == null ? new List<Gs2.Unity.Core.Model.EzAcquireAction>() : model.CompleteAcquireActions.Select(v => {
                     return Gs2.Unity.Core.Model.EzAcquireAction.FromModel(v);

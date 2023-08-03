@@ -44,6 +44,8 @@ namespace Gs2.Unity.Gs2Experience.Model
 		public long MaxRankCap;
 		[SerializeField]
 		public Gs2.Unity.Gs2Experience.Model.EzThreshold RankThreshold;
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Experience.Model.EzAcquireActionRate> AcquireActionRates;
 
         public Gs2.Gs2Experience.Model.ExperienceModel ToModel()
         {
@@ -54,6 +56,9 @@ namespace Gs2.Unity.Gs2Experience.Model
                 DefaultRankCap = DefaultRankCap,
                 MaxRankCap = MaxRankCap,
                 RankThreshold = RankThreshold?.ToModel(),
+                AcquireActionRates = AcquireActionRates?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
             };
         }
 
@@ -66,6 +71,9 @@ namespace Gs2.Unity.Gs2Experience.Model
                 DefaultRankCap = model.DefaultRankCap ?? 0,
                 MaxRankCap = model.MaxRankCap ?? 0,
                 RankThreshold = model.RankThreshold == null ? null : Gs2.Unity.Gs2Experience.Model.EzThreshold.FromModel(model.RankThreshold),
+                AcquireActionRates = model.AcquireActionRates == null ? new List<Gs2.Unity.Gs2Experience.Model.EzAcquireActionRate>() : model.AcquireActionRates.Select(v => {
+                    return Gs2.Unity.Gs2Experience.Model.EzAcquireActionRate.FromModel(v);
+                }).ToList(),
             };
         }
     }
