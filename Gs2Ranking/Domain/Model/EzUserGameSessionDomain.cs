@@ -270,6 +270,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             private Gs2Iterator<Gs2.Gs2Ranking.Model.Ranking> _it;
         #if !GS2_ENABLE_UNITASK
             private readonly string _categoryName;
+            private readonly string _additionalScopeName;
             private readonly Gs2.Gs2Ranking.Domain.Model.UserAccessTokenDomain _domain;
         #endif
             private readonly Gs2.Unity.Util.Profile _profile;
@@ -278,6 +279,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 Gs2Iterator<Gs2.Gs2Ranking.Model.Ranking> it,
         #if !GS2_ENABLE_UNITASK
                 string categoryName,
+                string additionalScopeName,
                 Gs2.Gs2Ranking.Domain.Model.UserAccessTokenDomain domain,
         #endif
                 Gs2.Unity.Util.Profile profile
@@ -286,6 +288,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 _it = it;
         #if !GS2_ENABLE_UNITASK
                 _categoryName = categoryName;
+                _additionalScopeName = additionalScopeName;
                 _domain = domain;
         #endif
                 _profile = profile;
@@ -307,7 +310,8 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                     () =>
                     {
                         return _it = _domain.Rankings(
-                            _categoryName
+                            _categoryName,
+                            _additionalScopeName
                         );
                     }
                 );
@@ -323,12 +327,14 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzRanking> Rankings(
-              string categoryName
+              string categoryName,
+              string additionalScopeName = null
         )
         {
             return new EzRankingsIterator(
                 _domain.Rankings(
-                    categoryName
+                    categoryName,
+                    additionalScopeName
                 ),
                 _profile
             );
@@ -338,14 +344,16 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         #else
         public Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzRanking> Rankings(
         #endif
-              string categoryName
+              string categoryName,
+              string additionalScopeName = null
         )
         {
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking.Model.EzRanking>(async (writer, token) =>
             {
                 var it = _domain.RankingsAsync(
-                    categoryName
+                    categoryName,
+                    additionalScopeName
                 ).GetAsyncEnumerator();
                 while(
                     await _profile.RunIteratorAsync(
@@ -356,7 +364,8 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                         },
                         () => {
                             it = _domain.RankingsAsync(
-                                categoryName
+                                categoryName,
+                                additionalScopeName
                             ).GetAsyncEnumerator();
                         }
                     )
@@ -368,9 +377,11 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         #else
             return new EzRankingsIterator(
                 _domain.Rankings(
-                    categoryName
+                    categoryName,
+                    additionalScopeName
                 ),
                 categoryName,
+                additionalScopeName,
                 _domain,
                 _profile
             );

@@ -194,7 +194,8 @@ namespace Gs2.Unity.Gs2Ranking
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzGetNearRankingResult>> callback,
                 string namespaceName,
                 string categoryName,
-                long score
+                long score,
+                string additionalScopeName = null
         )
 		{
             yield return _profile.Run(
@@ -204,6 +205,7 @@ namespace Gs2.Unity.Gs2Ranking
                     new Gs2.Gs2Ranking.Request.DescribeNearRankingsRequest()
                         .WithNamespaceName(namespaceName)
                         .WithCategoryName(categoryName)
+                        .WithAdditionalScopeName(additionalScopeName)
                         .WithScore(score),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzGetNearRankingResult>(
@@ -221,6 +223,7 @@ namespace Gs2.Unity.Gs2Ranking
                 string namespaceName,
                 string categoryName,
                 string scorerUserId,
+                string additionalScopeName = null,
                 string uniqueId = null
         )
 		{
@@ -231,6 +234,7 @@ namespace Gs2.Unity.Gs2Ranking
                     new Gs2.Gs2Ranking.Request.GetRankingRequest()
                         .WithNamespaceName(namespaceName)
                         .WithCategoryName(categoryName)
+                        .WithAdditionalScopeName(additionalScopeName)
                         .WithScorerUserId(scorerUserId)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithUniqueId(uniqueId),
@@ -249,6 +253,7 @@ namespace Gs2.Unity.Gs2Ranking
 		        GameSession session,
                 string namespaceName,
                 string categoryName,
+                string additionalScopeName = null,
                 int? limit = null,
                 string pageToken = null,
                 long? startIndex = null
@@ -261,6 +266,7 @@ namespace Gs2.Unity.Gs2Ranking
                     new Gs2.Gs2Ranking.Request.DescribeRankingsRequest()
                         .WithNamespaceName(namespaceName)
                         .WithCategoryName(categoryName)
+                        .WithAdditionalScopeName(additionalScopeName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithLimit(limit)
                         .WithPageToken(pageToken)
