@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 #if UNITY_INCLUDE_TESTS
 using UnityEditor;
@@ -21,15 +23,12 @@ using UnityEngine;
 namespace Gs2.Unity.Gs2MegaField.ScriptableObject
 {
     [CreateAssetMenu(fileName = "Layer", menuName = "Game Server Services/Gs2MegaField/Layer")]
-    public class Layer : UnityEngine.ScriptableObject
+    public class Layer : LayerModel
     {
         public Namespace Namespace;
         public string areaModelName;
-        public string layerModelName;
 
-        public string NamespaceName => this.Namespace?.NamespaceName;
         public string AreaModelName => this.areaModelName;
-        public string LayerModelName => this.layerModelName;
 
 #if UNITY_INCLUDE_TESTS
         public static Layer Load(

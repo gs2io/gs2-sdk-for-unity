@@ -46,13 +46,15 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
 
         public static OwnFriendUser New(
             Namespace Namespace,
-            string targetUserId
+            string targetUserId,
+            bool withProfile
         )
         {
             var instance = CreateInstance<OwnFriendUser>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
             instance.targetUserId = targetUserId;
+            instance.withProfile = withProfile;
             return instance;
         }
 
@@ -62,6 +64,7 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
             instance.name = "Runtime";
             instance.Namespace = Namespace;
             instance.targetUserId = targetUserId;
+            instance.withProfile = withProfile;
             return instance;
         }
     }

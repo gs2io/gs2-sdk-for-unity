@@ -53,8 +53,6 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
     public partial class EzShowcaseDomain {
         private readonly Gs2.Gs2Showcase.Domain.Model.ShowcaseDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
-        public string TransactionId => _domain.TransactionId;
-        public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string ShowcaseName => _domain?.ShowcaseName;
@@ -65,6 +63,17 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
         ) {
             this._domain = domain;
             this._profile = profile;
+        }
+
+        public Gs2.Unity.Gs2Showcase.Domain.Model.EzDisplayItemDomain DisplayItem(
+            string displayItemId
+        ) {
+            return new Gs2.Unity.Gs2Showcase.Domain.Model.EzDisplayItemDomain(
+                _domain.DisplayItem(
+                    displayItemId
+                ),
+                _profile
+            );
         }
 
         #if GS2_ENABLE_UNITASK

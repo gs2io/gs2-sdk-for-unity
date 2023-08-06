@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -57,7 +59,7 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
         public string Signature => _domain.Signature;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
-        public string EntryModelName => _domain?.EntryModelName;
+        public string EntryName => _domain?.EntryName;
 
         public EzEntryGameSessionDomain(
             Gs2.Gs2Dictionary.Domain.Model.EntryAccessTokenDomain domain,
@@ -97,6 +99,7 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
                 {
                     return await _domain.GetWithSignatureAsync(
                         new GetEntryWithSignatureRequest()
+                            .WithEntryModelName(EntryName)
                             .WithKeyId(keyId)
                             .WithAccessToken(_domain.AccessToken.Token)
                     );
@@ -108,6 +111,7 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
             {
                 var future = _domain.GetWithSignature(
                     new GetEntryWithSignatureRequest()
+                        .WithEntryModelName(EntryName)
                         .WithKeyId(keyId)
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
@@ -118,6 +122,7 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
         			{
                 		return future = _domain.GetWithSignature(
                     		new GetEntryWithSignatureRequest()
+                	        .WithEntryModelName(EntryName)
                 	        .WithKeyId(keyId)
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );

@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 #if UNITY_INCLUDE_TESTS
 using UnityEditor;
@@ -20,7 +22,7 @@ using UnityEngine;
 
 namespace Gs2.Unity.Gs2Account.ScriptableObject
 {
-    [CreateAssetMenu(fileName = "TakeOver", menuName = "Game Server Services/Gs2Account/TakeOver")]
+    [CreateAssetMenu(fileName = "OwnTakeOver", menuName = "Game Server Services/Gs2Account/OwnTakeOver")]
     public class OwnTakeOver : UnityEngine.ScriptableObject
     {
         public OwnAccount Account;
@@ -30,12 +32,12 @@ namespace Gs2.Unity.Gs2Account.ScriptableObject
         public int Type => this.type;
 
 #if UNITY_INCLUDE_TESTS
-        public static TakeOver Load(
+        public static OwnTakeOver Load(
             string assetPath
         )
         {
             return Instantiate(
-                AssetDatabase.LoadAssetAtPath<TakeOver>(assetPath)
+                AssetDatabase.LoadAssetAtPath<OwnTakeOver>(assetPath)
             );
         }
 #endif

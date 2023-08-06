@@ -21,13 +21,9 @@ using UnityEngine;
 namespace Gs2.Unity.Gs2Inventory.ScriptableObject
 {
     [CreateAssetMenu(fileName = "OwnSimpleInventory", menuName = "Game Server Services/Gs2Inventory/OwnSimpleInventory")]
-    public class OwnSimpleInventory : UnityEngine.ScriptableObject
+    public class OwnSimpleInventory : SimpleInventoryModel
     {
-        public Namespace Namespace;
-        public string inventoryName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
-        public string InventoryName => this.inventoryName;
 
 #if UNITY_INCLUDE_TESTS
         public static OwnSimpleInventory Load(

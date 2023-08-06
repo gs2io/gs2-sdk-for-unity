@@ -42,6 +42,8 @@ namespace Gs2.Unity.Gs2Experience.Model
 		public long RankValue;
 		[SerializeField]
 		public long RankCapValue;
+		[SerializeField]
+		public long NextRankUpExperienceValue;
 
         public Gs2.Gs2Experience.Model.Status ToModel()
         {
@@ -51,6 +53,7 @@ namespace Gs2.Unity.Gs2Experience.Model
                 ExperienceValue = ExperienceValue,
                 RankValue = RankValue,
                 RankCapValue = RankCapValue,
+                NextRankUpExperienceValue = NextRankUpExperienceValue,
             };
         }
 
@@ -62,6 +65,7 @@ namespace Gs2.Unity.Gs2Experience.Model
                 ExperienceValue = model.ExperienceValue ?? 0,
                 RankValue = model.RankValue ?? 0,
                 RankCapValue = model.RankCapValue ?? 0,
+                NextRankUpExperienceValue = model.NextRankUpExperienceValue ?? 0,
             };
         }
     }

@@ -28,9 +28,9 @@ namespace Gs2.Unity.Gs2Chat.ScriptableObject
         public Room Room;
         public string messageName;
 
-        public string NamespaceName => this.Room.NamespaceName;
-        public string RoomName => this.Room.RoomName;
-        public string Password => this.Room.Password;
+        public string NamespaceName => this.Room?.NamespaceName;
+        public string RoomName => this.Room?.RoomName;
+        public string Password => this.Room?.Password;
         public string MessageName => this.messageName;
 
 #if UNITY_INCLUDE_TESTS

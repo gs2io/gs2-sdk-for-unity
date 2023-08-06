@@ -29,7 +29,7 @@ namespace Gs2.Unity.Gs2Chat.ScriptableObject
         public string roomName;
         public string password;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string RoomName => this.roomName;
         public string Password => this.password;
 
@@ -46,13 +46,15 @@ namespace Gs2.Unity.Gs2Chat.ScriptableObject
 
         public static Room New(
             Namespace Namespace,
-            string roomName
+            string roomName,
+            string password
         )
         {
             var instance = CreateInstance<Room>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
             instance.roomName = roomName;
+            instance.password = password;
             return instance;
         }
 
@@ -62,6 +64,7 @@ namespace Gs2.Unity.Gs2Chat.ScriptableObject
             instance.name = "Runtime";
             instance.Namespace = Namespace;
             instance.roomName = roomName;
+            instance.password = password;
             return instance;
         }
     }

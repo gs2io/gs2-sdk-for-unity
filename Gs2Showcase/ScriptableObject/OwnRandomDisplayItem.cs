@@ -20,14 +20,13 @@ using UnityEngine;
 
 namespace Gs2.Unity.Gs2Showcase.ScriptableObject
 {
-    [CreateAssetMenu(fileName = "OwnRandomDisplayItem", menuName = "Game Server Services/Gs2Showcase/OwnRandomDisplayItem")]
     public class OwnRandomDisplayItem : UnityEngine.ScriptableObject
     {
-        public RandomShowcase RandomShowcase;
+        public OwnRandomShowcase RandomShowcase;
         public string displayItemName;
 
-        public string NamespaceName => this.RandomShowcase?.NamespaceName;
-        public string ShowcaseName => this.RandomShowcase?.ShowcaseName;
+        public string NamespaceName => this.RandomShowcase.NamespaceName;
+        public string ShowcaseName => this.RandomShowcase.ShowcaseName;
         public string DisplayItemName => this.displayItemName;
 
 #if UNITY_INCLUDE_TESTS
@@ -42,7 +41,7 @@ namespace Gs2.Unity.Gs2Showcase.ScriptableObject
 #endif
 
         public static OwnRandomDisplayItem New(
-            RandomShowcase RandomShowcase,
+            OwnRandomShowcase RandomShowcase,
             string displayItemName
         )
         {

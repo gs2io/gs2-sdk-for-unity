@@ -31,6 +31,7 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
 
         public string NamespaceName => this.Namespace.NamespaceName;
         public string TargetUserId => this.targetUserId;
+
         public bool WithProfile => this.withProfile;
 
 #if UNITY_INCLUDE_TESTS
@@ -46,13 +47,15 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
 
         public static OwnFollowUser New(
             Namespace Namespace,
-            string targetUserId
+            string targetUserId,
+            bool withProfile
         )
         {
             var instance = CreateInstance<OwnFollowUser>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
             instance.targetUserId = targetUserId;
+            instance.withProfile = withProfile;
             return instance;
         }
 
@@ -62,6 +65,7 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
             instance.name = "Runtime";
             instance.Namespace = Namespace;
             instance.targetUserId = targetUserId;
+            instance.withProfile = withProfile;
             return instance;
         }
     }

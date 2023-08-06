@@ -22,7 +22,6 @@ using UnityEngine;
 
 namespace Gs2.Unity.Gs2Ranking.ScriptableObject
 {
-    [CreateAssetMenu(fileName = "Ranking", menuName = "Game Server Services/Gs2Ranking/Ranking")]
     public class Ranking : UnityEngine.ScriptableObject
     {
         public User User;

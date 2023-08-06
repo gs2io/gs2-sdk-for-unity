@@ -167,11 +167,11 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
         }
 
         public Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain Entry(
-            string entryModelName
+            string entryName
         ) {
             return new Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain(
                 _domain.Entry(
-                    entryModelName
+                    entryName
                 ),
                 _profile
             );

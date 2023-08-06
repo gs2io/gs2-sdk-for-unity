@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 #if UNITY_INCLUDE_TESTS
 using UnityEditor;
@@ -24,7 +26,6 @@ namespace Gs2.Unity.Gs2Account.ScriptableObject
     public class OwnAccount : UnityEngine.ScriptableObject
     {
         public Namespace Namespace;
-        public string userId;
 
         public string NamespaceName => this.Namespace.NamespaceName;
 
@@ -40,14 +41,12 @@ namespace Gs2.Unity.Gs2Account.ScriptableObject
 #endif
 
         public static OwnAccount New(
-            Namespace Namespace,
-            string userId
+            Namespace Namespace
         )
         {
             var instance = CreateInstance<OwnAccount>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
-            instance.userId = userId;
             return instance;
         }
 
@@ -56,7 +55,6 @@ namespace Gs2.Unity.Gs2Account.ScriptableObject
             var instance = CreateInstance<OwnAccount>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
-            instance.userId = userId;
             return instance;
         }
     }

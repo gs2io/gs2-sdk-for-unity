@@ -24,11 +24,13 @@ namespace Gs2.Unity.Gs2Inventory.ScriptableObject
     public class OwnReferenceOf : UnityEngine.ScriptableObject
     {
         public OwnItemSet ItemSet;
+        public string referenceOf;
 
         public string NamespaceName => this.ItemSet.NamespaceName;
         public string InventoryName => this.ItemSet.InventoryName;
         public string ItemName => this.ItemSet.ItemName;
         public string ItemSetName => this.ItemSet.ItemSetName;
+        public string ReferenceOf => this.referenceOf;
 
 #if UNITY_INCLUDE_TESTS
         public static OwnReferenceOf Load(
@@ -42,12 +44,14 @@ namespace Gs2.Unity.Gs2Inventory.ScriptableObject
 #endif
 
         public static OwnReferenceOf New(
-            OwnItemSet ItemSet
+            OwnItemSet ItemSet,
+            string referenceOf
         )
         {
             var instance = CreateInstance<OwnReferenceOf>();
             instance.name = "Runtime";
             instance.ItemSet = ItemSet;
+            instance.referenceOf = referenceOf;
             return instance;
         }
 
@@ -56,6 +60,7 @@ namespace Gs2.Unity.Gs2Inventory.ScriptableObject
             var instance = CreateInstance<OwnReferenceOf>();
             instance.name = "Runtime";
             instance.ItemSet = ItemSet;
+            instance.referenceOf = referenceOf;
             return instance;
         }
     }

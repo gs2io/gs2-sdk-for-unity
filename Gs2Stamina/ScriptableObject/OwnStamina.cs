@@ -21,13 +21,9 @@ using UnityEngine;
 namespace Gs2.Unity.Gs2Stamina.ScriptableObject
 {
     [CreateAssetMenu(fileName = "OwnStamina", menuName = "Game Server Services/Gs2Stamina/OwnStamina")]
-    public class OwnStamina : UnityEngine.ScriptableObject
+    public class OwnStamina : StaminaModel
     {
-        public Namespace Namespace;
-        public string staminaName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
-        public string StaminaName => this.staminaName;
 
 #if UNITY_INCLUDE_TESTS
         public static OwnStamina Load(

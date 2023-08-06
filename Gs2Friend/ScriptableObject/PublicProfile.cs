@@ -22,13 +22,14 @@ using UnityEngine;
 
 namespace Gs2.Unity.Gs2Friend.ScriptableObject
 {
-    [CreateAssetMenu(fileName = "PublicProfile", menuName = "Game Server Services/Gs2Friend/PublicProfile")]
+    [CreateAssetMenu(fileName = "OwnPublicProfile", menuName = "Game Server Services/Gs2Friend/OwnPublicProfile")]
     public class PublicProfile : UnityEngine.ScriptableObject
     {
-        public User User;
+        public Namespace Namespace;
+        public string userId;
 
-        public string NamespaceName => this.User.NamespaceName;
-        public string UserId => this.User.UserId;
+        public string NamespaceName => this.Namespace.NamespaceName;
+        public string UserId => this.userId;
 
 #if UNITY_INCLUDE_TESTS
         public static PublicProfile Load(
@@ -42,12 +43,14 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
 #endif
 
         public static PublicProfile New(
-            User User
+            Namespace Namespace,
+            string userId
         )
         {
             var instance = CreateInstance<PublicProfile>();
             instance.name = "Runtime";
-            instance.User = User;
+            instance.Namespace = Namespace;
+            instance.userId = userId;
             return instance;
         }
 
@@ -55,7 +58,8 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
         {
             var instance = CreateInstance<PublicProfile>();
             instance.name = "Runtime";
-            instance.User = User;
+            instance.Namespace = Namespace;
+            instance.userId = userId;
             return instance;
         }
     }

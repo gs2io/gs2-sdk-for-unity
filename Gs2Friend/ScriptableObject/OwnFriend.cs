@@ -12,6 +12,53 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
+#if UNITY_INCLUDE_TESTS
+using UnityEditor;
+#endif
+using UnityEngine;
+
+namespace Gs2.Unity.Gs2Friend.ScriptableObject
+{
+    [CreateAssetMenu(fileName = "OwnFriend", menuName = "Game Server Services/Gs2Friend/OwnFriend")]
+    public class OwnFriend : UnityEngine.ScriptableObject
+    {
+        public Namespace Namespace;
+        public bool withProfile;
+
+        public string NamespaceName => this.Namespace.NamespaceName;
+        public bool WithProfile => this.withProfile;
+
+#if UNITY_INCLUDE_TESTS
+        public static OwnFriend Load(
+            string assetPath
+        )
+        {
+            return Instantiate(
+                AssetDatabase.LoadAssetAtPath<OwnFriend>(assetPath)
+            );
+        }
+#endif
+
+        public static OwnFriend New(
+            Namespace Namespace,
+            bool withProfile
+        )
+        {
+            var instance = CreateInstance<OwnFriend>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            instance.withProfile = withProfile;
+            return instance;
+        }
+
+        public OwnFriend Clone()
+        {
+            var instance = CreateInstance<OwnFriend>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            instance.withProfile = withProfile;
+            return instance;
+        }
+    }
+}

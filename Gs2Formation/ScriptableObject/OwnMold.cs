@@ -21,13 +21,9 @@ using UnityEngine;
 namespace Gs2.Unity.Gs2Formation.ScriptableObject
 {
     [CreateAssetMenu(fileName = "OwnMold", menuName = "Game Server Services/Gs2Formation/OwnMold")]
-    public class OwnMold : UnityEngine.ScriptableObject
+    public class OwnMold : MoldModel
     {
-        public Namespace Namespace;
-        public string moldName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
-        public string MoldName => this.moldName;
 
 #if UNITY_INCLUDE_TESTS
         public static OwnMold Load(

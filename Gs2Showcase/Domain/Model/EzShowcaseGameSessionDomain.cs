@@ -53,8 +53,6 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
     public partial class EzShowcaseGameSessionDomain {
         private readonly Gs2.Gs2Showcase.Domain.Model.ShowcaseAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
-        public string TransactionId => _domain.TransactionId;
-        public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string ShowcaseName => _domain?.ShowcaseName;
@@ -67,84 +65,15 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Showcase.Domain.Model.EzShowcaseGameSessionDomain> Buy(
-              string displayItemId = null,
-              int? quantity = null,
-              Gs2.Unity.Gs2Showcase.Model.EzConfig[] config = null
-        )
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Showcase.Domain.Model.EzShowcaseGameSessionDomain> self)
-            {
-                yield return BuyAsync(
-                    displayItemId,
-                    quantity,
-                    config
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Showcase.Domain.Model.EzShowcaseGameSessionDomain>(Impl);
-        }
-
-        public async UniTask<Gs2.Unity.Gs2Showcase.Domain.Model.EzShowcaseGameSessionDomain> BuyAsync(
-        #else
-        public IFuture<Gs2.Unity.Gs2Showcase.Domain.Model.EzShowcaseGameSessionDomain> Buy(
-        #endif
-              string displayItemId = null,
-              int? quantity = null,
-              Gs2.Unity.Gs2Showcase.Model.EzConfig[] config = null
+        public Gs2.Unity.Gs2Showcase.Domain.Model.EzDisplayItemGameSessionDomain DisplayItem(
+            string displayItemId
         ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.BuyAsync(
-                        new BuyRequest()
-                            .WithDisplayItemId(displayItemId)
-                            .WithQuantity(quantity)
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
+            return new Gs2.Unity.Gs2Showcase.Domain.Model.EzDisplayItemGameSessionDomain(
+                _domain.DisplayItem(
+                    displayItemId
+                ),
+                _profile
             );
-            return new Gs2.Unity.Gs2Showcase.Domain.Model.EzShowcaseGameSessionDomain(result, _profile);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Showcase.Domain.Model.EzShowcaseGameSessionDomain> self)
-            {
-                var future = _domain.Buy(
-                    new BuyRequest()
-                        .WithDisplayItemId(displayItemId)
-                        .WithQuantity(quantity)
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
-                        .WithAccessToken(_domain.AccessToken.Token)
-                );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.Buy(
-                    		new BuyRequest()
-                	        .WithDisplayItemId(displayItemId)
-                	        .WithQuantity(quantity)
-        	                .WithConfig(config?.Select(v => v.ToModel()).ToArray())
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Showcase.Domain.Model.EzShowcaseGameSessionDomain(result, _profile));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Showcase.Domain.Model.EzShowcaseGameSessionDomain>(Impl);
-        #endif
         }
 
         #if GS2_ENABLE_UNITASK

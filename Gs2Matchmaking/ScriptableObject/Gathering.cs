@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 #if UNITY_INCLUDE_TESTS
 using UnityEditor;
@@ -23,11 +25,10 @@ namespace Gs2.Unity.Gs2Matchmaking.ScriptableObject
     [CreateAssetMenu(fileName = "Gathering", menuName = "Game Server Services/Gs2Matchmaking/Gathering")]
     public class Gathering : UnityEngine.ScriptableObject
     {
-        public User User;
+        public Namespace Namespace;
         public string gatheringName;
 
-        public string NamespaceName => this.User?.NamespaceName;
-        public string UserId => this.User?.UserId;
+        public string NamespaceName => this.Namespace?.NamespaceName;
         public string GatheringName => this.gatheringName;
 
 #if UNITY_INCLUDE_TESTS
@@ -42,13 +43,13 @@ namespace Gs2.Unity.Gs2Matchmaking.ScriptableObject
 #endif
 
         public static Gathering New(
-            User User,
+            Namespace Namespace,
             string gatheringName
         )
         {
             var instance = CreateInstance<Gathering>();
             instance.name = "Runtime";
-            instance.User = User;
+            instance.Namespace = Namespace;
             instance.gatheringName = gatheringName;
             return instance;
         }
@@ -57,7 +58,7 @@ namespace Gs2.Unity.Gs2Matchmaking.ScriptableObject
         {
             var instance = CreateInstance<Gathering>();
             instance.name = "Runtime";
-            instance.User = User;
+            instance.Namespace = Namespace;
             instance.gatheringName = gatheringName;
             return instance;
         }

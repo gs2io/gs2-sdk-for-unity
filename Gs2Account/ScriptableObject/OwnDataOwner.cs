@@ -23,7 +23,7 @@ namespace Gs2.Unity.Gs2Account.ScriptableObject
     [CreateAssetMenu(fileName = "OwnDataOwner", menuName = "Game Server Services/Gs2Account/OwnDataOwner")]
     public class OwnDataOwner : UnityEngine.ScriptableObject
     {
-        public OwnAccount Account;
+        public Account Account;
         public string dataOwnerName;
 
         public string NamespaceName => this.Account.NamespaceName;
@@ -41,7 +41,7 @@ namespace Gs2.Unity.Gs2Account.ScriptableObject
 #endif
 
         public static OwnDataOwner New(
-            OwnAccount Account,
+            Account Account,
             string dataOwnerName
         )
         {

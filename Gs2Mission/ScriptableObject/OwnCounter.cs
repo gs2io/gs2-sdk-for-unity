@@ -21,13 +21,9 @@ using UnityEngine;
 namespace Gs2.Unity.Gs2Mission.ScriptableObject
 {
     [CreateAssetMenu(fileName = "OwnCounter", menuName = "Game Server Services/Gs2Mission/OwnCounter")]
-    public class OwnCounter : UnityEngine.ScriptableObject
+    public class OwnCounter : CounterModel
     {
-        public Namespace Namespace;
-        public string counterName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
-        public string CounterName => this.counterName;
 
 #if UNITY_INCLUDE_TESTS
         public static OwnCounter Load(

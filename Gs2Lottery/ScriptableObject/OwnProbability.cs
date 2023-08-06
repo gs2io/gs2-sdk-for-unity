@@ -22,15 +22,12 @@ using UnityEngine;
 
 namespace Gs2.Unity.Gs2Lottery.ScriptableObject
 {
-    [CreateAssetMenu(fileName = "OwnProbability", menuName = "Game Server Services/Gs2Lottery/OwnProbability")]
     public class OwnProbability : UnityEngine.ScriptableObject
     {
         public LotteryModel LotteryModel;
-        public string prizeId;
 
         public string NamespaceName => this.LotteryModel.NamespaceName;
         public string LotteryName => this.LotteryModel.LotteryName;
-        public string PrizeId => this.prizeId;
 
 #if UNITY_INCLUDE_TESTS
         public static OwnProbability Load(
@@ -44,14 +41,12 @@ namespace Gs2.Unity.Gs2Lottery.ScriptableObject
 #endif
 
         public static OwnProbability New(
-            LotteryModel LotteryModel,
-            string prizeId
+            LotteryModel LotteryModel
         )
         {
             var instance = CreateInstance<OwnProbability>();
             instance.name = "Runtime";
             instance.LotteryModel = LotteryModel;
-            instance.prizeId = prizeId;
             return instance;
         }
 
@@ -60,7 +55,6 @@ namespace Gs2.Unity.Gs2Lottery.ScriptableObject
             var instance = CreateInstance<OwnProbability>();
             instance.name = "Runtime";
             instance.LotteryModel = LotteryModel;
-            instance.prizeId = prizeId;
             return instance;
         }
     }

@@ -21,13 +21,9 @@ using UnityEngine;
 namespace Gs2.Unity.Gs2Matchmaking.ScriptableObject
 {
     [CreateAssetMenu(fileName = "OwnRating", menuName = "Game Server Services/Gs2Matchmaking/OwnRating")]
-    public class OwnRating : UnityEngine.ScriptableObject
+    public class OwnRating : RatingModel
     {
-        public Namespace Namespace;
-        public string ratingName;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
-        public string RatingName => this.ratingName;
 
 #if UNITY_INCLUDE_TESTS
         public static OwnRating Load(
