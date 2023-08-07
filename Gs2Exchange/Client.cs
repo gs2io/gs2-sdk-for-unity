@@ -312,5 +312,36 @@ namespace Gs2.Unity.Gs2Exchange
                 )
             );
 		}
+
+        public IEnumerator IncrementalExchange(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzIncrementalExchangeResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string rateName,
+                int count,
+                List<Gs2.Unity.Gs2Exchange.Model.EzConfig> config = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.IncrementalExchange(
+                    new Gs2.Gs2Exchange.Request.IncrementalExchangeRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRateName(rateName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithCount(count)
+                        .WithConfig(config?.Select(v => {
+                            return v?.ToModel();
+                        }).ToArray()),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzIncrementalExchangeResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Exchange.Result.EzIncrementalExchangeResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
     }
 }
