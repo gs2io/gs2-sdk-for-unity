@@ -1,0 +1,27 @@
+{
+    "name": "Gs2.Unity.Editor",
+    "rootNamespace": "",
+    "references": [
+        "Gs2",
+        "Gs2.Unity",
+        "UniTask",
+        "UniTask.Linq",
+        "UnityEngine.Purchasing",
+        "UnityEngine.Purchasing.Stores",
+        "Unity.Localization",
+        "AppleAuth",
+        "Gs2.Unity.UIKit.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+    ],
+    "noEngineReferences": false
+}

@@ -25,12 +25,10 @@ namespace Gs2.Unity.Gs2Ranking.ScriptableObject
     [CreateAssetMenu(fileName = "SubscribeUser", menuName = "Game Server Services/Gs2Ranking/SubscribeUser")]
     public class SubscribeUser : UnityEngine.ScriptableObject
     {
-        public User User;
         public CategoryModel CategoryModel;
         public string targetUserId;
 
-        public string NamespaceName => this.User.NamespaceName;
-        public string UserId => this.User.UserId;
+        public string NamespaceName => this.CategoryModel.NamespaceName;
         public string CategoryName => this.CategoryModel.CategoryName;
         public string TargetUserId => this.targetUserId;
 
@@ -46,14 +44,12 @@ namespace Gs2.Unity.Gs2Ranking.ScriptableObject
 #endif
 
         public static SubscribeUser New(
-            User User,
             CategoryModel CategoryModel,
             string targetUserId
         )
         {
             var instance = CreateInstance<SubscribeUser>();
             instance.name = "Runtime";
-            instance.User = User;
             instance.CategoryModel = CategoryModel;
             instance.targetUserId = targetUserId;
             return instance;
@@ -63,7 +59,6 @@ namespace Gs2.Unity.Gs2Ranking.ScriptableObject
         {
             var instance = CreateInstance<SubscribeUser>();
             instance.name = "Runtime";
-            instance.User = User;
             instance.CategoryModel = CategoryModel;
             instance.targetUserId = targetUserId;
             return instance;
