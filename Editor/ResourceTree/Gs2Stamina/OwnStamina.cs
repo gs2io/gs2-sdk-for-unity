@@ -72,7 +72,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Stamina
 
         public override void OnGUI() {
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/Stamina";
                 directory += "/Namespace/" + NamespaceName;
                 directory += "/StaminaModel/" + StaminaName;
 

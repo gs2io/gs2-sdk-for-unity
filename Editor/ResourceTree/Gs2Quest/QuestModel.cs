@@ -76,7 +76,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Quest
             QuestModelEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/Quest";
                 directory += "/Namespace" + "/" + NamespaceName;
                 directory += "/QuestGroupModel" + "/" + QuestGroupName;
                 directory += "/QuestModel" + "/" + QuestName;

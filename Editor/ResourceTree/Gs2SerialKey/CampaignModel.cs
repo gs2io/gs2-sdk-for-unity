@@ -41,6 +41,7 @@ namespace Gs2.Editor.ResourceTree.Gs2SerialKey
             this.icon = EditorGUIUtility.ObjectContent(null, typeof(GameObject)).image.ToTexture2D();
             this.displayName = item.Name;
             this.children = new TreeViewItem[] {
+                new IssueJobHolder(++id, this)
             }.ToList();
             this._parent = parent;
             this._item = item;
@@ -74,7 +75,7 @@ namespace Gs2.Editor.ResourceTree.Gs2SerialKey
             CampaignModelEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/SerialKey";
                 directory += "/Namespace" + "/" + NamespaceName;
                 directory += "/CampaignModelMaster" + "/" + CampaignModelName;
 

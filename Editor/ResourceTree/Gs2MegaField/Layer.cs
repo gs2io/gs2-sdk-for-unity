@@ -76,7 +76,7 @@ namespace Gs2.Editor.ResourceTree.Gs2MegaField
             LayerEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/MegaField";
                 directory += "/Namespace" + "/" + NamespaceName;
                 directory += "/Layer" + "/" + AreaModelName;
                 directory += "/Layer" + "/" + LayerModelName;

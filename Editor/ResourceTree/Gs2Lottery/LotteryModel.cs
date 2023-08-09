@@ -74,7 +74,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Lottery
             LotteryModelEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/Lottery";
                 directory += "/Namespace" + "/" + NamespaceName;
                 directory += "/LotteryModel" + "/" + LotteryName;
 

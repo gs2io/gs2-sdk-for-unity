@@ -76,7 +76,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Matchmaking
             VoteEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/Matchmaking";
                 directory += "/Namespace" + "/" + NamespaceName;
                 directory += "/Vote" + "/" + RatingName;
                 directory += "/Vote" + "/" + GatheringName;

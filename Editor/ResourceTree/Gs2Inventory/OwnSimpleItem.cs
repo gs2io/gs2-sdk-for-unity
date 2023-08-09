@@ -74,7 +74,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Inventory
 
         public override void OnGUI() {
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/Inventory";
                 directory += "/Namespace/" + NamespaceName;
                 directory += "/SimpleInventoryModel/" + InventoryName;
                 directory += "/SimpleItemModel/" + ItemName;

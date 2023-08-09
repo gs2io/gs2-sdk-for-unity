@@ -67,7 +67,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Account
 
         public override void OnGUI() {
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/Account";
                 directory += "/Namespace/" + NamespaceName;
 
                 CreateFolder(directory);

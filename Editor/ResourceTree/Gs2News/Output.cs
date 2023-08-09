@@ -76,7 +76,7 @@ namespace Gs2.Editor.ResourceTree.Gs2News
             OutputEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/News";
                 directory += "/Namespace" + "/" + NamespaceName;
                 directory += "/Progress" + "/" + UploadToken;
                 directory += "/Output" + "/" + OutputName;

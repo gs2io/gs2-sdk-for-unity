@@ -41,6 +41,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Stamina
             this.icon = EditorGUIUtility.ObjectContent(null, typeof(GameObject)).image.ToTexture2D();
             this.displayName = item.Name;
             this.children = new TreeViewItem[] {
+                new OwnStamina(++id, parent, item)
             }.ToList();
             this._parent = parent;
             this._item = item;
@@ -74,7 +75,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Stamina
             StaminaModelEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/Stamina";
                 directory += "/Namespace" + "/" + NamespaceName;
                 directory += "/StaminaModel" + "/" + StaminaName;
 

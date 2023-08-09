@@ -41,6 +41,7 @@ namespace Gs2.Editor.ResourceTree.Gs2News
             this.icon = EditorGUIUtility.ObjectContent(null, typeof(GameObject)).image.ToTexture2D();
             this.displayName = item.UploadToken;
             this.children = new TreeViewItem[] {
+                new OutputHolder(++id, this)
             }.ToList();
             this._parent = parent;
             this._item = item;
@@ -74,7 +75,7 @@ namespace Gs2.Editor.ResourceTree.Gs2News
             ProgressEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/News";
                 directory += "/Namespace" + "/" + NamespaceName;
                 directory += "/Progress" + "/" + UploadToken;
 

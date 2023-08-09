@@ -72,7 +72,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Dictionary
 
         public override void OnGUI() {
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/Dictionary";
                 directory += "/Namespace/" + NamespaceName;
                 directory += "/EntryModel/" + EntryName;
 

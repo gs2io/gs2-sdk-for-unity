@@ -72,7 +72,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Mission
 
         public override void OnGUI() {
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/Mission";
                 directory += "/Namespace/" + NamespaceName;
                 directory += "/CounterModel/" + CounterName;
 

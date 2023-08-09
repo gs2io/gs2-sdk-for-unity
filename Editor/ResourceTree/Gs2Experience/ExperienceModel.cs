@@ -74,7 +74,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Experience
             ExperienceModelEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/Experience";
                 directory += "/Namespace" + "/" + NamespaceName;
                 directory += "/ExperienceModel" + "/" + ExperienceName;
 

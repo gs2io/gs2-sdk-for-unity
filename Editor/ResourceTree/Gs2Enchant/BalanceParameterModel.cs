@@ -74,7 +74,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Enchant
             BalanceParameterModelEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/Enchant";
                 directory += "/Namespace" + "/" + NamespaceName;
                 directory += "/BalanceParameterModel" + "/" + ParameterName;
 

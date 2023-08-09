@@ -76,7 +76,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Mission
             MissionTaskModelEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/Mission";
                 directory += "/Namespace" + "/" + NamespaceName;
                 directory += "/MissionGroupModel" + "/" + MissionGroupName;
                 directory += "/MissionTaskModel" + "/" + MissionTaskName;

@@ -74,7 +74,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Key
             GitHubApiKeyEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/Key";
                 directory += "/Namespace" + "/" + NamespaceName;
                 directory += "/GitHubApiKey" + "/" + ApiKeyName;
 

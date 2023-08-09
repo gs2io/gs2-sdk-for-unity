@@ -54,7 +54,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Friend
             NamespaceEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/Friend";
                 directory += "/Namespace" + "/" + NamespaceName;
 
                 CreateFolder(directory);

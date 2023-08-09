@@ -42,6 +42,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Inventory
             this.icon = EditorGUIUtility.ObjectContent(null, typeof(GameObject)).image.ToTexture2D();
             this.displayName = item.Name;
             this.children = new TreeViewItem[] {
+                new OwnItemSet(++id, parent, item)
             }.ToList();
             this._parent = parent;
             this._item = item;
@@ -76,7 +77,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Inventory
             ItemModelEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/Inventory";
                 directory += "/Namespace" + "/" + NamespaceName;
                 directory += "/InventoryModel" + "/" + InventoryName;
                 directory += "/ItemModel" + "/" + ItemName;

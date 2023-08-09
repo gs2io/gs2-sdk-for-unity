@@ -74,7 +74,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Inbox
             GlobalMessageEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/Inbox";
                 directory += "/Namespace" + "/" + NamespaceName;
                 directory += "/GlobalMessage" + "/" + GlobalMessageName;
 

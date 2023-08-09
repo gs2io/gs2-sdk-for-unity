@@ -55,7 +55,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Showcase
             NamespaceEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/Showcase";
                 directory += "/Namespace" + "/" + NamespaceName;
 
                 CreateFolder(directory);

@@ -55,7 +55,7 @@ namespace Gs2.Editor.ResourceTree.Gs2SerialKey
             NamespaceEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/SerialKey";
                 directory += "/Namespace" + "/" + NamespaceName;
 
                 CreateFolder(directory);
