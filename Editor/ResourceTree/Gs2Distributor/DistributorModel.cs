@@ -74,7 +74,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Distributor
             DistributorModelEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/Distributor";
                 directory += "/Namespace" + "/" + NamespaceName;
                 directory += "/DistributorModel" + "/" + DistributorName;
 

@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using Gs2.Core.Net;
+using Gs2.Core.Exception;
 using Gs2.Editor.ResourceTree.Core;
 using Gs2.Gs2Distributor;
 using Gs2.Gs2Distributor.Request;
@@ -43,6 +44,12 @@ namespace Gs2.Editor.ResourceTree.Gs2Distributor
             this._parent = parent;
         }
 
+        public override void Reload() {
+            this.children = new TreeViewItem[] {
+                new Loading(this, id + 1, this.depth + 1),
+            }.ToList();
+        }
+
         public override IEnumerator Load(TreeView view, Gs2RestSession session, Func<bool> reload) {
             var future = new Gs2DistributorRestClient(session).DescribeDistributorModelsFuture(
                 new DescribeDistributorModelsRequest()
@@ -50,6 +57,12 @@ namespace Gs2.Editor.ResourceTree.Gs2Distributor
             );
             yield return future;
             if (future.Error != null) {
+                if (future.Error is NotFoundException) {
+                    this.children = new TreeViewItem[] {
+                    }.ToList();
+                    reload.Invoke();
+                    yield break;
+                }
                 Debug.LogError(future.Error.Message);
                 yield break;
             }
