@@ -68,14 +68,14 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Quest.Domain.Model.EzUserGameSessionDomain> Start(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Start(
               string questGroupName,
               string questName,
               bool? force = null,
               Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null
         )
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Quest.Domain.Model.EzUserGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 yield return StartAsync(
                     questGroupName,
@@ -87,12 +87,12 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Quest.Domain.Model.EzUserGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2Quest.Domain.Model.EzUserGameSessionDomain> StartAsync(
+        public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> StartAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Quest.Domain.Model.EzUserGameSessionDomain> Start(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Start(
         #endif
               string questGroupName,
               string questName,
@@ -114,9 +114,9 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                     );
                 }
             );
-            return new Gs2.Unity.Gs2Quest.Domain.Model.EzUserGameSessionDomain(result, _profile);
+            return new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
         #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Quest.Domain.Model.EzUserGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 var future = _domain.Start(
                     new StartRequest()
@@ -147,9 +147,9 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Quest.Domain.Model.EzUserGameSessionDomain(result, _profile));
+                self.OnComplete(new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Quest.Domain.Model.EzUserGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         #endif
         }
 

@@ -69,12 +69,12 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomDisplayItemGameSessionDomain> RandomShowcaseBuy(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> RandomShowcaseBuy(
               int? quantity = null,
               Gs2.Unity.Gs2Showcase.Model.EzConfig[] config = null
         )
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomDisplayItemGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 yield return RandomShowcaseBuyAsync(
                     quantity,
@@ -84,12 +84,12 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomDisplayItemGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomDisplayItemGameSessionDomain> RandomShowcaseBuyAsync(
+        public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> RandomShowcaseBuyAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomDisplayItemGameSessionDomain> RandomShowcaseBuy(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> RandomShowcaseBuy(
         #endif
               int? quantity = null,
               Gs2.Unity.Gs2Showcase.Model.EzConfig[] config = null
@@ -107,9 +107,9 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
                     );
                 }
             );
-            return new Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomDisplayItemGameSessionDomain(result, _profile);
+            return new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
         #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomDisplayItemGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 var future = _domain.RandomShowcaseBuy(
                     new RandomShowcaseBuyRequest()
@@ -136,9 +136,9 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomDisplayItemGameSessionDomain(result, _profile));
+                self.OnComplete(new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomDisplayItemGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         #endif
         }
 

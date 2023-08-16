@@ -68,11 +68,11 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain> ReceiveRewards(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveRewards(
               string missionTaskName
         )
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 yield return ReceiveRewardsAsync(
                     missionTaskName
@@ -81,12 +81,12 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain> ReceiveRewardsAsync(
+        public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveRewardsAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain> ReceiveRewards(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveRewards(
         #endif
               string missionTaskName
         ) {
@@ -102,9 +102,9 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                     );
                 }
             );
-            return new Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain(result, _profile);
+            return new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
         #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 var future = _domain.Complete(
                     new CompleteRequest()
@@ -129,9 +129,9 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain(result, _profile));
+                self.OnComplete(new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         #endif
         }
 

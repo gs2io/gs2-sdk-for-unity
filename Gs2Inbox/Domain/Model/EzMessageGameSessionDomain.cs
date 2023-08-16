@@ -68,10 +68,10 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> Read(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Read(
         )
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 yield return ReadAsync(
                 ).ToCoroutine(
@@ -79,12 +79,12 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> ReadAsync(
+        public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ReadAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> Read(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Read(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -98,9 +98,9 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
                     );
                 }
             );
-            return new Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain(result, _profile);
+            return new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
         #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 var future = _domain.Read(
                     new ReadMessageRequest()
@@ -123,9 +123,9 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain(result, _profile));
+                self.OnComplete(new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         #endif
         }
 

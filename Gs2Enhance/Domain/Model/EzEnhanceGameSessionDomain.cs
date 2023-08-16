@@ -69,14 +69,14 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain> Enhance(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Enhance(
               string rateName,
               string targetItemSetId,
               Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials,
               Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
         )
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 yield return EnhanceAsync(
                     rateName,
@@ -88,12 +88,12 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain> EnhanceAsync(
+        public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> EnhanceAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain> Enhance(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Enhance(
         #endif
               string rateName,
               string targetItemSetId,
@@ -115,9 +115,9 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
                     );
                 }
             );
-            return new Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain(result, _profile);
+            return new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
         #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 var future = _domain.Direct(
                     new DirectEnhanceRequest()
@@ -148,9 +148,9 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain(result, _profile));
+                self.OnComplete(new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Enhance.Domain.Model.EzEnhanceGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         #endif
         }
 

@@ -69,12 +69,12 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Showcase.Domain.Model.EzDisplayItemGameSessionDomain> Buy(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Buy(
               int? quantity = null,
               Gs2.Unity.Gs2Showcase.Model.EzConfig[] config = null
         )
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Showcase.Domain.Model.EzDisplayItemGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 yield return BuyAsync(
                     quantity,
@@ -84,12 +84,12 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Showcase.Domain.Model.EzDisplayItemGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2Showcase.Domain.Model.EzDisplayItemGameSessionDomain> BuyAsync(
+        public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> BuyAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Showcase.Domain.Model.EzDisplayItemGameSessionDomain> Buy(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Buy(
         #endif
               int? quantity = null,
               Gs2.Unity.Gs2Showcase.Model.EzConfig[] config = null
@@ -107,9 +107,9 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
                     );
                 }
             );
-            return new Gs2.Unity.Gs2Showcase.Domain.Model.EzDisplayItemGameSessionDomain(result, _profile);
+            return new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
         #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Showcase.Domain.Model.EzDisplayItemGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 var future = _domain.Buy(
                     new BuyRequest()
@@ -136,9 +136,9 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Showcase.Domain.Model.EzDisplayItemGameSessionDomain(result, _profile));
+                self.OnComplete(new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Showcase.Domain.Model.EzDisplayItemGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         #endif
         }
 

@@ -67,13 +67,13 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain> Exchange(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Exchange(
               string rateName,
               int count,
               Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
         )
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 yield return ExchangeAsync(
                     rateName,
@@ -84,12 +84,12 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain> ExchangeAsync(
+        public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ExchangeAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain> Exchange(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Exchange(
         #endif
               string rateName,
               int count,
@@ -109,9 +109,9 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                     );
                 }
             );
-            return new Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain(result, _profile);
+            return new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
         #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 var future = _domain.Exchange(
                     new ExchangeRequest()
@@ -140,20 +140,20 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain(result, _profile));
+                self.OnComplete(new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         #endif
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain> IncrementalExchange(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> IncrementalExchange(
               string rateName,
               int count,
               Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
         )
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 yield return IncrementalExchangeAsync(
                     rateName,
@@ -164,12 +164,12 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain> IncrementalExchangeAsync(
+        public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> IncrementalExchangeAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain> IncrementalExchange(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> IncrementalExchange(
         #endif
               string rateName,
               int count,
@@ -189,9 +189,9 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                     );
                 }
             );
-            return new Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain(result, _profile);
+            return new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
         #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 var future = _domain.Incremental(
                     new IncrementalExchangeRequest()
@@ -220,9 +220,9 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain(result, _profile));
+                self.OnComplete(new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         #endif
         }
 

@@ -67,12 +67,12 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain> Receive(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Receive(
               string bonusModelName,
               Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null
         )
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 yield return ReceiveAsync(
                     bonusModelName,
@@ -82,12 +82,12 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain> ReceiveAsync(
+        public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain> Receive(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Receive(
         #endif
               string bonusModelName,
               Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null
@@ -105,9 +105,9 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                     );
                 }
             );
-            return new Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain(result, _profile);
+            return new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
         #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 var future = _domain.Receive(
                     new ReceiveRequest()
@@ -134,20 +134,20 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain(result, _profile));
+                self.OnComplete(new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         #endif
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain> MissedReceive(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> MissedReceive(
               string bonusModelName,
               int stepNumber,
               Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null
         )
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 yield return MissedReceiveAsync(
                     bonusModelName,
@@ -158,12 +158,12 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain> MissedReceiveAsync(
+        public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> MissedReceiveAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain> MissedReceive(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> MissedReceive(
         #endif
               string bonusModelName,
               int stepNumber,
@@ -183,9 +183,9 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                     );
                 }
             );
-            return new Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain(result, _profile);
+            return new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
         #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 var future = _domain.MissedReceive(
                     new MissedReceiveRequest()
@@ -214,9 +214,9 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain(result, _profile));
+                self.OnComplete(new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         #endif
         }
 

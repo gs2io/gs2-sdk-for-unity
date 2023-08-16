@@ -138,10 +138,10 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Idle.Domain.Model.EzStatusGameSessionDomain> Receive(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Receive(
         )
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Idle.Domain.Model.EzStatusGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 yield return ReceiveAsync(
                 ).ToCoroutine(
@@ -149,12 +149,12 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Idle.Domain.Model.EzStatusGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2Idle.Domain.Model.EzStatusGameSessionDomain> ReceiveAsync(
+        public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Idle.Domain.Model.EzStatusGameSessionDomain> Receive(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Receive(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -168,9 +168,9 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
                     );
                 }
             );
-            return new Gs2.Unity.Gs2Idle.Domain.Model.EzStatusGameSessionDomain(result, _profile);
+            return new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
         #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Idle.Domain.Model.EzStatusGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
                 var future = _domain.Receive(
                     new ReceiveRequest()
@@ -193,9 +193,9 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Idle.Domain.Model.EzStatusGameSessionDomain(result, _profile));
+                self.OnComplete(new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Idle.Domain.Model.EzStatusGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         #endif
         }
 
