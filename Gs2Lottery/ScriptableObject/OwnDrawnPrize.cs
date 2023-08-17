@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 #if UNITY_INCLUDE_TESTS
 using UnityEditor;
@@ -22,44 +20,44 @@ using UnityEngine;
 
 namespace Gs2.Unity.Gs2Lottery.ScriptableObject
 {
-    public class OwnProbability : UnityEngine.ScriptableObject
+    [CreateAssetMenu(fileName = "OwnDrawnPrize", menuName = "Game Server Services/Gs2Lottery/OwnDrawnPrize")]
+    public class OwnDrawnPrize : UnityEngine.ScriptableObject
     {
-        public LotteryModel LotteryModel;
-        public string prizeId;
+        public Namespace Namespace;
+        public int index;
 
-        public string NamespaceName => this.LotteryModel.NamespaceName;
-        public string LotteryName => this.LotteryModel.LotteryName;
-        public string PrizeId => this.prizeId;
+        public string NamespaceName => this.Namespace.NamespaceName;
+        public int Index => this.index;
 
 #if UNITY_INCLUDE_TESTS
-        public static OwnProbability Load(
+        public static OwnDrawnPrize Load(
             string assetPath
         )
         {
             return Instantiate(
-                AssetDatabase.LoadAssetAtPath<OwnProbability>(assetPath)
+                AssetDatabase.LoadAssetAtPath<OwnDrawnPrize>(assetPath)
             );
         }
 #endif
 
-        public static OwnProbability New(
-            LotteryModel LotteryModel,
-            string prizeId
+        public static OwnDrawnPrize New(
+            Namespace Namespace,
+            int index
         )
         {
-            var instance = CreateInstance<OwnProbability>();
+            var instance = CreateInstance<OwnDrawnPrize>();
             instance.name = "Runtime";
-            instance.LotteryModel = LotteryModel;
-            instance.prizeId = prizeId;
+            instance.Namespace = Namespace;
+            instance.index = index;
             return instance;
         }
 
-        public OwnProbability Clone()
+        public OwnDrawnPrize Clone()
         {
-            var instance = CreateInstance<OwnProbability>();
+            var instance = CreateInstance<OwnDrawnPrize>();
             instance.name = "Runtime";
-            instance.LotteryModel = LotteryModel;
-            instance.prizeId = prizeId;
+            instance.Namespace = Namespace;
+            instance.index = index;
             return instance;
         }
     }
