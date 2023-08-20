@@ -24,41 +24,61 @@ using UnityEngine;
 
 namespace Gs2.Editor.ResourceTree.Gs2Inventory
 {
-    public sealed class Namespace : AbstractTreeViewItem
+    public sealed class BigInventoryModel : AbstractTreeViewItem
     {
-        private Gs2.Gs2Inventory.Model.Namespace _item;
-        public string NamespaceName => _item.Name;
+        private Gs2.Gs2Inventory.Model.BigInventoryModel _item;
+        private Namespace _parent;
+        public string NamespaceName => _parent.NamespaceName;
+        public string InventoryName => _item.Name;
 
-        public Namespace(
+        public BigInventoryModel(
                 int id,
-                Gs2.Gs2Inventory.Model.Namespace item
+                Namespace parent,
+                Gs2.Gs2Inventory.Model.BigInventoryModel item
         ) {
             this.id = id = id * 100;
-            this.depth = 2;
+            this.depth = 4;
             this.icon = EditorGUIUtility.ObjectContent(null, typeof(GameObject)).image.ToTexture2D();
             this.displayName = item.Name;
             this.children = new TreeViewItem[] {
-                new InventoryModelHolder(++id, this),
-                new SimpleInventoryModelHolder(++id, this),
-                new BigInventoryModelHolder(++id, this)
+                new BigItemModelHolder(++id, this),
+                new OwnBigInventory(++id, parent, item)
             }.ToList();
+            this._parent = parent;
             this._item = item;
         }
 
         public override ScriptableObject ToScriptableObject() {
-            var instance = Gs2.Unity.Gs2Inventory.ScriptableObject.Namespace.New(
+            Gs2.Unity.Gs2Inventory.ScriptableObject.Namespace parent = null;
+            var guids = AssetDatabase.FindAssets("t:Gs2.Unity.Gs2Inventory.ScriptableObject.Namespace");
+            foreach (var guid in guids) {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var item = AssetDatabase.LoadAssetAtPath<Gs2.Unity.Gs2Inventory.ScriptableObject.Namespace>(path);
+                if (
+                    item.NamespaceName == NamespaceName
+                ) {
+                    parent = item;
+                }
+            }
+            if (parent == null) {
+                Debug.LogError("Gs2.Unity.Gs2Inventory.ScriptableObject.Namespace not found.");
+                return null;
+            }
+            var instance = Gs2.Unity.Gs2Inventory.ScriptableObject.BigInventoryModel.New(
+                parent,
                 this._item.Name
             );
-            instance.name = this._item.Name + "Namespace";
+            instance.name = this._item.Name + "BigInventoryModel";
             return instance;
         }
 
         public override void OnGUI() {
-            NamespaceEditorExt.OnGUI(this._item);
+            BigInventoryModelEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
                 var directory = "Assets/Gs2/Resources/Inventory";
                 directory += "/Namespace" + "/" + NamespaceName;
+                directory += "/BigInventoryModel" + "/" + InventoryName;
 
                 CreateFolder(directory);
 

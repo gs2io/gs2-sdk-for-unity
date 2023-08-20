@@ -534,5 +534,180 @@ namespace Gs2.Unity.Gs2Inventory
                 )
             );
 		}
+
+        public IEnumerator GetBigInventoryModel(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetBigInventoryModelResult>> callback,
+                string namespaceName,
+                string inventoryName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.GetBigInventoryModel(
+                    new Gs2.Gs2Inventory.Request.GetBigInventoryModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetBigInventoryModelResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzGetBigInventoryModelResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListBigInventoryModels(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListBigInventoryModelsResult>> callback,
+                string namespaceName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeBigInventoryModels(
+                    new Gs2.Gs2Inventory.Request.DescribeBigInventoryModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListBigInventoryModelsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzListBigInventoryModelsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator GetBigItemModel(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetBigItemModelResult>> callback,
+                string namespaceName,
+                string inventoryName,
+                string itemName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetBigItemModel(
+                    new Gs2.Gs2Inventory.Request.GetBigItemModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName)
+                        .WithItemName(itemName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetBigItemModelResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzGetBigItemModelResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListBigItemModels(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListBigItemModelsResult>> callback,
+                string namespaceName,
+                string inventoryName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeBigItemModels(
+                    new Gs2.Gs2Inventory.Request.DescribeBigItemModelsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListBigItemModelsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzListBigItemModelsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ConsumeBigItem(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzConsumeBigItemResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string inventoryName,
+                decimal consumeCount
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.ConsumeBigItem(
+                    new Gs2.Gs2Inventory.Request.ConsumeBigItemRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithConsumeCount(consumeCount.ToString("0")),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzConsumeBigItemResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzConsumeBigItemResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator GetBigItem(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetBigItemResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string inventoryName,
+                string itemName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetBigItem(
+                    new Gs2.Gs2Inventory.Request.GetBigItemRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName)
+                        .WithItemName(itemName)
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetBigItemResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzGetBigItemResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListBigItems(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListBigItemsResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string inventoryName,
+                string pageToken = null,
+                int? limit = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribeBigItems(
+                    new Gs2.Gs2Inventory.Request.DescribeBigItemsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithInventoryName(inventoryName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListBigItemsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inventory.Result.EzListBigItemsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
     }
 }

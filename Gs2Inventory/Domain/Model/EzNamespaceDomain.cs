@@ -311,5 +311,117 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             );
         }
 
+        public class EzBigInventoryModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzBigInventoryModel>
+        {
+            private Gs2Iterator<Gs2.Gs2Inventory.Model.BigInventoryModel> _it;
+        #if !GS2_ENABLE_UNITASK
+            private readonly Gs2.Gs2Inventory.Domain.Model.NamespaceDomain _domain;
+        #endif
+            private readonly Gs2.Unity.Util.Profile _profile;
+
+            public EzBigInventoryModelsIterator(
+                Gs2Iterator<Gs2.Gs2Inventory.Model.BigInventoryModel> it,
+        #if !GS2_ENABLE_UNITASK
+                Gs2.Gs2Inventory.Domain.Model.NamespaceDomain domain,
+        #endif
+                Gs2.Unity.Util.Profile profile
+            )
+            {
+                _it = it;
+        #if !GS2_ENABLE_UNITASK
+                _domain = domain;
+        #endif
+                _profile = profile;
+            }
+
+            public override bool HasNext()
+            {
+                return _it.HasNext();
+            }
+
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzBigInventoryModel>> callback)
+            {
+        #if GS2_ENABLE_UNITASK
+                yield return _it.Next();
+        #else
+                yield return _profile.RunIterator(
+                    null,
+                    _it,
+                    () =>
+                    {
+                        return _it = _domain.BigInventoryModels(
+                        );
+                    }
+                );
+        #endif
+                callback.Invoke(
+                    new AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzBigInventoryModel>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzBigInventoryModel.FromModel(_it.Current),
+                        _it.Error
+                    )
+                );
+            }
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzBigInventoryModel> BigInventoryModels(
+        )
+        {
+            return new EzBigInventoryModelsIterator(
+                _domain.BigInventoryModels(
+                ),
+                _profile
+            );
+        }
+
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Inventory.Model.EzBigInventoryModel> BigInventoryModelsAsync(
+        #else
+        public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzBigInventoryModel> BigInventoryModels(
+        #endif
+        )
+        {
+        #if GS2_ENABLE_UNITASK
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Inventory.Model.EzBigInventoryModel>(async (writer, token) =>
+            {
+                var it = _domain.BigInventoryModelsAsync(
+                ).GetAsyncEnumerator();
+                while(
+                    await _profile.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.BigInventoryModelsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzBigInventoryModel.FromModel(it.Current));
+                }
+            });
+        #else
+            return new EzBigInventoryModelsIterator(
+                _domain.BigInventoryModels(
+                ),
+                _domain,
+                _profile
+            );
+        #endif
+        }
+
+        public Gs2.Unity.Gs2Inventory.Domain.Model.EzBigInventoryModelDomain BigInventoryModel(
+            string inventoryName
+        ) {
+            return new Gs2.Unity.Gs2Inventory.Domain.Model.EzBigInventoryModelDomain(
+                _domain.BigInventoryModel(
+                    inventoryName
+                ),
+                _profile
+            );
+        }
+
     }
 }
