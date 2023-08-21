@@ -59,6 +59,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Exchange.Editor
             }
             EditorGUILayout.TextField("CreatedAt", UnixTime.FromUnixTime(item.CreatedAt ?? 0).ToString(CultureInfo.CurrentUICulture));
             EditorGUILayout.TextField("UpdatedAt", UnixTime.FromUnixTime(item.UpdatedAt ?? 0).ToString(CultureInfo.CurrentUICulture));
+            EditorGUILayout.TextField("Revision", item.Revision?.ToString());
             EditorGUI.EndDisabledGroup();
         }
     }

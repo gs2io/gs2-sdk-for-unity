@@ -32,6 +32,7 @@ namespace Gs2.Editor.ResourceTree.Gs2SerialKey.Editor
             EditorGUILayout.TextField("IssueRequestCount", item.IssueRequestCount?.ToString());
             EditorGUILayout.TextField("Status", item.Status);
             EditorGUILayout.TextField("CreatedAt", UnixTime.FromUnixTime(item.CreatedAt ?? 0).ToString(CultureInfo.CurrentUICulture));
+            EditorGUILayout.TextField("Revision", item.Revision?.ToString());
             EditorGUI.EndDisabledGroup();
         }
     }

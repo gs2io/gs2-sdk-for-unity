@@ -29,6 +29,7 @@ namespace Gs2.Editor.ResourceTree.Gs2News.Editor
             EditorGUILayout.TextField("Name", item.Name);
             EditorGUILayout.TextField("Text", item.Text);
             EditorGUILayout.TextField("CreatedAt", UnixTime.FromUnixTime(item.CreatedAt ?? 0).ToString(CultureInfo.CurrentUICulture));
+            EditorGUILayout.TextField("Revision", item.Revision?.ToString());
             EditorGUI.EndDisabledGroup();
         }
     }
