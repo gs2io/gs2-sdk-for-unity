@@ -24,7 +24,6 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
     public class OwnFriendRequest : UnityEngine.ScriptableObject
     {
         public Namespace Namespace;
-        public string userId;
         public string targetUserId;
 
         public string NamespaceName => this.Namespace.NamespaceName;
@@ -50,7 +49,6 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
             var instance = CreateInstance<OwnFriendRequest>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
-            instance.userId = userId;
             instance.targetUserId = targetUserId;
             return instance;
         }
@@ -60,7 +58,6 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
             var instance = CreateInstance<OwnFriendRequest>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
-            instance.userId = userId;
             instance.targetUserId = targetUserId;
             return instance;
         }

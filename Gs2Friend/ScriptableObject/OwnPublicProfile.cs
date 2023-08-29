@@ -12,6 +12,49 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
+#if UNITY_INCLUDE_TESTS
+using UnityEditor;
+#endif
+using UnityEngine;
+
+namespace Gs2.Unity.Gs2Friend.ScriptableObject
+{
+    [CreateAssetMenu(fileName = "OwnPublicProfile", menuName = "Game Server Services/Gs2Friend/OwnPublicProfile")]
+    public class OwnPublicProfile : UnityEngine.ScriptableObject
+    {
+        public Namespace Namespace;
+
+        public string NamespaceName => this.Namespace.NamespaceName;
+
+#if UNITY_INCLUDE_TESTS
+        public static OwnPublicProfile Load(
+            string assetPath
+        )
+        {
+            return Instantiate(
+                AssetDatabase.LoadAssetAtPath<OwnPublicProfile>(assetPath)
+            );
+        }
+#endif
+
+        public static OwnPublicProfile New(
+            Namespace Namespace,
+            string userId
+        )
+        {
+            var instance = CreateInstance<OwnPublicProfile>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            return instance;
+        }
+
+        public OwnPublicProfile Clone()
+        {
+            var instance = CreateInstance<OwnPublicProfile>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            return instance;
+        }
+    }
+}

@@ -24,60 +24,61 @@ using UnityEngine;
 
 namespace Gs2.Editor.ResourceTree.Gs2Formation
 {
-    public sealed class FormModel : AbstractTreeViewItem
+    public sealed class SlotModel : AbstractTreeViewItem
     {
-        private Gs2.Gs2Formation.Model.FormModel _item;
-        private Namespace _parent;
+        private Gs2.Gs2Formation.Model.SlotModel _item;
+        private FormModel _parent;
         public string NamespaceName => _parent.NamespaceName;
-        public string FormModelName => _item.Name;
+        public string FormModelName => _parent.FormModelName;
+        public string SlotModelName => _item.Name;
 
-        public FormModel(
+        public SlotModel(
                 int id,
-                Namespace parent,
-                Gs2.Gs2Formation.Model.FormModel item
+                FormModel parent,
+                Gs2.Gs2Formation.Model.SlotModel item
         ) {
             this.id = id = id * 100;
             this.depth = 4;
             this.icon = EditorGUIUtility.ObjectContent(null, typeof(GameObject)).image.ToTexture2D();
             this.displayName = item.Name;
             this.children = new TreeViewItem[] {
-                new OwnForm(++id, parent, item)
             }.ToList();
             this._parent = parent;
             this._item = item;
         }
 
         public override ScriptableObject ToScriptableObject() {
-            Gs2.Unity.Gs2Formation.ScriptableObject.Namespace parent = null;
-            var guids = AssetDatabase.FindAssets("t:Gs2.Unity.Gs2Formation.ScriptableObject.Namespace");
+            Gs2.Unity.Gs2Formation.ScriptableObject.FormModel parent = null;
+            var guids = AssetDatabase.FindAssets("t:Gs2.Unity.Gs2Formation.ScriptableObject.FormModel");
             foreach (var guid in guids) {
                 var path = AssetDatabase.GUIDToAssetPath(guid);
-                var item = AssetDatabase.LoadAssetAtPath<Gs2.Unity.Gs2Formation.ScriptableObject.Namespace>(path);
+                var item = AssetDatabase.LoadAssetAtPath<Gs2.Unity.Gs2Formation.ScriptableObject.FormModel>(path);
                 if (
-                    item.NamespaceName == NamespaceName
+                    item.FormModelName == FormModelName
                 ) {
                     parent = item;
                 }
             }
             if (parent == null) {
-                Debug.LogError("Gs2.Unity.Gs2Formation.ScriptableObject.Namespace not found.");
+                Debug.LogError("Gs2.Unity.Gs2Formation.ScriptableObject.FormModel not found.");
                 return null;
             }
-            var instance = Gs2.Unity.Gs2Formation.ScriptableObject.FormModel.NewByFormModelName(
+            var instance = Gs2.Unity.Gs2Formation.ScriptableObject.SlotModel.New(
                 parent,
                 this._item.Name
             );
-            instance.name = this._item.Name + "FormModel";
+            instance.name = this._item.Name + "SlotModel";
             return instance;
         }
 
         public override void OnGUI() {
-            FormModelEditorExt.OnGUI(this._item);
+            SlotModelEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
                 var directory = "Assets/Gs2/Resources/Formation";
                 directory += "/Namespace" + "/" + NamespaceName;
                 directory += "/FormModel" + "/" + FormModelName;
+                directory += "/SlotModel" + "/" + SlotModelName;
 
                 CreateFolder(directory);
 

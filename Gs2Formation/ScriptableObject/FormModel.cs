@@ -24,9 +24,11 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
     public class FormModel : UnityEngine.ScriptableObject
     {
         public Namespace Namespace;
+        public string moldModelName;
         public string formModelName;
 
         public string NamespaceName => this.Namespace?.NamespaceName;
+        public string MoldModelName => this.moldModelName;
         public string FormModelName => this.formModelName;
 
 #if UNITY_INCLUDE_TESTS
@@ -40,7 +42,7 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
         }
 #endif
 
-        public static FormModel New(
+        public static FormModel NewByFormModelName(
             Namespace Namespace,
             string formModelName
         )
@@ -52,11 +54,24 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
             return instance;
         }
 
+        public static FormModel NewByMoldModelName(
+            Namespace Namespace,
+            string moldModelName
+        )
+        {
+            var instance = CreateInstance<FormModel>();
+            instance.name = "Runtime";
+            instance.Namespace = Namespace;
+            instance.moldModelName = moldModelName;
+            return instance;
+        }
+
         public FormModel Clone()
         {
             var instance = CreateInstance<FormModel>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
+            instance.moldModelName = moldModelName;
             instance.formModelName = formModelName;
             return instance;
         }
