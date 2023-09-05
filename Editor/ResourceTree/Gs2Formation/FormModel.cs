@@ -63,7 +63,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Formation
                 Debug.LogError("Gs2.Unity.Gs2Formation.ScriptableObject.Namespace not found.");
                 return null;
             }
-            var instance = Gs2.Unity.Gs2Formation.ScriptableObject.FormModel.NewByFormModelName(
+            var instance = Gs2.Unity.Gs2Formation.ScriptableObject.FormModel.New(
                 parent,
                 this._item.Name
             );

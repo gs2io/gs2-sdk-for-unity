@@ -33,12 +33,15 @@ namespace Gs2.Unity.Gs2Stamina.Result
 		[SerializeField]
 		public Gs2.Unity.Gs2Stamina.Model.EzStamina Item;
 		[SerializeField]
+		public Gs2.Unity.Gs2Stamina.Model.EzStamina Old;
+		[SerializeField]
 		public Gs2.Unity.Gs2Stamina.Model.EzStaminaModel StaminaModel;
 
         public static EzSetRecoverIntervalResult FromModel(Gs2.Gs2Stamina.Result.SetRecoverIntervalByStatusResult model)
         {
             return new EzSetRecoverIntervalResult {
                 Item = model.Item == null ? null : Gs2.Unity.Gs2Stamina.Model.EzStamina.FromModel(model.Item),
+                Old = model.Old == null ? null : Gs2.Unity.Gs2Stamina.Model.EzStamina.FromModel(model.Old),
                 StaminaModel = model.StaminaModel == null ? null : Gs2.Unity.Gs2Stamina.Model.EzStaminaModel.FromModel(model.StaminaModel),
             };
         }
