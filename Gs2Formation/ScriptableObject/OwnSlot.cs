@@ -27,7 +27,7 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
         public string slotName;
 
         public string NamespaceName => this.Form.NamespaceName;
-        public string MoldName => this.Form.MoldName;
+        public string MoldModelName => this.Form.MoldModelName;
         public int Index => this.Form.Index;
         public string SlotName => this.slotName;
 

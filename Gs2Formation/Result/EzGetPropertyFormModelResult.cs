@@ -28,18 +28,15 @@ namespace Gs2.Unity.Gs2Formation.Result
 	[Preserve]
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
-	public class EzSetPropertyFormResult
+	public class EzGetPropertyFormModelResult
 	{
 		[SerializeField]
-		public Gs2.Unity.Gs2Formation.Model.EzPropertyForm Item;
-		[SerializeField]
-		public Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel ProeprtyFormModel;
+		public Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel Item;
 
-        public static EzSetPropertyFormResult FromModel(Gs2.Gs2Formation.Result.SetPropertyFormWithSignatureResult model)
+        public static EzGetPropertyFormModelResult FromModel(Gs2.Gs2Formation.Result.GetPropertyFormModelResult model)
         {
-            return new EzSetPropertyFormResult {
-                Item = model.Item == null ? null : Gs2.Unity.Gs2Formation.Model.EzPropertyForm.FromModel(model.Item),
-                ProeprtyFormModel = model.ProeprtyFormModel == null ? null : Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel.FromModel(model.ProeprtyFormModel),
+            return new EzGetPropertyFormModelResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel.FromModel(model.Item),
             };
         }
     }

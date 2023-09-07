@@ -38,13 +38,13 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
 
         public static OwnMold New(
             Namespace Namespace,
-            string moldName
+            string moldModelName
         )
         {
             var instance = CreateInstance<OwnMold>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
-            instance.moldName = moldName;
+            instance.moldModelName = moldModelName;
             return instance;
         }
 
@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
             var instance = CreateInstance<OwnMold>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
-            instance.moldName = moldName;
+            instance.moldModelName = moldModelName;
             return instance;
         }
     }

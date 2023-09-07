@@ -59,7 +59,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
-        public string FormModelName => _domain?.FormModelName;
+        public string PropertyFormModelName => _domain?.PropertyFormModelName;
         public string PropertyId => _domain?.PropertyId;
 
         public EzPropertyFormDomain(

@@ -50,45 +50,34 @@ using System.Collections.Generic;
 namespace Gs2.Unity.Gs2Formation.Domain.Model
 {
 
-    public partial class EzMoldModelDomain {
-        private readonly Gs2.Gs2Formation.Domain.Model.MoldModelDomain _domain;
+    public partial class EzPropertyFormModelDomain {
+        private readonly Gs2.Gs2Formation.Domain.Model.PropertyFormModelDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
-        public string MoldModelName => _domain?.MoldModelName;
+        public string PropertyFormModelName => _domain?.PropertyFormModelName;
 
-        public EzMoldModelDomain(
-            Gs2.Gs2Formation.Domain.Model.MoldModelDomain domain,
+        public EzPropertyFormModelDomain(
+            Gs2.Gs2Formation.Domain.Model.PropertyFormModelDomain domain,
             Gs2.Unity.Util.Profile profile
         ) {
             this._domain = domain;
             this._profile = profile;
         }
 
-        public Gs2.Unity.Gs2Formation.Domain.Model.EzFormModelDomain FormModel(
-            string formModelName
-        ) {
-            return new Gs2.Unity.Gs2Formation.Domain.Model.EzFormModelDomain(
-                _domain.FormModel(
-                    formModelName
-                ),
-                _profile
-            );
-        }
-
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Formation.Model.EzMoldModel> Model()
+        public IFuture<Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel> Model()
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Model.EzMoldModel> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel> self)
             {
                 yield return ModelAsync().ToCoroutine(
                     self.OnComplete,
                     e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
                 );
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Model.EzMoldModel>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2Formation.Model.EzMoldModel> ModelAsync()
+        public async UniTask<Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel> ModelAsync()
         {
             var item = await _profile.RunAsync(
                 null,
@@ -100,14 +89,14 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             if (item == null) {
                 return null;
             }
-            return Gs2.Unity.Gs2Formation.Model.EzMoldModel.FromModel(
+            return Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel.FromModel(
                 item
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Formation.Model.EzMoldModel> Model()
+        public IFuture<Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel> Model()
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Model.EzMoldModel> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel> self)
             {
                 var future = _domain.Model();
                 yield return _profile.RunFuture(
@@ -126,11 +115,11 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                     self.OnComplete(null);
                     yield break;
                 }
-                self.OnComplete(Gs2.Unity.Gs2Formation.Model.EzMoldModel.FromModel(
+                self.OnComplete(Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel.FromModel(
                     item
                 ));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Model.EzMoldModel>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel>(Impl);
         }
         #endif
 

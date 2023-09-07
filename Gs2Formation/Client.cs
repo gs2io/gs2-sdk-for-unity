@@ -70,7 +70,7 @@ namespace Gs2.Unity.Gs2Formation
         public IEnumerator GetMoldModel(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetMoldModelResult>> callback,
                 string namespaceName,
-                string moldName
+                string moldModelName
         )
 		{
             yield return _profile.Run(
@@ -79,7 +79,7 @@ namespace Gs2.Unity.Gs2Formation
                 cb => _client.GetMoldModel(
                     new Gs2.Gs2Formation.Request.GetMoldModelRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithMoldName(moldName),
+                        .WithMoldModelName(moldModelName),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetMoldModelResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Formation.Result.EzGetMoldModelResult.FromModel(r.Result),
@@ -115,7 +115,7 @@ namespace Gs2.Unity.Gs2Formation
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetMoldResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string moldName
+                string moldModelName
         )
 		{
             yield return _profile.Run(
@@ -124,7 +124,7 @@ namespace Gs2.Unity.Gs2Formation
                 cb => _client.GetMold(
                     new Gs2.Gs2Formation.Request.GetMoldRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithMoldName(moldName)
+                        .WithMoldModelName(moldModelName)
                         .WithAccessToken(session.AccessToken.Token),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetMoldResult>(
@@ -166,6 +166,7 @@ namespace Gs2.Unity.Gs2Formation
         public IEnumerator GetFormModel(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetFormModelResult>> callback,
                 string namespaceName,
+                string moldModelName,
                 string formModelName
         )
 		{
@@ -175,6 +176,7 @@ namespace Gs2.Unity.Gs2Formation
                 cb => _client.GetFormModel(
                     new Gs2.Gs2Formation.Request.GetFormModelRequest()
                         .WithNamespaceName(namespaceName)
+                        .WithMoldModelName(moldModelName)
                         .WithFormModelName(formModelName),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetFormModelResult>(
@@ -186,32 +188,11 @@ namespace Gs2.Unity.Gs2Formation
             );
 		}
 
-        public IEnumerator ListFormModels(
-		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzListFormModelsResult>> callback,
-                string namespaceName
-        )
-		{
-            yield return _profile.Run(
-                callback,
-                null,
-                cb => _restClient.DescribeFormModels(
-                    new Gs2.Gs2Formation.Request.DescribeFormModelsRequest()
-                        .WithNamespaceName(namespaceName),
-                    r => cb.Invoke(
-                        new AsyncResult<Gs2.Unity.Gs2Formation.Result.EzListFormModelsResult>(
-                            r.Result == null ? null : Gs2.Unity.Gs2Formation.Result.EzListFormModelsResult.FromModel(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
         public IEnumerator GetForm(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetFormResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string moldName,
+                string moldModelName,
                 int index
         )
 		{
@@ -221,7 +202,7 @@ namespace Gs2.Unity.Gs2Formation
                 cb => _restClient.GetForm(
                     new Gs2.Gs2Formation.Request.GetFormRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithMoldName(moldName)
+                        .WithMoldModelName(moldModelName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithIndex(index),
                     r => cb.Invoke(
@@ -238,7 +219,7 @@ namespace Gs2.Unity.Gs2Formation
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetFormWithSignatureResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string moldName,
+                string moldModelName,
                 int index,
                 string keyId
         )
@@ -249,7 +230,7 @@ namespace Gs2.Unity.Gs2Formation
                 cb => _restClient.GetFormWithSignature(
                     new Gs2.Gs2Formation.Request.GetFormWithSignatureRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithMoldName(moldName)
+                        .WithMoldModelName(moldModelName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithIndex(index)
                         .WithKeyId(keyId),
@@ -267,7 +248,7 @@ namespace Gs2.Unity.Gs2Formation
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzListFormsResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string moldName,
+                string moldModelName,
                 string pageToken = null,
                 int? limit = null
         )
@@ -278,7 +259,7 @@ namespace Gs2.Unity.Gs2Formation
                 cb => _restClient.DescribeForms(
                     new Gs2.Gs2Formation.Request.DescribeFormsRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithMoldName(moldName)
+                        .WithMoldModelName(moldModelName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithPageToken(pageToken)
                         .WithLimit(limit),
@@ -296,7 +277,7 @@ namespace Gs2.Unity.Gs2Formation
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzSetFormResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string moldName,
+                string moldModelName,
                 int index,
                 List<Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature> slots,
                 string keyId
@@ -308,7 +289,7 @@ namespace Gs2.Unity.Gs2Formation
                 cb => _restClient.SetFormWithSignature(
                     new Gs2.Gs2Formation.Request.SetFormWithSignatureRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithMoldName(moldName)
+                        .WithMoldModelName(moldModelName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithIndex(index)
                         .WithSlots(slots?.Select(v => {
@@ -325,11 +306,55 @@ namespace Gs2.Unity.Gs2Formation
             );
 		}
 
+        public IEnumerator GetPropertyFormModel(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetPropertyFormModelResult>> callback,
+                string namespaceName,
+                string propertyFormModelName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _client.GetPropertyFormModel(
+                    new Gs2.Gs2Formation.Request.GetPropertyFormModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithPropertyFormModelName(propertyFormModelName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetPropertyFormModelResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Formation.Result.EzGetPropertyFormModelResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListPropertyFormModels(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzListPropertyFormModelsResult>> callback,
+                string namespaceName
+        )
+		{
+            yield return _profile.Run(
+                callback,
+                null,
+                cb => _restClient.DescribePropertyFormModels(
+                    new Gs2.Gs2Formation.Request.DescribePropertyFormModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Formation.Result.EzListPropertyFormModelsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Formation.Result.EzListPropertyFormModelsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator GetPropertyForm(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetPropertyFormResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string formModelName,
+                string propertyFormModelName,
                 string propertyId
         )
 		{
@@ -339,7 +364,7 @@ namespace Gs2.Unity.Gs2Formation
                 cb => _restClient.GetPropertyForm(
                     new Gs2.Gs2Formation.Request.GetPropertyFormRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithFormModelName(formModelName)
+                        .WithPropertyFormModelName(propertyFormModelName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithPropertyId(propertyId),
                     r => cb.Invoke(
@@ -356,7 +381,7 @@ namespace Gs2.Unity.Gs2Formation
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetPropertyFormWithSignatureResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string formModelName,
+                string propertyFormModelName,
                 string propertyId,
                 string keyId
         )
@@ -367,7 +392,7 @@ namespace Gs2.Unity.Gs2Formation
                 cb => _restClient.GetPropertyFormWithSignature(
                     new Gs2.Gs2Formation.Request.GetPropertyFormWithSignatureRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithFormModelName(formModelName)
+                        .WithPropertyFormModelName(propertyFormModelName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithPropertyId(propertyId)
                         .WithKeyId(keyId),
@@ -385,7 +410,7 @@ namespace Gs2.Unity.Gs2Formation
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzListPropertyFormsResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string formModelName,
+                string propertyFormModelName,
                 string pageToken = null,
                 int? limit = null
         )
@@ -396,7 +421,7 @@ namespace Gs2.Unity.Gs2Formation
                 cb => _restClient.DescribePropertyForms(
                     new Gs2.Gs2Formation.Request.DescribePropertyFormsRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithFormModelName(formModelName)
+                        .WithPropertyFormModelName(propertyFormModelName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithPageToken(pageToken)
                         .WithLimit(limit),
@@ -414,7 +439,7 @@ namespace Gs2.Unity.Gs2Formation
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzSetPropertyFormResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string formModelName,
+                string propertyFormModelName,
                 string propertyId,
                 List<Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature> slots,
                 string keyId
@@ -426,7 +451,7 @@ namespace Gs2.Unity.Gs2Formation
                 cb => _restClient.SetPropertyFormWithSignature(
                     new Gs2.Gs2Formation.Request.SetPropertyFormWithSignatureRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithFormModelName(formModelName)
+                        .WithPropertyFormModelName(propertyFormModelName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithPropertyId(propertyId)
                         .WithSlots(slots?.Select(v => {

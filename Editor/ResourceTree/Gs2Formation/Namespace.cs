@@ -38,8 +38,8 @@ namespace Gs2.Editor.ResourceTree.Gs2Formation
             this.icon = EditorGUIUtility.ObjectContent(null, typeof(GameObject)).image.ToTexture2D();
             this.displayName = item.Name;
             this.children = new TreeViewItem[] {
-                new FormModelHolder(++id, this),
-                new MoldModelHolder(++id, this)
+                new MoldModelHolder(++id, this),
+                new PropertyFormModelHolder(++id, this)
             }.ToList();
             this._item = item;
         }

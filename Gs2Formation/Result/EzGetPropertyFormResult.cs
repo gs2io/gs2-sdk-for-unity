@@ -33,13 +33,13 @@ namespace Gs2.Unity.Gs2Formation.Result
 		[SerializeField]
 		public Gs2.Unity.Gs2Formation.Model.EzPropertyForm Item;
 		[SerializeField]
-		public Gs2.Unity.Gs2Formation.Model.EzFormModel FormModel;
+		public Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel PropertyFormModel;
 
         public static EzGetPropertyFormResult FromModel(Gs2.Gs2Formation.Result.GetPropertyFormResult model)
         {
             return new EzGetPropertyFormResult {
                 Item = model.Item == null ? null : Gs2.Unity.Gs2Formation.Model.EzPropertyForm.FromModel(model.Item),
-                FormModel = model.FormModel == null ? null : Gs2.Unity.Gs2Formation.Model.EzFormModel.FromModel(model.FormModel),
+                PropertyFormModel = model.PropertyFormModel == null ? null : Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel.FromModel(model.PropertyFormModel),
             };
         }
     }

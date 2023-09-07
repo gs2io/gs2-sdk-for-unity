@@ -21,14 +21,10 @@ using UnityEngine;
 namespace Gs2.Unity.Gs2Formation.ScriptableObject
 {
     [CreateAssetMenu(fileName = "OwnPropertyForm", menuName = "Game Server Services/Gs2Formation/OwnPropertyForm")]
-    public class OwnPropertyForm : UnityEngine.ScriptableObject
+    public class OwnPropertyForm : PropertyFormModel
     {
-        public Namespace Namespace;
-        public string formModelName;
         public string propertyId;
 
-        public string NamespaceName => this.Namespace.NamespaceName;
-        public string FormModelName => this.formModelName;
         public string PropertyId => this.propertyId;
 
 #if UNITY_INCLUDE_TESTS
@@ -44,14 +40,14 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
 
         public static OwnPropertyForm New(
             Namespace Namespace,
-            string formModelName,
+            string propertyFormModelName,
             string propertyId
         )
         {
             var instance = CreateInstance<OwnPropertyForm>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
-            instance.formModelName = formModelName;
+            instance.propertyFormModelName = propertyFormModelName;
             instance.propertyId = propertyId;
             return instance;
         }
@@ -61,7 +57,7 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
             var instance = CreateInstance<OwnPropertyForm>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
-            instance.formModelName = formModelName;
+            instance.propertyFormModelName = propertyFormModelName;
             instance.propertyId = propertyId;
             return instance;
         }

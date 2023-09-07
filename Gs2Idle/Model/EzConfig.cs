@@ -37,15 +37,15 @@ namespace Gs2.Unity.Gs2Idle.Model
 		[SerializeField]
 		public string Value;
 
-        public Gs2.Gs2Quest.Model.Config ToModel()
+        public Gs2.Gs2Idle.Model.Config ToModel()
         {
-            return new Gs2.Gs2Quest.Model.Config {
+            return new Gs2.Gs2Idle.Model.Config {
                 Key = Key,
                 Value = Value,
             };
         }
 
-        public static EzConfig FromModel(Gs2.Gs2Quest.Model.Config model)
+        public static EzConfig FromModel(Gs2.Gs2Idle.Model.Config model)
         {
             return new EzConfig {
                 Key = model.Key == null ? null : model.Key,

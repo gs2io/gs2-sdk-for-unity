@@ -20,45 +20,44 @@ using UnityEngine;
 
 namespace Gs2.Unity.Gs2Formation.ScriptableObject
 {
-    [CreateAssetMenu(fileName = "OwnForm", menuName = "Game Server Services/Gs2Formation/OwnForm")]
-    public class OwnForm : UnityEngine.ScriptableObject
+    [CreateAssetMenu(fileName = "PropertyFormModel", menuName = "Game Server Services/Gs2Formation/PropertyFormModel")]
+    public class PropertyFormModel : UnityEngine.ScriptableObject
     {
-        public OwnMold Mold;
-        public int index;
+        public Namespace Namespace;
+        public string propertyFormModelName;
 
-        public string NamespaceName => this.Mold.NamespaceName;
-        public string MoldModelName => this.Mold.MoldModelName;
-        public int Index => this.index;
+        public string NamespaceName => this.Namespace?.NamespaceName;
+        public string PropertyFormModelName => this.propertyFormModelName;
 
 #if UNITY_INCLUDE_TESTS
-        public static OwnForm Load(
+        public static PropertyFormModel Load(
             string assetPath
         )
         {
             return Instantiate(
-                AssetDatabase.LoadAssetAtPath<OwnForm>(assetPath)
+                AssetDatabase.LoadAssetAtPath<PropertyFormModel>(assetPath)
             );
         }
 #endif
 
-        public static OwnForm New(
-            OwnMold Mold,
-            int index
+        public static PropertyFormModel New(
+            Namespace Namespace,
+            string propertyFormModelName
         )
         {
-            var instance = CreateInstance<OwnForm>();
+            var instance = CreateInstance<PropertyFormModel>();
             instance.name = "Runtime";
-            instance.Mold = Mold;
-            instance.index = index;
+            instance.Namespace = Namespace;
+            instance.propertyFormModelName = propertyFormModelName;
             return instance;
         }
 
-        public OwnForm Clone()
+        public PropertyFormModel Clone()
         {
-            var instance = CreateInstance<OwnForm>();
+            var instance = CreateInstance<PropertyFormModel>();
             instance.name = "Runtime";
-            instance.Mold = Mold;
-            instance.index = index;
+            instance.Namespace = Namespace;
+            instance.propertyFormModelName = propertyFormModelName;
             return instance;
         }
     }

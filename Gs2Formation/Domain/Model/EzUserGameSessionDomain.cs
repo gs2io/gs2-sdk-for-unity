@@ -169,11 +169,11 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
 
         public Gs2.Unity.Gs2Formation.Domain.Model.EzMoldGameSessionDomain Mold(
-            string moldName
+            string moldModelName
         ) {
             return new Gs2.Unity.Gs2Formation.Domain.Model.EzMoldGameSessionDomain(
                 _domain.Mold(
-                    moldName
+                    moldModelName
                 ),
                 _profile
             );
@@ -183,7 +183,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         {
             private Gs2Iterator<Gs2.Gs2Formation.Model.PropertyForm> _it;
         #if !GS2_ENABLE_UNITASK
-            private readonly string _formModelName;
+            private readonly string _propertyFormModelName;
             private readonly Gs2.Gs2Formation.Domain.Model.UserAccessTokenDomain _domain;
         #endif
             private readonly Gs2.Unity.Util.Profile _profile;
@@ -191,7 +191,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             public EzPropertyFormsIterator(
                 Gs2Iterator<Gs2.Gs2Formation.Model.PropertyForm> it,
         #if !GS2_ENABLE_UNITASK
-                string formModelName,
+                string propertyFormModelName,
                 Gs2.Gs2Formation.Domain.Model.UserAccessTokenDomain domain,
         #endif
                 Gs2.Unity.Util.Profile profile
@@ -199,7 +199,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             {
                 _it = it;
         #if !GS2_ENABLE_UNITASK
-                _formModelName = formModelName;
+                _propertyFormModelName = propertyFormModelName;
                 _domain = domain;
         #endif
                 _profile = profile;
@@ -221,7 +221,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                     () =>
                     {
                         return _it = _domain.PropertyForms(
-                            _formModelName
+                            _propertyFormModelName
                         );
                     }
                 );
@@ -237,12 +237,12 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzPropertyForm> PropertyForms(
-              string formModelName
+              string propertyFormModelName
         )
         {
             return new EzPropertyFormsIterator(
                 _domain.PropertyForms(
-                    formModelName
+                    propertyFormModelName
                 ),
                 _profile
             );
@@ -252,14 +252,14 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         #else
         public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzPropertyForm> PropertyForms(
         #endif
-              string formModelName
+              string propertyFormModelName
         )
         {
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Formation.Model.EzPropertyForm>(async (writer, token) =>
             {
                 var it = _domain.PropertyFormsAsync(
-                    formModelName
+                    propertyFormModelName
                 ).GetAsyncEnumerator();
                 while(
                     await _profile.RunIteratorAsync(
@@ -270,7 +270,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                         },
                         () => {
                             it = _domain.PropertyFormsAsync(
-                                formModelName
+                                propertyFormModelName
                             ).GetAsyncEnumerator();
                         }
                     )
@@ -282,9 +282,9 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         #else
             return new EzPropertyFormsIterator(
                 _domain.PropertyForms(
-                    formModelName
+                    propertyFormModelName
                 ),
-                formModelName,
+                propertyFormModelName,
                 _domain,
                 _profile
             );
@@ -292,12 +292,12 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
 
         public Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain PropertyForm(
-            string formModelName,
+            string propertyFormModelName,
             string propertyId
         ) {
             return new Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain(
                 _domain.PropertyForm(
-                    formModelName,
+                    propertyFormModelName,
                     propertyId
                 ),
                 _profile

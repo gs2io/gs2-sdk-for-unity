@@ -58,7 +58,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
-        public string MoldName => _domain?.MoldName;
+        public string MoldModelName => _domain?.MoldModelName;
 
         public EzMoldDomain(
             Gs2.Gs2Formation.Domain.Model.MoldDomain domain,

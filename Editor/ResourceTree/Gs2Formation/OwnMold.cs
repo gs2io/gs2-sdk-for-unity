@@ -29,7 +29,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Formation
         private Namespace _parent;
         private Gs2.Gs2Formation.Model.MoldModel _item;
         public string NamespaceName => _parent.NamespaceName;
-        public string MoldName => _item.Name;
+        public string MoldModelName => _item.Name;
 
         public OwnMold(
                 int id,
@@ -74,7 +74,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Formation
             if (GUILayout.Button("Create Reference Object")) {
                 var directory = "Assets/Gs2/Resources/Formation";
                 directory += "/Namespace/" + NamespaceName;
-                directory += "/MoldModel/" + MoldName;
+                directory += "/MoldModel/" + MoldModelName;
 
                 CreateFolder(directory);
 

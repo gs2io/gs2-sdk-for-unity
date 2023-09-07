@@ -167,26 +167,26 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
 
         public Gs2.Unity.Gs2Formation.Domain.Model.EzMoldModelDomain MoldModel(
-            string moldName
+            string moldModelName
         ) {
             return new Gs2.Unity.Gs2Formation.Domain.Model.EzMoldModelDomain(
                 _domain.MoldModel(
-                    moldName
+                    moldModelName
                 ),
                 _profile
             );
         }
 
-        public class EzFormModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzFormModel>
+        public class EzPropertyFormModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel>
         {
-            private Gs2Iterator<Gs2.Gs2Formation.Model.FormModel> _it;
+            private Gs2Iterator<Gs2.Gs2Formation.Model.PropertyFormModel> _it;
         #if !GS2_ENABLE_UNITASK
             private readonly Gs2.Gs2Formation.Domain.Model.NamespaceDomain _domain;
         #endif
             private readonly Gs2.Unity.Util.Profile _profile;
 
-            public EzFormModelsIterator(
-                Gs2Iterator<Gs2.Gs2Formation.Model.FormModel> it,
+            public EzPropertyFormModelsIterator(
+                Gs2Iterator<Gs2.Gs2Formation.Model.PropertyFormModel> it,
         #if !GS2_ENABLE_UNITASK
                 Gs2.Gs2Formation.Domain.Model.NamespaceDomain domain,
         #endif
@@ -205,7 +205,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                 return _it.HasNext();
             }
 
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Formation.Model.EzFormModel>> callback)
+            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel>> callback)
             {
         #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
@@ -215,14 +215,14 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                     _it,
                     () =>
                     {
-                        return _it = _domain.FormModels(
+                        return _it = _domain.PropertyFormModels(
                         );
                     }
                 );
         #endif
                 callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Formation.Model.EzFormModel>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzFormModel.FromModel(_it.Current),
+                    new AsyncResult<Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel>(
+                        _it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel.FromModel(_it.Current),
                         _it.Error
                     )
                 );
@@ -230,26 +230,26 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzFormModel> FormModels(
+        public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel> PropertyFormModels(
         )
         {
-            return new EzFormModelsIterator(
-                _domain.FormModels(
+            return new EzPropertyFormModelsIterator(
+                _domain.PropertyFormModels(
                 ),
                 _profile
             );
         }
 
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Formation.Model.EzFormModel> FormModelsAsync(
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel> PropertyFormModelsAsync(
         #else
-        public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzFormModel> FormModels(
+        public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel> PropertyFormModels(
         #endif
         )
         {
         #if GS2_ENABLE_UNITASK
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Formation.Model.EzFormModel>(async (writer, token) =>
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel>(async (writer, token) =>
             {
-                var it = _domain.FormModelsAsync(
+                var it = _domain.PropertyFormModelsAsync(
                 ).GetAsyncEnumerator();
                 while(
                     await _profile.RunIteratorAsync(
@@ -259,18 +259,18 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                             return await it.MoveNextAsync();
                         },
                         () => {
-                            it = _domain.FormModelsAsync(
+                            it = _domain.PropertyFormModelsAsync(
                             ).GetAsyncEnumerator();
                         }
                     )
                 )
                 {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzFormModel.FromModel(it.Current));
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel.FromModel(it.Current));
                 }
             });
         #else
-            return new EzFormModelsIterator(
-                _domain.FormModels(
+            return new EzPropertyFormModelsIterator(
+                _domain.PropertyFormModels(
                 ),
                 _domain,
                 _profile
@@ -278,12 +278,12 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         #endif
         }
 
-        public Gs2.Unity.Gs2Formation.Domain.Model.EzFormModelDomain FormModel(
-            string formModelName
+        public Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormModelDomain PropertyFormModel(
+            string propertyFormModelName
         ) {
-            return new Gs2.Unity.Gs2Formation.Domain.Model.EzFormModelDomain(
-                _domain.FormModel(
-                    formModelName
+            return new Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormModelDomain(
+                _domain.PropertyFormModel(
+                    propertyFormModelName
                 ),
                 _profile
             );

@@ -54,6 +54,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         private readonly Gs2.Gs2Formation.Domain.Model.FormModelDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
         public string NamespaceName => _domain?.NamespaceName;
+        public string MoldModelName => _domain?.MoldModelName;
         public string FormModelName => _domain?.FormModelName;
 
         public EzFormModelDomain(

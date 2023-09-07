@@ -28,14 +28,15 @@ namespace Gs2.Editor.ResourceTree.Gs2Formation
 {
     public sealed class OwnForm : AbstractTreeViewItem
     {
-        private Namespace _parent;
+        private MoldModel _parent;
         private Gs2.Gs2Formation.Model.FormModel _item;
         public string NamespaceName => _parent.NamespaceName;
+        public string MoldModelName => _parent.MoldModelName;
         public string FormModelName => _item.Name;
 
         public OwnForm(
                 int id,
-                Namespace parent,
+                MoldModel parent,
                 Gs2.Gs2Formation.Model.FormModel item
         ) {
             this.id = id = id * 100;
@@ -56,7 +57,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Formation
                 var item = AssetDatabase.LoadAssetAtPath<Gs2.Unity.Gs2Formation.ScriptableObject.OwnMold>(path);
                 if (
                     item.NamespaceName == NamespaceName &&
-                    item.MoldName == this._item.Name
+                    item.MoldModelName == MoldModelName
                 ) {
                     parent = item;
                 }
@@ -75,8 +76,9 @@ namespace Gs2.Editor.ResourceTree.Gs2Formation
 
         public override void OnGUI() {
             if (GUILayout.Button("Create Reference Object")) {
-                var directory = "Assets/Gs2/Resources";
+                var directory = "Assets/Gs2/Resources/Formation";
                 directory += "/Namespace/" + NamespaceName;
+                directory += "/MoldModel/" + MoldModelName;
                 directory += "/FormModel/" + FormModelName;
 
                 CreateFolder(directory);

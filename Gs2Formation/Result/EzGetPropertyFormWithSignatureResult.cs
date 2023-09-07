@@ -37,7 +37,7 @@ namespace Gs2.Unity.Gs2Formation.Result
 		[SerializeField]
 		public string Signature;
 		[SerializeField]
-		public Gs2.Unity.Gs2Formation.Model.EzFormModel FormModel;
+		public Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel PropertyFormModel;
 
         public static EzGetPropertyFormWithSignatureResult FromModel(Gs2.Gs2Formation.Result.GetPropertyFormWithSignatureResult model)
         {
@@ -45,7 +45,7 @@ namespace Gs2.Unity.Gs2Formation.Result
                 Item = model.Item == null ? null : Gs2.Unity.Gs2Formation.Model.EzPropertyForm.FromModel(model.Item),
                 Body = model.Body == null ? null : model.Body,
                 Signature = model.Signature == null ? null : model.Signature,
-                FormModel = model.FormModel == null ? null : Gs2.Unity.Gs2Formation.Model.EzFormModel.FromModel(model.FormModel),
+                PropertyFormModel = model.PropertyFormModel == null ? null : Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel.FromModel(model.PropertyFormModel),
             };
         }
     }
