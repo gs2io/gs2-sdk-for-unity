@@ -121,6 +121,7 @@ namespace Gs2.Unity.Gs2Inbox
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzListResult>> callback,
 		        GameSession session,
                 string namespaceName,
+                bool? isRead = null,
                 string pageToken = null,
                 int? limit = null
         )
@@ -132,6 +133,7 @@ namespace Gs2.Unity.Gs2Inbox
                     new Gs2.Gs2Inbox.Request.DescribeMessagesRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
+                        .WithIsRead(isRead)
                         .WithPageToken(pageToken)
                         .WithLimit(limit),
                     r => cb.Invoke(

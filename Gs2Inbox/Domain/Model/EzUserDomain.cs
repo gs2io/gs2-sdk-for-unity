@@ -69,6 +69,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         {
             private Gs2Iterator<Gs2.Gs2Inbox.Model.Message> _it;
         #if !GS2_ENABLE_UNITASK
+            private readonly bool? _isRead;
             private readonly Gs2.Gs2Inbox.Domain.Model.UserDomain _domain;
         #endif
             private readonly Gs2.Unity.Util.Profile _profile;
@@ -76,6 +77,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
             public EzMessagesIterator(
                 Gs2Iterator<Gs2.Gs2Inbox.Model.Message> it,
         #if !GS2_ENABLE_UNITASK
+                bool? isRead,
                 Gs2.Gs2Inbox.Domain.Model.UserDomain domain,
         #endif
                 Gs2.Unity.Util.Profile profile
@@ -83,6 +85,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
             {
                 _it = it;
         #if !GS2_ENABLE_UNITASK
+                _isRead = isRead;
                 _domain = domain;
         #endif
                 _profile = profile;
@@ -104,6 +107,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
                     () =>
                     {
                         return _it = _domain.Messages(
+                            _isRead
                         );
                     }
                 );
@@ -119,10 +123,12 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public Gs2Iterator<Gs2.Unity.Gs2Inbox.Model.EzMessage> Messages(
+              bool? isRead = null
         )
         {
             return new EzMessagesIterator(
                 _domain.Messages(
+                    isRead
                 ),
                 _profile
             );
@@ -132,12 +138,14 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         #else
         public Gs2Iterator<Gs2.Unity.Gs2Inbox.Model.EzMessage> Messages(
         #endif
+              bool? isRead = null
         )
         {
         #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Inbox.Model.EzMessage>(async (writer, token) =>
             {
                 var it = _domain.MessagesAsync(
+                    isRead
                 ).GetAsyncEnumerator();
                 while(
                     await _profile.RunIteratorAsync(
@@ -148,6 +156,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
                         },
                         () => {
                             it = _domain.MessagesAsync(
+                                isRead
                             ).GetAsyncEnumerator();
                         }
                     )
@@ -159,7 +168,9 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         #else
             return new EzMessagesIterator(
                 _domain.Messages(
+                    isRead
                 ),
+                isRead,
                 _domain,
                 _profile
             );
