@@ -1,11 +1,13 @@
 {
     "name": "Gs2.Unity",
+    "rootNamespace": "",
     "references": [
         "Gs2",
         "UniTask",
         "UniTask.Linq",
         "UnityEngine.Purchasing",
-        "UnityEngine.Purchasing.Stores"
+        "UnityEngine.Purchasing.Stores",
+        "UnityEngine.Advertisements"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -24,6 +26,11 @@
             "name": "com.unity.purchasing",
             "expression": "4.6.0",
             "define": "GS2_IAP_4_6_0_OR_NEWER"
+        },
+        {
+            "name": "com.unity.ads",
+            "expression": "",
+            "define": "GS2_ENABLE_UNITY_ADS"
         },
         {
             "name": "com.cysharp.unitask",

@@ -32,6 +32,7 @@ namespace Gs2.Unity.Core
         private Gs2.Core.Domain.Gs2 _gs2;
         
         public Gs2Account.Domain.Gs2Account Account;
+        public Gs2AdReward.Domain.Gs2AdReward AdReward;
         public Gs2Auth.Domain.Gs2Auth Auth;
         public Gs2Chat.Domain.Gs2Chat Chat;
         public Gs2Datastore.Domain.Gs2Datastore Datastore;
@@ -81,6 +82,7 @@ namespace Gs2.Unity.Core
             );
             
             Account = new Gs2Account.Domain.Gs2Account(_gs2.Account, profile);
+            AdReward = new Gs2AdReward.Domain.Gs2AdReward(_gs2.AdReward, profile);
             Auth = new Gs2Auth.Domain.Gs2Auth(_gs2.Auth, profile);
             Chat = new Gs2Chat.Domain.Gs2Chat(_gs2.Chat, profile);
             Datastore = new Gs2Datastore.Domain.Gs2Datastore(_gs2.Datastore, profile);
