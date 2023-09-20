@@ -26,6 +26,8 @@ namespace Gs2.Editor.ResourceTree.Gs2Version.Editor
         public static void OnGUI(Gs2.Gs2Version.Model.TargetVersion item) {
             EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.TextField("VersionName", item.VersionName);
+            EditorGUILayout.TextField("Body", item.Body);
+            EditorGUILayout.TextField("Signature", item.Signature);
             if (item.Version == null) {
                 EditorGUILayout.TextField("Version", "");
             }
@@ -35,8 +37,6 @@ namespace Gs2.Editor.ResourceTree.Gs2Version.Editor
                 VersionEditorExt.OnGUI(item.Version);
                 EditorGUI.indentLevel--;
             }
-            EditorGUILayout.TextField("Body", item.Body);
-            EditorGUILayout.TextField("Signature", item.Signature);
             EditorGUI.EndDisabledGroup();
         }
     }

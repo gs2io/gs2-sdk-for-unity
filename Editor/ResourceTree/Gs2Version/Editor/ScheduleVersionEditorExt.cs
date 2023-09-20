@@ -21,15 +21,10 @@ using UnityEditor;
 
 namespace Gs2.Editor.ResourceTree.Gs2Version.Editor
 {
-    public static class VersionModelEditorExt
+    public static class ScheduleVersionEditorExt
     {
-        public static void OnGUI(Gs2.Gs2Version.Model.VersionModel item) {
+        public static void OnGUI(Gs2.Gs2Version.Model.ScheduleVersion item) {
             EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.TextField("VersionModelId", item.VersionModelId);
-            EditorGUILayout.TextField("Name", item.Name);
-            EditorGUILayout.TextField("Metadata", item.Metadata);
-            EditorGUILayout.TextField("Scope", item.Scope);
-            EditorGUILayout.TextField("Type", item.Type);
             if (item.CurrentVersion == null) {
                 EditorGUILayout.TextField("CurrentVersion", "");
             }
@@ -57,8 +52,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Version.Editor
                 VersionEditorExt.OnGUI(item.ErrorVersion);
                 EditorGUI.indentLevel--;
             }
-            EditorGUILayout.TextField("NeedSignature", item.NeedSignature?.ToString());
-            EditorGUILayout.TextField("SignatureKeyId", item.SignatureKeyId);
+            EditorGUILayout.TextField("ScheduleEventId", item.ScheduleEventId);
             EditorGUI.EndDisabledGroup();
         }
     }
