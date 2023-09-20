@@ -21,6 +21,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Numerics;
 using Gs2.Gs2Quest;
 using Gs2.Gs2Quest.Model;
 using Gs2.Gs2Quest.Request;
@@ -632,7 +633,7 @@ namespace Gs2.Unity.Gs2Inventory
 		        GameSession session,
                 string namespaceName,
                 string inventoryName,
-                decimal consumeCount
+                BigInteger consumeCount
         )
 		{
             yield return _profile.Run(

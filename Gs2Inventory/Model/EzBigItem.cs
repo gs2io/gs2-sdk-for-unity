@@ -19,6 +19,7 @@ using Gs2.Gs2Inventory.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Numerics;
 using Gs2.Util.LitJson;
 using UnityEngine;
 using UnityEngine.Scripting;
@@ -37,7 +38,7 @@ namespace Gs2.Unity.Gs2Inventory.Model
 		[SerializeField]
 		public string ItemName;
 		[SerializeField]
-		public decimal Count;
+		public BigInteger Count;
 
         public Gs2.Gs2Inventory.Model.BigItem ToModel()
         {
@@ -53,7 +54,7 @@ namespace Gs2.Unity.Gs2Inventory.Model
             return new EzBigItem {
                 ItemId = model.ItemId == null ? null : model.ItemId,
                 ItemName = model.ItemName == null ? null : model.ItemName,
-                Count = model.Count == null ? 0 : decimal.Parse(model.Count),
+                Count = model.Count == null ? 0 : BigInteger.Parse(model.Count),
             };
         }
     }
