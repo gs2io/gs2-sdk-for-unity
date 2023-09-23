@@ -14,6 +14,7 @@
  * permissions and limitations under the License.
  */
 
+using System;
 using Gs2.Gs2Account.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -23,31 +24,36 @@ using UnityEngine;
 using UnityEngine.Scripting;
 
 // ReSharper disable once CheckNamespace
-namespace Gs2.Unity.Gs2Account.Result
+namespace Gs2.Unity.Gs2Account.Model
 {
+
 	[Preserve]
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
-	public class EzAuthenticationResult
+	public class EzBanStatus
 	{
 		[SerializeField]
-		public Gs2.Unity.Gs2Account.Model.EzAccount Item;
+		public string Name;
 		[SerializeField]
-		public List<Gs2.Unity.Gs2Account.Model.EzBanStatus> BanStatuses;
+		public string Reason;
 		[SerializeField]
-		public string Body;
-		[SerializeField]
-		public string Signature;
+		public long ReleaseTimestamp;
 
-        public static EzAuthenticationResult FromModel(Gs2.Gs2Account.Result.AuthenticationResult model)
+        public Gs2.Gs2Account.Model.BanStatus ToModel()
         {
-            return new EzAuthenticationResult {
-                Item = model.Item == null ? null : Gs2.Unity.Gs2Account.Model.EzAccount.FromModel(model.Item),
-                BanStatuses = model.BanStatuses == null ? new List<Gs2.Unity.Gs2Account.Model.EzBanStatus>() : model.BanStatuses.Select(v => {
-                    return Gs2.Unity.Gs2Account.Model.EzBanStatus.FromModel(v);
-                }).ToList(),
-                Body = model.Body == null ? null : model.Body,
-                Signature = model.Signature == null ? null : model.Signature,
+            return new Gs2.Gs2Account.Model.BanStatus {
+                Name = Name,
+                Reason = Reason,
+                ReleaseTimestamp = ReleaseTimestamp,
+            };
+        }
+
+        public static EzBanStatus FromModel(Gs2.Gs2Account.Model.BanStatus model)
+        {
+            return new EzBanStatus {
+                Name = model.Name == null ? null : model.Name,
+                Reason = model.Reason == null ? null : model.Reason,
+                ReleaseTimestamp = model.ReleaseTimestamp ?? 0,
             };
         }
     }
