@@ -193,5 +193,19 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         }
         #endif
 
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Inventory.Model.EzBigItem> callback)
+        {
+            return this._domain.Subscribe(item => {
+                callback.Invoke(Gs2.Unity.Gs2Inventory.Model.EzBigItem.FromModel(
+                    item
+                ));
+            });
+        }
+
+        public void Unsubscribe(ulong callbackId)
+        {
+            this._domain.Unsubscribe(callbackId);
+        }
+
     }
 }

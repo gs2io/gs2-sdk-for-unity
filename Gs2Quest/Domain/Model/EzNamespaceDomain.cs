@@ -166,6 +166,14 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         #endif
         }
 
+        public ulong SubscribeQuestGroupModels(Action callback) {
+            return this._domain.SubscribeQuestGroupModels(callback);
+        }
+
+        public void UnsubscribeQuestGroupModels(ulong callbackId) {
+            this._domain.UnsubscribeQuestGroupModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2Quest.Domain.Model.EzQuestGroupModelDomain QuestGroupModel(
             string questGroupName
         ) {

@@ -177,6 +177,14 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
         #endif
         }
 
+        public ulong SubscribeBalanceParameterStatuses(Action callback) {
+            return this._domain.SubscribeBalanceParameterStatuses(callback);
+        }
+
+        public void UnsubscribeBalanceParameterStatuses(ulong callbackId) {
+            this._domain.UnsubscribeBalanceParameterStatuses(callbackId);
+        }
+
         public Gs2.Unity.Gs2Enchant.Domain.Model.EzBalanceParameterStatusGameSessionDomain BalanceParameterStatus(
             string parameterName,
             string propertyId
@@ -300,6 +308,14 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
                 _profile
             );
         #endif
+        }
+
+        public ulong SubscribeRarityParameterStatuses(Action callback) {
+            return this._domain.SubscribeRarityParameterStatuses(callback);
+        }
+
+        public void UnsubscribeRarityParameterStatuses(ulong callbackId) {
+            this._domain.UnsubscribeRarityParameterStatuses(callbackId);
         }
 
         public Gs2.Unity.Gs2Enchant.Domain.Model.EzRarityParameterStatusGameSessionDomain RarityParameterStatus(

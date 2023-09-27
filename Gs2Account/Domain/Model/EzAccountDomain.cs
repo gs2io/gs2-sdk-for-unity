@@ -55,6 +55,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
     public partial class EzAccountDomain {
         private readonly Gs2.Gs2Account.Domain.Model.AccountDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
+        public Gs2.Unity.Gs2Account.Model.EzBanStatus[] BanStatuses => _domain.BanStatuses.Select(Gs2.Unity.Gs2Account.Model.EzBanStatus.FromModel).ToArray();
         public string Body => _domain.Body;
         public string Signature => _domain.Signature;
         public string NextPageToken => _domain.NextPageToken;
@@ -241,6 +242,14 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         #endif
         }
 
+        public ulong SubscribeTakeOvers(Action callback) {
+            return this._domain.SubscribeTakeOvers(callback);
+        }
+
+        public void UnsubscribeTakeOvers(ulong callbackId) {
+            this._domain.UnsubscribeTakeOvers(callbackId);
+        }
+
         public Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverDomain TakeOver(
             int type
         ) {
@@ -310,6 +319,20 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Model.EzAccount>(Impl);
         }
         #endif
+
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Account.Model.EzAccount> callback)
+        {
+            return this._domain.Subscribe(item => {
+                callback.Invoke(Gs2.Unity.Gs2Account.Model.EzAccount.FromModel(
+                    item
+                ));
+            });
+        }
+
+        public void Unsubscribe(ulong callbackId)
+        {
+            this._domain.Unsubscribe(callbackId);
+        }
 
     }
 }

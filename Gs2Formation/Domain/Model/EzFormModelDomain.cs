@@ -124,5 +124,19 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
         #endif
 
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Formation.Model.EzFormModel> callback)
+        {
+            return this._domain.Subscribe(item => {
+                callback.Invoke(Gs2.Unity.Gs2Formation.Model.EzFormModel.FromModel(
+                    item
+                ));
+            });
+        }
+
+        public void Unsubscribe(ulong callbackId)
+        {
+            this._domain.Unsubscribe(callbackId);
+        }
+
     }
 }

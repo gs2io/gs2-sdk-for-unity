@@ -165,6 +165,14 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
         #endif
         }
 
+        public ulong SubscribeShowcases(Action callback) {
+            return this._domain.SubscribeShowcases(callback);
+        }
+
+        public void UnsubscribeShowcases(ulong callbackId) {
+            this._domain.UnsubscribeShowcases(callbackId);
+        }
+
         public Gs2.Unity.Gs2Showcase.Domain.Model.EzShowcaseDomain Showcase(
             string showcaseName
         ) {

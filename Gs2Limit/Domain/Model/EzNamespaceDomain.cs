@@ -166,6 +166,14 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
         #endif
         }
 
+        public ulong SubscribeLimitModels(Action callback) {
+            return this._domain.SubscribeLimitModels(callback);
+        }
+
+        public void UnsubscribeLimitModels(ulong callbackId) {
+            this._domain.UnsubscribeLimitModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2Limit.Domain.Model.EzLimitModelDomain LimitModel(
             string limitName
         ) {

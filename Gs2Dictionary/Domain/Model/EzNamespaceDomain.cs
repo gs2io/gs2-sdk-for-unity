@@ -166,6 +166,14 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
         #endif
         }
 
+        public ulong SubscribeEntryModels(Action callback) {
+            return this._domain.SubscribeEntryModels(callback);
+        }
+
+        public void UnsubscribeEntryModels(ulong callbackId) {
+            this._domain.UnsubscribeEntryModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryModelDomain EntryModel(
             string entryName
         ) {

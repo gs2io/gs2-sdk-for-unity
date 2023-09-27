@@ -336,5 +336,19 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
         #endif
 
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Account.Model.EzTakeOver> callback)
+        {
+            return this._domain.Subscribe(item => {
+                callback.Invoke(Gs2.Unity.Gs2Account.Model.EzTakeOver.FromModel(
+                    item
+                ));
+            });
+        }
+
+        public void Unsubscribe(ulong callbackId)
+        {
+            this._domain.Unsubscribe(callbackId);
+        }
+
     }
 }

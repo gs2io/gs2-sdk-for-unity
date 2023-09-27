@@ -250,5 +250,19 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         }
         #endif
 
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Inbox.Model.EzMessage> callback)
+        {
+            return this._domain.Subscribe(item => {
+                callback.Invoke(Gs2.Unity.Gs2Inbox.Model.EzMessage.FromModel(
+                    item
+                ));
+            });
+        }
+
+        public void Unsubscribe(ulong callbackId)
+        {
+            this._domain.Unsubscribe(callbackId);
+        }
+
     }
 }

@@ -169,6 +169,14 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         #endif
         }
 
+        public ulong SubscribeForms(Action callback) {
+            return this._domain.SubscribeForms(callback);
+        }
+
+        public void UnsubscribeForms(ulong callbackId) {
+            this._domain.UnsubscribeForms(callbackId);
+        }
+
         public Gs2.Unity.Gs2Formation.Domain.Model.EzFormDomain Form(
             int index
         ) {
@@ -238,6 +246,20 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Model.EzMold>(Impl);
         }
         #endif
+
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Formation.Model.EzMold> callback)
+        {
+            return this._domain.Subscribe(item => {
+                callback.Invoke(Gs2.Unity.Gs2Formation.Model.EzMold.FromModel(
+                    item
+                ));
+            });
+        }
+
+        public void Unsubscribe(ulong callbackId)
+        {
+            this._domain.Unsubscribe(callbackId);
+        }
 
     }
 }

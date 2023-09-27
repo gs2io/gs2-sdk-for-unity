@@ -168,6 +168,14 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         #endif
         }
 
+        public ulong SubscribeItemSets(Action callback) {
+            return this._domain.SubscribeItemSets(callback);
+        }
+
+        public void UnsubscribeItemSets(ulong callbackId) {
+            this._domain.UnsubscribeItemSets(callbackId);
+        }
+
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain ItemSet(
             string itemName,
             string itemSetName
@@ -239,6 +247,20 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Inventory.Model.EzInventory>(Impl);
         }
         #endif
+
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Inventory.Model.EzInventory> callback)
+        {
+            return this._domain.Subscribe(item => {
+                callback.Invoke(Gs2.Unity.Gs2Inventory.Model.EzInventory.FromModel(
+                    item
+                ));
+            });
+        }
+
+        public void Unsubscribe(ulong callbackId)
+        {
+            this._domain.Unsubscribe(callbackId);
+        }
 
     }
 }

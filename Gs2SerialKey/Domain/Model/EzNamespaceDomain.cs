@@ -166,6 +166,14 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
         #endif
         }
 
+        public ulong SubscribeCampaignModels(Action callback) {
+            return this._domain.SubscribeCampaignModels(callback);
+        }
+
+        public void UnsubscribeCampaignModels(ulong callbackId) {
+            this._domain.UnsubscribeCampaignModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2SerialKey.Domain.Model.EzCampaignModelDomain CampaignModel(
             string campaignModelName
         ) {

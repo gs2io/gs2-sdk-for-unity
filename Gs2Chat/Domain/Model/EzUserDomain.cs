@@ -166,6 +166,14 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #endif
         }
 
+        public ulong SubscribeRooms(Action callback) {
+            return this._domain.SubscribeRooms(callback);
+        }
+
+        public void UnsubscribeRooms(ulong callbackId) {
+            this._domain.UnsubscribeRooms(callbackId);
+        }
+
         public Gs2.Unity.Gs2Chat.Domain.Model.EzRoomDomain Room(
             string roomName,
             string password
@@ -280,6 +288,14 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #endif
         }
 
+        public ulong SubscribeSubscribes(Action callback) {
+            return this._domain.SubscribeSubscribes(callback);
+        }
+
+        public void UnsubscribeSubscribes(ulong callbackId) {
+            this._domain.UnsubscribeSubscribes(callbackId);
+        }
+
         public class EzSubscribesByRoomNameIterator : Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzSubscribe>
         {
             private Gs2Iterator<Gs2.Gs2Chat.Model.Subscribe> _it;
@@ -390,6 +406,14 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                 _profile
             );
         #endif
+        }
+
+        public ulong SubscribeSubscribesByRoomName(Action callback) {
+            return this._domain.SubscribeSubscribesByRoomName(callback);
+        }
+
+        public void UnsubscribeSubscribesByRoomName(ulong callbackId) {
+            this._domain.UnsubscribeSubscribesByRoomName(callbackId);
         }
 
         public Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeDomain Subscribe(

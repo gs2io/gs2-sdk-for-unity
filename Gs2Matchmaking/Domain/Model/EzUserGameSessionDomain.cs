@@ -276,6 +276,14 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #endif
         }
 
+        public ulong SubscribeDoMatchmaking(Action callback) {
+            return this._domain.SubscribeDoMatchmaking(callback);
+        }
+
+        public void UnsubscribeDoMatchmaking(ulong callbackId) {
+            this._domain.UnsubscribeDoMatchmaking(callbackId);
+        }
+
         public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain Gathering(
             string gatheringName
         ) {
@@ -403,6 +411,14 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                 _profile
             );
         #endif
+        }
+
+        public ulong SubscribeRatings(Action callback) {
+            return this._domain.SubscribeRatings(callback);
+        }
+
+        public void UnsubscribeRatings(ulong callbackId) {
+            this._domain.UnsubscribeRatings(callbackId);
         }
 
         public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzRatingGameSessionDomain Rating(

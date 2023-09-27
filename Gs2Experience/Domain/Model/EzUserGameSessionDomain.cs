@@ -179,6 +179,14 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
         #endif
         }
 
+        public ulong SubscribeStatuses(Action callback) {
+            return this._domain.SubscribeStatuses(callback);
+        }
+
+        public void UnsubscribeStatuses(ulong callbackId) {
+            this._domain.UnsubscribeStatuses(callbackId);
+        }
+
         public Gs2.Unity.Gs2Experience.Domain.Model.EzStatusGameSessionDomain Status(
             string experienceName,
             string propertyId

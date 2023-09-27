@@ -166,6 +166,14 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
         #endif
         }
 
+        public ulong SubscribeTriggers(Action callback) {
+            return this._domain.SubscribeTriggers(callback);
+        }
+
+        public void UnsubscribeTriggers(ulong callbackId) {
+            this._domain.UnsubscribeTriggers(callbackId);
+        }
+
         public Gs2.Unity.Gs2Schedule.Domain.Model.EzTriggerDomain Trigger(
             string triggerName
         ) {
@@ -276,6 +284,14 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
                 _profile
             );
         #endif
+        }
+
+        public ulong SubscribeEvents(Action callback) {
+            return this._domain.SubscribeEvents(callback);
+        }
+
+        public void UnsubscribeEvents(ulong callbackId) {
+            this._domain.UnsubscribeEvents(callbackId);
         }
 
         public Gs2.Unity.Gs2Schedule.Domain.Model.EzEventDomain Event(

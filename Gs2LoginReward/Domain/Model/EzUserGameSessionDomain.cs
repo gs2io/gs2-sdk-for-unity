@@ -175,6 +175,14 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
         #endif
         }
 
+        public ulong SubscribeReceiveStatuses(Action callback) {
+            return this._domain.SubscribeReceiveStatuses(callback);
+        }
+
+        public void UnsubscribeReceiveStatuses(ulong callbackId) {
+            this._domain.UnsubscribeReceiveStatuses(callbackId);
+        }
+
         public Gs2.Unity.Gs2LoginReward.Domain.Model.EzReceiveStatusGameSessionDomain ReceiveStatus(
             string bonusModelName
         ) {

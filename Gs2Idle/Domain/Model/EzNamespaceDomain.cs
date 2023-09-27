@@ -166,6 +166,14 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
         #endif
         }
 
+        public ulong SubscribeCategoryModels(Action callback) {
+            return this._domain.SubscribeCategoryModels(callback);
+        }
+
+        public void UnsubscribeCategoryModels(ulong callbackId) {
+            this._domain.UnsubscribeCategoryModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2Idle.Domain.Model.EzCategoryModelDomain CategoryModel(
             string categoryName
         ) {

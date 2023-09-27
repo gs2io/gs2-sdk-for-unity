@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -184,6 +186,14 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #endif
         }
 
+        public ulong SubscribeBlackLists(Action callback) {
+            return this._domain.SubscribeBlackLists(callback);
+        }
+
+        public void UnsubscribeBlackLists(ulong callbackId) {
+            this._domain.UnsubscribeBlackLists(callbackId);
+        }
+
         public Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListDomain BlackList(
         ) {
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListDomain(
@@ -303,6 +313,20 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                 _profile
             );
         #endif
+        }
+
+        public ulong SubscribeFollows(
+            Action callback,
+            bool? withProfile
+        ) {
+            return this._domain.SubscribeFollows(callback, withProfile);
+        }
+
+        public void UnsubscribeFollows(
+            ulong callbackId,
+            bool? withProfile
+        ) {
+            this._domain.UnsubscribeFollows(callbackId, withProfile);
         }
 
         public Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserDomain FollowUser(

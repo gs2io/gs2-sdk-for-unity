@@ -165,6 +165,14 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         #endif
         }
 
+        public ulong SubscribeSimpleItemModels(Action callback) {
+            return this._domain.SubscribeSimpleItemModels(callback);
+        }
+
+        public void UnsubscribeSimpleItemModels(ulong callbackId) {
+            this._domain.UnsubscribeSimpleItemModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemModelDomain SimpleItemModel(
             string itemName
         ) {
@@ -234,6 +242,20 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Inventory.Model.EzSimpleInventoryModel>(Impl);
         }
         #endif
+
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Inventory.Model.EzSimpleInventoryModel> callback)
+        {
+            return this._domain.Subscribe(item => {
+                callback.Invoke(Gs2.Unity.Gs2Inventory.Model.EzSimpleInventoryModel.FromModel(
+                    item
+                ));
+            });
+        }
+
+        public void Unsubscribe(ulong callbackId)
+        {
+            this._domain.Unsubscribe(callbackId);
+        }
 
     }
 }

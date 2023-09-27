@@ -177,6 +177,14 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
         #endif
         }
 
+        public ulong SubscribeCounters(Action callback) {
+            return this._domain.SubscribeCounters(callback);
+        }
+
+        public void UnsubscribeCounters(ulong callbackId) {
+            this._domain.UnsubscribeCounters(callbackId);
+        }
+
         public Gs2.Unity.Gs2Limit.Domain.Model.EzCounterDomain Counter(
             string limitName,
             string counterName

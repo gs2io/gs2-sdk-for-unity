@@ -178,6 +178,14 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         #endif
         }
 
+        public ulong SubscribeSubscribesByCategoryName(Action callback) {
+            return this._domain.SubscribeSubscribesByCategoryName(callback);
+        }
+
+        public void UnsubscribeSubscribesByCategoryName(ulong callbackId) {
+            this._domain.UnsubscribeSubscribesByCategoryName(callbackId);
+        }
+
         public Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserDomain SubscribeUser(
             string categoryName,
             string targetUserId
@@ -314,6 +322,14 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         #endif
         }
 
+        public ulong SubscribeRankings(Action callback) {
+            return this._domain.SubscribeRankings(callback);
+        }
+
+        public void UnsubscribeRankings(ulong callbackId) {
+            this._domain.UnsubscribeRankings(callbackId);
+        }
+
         public class EzNearRankingsIterator : Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzRanking>
         {
             private Gs2Iterator<Gs2.Gs2Ranking.Model.Ranking> _it;
@@ -448,6 +464,14 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         #endif
         }
 
+        public ulong SubscribeNearRankings(Action callback) {
+            return this._domain.SubscribeNearRankings(callback);
+        }
+
+        public void UnsubscribeNearRankings(ulong callbackId) {
+            this._domain.UnsubscribeNearRankings(callbackId);
+        }
+
         public Gs2.Unity.Gs2Ranking.Domain.Model.EzRankingDomain Ranking(
             string categoryName
         ) {
@@ -580,6 +604,14 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 _profile
             );
         #endif
+        }
+
+        public ulong SubscribeScores(Action callback) {
+            return this._domain.SubscribeScores(callback);
+        }
+
+        public void UnsubscribeScores(ulong callbackId) {
+            this._domain.UnsubscribeScores(callbackId);
         }
 
         public Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreDomain Score(

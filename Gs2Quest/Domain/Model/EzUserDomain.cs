@@ -168,6 +168,14 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         #endif
         }
 
+        public ulong SubscribeProgresses(Action callback) {
+            return this._domain.SubscribeProgresses(callback);
+        }
+
+        public void UnsubscribeProgresses(ulong callbackId) {
+            this._domain.UnsubscribeProgresses(callbackId);
+        }
+
         public Gs2.Unity.Gs2Quest.Domain.Model.EzProgressDomain Progress(
         ) {
             return new Gs2.Unity.Gs2Quest.Domain.Model.EzProgressDomain(
@@ -276,6 +284,14 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                 _profile
             );
         #endif
+        }
+
+        public ulong SubscribeCompletedQuestLists(Action callback) {
+            return this._domain.SubscribeCompletedQuestLists(callback);
+        }
+
+        public void UnsubscribeCompletedQuestLists(ulong callbackId) {
+            this._domain.UnsubscribeCompletedQuestLists(callbackId);
         }
 
         public Gs2.Unity.Gs2Quest.Domain.Model.EzCompletedQuestListDomain CompletedQuestList(

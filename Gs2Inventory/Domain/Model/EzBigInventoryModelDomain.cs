@@ -165,6 +165,14 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         #endif
         }
 
+        public ulong SubscribeBigItemModels(Action callback) {
+            return this._domain.SubscribeBigItemModels(callback);
+        }
+
+        public void UnsubscribeBigItemModels(ulong callbackId) {
+            this._domain.UnsubscribeBigItemModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzBigItemModelDomain BigItemModel(
             string itemName
         ) {
@@ -234,6 +242,20 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Inventory.Model.EzBigInventoryModel>(Impl);
         }
         #endif
+
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Inventory.Model.EzBigInventoryModel> callback)
+        {
+            return this._domain.Subscribe(item => {
+                callback.Invoke(Gs2.Unity.Gs2Inventory.Model.EzBigInventoryModel.FromModel(
+                    item
+                ));
+            });
+        }
+
+        public void Unsubscribe(ulong callbackId)
+        {
+            this._domain.Unsubscribe(callbackId);
+        }
 
     }
 }

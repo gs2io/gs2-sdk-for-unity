@@ -167,6 +167,14 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #endif
         }
 
+        public ulong SubscribeMessages(Action callback) {
+            return this._domain.SubscribeMessages(callback);
+        }
+
+        public void UnsubscribeMessages(ulong callbackId) {
+            this._domain.UnsubscribeMessages(callbackId);
+        }
+
         public Gs2.Unity.Gs2Chat.Domain.Model.EzMessageDomain Message(
             string messageName
         ) {
@@ -236,6 +244,20 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Chat.Model.EzRoom>(Impl);
         }
         #endif
+
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Chat.Model.EzRoom> callback)
+        {
+            return this._domain.Subscribe(item => {
+                callback.Invoke(Gs2.Unity.Gs2Chat.Model.EzRoom.FromModel(
+                    item
+                ));
+            });
+        }
+
+        public void Unsubscribe(ulong callbackId)
+        {
+            this._domain.Unsubscribe(callbackId);
+        }
 
     }
 }

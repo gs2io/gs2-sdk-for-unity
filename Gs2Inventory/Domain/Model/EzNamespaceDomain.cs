@@ -166,6 +166,14 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         #endif
         }
 
+        public ulong SubscribeInventoryModels(Action callback) {
+            return this._domain.SubscribeInventoryModels(callback);
+        }
+
+        public void UnsubscribeInventoryModels(ulong callbackId) {
+            this._domain.UnsubscribeInventoryModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzInventoryModelDomain InventoryModel(
             string inventoryName
         ) {
@@ -300,6 +308,14 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         #endif
         }
 
+        public ulong SubscribeSimpleInventoryModels(Action callback) {
+            return this._domain.SubscribeSimpleInventoryModels(callback);
+        }
+
+        public void UnsubscribeSimpleInventoryModels(ulong callbackId) {
+            this._domain.UnsubscribeSimpleInventoryModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleInventoryModelDomain SimpleInventoryModel(
             string inventoryName
         ) {
@@ -410,6 +426,14 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
                 _profile
             );
         #endif
+        }
+
+        public ulong SubscribeBigInventoryModels(Action callback) {
+            return this._domain.SubscribeBigInventoryModels(callback);
+        }
+
+        public void UnsubscribeBigInventoryModels(ulong callbackId) {
+            this._domain.UnsubscribeBigInventoryModels(callbackId);
         }
 
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzBigInventoryModelDomain BigInventoryModel(

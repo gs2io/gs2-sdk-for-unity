@@ -167,6 +167,14 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
         #endif
         }
 
+        public ulong SubscribeWebSocketSessions(Action callback) {
+            return this._domain.SubscribeWebSocketSessions(callback);
+        }
+
+        public void UnsubscribeWebSocketSessions(ulong callbackId) {
+            this._domain.UnsubscribeWebSocketSessions(callbackId);
+        }
+
         public Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain WebSocketSession(
         ) {
             return new Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain(

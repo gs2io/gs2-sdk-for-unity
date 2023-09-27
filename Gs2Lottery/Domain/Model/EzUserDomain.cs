@@ -168,6 +168,14 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
         #endif
         }
 
+        public ulong SubscribeBoxes(Action callback) {
+            return this._domain.SubscribeBoxes(callback);
+        }
+
+        public void UnsubscribeBoxes(ulong callbackId) {
+            this._domain.UnsubscribeBoxes(callbackId);
+        }
+
         public Gs2.Unity.Gs2Lottery.Domain.Model.EzBoxItemsDomain BoxItems(
             string prizeTableName
         ) {

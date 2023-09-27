@@ -168,6 +168,14 @@ namespace Gs2.Unity.Gs2JobQueue.Domain.Model
         #endif
         }
 
+        public ulong SubscribeJobs(Action callback) {
+            return this._domain.SubscribeJobs(callback);
+        }
+
+        public void UnsubscribeJobs(ulong callbackId) {
+            this._domain.UnsubscribeJobs(callbackId);
+        }
+
         public Gs2.Unity.Gs2JobQueue.Domain.Model.EzJobDomain Job(
             string jobName
         ) {

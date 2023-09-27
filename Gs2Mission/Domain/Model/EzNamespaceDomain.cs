@@ -166,6 +166,14 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         #endif
         }
 
+        public ulong SubscribeMissionGroupModels(Action callback) {
+            return this._domain.SubscribeMissionGroupModels(callback);
+        }
+
+        public void UnsubscribeMissionGroupModels(ulong callbackId) {
+            this._domain.UnsubscribeMissionGroupModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2Mission.Domain.Model.EzMissionGroupModelDomain MissionGroupModel(
             string missionGroupName
         ) {
@@ -276,6 +284,14 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                 _profile
             );
         #endif
+        }
+
+        public ulong SubscribeCounterModels(Action callback) {
+            return this._domain.SubscribeCounterModels(callback);
+        }
+
+        public void UnsubscribeCounterModels(ulong callbackId) {
+            this._domain.UnsubscribeCounterModels(callbackId);
         }
 
         public Gs2.Unity.Gs2Mission.Domain.Model.EzCounterModelDomain CounterModel(

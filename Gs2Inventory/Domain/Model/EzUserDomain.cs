@@ -166,6 +166,14 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         #endif
         }
 
+        public ulong SubscribeInventories(Action callback) {
+            return this._domain.SubscribeInventories(callback);
+        }
+
+        public void UnsubscribeInventories(ulong callbackId) {
+            this._domain.UnsubscribeInventories(callbackId);
+        }
+
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzInventoryDomain Inventory(
             string inventoryName
         ) {

@@ -167,6 +167,14 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         #endif
         }
 
+        public ulong SubscribeBigItems(Action callback) {
+            return this._domain.SubscribeBigItems(callback);
+        }
+
+        public void UnsubscribeBigItems(ulong callbackId) {
+            this._domain.UnsubscribeBigItems(callbackId);
+        }
+
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzBigItemGameSessionDomain BigItem(
             string itemName
         ) {

@@ -165,6 +165,14 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         #endif
         }
 
+        public ulong SubscribeQuestModels(Action callback) {
+            return this._domain.SubscribeQuestModels(callback);
+        }
+
+        public void UnsubscribeQuestModels(ulong callbackId) {
+            this._domain.UnsubscribeQuestModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2Quest.Domain.Model.EzQuestModelDomain QuestModel(
             string questName
         ) {
@@ -234,6 +242,20 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel>(Impl);
         }
         #endif
+
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel> callback)
+        {
+            return this._domain.Subscribe(item => {
+                callback.Invoke(Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel.FromModel(
+                    item
+                ));
+            });
+        }
+
+        public void Unsubscribe(ulong callbackId)
+        {
+            this._domain.Unsubscribe(callbackId);
+        }
 
     }
 }

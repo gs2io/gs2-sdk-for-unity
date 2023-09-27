@@ -165,6 +165,14 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         #endif
         }
 
+        public ulong SubscribeMissionTaskModels(Action callback) {
+            return this._domain.SubscribeMissionTaskModels(callback);
+        }
+
+        public void UnsubscribeMissionTaskModels(ulong callbackId) {
+            this._domain.UnsubscribeMissionTaskModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2Mission.Domain.Model.EzMissionTaskModelDomain MissionTaskModel(
             string missionTaskName
         ) {
@@ -234,6 +242,20 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel>(Impl);
         }
         #endif
+
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel> callback)
+        {
+            return this._domain.Subscribe(item => {
+                callback.Invoke(Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel.FromModel(
+                    item
+                ));
+            });
+        }
+
+        public void Unsubscribe(ulong callbackId)
+        {
+            this._domain.Unsubscribe(callbackId);
+        }
 
     }
 }

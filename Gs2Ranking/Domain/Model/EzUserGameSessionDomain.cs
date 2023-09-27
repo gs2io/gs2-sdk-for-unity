@@ -252,6 +252,14 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         #endif
         }
 
+        public ulong SubscribeSubscribeUsers(Action callback) {
+            return this._domain.SubscribeSubscribeUsers(callback);
+        }
+
+        public void UnsubscribeSubscribeUsers(ulong callbackId) {
+            this._domain.UnsubscribeSubscribeUsers(callbackId);
+        }
+
         public Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain SubscribeUser(
             string categoryName,
             string targetUserId
@@ -388,6 +396,14 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         #endif
         }
 
+        public ulong SubscribeRankings(Action callback) {
+            return this._domain.SubscribeRankings(callback);
+        }
+
+        public void UnsubscribeRankings(ulong callbackId) {
+            this._domain.UnsubscribeRankings(callbackId);
+        }
+
         public Gs2.Unity.Gs2Ranking.Domain.Model.EzRankingGameSessionDomain Ranking(
             string categoryName
         ) {
@@ -520,6 +536,14 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 _profile
             );
         #endif
+        }
+
+        public ulong SubscribeScores(Action callback) {
+            return this._domain.SubscribeScores(callback);
+        }
+
+        public void UnsubscribeScores(ulong callbackId) {
+            this._domain.UnsubscribeScores(callbackId);
         }
 
         public Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain Score(

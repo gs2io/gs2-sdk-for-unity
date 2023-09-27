@@ -188,6 +188,14 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
         #endif
         }
 
+        public ulong SubscribeLotteryModels(Action callback) {
+            return this._domain.SubscribeLotteryModels(callback);
+        }
+
+        public void UnsubscribeLotteryModels(ulong callbackId) {
+            this._domain.UnsubscribeLotteryModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2Lottery.Domain.Model.EzLotteryModelDomain LotteryModel(
             string lotteryName
         ) {

@@ -167,6 +167,14 @@ namespace Gs2.Unity.Gs2Realtime.Domain.Model
         #endif
         }
 
+        public ulong SubscribeRooms(Action callback) {
+            return this._domain.SubscribeRooms(callback);
+        }
+
+        public void UnsubscribeRooms(ulong callbackId) {
+            this._domain.UnsubscribeRooms(callbackId);
+        }
+
         public Gs2.Unity.Gs2Realtime.Domain.Model.EzRoomDomain Room(
             string roomName
         ) {

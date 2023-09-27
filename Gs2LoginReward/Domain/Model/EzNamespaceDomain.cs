@@ -188,6 +188,14 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
         #endif
         }
 
+        public ulong SubscribeBonusModels(Action callback) {
+            return this._domain.SubscribeBonusModels(callback);
+        }
+
+        public void UnsubscribeBonusModels(ulong callbackId) {
+            this._domain.UnsubscribeBonusModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusModelDomain BonusModel(
             string bonusModelName
         ) {

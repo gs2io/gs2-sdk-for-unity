@@ -166,6 +166,14 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         #endif
         }
 
+        public ulong SubscribeStaminaModels(Action callback) {
+            return this._domain.SubscribeStaminaModels(callback);
+        }
+
+        public void UnsubscribeStaminaModels(ulong callbackId) {
+            this._domain.UnsubscribeStaminaModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaModelDomain StaminaModel(
             string staminaName
         ) {

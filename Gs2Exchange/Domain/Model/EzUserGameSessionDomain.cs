@@ -189,6 +189,14 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         #endif
         }
 
+        public ulong SubscribeAwaits(Action callback) {
+            return this._domain.SubscribeAwaits(callback);
+        }
+
+        public void UnsubscribeAwaits(ulong callbackId) {
+            this._domain.UnsubscribeAwaits(callbackId);
+        }
+
         public Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain Await(
             string awaitName
         ) {

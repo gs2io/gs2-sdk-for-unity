@@ -167,6 +167,14 @@ namespace Gs2.Unity.Gs2Money.Domain.Model
         #endif
         }
 
+        public ulong SubscribeWallets(Action callback) {
+            return this._domain.SubscribeWallets(callback);
+        }
+
+        public void UnsubscribeWallets(ulong callbackId) {
+            this._domain.UnsubscribeWallets(callbackId);
+        }
+
         public Gs2.Unity.Gs2Money.Domain.Model.EzWalletDomain Wallet(
             int slot
         ) {

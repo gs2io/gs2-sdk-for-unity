@@ -302,6 +302,14 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         #endif
         }
 
+        public ulong SubscribeAccounts(Action callback) {
+            return this._domain.SubscribeAccounts(callback);
+        }
+
+        public void UnsubscribeAccounts(ulong callbackId) {
+            this._domain.UnsubscribeAccounts(callbackId);
+        }
+
         public Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain Account(
             string userId
         ) {

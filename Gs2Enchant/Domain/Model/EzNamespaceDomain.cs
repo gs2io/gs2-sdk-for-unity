@@ -166,6 +166,14 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
         #endif
         }
 
+        public ulong SubscribeBalanceParameterModels(Action callback) {
+            return this._domain.SubscribeBalanceParameterModels(callback);
+        }
+
+        public void UnsubscribeBalanceParameterModels(ulong callbackId) {
+            this._domain.UnsubscribeBalanceParameterModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2Enchant.Domain.Model.EzBalanceParameterModelDomain BalanceParameterModel(
             string parameterName
         ) {
@@ -276,6 +284,14 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
                 _profile
             );
         #endif
+        }
+
+        public ulong SubscribeRarityParameterModels(Action callback) {
+            return this._domain.SubscribeRarityParameterModels(callback);
+        }
+
+        public void UnsubscribeRarityParameterModels(ulong callbackId) {
+            this._domain.UnsubscribeRarityParameterModels(callbackId);
         }
 
         public Gs2.Unity.Gs2Enchant.Domain.Model.EzRarityParameterModelDomain RarityParameterModel(

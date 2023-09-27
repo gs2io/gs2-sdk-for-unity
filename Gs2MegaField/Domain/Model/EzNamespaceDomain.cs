@@ -166,6 +166,14 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
         #endif
         }
 
+        public ulong SubscribeAreaModels(Action callback) {
+            return this._domain.SubscribeAreaModels(callback);
+        }
+
+        public void UnsubscribeAreaModels(ulong callbackId) {
+            this._domain.UnsubscribeAreaModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2MegaField.Domain.Model.EzAreaModelDomain AreaModel(
             string areaModelName
         ) {

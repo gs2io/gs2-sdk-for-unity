@@ -177,6 +177,14 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         #endif
         }
 
+        public ulong SubscribeMessages(Action callback) {
+            return this._domain.SubscribeMessages(callback);
+        }
+
+        public void UnsubscribeMessages(ulong callbackId) {
+            this._domain.UnsubscribeMessages(callbackId);
+        }
+
         public Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageDomain Message(
             string messageName
         ) {

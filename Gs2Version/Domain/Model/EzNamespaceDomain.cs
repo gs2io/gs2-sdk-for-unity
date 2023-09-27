@@ -166,6 +166,14 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
         #endif
         }
 
+        public ulong SubscribeVersionModels(Action callback) {
+            return this._domain.SubscribeVersionModels(callback);
+        }
+
+        public void UnsubscribeVersionModels(ulong callbackId) {
+            this._domain.UnsubscribeVersionModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2Version.Domain.Model.EzVersionModelDomain VersionModel(
             string versionName
         ) {

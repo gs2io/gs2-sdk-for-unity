@@ -165,6 +165,14 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
         #endif
         }
 
+        public ulong SubscribeLayerModels(Action callback) {
+            return this._domain.SubscribeLayerModels(callback);
+        }
+
+        public void UnsubscribeLayerModels(ulong callbackId) {
+            this._domain.UnsubscribeLayerModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2MegaField.Domain.Model.EzLayerModelDomain LayerModel(
             string layerModelName
         ) {
@@ -234,6 +242,20 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2MegaField.Model.EzAreaModel>(Impl);
         }
         #endif
+
+        public ulong Subscribe(Action<Gs2.Unity.Gs2MegaField.Model.EzAreaModel> callback)
+        {
+            return this._domain.Subscribe(item => {
+                callback.Invoke(Gs2.Unity.Gs2MegaField.Model.EzAreaModel.FromModel(
+                    item
+                ));
+            });
+        }
+
+        public void Unsubscribe(ulong callbackId)
+        {
+            this._domain.Unsubscribe(callbackId);
+        }
 
     }
 }

@@ -265,6 +265,14 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #endif
         }
 
+        public ulong SubscribeSubscribes(Action callback) {
+            return this._domain.SubscribeSubscribes(callback);
+        }
+
+        public void UnsubscribeSubscribes(ulong callbackId) {
+            this._domain.UnsubscribeSubscribes(callbackId);
+        }
+
         public Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain Subscribe(
             string roomName
         ) {

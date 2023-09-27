@@ -166,6 +166,14 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         #endif
         }
 
+        public ulong SubscribeCounters(Action callback) {
+            return this._domain.SubscribeCounters(callback);
+        }
+
+        public void UnsubscribeCounters(ulong callbackId) {
+            this._domain.UnsubscribeCounters(callbackId);
+        }
+
         public Gs2.Unity.Gs2Mission.Domain.Model.EzCounterDomain Counter(
             string counterName
         ) {
@@ -276,6 +284,14 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                 _profile
             );
         #endif
+        }
+
+        public ulong SubscribeCompletes(Action callback) {
+            return this._domain.SubscribeCompletes(callback);
+        }
+
+        public void UnsubscribeCompletes(ulong callbackId) {
+            this._domain.UnsubscribeCompletes(callbackId);
         }
 
         public Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteDomain Complete(

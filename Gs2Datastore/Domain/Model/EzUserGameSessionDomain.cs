@@ -340,6 +340,14 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #endif
         }
 
+        public ulong SubscribeDataObjects(Action callback) {
+            return this._domain.SubscribeDataObjects(callback);
+        }
+
+        public void UnsubscribeDataObjects(ulong callbackId) {
+            this._domain.UnsubscribeDataObjects(callbackId);
+        }
+
         public Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain DataObject(
             string dataObjectName
         ) {

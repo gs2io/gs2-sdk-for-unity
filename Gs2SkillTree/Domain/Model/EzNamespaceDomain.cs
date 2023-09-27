@@ -166,6 +166,14 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         #endif
         }
 
+        public ulong SubscribeNodeModels(Action callback) {
+            return this._domain.SubscribeNodeModels(callback);
+        }
+
+        public void UnsubscribeNodeModels(ulong callbackId) {
+            this._domain.UnsubscribeNodeModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2SkillTree.Domain.Model.EzNodeModelDomain NodeModel(
             string nodeModelName
         ) {

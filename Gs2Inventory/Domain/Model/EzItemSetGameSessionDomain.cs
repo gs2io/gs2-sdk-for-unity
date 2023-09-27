@@ -120,13 +120,13 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
                     _domain.AccessToken,
                     future,
                     () =>
-                    {
-                        return future = _domain.GetItemWithSignature(
-                            new GetItemWithSignatureRequest()
-                                .WithKeyId(keyId)
-                                .WithAccessToken(_domain.AccessToken.Token)
-                        );
-                    }
+        			{
+                		return future = _domain.GetItemWithSignature(
+                    		new GetItemWithSignatureRequest()
+                	        .WithKeyId(keyId)
+                    	    .WithAccessToken(_domain.AccessToken.Token)
+        		        );
+        			}
                 );
                 if (future.Error != null)
                 {
@@ -188,13 +188,13 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
                     _domain.AccessToken,
                     future,
                     () =>
-                    {
-                        return future = _domain.Consume(
-                            new ConsumeItemSetRequest()
-                                .WithConsumeCount(consumeCount)
-                                .WithAccessToken(_domain.AccessToken.Token)
-                        );
-                    }
+        			{
+                		return future = _domain.Consume(
+                    		new ConsumeItemSetRequest()
+                	        .WithConsumeCount(consumeCount)
+                    	    .WithAccessToken(_domain.AccessToken.Token)
+        		        );
+        			}
                 );
                 if (future.Error != null)
                 {
@@ -262,6 +262,18 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]>(Impl);
         }
         #endif
+
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]> callback)
+        {
+            return this._domain.Subscribe(items => {
+                callback.Invoke(items.Select(Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel).ToArray());
+            });
+        }
+
+        public void Unsubscribe(ulong callbackId)
+        {
+            this._domain.Unsubscribe(callbackId);
+        }
 
     }
 }

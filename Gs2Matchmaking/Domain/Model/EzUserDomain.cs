@@ -167,6 +167,14 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #endif
         }
 
+        public ulong SubscribeGatherings(Action callback) {
+            return this._domain.SubscribeGatherings(callback);
+        }
+
+        public void UnsubscribeGatherings(ulong callbackId) {
+            this._domain.UnsubscribeGatherings(callbackId);
+        }
+
         public class EzDoMatchmakingByPlayerIterator : Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzGathering>
         {
             private Gs2Iterator<Gs2.Gs2Matchmaking.Model.Gathering> _it;
@@ -279,6 +287,14 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #endif
         }
 
+        public ulong SubscribeDoMatchmakingByPlayer(Action callback) {
+            return this._domain.SubscribeDoMatchmakingByPlayer(callback);
+        }
+
+        public void UnsubscribeDoMatchmakingByPlayer(ulong callbackId) {
+            this._domain.UnsubscribeDoMatchmakingByPlayer(callbackId);
+        }
+
         public class EzDoMatchmakingIterator : Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzGathering>
         {
             private Gs2Iterator<Gs2.Gs2Matchmaking.Model.Gathering> _it;
@@ -389,6 +405,14 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                 _profile
             );
         #endif
+        }
+
+        public ulong SubscribeDoMatchmaking(Action callback) {
+            return this._domain.SubscribeDoMatchmaking(callback);
+        }
+
+        public void UnsubscribeDoMatchmaking(ulong callbackId) {
+            this._domain.UnsubscribeDoMatchmaking(callbackId);
         }
 
         public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringDomain Gathering(
@@ -518,6 +542,14 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                 _profile
             );
         #endif
+        }
+
+        public ulong SubscribeRatings(Action callback) {
+            return this._domain.SubscribeRatings(callback);
+        }
+
+        public void UnsubscribeRatings(ulong callbackId) {
+            this._domain.UnsubscribeRatings(callbackId);
         }
 
         public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzRatingDomain Rating(

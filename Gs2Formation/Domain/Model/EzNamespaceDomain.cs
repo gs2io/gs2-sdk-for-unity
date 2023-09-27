@@ -166,6 +166,14 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         #endif
         }
 
+        public ulong SubscribeMoldModels(Action callback) {
+            return this._domain.SubscribeMoldModels(callback);
+        }
+
+        public void UnsubscribeMoldModels(ulong callbackId) {
+            this._domain.UnsubscribeMoldModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2Formation.Domain.Model.EzMoldModelDomain MoldModel(
             string moldModelName
         ) {
@@ -276,6 +284,14 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                 _profile
             );
         #endif
+        }
+
+        public ulong SubscribePropertyFormModels(Action callback) {
+            return this._domain.SubscribePropertyFormModels(callback);
+        }
+
+        public void UnsubscribePropertyFormModels(ulong callbackId) {
+            this._domain.UnsubscribePropertyFormModels(callbackId);
         }
 
         public Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormModelDomain PropertyFormModel(

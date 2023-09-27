@@ -166,6 +166,14 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
         #endif
         }
 
+        public ulong SubscribeExperienceModels(Action callback) {
+            return this._domain.SubscribeExperienceModels(callback);
+        }
+
+        public void UnsubscribeExperienceModels(ulong callbackId) {
+            this._domain.UnsubscribeExperienceModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2Experience.Domain.Model.EzExperienceModelDomain ExperienceModel(
             string experienceName
         ) {

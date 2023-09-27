@@ -170,6 +170,14 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
         #endif
         }
 
+        public ulong SubscribeDistributorModels(Action callback) {
+            return this._domain.SubscribeDistributorModels(callback);
+        }
+
+        public void UnsubscribeDistributorModels(ulong callbackId) {
+            this._domain.UnsubscribeDistributorModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2Distributor.Domain.Model.EzDistributorModelDomain DistributorModel(
             string distributorName
         ) {

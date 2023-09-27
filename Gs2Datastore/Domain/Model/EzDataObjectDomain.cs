@@ -229,6 +229,14 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #endif
         }
 
+        public ulong SubscribeDataObjectHistories(Action callback) {
+            return this._domain.SubscribeDataObjectHistories(callback);
+        }
+
+        public void UnsubscribeDataObjectHistories(ulong callbackId) {
+            this._domain.UnsubscribeDataObjectHistories(callbackId);
+        }
+
         public Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectHistoryDomain DataObjectHistory(
             string generation
         ) {
@@ -298,6 +306,20 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Model.EzDataObject>(Impl);
         }
         #endif
+
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Datastore.Model.EzDataObject> callback)
+        {
+            return this._domain.Subscribe(item => {
+                callback.Invoke(Gs2.Unity.Gs2Datastore.Model.EzDataObject.FromModel(
+                    item
+                ));
+            });
+        }
+
+        public void Unsubscribe(ulong callbackId)
+        {
+            this._domain.Unsubscribe(callbackId);
+        }
 
     }
 }

@@ -348,6 +348,14 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #endif
         }
 
+        public ulong SubscribeRatingModels(Action callback) {
+            return this._domain.SubscribeRatingModels(callback);
+        }
+
+        public void UnsubscribeRatingModels(ulong callbackId) {
+            this._domain.UnsubscribeRatingModels(callbackId);
+        }
+
         public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzRatingModelDomain RatingModel(
             string ratingName
         ) {
