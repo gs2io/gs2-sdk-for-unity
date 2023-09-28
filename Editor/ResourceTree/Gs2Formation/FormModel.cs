@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 
 using System.IO;
@@ -30,7 +32,6 @@ namespace Gs2.Editor.ResourceTree.Gs2Formation
         private MoldModel _parent;
         public string NamespaceName => _parent.NamespaceName;
         public string MoldModelName => _parent.MoldModelName;
-        public string FormModelName => _item.Name;
 
         public FormModel(
                 int id,
@@ -66,10 +67,9 @@ namespace Gs2.Editor.ResourceTree.Gs2Formation
                 return null;
             }
             var instance = Gs2.Unity.Gs2Formation.ScriptableObject.FormModel.New(
-                parent,
-                this._item.Name
+                parent
             );
-            instance.name = this._item.Name + "FormModel";
+            instance.name =  "FormModel";
             return instance;
         }
 
@@ -80,7 +80,6 @@ namespace Gs2.Editor.ResourceTree.Gs2Formation
                 var directory = "Assets/Gs2/Resources/Formation";
                 directory += "/Namespace" + "/" + NamespaceName;
                 directory += "/MoldModel" + "/" + MoldModelName;
-                directory += "/FormModel" + "/" + FormModelName;
 
                 CreateFolder(directory);
 

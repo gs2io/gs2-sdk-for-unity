@@ -65,11 +65,9 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
 
         public Gs2.Unity.Gs2Formation.Domain.Model.EzFormModelDomain FormModel(
-            string formModelName
         ) {
             return new Gs2.Unity.Gs2Formation.Domain.Model.EzFormModelDomain(
                 _domain.FormModel(
-                    formModelName
                 ),
                 _profile
             );

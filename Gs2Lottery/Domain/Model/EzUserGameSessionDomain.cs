@@ -179,6 +179,20 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
         #endif
         }
 
+        public ulong SubscribeBoxes(
+            Action callback,
+            string prizeTableName
+        ) {
+            return this._domain.SubscribeBoxes(callback, prizeTableName);
+        }
+
+        public void UnsubscribeBoxes(
+            ulong callbackId,
+            string prizeTableName
+        ) {
+            this._domain.UnsubscribeBoxes(callbackId, prizeTableName);
+        }
+
         public Gs2.Unity.Gs2Lottery.Domain.Model.EzBoxItemsGameSessionDomain BoxItems(
             string prizeTableName
         ) {
@@ -300,6 +314,20 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
                 _profile
             );
         #endif
+        }
+
+        public ulong SubscribeProbabilities(
+            Action callback,
+            string lotteryName
+        ) {
+            return this._domain.SubscribeProbabilities(callback, lotteryName);
+        }
+
+        public void UnsubscribeProbabilities(
+            ulong callbackId,
+            string lotteryName
+        ) {
+            this._domain.UnsubscribeProbabilities(callbackId, lotteryName);
         }
 
         public Gs2.Unity.Gs2Lottery.Domain.Model.EzProbabilityGameSessionDomain Probability(

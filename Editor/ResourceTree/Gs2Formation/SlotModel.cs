@@ -29,7 +29,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Formation
         private Gs2.Gs2Formation.Model.SlotModel _item;
         private FormModel _parent;
         public string NamespaceName => _parent.NamespaceName;
-        public string FormModelName => _parent.FormModelName;
+        public string MoldModelName => _parent.MoldModelName;
         public string SlotModelName => _item.Name;
 
         public SlotModel(
@@ -54,7 +54,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Formation
                 var path = AssetDatabase.GUIDToAssetPath(guid);
                 var item = AssetDatabase.LoadAssetAtPath<Gs2.Unity.Gs2Formation.ScriptableObject.FormModel>(path);
                 if (
-                    item.FormModelName == FormModelName
+                    item.MoldModelName == MoldModelName
                 ) {
                     parent = item;
                 }
@@ -77,7 +77,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Formation
             if (GUILayout.Button("Create Reference Object")) {
                 var directory = "Assets/Gs2/Resources/Formation";
                 directory += "/Namespace" + "/" + NamespaceName;
-                directory += "/FormModel" + "/" + FormModelName;
+                directory += "/MoldModelName" + "/" + MoldModelName;
                 directory += "/SlotModel" + "/" + SlotModelName;
 
                 CreateFolder(directory);

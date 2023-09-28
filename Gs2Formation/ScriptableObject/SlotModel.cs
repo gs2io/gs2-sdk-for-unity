@@ -28,7 +28,6 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
 
         public string NamespaceName => this.FormModel?.NamespaceName;
         public string MoldModelName => this.FormModel?.MoldModelName;
-        public string FormModelName => this.FormModel?.FormModelName;
         public string SlotModelName => this.slotModelName;
 
 #if UNITY_INCLUDE_TESTS
