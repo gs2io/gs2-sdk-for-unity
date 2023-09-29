@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 #if UNITY_INCLUDE_TESTS
 using UnityEditor;
@@ -22,38 +20,44 @@ using UnityEngine;
 
 namespace Gs2.Unity.Gs2Lottery.ScriptableObject
 {
-    [CreateAssetMenu(fileName = "OwnBoxItems", menuName = "Game Server Services/Gs2Lottery/OwnBoxItems")]
-    public class OwnBoxItems : PrizeTable
+    public class OwnBoxItem : UnityEngine.ScriptableObject
     {
+        public PrizeTable PrizeTable;
+        public string prizeId;
+
+        public string NamespaceName => this.PrizeTable.NamespaceName;
+        public string PrizeTableName => this.PrizeTable.PrizeTableName;
+        public string PrizeId => this.prizeId;
+
 #if UNITY_INCLUDE_TESTS
-        public new static OwnBoxItems Load(
+        public static OwnBoxItem Load(
             string assetPath
         )
         {
             return Instantiate(
-                AssetDatabase.LoadAssetAtPath<OwnBoxItems>(assetPath)
+                AssetDatabase.LoadAssetAtPath<OwnBoxItem>(assetPath)
             );
         }
 #endif
 
-        public new static OwnBoxItems New(
-            Namespace Namespace,
-            string prizeTableName
+        public static OwnBoxItem New(
+            PrizeTable PrizeTable,
+            string prizeId
         )
         {
-            var instance = CreateInstance<OwnBoxItems>();
+            var instance = CreateInstance<OwnBoxItem>();
             instance.name = "Runtime";
-            instance.Namespace = Namespace;
-            instance.prizeTableName = prizeTableName;
+            instance.PrizeTable = PrizeTable;
+            instance.prizeId = prizeId;
             return instance;
         }
 
-        public new OwnBoxItems Clone()
+        public OwnBoxItem Clone()
         {
-            var instance = CreateInstance<OwnBoxItems>();
+            var instance = CreateInstance<OwnBoxItem>();
             instance.name = "Runtime";
-            instance.Namespace = Namespace;
-            instance.prizeTableName = prizeTableName;
+            instance.PrizeTable = PrizeTable;
+            instance.prizeId = prizeId;
             return instance;
         }
     }

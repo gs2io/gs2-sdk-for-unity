@@ -366,6 +366,20 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #endif
         }
 
+        public ulong SubscribeFollows(
+            Action callback,
+            bool withProfile
+        ) {
+            return this._domain.SubscribeFollows(callback, withProfile);
+        }
+
+        public void UnsubscribeFollows(
+            ulong callbackId,
+            bool withProfile
+        ) {
+            this._domain.UnsubscribeFollows(callbackId, withProfile);
+        }
+
         public Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain FollowUser(
             string targetUserId,
             bool withProfile
@@ -491,6 +505,20 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #endif
         }
 
+        public ulong SubscribeFriends(
+            Action callback,
+            bool withProfile
+        ) {
+            return this._domain.SubscribeFriends(callback, withProfile);
+        }
+
+        public void UnsubscribeFriends(
+            ulong callbackId,
+            bool withProfile
+        ) {
+            this._domain.UnsubscribeFriends(callbackId, withProfile);
+        }
+
         public Gs2.Unity.Gs2Friend.Domain.Model.EzFriendGameSessionDomain Friend(
             bool withProfile
         ) {
@@ -603,6 +631,14 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #endif
         }
 
+        public ulong SubscribeSendRequests(Action callback) {
+            return this._domain.SubscribeSendRequests(callback);
+        }
+
+        public void UnsubscribeSendRequests(ulong callbackId) {
+            this._domain.UnsubscribeSendRequests(callbackId);
+        }
+
         public Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain SendFriendRequest(
             string targetUserId
         ) {
@@ -713,6 +749,14 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                 _profile
             );
         #endif
+        }
+
+        public ulong SubscribeReceiveRequests(Action callback) {
+            return this._domain.SubscribeReceiveRequests(callback);
+        }
+
+        public void UnsubscribeReceiveRequests(ulong callbackId) {
+            this._domain.UnsubscribeReceiveRequests(callbackId);
         }
 
         public Gs2.Unity.Gs2Friend.Domain.Model.EzReceiveFriendRequestGameSessionDomain ReceiveFriendRequest(

@@ -196,6 +196,33 @@ namespace Gs2.Unity.Gs2Friend
             );
 		}
 
+        public IEnumerator GetFollowUser(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzGetFollowUserResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string targetUserId,
+                bool? withProfile = null
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetFollow(
+                    new Gs2.Gs2Friend.Request.GetFollowRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithWithProfile(withProfile)
+                        .WithTargetUserId(targetUserId),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Friend.Result.EzGetFollowUserResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Friend.Result.EzGetFollowUserResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator Unfollow(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzUnfollowResult>> callback,
 		        GameSession session,
@@ -350,6 +377,31 @@ namespace Gs2.Unity.Gs2Friend
             );
 		}
 
+        public IEnumerator GetSendRequest(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzGetSendRequestResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string targetUserId
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetSendRequest(
+                    new Gs2.Gs2Friend.Request.GetSendRequestRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithTargetUserId(targetUserId),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Friend.Result.EzGetSendRequestResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Friend.Result.EzGetSendRequestResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator SendRequest(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzSendRequestResult>> callback,
 		        GameSession session,
@@ -416,6 +468,31 @@ namespace Gs2.Unity.Gs2Friend
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Friend.Result.EzDescribeReceiveRequestsResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Friend.Result.EzDescribeReceiveRequestsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator GetReceiveRequest(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzGetReceiveRequestResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string fromUserId
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _client.GetReceiveRequest(
+                    new Gs2.Gs2Friend.Request.GetReceiveRequestRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithFromUserId(fromUserId),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Friend.Result.EzGetReceiveRequestResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Friend.Result.EzGetReceiveRequestResult.FromModel(r.Result),
                             r.Error
                         )
                     )

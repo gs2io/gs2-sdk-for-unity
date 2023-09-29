@@ -33,6 +33,8 @@ namespace Gs2.Unity.Gs2Lottery.Model
 	public class EzBoxItem
 	{
 		[SerializeField]
+		public string PrizeId;
+		[SerializeField]
 		public List<Gs2.Unity.Core.Model.EzAcquireAction> AcquireActions;
 		[SerializeField]
 		public int Remaining;
@@ -42,6 +44,7 @@ namespace Gs2.Unity.Gs2Lottery.Model
         public Gs2.Gs2Lottery.Model.BoxItem ToModel()
         {
             return new Gs2.Gs2Lottery.Model.BoxItem {
+                PrizeId = PrizeId,
                 AcquireActions = AcquireActions?.Select(v => {
                     return v.ToModel();
                 }).ToArray(),
@@ -53,6 +56,7 @@ namespace Gs2.Unity.Gs2Lottery.Model
         public static EzBoxItem FromModel(Gs2.Gs2Lottery.Model.BoxItem model)
         {
             return new EzBoxItem {
+                PrizeId = model.PrizeId == null ? null : model.PrizeId,
                 AcquireActions = model.AcquireActions == null ? new List<Gs2.Unity.Core.Model.EzAcquireAction>() : model.AcquireActions.Select(v => {
                     return Gs2.Unity.Core.Model.EzAcquireAction.FromModel(v);
                 }).ToList(),

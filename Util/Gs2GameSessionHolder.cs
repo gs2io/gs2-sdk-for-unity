@@ -7,6 +7,7 @@ using System.Collections;
 using Gs2.Unity.Gs2Auth.Model;
 using Gs2.Unity.Util;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Gs2.Unity.Util
 {
@@ -14,6 +15,8 @@ namespace Gs2.Unity.Util
     public class Gs2GameSessionHolder : MonoBehaviour
     {
         public GameSession GameSession { get; private set; }
+
+        public UnityEvent OnLogin = new UnityEvent();
         public bool Initialized => GameSession != null;
 
         public void Awake()
@@ -99,6 +102,7 @@ namespace Gs2.Unity.Util
         public void UpdateAccessToken(GameSession gameSession)
         {
             GameSession = gameSession;
+            this.OnLogin.Invoke();
         }
 
         public void Logout()

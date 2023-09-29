@@ -21,6 +21,7 @@ using System.Linq;
 using Gs2.Core.Domain;
 using Gs2.Unity.Util;
 using Gs2.Util.LitJson;
+using UnityEngine.Events;
 using UnityEngine.Scripting;
 
 // ReSharper disable once CheckNamespace
@@ -31,7 +32,7 @@ namespace Gs2.Unity.Core.Model
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public static class EzConsumeActionExt
 	{
-		public static Gs2Future<bool> Satisfy(this EzConsumeAction self, Gs2Domain domain, GameSession session) 
+		public static Gs2Future<bool> Satisfy(this EzConsumeAction self, Gs2Domain domain, GameSession session, Action onCauseChange) 
 		{
 			IEnumerator Impl(Gs2Future<bool> result)
 			{
@@ -39,11 +40,16 @@ namespace Gs2.Unity.Core.Model
 					case "Gs2Enhance:DeleteProgressByUserId":
 					{
 						var request = Gs2.Gs2Enhance.Request.DeleteProgressByUserIdRequest.FromJson(JsonMapper.ToObject(self.Request));
-						var future = domain.Enhance.Namespace(
+						var d = domain.Enhance.Namespace(
 							request.NamespaceName
 						).Me(
 							session
-						).Progress().Model();
+						).Progress();
+						d.Subscribe(v =>
+						{
+							onCauseChange.Invoke();
+						});
+						var future = d.Model();
 						yield return future;
 						if (future.Error != null) {
 							result.OnError(future.Error);
@@ -55,13 +61,18 @@ namespace Gs2.Unity.Core.Model
 					case "Gs2Exchange:DeleteAwaitByUserId":
 					{
 						var request = Gs2.Gs2Exchange.Request.DeleteAwaitByUserIdRequest.FromJson(JsonMapper.ToObject(self.Request));
-						var future = domain.Exchange.Namespace(
+						var d = domain.Exchange.Namespace(
 							request.NamespaceName
 						).Me(
 							session
 						).Await(
 							request.AwaitName
-						).Model();
+						);
+						d.Subscribe(v =>
+						{
+							onCauseChange.Invoke();
+						});
+						var future = d.Model();
 						yield return future;
 						if (future.Error != null) {
 							result.OnError(future.Error);
@@ -73,13 +84,18 @@ namespace Gs2.Unity.Core.Model
 					case "Gs2Inbox:OpenMessageByUserId":
 					{
 						var request = Gs2.Gs2Inbox.Request.OpenMessageByUserIdRequest.FromJson(JsonMapper.ToObject(self.Request));
-						var future = domain.Inbox.Namespace(
+						var d = domain.Inbox.Namespace(
 							request.NamespaceName
 						).Me(
 							session
 						).Message(
 							request.MessageName
-						).Model();
+						);
+						d.Subscribe(v =>
+						{
+							onCauseChange.Invoke();
+						});
+						var future = d.Model();
 						yield return future;
 						if (future.Error != null) {
 							result.OnError(future.Error);
@@ -95,7 +111,7 @@ namespace Gs2.Unity.Core.Model
 					case "Gs2Inventory:ConsumeItemSetByUserId":
 					{
 						var request = Gs2.Gs2Inventory.Request.ConsumeItemSetByUserIdRequest.FromJson(JsonMapper.ToObject(self.Request));
-						var future = domain.Inventory.Namespace(
+						var d = domain.Inventory.Namespace(
 							request.NamespaceName
 						).Me(
 							session
@@ -104,7 +120,12 @@ namespace Gs2.Unity.Core.Model
 						).ItemSet(
 							request.ItemName,
 							request.ItemSetName
-						).Model();
+						);
+						d.Subscribe(v =>
+						{
+							onCauseChange.Invoke();
+						});
+						var future = d.Model();
 						yield return future;
 						if (future.Error != null) {
 							result.OnError(future.Error);
@@ -120,7 +141,7 @@ namespace Gs2.Unity.Core.Model
 					case "Gs2Inventory:VerifyReferenceOfByUserId":
 					{
 						var request = Gs2.Gs2Inventory.Request.VerifyReferenceOfByUserIdRequest.FromJson(JsonMapper.ToObject(self.Request));
-						var future = domain.Inventory.Namespace(
+						var d = domain.Inventory.Namespace(
 							request.NamespaceName
 						).Me(
 							session
@@ -129,7 +150,12 @@ namespace Gs2.Unity.Core.Model
 						).ItemSet(
 							request.ItemName,
 							request.ItemSetName
-						).Model();
+						);
+						d.Subscribe(v =>
+						{
+							onCauseChange.Invoke();
+						});
+						var future = d.Model();
 						yield return future;
 						if (future.Error != null) {
 							result.OnError(future.Error);
@@ -162,14 +188,19 @@ namespace Gs2.Unity.Core.Model
 					case "Gs2Limit:CountUpByUserId":
 					{
 						var request = Gs2.Gs2Limit.Request.CountUpByUserIdRequest.FromJson(JsonMapper.ToObject(self.Request));
-						var future = domain.Limit.Namespace(
+						var d = domain.Limit.Namespace(
 							request.NamespaceName
 						).Me(
 							session
 						).Counter(
 							request.LimitName,
 							request.CounterName
-						).Model();
+						);
+						d.Subscribe(v =>
+						{
+							onCauseChange.Invoke();
+						});
+						var future = d.Model();
 						yield return future;
 						if (future.Error != null) {
 							result.OnError(future.Error);
@@ -185,13 +216,18 @@ namespace Gs2.Unity.Core.Model
 					case "Gs2Mission:ReceiveByUserId":
 					{
 						var request = Gs2.Gs2Mission.Request.ReceiveByUserIdRequest.FromJson(JsonMapper.ToObject(self.Request));
-						var future = domain.Mission.Namespace(
+						var d = domain.Mission.Namespace(
 							request.NamespaceName
 						).Me(
 							session
 						).Complete(
 							request.MissionGroupName
-						).Model();
+						);
+						d.Subscribe(v =>
+						{
+							onCauseChange.Invoke();
+						});
+						var future = d.Model();
 						yield return future;
 						if (future.Error != null) {
 							result.OnError(future.Error);
@@ -207,13 +243,18 @@ namespace Gs2.Unity.Core.Model
 					case "Gs2Money:WithdrawByUserId":
 					{
 						var request = Gs2.Gs2Money.Request.WithdrawByUserIdRequest.FromJson(JsonMapper.ToObject(self.Request));
-						var future = domain.Money.Namespace(
+						var d = domain.Money.Namespace(
 							request.NamespaceName
 						).Me(
 							session
 						).Wallet(
 							request.Slot ?? 0
-						).Model();
+						);
+						d.Subscribe(v =>
+						{
+							onCauseChange.Invoke();
+						});
+						var future = d.Model();
 						yield return future;
 						if (future.Error != null) {
 							result.OnError(future.Error);
@@ -239,13 +280,18 @@ namespace Gs2.Unity.Core.Model
 					case "Gs2SerialKey:UseByUserId":
 					{
 						var request = Gs2.Gs2SerialKey.Request.UseByUserIdRequest.FromJson(JsonMapper.ToObject(self.Request));
-						var future = domain.SerialKey.Namespace(
+						var d = domain.SerialKey.Namespace(
 							request.NamespaceName
 						).Me(
 							session
 						).SerialKey(
 							request.Code
-						).Model();
+						);
+						d.Subscribe(v =>
+						{
+							onCauseChange.Invoke();
+						});
+						var future = d.Model();
 						yield return future;
 						if (future.Error != null) {
 							result.OnError(future.Error);
@@ -261,13 +307,18 @@ namespace Gs2.Unity.Core.Model
 					case "Gs2Stamina:ConsumeStaminaByUserId":
 					{
 						var request = Gs2.Gs2Stamina.Request.ConsumeStaminaByUserIdRequest.FromJson(JsonMapper.ToObject(self.Request));
-						var future = domain.Stamina.Namespace(
+						var d = domain.Stamina.Namespace(
 							request.NamespaceName
 						).Me(
 							session
 						).Stamina(
 							request.StaminaName
-						).Model();
+						);
+						d.Subscribe(v =>
+						{
+							onCauseChange.Invoke();
+						});
+						var future = d.Model();
 						yield return future;
 						if (future.Error != null) {
 							result.OnError(future.Error);

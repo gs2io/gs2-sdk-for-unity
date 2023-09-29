@@ -153,6 +153,14 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
 #endif
         }
         
+        public ulong SubscribeDrawnPrizes(Action callback) {
+            return this._domain.SubscribeDrawnPrizes(callback);
+        }
+
+        public void UnsubscribeDrawnPrizes(ulong callbackId) {
+            this._domain.UnsubscribeDrawnPrizes(callbackId);
+        }
+
         public Gs2.Unity.Gs2Lottery.Domain.Model.EzDrawnPrizeGameSessionDomain DrawnPrize(
             int index
         ) {

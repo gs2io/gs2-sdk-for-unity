@@ -25,6 +25,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Lottery.Editor
     {
         public static void OnGUI(Gs2.Gs2Lottery.Model.BoxItem item) {
             EditorGUI.BeginDisabledGroup(true);
+            EditorGUILayout.TextField("PrizeId", item.PrizeId);
             EditorGUILayout.TextField("Remaining", item.Remaining?.ToString());
             EditorGUILayout.TextField("Initial", item.Initial?.ToString());
             EditorGUI.EndDisabledGroup();
