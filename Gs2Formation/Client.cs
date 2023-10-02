@@ -166,8 +166,7 @@ namespace Gs2.Unity.Gs2Formation
         public IEnumerator GetFormModel(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetFormModelResult>> callback,
                 string namespaceName,
-                string moldModelName,
-                string formModelName
+                string moldModelName
         )
 		{
             yield return _profile.Run(
@@ -176,8 +175,7 @@ namespace Gs2.Unity.Gs2Formation
                 cb => _client.GetFormModel(
                     new Gs2.Gs2Formation.Request.GetFormModelRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithMoldModelName(moldModelName)
-                        .WithFormModelName(formModelName),
+                        .WithMoldModelName(moldModelName),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetFormModelResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Formation.Result.EzGetFormModelResult.FromModel(r.Result),
