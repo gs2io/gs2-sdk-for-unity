@@ -10,6 +10,8 @@ namespace Gs2.Unity
         public readonly Gs2Datastore.Client Datastore;
         public readonly Gs2Dictionary.Client Dictionary;
         public readonly Gs2Distributor.Client Distributor;
+        public readonly Gs2Enchant.Client Enchant;
+        public readonly Gs2Enhance.Client Enhance;
         public readonly Gs2Exchange.Client Exchange;
         public readonly Gs2Experience.Client Experience;
         public readonly Gs2Formation.Client Formation;
@@ -30,7 +32,9 @@ namespace Gs2.Unity
         public readonly Gs2Ranking.Client Ranking;
         public readonly Gs2Realtime.Client Realtime;
         public readonly Gs2Schedule.Client Schedule;
+        public readonly Gs2SerialKey.Client SerialKey;
         public readonly Gs2Showcase.Client Showcase;
+        public readonly Gs2SkillTree.Client SkillTree;
         public readonly Gs2Stamina.Client Stamina;
         public readonly Gs2StateMachine.Client StateMachine;
         public readonly Gs2Version.Client Version;
@@ -48,6 +52,8 @@ namespace Gs2.Unity
             Datastore = new Gs2Datastore.Client(profile);
             Dictionary = new Gs2Dictionary.Client(profile);
             Distributor = new Gs2Distributor.Client(profile);
+            Enchant = new Gs2Enchant.Client(profile);
+            Enhance = new Gs2Enhance.Client(profile);
             Exchange = new Gs2Exchange.Client(profile);
             Experience = new Gs2Experience.Client(profile);
             Formation = new Gs2Formation.Client(profile);
@@ -68,7 +74,9 @@ namespace Gs2.Unity
             Ranking = new Gs2Ranking.Client(profile);
             Realtime = new Gs2Realtime.Client(profile);
             Schedule = new Gs2Schedule.Client(profile);
+            SerialKey = new Gs2SerialKey.Client(profile);
             Showcase = new Gs2Showcase.Client(profile);
+            SkillTree = new Gs2SkillTree.Client(profile);
             Stamina = new Gs2Stamina.Client(profile);
             StateMachine = new Gs2StateMachine.Client(profile);
             Version = new Gs2Version.Client(profile);
