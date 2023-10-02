@@ -77,10 +77,10 @@ namespace Gs2.Unity.Gs2Lottery.Domain
         }
 
         public void ClearDrawnResult(
-            Gs2.Unity.Gs2Lottery.ScriptableObject.Namespace namespace_
+            string namespaceName
         ) {
             this._domain.ClearDrawnResult(
-                namespace_.NamespaceName
+                namespaceName
             );
         }
     }

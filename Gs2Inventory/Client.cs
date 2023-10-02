@@ -633,6 +633,7 @@ namespace Gs2.Unity.Gs2Inventory
 		        GameSession session,
                 string namespaceName,
                 string inventoryName,
+                string itemName,
                 BigInteger consumeCount
         )
 		{
@@ -643,6 +644,7 @@ namespace Gs2.Unity.Gs2Inventory
                     new Gs2.Gs2Inventory.Request.ConsumeBigItemRequest()
                         .WithNamespaceName(namespaceName)
                         .WithInventoryName(inventoryName)
+                        .WithItemName(itemName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithConsumeCount(consumeCount.ToString("0")),
                     r => cb.Invoke(
