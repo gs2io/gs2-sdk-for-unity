@@ -61,6 +61,10 @@ namespace Gs2.Unity.Util
         {
             var accountClient = new Gs2AccountRestClient(_restSession);
 
+            if (this._session.IsDisconnected()) {
+                await this._session.ReOpenFuture();
+            }
+            
             string body = null;
             string signature = null;
             {
@@ -143,6 +147,10 @@ namespace Gs2.Unity.Util
         {
             IEnumerator Impl(Gs2Future<AccessToken> result) {
                 var accountClient = new Gs2AccountRestClient(this._restSession);
+
+                if (this._session.IsDisconnected()) {
+                    yield return this._session.ReOpenFuture();
+                }
 
                 var authenticationFuture = accountClient.AuthenticationFuture(
                     new AuthenticationRequest()
