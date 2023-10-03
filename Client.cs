@@ -5,6 +5,7 @@ namespace Gs2.Unity
     public class Client
     {
         public readonly Gs2Account.Client Account;
+        public readonly Gs2AdReward.Client AdReward;
         public readonly Gs2Auth.Client Auth;
         public readonly Gs2Chat.Client Chat;
         public readonly Gs2Datastore.Client Datastore;
@@ -25,6 +26,7 @@ namespace Gs2.Unity
         public readonly Gs2LoginReward.Client LoginReward;
         public readonly Gs2Lottery.Client Lottery;
         public readonly Gs2Matchmaking.Client Matchmaking;
+        public readonly Gs2MegaField.Client MegaField;
         public readonly Gs2Mission.Client Mission;
         public readonly Gs2Money.Client Money;
         public readonly Gs2News.Client News;
@@ -47,6 +49,7 @@ namespace Gs2.Unity
             Profile = profile;
             
             Account = new Gs2Account.Client(profile);
+            AdReward = new Gs2AdReward.Client(profile);
             Auth = new Gs2Auth.Client(profile);
             Chat = new Gs2Chat.Client(profile);
             Datastore = new Gs2Datastore.Client(profile);
@@ -67,6 +70,7 @@ namespace Gs2.Unity
             LoginReward = new Gs2LoginReward.Client(profile);
             Lottery = new Gs2Lottery.Client(profile);
             Matchmaking = new Gs2Matchmaking.Client(profile);
+            MegaField = new Gs2MegaField.Client(profile);
             Mission = new Gs2Mission.Client(profile);
             Money = new Gs2Money.Client(profile);
             News = new Gs2News.Client(profile);
