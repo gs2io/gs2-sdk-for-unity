@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 #if UNITY_INCLUDE_TESTS
 using UnityEditor;
@@ -31,6 +33,8 @@ namespace Gs2.Unity.Gs2Inventory.ScriptableObject
         public string InventoryName => this.Inventory.InventoryName;
         public string ItemName => this.itemName;
         public string ItemSetName => this.itemSetName;
+
+        public string Grn => $"grn:gs2:{{region}}:{{ownerId}}:inventory:{NamespaceName}:user:{{userId}}:inventory:{InventoryName}:item:{ItemName}:itemSet:{ItemSetName}";
 
 #if UNITY_INCLUDE_TESTS
         public static OwnItemSet Load(

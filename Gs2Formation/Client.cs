@@ -186,6 +186,33 @@ namespace Gs2.Unity.Gs2Formation
             );
 		}
 
+        public IEnumerator DeleteForm(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzDeleteFormResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string moldModelName,
+                int index
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.DeleteForm(
+                    new Gs2.Gs2Formation.Request.DeleteFormRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithMoldModelName(moldModelName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithIndex(index),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Formation.Result.EzDeleteFormResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Formation.Result.EzDeleteFormResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator GetForm(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetFormResult>> callback,
 		        GameSession session,
@@ -341,6 +368,31 @@ namespace Gs2.Unity.Gs2Formation
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Formation.Result.EzListPropertyFormModelsResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Formation.Result.EzListPropertyFormModelsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator DeletePropertyForm(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzDeletePropertyFormResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string propertyId
+        )
+		{
+            yield return _profile.Run(
+                callback,
+		        session,
+                cb => _restClient.DeletePropertyForm(
+                    new Gs2.Gs2Formation.Request.DeletePropertyFormRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithPropertyId(propertyId),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Formation.Result.EzDeletePropertyFormResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Formation.Result.EzDeletePropertyFormResult.FromModel(r.Result),
                             r.Error
                         )
                     )

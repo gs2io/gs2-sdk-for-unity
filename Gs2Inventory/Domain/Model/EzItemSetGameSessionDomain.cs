@@ -263,10 +263,10 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         }
         #endif
 
-        public ulong Subscribe(Action<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]> callback)
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Inventory.Model.EzItemSet> callback)
         {
-            return this._domain.Subscribe(items => {
-                callback.Invoke(items.Select(Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel).ToArray());
+            return this._domain.Subscribe(item => {
+                callback.Invoke(Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel(item));
             });
         }
 
