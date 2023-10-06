@@ -43,6 +43,8 @@ namespace Gs2.Unity.Gs2Enhance.Model
 		[SerializeField]
 		public string MaterialInventoryModelId;
 		[SerializeField]
+		public List<string> AcquireExperienceHierarchy;
+		[SerializeField]
 		public string ExperienceModelId;
 
         public Gs2.Gs2Enhance.Model.RateModel ToModel()
@@ -53,6 +55,9 @@ namespace Gs2.Unity.Gs2Enhance.Model
                 TargetInventoryModelId = TargetInventoryModelId,
                 AcquireExperienceSuffix = AcquireExperienceSuffix,
                 MaterialInventoryModelId = MaterialInventoryModelId,
+                AcquireExperienceHierarchy = AcquireExperienceHierarchy?.Select(v => {
+                    return v;
+                }).ToArray(),
                 ExperienceModelId = ExperienceModelId,
             };
         }
@@ -65,6 +70,9 @@ namespace Gs2.Unity.Gs2Enhance.Model
                 TargetInventoryModelId = model.TargetInventoryModelId == null ? null : model.TargetInventoryModelId,
                 AcquireExperienceSuffix = model.AcquireExperienceSuffix == null ? null : model.AcquireExperienceSuffix,
                 MaterialInventoryModelId = model.MaterialInventoryModelId == null ? null : model.MaterialInventoryModelId,
+                AcquireExperienceHierarchy = model.AcquireExperienceHierarchy == null ? new List<string>() : model.AcquireExperienceHierarchy.Select(v => {
+                    return v;
+                }).ToList(),
                 ExperienceModelId = model.ExperienceModelId == null ? null : model.ExperienceModelId,
             };
         }
