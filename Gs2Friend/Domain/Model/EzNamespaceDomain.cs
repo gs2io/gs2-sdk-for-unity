@@ -54,6 +54,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         private readonly Gs2.Gs2Friend.Domain.Model.NamespaceDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
         public string Status => _domain.Status;
+        public string Url => _domain.Url;
         public string NamespaceName => _domain?.NamespaceName;
 
         public EzNamespaceDomain(

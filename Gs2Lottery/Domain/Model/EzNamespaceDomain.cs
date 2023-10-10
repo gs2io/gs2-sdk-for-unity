@@ -54,6 +54,7 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
         private readonly Gs2.Gs2Lottery.Domain.Model.NamespaceDomain _domain;
         private readonly Gs2.Unity.Util.Profile _profile;
         public string Status => _domain.Status;
+        public string Url => _domain.Url;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
 
