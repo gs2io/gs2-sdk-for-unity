@@ -55,6 +55,8 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         private readonly Gs2.Unity.Util.Profile _profile;
         public string Status => _domain.Status;
         public string Url => _domain.Url;
+        public string UploadToken => _domain.UploadToken;
+        public string UploadUrl => _domain.UploadUrl;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
 
