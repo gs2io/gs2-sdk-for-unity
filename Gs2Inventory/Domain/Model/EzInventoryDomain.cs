@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -168,12 +170,12 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         #endif
         }
 
-        public ulong SubscribeItemSets(Action callback) {
-            return this._domain.SubscribeItemSets(callback);
+        public ulong SubscribeItemSets(Action callback, string itemSetName = null) {
+            return this._domain.SubscribeItemSets(callback, itemSetName);
         }
 
-        public void UnsubscribeItemSets(ulong callbackId) {
-            this._domain.UnsubscribeItemSets(callbackId);
+        public void UnsubscribeItemSets(ulong callbackId, string itemSetName = null) {
+            this._domain.UnsubscribeItemSets(callbackId, itemSetName);
         }
 
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetDomain ItemSet(
