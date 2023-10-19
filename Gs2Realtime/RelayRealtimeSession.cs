@@ -118,7 +118,7 @@ namespace Gs2.Unity.Gs2Realtime
                 }
             }
         }
-#if GS2_ENABLE_UNITASK
+#if GS2_ENABLE_UNITASK && !UNITY_WEBGL
         
         public async UniTask SendAsync(ByteString data, uint[] targetConnectionIds = null)
         {

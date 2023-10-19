@@ -370,7 +370,7 @@ namespace Gs2.Unity.Gs2Realtime
         }
 #endif
 
-#if GS2_ENABLE_UNITASK
+#if GS2_ENABLE_UNITASK && !UNITY_WEBGL
         
         public async UniTask ConnectAsync(
             MonoBehaviour monoBehaviour
