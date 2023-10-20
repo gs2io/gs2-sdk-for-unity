@@ -37,7 +37,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Experience.Editor
                 TransactionSettingEditorExt.OnGUI(item.TransactionSetting);
                 EditorGUI.indentLevel--;
             }
-            EditorGUILayout.TextField("ExperienceCapScriptId", item.ExperienceCapScriptId);
+            EditorGUILayout.TextField("RankCapScriptId", item.RankCapScriptId);
             if (item.ChangeExperienceScript == null) {
                 EditorGUILayout.TextField("ChangeExperienceScript", "");
             }
