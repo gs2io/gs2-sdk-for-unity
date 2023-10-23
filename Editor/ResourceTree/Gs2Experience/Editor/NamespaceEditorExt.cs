@@ -65,15 +65,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Experience.Editor
                 ScriptSettingEditorExt.OnGUI(item.ChangeRankCapScript);
                 EditorGUI.indentLevel--;
             }
-            if (item.OverflowExperienceScript == null) {
-                EditorGUILayout.TextField("OverflowExperienceScript", "");
-            }
-            else {
-                EditorGUILayout.LabelField("OverflowExperienceScript");
-                EditorGUI.indentLevel++;
-                ScriptSettingEditorExt.OnGUI(item.OverflowExperienceScript);
-                EditorGUI.indentLevel--;
-            }
+            EditorGUILayout.TextField("OverflowExperienceScript", item.OverflowExperienceScript);
             if (item.LogSetting == null) {
                 EditorGUILayout.TextField("LogSetting", "");
             }
