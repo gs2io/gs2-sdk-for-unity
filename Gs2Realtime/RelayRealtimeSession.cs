@@ -105,16 +105,17 @@ namespace Gs2.Unity.Gs2Realtime
                 switch (relayEvent.EventType)
                 {
                     case RelayRealtimeEventType.OnRelayMessage:
-                        OnRelayMessageWithMetadataEvent relayMessageEvent = relayEvent as OnRelayMessageWithMetadataEvent;
-                        if (OnRelayMessage != null)
-                        {
-                            OnRelayMessage.Invoke(relayMessageEvent.Message);
-                        }
-                        if (OnRelayMessageWithMetadata != null)
-                        {
-                            OnRelayMessageWithMetadata.Invoke(relayMessageEvent.Message, relayMessageEvent.Metadata);
+                        if (relayEvent is OnRelayMessageWithMetadataEvent relayMessageEvent) {
+                            if (OnRelayMessage != null) {
+                                OnRelayMessage.Invoke(relayMessageEvent.Message);
+                            }
+                            if (OnRelayMessageWithMetadata != null) {
+                                OnRelayMessageWithMetadata.Invoke(relayMessageEvent.Message, relayMessageEvent.Metadata);
+                            }
                         }
                         break;
+                    default:
+                        return;
                 }
             }
         }
