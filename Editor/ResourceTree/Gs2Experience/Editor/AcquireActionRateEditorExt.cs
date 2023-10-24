@@ -26,6 +26,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Experience.Editor
         public static void OnGUI(Gs2.Gs2Experience.Model.AcquireActionRate item) {
             EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.TextField("Name", item.Name);
+            EditorGUILayout.TextField("Mode", item.Mode);
             EditorGUI.EndDisabledGroup();
         }
     }
