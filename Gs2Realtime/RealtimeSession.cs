@@ -81,93 +81,83 @@ namespace Gs2.Unity.Gs2Realtime
             {
                 case RealtimeEventType.OnMessage:
                 {
-                    var typedEvent = @event as OnMessageEvent;
-                    if (OnMessage != null)
-                    {
-                        OnMessage.Invoke(typedEvent.Message);
+                    if (@event is OnMessageEvent typedEvent) {
+                        if (OnMessage != null) {
+                            OnMessage.Invoke(typedEvent.Message);
+                        }
+                        if (OnMessageWithMetadata != null) {
+                            OnMessageWithMetadata.Invoke(typedEvent.Message, typedEvent.Metadata);
+                        }
                     }
-
-                    if (OnMessageWithMetadata != null)
-                    {
-                        OnMessageWithMetadata.Invoke(typedEvent.Message, typedEvent.Metadata);
-                    }
-
                     break;
                 }
                 case RealtimeEventType.OnJoinPlayer:
                 {
-                    var typedEvent = @event as OnJoinPlayerEvent;
-                    if (OnJoinPlayer != null)
-                    {
-                        OnJoinPlayer.Invoke(typedEvent.Player);
+                    if (@event is OnJoinPlayerEvent typedEvent) {
+                        if (OnJoinPlayer != null) {
+                            OnJoinPlayer.Invoke(typedEvent.Player);
+                        }
+                        if (OnJoinPlayerWithMetadata != null) {
+                            OnJoinPlayerWithMetadata.Invoke(typedEvent.Player, typedEvent.Metadata);
+                        }
                     }
-
-                    if (OnJoinPlayerWithMetadata != null)
-                    {
-                        OnJoinPlayerWithMetadata.Invoke(typedEvent.Player, typedEvent.Metadata);
-                    }
-
                     break;
                 }
                 case RealtimeEventType.OnLeavePlayer:
                 {
-                    var typedEvent = @event as OnLeavePlayerEvent;
-                    if (OnLeavePlayer != null)
-                    {
-                        OnLeavePlayer.Invoke(typedEvent.Player);
+                    if (@event is OnLeavePlayerEvent typedEvent) {
+                        if (OnLeavePlayer != null) {
+                            OnLeavePlayer.Invoke(typedEvent.Player);
+                        }
+                        if (OnLeavePlayerWithMetadata != null) {
+                            OnLeavePlayerWithMetadata.Invoke(typedEvent.Player, typedEvent.Metadata);
+                        }
                     }
-
-                    if (OnLeavePlayerWithMetadata != null)
-                    {
-                        OnLeavePlayerWithMetadata.Invoke(typedEvent.Player, typedEvent.Metadata);
-                    }
-
                     break;
                 }
                 case RealtimeEventType.OnUpdateProfile:
                 {
-                    var typedEvent = @event as OnUpdateProfileEvent;
-                    if (OnUpdateProfile != null)
-                    {
-                        OnUpdateProfile.Invoke(typedEvent.Player);
-                    }
-
-                    if (OnUpdateProfileWithMetadata != null)
-                    {
-                        OnUpdateProfileWithMetadata.Invoke(typedEvent.Player, typedEvent.Metadata);
+                    if (@event is OnUpdateProfileEvent typedEvent) {
+                        if (OnUpdateProfile != null) {
+                            OnUpdateProfile.Invoke(typedEvent.Player);
+                        }
+                        if (OnUpdateProfileWithMetadata != null) {
+                            OnUpdateProfileWithMetadata.Invoke(typedEvent.Player, typedEvent.Metadata);
+                        }
                     }
 
                     break;
                 }
                 case RealtimeEventType.OnError:
                 {
-                    var typedEvent = @event as OnErrorEvent;
-                    if (OnError != null)
-                    {
-                        OnError.Invoke(typedEvent.Error);
+                    if (@event is OnErrorEvent typedEvent) {
+                        if (OnError != null) {
+                            OnError.Invoke(typedEvent.Error);
+                        }
+                        if (OnErrorWithMetadata != null) {
+                            OnErrorWithMetadata.Invoke(typedEvent.Error, typedEvent.Metadata);
+                        }
                     }
-
-                    if (OnErrorWithMetadata != null)
-                    {
-                        OnErrorWithMetadata.Invoke(typedEvent.Error, typedEvent.Metadata);
-                    }
-
                     break;
                 }
                 case RealtimeEventType.OnGeneralError:
-                    if (OnGeneralError != null)
-                    {
-                        OnGeneralError.Invoke((@event as OnGeneralErrorEvent).Error);
+                {
+                    if (@event is OnGeneralErrorEvent typedEvent) {
+                        if (OnGeneralError != null) {
+                            OnGeneralError.Invoke(typedEvent.Error);
+                        }
                     }
-
                     break;
+                }
                 case RealtimeEventType.OnClose:
-                    if (OnClose != null)
-                    {
-                        OnClose.Invoke((@event as OnCloseEvent).Error);
+                {
+                    if (@event is OnCloseEvent typedEvent) {
+                        if (OnClose != null) {
+                            OnClose.Invoke(typedEvent.Error);
+                        }
                     }
-
                     break;
+                }
                 case RealtimeEventType.PluginEventType:
                     break;
             }
