@@ -98,6 +98,8 @@ namespace Gs2.Unity.Gs2Realtime
 
         protected override void EventHandler(RealtimeEvent @event)
         {
+            if (@event == null) return;
+            
             base.EventHandler(@event);
 
             if (@event is RelayRealtimeEvent relayEvent)
@@ -106,12 +108,8 @@ namespace Gs2.Unity.Gs2Realtime
                 {
                     case RelayRealtimeEventType.OnRelayMessage:
                         if (relayEvent is OnRelayMessageWithMetadataEvent relayMessageEvent) {
-                            if (OnRelayMessage != null) {
-                                OnRelayMessage.Invoke(relayMessageEvent.Message);
-                            }
-                            if (OnRelayMessageWithMetadata != null) {
-                                OnRelayMessageWithMetadata.Invoke(relayMessageEvent.Message, relayMessageEvent.Metadata);
-                            }
+                            OnRelayMessage?.Invoke(relayMessageEvent.Message);
+                            OnRelayMessageWithMetadata?.Invoke(relayMessageEvent.Message, relayMessageEvent.Metadata);
                         }
                         break;
                     default:

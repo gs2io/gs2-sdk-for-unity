@@ -77,53 +77,39 @@ namespace Gs2.Unity.Gs2Realtime
 
         protected virtual void EventHandler(RealtimeEvent @event)
         {
+            if (@event == null) return;
+            
             switch (@event.EventType)
             {
                 case RealtimeEventType.OnMessage:
                 {
                     if (@event is OnMessageEvent typedEvent) {
-                        if (OnMessage != null) {
-                            OnMessage.Invoke(typedEvent.Message);
-                        }
-                        if (OnMessageWithMetadata != null) {
-                            OnMessageWithMetadata.Invoke(typedEvent.Message, typedEvent.Metadata);
-                        }
+                        OnMessage?.Invoke(typedEvent.Message);
+                        OnMessageWithMetadata?.Invoke(typedEvent.Message, typedEvent.Metadata);
                     }
                     break;
                 }
                 case RealtimeEventType.OnJoinPlayer:
                 {
                     if (@event is OnJoinPlayerEvent typedEvent) {
-                        if (OnJoinPlayer != null) {
-                            OnJoinPlayer.Invoke(typedEvent.Player);
-                        }
-                        if (OnJoinPlayerWithMetadata != null) {
-                            OnJoinPlayerWithMetadata.Invoke(typedEvent.Player, typedEvent.Metadata);
-                        }
+                        OnJoinPlayer?.Invoke(typedEvent.Player);
+                        OnJoinPlayerWithMetadata?.Invoke(typedEvent.Player, typedEvent.Metadata);
                     }
                     break;
                 }
                 case RealtimeEventType.OnLeavePlayer:
                 {
                     if (@event is OnLeavePlayerEvent typedEvent) {
-                        if (OnLeavePlayer != null) {
-                            OnLeavePlayer.Invoke(typedEvent.Player);
-                        }
-                        if (OnLeavePlayerWithMetadata != null) {
-                            OnLeavePlayerWithMetadata.Invoke(typedEvent.Player, typedEvent.Metadata);
-                        }
+                        OnLeavePlayer?.Invoke(typedEvent.Player);
+                        OnLeavePlayerWithMetadata?.Invoke(typedEvent.Player, typedEvent.Metadata);
                     }
                     break;
                 }
                 case RealtimeEventType.OnUpdateProfile:
                 {
                     if (@event is OnUpdateProfileEvent typedEvent) {
-                        if (OnUpdateProfile != null) {
-                            OnUpdateProfile.Invoke(typedEvent.Player);
-                        }
-                        if (OnUpdateProfileWithMetadata != null) {
-                            OnUpdateProfileWithMetadata.Invoke(typedEvent.Player, typedEvent.Metadata);
-                        }
+                        OnUpdateProfile?.Invoke(typedEvent.Player);
+                        OnUpdateProfileWithMetadata?.Invoke(typedEvent.Player, typedEvent.Metadata);
                     }
 
                     break;
@@ -131,30 +117,22 @@ namespace Gs2.Unity.Gs2Realtime
                 case RealtimeEventType.OnError:
                 {
                     if (@event is OnErrorEvent typedEvent) {
-                        if (OnError != null) {
-                            OnError.Invoke(typedEvent.Error);
-                        }
-                        if (OnErrorWithMetadata != null) {
-                            OnErrorWithMetadata.Invoke(typedEvent.Error, typedEvent.Metadata);
-                        }
+                        OnError?.Invoke(typedEvent.Error);
+                        OnErrorWithMetadata?.Invoke(typedEvent.Error, typedEvent.Metadata);
                     }
                     break;
                 }
                 case RealtimeEventType.OnGeneralError:
                 {
                     if (@event is OnGeneralErrorEvent typedEvent) {
-                        if (OnGeneralError != null) {
-                            OnGeneralError.Invoke(typedEvent.Error);
-                        }
+                        OnGeneralError?.Invoke(typedEvent.Error);
                     }
                     break;
                 }
                 case RealtimeEventType.OnClose:
                 {
                     if (@event is OnCloseEvent typedEvent) {
-                        if (OnClose != null) {
-                            OnClose.Invoke(typedEvent.Error);
-                        }
+                        OnClose?.Invoke(typedEvent.Error);
                     }
                     break;
                 }
