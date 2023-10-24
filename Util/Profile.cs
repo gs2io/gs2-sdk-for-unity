@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Exception;
@@ -25,16 +24,10 @@ using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Core.Result;
 using Gs2.Gs2Auth.Model;
-using Gs2.Gs2Gateway;
-using Gs2.Gs2Gateway.Request;
-using Gs2.Gs2Version;
-using Gs2.Gs2Version.Request;
 using Gs2.Unity.Core;
-using Gs2.Unity.Gs2Version.Model;
 using UnityEngine.Events;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
-using Gs2.Unity.Core;
 #endif
 
 namespace Gs2.Unity.Util
@@ -44,10 +37,6 @@ namespace Gs2.Unity.Util
         private readonly IReopener _reopener;
         private IAuthenticator _authenticator;
         private string _distributorNamespaceName;
-        public Gs2.Unity.Gs2Gateway.ScriptableObject.Namespace _gatewayNamespace;
-        public bool _allowConcurrentAccess;
-        public Gs2.Unity.Gs2Version.ScriptableObject.Namespace _versionNamespace;
-        public List<EzTargetVersion> _targetVersions;
 
         public string DistributorNamespaceName => _distributorNamespaceName;
         
@@ -230,16 +219,25 @@ namespace Gs2.Unity.Util
             {
                 try
                 {
+                    if (this._authenticator != null && this._authenticator.NeedReAuthentication) {
+                        var asyncAuthenticationResult = await this._authenticator.AuthenticationAsync();
+                        if (asyncAuthenticationResult != null)
+                        {
+                            accessToken.Token = asyncAuthenticationResult.Token;
+                            accessToken.UserId = asyncAuthenticationResult.UserId;
+                            accessToken.Expire = asyncAuthenticationResult.Expire;
+                            continue;
+                        }
+                    }
                     return await requestActionAsync.Invoke();
                 }
                 catch (UnauthorizedException)
                 {
-                    var authenticator = _authenticator;
-                    if (accessToken != null && authenticator != null && !isAuthenticationTried)
+                    if (accessToken != null && this._authenticator != null && !isAuthenticationTried)
                     {
                         isAuthenticationTried = true;
 
-                        var asyncAuthenticationResult = await authenticator.AuthenticationAsync();
+                        var asyncAuthenticationResult = await this._authenticator.AuthenticationAsync();
 
                         if (asyncAuthenticationResult != null)
                         {
@@ -256,11 +254,11 @@ namespace Gs2.Unity.Util
                 }
                 catch (SessionNotOpenException)
                 {
-                    if (_reopener != null && !isReopenTried)
+                    if (this._reopener != null && !isReopenTried)
                     {
                         isReopenTried = true;
 
-                        var asyncOpenResult = await _reopener.ReOpenAsync(Gs2Session, Gs2RestSession);
+                        var asyncOpenResult = await this._reopener.ReOpenAsync(Gs2Session, Gs2RestSession);
 
                         if (asyncOpenResult != null)
                         {
@@ -293,6 +291,16 @@ namespace Gs2.Unity.Util
             {
                 try
                 {
+                    if (this._authenticator != null && this._authenticator.NeedReAuthentication) {
+                        var asyncAuthenticationResult = await this._authenticator.AuthenticationAsync();
+                        if (asyncAuthenticationResult != null)
+                        {
+                            accessToken.Token = asyncAuthenticationResult.Token;
+                            accessToken.UserId = asyncAuthenticationResult.UserId;
+                            accessToken.Expire = asyncAuthenticationResult.Expire;
+                            continue;
+                        }
+                    }
                     return await requestActionAsync.Invoke();
                 }
                 catch (UnauthorizedException)
@@ -346,7 +354,7 @@ namespace Gs2.Unity.Util
 
             return false;
         }
-#else
+#endif
 
         public delegate IFuture<T> RetryAction<T>();
         
@@ -360,6 +368,21 @@ namespace Gs2.Unity.Util
 
             while (true)
             {
+                if (this._authenticator != null && this._authenticator.NeedReAuthentication) {
+                    var authenticationFuture = this._authenticator.AuthenticationFuture();
+                    if (authenticationFuture.Error != null)
+                    {
+                        break;
+                    }
+                    yield return authenticationFuture;
+                    if (authenticationFuture.Result != null)
+                    {
+                        accessToken.Token = authenticationFuture.Result.Token;
+                        accessToken.UserId = authenticationFuture.Result.UserId;
+                        accessToken.Expire = authenticationFuture.Result.Expire;
+                    }
+                }
+                
                 yield return requestFuture;
                 
                 if (requestFuture.Error is SessionNotOpenException && !isReopenTried)
@@ -368,9 +391,9 @@ namespace Gs2.Unity.Util
 
                     AsyncResult<OpenResult> asyncOpenResult = null;
 
-                    yield return _reopener.ReOpen(Gs2Session, Gs2RestSession, aor => asyncOpenResult = aor);
+                    yield return this._reopener.ReOpen(Gs2Session, Gs2RestSession, aor => asyncOpenResult = aor);
 
-                    _reopener.Callback?.Invoke(asyncOpenResult);
+                    this._reopener.Callback?.Invoke(asyncOpenResult);
 
                     if (asyncOpenResult.Error == null)
                     {
@@ -380,14 +403,13 @@ namespace Gs2.Unity.Util
                     }
                 }
 
-                var authenticator = _authenticator;
-                if (accessToken != null && authenticator != null && requestFuture.Error is UnauthorizedException && !isAuthenticationTried)
+                if (accessToken != null && this._authenticator != null && requestFuture.Error is UnauthorizedException && !isAuthenticationTried)
                 {
                     isAuthenticationTried = true;
 
                     AsyncResult<AccessToken> asyncAuthenticationResult = null;
 
-                    yield return authenticator.Authentication(aar => asyncAuthenticationResult = aar);
+                    yield return this._authenticator.Authentication(aar => asyncAuthenticationResult = aar);
 
                     if (asyncAuthenticationResult.Error == null)
                     {
@@ -396,7 +418,7 @@ namespace Gs2.Unity.Util
                         accessToken.Expire = asyncAuthenticationResult.Result.Expire;
                     }
 
-                    authenticator.Callback?.Invoke(asyncAuthenticationResult);
+                    this._authenticator.Callback?.Invoke(asyncAuthenticationResult);
 
                     if (asyncAuthenticationResult.Error == null)
                     {
@@ -410,7 +432,6 @@ namespace Gs2.Unity.Util
             }
         }
 
-#endif
         public delegate Gs2Iterator<T> RetryIterator<T>();
 
         public IEnumerator RunIterator<T>(
@@ -423,6 +444,21 @@ namespace Gs2.Unity.Util
 
             while (true)
             {
+                if (this._authenticator != null && this._authenticator.NeedReAuthentication) {
+                    var authenticationFuture = this._authenticator.AuthenticationFuture();
+                    if (authenticationFuture.Error != null)
+                    {
+                        break;
+                    }
+                    yield return authenticationFuture;
+                    if (authenticationFuture.Result != null)
+                    {
+                        accessToken.Token = authenticationFuture.Result.Token;
+                        accessToken.UserId = authenticationFuture.Result.UserId;
+                        accessToken.Expire = authenticationFuture.Result.Expire;
+                    }
+                }
+
                 yield return requestIterator.Next();
 
                 if (requestIterator.Error is SessionNotOpenException && !isReopenTried)

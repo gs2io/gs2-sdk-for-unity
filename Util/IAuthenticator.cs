@@ -12,6 +12,7 @@ namespace Gs2.Unity.Util
     public abstract class IAuthenticator
     {
         public UnityAction<AsyncResult<AccessToken>> Callback { get; set; }
+        public bool NeedReAuthentication { get; protected set; }
 
 #if GS2_ENABLE_UNITASK
         public abstract UniTask<AccessToken> AuthenticationAsync();

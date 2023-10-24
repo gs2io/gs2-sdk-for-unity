@@ -17,6 +17,7 @@ using Gs2.Gs2Gateway;
 using Gs2.Gs2Gateway.Request;
 using Gs2.Gs2Version;
 using Gs2.Gs2Version.Request;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace Gs2.Unity.Util
@@ -109,6 +110,9 @@ namespace Gs2.Unity.Util
                     await this._session.ReOpenFuture();
                     throw;
                 }
+                NeedReAuthentication = false;
+                this._session.OnDisconnect -= OnDisconnect;
+                this._session.OnDisconnect += OnDisconnect;
             }
             if (this._versionSetting != null) {
                 var checkVersionResult = await new Gs2VersionRestClient(_restSession).CheckVersionAsync(
@@ -142,6 +146,10 @@ namespace Gs2.Unity.Util
         }
 
 #endif
+        
+        private void OnDisconnect() {
+            NeedReAuthentication = true;
+        }
         
         public override Gs2Future<AccessToken> AuthenticationFuture()
         {
@@ -213,6 +221,9 @@ namespace Gs2.Unity.Util
                             yield break;
                         }
                     }
+                    NeedReAuthentication = false;
+                    this._session.OnDisconnect -= OnDisconnect;
+                    this._session.OnDisconnect += OnDisconnect;
                 }
                 if (this._versionSetting != null) {
                     var future = new Gs2VersionRestClient(_restSession).CheckVersionFuture(
