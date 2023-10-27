@@ -35,13 +35,21 @@ namespace Gs2.Unity.Gs2Experience.Model
 		[SerializeField]
 		public string Name;
 		[SerializeField]
+		public string Mode;
+		[SerializeField]
 		public List<double> Rates;
+		[SerializeField]
+		public List<string> BigRates;
 
         public Gs2.Gs2Experience.Model.AcquireActionRate ToModel()
         {
             return new Gs2.Gs2Experience.Model.AcquireActionRate {
                 Name = Name,
+                Mode = Mode,
                 Rates = Rates?.Select(v => {
+                    return v;
+                }).ToArray(),
+                BigRates = BigRates?.Select(v => {
                     return v;
                 }).ToArray(),
             };
@@ -51,7 +59,11 @@ namespace Gs2.Unity.Gs2Experience.Model
         {
             return new EzAcquireActionRate {
                 Name = model.Name == null ? null : model.Name,
+                Mode = model.Mode == null ? null : model.Mode,
                 Rates = model.Rates == null ? new List<double>() : model.Rates.Select(v => {
+                    return v;
+                }).ToList(),
+                BigRates = model.BigRates == null ? new List<string>() : model.BigRates.Select(v => {
                     return v;
                 }).ToList(),
             };

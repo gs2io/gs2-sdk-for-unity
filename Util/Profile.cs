@@ -219,7 +219,7 @@ namespace Gs2.Unity.Util
             {
                 try
                 {
-                    if (this._authenticator != null && this._authenticator.NeedReAuthentication) {
+                    if (accessToken != null && this._authenticator != null && this._authenticator.NeedReAuthentication) {
                         var asyncAuthenticationResult = await this._authenticator.AuthenticationAsync();
                         if (asyncAuthenticationResult != null)
                         {
@@ -291,7 +291,7 @@ namespace Gs2.Unity.Util
             {
                 try
                 {
-                    if (this._authenticator != null && this._authenticator.NeedReAuthentication) {
+                    if (accessToken != null && this._authenticator != null && this._authenticator.NeedReAuthentication) {
                         var asyncAuthenticationResult = await this._authenticator.AuthenticationAsync();
                         if (asyncAuthenticationResult != null)
                         {
@@ -306,7 +306,7 @@ namespace Gs2.Unity.Util
                 catch (UnauthorizedException)
                 {
                     var authenticator = _authenticator;
-                    if (accessToken != null && authenticator != null && !isAuthenticationTried)
+                    if (accessToken != null && this._authenticator != null && !isAuthenticationTried)
                     {
                         isAuthenticationTried = true;
 
@@ -368,7 +368,7 @@ namespace Gs2.Unity.Util
 
             while (true)
             {
-                if (this._authenticator != null && this._authenticator.NeedReAuthentication) {
+                if (accessToken != null && this._authenticator != null && this._authenticator.NeedReAuthentication) {
                     var authenticationFuture = this._authenticator.AuthenticationFuture();
                     if (authenticationFuture.Error != null)
                     {
