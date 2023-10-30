@@ -444,7 +444,7 @@ namespace Gs2.Unity.Util
 
             while (true)
             {
-                if (this._authenticator != null && this._authenticator.NeedReAuthentication) {
+                if (accessToken != null && this._authenticator != null && this._authenticator.NeedReAuthentication) {
                     var authenticationFuture = this._authenticator.AuthenticationFuture();
                     if (authenticationFuture.Error != null)
                     {

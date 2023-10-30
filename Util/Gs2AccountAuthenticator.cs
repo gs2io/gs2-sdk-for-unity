@@ -63,7 +63,7 @@ namespace Gs2.Unity.Util
             var accountClient = new Gs2AccountRestClient(_restSession);
 
             if (this._session.IsDisconnected()) {
-                await this._session.ReOpenFuture();
+                await this._session.ReOpenAsync();
             }
             
             string body = null;
