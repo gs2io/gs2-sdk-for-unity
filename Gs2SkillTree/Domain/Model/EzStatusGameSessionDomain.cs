@@ -105,7 +105,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                var future = _domain.Release(
+                var future = _domain.ReleaseFuture(
                     new ReleaseRequest()
                         .WithNodeModelNames(nodeModelNames)
                         .WithAccessToken(_domain.AccessToken.Token)
@@ -115,7 +115,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Release(
+                		return future = _domain.ReleaseFuture(
                     		new ReleaseRequest()
                 	        .WithNodeModelNames(nodeModelNames)
                     	    .WithAccessToken(_domain.AccessToken.Token)
@@ -173,7 +173,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                var future = _domain.Restrain(
+                var future = _domain.RestrainFuture(
                     new RestrainRequest()
                         .WithNodeModelNames(nodeModelNames)
                         .WithAccessToken(_domain.AccessToken.Token)
@@ -183,7 +183,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Restrain(
+                		return future = _domain.RestrainFuture(
                     		new RestrainRequest()
                 	        .WithNodeModelNames(nodeModelNames)
                     	    .WithAccessToken(_domain.AccessToken.Token)
@@ -237,7 +237,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                var future = _domain.Reset(
+                var future = _domain.ResetFuture(
                     new ResetRequest()
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
@@ -246,7 +246,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Reset(
+                		return future = _domain.ResetFuture(
                     		new ResetRequest()
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );
@@ -283,7 +283,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
                 _domain.AccessToken,
                 async () =>
                 {
-                    return await _domain.Model();
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
@@ -298,12 +298,12 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2SkillTree.Model.EzStatus> self)
             {
-                var future = _domain.Model();
+                var future = _domain.ModelFuture();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
                     future,
                     () => {
-                    	return future = _domain.Model();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {

@@ -102,7 +102,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
             {
-                var future = _domain.CreateAccount(
+                var future = _domain.CreateAccountFuture(
                     new CreateAccountRequest()
                 );
                 yield return _profile.RunFuture(
@@ -110,7 +110,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.CreateAccount(
+                		return future = _domain.CreateAccountFuture(
                     		new CreateAccountRequest()
         		        );
         			}
@@ -173,7 +173,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
             {
-                var future = _domain.DoTakeOver(
+                var future = _domain.DoTakeOverFuture(
                     new DoTakeOverRequest()
                         .WithType(type)
                         .WithUserIdentifier(userIdentifier)
@@ -184,7 +184,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.DoTakeOver(
+                		return future = _domain.DoTakeOverFuture(
                     		new DoTakeOverRequest()
                 	        .WithType(type)
                 	        .WithUserIdentifier(userIdentifier)

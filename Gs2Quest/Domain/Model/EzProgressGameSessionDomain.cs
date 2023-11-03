@@ -113,7 +113,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                var future = _domain.End(
+                var future = _domain.EndFuture(
                     new EndRequest()
                         .WithRewards(rewards?.Select(v => v.ToModel()).ToArray())
                         .WithIsComplete(isComplete)
@@ -125,7 +125,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.End(
+                		return future = _domain.EndFuture(
                     		new EndRequest()
         	                .WithRewards(rewards?.Select(v => v.ToModel()).ToArray())
                 	        .WithIsComplete(isComplete)
@@ -181,7 +181,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain> self)
             {
-                var future = _domain.Delete(
+                var future = _domain.DeleteFuture(
                     new DeleteProgressRequest()
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
@@ -190,7 +190,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Delete(
+                		return future = _domain.DeleteFuture(
                     		new DeleteProgressRequest()
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );
@@ -227,7 +227,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                 _domain.AccessToken,
                 async () =>
                 {
-                    return await _domain.Model();
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
@@ -242,12 +242,12 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Quest.Model.EzProgress> self)
             {
-                var future = _domain.Model();
+                var future = _domain.ModelFuture();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
                     future,
                     () => {
-                    	return future = _domain.Model();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {

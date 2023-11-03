@@ -113,7 +113,7 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Enchant.Domain.Model.EzRarityParameterStatusGameSessionDomain> self)
             {
-                var future = _domain.Verify(
+                var future = _domain.VerifyFuture(
                     new VerifyRarityParameterStatusRequest()
                         .WithVerifyType(verifyType)
                         .WithParameterValueName(parameterValueName)
@@ -125,7 +125,7 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Verify(
+                		return future = _domain.VerifyFuture(
                     		new VerifyRarityParameterStatusRequest()
                 	        .WithVerifyType(verifyType)
                 	        .WithParameterValueName(parameterValueName)
@@ -165,7 +165,7 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
                 _domain.AccessToken,
                 async () =>
                 {
-                    return await _domain.Model();
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
@@ -180,12 +180,12 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Enchant.Model.EzRarityParameterStatus> self)
             {
-                var future = _domain.Model();
+                var future = _domain.ModelFuture();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
                     future,
                     () => {
-                    	return future = _domain.Model();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {

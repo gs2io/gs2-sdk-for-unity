@@ -13,11 +13,18 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+// ReSharper disable InconsistentNaming
+// ReSharper disable Unity.NoNullPropagation
+
+#pragma warning disable CS0109 // Member does not hide an inherited member; new keyword is not required
+#pragma warning disable CS0108, CS0114
+
 #if UNITY_INCLUDE_TESTS
 using UnityEditor;
 #endif
 using UnityEngine;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Money.ScriptableObject
 {
     [CreateAssetMenu(fileName = "OwnWallet", menuName = "Game Server Services/Gs2Money/OwnWallet")]
@@ -39,19 +46,17 @@ namespace Gs2.Unity.Gs2Money.ScriptableObject
             );
         }
 #endif
-
         public static OwnWallet New(
-            Namespace Namespace,
+            Namespace @namespace,
             int slot
         )
         {
             var instance = CreateInstance<OwnWallet>();
             instance.name = "Runtime";
-            instance.Namespace = Namespace;
+            instance.Namespace = @namespace;
             instance.slot = slot;
             return instance;
         }
-
         public OwnWallet Clone()
         {
             var instance = CreateInstance<OwnWallet>();

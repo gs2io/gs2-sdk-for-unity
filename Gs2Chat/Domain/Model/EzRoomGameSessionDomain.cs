@@ -101,7 +101,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> self)
             {
-                var future = _domain.Delete(
+                var future = _domain.DeleteFuture(
                     new DeleteRoomRequest()
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
@@ -110,7 +110,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Delete(
+                		return future = _domain.DeleteFuture(
                     		new DeleteRoomRequest()
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );
@@ -171,7 +171,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzMessageGameSessionDomain> self)
             {
-                var future = _domain.Post(
+                var future = _domain.PostFuture(
                     new PostRequest()
                         .WithCategory(category)
                         .WithMetadata(metadata)
@@ -182,7 +182,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Post(
+                		return future = _domain.PostFuture(
                     		new PostRequest()
                 	        .WithCategory(category)
                 	        .WithMetadata(metadata)
@@ -341,7 +341,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                 _domain.AccessToken,
                 async () =>
                 {
-                    return await _domain.Model();
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
@@ -356,12 +356,12 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Model.EzRoom> self)
             {
-                var future = _domain.Model();
+                var future = _domain.ModelFuture();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
                     future,
                     () => {
-                    	return future = _domain.Model();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {

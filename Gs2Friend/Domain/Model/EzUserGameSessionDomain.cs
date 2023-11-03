@@ -106,7 +106,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> self)
             {
-                var future = _domain.SendRequest(
+                var future = _domain.SendRequestFuture(
                     new SendRequestRequest()
                         .WithTargetUserId(targetUserId)
                         .WithAccessToken(_domain.AccessToken.Token)
@@ -116,7 +116,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.SendRequest(
+                		return future = _domain.SendRequestFuture(
                     		new SendRequestRequest()
                 	        .WithTargetUserId(targetUserId)
                     	    .WithAccessToken(_domain.AccessToken.Token)

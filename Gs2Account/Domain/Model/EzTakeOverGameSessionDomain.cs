@@ -110,7 +110,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> self)
             {
-                var future = _domain.Create(
+                var future = _domain.CreateFuture(
                     new CreateTakeOverRequest()
                         .WithUserIdentifier(userIdentifier)
                         .WithPassword(password)
@@ -121,7 +121,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Create(
+                		return future = _domain.CreateFuture(
                     		new CreateTakeOverRequest()
                 	        .WithUserIdentifier(userIdentifier)
                 	        .WithPassword(password)
@@ -184,7 +184,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> self)
             {
-                var future = _domain.Update(
+                var future = _domain.UpdateFuture(
                     new UpdateTakeOverRequest()
                         .WithOldPassword(oldPassword)
                         .WithPassword(password)
@@ -195,7 +195,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Update(
+                		return future = _domain.UpdateFuture(
                     		new UpdateTakeOverRequest()
                 	        .WithOldPassword(oldPassword)
                 	        .WithPassword(password)
@@ -250,7 +250,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> self)
             {
-                var future = _domain.Delete(
+                var future = _domain.DeleteFuture(
                     new DeleteTakeOverRequest()
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
@@ -259,7 +259,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Delete(
+                		return future = _domain.DeleteFuture(
                     		new DeleteTakeOverRequest()
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );
@@ -296,7 +296,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                 _domain.AccessToken,
                 async () =>
                 {
-                    return await _domain.Model();
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
@@ -311,12 +311,12 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Model.EzTakeOver> self)
             {
-                var future = _domain.Model();
+                var future = _domain.ModelFuture();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
                     future,
                     () => {
-                    	return future = _domain.Model();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {

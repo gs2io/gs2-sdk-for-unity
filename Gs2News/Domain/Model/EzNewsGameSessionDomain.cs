@@ -101,7 +101,7 @@ namespace Gs2.Unity.Gs2News.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]> self)
             {
-                var future = _domain.WantGrant(
+                var future = _domain.WantGrantFuture(
                     new WantGrantRequest()
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
@@ -110,7 +110,7 @@ namespace Gs2.Unity.Gs2News.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.WantGrant(
+                		return future = _domain.WantGrantFuture(
                     		new WantGrantRequest()
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );
@@ -147,7 +147,7 @@ namespace Gs2.Unity.Gs2News.Domain.Model
                 _domain.AccessToken,
                 async () =>
                 {
-                    return await _domain.Model();
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
@@ -162,12 +162,12 @@ namespace Gs2.Unity.Gs2News.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2News.Model.EzNews> self)
             {
-                var future = _domain.Model();
+                var future = _domain.ModelFuture();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
                     future,
                     () => {
-                    	return future = _domain.Model();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {

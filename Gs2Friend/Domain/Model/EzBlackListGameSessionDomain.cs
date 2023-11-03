@@ -103,7 +103,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> self)
             {
-                var future = _domain.Register(
+                var future = _domain.RegisterFuture(
                     new RegisterBlackListRequest()
                         .WithTargetUserId(targetUserId)
                         .WithAccessToken(_domain.AccessToken.Token)
@@ -113,7 +113,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Register(
+                		return future = _domain.RegisterFuture(
                     		new RegisterBlackListRequest()
                 	        .WithTargetUserId(targetUserId)
                     	    .WithAccessToken(_domain.AccessToken.Token)
@@ -171,7 +171,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> self)
             {
-                var future = _domain.Unregister(
+                var future = _domain.UnregisterFuture(
                     new UnregisterBlackListRequest()
                         .WithTargetUserId(targetUserId)
                         .WithAccessToken(_domain.AccessToken.Token)
@@ -181,7 +181,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Unregister(
+                		return future = _domain.UnregisterFuture(
                     		new UnregisterBlackListRequest()
                 	        .WithTargetUserId(targetUserId)
                     	    .WithAccessToken(_domain.AccessToken.Token)
@@ -219,7 +219,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                 _domain.AccessToken,
                 async () =>
                 {
-                    return await _domain.Model();
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
@@ -234,12 +234,12 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzBlackList> self)
             {
-                var future = _domain.Model();
+                var future = _domain.ModelFuture();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
                     future,
                     () => {
-                    	return future = _domain.Model();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {

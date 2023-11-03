@@ -118,7 +118,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> self)
             {
-                var future = _domain.Vote(
+                var future = _domain.VoteFuture(
                     new VoteRequest()
                         .WithBallotBody(ballotBody)
                         .WithBallotSignature(ballotSignature)
@@ -130,7 +130,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Vote(
+                		return future = _domain.VoteFuture(
                     		new VoteRequest()
                 	        .WithBallotBody(ballotBody)
                 	        .WithBallotSignature(ballotSignature)
@@ -197,7 +197,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> self)
             {
-                var future = _domain.VoteMultiple(
+                var future = _domain.VoteMultipleFuture(
                     new VoteMultipleRequest()
                         .WithSignedBallots(signedBallots?.Select(v => v.ToModel()).ToArray())
                         .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())
@@ -208,7 +208,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.VoteMultiple(
+                		return future = _domain.VoteMultipleFuture(
                     		new VoteMultipleRequest()
         	                .WithSignedBallots(signedBallots?.Select(v => v.ToModel()).ToArray())
         	                .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())

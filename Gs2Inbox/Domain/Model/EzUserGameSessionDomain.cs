@@ -100,7 +100,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain[]> self)
             {
-                var future = _domain.ReceiveGlobalMessage(
+                var future = _domain.ReceiveGlobalMessageFuture(
                     new ReceiveGlobalMessageRequest()
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
@@ -109,7 +109,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.ReceiveGlobalMessage(
+                		return future = _domain.ReceiveGlobalMessageFuture(
                     		new ReceiveGlobalMessageRequest()
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );

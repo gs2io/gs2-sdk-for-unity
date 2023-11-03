@@ -125,7 +125,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> self)
             {
-                var future = _domain.CreateGathering(
+                var future = _domain.CreateGatheringFuture(
                     new CreateGatheringRequest()
                         .WithPlayer(player?.ToModel())
                         .WithAttributeRanges(attributeRanges?.Select(v => v.ToModel()).ToArray())
@@ -140,7 +140,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.CreateGathering(
+                		return future = _domain.CreateGatheringFuture(
                     		new CreateGatheringRequest()
             	            .WithPlayer(player?.ToModel())
         	                .WithAttributeRanges(attributeRanges?.Select(v => v.ToModel()).ToArray())

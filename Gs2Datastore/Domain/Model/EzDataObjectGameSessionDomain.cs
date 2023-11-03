@@ -112,7 +112,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
             {
-                var future = _domain.Update(
+                var future = _domain.UpdateFuture(
                     new UpdateDataObjectRequest()
                         .WithScope(scope)
                         .WithAllowUserIds(allowUserIds)
@@ -123,7 +123,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Update(
+                		return future = _domain.UpdateFuture(
                     		new UpdateDataObjectRequest()
                 	        .WithScope(scope)
                 	        .WithAllowUserIds(allowUserIds)
@@ -182,7 +182,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
             {
-                var future = _domain.PrepareReUpload(
+                var future = _domain.PrepareReUploadFuture(
                     new PrepareReUploadRequest()
                         .WithContentType(contentType)
                         .WithAccessToken(_domain.AccessToken.Token)
@@ -192,7 +192,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.PrepareReUpload(
+                		return future = _domain.PrepareReUploadFuture(
                     		new PrepareReUploadRequest()
                 	        .WithContentType(contentType)
                     	    .WithAccessToken(_domain.AccessToken.Token)
@@ -246,7 +246,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
             {
-                var future = _domain.DoneUpload(
+                var future = _domain.DoneUploadFuture(
                     new DoneUploadRequest()
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
@@ -255,7 +255,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.DoneUpload(
+                		return future = _domain.DoneUploadFuture(
                     		new DoneUploadRequest()
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );
@@ -308,7 +308,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
             {
-                var future = _domain.Delete(
+                var future = _domain.DeleteFuture(
                     new DeleteDataObjectRequest()
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
@@ -317,7 +317,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Delete(
+                		return future = _domain.DeleteFuture(
                     		new DeleteDataObjectRequest()
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );
@@ -370,7 +370,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
             {
-                var future = _domain.PrepareDownloadOwnData(
+                var future = _domain.PrepareDownloadOwnDataFuture(
                     new PrepareDownloadOwnDataRequest()
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
@@ -379,7 +379,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.PrepareDownloadOwnData(
+                		return future = _domain.PrepareDownloadOwnDataFuture(
                     		new PrepareDownloadOwnDataRequest()
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );
@@ -536,7 +536,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 _domain.AccessToken,
                 async () =>
                 {
-                    return await _domain.Model();
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
@@ -551,12 +551,12 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Model.EzDataObject> self)
             {
-                var future = _domain.Model();
+                var future = _domain.ModelFuture();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
                     future,
                     () => {
-                    	return future = _domain.Model();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {

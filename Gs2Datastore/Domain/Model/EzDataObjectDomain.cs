@@ -103,7 +103,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain> self)
             {
-                var future = _domain.PrepareDownloadByUserIdAndName(
+                var future = _domain.PrepareDownloadByUserIdAndNameFuture(
                     new PrepareDownloadByUserIdAndDataObjectNameRequest()
                 );
                 yield return _profile.RunFuture(
@@ -111,7 +111,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.PrepareDownloadByUserIdAndName(
+                		return future = _domain.PrepareDownloadByUserIdAndNameFuture(
                     		new PrepareDownloadByUserIdAndDataObjectNameRequest()
         		        );
         			}
@@ -267,7 +267,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 null,
                 async () =>
                 {
-                    return await _domain.Model();
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
@@ -282,12 +282,12 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Model.EzDataObject> self)
             {
-                var future = _domain.Model();
+                var future = _domain.ModelFuture();
                 yield return _profile.RunFuture(
                     null,
                     future,
                     () => {
-                    	return future = _domain.Model();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {

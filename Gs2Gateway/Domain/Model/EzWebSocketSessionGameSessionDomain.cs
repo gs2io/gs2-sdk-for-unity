@@ -104,7 +104,7 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain> self)
             {
-                var future = _domain.SetUserId(
+                var future = _domain.SetUserIdFuture(
                     new SetUserIdRequest()
                         .WithAllowConcurrentAccess(allowConcurrentAccess)
                         .WithAccessToken(_domain.AccessToken.Token)
@@ -114,7 +114,7 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.SetUserId(
+                		return future = _domain.SetUserIdFuture(
                     		new SetUserIdRequest()
                 	        .WithAllowConcurrentAccess(allowConcurrentAccess)
                     	    .WithAccessToken(_domain.AccessToken.Token)
@@ -152,7 +152,7 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
                 _domain.AccessToken,
                 async () =>
                 {
-                    return await _domain.Model();
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
@@ -167,12 +167,12 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> self)
             {
-                var future = _domain.Model();
+                var future = _domain.ModelFuture();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
                     future,
                     () => {
-                    	return future = _domain.Model();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {

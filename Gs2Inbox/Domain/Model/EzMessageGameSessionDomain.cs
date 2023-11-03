@@ -102,7 +102,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                var future = _domain.Read(
+                var future = _domain.ReadFuture(
                     new ReadMessageRequest()
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
@@ -111,7 +111,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Read(
+                		return future = _domain.ReadFuture(
                     		new ReadMessageRequest()
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );
@@ -164,7 +164,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> self)
             {
-                var future = _domain.Delete(
+                var future = _domain.DeleteFuture(
                     new DeleteMessageRequest()
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
@@ -173,7 +173,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Delete(
+                		return future = _domain.DeleteFuture(
                     		new DeleteMessageRequest()
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );
@@ -210,7 +210,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
                 _domain.AccessToken,
                 async () =>
                 {
-                    return await _domain.Model();
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
@@ -225,12 +225,12 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inbox.Model.EzMessage> self)
             {
-                var future = _domain.Model();
+                var future = _domain.ModelFuture();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
                     future,
                     () => {
-                    	return future = _domain.Model();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {

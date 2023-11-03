@@ -118,7 +118,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                var future = _domain.Start(
+                var future = _domain.StartFuture(
                     new StartRequest()
                         .WithQuestGroupName(questGroupName)
                         .WithQuestName(questName)
@@ -131,7 +131,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Start(
+                		return future = _domain.StartFuture(
                     		new StartRequest()
                 	        .WithQuestGroupName(questGroupName)
                 	        .WithQuestName(questName)

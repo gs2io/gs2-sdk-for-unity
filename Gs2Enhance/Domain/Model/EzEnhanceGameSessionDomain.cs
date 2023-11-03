@@ -119,7 +119,7 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                var future = _domain.Direct(
+                var future = _domain.DirectFuture(
                     new DirectEnhanceRequest()
                         .WithRateName(rateName)
                         .WithTargetItemSetId(targetItemSetId)
@@ -132,7 +132,7 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Direct(
+                		return future = _domain.DirectFuture(
                     		new DirectEnhanceRequest()
                 	        .WithRateName(rateName)
                 	        .WithTargetItemSetId(targetItemSetId)

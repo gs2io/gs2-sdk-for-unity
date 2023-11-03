@@ -504,14 +504,16 @@ namespace Gs2.Unity.Gs2Realtime
             }
         }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async UniTask SendAsync(BinaryMessage message)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             if (!Connected)
             {
                 throw new SendException(message);
             }
-            
-            _webSocket.Send(
+
+            this._webSocket.Send(
                 _messenger.Pack(
                     message
                 )

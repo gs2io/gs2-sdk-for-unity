@@ -105,7 +105,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain[]> self)
             {
-                var future = _domain.ConsumeSimpleItems(
+                var future = _domain.ConsumeSimpleItemsFuture(
                     new ConsumeSimpleItemsRequest()
                         .WithConsumeCounts(consumeCounts?.Select(v => v.ToModel()).ToArray())
                         .WithAccessToken(_domain.AccessToken.Token)
@@ -115,7 +115,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.ConsumeSimpleItems(
+                		return future = _domain.ConsumeSimpleItemsFuture(
                     		new ConsumeSimpleItemsRequest()
         	                .WithConsumeCounts(consumeCounts?.Select(v => v.ToModel()).ToArray())
                     	    .WithAccessToken(_domain.AccessToken.Token)

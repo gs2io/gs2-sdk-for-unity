@@ -110,7 +110,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain> self)
             {
-                var future = _domain.PutScore(
+                var future = _domain.PutScoreFuture(
                     new PutScoreRequest()
                         .WithScore(score)
                         .WithMetadata(metadata)
@@ -121,7 +121,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.PutScore(
+                		return future = _domain.PutScoreFuture(
                     		new PutScoreRequest()
                 	        .WithScore(score)
                 	        .WithMetadata(metadata)
@@ -164,7 +164,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 _domain.AccessToken,
                 async () =>
                 {
-                    return await _domain.Model(scorerUserId);
+                    return await _domain.ModelAsync(scorerUserId);
                 }
             );
             if (item == null) {
@@ -181,12 +181,12 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Model.EzRanking> self)
             {
-                var future = _domain.Model(scorerUserId);
+                var future = _domain.ModelFuture(scorerUserId);
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
                     future,
                     () => {
-                        return future = _domain.Model(scorerUserId);
+                        return future = _domain.ModelFuture(scorerUserId);
                     }
                 );
                 if (future.Error != null) {

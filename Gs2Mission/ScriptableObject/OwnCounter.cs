@@ -13,11 +13,18 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+// ReSharper disable InconsistentNaming
+// ReSharper disable Unity.NoNullPropagation
+
+#pragma warning disable CS0109 // Member does not hide an inherited member; new keyword is not required
+#pragma warning disable CS0108, CS0114
+
 #if UNITY_INCLUDE_TESTS
 using UnityEditor;
 #endif
 using UnityEngine;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Mission.ScriptableObject
 {
     [CreateAssetMenu(fileName = "OwnCounter", menuName = "Game Server Services/Gs2Mission/OwnCounter")]
@@ -26,7 +33,7 @@ namespace Gs2.Unity.Gs2Mission.ScriptableObject
 
 
 #if UNITY_INCLUDE_TESTS
-        public static OwnCounter Load(
+        public new static OwnCounter Load(
             string assetPath
         )
         {
@@ -35,20 +42,18 @@ namespace Gs2.Unity.Gs2Mission.ScriptableObject
             );
         }
 #endif
-
-        public static OwnCounter New(
-            Namespace Namespace,
+        public new static OwnCounter New(
+            Namespace @namespace,
             string counterName
         )
         {
             var instance = CreateInstance<OwnCounter>();
             instance.name = "Runtime";
-            instance.Namespace = Namespace;
+            instance.Namespace = @namespace;
             instance.counterName = counterName;
             return instance;
         }
-
-        public OwnCounter Clone()
+        public new OwnCounter Clone()
         {
             var instance = CreateInstance<OwnCounter>();
             instance.name = "Runtime";

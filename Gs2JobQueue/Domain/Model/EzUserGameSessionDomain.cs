@@ -102,7 +102,7 @@ namespace Gs2.Unity.Gs2JobQueue.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2JobQueue.Domain.Model.EzJobGameSessionDomain> self)
             {
-                var future = _domain.Run(
+                var future = _domain.RunFuture(
                     new RunRequest()
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
@@ -111,7 +111,7 @@ namespace Gs2.Unity.Gs2JobQueue.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Run(
+                		return future = _domain.RunFuture(
                     		new RunRequest()
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );

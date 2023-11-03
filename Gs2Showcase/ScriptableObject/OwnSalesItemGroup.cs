@@ -13,11 +13,18 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+// ReSharper disable InconsistentNaming
+// ReSharper disable Unity.NoNullPropagation
+
+#pragma warning disable CS0109 // Member does not hide an inherited member; new keyword is not required
+#pragma warning disable CS0108, CS0114
+
 #if UNITY_INCLUDE_TESTS
 using UnityEditor;
 #endif
 using UnityEngine;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Showcase.ScriptableObject
 {
     public class OwnSalesItemGroup : UnityEngine.ScriptableObject
@@ -38,17 +45,15 @@ namespace Gs2.Unity.Gs2Showcase.ScriptableObject
             );
         }
 #endif
-
         public static OwnSalesItemGroup New(
-            OwnDisplayItem DisplayItem
+            OwnDisplayItem @displayItem
         )
         {
             var instance = CreateInstance<OwnSalesItemGroup>();
             instance.name = "Runtime";
-            instance.DisplayItem = DisplayItem;
+            instance.DisplayItem = @displayItem;
             return instance;
         }
-
         public OwnSalesItemGroup Clone()
         {
             var instance = CreateInstance<OwnSalesItemGroup>();

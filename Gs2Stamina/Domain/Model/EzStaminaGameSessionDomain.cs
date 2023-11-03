@@ -105,7 +105,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
             {
-                var future = _domain.Consume(
+                var future = _domain.ConsumeFuture(
                     new ConsumeStaminaRequest()
                         .WithConsumeValue(consumeValue)
                         .WithAccessToken(_domain.AccessToken.Token)
@@ -115,7 +115,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Consume(
+                		return future = _domain.ConsumeFuture(
                     		new ConsumeStaminaRequest()
                 	        .WithConsumeValue(consumeValue)
                     	    .WithAccessToken(_domain.AccessToken.Token)
@@ -181,7 +181,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
             {
-                var future = _domain.SetMaxValueByStatus(
+                var future = _domain.SetMaxValueByStatusFuture(
                     new SetMaxValueByStatusRequest()
                         .WithKeyId(keyId)
                         .WithSignedStatusBody(signedStatusBody)
@@ -193,7 +193,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.SetMaxValueByStatus(
+                		return future = _domain.SetMaxValueByStatusFuture(
                     		new SetMaxValueByStatusRequest()
                 	        .WithKeyId(keyId)
                 	        .WithSignedStatusBody(signedStatusBody)
@@ -261,7 +261,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
             {
-                var future = _domain.SetRecoverIntervalByStatus(
+                var future = _domain.SetRecoverIntervalByStatusFuture(
                     new SetRecoverIntervalByStatusRequest()
                         .WithKeyId(keyId)
                         .WithSignedStatusBody(signedStatusBody)
@@ -273,7 +273,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.SetRecoverIntervalByStatus(
+                		return future = _domain.SetRecoverIntervalByStatusFuture(
                     		new SetRecoverIntervalByStatusRequest()
                 	        .WithKeyId(keyId)
                 	        .WithSignedStatusBody(signedStatusBody)
@@ -341,7 +341,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
             {
-                var future = _domain.SetRecoverValueByStatus(
+                var future = _domain.SetRecoverValueByStatusFuture(
                     new SetRecoverValueByStatusRequest()
                         .WithKeyId(keyId)
                         .WithSignedStatusBody(signedStatusBody)
@@ -353,7 +353,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.SetRecoverValueByStatus(
+                		return future = _domain.SetRecoverValueByStatusFuture(
                     		new SetRecoverValueByStatusRequest()
                 	        .WithKeyId(keyId)
                 	        .WithSignedStatusBody(signedStatusBody)
@@ -393,7 +393,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
                 _domain.AccessToken,
                 async () =>
                 {
-                    return await _domain.Model();
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
@@ -408,12 +408,12 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Model.EzStamina> self)
             {
-                var future = _domain.Model();
+                var future = _domain.ModelFuture();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
                     future,
                     () => {
-                    	return future = _domain.Model();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {

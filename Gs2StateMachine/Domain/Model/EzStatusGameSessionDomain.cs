@@ -108,7 +108,7 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> self)
             {
-                var future = _domain.Emit(
+                var future = _domain.EmitFuture(
                     new EmitRequest()
                         .WithEventName(eventName)
                         .WithArgs(args)
@@ -119,7 +119,7 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Emit(
+                		return future = _domain.EmitFuture(
                     		new EmitRequest()
                 	        .WithEventName(eventName)
                 	        .WithArgs(args)
@@ -174,7 +174,7 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> self)
             {
-                var future = _domain.ExitStateMachine(
+                var future = _domain.ExitStateMachineFuture(
                     new ExitStateMachineRequest()
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
@@ -183,7 +183,7 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.ExitStateMachine(
+                		return future = _domain.ExitStateMachineFuture(
                     		new ExitStateMachineRequest()
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );
@@ -220,7 +220,7 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
                 _domain.AccessToken,
                 async () =>
                 {
-                    return await _domain.Model();
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
@@ -235,12 +235,12 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2StateMachine.Model.EzStatus> self)
             {
-                var future = _domain.Model();
+                var future = _domain.ModelFuture();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
                     future,
                     () => {
-                    	return future = _domain.Model();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {

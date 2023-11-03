@@ -57,6 +57,7 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
         public string Token => _domain.Token;
         public string UserId => _domain.UserId;
         public long? Expire => _domain.Expire;
+        public string Status => _domain.Status;
 
         public EzAccessTokenDomain(
             Gs2.Gs2Auth.Domain.Model.AccessTokenDomain domain,
@@ -112,7 +113,7 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Auth.Domain.Model.EzAccessTokenDomain> self)
             {
-                var future = _domain.LoginBySignature(
+                var future = _domain.LoginBySignatureFuture(
                     new LoginBySignatureRequest()
                         .WithKeyId(keyId)
                         .WithBody(body)
@@ -123,7 +124,7 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.LoginBySignature(
+                		return future = _domain.LoginBySignatureFuture(
                     		new LoginBySignatureRequest()
                 	        .WithKeyId(keyId)
                 	        .WithBody(body)
@@ -162,7 +163,7 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
                 null,
                 async () =>
                 {
-                    return await _domain.Model();
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
@@ -177,12 +178,12 @@ namespace Gs2.Unity.Gs2Auth.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Util.GameSession> self)
             {
-                var future = _domain.Model();
+                var future = _domain.ModelFuture();
                 yield return _profile.RunFuture(
                     null,
                     future,
                     () => {
-                    	return future = _domain.Model();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {

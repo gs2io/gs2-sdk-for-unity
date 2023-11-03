@@ -108,7 +108,7 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Version.Domain.Model.EzCheckerGameSessionDomain> self)
             {
-                var future = _domain.CheckVersion(
+                var future = _domain.CheckVersionFuture(
                     new CheckVersionRequest()
                         .WithTargetVersions(targetVersions?.Select(v => v.ToModel()).ToArray())
                         .WithAccessToken(_domain.AccessToken.Token)
@@ -118,7 +118,7 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.CheckVersion(
+                		return future = _domain.CheckVersionFuture(
                     		new CheckVersionRequest()
         	                .WithTargetVersions(targetVersions?.Select(v => v.ToModel()).ToArray())
                     	    .WithAccessToken(_domain.AccessToken.Token)

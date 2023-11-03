@@ -109,7 +109,7 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                var future = _domain.Receive(
+                var future = _domain.ReceiveFuture(
                     new ReceiveRequest()
                         .WithBonusModelName(bonusModelName)
                         .WithConfig(config?.Select(v => v.ToModel()).ToArray())
@@ -120,7 +120,7 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Receive(
+                		return future = _domain.ReceiveFuture(
                     		new ReceiveRequest()
                 	        .WithBonusModelName(bonusModelName)
         	                .WithConfig(config?.Select(v => v.ToModel()).ToArray())
@@ -187,7 +187,7 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                var future = _domain.MissedReceive(
+                var future = _domain.MissedReceiveFuture(
                     new MissedReceiveRequest()
                         .WithBonusModelName(bonusModelName)
                         .WithStepNumber(stepNumber)
@@ -199,7 +199,7 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.MissedReceive(
+                		return future = _domain.MissedReceiveFuture(
                     		new MissedReceiveRequest()
                 	        .WithBonusModelName(bonusModelName)
                 	        .WithStepNumber(stepNumber)

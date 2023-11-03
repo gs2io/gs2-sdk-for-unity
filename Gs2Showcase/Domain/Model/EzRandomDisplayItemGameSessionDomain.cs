@@ -111,7 +111,7 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                var future = _domain.RandomShowcaseBuy(
+                var future = _domain.RandomShowcaseBuyFuture(
                     new RandomShowcaseBuyRequest()
                         .WithQuantity(quantity)
                         .WithConfig(config?.Select(v => v.ToModel()).ToArray())
@@ -122,7 +122,7 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.RandomShowcaseBuy(
+                		return future = _domain.RandomShowcaseBuyFuture(
                     		new RandomShowcaseBuyRequest()
                 	        .WithQuantity(quantity)
         	                .WithConfig(config?.Select(v => v.ToModel()).ToArray())
@@ -161,7 +161,7 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
                 _domain.AccessToken,
                 async () =>
                 {
-                    return await _domain.Model();
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
@@ -176,12 +176,12 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem> self)
             {
-                var future = _domain.Model();
+                var future = _domain.ModelFuture();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
                     future,
                     () => {
-                    	return future = _domain.Model();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {

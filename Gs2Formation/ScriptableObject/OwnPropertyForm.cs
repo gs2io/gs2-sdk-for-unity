@@ -13,11 +13,18 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+// ReSharper disable InconsistentNaming
+// ReSharper disable Unity.NoNullPropagation
+
+#pragma warning disable CS0109 // Member does not hide an inherited member; new keyword is not required
+#pragma warning disable CS0108, CS0114
+
 #if UNITY_INCLUDE_TESTS
 using UnityEditor;
 #endif
 using UnityEngine;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Formation.ScriptableObject
 {
     [CreateAssetMenu(fileName = "OwnPropertyForm", menuName = "Game Server Services/Gs2Formation/OwnPropertyForm")]
@@ -28,7 +35,7 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
         public string PropertyId => this.propertyId;
 
 #if UNITY_INCLUDE_TESTS
-        public static OwnPropertyForm Load(
+        public new static OwnPropertyForm Load(
             string assetPath
         )
         {
@@ -37,22 +44,20 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
             );
         }
 #endif
-
-        public static OwnPropertyForm New(
-            Namespace Namespace,
+        public new static OwnPropertyForm New(
+            Namespace @namespace,
             string propertyFormModelName,
             string propertyId
         )
         {
             var instance = CreateInstance<OwnPropertyForm>();
             instance.name = "Runtime";
-            instance.Namespace = Namespace;
+            instance.Namespace = @namespace;
             instance.propertyFormModelName = propertyFormModelName;
             instance.propertyId = propertyId;
             return instance;
         }
-
-        public OwnPropertyForm Clone()
+        public new OwnPropertyForm Clone()
         {
             var instance = CreateInstance<OwnPropertyForm>();
             instance.name = "Runtime";

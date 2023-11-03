@@ -109,7 +109,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> self)
             {
-                var future = _domain.GetWithSignature(
+                var future = _domain.GetWithSignatureFuture(
                     new GetFormWithSignatureRequest()
                         .WithKeyId(keyId)
                         .WithAccessToken(_domain.AccessToken.Token)
@@ -119,7 +119,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.GetWithSignature(
+                		return future = _domain.GetWithSignatureFuture(
                     		new GetFormWithSignatureRequest()
                 	        .WithKeyId(keyId)
                     	    .WithAccessToken(_domain.AccessToken.Token)
@@ -181,7 +181,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> self)
             {
-                var future = _domain.SetWithSignature(
+                var future = _domain.SetWithSignatureFuture(
                     new SetFormWithSignatureRequest()
                         .WithSlots(slots?.Select(v => v.ToModel()).ToArray())
                         .WithKeyId(keyId)
@@ -192,7 +192,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.SetWithSignature(
+                		return future = _domain.SetWithSignatureFuture(
                     		new SetFormWithSignatureRequest()
         	                .WithSlots(slots?.Select(v => v.ToModel()).ToArray())
                 	        .WithKeyId(keyId)
@@ -247,7 +247,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> self)
             {
-                var future = _domain.Delete(
+                var future = _domain.DeleteFuture(
                     new DeleteFormRequest()
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
@@ -256,7 +256,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Delete(
+                		return future = _domain.DeleteFuture(
                     		new DeleteFormRequest()
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );
@@ -293,7 +293,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                 _domain.AccessToken,
                 async () =>
                 {
-                    return await _domain.Model();
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
@@ -308,12 +308,12 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Model.EzForm> self)
             {
-                var future = _domain.Model();
+                var future = _domain.ModelFuture();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
                     future,
                     () => {
-                    	return future = _domain.Model();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {

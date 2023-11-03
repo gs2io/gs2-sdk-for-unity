@@ -123,7 +123,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
             {
-                var future = _domain.PrepareUpload(
+                var future = _domain.PrepareUploadFuture(
                     new PrepareUploadRequest()
                         .WithName(name)
                         .WithScope(scope)
@@ -137,7 +137,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.PrepareUpload(
+                		return future = _domain.PrepareUploadFuture(
                     		new PrepareUploadRequest()
                 	        .WithName(name)
                 	        .WithScope(scope)
@@ -199,7 +199,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
             {
-                var future = _domain.PrepareDownload(
+                var future = _domain.PrepareDownloadFuture(
                     new PrepareDownloadRequest()
                         .WithDataObjectId(dataObjectId)
                         .WithAccessToken(_domain.AccessToken.Token)
@@ -209,7 +209,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.PrepareDownload(
+                		return future = _domain.PrepareDownloadFuture(
                     		new PrepareDownloadRequest()
                 	        .WithDataObjectId(dataObjectId)
                     	    .WithAccessToken(_domain.AccessToken.Token)

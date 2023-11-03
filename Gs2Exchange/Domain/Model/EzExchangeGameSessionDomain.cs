@@ -113,7 +113,7 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                var future = _domain.Exchange(
+                var future = _domain.ExchangeFuture(
                     new ExchangeRequest()
                         .WithRateName(rateName)
                         .WithCount(count)
@@ -125,7 +125,7 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Exchange(
+                		return future = _domain.ExchangeFuture(
                     		new ExchangeRequest()
                 	        .WithRateName(rateName)
                 	        .WithCount(count)
@@ -193,7 +193,7 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                var future = _domain.Incremental(
+                var future = _domain.IncrementalFuture(
                     new IncrementalExchangeRequest()
                         .WithRateName(rateName)
                         .WithCount(count)
@@ -205,7 +205,7 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Incremental(
+                		return future = _domain.IncrementalFuture(
                     		new IncrementalExchangeRequest()
                 	        .WithRateName(rateName)
                 	        .WithCount(count)

@@ -105,7 +105,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain> self)
             {
-                var future = _domain.RestoreDataObject(
+                var future = _domain.RestoreDataObjectFuture(
                     new RestoreDataObjectRequest()
                         .WithDataObjectId(dataObjectId)
                 );
@@ -114,7 +114,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.RestoreDataObject(
+                		return future = _domain.RestoreDataObjectFuture(
                     		new RestoreDataObjectRequest()
                 	        .WithDataObjectId(dataObjectId)
         		        );

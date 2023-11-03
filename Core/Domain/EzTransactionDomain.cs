@@ -1,8 +1,6 @@
 using System.Collections;
 using Gs2.Core.Domain;
 using Gs2.Core.Net;
-using UnityEngine;
-using System.Collections;
 
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
@@ -25,9 +23,9 @@ namespace Gs2.Unity.Core.Domain
             this._domain = domain;
         }
         
-        public IFuture<EzTransactionDomain> Wait() {
+        public IFuture<EzTransactionDomain> WaitFuture() {
             IEnumerator Impl(IFuture<EzTransactionDomain> self) {
-                var future = this._domain.Wait();
+                var future = this._domain.WaitFuture();
                 yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);

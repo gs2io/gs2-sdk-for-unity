@@ -109,7 +109,7 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain> self)
             {
-                var future = _domain.GetWithSignature(
+                var future = _domain.GetWithSignatureFuture(
                     new GetEntryWithSignatureRequest()
                         .WithEntryModelName(EntryName)
                         .WithKeyId(keyId)
@@ -120,7 +120,7 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.GetWithSignature(
+                		return future = _domain.GetWithSignatureFuture(
                     		new GetEntryWithSignatureRequest()
                 	        .WithEntryModelName(EntryName)
                 	        .WithKeyId(keyId)
@@ -159,7 +159,7 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
                 _domain.AccessToken,
                 async () =>
                 {
-                    return await _domain.Model();
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
@@ -174,12 +174,12 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Dictionary.Model.EzEntry> self)
             {
-                var future = _domain.Model();
+                var future = _domain.ModelFuture();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
                     future,
                     () => {
-                    	return future = _domain.Model();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {

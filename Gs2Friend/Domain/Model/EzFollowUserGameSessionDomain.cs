@@ -100,7 +100,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> self)
             {
-                var future = _domain.Follow(
+                var future = _domain.FollowFuture(
                     new FollowRequest()
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
@@ -109,7 +109,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Follow(
+                		return future = _domain.FollowFuture(
                     		new FollowRequest()
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );
@@ -162,7 +162,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> self)
             {
-                var future = _domain.Unfollow(
+                var future = _domain.UnfollowFuture(
                     new UnfollowRequest()
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
@@ -171,7 +171,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Unfollow(
+                		return future = _domain.UnfollowFuture(
                     		new UnfollowRequest()
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );
@@ -208,7 +208,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                 _domain.AccessToken,
                 async () =>
                 {
-                    return await _domain.Model();
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
@@ -223,12 +223,12 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzFollowUser> self)
             {
-                var future = _domain.Model();
+                var future = _domain.ModelFuture();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
                     future,
                     () => {
-                    	return future = _domain.Model();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {

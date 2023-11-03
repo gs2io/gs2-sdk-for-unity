@@ -104,7 +104,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> self)
             {
-                var future = _domain.Subscribe(
+                var future = _domain.SubscribeFuture(
                     new SubscribeRequest()
                         .WithNotificationTypes(notificationTypes?.Select(v => v.ToModel()).ToArray())
                         .WithAccessToken(_domain.AccessToken.Token)
@@ -114,7 +114,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Subscribe(
+                		return future = _domain.SubscribeFuture(
                     		new SubscribeRequest()
         	                .WithNotificationTypes(notificationTypes?.Select(v => v.ToModel()).ToArray())
                     	    .WithAccessToken(_domain.AccessToken.Token)
@@ -172,7 +172,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> self)
             {
-                var future = _domain.UpdateNotificationType(
+                var future = _domain.UpdateNotificationTypeFuture(
                     new UpdateNotificationTypeRequest()
                         .WithNotificationTypes(notificationTypes?.Select(v => v.ToModel()).ToArray())
                         .WithAccessToken(_domain.AccessToken.Token)
@@ -182,7 +182,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.UpdateNotificationType(
+                		return future = _domain.UpdateNotificationTypeFuture(
                     		new UpdateNotificationTypeRequest()
         	                .WithNotificationTypes(notificationTypes?.Select(v => v.ToModel()).ToArray())
                     	    .WithAccessToken(_domain.AccessToken.Token)
@@ -236,7 +236,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> self)
             {
-                var future = _domain.Unsubscribe(
+                var future = _domain.UnsubscribeFuture(
                     new UnsubscribeRequest()
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
@@ -245,7 +245,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Unsubscribe(
+                		return future = _domain.UnsubscribeFuture(
                     		new UnsubscribeRequest()
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );
@@ -282,7 +282,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                 _domain.AccessToken,
                 async () =>
                 {
-                    return await _domain.Model();
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
@@ -297,12 +297,12 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Model.EzSubscribe> self)
             {
-                var future = _domain.Model();
+                var future = _domain.ModelFuture();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
                     future,
                     () => {
-                    	return future = _domain.Model();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {

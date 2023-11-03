@@ -13,11 +13,18 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+// ReSharper disable InconsistentNaming
+// ReSharper disable Unity.NoNullPropagation
+
+#pragma warning disable CS0109 // Member does not hide an inherited member; new keyword is not required
+#pragma warning disable CS0108, CS0114
+
 #if UNITY_INCLUDE_TESTS
 using UnityEditor;
 #endif
 using UnityEngine;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Inventory.ScriptableObject
 {
     [CreateAssetMenu(fileName = "OwnBigInventory", menuName = "Game Server Services/Gs2Inventory/OwnBigInventory")]
@@ -26,7 +33,7 @@ namespace Gs2.Unity.Gs2Inventory.ScriptableObject
 
 
 #if UNITY_INCLUDE_TESTS
-        public static OwnBigInventory Load(
+        public new static OwnBigInventory Load(
             string assetPath
         )
         {
@@ -35,20 +42,18 @@ namespace Gs2.Unity.Gs2Inventory.ScriptableObject
             );
         }
 #endif
-
-        public static OwnBigInventory New(
-            Namespace Namespace,
+        public new static OwnBigInventory New(
+            Namespace @namespace,
             string inventoryName
         )
         {
             var instance = CreateInstance<OwnBigInventory>();
             instance.name = "Runtime";
-            instance.Namespace = Namespace;
+            instance.Namespace = @namespace;
             instance.inventoryName = inventoryName;
             return instance;
         }
-
-        public OwnBigInventory Clone()
+        public new OwnBigInventory Clone()
         {
             var instance = CreateInstance<OwnBigInventory>();
             instance.name = "Runtime";

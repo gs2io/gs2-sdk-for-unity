@@ -104,7 +104,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> self)
             {
-                var future = _domain.Update(
+                var future = _domain.UpdateFuture(
                     new UpdateGatheringRequest()
                         .WithAttributeRanges(attributeRanges?.Select(v => v.ToModel()).ToArray())
                         .WithAccessToken(_domain.AccessToken.Token)
@@ -114,7 +114,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Update(
+                		return future = _domain.UpdateFuture(
                     		new UpdateGatheringRequest()
         	                .WithAttributeRanges(attributeRanges?.Select(v => v.ToModel()).ToArray())
                     	    .WithAccessToken(_domain.AccessToken.Token)
@@ -168,7 +168,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> self)
             {
-                var future = _domain.CancelMatchmaking(
+                var future = _domain.CancelMatchmakingFuture(
                     new CancelMatchmakingRequest()
                         .WithAccessToken(_domain.AccessToken.Token)
                 );
@@ -177,7 +177,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.CancelMatchmaking(
+                		return future = _domain.CancelMatchmakingFuture(
                     		new CancelMatchmakingRequest()
                     	    .WithAccessToken(_domain.AccessToken.Token)
         		        );
@@ -214,7 +214,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                 _domain.AccessToken,
                 async () =>
                 {
-                    return await _domain.Model();
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
@@ -229,12 +229,12 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> self)
             {
-                var future = _domain.Model();
+                var future = _domain.ModelFuture();
                 yield return _profile.RunFuture(
                     _domain.AccessToken,
                     future,
                     () => {
-                    	return future = _domain.Model();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {

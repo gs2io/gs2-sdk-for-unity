@@ -107,7 +107,7 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyDomain> self)
             {
-                var future = _domain.Use(
+                var future = _domain.UseFuture(
                     new UseByUserIdRequest()
                         .WithNamespaceName(NamespaceName)
                         .WithUserId(userId)
@@ -118,7 +118,7 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Use(
+                		return future = _domain.UseFuture(
                             new UseByUserIdRequest()
                                 .WithNamespaceName(NamespaceName)
                                 .WithUserId(userId)
@@ -157,7 +157,7 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
                 null,
                 async () =>
                 {
-                    return await _domain.Model();
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
@@ -172,12 +172,12 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2SerialKey.Model.EzSerialKey> self)
             {
-                var future = _domain.Model();
+                var future = _domain.ModelFuture();
                 yield return _profile.RunFuture(
                     null,
                     future,
                     () => {
-                    	return future = _domain.Model();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {

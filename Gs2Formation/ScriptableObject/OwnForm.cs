@@ -13,11 +13,18 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+// ReSharper disable InconsistentNaming
+// ReSharper disable Unity.NoNullPropagation
+
+#pragma warning disable CS0109 // Member does not hide an inherited member; new keyword is not required
+#pragma warning disable CS0108, CS0114
+
 #if UNITY_INCLUDE_TESTS
 using UnityEditor;
 #endif
 using UnityEngine;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Formation.ScriptableObject
 {
     [CreateAssetMenu(fileName = "OwnForm", menuName = "Game Server Services/Gs2Formation/OwnForm")]
@@ -40,19 +47,17 @@ namespace Gs2.Unity.Gs2Formation.ScriptableObject
             );
         }
 #endif
-
         public static OwnForm New(
-            OwnMold Mold,
+            OwnMold @mold,
             int index
         )
         {
             var instance = CreateInstance<OwnForm>();
             instance.name = "Runtime";
-            instance.Mold = Mold;
+            instance.Mold = @mold;
             instance.index = index;
             return instance;
         }
-
         public OwnForm Clone()
         {
             var instance = CreateInstance<OwnForm>();

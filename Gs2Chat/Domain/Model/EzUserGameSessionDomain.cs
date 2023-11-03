@@ -116,7 +116,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> self)
             {
-                var future = _domain.CreateRoom(
+                var future = _domain.CreateRoomFuture(
                     new CreateRoomRequest()
                         .WithName(name)
                         .WithMetadata(metadata)
@@ -129,7 +129,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.CreateRoom(
+                		return future = _domain.CreateRoomFuture(
                     		new CreateRoomRequest()
                 	        .WithName(name)
                 	        .WithMetadata(metadata)

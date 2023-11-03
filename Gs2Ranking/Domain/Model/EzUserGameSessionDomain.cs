@@ -109,7 +109,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> self)
             {
-                var future = _domain.Subscribe(
+                var future = _domain.SubscribeFuture(
                     new SubscribeRequest()
                         .WithCategoryName(categoryName)
                         .WithTargetUserId(targetUserId)
@@ -120,7 +120,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                     future,
                     () =>
         			{
-                		return future = _domain.Subscribe(
+                		return future = _domain.SubscribeFuture(
                     		new SubscribeRequest()
                 	        .WithCategoryName(categoryName)
                 	        .WithTargetUserId(targetUserId)

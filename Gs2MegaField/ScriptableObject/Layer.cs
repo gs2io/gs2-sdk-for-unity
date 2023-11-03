@@ -15,11 +15,18 @@
  *
  * deny overwrite
  */
+// ReSharper disable InconsistentNaming
+// ReSharper disable Unity.NoNullPropagation
+
+#pragma warning disable CS0109 // Member does not hide an inherited member; new keyword is not required
+#pragma warning disable CS0108, CS0114
+
 #if UNITY_INCLUDE_TESTS
 using UnityEditor;
 #endif
 using UnityEngine;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2MegaField.ScriptableObject
 {
     [CreateAssetMenu(fileName = "Layer", menuName = "Game Server Services/Gs2MegaField/Layer")]
@@ -31,7 +38,7 @@ namespace Gs2.Unity.Gs2MegaField.ScriptableObject
         public string AreaModelName => this.areaModelName;
 
 #if UNITY_INCLUDE_TESTS
-        public static Layer Load(
+        public new static Layer Load(
             string assetPath
         )
         {

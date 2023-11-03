@@ -13,11 +13,18 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+// ReSharper disable InconsistentNaming
+// ReSharper disable Unity.NoNullPropagation
+
+#pragma warning disable CS0109 // Member does not hide an inherited member; new keyword is not required
+#pragma warning disable CS0108, CS0114
+
 #if UNITY_INCLUDE_TESTS
 using UnityEditor;
 #endif
 using UnityEngine;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2News.ScriptableObject
 {
     public class OwnNews : UnityEngine.ScriptableObject
@@ -36,17 +43,15 @@ namespace Gs2.Unity.Gs2News.ScriptableObject
             );
         }
 #endif
-
         public static OwnNews New(
-            Namespace Namespace
+            Namespace @namespace
         )
         {
             var instance = CreateInstance<OwnNews>();
             instance.name = "Runtime";
-            instance.Namespace = Namespace;
+            instance.Namespace = @namespace;
             return instance;
         }
-
         public OwnNews Clone()
         {
             var instance = CreateInstance<OwnNews>();
