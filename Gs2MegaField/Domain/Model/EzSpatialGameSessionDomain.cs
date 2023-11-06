@@ -68,10 +68,22 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to UpdateFuture.")]
         public IFuture<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]> Update(
-              Gs2.Unity.Gs2MegaField.Model.EzMyPosition position,
-              Gs2.Unity.Gs2MegaField.Model.EzScope[] scopes = null
+            Gs2.Unity.Gs2MegaField.Model.EzMyPosition position,
+            Gs2.Unity.Gs2MegaField.Model.EzScope[] scopes = null
+        )
+        {
+            return UpdateFuture(
+                position,
+                scopes
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]> UpdateFuture(
+            Gs2.Unity.Gs2MegaField.Model.EzMyPosition position,
+            Gs2.Unity.Gs2MegaField.Model.EzScope[] scopes = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]> self)
@@ -89,10 +101,10 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]> UpdateAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]> Update(
+        public IFuture<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]> UpdateFuture(
         #endif
-              Gs2.Unity.Gs2MegaField.Model.EzMyPosition position,
-              Gs2.Unity.Gs2MegaField.Model.EzScope[] scopes = null
+            Gs2.Unity.Gs2MegaField.Model.EzMyPosition position,
+            Gs2.Unity.Gs2MegaField.Model.EzScope[] scopes = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -142,8 +154,14 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2MegaField.Model.EzSpatial> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2MegaField.Model.EzSpatial> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2MegaField.Model.EzSpatial> self)
             {
@@ -172,7 +190,7 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2MegaField.Model.EzSpatial> Model()
+        public IFuture<Gs2.Unity.Gs2MegaField.Model.EzSpatial> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2MegaField.Model.EzSpatial> self)
             {

@@ -65,8 +65,16 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to AcceptFuture.")]
         public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> Accept(
+        )
+        {
+            return AcceptFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> AcceptFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> self)
@@ -82,7 +90,7 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> AcceptAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> Accept(
+        public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> AcceptFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -127,8 +135,16 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to DeleteFuture.")]
         public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> Delete(
+        )
+        {
+            return DeleteFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> DeleteFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> self)
@@ -144,7 +160,7 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> DeleteAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> Delete(
+        public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> DeleteFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -189,8 +205,14 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> self)
             {
@@ -219,7 +241,7 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> Model()
+        public IFuture<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> self)
             {

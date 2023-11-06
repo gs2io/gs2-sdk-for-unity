@@ -66,11 +66,25 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to VerifyRarityParameterStatusFuture.")]
         public IFuture<Gs2.Unity.Gs2Enchant.Domain.Model.EzRarityParameterStatusGameSessionDomain> VerifyRarityParameterStatus(
-              string verifyType,
-              string parameterValueName,
-              int parameterCount
+            string verifyType,
+            string parameterValueName,
+            int parameterCount
+        )
+        {
+            return VerifyRarityParameterStatusFuture(
+                verifyType,
+                parameterValueName,
+                parameterCount
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Enchant.Domain.Model.EzRarityParameterStatusGameSessionDomain> VerifyRarityParameterStatusFuture(
+            string verifyType,
+            string parameterValueName,
+            int parameterCount
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Enchant.Domain.Model.EzRarityParameterStatusGameSessionDomain> self)
@@ -89,11 +103,11 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Enchant.Domain.Model.EzRarityParameterStatusGameSessionDomain> VerifyRarityParameterStatusAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Enchant.Domain.Model.EzRarityParameterStatusGameSessionDomain> VerifyRarityParameterStatus(
+        public IFuture<Gs2.Unity.Gs2Enchant.Domain.Model.EzRarityParameterStatusGameSessionDomain> VerifyRarityParameterStatusFuture(
         #endif
-              string verifyType,
-              string parameterValueName,
-              int parameterCount
+            string verifyType,
+            string parameterValueName,
+            int parameterCount
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -146,8 +160,14 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Enchant.Model.EzRarityParameterStatus> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Enchant.Model.EzRarityParameterStatus> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Enchant.Model.EzRarityParameterStatus> self)
             {
@@ -176,7 +196,7 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Enchant.Model.EzRarityParameterStatus> Model()
+        public IFuture<Gs2.Unity.Gs2Enchant.Model.EzRarityParameterStatus> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Enchant.Model.EzRarityParameterStatus> self)
             {

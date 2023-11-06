@@ -67,8 +67,16 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ReadFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Read(
+        )
+        {
+            return ReadFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReadFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -84,7 +92,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
 
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ReadAsync(
         #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Read(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReadFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -129,8 +137,16 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to DeleteFuture.")]
         public IFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> Delete(
+        )
+        {
+            return DeleteFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> DeleteFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> self)
@@ -146,7 +162,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> DeleteAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> Delete(
+        public IFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain> DeleteFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -191,8 +207,14 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Inbox.Model.EzMessage> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Inbox.Model.EzMessage> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inbox.Model.EzMessage> self)
             {
@@ -221,7 +243,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Inbox.Model.EzMessage> Model()
+        public IFuture<Gs2.Unity.Gs2Inbox.Model.EzMessage> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inbox.Model.EzMessage> self)
             {

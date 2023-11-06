@@ -68,12 +68,28 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to EnhanceFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Enhance(
-              string rateName,
-              string targetItemSetId,
-              Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials,
-              Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
+            string rateName,
+            string targetItemSetId,
+            Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials,
+            Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
+        )
+        {
+            return EnhanceFuture(
+                rateName,
+                targetItemSetId,
+                materials,
+                config
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> EnhanceFuture(
+            string rateName,
+            string targetItemSetId,
+            Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials,
+            Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -93,12 +109,12 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
 
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> EnhanceAsync(
         #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Enhance(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> EnhanceFuture(
         #endif
-              string rateName,
-              string targetItemSetId,
-              Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials,
-              Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
+            string rateName,
+            string targetItemSetId,
+            Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials,
+            Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(

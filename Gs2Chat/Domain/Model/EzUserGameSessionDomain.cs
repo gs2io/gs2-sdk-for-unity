@@ -65,12 +65,28 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to CreateRoomFuture.")]
         public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> CreateRoom(
-              string name = null,
-              string metadata = null,
-              string password = null,
-              string[] whiteListUserIds = null
+            string name = null,
+            string metadata = null,
+            string password = null,
+            string[] whiteListUserIds = null
+        )
+        {
+            return CreateRoomFuture(
+                name,
+                metadata,
+                password,
+                whiteListUserIds
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> CreateRoomFuture(
+            string name = null,
+            string metadata = null,
+            string password = null,
+            string[] whiteListUserIds = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> self)
@@ -90,12 +106,12 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> CreateRoomAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> CreateRoom(
+        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> CreateRoomFuture(
         #endif
-              string name = null,
-              string metadata = null,
-              string password = null,
-              string[] whiteListUserIds = null
+            string name = null,
+            string metadata = null,
+            string password = null,
+            string[] whiteListUserIds = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(

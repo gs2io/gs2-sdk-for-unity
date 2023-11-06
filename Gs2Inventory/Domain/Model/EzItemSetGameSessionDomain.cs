@@ -72,8 +72,18 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to GetItemWithSignatureFuture.")]
         public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain> GetItemWithSignature(
+              string keyId
+        )
+        {
+            return GetItemWithSignatureFuture(
+                keyId
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain> GetItemWithSignatureFuture(
               string keyId
         )
         {
@@ -91,7 +101,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain> GetItemWithSignatureAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain> GetItemWithSignature(
+        public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain> GetItemWithSignatureFuture(
         #endif
               string keyId
         ) {
@@ -140,8 +150,18 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ConsumeFuture.")]
         public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain> Consume(
+              long consumeCount
+        )
+        {
+            return ConsumeFuture(
+                consumeCount
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain> ConsumeFuture(
               long consumeCount
         )
         {
@@ -159,7 +179,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain> ConsumeAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain> Consume(
+        public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain> ConsumeFuture(
         #endif
               long consumeCount
         ) {
@@ -208,8 +228,25 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        public Gs2.Unity.Gs2Inventory.Domain.Model.EzReferenceOfGameSessionDomain ReferenceOf(
+            string referenceOf
+        ) {
+            return new Gs2.Unity.Gs2Inventory.Domain.Model.EzReferenceOfGameSessionDomain(
+                _domain.ReferenceOf(
+                    referenceOf
+                ),
+                _profile
+            );
+        }
+
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]> self)
             {
@@ -236,7 +273,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             return item.Select(Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel).ToArray();
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]> Model()
+        public IFuture<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]> self)
             {
@@ -245,7 +282,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
                     _domain.AccessToken,
                     future,
                     () => {
-                        return future = _domain.ModelFuture();
+                    	return future = _domain.ModelFuture();
                     }
                 );
                 if (future.Error != null) {
@@ -266,7 +303,9 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         public ulong Subscribe(Action<Gs2.Unity.Gs2Inventory.Model.EzItemSet> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel(item));
+                callback.Invoke(Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel(
+                    item
+                ));
             });
         }
 

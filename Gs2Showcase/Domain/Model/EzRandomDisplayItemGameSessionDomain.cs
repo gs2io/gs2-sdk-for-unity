@@ -68,10 +68,22 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to RandomShowcaseBuyFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> RandomShowcaseBuy(
-              int? quantity = null,
-              Gs2.Unity.Gs2Showcase.Model.EzConfig[] config = null
+            int? quantity = null,
+            Gs2.Unity.Gs2Showcase.Model.EzConfig[] config = null
+        )
+        {
+            return RandomShowcaseBuyFuture(
+                quantity,
+                config
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> RandomShowcaseBuyFuture(
+            int? quantity = null,
+            Gs2.Unity.Gs2Showcase.Model.EzConfig[] config = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -89,10 +101,10 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
 
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> RandomShowcaseBuyAsync(
         #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> RandomShowcaseBuy(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> RandomShowcaseBuyFuture(
         #endif
-              int? quantity = null,
-              Gs2.Unity.Gs2Showcase.Model.EzConfig[] config = null
+            int? quantity = null,
+            Gs2.Unity.Gs2Showcase.Model.EzConfig[] config = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -142,8 +154,14 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem> self)
             {
@@ -172,7 +190,7 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem> Model()
+        public IFuture<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem> self)
             {

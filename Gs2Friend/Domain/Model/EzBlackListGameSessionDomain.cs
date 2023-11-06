@@ -64,9 +64,19 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to RegisterBlackListFuture.")]
         public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> RegisterBlackList(
-              string targetUserId
+            string targetUserId
+        )
+        {
+            return RegisterBlackListFuture(
+                targetUserId
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> RegisterBlackListFuture(
+            string targetUserId
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> self)
@@ -83,9 +93,9 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> RegisterBlackListAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> RegisterBlackList(
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> RegisterBlackListFuture(
         #endif
-              string targetUserId
+            string targetUserId
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -132,9 +142,19 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to UnregisterBlackListFuture.")]
         public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> UnregisterBlackList(
-              string targetUserId
+            string targetUserId
+        )
+        {
+            return UnregisterBlackListFuture(
+                targetUserId
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> UnregisterBlackListFuture(
+            string targetUserId
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> self)
@@ -151,9 +171,9 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> UnregisterBlackListAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> UnregisterBlackList(
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzBlackListGameSessionDomain> UnregisterBlackListFuture(
         #endif
-              string targetUserId
+            string targetUserId
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -200,8 +220,14 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Friend.Model.EzBlackList> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzBlackList> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzBlackList> self)
             {
@@ -230,7 +256,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Friend.Model.EzBlackList> Model()
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzBlackList> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzBlackList> self)
             {

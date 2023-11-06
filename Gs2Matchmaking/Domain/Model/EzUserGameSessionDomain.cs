@@ -66,14 +66,34 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to CreateGatheringFuture.")]
         public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> CreateGathering(
-              Gs2.Unity.Gs2Matchmaking.Model.EzPlayer player,
-              Gs2.Unity.Gs2Matchmaking.Model.EzAttributeRange[] attributeRanges = null,
-              Gs2.Unity.Gs2Matchmaking.Model.EzCapacityOfRole[] capacityOfRoles = null,
-              string[] allowUserIds = null,
-              long? expiresAt = null,
-              Gs2.Unity.Gs2Matchmaking.Model.EzTimeSpan expiresAtTimeSpan = null
+            Gs2.Unity.Gs2Matchmaking.Model.EzPlayer player,
+            Gs2.Unity.Gs2Matchmaking.Model.EzAttributeRange[] attributeRanges = null,
+            Gs2.Unity.Gs2Matchmaking.Model.EzCapacityOfRole[] capacityOfRoles = null,
+            string[] allowUserIds = null,
+            long? expiresAt = null,
+            Gs2.Unity.Gs2Matchmaking.Model.EzTimeSpan expiresAtTimeSpan = null
+        )
+        {
+            return CreateGatheringFuture(
+                player,
+                attributeRanges,
+                capacityOfRoles,
+                allowUserIds,
+                expiresAt,
+                expiresAtTimeSpan
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> CreateGatheringFuture(
+            Gs2.Unity.Gs2Matchmaking.Model.EzPlayer player,
+            Gs2.Unity.Gs2Matchmaking.Model.EzAttributeRange[] attributeRanges = null,
+            Gs2.Unity.Gs2Matchmaking.Model.EzCapacityOfRole[] capacityOfRoles = null,
+            string[] allowUserIds = null,
+            long? expiresAt = null,
+            Gs2.Unity.Gs2Matchmaking.Model.EzTimeSpan expiresAtTimeSpan = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> self)
@@ -95,14 +115,14 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> CreateGatheringAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> CreateGathering(
+        public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> CreateGatheringFuture(
         #endif
-              Gs2.Unity.Gs2Matchmaking.Model.EzPlayer player,
-              Gs2.Unity.Gs2Matchmaking.Model.EzAttributeRange[] attributeRanges = null,
-              Gs2.Unity.Gs2Matchmaking.Model.EzCapacityOfRole[] capacityOfRoles = null,
-              string[] allowUserIds = null,
-              long? expiresAt = null,
-              Gs2.Unity.Gs2Matchmaking.Model.EzTimeSpan expiresAtTimeSpan = null
+            Gs2.Unity.Gs2Matchmaking.Model.EzPlayer player,
+            Gs2.Unity.Gs2Matchmaking.Model.EzAttributeRange[] attributeRanges = null,
+            Gs2.Unity.Gs2Matchmaking.Model.EzCapacityOfRole[] capacityOfRoles = null,
+            string[] allowUserIds = null,
+            long? expiresAt = null,
+            Gs2.Unity.Gs2Matchmaking.Model.EzTimeSpan expiresAtTimeSpan = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(

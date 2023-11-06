@@ -65,9 +65,19 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to SubscribeFuture.")]
         public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> Subscribe(
-              Gs2.Unity.Gs2Chat.Model.EzNotificationType[] notificationTypes = null
+            Gs2.Unity.Gs2Chat.Model.EzNotificationType[] notificationTypes = null
+        )
+        {
+            return SubscribeFuture(
+                notificationTypes
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> SubscribeFuture(
+            Gs2.Unity.Gs2Chat.Model.EzNotificationType[] notificationTypes = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> self)
@@ -84,9 +94,9 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> SubscribeAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> Subscribe(
+        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> SubscribeFuture(
         #endif
-              Gs2.Unity.Gs2Chat.Model.EzNotificationType[] notificationTypes = null
+            Gs2.Unity.Gs2Chat.Model.EzNotificationType[] notificationTypes = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -133,9 +143,19 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to UpdateSubscribeSettingFuture.")]
         public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> UpdateSubscribeSetting(
-              Gs2.Unity.Gs2Chat.Model.EzNotificationType[] notificationTypes = null
+            Gs2.Unity.Gs2Chat.Model.EzNotificationType[] notificationTypes = null
+        )
+        {
+            return UpdateSubscribeSettingFuture(
+                notificationTypes
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> UpdateSubscribeSettingFuture(
+            Gs2.Unity.Gs2Chat.Model.EzNotificationType[] notificationTypes = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> self)
@@ -152,9 +172,9 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> UpdateSubscribeSettingAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> UpdateSubscribeSetting(
+        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> UpdateSubscribeSettingFuture(
         #endif
-              Gs2.Unity.Gs2Chat.Model.EzNotificationType[] notificationTypes = null
+            Gs2.Unity.Gs2Chat.Model.EzNotificationType[] notificationTypes = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -201,8 +221,16 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to UnsubscribeFuture.")]
         public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> Unsubscribe(
+        )
+        {
+            return UnsubscribeFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> UnsubscribeFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> self)
@@ -218,7 +246,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> UnsubscribeAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> Unsubscribe(
+        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain> UnsubscribeFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -263,8 +291,14 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Chat.Model.EzSubscribe> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Chat.Model.EzSubscribe> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Model.EzSubscribe> self)
             {
@@ -293,7 +327,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Chat.Model.EzSubscribe> Model()
+        public IFuture<Gs2.Unity.Gs2Chat.Model.EzSubscribe> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Model.EzSubscribe> self)
             {

@@ -24,6 +24,7 @@
 // ReSharper disable NotAccessedField.Local
 
 #pragma warning disable 1998
+#pragma warning disable CS0169, CS0168
 
 using System;
 using System.Linq;
@@ -184,8 +185,14 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel> self)
             {
@@ -214,7 +221,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel> Model()
+        public IFuture<Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel> self)
             {

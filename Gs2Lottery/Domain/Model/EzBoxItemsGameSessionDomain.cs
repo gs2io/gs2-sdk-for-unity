@@ -65,8 +65,16 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ResetBoxFuture.")]
         public IFuture<Gs2.Unity.Gs2Lottery.Domain.Model.EzBoxItemsGameSessionDomain> ResetBox(
+        )
+        {
+            return ResetBoxFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Lottery.Domain.Model.EzBoxItemsGameSessionDomain> ResetBoxFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Lottery.Domain.Model.EzBoxItemsGameSessionDomain> self)
@@ -82,7 +90,7 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Lottery.Domain.Model.EzBoxItemsGameSessionDomain> ResetBoxAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Lottery.Domain.Model.EzBoxItemsGameSessionDomain> ResetBox(
+        public IFuture<Gs2.Unity.Gs2Lottery.Domain.Model.EzBoxItemsGameSessionDomain> ResetBoxFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -127,8 +135,14 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> self)
             {
@@ -157,7 +171,7 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> Model()
+        public IFuture<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> self)
             {

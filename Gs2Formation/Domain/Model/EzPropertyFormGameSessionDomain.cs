@@ -70,9 +70,19 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to GetPropertyFormWithSignatureFuture.")]
         public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> GetPropertyFormWithSignature(
-              string keyId
+            string keyId
+        )
+        {
+            return GetPropertyFormWithSignatureFuture(
+                keyId
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> GetPropertyFormWithSignatureFuture(
+            string keyId
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> self)
@@ -89,9 +99,9 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> GetPropertyFormWithSignatureAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> GetPropertyFormWithSignature(
+        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> GetPropertyFormWithSignatureFuture(
         #endif
-              string keyId
+            string keyId
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -138,10 +148,22 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to SetPropertyFormFuture.")]
         public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> SetPropertyForm(
-              Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature[] slots,
-              string keyId
+            Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature[] slots,
+            string keyId
+        )
+        {
+            return SetPropertyFormFuture(
+                slots,
+                keyId
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> SetPropertyFormFuture(
+            Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature[] slots,
+            string keyId
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> self)
@@ -159,10 +181,10 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> SetPropertyFormAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> SetPropertyForm(
+        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> SetPropertyFormFuture(
         #endif
-              Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature[] slots,
-              string keyId
+            Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature[] slots,
+            string keyId
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -212,8 +234,16 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to DeletePropertyFormFuture.")]
         public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> DeletePropertyForm(
+        )
+        {
+            return DeletePropertyFormFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> DeletePropertyFormFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> self)
@@ -229,7 +259,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> DeletePropertyFormAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> DeletePropertyForm(
+        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> DeletePropertyFormFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -274,8 +304,14 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Formation.Model.EzPropertyForm> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Formation.Model.EzPropertyForm> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Model.EzPropertyForm> self)
             {
@@ -304,7 +340,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Formation.Model.EzPropertyForm> Model()
+        public IFuture<Gs2.Unity.Gs2Formation.Model.EzPropertyForm> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Model.EzPropertyForm> self)
             {

@@ -66,8 +66,16 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to UnsubscribeFuture.")]
         public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> Unsubscribe(
+        )
+        {
+            return UnsubscribeFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> UnsubscribeFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> self)
@@ -83,7 +91,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> UnsubscribeAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> Unsubscribe(
+        public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> UnsubscribeFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -128,8 +136,14 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> self)
             {
@@ -158,7 +172,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> Model()
+        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> self)
             {

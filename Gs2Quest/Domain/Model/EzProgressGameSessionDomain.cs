@@ -66,11 +66,25 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to EndFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> End(
-              bool isComplete,
-              Gs2.Unity.Gs2Quest.Model.EzReward[] rewards = null,
-              Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null
+            bool isComplete,
+            Gs2.Unity.Gs2Quest.Model.EzReward[] rewards = null,
+            Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null
+        )
+        {
+            return EndFuture(
+                isComplete,
+                rewards,
+                config
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> EndFuture(
+            bool isComplete,
+            Gs2.Unity.Gs2Quest.Model.EzReward[] rewards = null,
+            Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -89,11 +103,11 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
 
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> EndAsync(
         #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> End(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> EndFuture(
         #endif
-              bool isComplete,
-              Gs2.Unity.Gs2Quest.Model.EzReward[] rewards = null,
-              Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null
+            bool isComplete,
+            Gs2.Unity.Gs2Quest.Model.EzReward[] rewards = null,
+            Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -146,8 +160,16 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to DeleteProgressFuture.")]
         public IFuture<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain> DeleteProgress(
+        )
+        {
+            return DeleteProgressFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain> DeleteProgressFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain> self)
@@ -163,7 +185,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain> DeleteProgressAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain> DeleteProgress(
+        public IFuture<Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain> DeleteProgressFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -208,8 +230,14 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Quest.Model.EzProgress> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Quest.Model.EzProgress> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Quest.Model.EzProgress> self)
             {
@@ -238,7 +266,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Quest.Model.EzProgress> Model()
+        public IFuture<Gs2.Unity.Gs2Quest.Model.EzProgress> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Quest.Model.EzProgress> self)
             {

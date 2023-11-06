@@ -68,13 +68,31 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to PrepareUploadFuture.")]
         public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareUpload(
-              string name = null,
-              string scope = null,
-              string contentType = null,
-              string[] allowUserIds = null,
-              bool? updateIfExists = null
+            string name = null,
+            string scope = null,
+            string contentType = null,
+            string[] allowUserIds = null,
+            bool? updateIfExists = null
+        )
+        {
+            return PrepareUploadFuture(
+                name,
+                scope,
+                contentType,
+                allowUserIds,
+                updateIfExists
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareUploadFuture(
+            string name = null,
+            string scope = null,
+            string contentType = null,
+            string[] allowUserIds = null,
+            bool? updateIfExists = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
@@ -95,13 +113,13 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareUploadAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareUpload(
+        public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareUploadFuture(
         #endif
-              string name = null,
-              string scope = null,
-              string contentType = null,
-              string[] allowUserIds = null,
-              bool? updateIfExists = null
+            string name = null,
+            string scope = null,
+            string contentType = null,
+            string[] allowUserIds = null,
+            bool? updateIfExists = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -160,9 +178,19 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to PrepareDownloadFuture.")]
         public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareDownload(
-              string dataObjectId
+            string dataObjectId
+        )
+        {
+            return PrepareDownloadFuture(
+                dataObjectId
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareDownloadFuture(
+            string dataObjectId
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
@@ -179,9 +207,9 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareDownloadAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareDownload(
+        public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareDownloadFuture(
         #endif
-              string dataObjectId
+            string dataObjectId
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(

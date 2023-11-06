@@ -67,9 +67,19 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to SendRequestFuture.")]
         public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> SendRequest(
-              string targetUserId
+            string targetUserId
+        )
+        {
+            return SendRequestFuture(
+                targetUserId
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> SendRequestFuture(
+            string targetUserId
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> self)
@@ -86,9 +96,9 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> SendRequestAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> SendRequest(
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> SendRequestFuture(
         #endif
-              string targetUserId
+            string targetUserId
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(

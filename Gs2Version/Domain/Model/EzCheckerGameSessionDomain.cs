@@ -69,9 +69,19 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to CheckVersionFuture.")]
         public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzCheckerGameSessionDomain> CheckVersion(
-              Gs2.Unity.Gs2Version.Model.EzTargetVersion[] targetVersions = null
+            Gs2.Unity.Gs2Version.Model.EzTargetVersion[] targetVersions = null
+        )
+        {
+            return CheckVersionFuture(
+                targetVersions
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzCheckerGameSessionDomain> CheckVersionFuture(
+            Gs2.Unity.Gs2Version.Model.EzTargetVersion[] targetVersions = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Version.Domain.Model.EzCheckerGameSessionDomain> self)
@@ -88,9 +98,9 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Version.Domain.Model.EzCheckerGameSessionDomain> CheckVersionAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzCheckerGameSessionDomain> CheckVersion(
+        public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzCheckerGameSessionDomain> CheckVersionFuture(
         #endif
-              Gs2.Unity.Gs2Version.Model.EzTargetVersion[] targetVersions = null
+            Gs2.Unity.Gs2Version.Model.EzTargetVersion[] targetVersions = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(

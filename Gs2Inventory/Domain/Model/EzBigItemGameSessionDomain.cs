@@ -66,9 +66,19 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ConsumeBigItemFuture.")]
         public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzBigItemGameSessionDomain> ConsumeBigItem(
-              string consumeCount
+            string consumeCount
+        )
+        {
+            return ConsumeBigItemFuture(
+                consumeCount
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzBigItemGameSessionDomain> ConsumeBigItemFuture(
+            string consumeCount
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Domain.Model.EzBigItemGameSessionDomain> self)
@@ -85,9 +95,9 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Inventory.Domain.Model.EzBigItemGameSessionDomain> ConsumeBigItemAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzBigItemGameSessionDomain> ConsumeBigItem(
+        public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzBigItemGameSessionDomain> ConsumeBigItemFuture(
         #endif
-              string consumeCount
+            string consumeCount
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -134,8 +144,14 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Inventory.Model.EzBigItem> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Inventory.Model.EzBigItem> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Model.EzBigItem> self)
             {
@@ -164,7 +180,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Inventory.Model.EzBigItem> Model()
+        public IFuture<Gs2.Unity.Gs2Inventory.Model.EzBigItem> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Model.EzBigItem> self)
             {

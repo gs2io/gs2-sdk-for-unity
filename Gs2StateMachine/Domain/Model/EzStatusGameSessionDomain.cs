@@ -65,10 +65,22 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to EmitFuture.")]
         public IFuture<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> Emit(
-              string eventName,
-              string args = null
+            string eventName,
+            string args = null
+        )
+        {
+            return EmitFuture(
+                eventName,
+                args
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> EmitFuture(
+            string eventName,
+            string args = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> self)
@@ -86,10 +98,10 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> EmitAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> Emit(
+        public IFuture<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> EmitFuture(
         #endif
-              string eventName,
-              string args = null
+            string eventName,
+            string args = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -139,8 +151,16 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ExitFuture.")]
         public IFuture<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> Exit(
+        )
+        {
+            return ExitFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> ExitFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> self)
@@ -156,7 +176,7 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> ExitAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> Exit(
+        public IFuture<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> ExitFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -201,8 +221,14 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2StateMachine.Model.EzStatus> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2StateMachine.Model.EzStatus> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2StateMachine.Model.EzStatus> self)
             {
@@ -231,7 +257,7 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2StateMachine.Model.EzStatus> Model()
+        public IFuture<Gs2.Unity.Gs2StateMachine.Model.EzStatus> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2StateMachine.Model.EzStatus> self)
             {

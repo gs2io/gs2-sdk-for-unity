@@ -65,9 +65,19 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to UpdateGatheringFuture.")]
         public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> UpdateGathering(
-              Gs2.Unity.Gs2Matchmaking.Model.EzAttributeRange[] attributeRanges = null
+            Gs2.Unity.Gs2Matchmaking.Model.EzAttributeRange[] attributeRanges = null
+        )
+        {
+            return UpdateGatheringFuture(
+                attributeRanges
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> UpdateGatheringFuture(
+            Gs2.Unity.Gs2Matchmaking.Model.EzAttributeRange[] attributeRanges = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> self)
@@ -84,9 +94,9 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> UpdateGatheringAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> UpdateGathering(
+        public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> UpdateGatheringFuture(
         #endif
-              Gs2.Unity.Gs2Matchmaking.Model.EzAttributeRange[] attributeRanges = null
+            Gs2.Unity.Gs2Matchmaking.Model.EzAttributeRange[] attributeRanges = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -133,8 +143,16 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to CancelMatchmakingFuture.")]
         public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> CancelMatchmaking(
+        )
+        {
+            return CancelMatchmakingFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> CancelMatchmakingFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> self)
@@ -150,7 +168,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> CancelMatchmakingAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> CancelMatchmaking(
+        public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> CancelMatchmakingFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -195,8 +213,14 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> self)
             {
@@ -225,7 +249,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> Model()
+        public IFuture<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> self)
             {

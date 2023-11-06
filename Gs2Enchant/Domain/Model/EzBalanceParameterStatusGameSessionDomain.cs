@@ -66,8 +66,14 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterStatus> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterStatus> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterStatus> self)
             {
@@ -96,7 +102,7 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterStatus> Model()
+        public IFuture<Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterStatus> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterStatus> self)
             {

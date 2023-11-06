@@ -190,8 +190,14 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Model.EzAccount> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Account.Model.EzAccount> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Model.EzAccount> self)
             {
@@ -220,7 +226,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Account.Model.EzAccount> Model()
+        public IFuture<Gs2.Unity.Gs2Account.Model.EzAccount> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Model.EzAccount> self)
             {

@@ -66,10 +66,22 @@ namespace Gs2.Unity.Gs2Money.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to WithdrawFuture.")]
         public IFuture<Gs2.Unity.Gs2Money.Domain.Model.EzWalletGameSessionDomain> Withdraw(
-              int count,
-              bool? paidOnly = null
+            int count,
+            bool? paidOnly = null
+        )
+        {
+            return WithdrawFuture(
+                count,
+                paidOnly
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Money.Domain.Model.EzWalletGameSessionDomain> WithdrawFuture(
+            int count,
+            bool? paidOnly = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Money.Domain.Model.EzWalletGameSessionDomain> self)
@@ -87,10 +99,10 @@ namespace Gs2.Unity.Gs2Money.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Money.Domain.Model.EzWalletGameSessionDomain> WithdrawAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Money.Domain.Model.EzWalletGameSessionDomain> Withdraw(
+        public IFuture<Gs2.Unity.Gs2Money.Domain.Model.EzWalletGameSessionDomain> WithdrawFuture(
         #endif
-              int count,
-              bool? paidOnly = null
+            int count,
+            bool? paidOnly = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -140,8 +152,14 @@ namespace Gs2.Unity.Gs2Money.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Money.Model.EzWallet> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Money.Model.EzWallet> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Money.Model.EzWallet> self)
             {
@@ -170,7 +188,7 @@ namespace Gs2.Unity.Gs2Money.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Money.Model.EzWallet> Model()
+        public IFuture<Gs2.Unity.Gs2Money.Model.EzWallet> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Money.Model.EzWallet> self)
             {

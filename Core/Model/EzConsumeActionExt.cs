@@ -49,7 +49,7 @@ namespace Gs2.Unity.Core.Model
 						{
 							onCauseChange.Invoke();
 						});
-						var future = d.Model();
+						var future = d.ModelFuture();
 						yield return future;
 						if (future.Error != null) {
 							result.OnError(future.Error);
@@ -72,7 +72,7 @@ namespace Gs2.Unity.Core.Model
 						{
 							onCauseChange.Invoke();
 						});
-						var future = d.Model();
+						var future = d.ModelFuture();
 						yield return future;
 						if (future.Error != null) {
 							result.OnError(future.Error);
@@ -95,7 +95,7 @@ namespace Gs2.Unity.Core.Model
 						{
 							onCauseChange.Invoke();
 						});
-						var future = d.Model();
+						var future = d.ModelFuture();
 						yield return future;
 						if (future.Error != null) {
 							result.OnError(future.Error);
@@ -125,7 +125,7 @@ namespace Gs2.Unity.Core.Model
 						{
 							onCauseChange.Invoke();
 						});
-						var future = d.Model();
+						var future = d.ModelFuture();
 						yield return future;
 						if (future.Error != null) {
 							result.OnError(future.Error);
@@ -155,7 +155,7 @@ namespace Gs2.Unity.Core.Model
 						{
 							onCauseChange.Invoke();
 						});
-						var future = d.Model();
+						var future = d.ModelFuture();
 						yield return future;
 						if (future.Error != null) {
 							result.OnError(future.Error);
@@ -200,7 +200,7 @@ namespace Gs2.Unity.Core.Model
 						{
 							onCauseChange.Invoke();
 						});
-						var future = d.Model();
+						var future = d.ModelFuture();
 						yield return future;
 						if (future.Error != null) {
 							result.OnError(future.Error);
@@ -227,7 +227,7 @@ namespace Gs2.Unity.Core.Model
 						{
 							onCauseChange.Invoke();
 						});
-						var future = d.Model();
+						var future = d.ModelFuture();
 						yield return future;
 						if (future.Error != null) {
 							result.OnError(future.Error);
@@ -254,7 +254,7 @@ namespace Gs2.Unity.Core.Model
 						{
 							onCauseChange.Invoke();
 						});
-						var future = d.Model();
+						var future = d.ModelFuture();
 						yield return future;
 						if (future.Error != null) {
 							result.OnError(future.Error);
@@ -291,7 +291,7 @@ namespace Gs2.Unity.Core.Model
 						{
 							onCauseChange.Invoke();
 						});
-						var future = d.Model();
+						var future = d.ModelFuture();
 						yield return future;
 						if (future.Error != null) {
 							result.OnError(future.Error);
@@ -318,7 +318,7 @@ namespace Gs2.Unity.Core.Model
 						{
 							onCauseChange.Invoke();
 						});
-						var future = d.Model();
+						var future = d.ModelFuture();
 						yield return future;
 						if (future.Error != null) {
 							result.OnError(future.Error);

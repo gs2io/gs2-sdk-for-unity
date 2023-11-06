@@ -69,9 +69,19 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to GetEntryWithSignatureFuture.")]
         public IFuture<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain> GetEntryWithSignature(
-              string keyId
+            string keyId
+        )
+        {
+            return GetEntryWithSignatureFuture(
+                keyId
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain> GetEntryWithSignatureFuture(
+            string keyId
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain> self)
@@ -88,9 +98,9 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain> GetEntryWithSignatureAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain> GetEntryWithSignature(
+        public IFuture<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain> GetEntryWithSignatureFuture(
         #endif
-              string keyId
+            string keyId
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -140,8 +150,14 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Dictionary.Model.EzEntry> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Dictionary.Model.EzEntry> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Dictionary.Model.EzEntry> self)
             {
@@ -170,7 +186,7 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Dictionary.Model.EzEntry> Model()
+        public IFuture<Gs2.Unity.Gs2Dictionary.Model.EzEntry> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Dictionary.Model.EzEntry> self)
             {

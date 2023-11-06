@@ -65,8 +65,16 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to FollowFuture.")]
         public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> Follow(
+        )
+        {
+            return FollowFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> FollowFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> self)
@@ -82,7 +90,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> FollowAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> Follow(
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> FollowFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -127,8 +135,16 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to UnfollowFuture.")]
         public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> Unfollow(
+        )
+        {
+            return UnfollowFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> UnfollowFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> self)
@@ -144,7 +160,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> UnfollowAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> Unfollow(
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> UnfollowFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -189,8 +205,14 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Friend.Model.EzFollowUser> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzFollowUser> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzFollowUser> self)
             {
@@ -219,7 +241,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Friend.Model.EzFollowUser> Model()
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzFollowUser> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzFollowUser> self)
             {

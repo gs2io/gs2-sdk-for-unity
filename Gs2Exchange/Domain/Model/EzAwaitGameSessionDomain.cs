@@ -68,8 +68,16 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to AcquireFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Acquire(
+        )
+        {
+            return AcquireFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> AcquireFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -85,7 +93,7 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
 
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> AcquireAsync(
         #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Acquire(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> AcquireFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -130,8 +138,16 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to SkipFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Skip(
+        )
+        {
+            return SkipFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> SkipFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -147,7 +163,7 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
 
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> SkipAsync(
         #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Skip(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> SkipFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -192,8 +208,16 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to DeleteAwaitFuture.")]
         public IFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain> DeleteAwait(
+        )
+        {
+            return DeleteAwaitFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain> DeleteAwaitFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain> self)
@@ -209,7 +233,7 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain> DeleteAwaitAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain> DeleteAwait(
+        public IFuture<Gs2.Unity.Gs2Exchange.Domain.Model.EzAwaitGameSessionDomain> DeleteAwaitFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -254,8 +278,14 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Exchange.Model.EzAwait> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Exchange.Model.EzAwait> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Exchange.Model.EzAwait> self)
             {
@@ -284,7 +314,7 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Exchange.Model.EzAwait> Model()
+        public IFuture<Gs2.Unity.Gs2Exchange.Model.EzAwait> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Exchange.Model.EzAwait> self)
             {

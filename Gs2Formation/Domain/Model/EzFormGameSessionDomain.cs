@@ -70,9 +70,19 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to GetFormWithSignatureFuture.")]
         public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> GetFormWithSignature(
-              string keyId
+            string keyId
+        )
+        {
+            return GetFormWithSignatureFuture(
+                keyId
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> GetFormWithSignatureFuture(
+            string keyId
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> self)
@@ -89,9 +99,9 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> GetFormWithSignatureAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> GetFormWithSignature(
+        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> GetFormWithSignatureFuture(
         #endif
-              string keyId
+            string keyId
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -138,10 +148,22 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to SetFormFuture.")]
         public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> SetForm(
-              Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature[] slots,
-              string keyId
+            Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature[] slots,
+            string keyId
+        )
+        {
+            return SetFormFuture(
+                slots,
+                keyId
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> SetFormFuture(
+            Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature[] slots,
+            string keyId
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> self)
@@ -159,10 +181,10 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> SetFormAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> SetForm(
+        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> SetFormFuture(
         #endif
-              Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature[] slots,
-              string keyId
+            Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature[] slots,
+            string keyId
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -212,8 +234,16 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to DeleteFormFuture.")]
         public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> DeleteForm(
+        )
+        {
+            return DeleteFormFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> DeleteFormFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> self)
@@ -229,7 +259,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> DeleteFormAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> DeleteForm(
+        public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> DeleteFormFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -274,8 +304,14 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Formation.Model.EzForm> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Formation.Model.EzForm> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Model.EzForm> self)
             {
@@ -304,7 +340,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Formation.Model.EzForm> Model()
+        public IFuture<Gs2.Unity.Gs2Formation.Model.EzForm> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Model.EzForm> self)
             {

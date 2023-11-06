@@ -64,8 +64,14 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Friend.Model.EzPublicProfile> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzPublicProfile> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzPublicProfile> self)
             {
@@ -94,7 +100,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Friend.Model.EzPublicProfile> Model()
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzPublicProfile> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzPublicProfile> self)
             {

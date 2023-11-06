@@ -66,9 +66,19 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ReleaseFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Release(
-              string[] nodeModelNames
+            string[] nodeModelNames
+        )
+        {
+            return ReleaseFuture(
+                nodeModelNames
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReleaseFuture(
+            string[] nodeModelNames
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -85,9 +95,9 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
 
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ReleaseAsync(
         #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Release(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReleaseFuture(
         #endif
-              string[] nodeModelNames
+            string[] nodeModelNames
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -134,9 +144,19 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to RestrainFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Restrain(
-              string[] nodeModelNames
+            string[] nodeModelNames
+        )
+        {
+            return RestrainFuture(
+                nodeModelNames
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> RestrainFuture(
+            string[] nodeModelNames
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -153,9 +173,9 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
 
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> RestrainAsync(
         #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Restrain(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> RestrainFuture(
         #endif
-              string[] nodeModelNames
+            string[] nodeModelNames
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -202,8 +222,16 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ResetFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Reset(
+        )
+        {
+            return ResetFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ResetFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -219,7 +247,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
 
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ResetAsync(
         #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Reset(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ResetFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -264,8 +292,14 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2SkillTree.Model.EzStatus> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2SkillTree.Model.EzStatus> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2SkillTree.Model.EzStatus> self)
             {
@@ -294,7 +328,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2SkillTree.Model.EzStatus> Model()
+        public IFuture<Gs2.Unity.Gs2SkillTree.Model.EzStatus> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2SkillTree.Model.EzStatus> self)
             {

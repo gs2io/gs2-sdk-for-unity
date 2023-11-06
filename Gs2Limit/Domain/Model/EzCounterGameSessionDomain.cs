@@ -66,10 +66,22 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to CountUpFuture.")]
         public IFuture<Gs2.Unity.Gs2Limit.Domain.Model.EzCounterGameSessionDomain> CountUp(
-              int? countUpValue = null,
-              int? maxValue = null
+            int? countUpValue = null,
+            int? maxValue = null
+        )
+        {
+            return CountUpFuture(
+                countUpValue,
+                maxValue
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Limit.Domain.Model.EzCounterGameSessionDomain> CountUpFuture(
+            int? countUpValue = null,
+            int? maxValue = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Limit.Domain.Model.EzCounterGameSessionDomain> self)
@@ -87,10 +99,10 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Limit.Domain.Model.EzCounterGameSessionDomain> CountUpAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Limit.Domain.Model.EzCounterGameSessionDomain> CountUp(
+        public IFuture<Gs2.Unity.Gs2Limit.Domain.Model.EzCounterGameSessionDomain> CountUpFuture(
         #endif
-              int? countUpValue = null,
-              int? maxValue = null
+            int? countUpValue = null,
+            int? maxValue = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -140,8 +152,14 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Limit.Model.EzCounter> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Limit.Model.EzCounter> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Limit.Model.EzCounter> self)
             {
@@ -170,7 +188,7 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Limit.Model.EzCounter> Model()
+        public IFuture<Gs2.Unity.Gs2Limit.Model.EzCounter> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Limit.Model.EzCounter> self)
             {

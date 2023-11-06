@@ -67,10 +67,22 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to PutScoreFuture.")]
         public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain> PutScore(
-              long score,
-              string metadata = null
+            long score,
+            string metadata = null
+        )
+        {
+            return PutScoreFuture(
+                score,
+                metadata
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain> PutScoreFuture(
+            long score,
+            string metadata = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain> self)
@@ -88,10 +100,10 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain> PutScoreAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain> PutScore(
+        public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain> PutScoreFuture(
         #endif
-              long score,
-              string metadata = null
+            long score,
+            string metadata = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -141,8 +153,16 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> Model(
+            string scorerUserId
+        )
+        {
+            return ModelFuture(scorerUserId);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> ModelFuture(
             string scorerUserId
         )
         {
@@ -175,7 +195,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> Model(
+        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> ModelFuture(
             string scorerUserId
         )
         {
@@ -186,7 +206,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                     _domain.AccessToken,
                     future,
                     () => {
-                        return future = _domain.ModelFuture(scorerUserId);
+                    	return future = _domain.ModelFuture(scorerUserId);
                     }
                 );
                 if (future.Error != null) {

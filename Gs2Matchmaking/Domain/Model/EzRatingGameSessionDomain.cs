@@ -65,8 +65,14 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Matchmaking.Model.EzRating> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Matchmaking.Model.EzRating> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Model.EzRating> self)
             {
@@ -95,7 +101,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Matchmaking.Model.EzRating> Model()
+        public IFuture<Gs2.Unity.Gs2Matchmaking.Model.EzRating> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Model.EzRating> self)
             {

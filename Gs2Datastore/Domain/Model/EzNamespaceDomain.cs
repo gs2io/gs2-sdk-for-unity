@@ -24,6 +24,7 @@
 // ReSharper disable NotAccessedField.Local
 
 #pragma warning disable 1998
+#pragma warning disable CS0169, CS0168
 
 using System;
 using System.Linq;
@@ -67,9 +68,19 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to RestoreDataObjectFuture.")]
         public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain> RestoreDataObject(
-              string dataObjectId
+            string dataObjectId
+        )
+        {
+            return RestoreDataObjectFuture(
+                dataObjectId
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain> RestoreDataObjectFuture(
+            string dataObjectId
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain> self)
@@ -86,9 +97,9 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain> RestoreDataObjectAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain> RestoreDataObject(
+        public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain> RestoreDataObjectFuture(
         #endif
-              string dataObjectId
+            string dataObjectId
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(

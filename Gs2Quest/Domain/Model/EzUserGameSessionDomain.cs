@@ -67,12 +67,28 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to StartFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Start(
-              string questGroupName,
-              string questName,
-              bool? force = null,
-              Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null
+            string questGroupName,
+            string questName,
+            bool? force = null,
+            Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null
+        )
+        {
+            return StartFuture(
+                questGroupName,
+                questName,
+                force,
+                config
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> StartFuture(
+            string questGroupName,
+            string questName,
+            bool? force = null,
+            Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -92,12 +108,12 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
 
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> StartAsync(
         #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Start(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> StartFuture(
         #endif
-              string questGroupName,
-              string questName,
-              bool? force = null,
-              Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null
+            string questGroupName,
+            string questName,
+            bool? force = null,
+            Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(

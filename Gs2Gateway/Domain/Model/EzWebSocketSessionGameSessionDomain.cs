@@ -65,9 +65,19 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to SetUserIdFuture.")]
         public IFuture<Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain> SetUserId(
-              bool? allowConcurrentAccess = null
+            bool? allowConcurrentAccess = null
+        )
+        {
+            return SetUserIdFuture(
+                allowConcurrentAccess
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain> SetUserIdFuture(
+            bool? allowConcurrentAccess = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain> self)
@@ -84,9 +94,9 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain> SetUserIdAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain> SetUserId(
+        public IFuture<Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain> SetUserIdFuture(
         #endif
-              bool? allowConcurrentAccess = null
+            bool? allowConcurrentAccess = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -133,8 +143,14 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> self)
             {
@@ -163,7 +179,7 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> Model()
+        public IFuture<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> self)
             {

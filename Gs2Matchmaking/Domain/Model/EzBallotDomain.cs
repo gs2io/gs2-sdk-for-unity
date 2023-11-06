@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -26,6 +24,7 @@
 // ReSharper disable NotAccessedField.Local
 
 #pragma warning disable 1998
+#pragma warning disable CS0169, CS0168
 
 using System;
 using System.Linq;
@@ -72,8 +71,14 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Matchmaking.Model.EzBallot> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Matchmaking.Model.EzBallot> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Model.EzBallot> self)
             {
@@ -102,7 +107,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Matchmaking.Model.EzBallot> Model()
+        public IFuture<Gs2.Unity.Gs2Matchmaking.Model.EzBallot> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Model.EzBallot> self)
             {
@@ -130,6 +135,20 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Model.EzBallot>(Impl);
         }
         #endif
+
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Matchmaking.Model.EzBallot> callback)
+        {
+            return this._domain.Subscribe(item => {
+                callback.Invoke(Gs2.Unity.Gs2Matchmaking.Model.EzBallot.FromModel(
+                    item
+                ));
+            });
+        }
+
+        public void Unsubscribe(ulong callbackId)
+        {
+            this._domain.Unsubscribe(callbackId);
+        }
 
     }
 }

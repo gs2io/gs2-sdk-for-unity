@@ -66,11 +66,25 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ExchangeFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Exchange(
-              string rateName,
-              int count,
-              Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
+            string rateName,
+            int count,
+            Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
+        )
+        {
+            return ExchangeFuture(
+                rateName,
+                count,
+                config
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ExchangeFuture(
+            string rateName,
+            int count,
+            Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -89,11 +103,11 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
 
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ExchangeAsync(
         #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Exchange(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ExchangeFuture(
         #endif
-              string rateName,
-              int count,
-              Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
+            string rateName,
+            int count,
+            Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -146,11 +160,25 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to IncrementalExchangeFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> IncrementalExchange(
-              string rateName,
-              int count,
-              Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
+            string rateName,
+            int count,
+            Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
+        )
+        {
+            return IncrementalExchangeFuture(
+                rateName,
+                count,
+                config
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> IncrementalExchangeFuture(
+            string rateName,
+            int count,
+            Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -169,11 +197,11 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
 
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> IncrementalExchangeAsync(
         #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> IncrementalExchange(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> IncrementalExchangeFuture(
         #endif
-              string rateName,
-              int count,
-              Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
+            string rateName,
+            int count,
+            Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(

@@ -189,8 +189,14 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Inventory.Model.EzInventory> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Inventory.Model.EzInventory> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Model.EzInventory> self)
             {
@@ -219,7 +225,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Inventory.Model.EzInventory> Model()
+        public IFuture<Gs2.Unity.Gs2Inventory.Model.EzInventory> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Model.EzInventory> self)
             {

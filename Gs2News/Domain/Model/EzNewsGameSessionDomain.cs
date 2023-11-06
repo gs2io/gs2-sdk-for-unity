@@ -66,8 +66,16 @@ namespace Gs2.Unity.Gs2News.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to GetContentsUrlFuture.")]
         public IFuture<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]> GetContentsUrl(
+        )
+        {
+            return GetContentsUrlFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]> GetContentsUrlFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]> self)
@@ -83,7 +91,7 @@ namespace Gs2.Unity.Gs2News.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]> GetContentsUrlAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]> GetContentsUrl(
+        public IFuture<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]> GetContentsUrlFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -128,8 +136,14 @@ namespace Gs2.Unity.Gs2News.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2News.Model.EzNews> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2News.Model.EzNews> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2News.Model.EzNews> self)
             {
@@ -158,7 +172,7 @@ namespace Gs2.Unity.Gs2News.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2News.Model.EzNews> Model()
+        public IFuture<Gs2.Unity.Gs2News.Model.EzNews> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2News.Model.EzNews> self)
             {

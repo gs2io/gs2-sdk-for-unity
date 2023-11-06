@@ -79,8 +79,14 @@ namespace Gs2.Unity.Gs2JobQueue.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2JobQueue.Model.EzJob> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2JobQueue.Model.EzJob> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2JobQueue.Model.EzJob> self)
             {
@@ -109,7 +115,7 @@ namespace Gs2.Unity.Gs2JobQueue.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2JobQueue.Model.EzJob> Model()
+        public IFuture<Gs2.Unity.Gs2JobQueue.Model.EzJob> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2JobQueue.Model.EzJob> self)
             {

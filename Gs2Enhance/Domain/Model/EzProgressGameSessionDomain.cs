@@ -68,13 +68,31 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to StartFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Start(
-              string rateName,
-              string targetItemSetId,
-              Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials = null,
-              bool? force = null,
-              Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
+            string rateName,
+            string targetItemSetId,
+            Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials = null,
+            bool? force = null,
+            Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
+        )
+        {
+            return StartFuture(
+                rateName,
+                targetItemSetId,
+                materials,
+                force,
+                config
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> StartFuture(
+            string rateName,
+            string targetItemSetId,
+            Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials = null,
+            bool? force = null,
+            Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -95,13 +113,13 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
 
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> StartAsync(
         #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Start(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> StartFuture(
         #endif
-              string rateName,
-              string targetItemSetId,
-              Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials = null,
-              bool? force = null,
-              Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
+            string rateName,
+            string targetItemSetId,
+            Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials = null,
+            bool? force = null,
+            Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -160,9 +178,19 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to EndFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> End(
-              Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
+        )
+        {
+            return EndFuture(
+                config
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> EndFuture(
+            Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -179,9 +207,9 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
 
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> EndAsync(
         #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> End(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> EndFuture(
         #endif
-              Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -228,8 +256,16 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to DeleteProgressFuture.")]
         public IFuture<Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressGameSessionDomain> DeleteProgress(
+        )
+        {
+            return DeleteProgressFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressGameSessionDomain> DeleteProgressFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressGameSessionDomain> self)
@@ -245,7 +281,7 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressGameSessionDomain> DeleteProgressAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressGameSessionDomain> DeleteProgress(
+        public IFuture<Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressGameSessionDomain> DeleteProgressFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -290,8 +326,14 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Enhance.Model.EzProgress> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Enhance.Model.EzProgress> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Enhance.Model.EzProgress> self)
             {
@@ -320,7 +362,7 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Enhance.Model.EzProgress> Model()
+        public IFuture<Gs2.Unity.Gs2Enhance.Model.EzProgress> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Enhance.Model.EzProgress> self)
             {

@@ -66,8 +66,16 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to DeleteRoomFuture.")]
         public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> DeleteRoom(
+        )
+        {
+            return DeleteRoomFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> DeleteRoomFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> self)
@@ -83,7 +91,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> DeleteRoomAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> DeleteRoom(
+        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> DeleteRoomFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -128,10 +136,22 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to PostFuture.")]
         public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzMessageGameSessionDomain> Post(
-              string metadata,
-              int? category = null
+            string metadata,
+            int? category = null
+        )
+        {
+            return PostFuture(
+                metadata,
+                category
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzMessageGameSessionDomain> PostFuture(
+            string metadata,
+            int? category = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzMessageGameSessionDomain> self)
@@ -149,10 +169,10 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Chat.Domain.Model.EzMessageGameSessionDomain> PostAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzMessageGameSessionDomain> Post(
+        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzMessageGameSessionDomain> PostFuture(
         #endif
-              string metadata,
-              int? category = null
+            string metadata,
+            int? category = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -322,8 +342,14 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Chat.Model.EzRoom> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Chat.Model.EzRoom> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Model.EzRoom> self)
             {
@@ -352,7 +378,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Chat.Model.EzRoom> Model()
+        public IFuture<Gs2.Unity.Gs2Chat.Model.EzRoom> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Model.EzRoom> self)
             {

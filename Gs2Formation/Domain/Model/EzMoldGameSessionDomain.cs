@@ -188,8 +188,14 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Formation.Model.EzMold> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Formation.Model.EzMold> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Model.EzMold> self)
             {
@@ -218,7 +224,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Formation.Model.EzMold> Model()
+        public IFuture<Gs2.Unity.Gs2Formation.Model.EzMold> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Model.EzMold> self)
             {

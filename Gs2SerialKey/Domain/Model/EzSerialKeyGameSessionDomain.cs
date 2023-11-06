@@ -66,9 +66,19 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to UseSerialCodeFuture.")]
         public IFuture<Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyGameSessionDomain> UseSerialCode(
-              string code
+            string code
+        )
+        {
+            return UseSerialCodeFuture(
+                code
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyGameSessionDomain> UseSerialCodeFuture(
+            string code
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyGameSessionDomain> self)
@@ -85,9 +95,9 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyGameSessionDomain> UseSerialCodeAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyGameSessionDomain> UseSerialCode(
+        public IFuture<Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyGameSessionDomain> UseSerialCodeFuture(
         #endif
-              string code
+            string code
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -134,8 +144,14 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2SerialKey.Model.EzSerialKey> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2SerialKey.Model.EzSerialKey> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2SerialKey.Model.EzSerialKey> self)
             {
@@ -164,7 +180,7 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2SerialKey.Model.EzSerialKey> Model()
+        public IFuture<Gs2.Unity.Gs2SerialKey.Model.EzSerialKey> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2SerialKey.Model.EzSerialKey> self)
             {

@@ -26,6 +26,7 @@
 // ReSharper disable NotAccessedField.Local
 
 #pragma warning disable 1998
+#pragma warning disable CS0169, CS0168
 
 using System;
 using System.Linq;
@@ -70,8 +71,20 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to AuthenticationFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> Authentication(
+              string keyId,
+              string password
+        )
+        {
+            return AuthenticationFuture(
+                keyId,
+                password
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> AuthenticationFuture(
               string keyId,
               string password
         )
@@ -91,7 +104,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> AuthenticationAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> Authentication(
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> AuthenticationFuture(
         #endif
               string keyId,
               string password
@@ -251,7 +264,8 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
 
         public Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverDomain TakeOver(
-            int type
+            int type,
+            string userIdentifier
         ) {
             return new Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverDomain(
                 _domain.TakeOver(
@@ -261,8 +275,14 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Model.EzAccount> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Account.Model.EzAccount> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Model.EzAccount> self)
             {
@@ -291,7 +311,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Account.Model.EzAccount> Model()
+        public IFuture<Gs2.Unity.Gs2Account.Model.EzAccount> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Model.EzAccount> self)
             {

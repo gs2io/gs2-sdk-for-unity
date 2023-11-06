@@ -66,10 +66,22 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ReceiveFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Receive(
-              string bonusModelName,
-              Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null
+            string bonusModelName,
+            Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null
+        )
+        {
+            return ReceiveFuture(
+                bonusModelName,
+                config
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveFuture(
+            string bonusModelName,
+            Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -87,10 +99,10 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
 
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveAsync(
         #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Receive(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveFuture(
         #endif
-              string bonusModelName,
-              Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null
+            string bonusModelName,
+            Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -140,11 +152,25 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to MissedReceiveFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> MissedReceive(
-              string bonusModelName,
-              int stepNumber,
-              Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null
+            string bonusModelName,
+            int stepNumber,
+            Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null
+        )
+        {
+            return MissedReceiveFuture(
+                bonusModelName,
+                stepNumber,
+                config
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> MissedReceiveFuture(
+            string bonusModelName,
+            int stepNumber,
+            Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -163,11 +189,11 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
 
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> MissedReceiveAsync(
         #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> MissedReceive(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> MissedReceiveFuture(
         #endif
-              string bonusModelName,
-              int stepNumber,
-              Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null
+            string bonusModelName,
+            int stepNumber,
+            Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(

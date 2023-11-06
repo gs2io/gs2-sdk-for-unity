@@ -24,6 +24,7 @@
 // ReSharper disable NotAccessedField.Local
 
 #pragma warning disable 1998
+#pragma warning disable CS0169, CS0168
 
 using System;
 using System.Linq;
@@ -68,8 +69,16 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to CreateFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> Create(
+        )
+        {
+            return CreateFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> CreateFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
@@ -85,7 +94,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> CreateAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> Create(
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> CreateFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -127,11 +136,25 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to DoTakeOverFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOver(
-              int type,
-              string userIdentifier,
-              string password
+            int type,
+            string userIdentifier,
+            string password
+        )
+        {
+            return DoTakeOverFuture(
+                type,
+                userIdentifier,
+                password
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOverFuture(
+            int type,
+            string userIdentifier,
+            string password
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
@@ -150,11 +173,11 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOverAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOver(
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOverFuture(
         #endif
-              int type,
-              string userIdentifier,
-              string password
+            int type,
+            string userIdentifier,
+            string password
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(

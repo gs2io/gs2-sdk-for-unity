@@ -70,9 +70,19 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to GetStatusWithSignatureFuture.")]
         public IFuture<Gs2.Unity.Gs2Experience.Domain.Model.EzStatusGameSessionDomain> GetStatusWithSignature(
-              string keyId
+            string keyId
+        )
+        {
+            return GetStatusWithSignatureFuture(
+                keyId
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Experience.Domain.Model.EzStatusGameSessionDomain> GetStatusWithSignatureFuture(
+            string keyId
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Experience.Domain.Model.EzStatusGameSessionDomain> self)
@@ -89,9 +99,9 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Experience.Domain.Model.EzStatusGameSessionDomain> GetStatusWithSignatureAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Experience.Domain.Model.EzStatusGameSessionDomain> GetStatusWithSignature(
+        public IFuture<Gs2.Unity.Gs2Experience.Domain.Model.EzStatusGameSessionDomain> GetStatusWithSignatureFuture(
         #endif
-              string keyId
+            string keyId
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -138,8 +148,14 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Experience.Model.EzStatus> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Experience.Model.EzStatus> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Experience.Model.EzStatus> self)
             {
@@ -168,7 +184,7 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Experience.Model.EzStatus> Model()
+        public IFuture<Gs2.Unity.Gs2Experience.Model.EzStatus> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Experience.Model.EzStatus> self)
             {

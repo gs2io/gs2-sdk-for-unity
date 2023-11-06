@@ -67,9 +67,19 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ReceiveRewardsFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveRewards(
-              string missionTaskName
+            string missionTaskName
+        )
+        {
+            return ReceiveRewardsFuture(
+                missionTaskName
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveRewardsFuture(
+            string missionTaskName
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -86,9 +96,9 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
 
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveRewardsAsync(
         #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveRewards(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveRewardsFuture(
         #endif
-              string missionTaskName
+            string missionTaskName
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -135,8 +145,14 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Mission.Model.EzComplete> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Mission.Model.EzComplete> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Mission.Model.EzComplete> self)
             {
@@ -165,7 +181,7 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Mission.Model.EzComplete> Model()
+        public IFuture<Gs2.Unity.Gs2Mission.Model.EzComplete> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Mission.Model.EzComplete> self)
             {

@@ -66,10 +66,22 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to SubscribeFuture.")]
         public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> Subscribe(
-              string categoryName,
-              string targetUserId
+            string categoryName,
+            string targetUserId
+        )
+        {
+            return SubscribeFuture(
+                categoryName,
+                targetUserId
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> SubscribeFuture(
+            string categoryName,
+            string targetUserId
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> self)
@@ -87,10 +99,10 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> SubscribeAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> Subscribe(
+        public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> SubscribeFuture(
         #endif
-              string categoryName,
-              string targetUserId
+            string categoryName,
+            string targetUserId
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(

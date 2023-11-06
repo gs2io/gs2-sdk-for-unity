@@ -68,9 +68,19 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to GetSimpleItemWithSignatureFuture.")]
         public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain> GetSimpleItemWithSignature(
-              string keyId
+            string keyId
+        )
+        {
+            return GetSimpleItemWithSignatureFuture(
+                keyId
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain> GetSimpleItemWithSignatureFuture(
+            string keyId
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain> self)
@@ -87,9 +97,9 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain> GetSimpleItemWithSignatureAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain> GetSimpleItemWithSignature(
+        public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain> GetSimpleItemWithSignatureFuture(
         #endif
-              string keyId
+            string keyId
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -136,8 +146,14 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem> self)
             {
@@ -166,7 +182,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem> Model()
+        public IFuture<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem> self)
             {

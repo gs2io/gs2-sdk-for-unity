@@ -66,9 +66,19 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ConsumeSimpleItemsFuture.")]
         public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain[]> ConsumeSimpleItems(
-              Gs2.Unity.Gs2Inventory.Model.EzConsumeCount[] consumeCounts
+            Gs2.Unity.Gs2Inventory.Model.EzConsumeCount[] consumeCounts
+        )
+        {
+            return ConsumeSimpleItemsFuture(
+                consumeCounts
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain[]> ConsumeSimpleItemsFuture(
+            Gs2.Unity.Gs2Inventory.Model.EzConsumeCount[] consumeCounts
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain[]> self)
@@ -85,9 +95,9 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain[]> ConsumeSimpleItemsAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain[]> ConsumeSimpleItems(
+        public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain[]> ConsumeSimpleItemsFuture(
         #endif
-              Gs2.Unity.Gs2Inventory.Model.EzConsumeCount[] consumeCounts
+            Gs2.Unity.Gs2Inventory.Model.EzConsumeCount[] consumeCounts
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(

@@ -66,8 +66,16 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to DeleteFriendFuture.")]
         public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserGameSessionDomain> DeleteFriend(
+        )
+        {
+            return DeleteFriendFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserGameSessionDomain> DeleteFriendFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserGameSessionDomain> self)
@@ -83,7 +91,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserGameSessionDomain> DeleteFriendAsync(
         #else
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserGameSessionDomain> DeleteFriend(
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserGameSessionDomain> DeleteFriendFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -128,8 +136,14 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Friend.Model.EzFriendUser> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzFriendUser> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzFriendUser> self)
             {
@@ -158,7 +172,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Friend.Model.EzFriendUser> Model()
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzFriendUser> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzFriendUser> self)
             {

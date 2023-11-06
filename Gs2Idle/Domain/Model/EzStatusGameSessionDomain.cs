@@ -69,8 +69,16 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
             this._profile = profile;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to PredictionFuture.")]
         public IFuture<Gs2.Unity.Core.Model.EzAcquireAction[]> Prediction(
+        )
+        {
+            return PredictionFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Core.Model.EzAcquireAction[]> PredictionFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Model.EzAcquireAction[]> self)
@@ -86,7 +94,7 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
 
         public async UniTask<Gs2.Unity.Core.Model.EzAcquireAction[]> PredictionAsync(
         #else
-        public IFuture<Gs2.Unity.Core.Model.EzAcquireAction[]> Prediction(
+        public IFuture<Gs2.Unity.Core.Model.EzAcquireAction[]> PredictionFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -137,8 +145,16 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ReceiveFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Receive(
+        )
+        {
+            return ReceiveFuture(
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -154,7 +170,7 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
 
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveAsync(
         #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Receive(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveFuture(
         #endif
         ) {
         #if GS2_ENABLE_UNITASK
@@ -199,8 +215,14 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
         #endif
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Idle.Model.EzStatus> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IFuture<Gs2.Unity.Gs2Idle.Model.EzStatus> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Idle.Model.EzStatus> self)
             {
@@ -229,7 +251,7 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
             );
         }
         #else
-        public IFuture<Gs2.Unity.Gs2Idle.Model.EzStatus> Model()
+        public IFuture<Gs2.Unity.Gs2Idle.Model.EzStatus> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Idle.Model.EzStatus> self)
             {
