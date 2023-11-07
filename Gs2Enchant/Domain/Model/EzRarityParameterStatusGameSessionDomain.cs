@@ -89,14 +89,19 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Enchant.Domain.Model.EzRarityParameterStatusGameSessionDomain> self)
             {
-                yield return VerifyRarityParameterStatusAsync(
-                    verifyType,
-                    parameterValueName,
-                    parameterCount
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._domain.VerifyFuture(
+                    new VerifyRarityParameterStatusRequest()
+                        .WithVerifyType(verifyType)
+                        .WithParameterValueName(parameterValueName)
+                        .WithParameterCount(parameterCount)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Enchant.Domain.Model.EzRarityParameterStatusGameSessionDomain(future.Result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Enchant.Domain.Model.EzRarityParameterStatusGameSessionDomain>(Impl);
         }
@@ -173,7 +178,16 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
             {
                 yield return ModelAsync().ToCoroutine(
                     self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                    e =>
+                    {
+                        if (e is Gs2.Core.Exception.Gs2Exception e2) {
+                            self.OnError(e2);
+                        }
+                        else {
+                            UnityEngine.Debug.LogError(e.Message);
+                            self.OnError(new Gs2.Core.Exception.UnknownException(e.Message));
+                        }
+                    }
                 );
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Enchant.Model.EzRarityParameterStatus>(Impl);

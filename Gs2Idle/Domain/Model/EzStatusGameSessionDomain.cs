@@ -184,7 +184,7 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
                     );
                 }
             );
-            return new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
+            return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {

@@ -79,11 +79,16 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> self)
             {
-                yield return DeleteRequestAsync(
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._domain.DeleteFuture(
+                    new DeleteRequestRequest()
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain(future.Result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain>(Impl);
         }
@@ -148,7 +153,16 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             {
                 yield return ModelAsync().ToCoroutine(
                     self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                    e =>
+                    {
+                        if (e is Gs2.Core.Exception.Gs2Exception e2) {
+                            self.OnError(e2);
+                        }
+                        else {
+                            UnityEngine.Debug.LogError(e.Message);
+                            self.OnError(new Gs2.Core.Exception.UnknownException(e.Message));
+                        }
+                    }
                 );
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Model.EzFriendRequest>(Impl);

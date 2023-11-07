@@ -83,11 +83,15 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
             {
-                yield return CreateAsync(
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._domain.CreateAccountFuture(
+                    new CreateAccountRequest()
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(future.Result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
         }
@@ -159,14 +163,18 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
             {
-                yield return DoTakeOverAsync(
-                    type,
-                    userIdentifier,
-                    password
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._domain.DoTakeOverFuture(
+                    new DoTakeOverRequest()
+                        .WithType(type)
+                        .WithUserIdentifier(userIdentifier)
+                        .WithPassword(password)
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(future.Result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
         }

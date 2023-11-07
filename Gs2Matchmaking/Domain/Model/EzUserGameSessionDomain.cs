@@ -98,17 +98,22 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> self)
             {
-                yield return CreateGatheringAsync(
-                    player,
-                    attributeRanges,
-                    capacityOfRoles,
-                    allowUserIds,
-                    expiresAt,
-                    expiresAtTimeSpan
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._domain.CreateGatheringFuture(
+                    new CreateGatheringRequest()
+                        .WithPlayer(player?.ToModel())
+                        .WithAttributeRanges(attributeRanges?.Select(v => v.ToModel()).ToArray())
+                        .WithCapacityOfRoles(capacityOfRoles?.Select(v => v.ToModel()).ToArray())
+                        .WithAllowUserIds(allowUserIds)
+                        .WithExpiresAt(expiresAt)
+                        .WithExpiresAtTimeSpan(expiresAtTimeSpan?.ToModel())
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain(future.Result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain>(Impl);
         }

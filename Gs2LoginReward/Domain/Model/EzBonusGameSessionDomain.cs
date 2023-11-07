@@ -86,13 +86,18 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                yield return ReceiveAsync(
-                    bonusModelName,
-                    config
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._domain.ReceiveFuture(
+                    new ReceiveRequest()
+                        .WithBonusModelName(bonusModelName)
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(future.Result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(future.Result));
             }
             return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
@@ -117,7 +122,7 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                     );
                 }
             );
-            return new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
+            return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
@@ -146,7 +151,7 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
+                self.OnComplete(result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
             }
             return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         #endif
@@ -175,14 +180,19 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                yield return MissedReceiveAsync(
-                    bonusModelName,
-                    stepNumber,
-                    config
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._domain.MissedReceiveFuture(
+                    new MissedReceiveRequest()
+                        .WithBonusModelName(bonusModelName)
+                        .WithStepNumber(stepNumber)
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(future.Result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(future.Result));
             }
             return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
@@ -209,7 +219,7 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                     );
                 }
             );
-            return new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
+            return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
@@ -240,7 +250,7 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
+                self.OnComplete(result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
             }
             return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         #endif

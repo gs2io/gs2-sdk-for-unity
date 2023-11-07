@@ -91,15 +91,20 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> self)
             {
-                yield return CreateRoomAsync(
-                    name,
-                    metadata,
-                    password,
-                    whiteListUserIds
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._domain.CreateRoomFuture(
+                    new CreateRoomRequest()
+                        .WithName(name)
+                        .WithMetadata(metadata)
+                        .WithPassword(password)
+                        .WithWhiteListUserIds(whiteListUserIds)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain(future.Result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain>(Impl);
         }

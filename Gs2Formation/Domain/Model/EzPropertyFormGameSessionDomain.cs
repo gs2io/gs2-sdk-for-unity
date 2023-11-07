@@ -87,12 +87,17 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> self)
             {
-                yield return GetPropertyFormWithSignatureAsync(
-                    keyId
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._domain.GetWithSignatureFuture(
+                    new GetPropertyFormWithSignatureRequest()
+                        .WithKeyId(keyId)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain(future.Result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain>(Impl);
         }
@@ -168,13 +173,18 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> self)
             {
-                yield return SetPropertyFormAsync(
-                    slots,
-                    keyId
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._domain.SetWithSignatureFuture(
+                    new SetPropertyFormWithSignatureRequest()
+                        .WithSlots(slots?.Select(v => v.ToModel()).ToArray())
+                        .WithKeyId(keyId)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain(future.Result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain>(Impl);
         }
@@ -248,11 +258,16 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain> self)
             {
-                yield return DeletePropertyFormAsync(
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._domain.DeleteFuture(
+                    new DeletePropertyFormRequest()
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain(future.Result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzPropertyFormGameSessionDomain>(Impl);
         }
@@ -317,7 +332,16 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             {
                 yield return ModelAsync().ToCoroutine(
                     self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                    e =>
+                    {
+                        if (e is Gs2.Core.Exception.Gs2Exception e2) {
+                            self.OnError(e2);
+                        }
+                        else {
+                            UnityEngine.Debug.LogError(e.Message);
+                            self.OnError(new Gs2.Core.Exception.UnknownException(e.Message));
+                        }
+                    }
                 );
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Model.EzPropertyForm>(Impl);

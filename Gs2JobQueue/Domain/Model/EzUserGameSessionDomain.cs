@@ -81,11 +81,16 @@ namespace Gs2.Unity.Gs2JobQueue.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2JobQueue.Domain.Model.EzJobGameSessionDomain> self)
             {
-                yield return RunAsync(
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._domain.RunFuture(
+                    new RunRequest()
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2JobQueue.Domain.Model.EzJobGameSessionDomain(future.Result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2JobQueue.Domain.Model.EzJobGameSessionDomain>(Impl);
         }

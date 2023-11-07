@@ -83,12 +83,17 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                yield return ReleaseAsync(
-                    nodeModelNames
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._domain.ReleaseFuture(
+                    new ReleaseRequest()
+                        .WithNodeModelNames(nodeModelNames)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(future.Result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(future.Result));
             }
             return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
@@ -111,7 +116,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
                     );
                 }
             );
-            return new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
+            return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
@@ -138,7 +143,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
+                self.OnComplete(result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
             }
             return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         #endif
@@ -161,12 +166,17 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                yield return RestrainAsync(
-                    nodeModelNames
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._domain.RestrainFuture(
+                    new RestrainRequest()
+                        .WithNodeModelNames(nodeModelNames)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(future.Result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(future.Result));
             }
             return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
@@ -189,7 +199,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
                     );
                 }
             );
-            return new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
+            return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
@@ -216,7 +226,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
+                self.OnComplete(result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
             }
             return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         #endif
@@ -236,11 +246,16 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                yield return ResetAsync(
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._domain.ResetFuture(
+                    new ResetRequest()
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(future.Result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(future.Result));
             }
             return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
@@ -261,7 +276,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
                     );
                 }
             );
-            return new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
+            return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
         #else
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
@@ -286,7 +301,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
                     yield break;
                 }
                 var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
+                self.OnComplete(result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
             }
             return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         #endif
@@ -305,7 +320,16 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
             {
                 yield return ModelAsync().ToCoroutine(
                     self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                    e =>
+                    {
+                        if (e is Gs2.Core.Exception.Gs2Exception e2) {
+                            self.OnError(e2);
+                        }
+                        else {
+                            UnityEngine.Debug.LogError(e.Message);
+                            self.OnError(new Gs2.Core.Exception.UnknownException(e.Message));
+                        }
+                    }
                 );
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2SkillTree.Model.EzStatus>(Impl);

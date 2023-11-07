@@ -97,16 +97,21 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
             {
-                yield return PrepareUploadAsync(
-                    name,
-                    scope,
-                    contentType,
-                    allowUserIds,
-                    updateIfExists
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._domain.PrepareUploadFuture(
+                    new PrepareUploadRequest()
+                        .WithName(name)
+                        .WithScope(scope)
+                        .WithContentType(contentType)
+                        .WithAllowUserIds(allowUserIds)
+                        .WithUpdateIfExists(updateIfExists)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain(future.Result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain>(Impl);
         }
@@ -195,12 +200,17 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> self)
             {
-                yield return PrepareDownloadAsync(
-                    dataObjectId
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._domain.PrepareDownloadFuture(
+                    new PrepareDownloadRequest()
+                        .WithDataObjectId(dataObjectId)
+                        .WithAccessToken(_domain.AccessToken.Token)
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain(future.Result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain>(Impl);
         }

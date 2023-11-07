@@ -95,15 +95,19 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> self)
             {
-                yield return VoteAsync(
-                    ballotBody,
-                    ballotSignature,
-                    keyId,
-                    gameResults
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._domain.VoteFuture(
+                    new VoteRequest()
+                        .WithBallotBody(ballotBody)
+                        .WithBallotSignature(ballotSignature)
+                        .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())
+                        .WithKeyId(keyId)
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain(future.Result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain>(Impl);
         }
@@ -191,14 +195,18 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> self)
             {
-                yield return VoteMultipleAsync(
-                    keyId,
-                    signedBallots,
-                    gameResults
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._domain.VoteMultipleFuture(
+                    new VoteMultipleRequest()
+                        .WithSignedBallots(signedBallots?.Select(v => v.ToModel()).ToArray())
+                        .WithGameResults(gameResults?.Select(v => v.ToModel()).ToArray())
+                        .WithKeyId(keyId)
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain(future.Result, _profile));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain>(Impl);
         }
