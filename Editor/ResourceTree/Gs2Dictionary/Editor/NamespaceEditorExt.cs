@@ -37,15 +37,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Dictionary.Editor
                 ScriptSettingEditorExt.OnGUI(item.EntryScript);
                 EditorGUI.indentLevel--;
             }
-            if (item.DuplicateEntryScript == null) {
-                EditorGUILayout.TextField("DuplicateEntryScript", "");
-            }
-            else {
-                EditorGUILayout.LabelField("DuplicateEntryScript");
-                EditorGUI.indentLevel++;
-                ScriptSettingEditorExt.OnGUI(item.DuplicateEntryScript);
-                EditorGUI.indentLevel--;
-            }
+            EditorGUILayout.TextField("DuplicateEntryScript", item.DuplicateEntryScript);
             if (item.LogSetting == null) {
                 EditorGUILayout.TextField("LogSetting", "");
             }
