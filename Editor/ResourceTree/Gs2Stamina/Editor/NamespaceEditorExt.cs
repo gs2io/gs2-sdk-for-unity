@@ -28,15 +28,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Stamina.Editor
             EditorGUILayout.TextField("NamespaceId", item.NamespaceId);
             EditorGUILayout.TextField("Name", item.Name);
             EditorGUILayout.TextField("Description", item.Description);
-            if (item.OverflowTriggerScript == null) {
-                EditorGUILayout.TextField("OverflowTriggerScript", "");
-            }
-            else {
-                EditorGUILayout.LabelField("OverflowTriggerScript");
-                EditorGUI.indentLevel++;
-                ScriptSettingEditorExt.OnGUI(item.OverflowTriggerScript);
-                EditorGUI.indentLevel--;
-            }
+            EditorGUILayout.TextField("OverflowTriggerScript", item.OverflowTriggerScript);
             if (item.LogSetting == null) {
                 EditorGUILayout.TextField("LogSetting", "");
             }
