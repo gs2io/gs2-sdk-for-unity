@@ -141,16 +141,35 @@ namespace Gs2.Unity.Core
                 gameSession.AccessToken
             );
         }
-#else
-        public Gs2Future<bool> Dispatch(
+#endif
+        
+        public Gs2Future<bool> DispatchFuture(
             GameSession gameSession
         )
         {
-            return _gs2.Dispatch(
+            return _gs2.DispatchFuture(
                 gameSession.AccessToken
             );
         }
+        
+#if GS2_ENABLE_UNITASK
+        [Obsolete("Rename to DispatchAsync")]
+        public async UniTask Dispatch(
+#else
+        [Obsolete("Rename to DispatchFuture")]
+        public Gs2Future<bool> Dispatch(
 #endif
+            GameSession gameSession
+        )
+        {
+#if GS2_ENABLE_UNITASK
+            await _gs2.DispatchAsync(
+#else
+            return _gs2.DispatchFuture(
+#endif
+                gameSession.AccessToken
+            );
+        }
 
 #if GS2_ENABLE_UNITASK
         public async UniTask Disconnect()

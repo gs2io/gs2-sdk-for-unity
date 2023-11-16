@@ -23,9 +23,9 @@ namespace Gs2.Unity.Core.Domain
             this._domain = domain;
         }
         
-        public IFuture<EzTransactionDomain> WaitFuture() {
+        public IFuture<EzTransactionDomain> WaitFuture(bool all = false) {
             IEnumerator Impl(IFuture<EzTransactionDomain> self) {
-                var future = this._domain.WaitFuture();
+                var future = this._domain.WaitFuture(all);
                 yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
@@ -37,8 +37,8 @@ namespace Gs2.Unity.Core.Domain
         }
         
 #if GS2_ENABLE_UNITASK
-        public async UniTask<EzTransactionDomain> WaitAsync() {
-            await this._domain.WaitAsync();
+        public async UniTask<EzTransactionDomain> WaitAsync(bool all = false) {
+            await this._domain.WaitAsync(all);
             return this;
         }
 #endif

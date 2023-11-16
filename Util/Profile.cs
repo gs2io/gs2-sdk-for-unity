@@ -38,6 +38,9 @@ namespace Gs2.Unity.Util
         private IAuthenticator _authenticator;
         private string _distributorNamespaceName;
 
+        public IReopener Reopener => _reopener;
+
+        public IAuthenticator Authenticator => _authenticator;
         public string DistributorNamespaceName => _distributorNamespaceName;
         
         public Profile(
