@@ -63,9 +63,9 @@ namespace Gs2.Unity.Gs2Auth
 
         public IEnumerator Login(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Auth.Result.EzLoginResult>> callback,
-                string keyId,
                 string body,
-                string signature
+                string signature,
+                string keyId = null
         )
 		{
             yield return _profile.Run(

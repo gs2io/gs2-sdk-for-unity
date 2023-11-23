@@ -151,23 +151,23 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
 
         [Obsolete("The name has been changed to SetMaxValueFuture.")]
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetMaxValue(
-            string keyId,
             string signedStatusBody,
-            string signedStatusSignature
+            string signedStatusSignature,
+            string keyId = null
         )
         {
             return SetMaxValueFuture(
-                keyId,
                 signedStatusBody,
-                signedStatusSignature
+                signedStatusSignature,
+                keyId
             );
         }
 
         #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetMaxValueFuture(
-            string keyId,
             string signedStatusBody,
-            string signedStatusSignature
+            string signedStatusSignature,
+            string keyId = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
@@ -193,9 +193,9 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         #else
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetMaxValueFuture(
         #endif
-            string keyId,
             string signedStatusBody,
-            string signedStatusSignature
+            string signedStatusSignature,
+            string keyId = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -250,23 +250,23 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
 
         [Obsolete("The name has been changed to SetRecoverIntervalFuture.")]
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverInterval(
-            string keyId,
             string signedStatusBody,
-            string signedStatusSignature
+            string signedStatusSignature,
+            string keyId = null
         )
         {
             return SetRecoverIntervalFuture(
-                keyId,
                 signedStatusBody,
-                signedStatusSignature
+                signedStatusSignature,
+                keyId
             );
         }
 
         #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverIntervalFuture(
-            string keyId,
             string signedStatusBody,
-            string signedStatusSignature
+            string signedStatusSignature,
+            string keyId = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
@@ -292,9 +292,9 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         #else
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverIntervalFuture(
         #endif
-            string keyId,
             string signedStatusBody,
-            string signedStatusSignature
+            string signedStatusSignature,
+            string keyId = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -349,23 +349,23 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
 
         [Obsolete("The name has been changed to SetRecoverValueFuture.")]
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverValue(
-            string keyId,
             string signedStatusBody,
-            string signedStatusSignature
+            string signedStatusSignature,
+            string keyId = null
         )
         {
             return SetRecoverValueFuture(
-                keyId,
                 signedStatusBody,
-                signedStatusSignature
+                signedStatusSignature,
+                keyId
             );
         }
 
         #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverValueFuture(
-            string keyId,
             string signedStatusBody,
-            string signedStatusSignature
+            string signedStatusSignature,
+            string keyId = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
@@ -391,9 +391,9 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         #else
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverValueFuture(
         #endif
-            string keyId,
             string signedStatusBody,
-            string signedStatusSignature
+            string signedStatusSignature,
+            string keyId = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(

@@ -73,15 +73,15 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> Vote(
             string ballotBody,
             string ballotSignature,
-            string keyId,
-            Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null
+            Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null,
+            string keyId = null
         )
         {
             return VoteFuture(
                 ballotBody,
                 ballotSignature,
-                keyId,
-                gameResults
+                gameResults,
+                keyId
             );
         }
 
@@ -89,8 +89,8 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> VoteFuture(
             string ballotBody,
             string ballotSignature,
-            string keyId,
-            Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null
+            Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null,
+            string keyId = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> self)
@@ -118,8 +118,8 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #endif
             string ballotBody,
             string ballotSignature,
-            string keyId,
-            Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null
+            Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null,
+            string keyId = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -174,23 +174,23 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
 
         [Obsolete("The name has been changed to VoteMultipleFuture.")]
         public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> VoteMultiple(
-            string keyId,
             Gs2.Unity.Gs2Matchmaking.Model.EzSignedBallot[] signedBallots = null,
-            Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null
+            Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null,
+            string keyId = null
         )
         {
             return VoteMultipleFuture(
-                keyId,
                 signedBallots,
-                gameResults
+                gameResults,
+                keyId
             );
         }
 
         #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> VoteMultipleFuture(
-            string keyId,
             Gs2.Unity.Gs2Matchmaking.Model.EzSignedBallot[] signedBallots = null,
-            Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null
+            Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null,
+            string keyId = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> self)
@@ -215,9 +215,9 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         #else
         public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain> VoteMultipleFuture(
         #endif
-            string keyId,
             Gs2.Unity.Gs2Matchmaking.Model.EzSignedBallot[] signedBallots = null,
-            Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null
+            Gs2.Unity.Gs2Matchmaking.Model.EzGameResult[] gameResults = null,
+            string keyId = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(

@@ -189,9 +189,9 @@ namespace Gs2.Unity.Gs2Stamina
 		        GameSession session,
                 string namespaceName,
                 string staminaName,
-                string keyId,
                 string signedStatusBody,
-                string signedStatusSignature
+                string signedStatusSignature,
+                string keyId = null
         )
 		{
             yield return _profile.Run(
@@ -220,9 +220,9 @@ namespace Gs2.Unity.Gs2Stamina
 		        GameSession session,
                 string namespaceName,
                 string staminaName,
-                string keyId,
                 string signedStatusBody,
-                string signedStatusSignature
+                string signedStatusSignature,
+                string keyId = null
         )
 		{
             yield return _profile.Run(
@@ -251,9 +251,9 @@ namespace Gs2.Unity.Gs2Stamina
 		        GameSession session,
                 string namespaceName,
                 string staminaName,
-                string keyId,
                 string signedStatusBody,
-                string signedStatusSignature
+                string signedStatusSignature,
+                string keyId = null
         )
 		{
             yield return _profile.Run(

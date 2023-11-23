@@ -72,7 +72,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
 
         [Obsolete("The name has been changed to GetFormWithSignatureFuture.")]
         public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> GetFormWithSignature(
-            string keyId
+            string keyId = null
         )
         {
             return GetFormWithSignatureFuture(
@@ -82,7 +82,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> GetFormWithSignatureFuture(
-            string keyId
+            string keyId = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> self)
@@ -106,7 +106,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         #else
         public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> GetFormWithSignatureFuture(
         #endif
-            string keyId
+            string keyId = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
@@ -156,7 +156,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         [Obsolete("The name has been changed to SetFormFuture.")]
         public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> SetForm(
             Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature[] slots,
-            string keyId
+            string keyId = null
         )
         {
             return SetFormFuture(
@@ -168,7 +168,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> SetFormFuture(
             Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature[] slots,
-            string keyId
+            string keyId = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> self)
@@ -194,7 +194,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> SetFormFuture(
         #endif
             Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature[] slots,
-            string keyId
+            string keyId = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(

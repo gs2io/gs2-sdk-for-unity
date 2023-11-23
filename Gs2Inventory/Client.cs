@@ -270,8 +270,8 @@ namespace Gs2.Unity.Gs2Inventory
                 string namespaceName,
                 string inventoryName,
                 string itemName,
-                string keyId,
-                string itemSetName = null
+                string itemSetName = null,
+                string keyId = null
         )
 		{
             yield return _profile.Run(
@@ -478,7 +478,7 @@ namespace Gs2.Unity.Gs2Inventory
                 string namespaceName,
                 string inventoryName,
                 string itemName,
-                string keyId
+                string keyId = null
         )
 		{
             yield return _profile.Run(

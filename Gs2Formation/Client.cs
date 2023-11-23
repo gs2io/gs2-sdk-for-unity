@@ -240,7 +240,7 @@ namespace Gs2.Unity.Gs2Formation
                 string namespaceName,
                 string moldModelName,
                 int index,
-                string keyId
+                string keyId = null
         )
 		{
             yield return _profile.Run(
@@ -299,7 +299,7 @@ namespace Gs2.Unity.Gs2Formation
                 string moldModelName,
                 int index,
                 List<Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature> slots,
-                string keyId
+                string keyId = null
         )
 		{
             yield return _profile.Run(
@@ -427,7 +427,7 @@ namespace Gs2.Unity.Gs2Formation
                 string namespaceName,
                 string propertyFormModelName,
                 string propertyId,
-                string keyId
+                string keyId = null
         )
 		{
             yield return _profile.Run(
@@ -486,7 +486,7 @@ namespace Gs2.Unity.Gs2Formation
                 string propertyFormModelName,
                 string propertyId,
                 List<Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature> slots,
-                string keyId
+                string keyId = null
         )
 		{
             yield return _profile.Run(

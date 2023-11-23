@@ -27,7 +27,6 @@ namespace Gs2.Editor.ResourceTree.Gs2Enchant.Editor
             EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.TextField("EnableAutoRun", item.EnableAutoRun?.ToString());
             EditorGUILayout.TextField("DistributorNamespaceId", item.DistributorNamespaceId);
-            EditorGUILayout.TextField("KeyId", item.KeyId);
             EditorGUILayout.TextField("QueueNamespaceId", item.QueueNamespaceId);
             EditorGUI.EndDisabledGroup();
         }

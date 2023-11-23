@@ -65,8 +65,8 @@ namespace Gs2.Unity.Gs2Account
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzAuthenticationResult>> callback,
                 string namespaceName,
                 string userId,
-                string keyId,
-                string password
+                string password,
+                string keyId = null
         )
 		{
             yield return _profile.Run(

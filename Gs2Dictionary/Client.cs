@@ -135,7 +135,7 @@ namespace Gs2.Unity.Gs2Dictionary
 		        GameSession session,
                 string namespaceName,
                 string entryModelName,
-                string keyId
+                string keyId = null
         )
 		{
             yield return _profile.Run(

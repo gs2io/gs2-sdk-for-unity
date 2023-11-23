@@ -70,7 +70,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
         [Obsolete("The name has been changed to GetSimpleItemWithSignatureFuture.")]
         public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain> GetSimpleItemWithSignature(
-            string keyId
+            string keyId = null
         )
         {
             return GetSimpleItemWithSignatureFuture(
@@ -80,7 +80,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain> GetSimpleItemWithSignatureFuture(
-            string keyId
+            string keyId = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain> self)
@@ -104,7 +104,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         #else
         public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain> GetSimpleItemWithSignatureFuture(
         #endif
-            string keyId
+            string keyId = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(

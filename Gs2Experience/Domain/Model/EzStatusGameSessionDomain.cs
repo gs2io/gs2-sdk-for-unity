@@ -72,7 +72,7 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
 
         [Obsolete("The name has been changed to GetStatusWithSignatureFuture.")]
         public IFuture<Gs2.Unity.Gs2Experience.Domain.Model.EzStatusGameSessionDomain> GetStatusWithSignature(
-            string keyId
+            string keyId = null
         )
         {
             return GetStatusWithSignatureFuture(
@@ -82,7 +82,7 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Experience.Domain.Model.EzStatusGameSessionDomain> GetStatusWithSignatureFuture(
-            string keyId
+            string keyId = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Experience.Domain.Model.EzStatusGameSessionDomain> self)
@@ -106,7 +106,7 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
         #else
         public IFuture<Gs2.Unity.Gs2Experience.Domain.Model.EzStatusGameSessionDomain> GetStatusWithSignatureFuture(
         #endif
-            string keyId
+            string keyId = null
         ) {
         #if GS2_ENABLE_UNITASK
             var result = await _profile.RunAsync(
