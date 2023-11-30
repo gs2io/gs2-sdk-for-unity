@@ -26,12 +26,12 @@ namespace Gs2.Unity.Gs2Key.ScriptableObject
     public class Key : UnityEngine.ScriptableObject
     {
         public Namespace Namespace;
-        public string keyName;
+        public string keyName = "default";
 
-        public string NamespaceName => this.Namespace?.NamespaceName;
-        public string KeyName => this.keyName;
+        public string NamespaceName => this.Namespace?.NamespaceName ?? "default";
+        public string KeyName => this.keyName ?? "default";
 
-        public string Grn => $"grn:gs2:{{region}}:{{ownerId}}:key:{Namespace.namespaceName}:key:{keyName}";
+        public string Grn => $"grn:gs2:{{region}}:{{ownerId}}:key:{NamespaceName}:key:{KeyName}";
 
 #if UNITY_INCLUDE_TESTS
         public static Key Load(

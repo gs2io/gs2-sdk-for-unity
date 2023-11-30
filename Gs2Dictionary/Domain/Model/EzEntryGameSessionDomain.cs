@@ -54,7 +54,8 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
 
     public partial class EzEntryGameSessionDomain {
         private readonly Gs2.Gs2Dictionary.Domain.Model.EntryAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string Body => _domain.Body;
         public string Signature => _domain.Signature;
         public string NamespaceName => _domain?.NamespaceName;
@@ -63,15 +64,17 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
 
         public EzEntryGameSessionDomain(
             Gs2.Gs2Dictionary.Domain.Model.EntryAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
         [Obsolete("The name has been changed to GetEntryWithSignatureFuture.")]
         public IFuture<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain> GetEntryWithSignature(
-            string keyId
+            string keyId = null
         )
         {
             return GetEntryWithSignatureFuture(
@@ -79,76 +82,51 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain> GetEntryWithSignatureFuture(
-            string keyId
+            string keyId = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain> self)
             {
-                yield return GetEntryWithSignatureAsync(
-                    keyId
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.GetWithSignatureFuture(
+                        new GetEntryWithSignatureRequest()
+                            .WithKeyId(keyId)
+                    )
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain> GetEntryWithSignatureAsync(
-        #else
-        public IFuture<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain> GetEntryWithSignatureFuture(
-        #endif
-            string keyId
-        ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.GetWithSignatureAsync(
-                        new GetEntryWithSignatureRequest()
-                            .WithEntryModelName(EntryName)
-                            .WithKeyId(keyId)
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
-            );
-            return new Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain(result, _profile);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain> self)
-            {
-                var future = _domain.GetWithSignatureFuture(
+        public async UniTask<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain> GetEntryWithSignatureAsync(
+            string keyId = null
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.GetWithSignatureAsync(
                     new GetEntryWithSignatureRequest()
-                        .WithEntryModelName(EntryName)
                         .WithKeyId(keyId)
-                        .WithAccessToken(_domain.AccessToken.Token)
-                );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.GetWithSignatureFuture(
-                    		new GetEntryWithSignatureRequest()
-                	        .WithEntryModelName(EntryName)
-                	        .WithKeyId(keyId)
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain(result, _profile));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain>(Impl);
-        #endif
+                )
+            );
+            return new Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
         }
+        #endif
 
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Dictionary.Model.EzEntry> Model()
@@ -157,22 +135,10 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Dictionary.Model.EzEntry> ModelFuture()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Dictionary.Model.EzEntry> self)
-            {
-                yield return ModelAsync().ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Dictionary.Model.EzEntry>(Impl);
-        }
-
         public async UniTask<Gs2.Unity.Gs2Dictionary.Model.EzEntry> ModelAsync()
         {
-            var item = await _profile.RunAsync(
-                _domain.AccessToken,
+            var item = await this._connection.RunAsync(
+                this._gameSession,
                 async () =>
                 {
                     return await _domain.ModelAsync();
@@ -185,19 +151,19 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
                 item
             );
         }
-        #else
+        #endif
+
         public IFuture<Gs2.Unity.Gs2Dictionary.Model.EzEntry> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Dictionary.Model.EzEntry> self)
             {
-                var future = _domain.ModelFuture();
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
+                var future = this._connection.RunFuture(
+                    this._gameSession,
                     () => {
-                    	return future = _domain.ModelFuture();
+                    	return _domain.ModelFuture();
                     }
                 );
+                yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
@@ -213,7 +179,6 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Dictionary.Model.EzEntry>(Impl);
         }
-        #endif
 
         public ulong Subscribe(Action<Gs2.Unity.Gs2Dictionary.Model.EzEntry> callback)
         {

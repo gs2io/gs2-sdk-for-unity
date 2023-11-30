@@ -52,16 +52,19 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
 
     public partial class EzUserGameSessionDomain {
         private readonly Gs2.Gs2SkillTree.Domain.Model.UserAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserGameSessionDomain(
             Gs2.Gs2SkillTree.Domain.Model.UserAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
         public Gs2.Unity.Gs2SkillTree.Domain.Model.EzStatusGameSessionDomain Status(
@@ -69,7 +72,8 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
             return new Gs2.Unity.Gs2SkillTree.Domain.Model.EzStatusGameSessionDomain(
                 _domain.Status(
                 ),
-                _profile
+                this._gameSession,
+                this._connection
             );
         }
 

@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
     public partial class EzSimpleInventoryDomain {
         private readonly Gs2.Gs2Inventory.Domain.Model.SimpleInventoryDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
@@ -61,119 +61,10 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
         public EzSimpleInventoryDomain(
             Gs2.Gs2Inventory.Domain.Model.SimpleInventoryDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
-        }
-
-        public class EzSimpleItemsIterator : Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem>
-        {
-            private Gs2Iterator<Gs2.Gs2Inventory.Model.SimpleItem> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2Inventory.Domain.Model.SimpleInventoryDomain _domain;
-        #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
-
-            public EzSimpleItemsIterator(
-                Gs2Iterator<Gs2.Gs2Inventory.Model.SimpleItem> it,
-        #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2Inventory.Domain.Model.SimpleInventoryDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    null,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.SimpleItems(
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzSimpleItem.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem> SimpleItems(
-        )
-        {
-            return new EzSimpleItemsIterator(
-                _domain.SimpleItems(
-                ),
-                _profile
-            );
-        }
-
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem> SimpleItemsAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem> SimpleItems(
-        #endif
-        )
-        {
-        #if GS2_ENABLE_UNITASK
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem>(async (writer, token) =>
-            {
-                var it = _domain.SimpleItemsAsync(
-                ).GetAsyncEnumerator();
-                while(
-                    await _profile.RunIteratorAsync(
-                        null,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.SimpleItemsAsync(
-                            ).GetAsyncEnumerator();
-                        }
-                    )
-                )
-                {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzSimpleItem.FromModel(it.Current));
-                }
-            });
-        #else
-            return new EzSimpleItemsIterator(
-                _domain.SimpleItems(
-                ),
-                _domain,
-                _profile
-            );
-        #endif
-        }
-
-        public ulong SubscribeSimpleItems(Action callback) {
-            return this._domain.SubscribeSimpleItems(callback);
-        }
-
-        public void UnsubscribeSimpleItems(ulong callbackId) {
-            this._domain.UnsubscribeSimpleItems(callbackId);
+            this._connection = connection;
         }
 
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemDomain SimpleItem(
@@ -183,7 +74,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
                 _domain.SimpleItem(
                     itemName
                 ),
-                _profile
+                this._connection
             );
         }
 

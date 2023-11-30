@@ -52,7 +52,8 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
 
     public partial class EzEnhanceGameSessionDomain {
         private readonly Gs2.Gs2Enhance.Domain.Model.EnhanceAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public long? AcquireExperience => _domain.AcquireExperience;
@@ -62,10 +63,12 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
 
         public EzEnhanceGameSessionDomain(
             Gs2.Gs2Enhance.Domain.Model.EnhanceAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
         [Obsolete("The name has been changed to EnhanceFuture.")]
@@ -84,7 +87,6 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> EnhanceFuture(
             string rateName,
             string targetItemSetId,
@@ -94,13 +96,15 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                var future = this._domain.DirectFuture(
-                    new DirectEnhanceRequest()
-                        .WithRateName(rateName)
-                        .WithTargetItemSetId(targetItemSetId)
-                        .WithMaterials(materials?.Select(v => v.ToModel()).ToArray())
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
-                        .WithAccessToken(_domain.AccessToken.Token)
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.DirectFuture(
+                        new DirectEnhanceRequest()
+                            .WithRateName(rateName)
+                            .WithTargetItemSetId(targetItemSetId)
+                            .WithMaterials(materials?.Select(v => v.ToModel()).ToArray())
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                    )
                 );
                 yield return future;
                 if (future.Error != null) {
@@ -112,68 +116,26 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
 
+        #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> EnhanceAsync(
-        #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> EnhanceFuture(
-        #endif
             string rateName,
             string targetItemSetId,
             Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials,
             Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
         ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.DirectAsync(
-                        new DirectEnhanceRequest()
-                            .WithRateName(rateName)
-                            .WithTargetItemSetId(targetItemSetId)
-                            .WithMaterials(materials?.Select(v => v.ToModel()).ToArray())
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
-            );
-            return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
-            {
-                var future = _domain.DirectFuture(
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.DirectAsync(
                     new DirectEnhanceRequest()
                         .WithRateName(rateName)
                         .WithTargetItemSetId(targetItemSetId)
                         .WithMaterials(materials?.Select(v => v.ToModel()).ToArray())
                         .WithConfig(config?.Select(v => v.ToModel()).ToArray())
-                        .WithAccessToken(_domain.AccessToken.Token)
-                );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.DirectFuture(
-                    		new DirectEnhanceRequest()
-                	        .WithRateName(rateName)
-                	        .WithTargetItemSetId(targetItemSetId)
-        	                .WithMaterials(materials?.Select(v => v.ToModel()).ToArray())
-        	                .WithConfig(config?.Select(v => v.ToModel()).ToArray())
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
-        #endif
+                )
+            );
+            return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
         }
+        #endif
 
     }
 }

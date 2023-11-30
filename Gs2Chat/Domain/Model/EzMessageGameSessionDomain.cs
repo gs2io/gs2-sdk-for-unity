@@ -52,7 +52,8 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
 
     public partial class EzMessageGameSessionDomain {
         private readonly Gs2.Gs2Chat.Domain.Model.MessageAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string RoomName => _domain?.RoomName;
@@ -61,10 +62,12 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
 
         public EzMessageGameSessionDomain(
             Gs2.Gs2Chat.Domain.Model.MessageAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
         [Obsolete("The name has been changed to ModelFuture.")]
@@ -74,31 +77,10 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Chat.Model.EzMessage> ModelFuture()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Model.EzMessage> self)
-            {
-                yield return ModelAsync().ToCoroutine(
-                    self.OnComplete,
-                    e =>
-                    {
-                        if (e is Gs2.Core.Exception.Gs2Exception e2) {
-                            self.OnError(e2);
-                        }
-                        else {
-                            UnityEngine.Debug.LogError(e.Message);
-                            self.OnError(new Gs2.Core.Exception.UnknownException(e.Message));
-                        }
-                    }
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Chat.Model.EzMessage>(Impl);
-        }
-
         public async UniTask<Gs2.Unity.Gs2Chat.Model.EzMessage> ModelAsync()
         {
-            var item = await _profile.RunAsync(
-                _domain.AccessToken,
+            var item = await this._connection.RunAsync(
+                this._gameSession,
                 async () =>
                 {
                     return await _domain.ModelAsync();
@@ -111,19 +93,19 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                 item
             );
         }
-        #else
+        #endif
+
         public IFuture<Gs2.Unity.Gs2Chat.Model.EzMessage> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Model.EzMessage> self)
             {
-                var future = _domain.ModelFuture();
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
+                var future = this._connection.RunFuture(
+                    this._gameSession,
                     () => {
-                    	return future = _domain.ModelFuture();
+                    	return _domain.ModelFuture();
                     }
                 );
+                yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
@@ -139,7 +121,6 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Chat.Model.EzMessage>(Impl);
         }
-        #endif
 
         public ulong Subscribe(Action<Gs2.Unity.Gs2Chat.Model.EzMessage> callback)
         {

@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2Money
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2MoneyWebSocketClient _client;
 		private readonly Gs2MoneyRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2MoneyWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2MoneyRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2MoneyRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2MoneyWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2MoneyRestClient(connection.RestSession);
 		}
 
         public IEnumerator Get(
@@ -68,7 +61,7 @@ namespace Gs2.Unity.Gs2Money
                 int slot
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.GetWallet(
@@ -95,7 +88,7 @@ namespace Gs2.Unity.Gs2Money
                 bool? paidOnly = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.Withdraw(

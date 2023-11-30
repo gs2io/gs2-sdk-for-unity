@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -13,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -27,6 +28,8 @@
 #pragma warning disable 1998
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core;
@@ -36,62 +39,8 @@ using Gs2.Core.Util;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
-#if GS2_ENABLE_UNITASK
-using System.Threading;
-using System.Collections.Generic;
-using Cysharp.Threading;
-using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Linq;
-#else
-using System.Collections;
-using UnityEngine.Events;
-using Gs2.Core.Exception;
-#endif
 
 namespace Gs2.Unity.Gs2Friend.Domain.Iterator
 {
 
-    #if GS2_ENABLE_UNITASK
-    public class EzDescribeBlackListIterator {
-    #else
-    public class EzDescribeBlackListIterator : Gs2Iterator<string> {
-    #endif
-        private readonly Gs2.Gs2Friend.Domain.Iterator.DescribeBlackListIterator _iterator;
-
-        public EzDescribeBlackListIterator(
-            Gs2.Gs2Friend.Domain.Iterator.DescribeBlackListIterator iterator
-        ) {
-            this._iterator = iterator;
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<string> GetAsyncEnumerator(
-            CancellationToken cancellationToken = new CancellationToken()
-        )
-        {
-            return UniTaskAsyncEnumerable.Create<string>(async (writer, token) =>
-            {
-            });
-        }
-
-        #else
-
-        public override bool HasNext()
-        {
-            return _iterator.HasNext();
-        }
-
-        protected override IEnumerator Next(
-            Action<AsyncResult<string>> callback
-        )
-        {
-            yield return _iterator;
-            callback.Invoke(new AsyncResult<string>(
-                _iterator.Current,
-                _iterator.Error
-            ));
-        }
-
-        #endif
-    }
 }

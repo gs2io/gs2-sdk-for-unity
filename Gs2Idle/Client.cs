@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2Idle
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2IdleWebSocketClient _client;
 		private readonly Gs2IdleRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2IdleWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2IdleRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2IdleRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2IdleWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2IdleRestClient(connection.RestSession);
 		}
 
         public IEnumerator GetCategoryModel(
@@ -67,7 +60,7 @@ namespace Gs2.Unity.Gs2Idle
                 string categoryName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.GetCategoryModel(
@@ -89,7 +82,7 @@ namespace Gs2.Unity.Gs2Idle
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribeCategoryModels(
@@ -112,7 +105,7 @@ namespace Gs2.Unity.Gs2Idle
                 string categoryName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.GetStatus(
@@ -138,7 +131,7 @@ namespace Gs2.Unity.Gs2Idle
                 int? limit = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeStatuses(
@@ -164,7 +157,7 @@ namespace Gs2.Unity.Gs2Idle
                 string categoryName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.Prediction(
@@ -189,7 +182,7 @@ namespace Gs2.Unity.Gs2Idle
                 string categoryName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.Receive(

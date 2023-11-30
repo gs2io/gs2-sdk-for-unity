@@ -52,105 +52,43 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
 
     public partial class EzUserGameSessionDomain {
         private readonly Gs2.Gs2LoginReward.Domain.Model.UserAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserGameSessionDomain(
             Gs2.Gs2LoginReward.Domain.Model.UserAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
-        public Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain Bonus(
-        ) {
-            return new Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain(
-                _domain.Bonus(
-                ),
-                _profile
-            );
-        }
-
-        public class EzReceiveStatusesIterator : Gs2Iterator<Gs2.Unity.Gs2LoginReward.Model.EzReceiveStatus>
-        {
-            private Gs2Iterator<Gs2.Gs2LoginReward.Model.ReceiveStatus> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2LoginReward.Domain.Model.UserAccessTokenDomain _domain;
-        #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
-
-            public EzReceiveStatusesIterator(
-                Gs2Iterator<Gs2.Gs2LoginReward.Model.ReceiveStatus> it,
-        #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2LoginReward.Domain.Model.UserAccessTokenDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2LoginReward.Model.EzReceiveStatus>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    _domain.AccessToken,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.ReceiveStatuses(
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2LoginReward.Model.EzReceiveStatus>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2LoginReward.Model.EzReceiveStatus.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
         public Gs2Iterator<Gs2.Unity.Gs2LoginReward.Model.EzReceiveStatus> ReceiveStatuses(
         )
         {
-            return new EzReceiveStatusesIterator(
-                _domain.ReceiveStatuses(
-                ),
-                _profile
+            return new Gs2.Unity.Gs2LoginReward.Domain.Iterator.EzListReceiveStatussIterator(
+                this._domain,
+                this._gameSession,
+                this._connection
             );
         }
 
+        #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2LoginReward.Model.EzReceiveStatus> ReceiveStatusesAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2LoginReward.Model.EzReceiveStatus> ReceiveStatuses(
-        #endif
         )
         {
-        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2LoginReward.Model.EzReceiveStatus>(async (writer, token) =>
             {
                 var it = _domain.ReceiveStatusesAsync(
                 ).GetAsyncEnumerator();
                 while(
-                    await _profile.RunIteratorAsync(
-                        _domain.AccessToken,
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
                         async () =>
                         {
                             return await it.MoveNextAsync();
@@ -165,15 +103,8 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2LoginReward.Model.EzReceiveStatus.FromModel(it.Current));
                 }
             });
-        #else
-            return new EzReceiveStatusesIterator(
-                _domain.ReceiveStatuses(
-                ),
-                _domain,
-                _profile
-            );
-        #endif
         }
+        #endif
 
         public ulong SubscribeReceiveStatuses(Action callback) {
             return this._domain.SubscribeReceiveStatuses(callback);
@@ -183,6 +114,16 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
             this._domain.UnsubscribeReceiveStatuses(callbackId);
         }
 
+        public Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain Bonus(
+        ) {
+            return new Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain(
+                _domain.Bonus(
+                ),
+                this._gameSession,
+                this._connection
+            );
+        }
+
         public Gs2.Unity.Gs2LoginReward.Domain.Model.EzReceiveStatusGameSessionDomain ReceiveStatus(
             string bonusModelName
         ) {
@@ -190,7 +131,8 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                 _domain.ReceiveStatus(
                     bonusModelName
                 ),
-                _profile
+                this._gameSession,
+                this._connection
             );
         }
 

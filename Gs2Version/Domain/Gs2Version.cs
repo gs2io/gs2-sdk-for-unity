@@ -55,14 +55,14 @@ namespace Gs2.Unity.Gs2Version.Domain
 
     public class Gs2Version {
         private readonly Gs2.Gs2Version.Domain.Gs2Version _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
         public Gs2Version(
             Gs2.Gs2Version.Domain.Gs2Version domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._connection = connection;
         }
 
         public Gs2.Unity.Gs2Version.Domain.Model.EzNamespaceDomain Namespace(
@@ -72,7 +72,7 @@ namespace Gs2.Unity.Gs2Version.Domain
                 _domain.Namespace(
                     namespaceName
                 ),
-                _profile
+                this._connection
             );
         }
     }

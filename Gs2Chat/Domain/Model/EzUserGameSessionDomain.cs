@@ -52,17 +52,20 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
 
     public partial class EzUserGameSessionDomain {
         private readonly Gs2.Gs2Chat.Domain.Model.UserAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserGameSessionDomain(
             Gs2.Gs2Chat.Domain.Model.UserAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
         [Obsolete("The name has been changed to CreateRoomFuture.")]
@@ -81,7 +84,6 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> CreateRoomFuture(
             string name = null,
             string metadata = null,
@@ -91,177 +93,76 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> self)
             {
-                var future = this._domain.CreateRoomFuture(
-                    new CreateRoomRequest()
-                        .WithName(name)
-                        .WithMetadata(metadata)
-                        .WithPassword(password)
-                        .WithWhiteListUserIds(whiteListUserIds)
-                        .WithAccessToken(_domain.AccessToken.Token)
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.CreateRoomFuture(
+                        new CreateRoomRequest()
+                            .WithName(name)
+                            .WithMetadata(metadata)
+                            .WithPassword(password)
+                            .WithWhiteListUserIds(whiteListUserIds)
+                    )
                 );
                 yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(new Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain(future.Result, _profile));
+                self.OnComplete(new Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain>(Impl);
         }
 
+        #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> CreateRoomAsync(
-        #else
-        public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> CreateRoomFuture(
-        #endif
             string name = null,
             string metadata = null,
             string password = null,
             string[] whiteListUserIds = null
         ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.CreateRoomAsync(
-                        new CreateRoomRequest()
-                            .WithName(name)
-                            .WithMetadata(metadata)
-                            .WithPassword(password)
-                            .WithWhiteListUserIds(whiteListUserIds)
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
-            );
-            return new Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain(result, _profile);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> self)
-            {
-                var future = _domain.CreateRoomFuture(
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.CreateRoomAsync(
                     new CreateRoomRequest()
                         .WithName(name)
                         .WithMetadata(metadata)
                         .WithPassword(password)
                         .WithWhiteListUserIds(whiteListUserIds)
-                        .WithAccessToken(_domain.AccessToken.Token)
-                );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.CreateRoomFuture(
-                    		new CreateRoomRequest()
-                	        .WithName(name)
-                	        .WithMetadata(metadata)
-                	        .WithPassword(password)
-                	        .WithWhiteListUserIds(whiteListUserIds)
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain(result, _profile));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain>(Impl);
-        #endif
-        }
-
-        public Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain Room(
-            string roomName,
-            string password
-        ) {
+                )
+            );
             return new Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain(
-                _domain.Room(
-                    roomName,
-                    password
-                ),
-                _profile
+                result,
+                this._gameSession,
+                this._connection
             );
         }
-
-        public class EzSubscribesIterator : Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzSubscribe>
-        {
-            private Gs2Iterator<Gs2.Gs2Chat.Model.Subscribe> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2Chat.Domain.Model.UserAccessTokenDomain _domain;
         #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
 
-            public EzSubscribesIterator(
-                Gs2Iterator<Gs2.Gs2Chat.Model.Subscribe> it,
-        #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2Chat.Domain.Model.UserAccessTokenDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Chat.Model.EzSubscribe>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    _domain.AccessToken,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.Subscribes(
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Chat.Model.EzSubscribe>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Chat.Model.EzSubscribe.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
         public Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzSubscribe> Subscribes(
         )
         {
-            return new EzSubscribesIterator(
-                _domain.Subscribes(
-                ),
-                _profile
+            return new Gs2.Unity.Gs2Chat.Domain.Iterator.EzListSubscribeRoomsIterator(
+                this._domain,
+                this._gameSession,
+                this._connection
             );
         }
 
+        #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Chat.Model.EzSubscribe> SubscribesAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzSubscribe> Subscribes(
-        #endif
         )
         {
-        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Chat.Model.EzSubscribe>(async (writer, token) =>
             {
                 var it = _domain.SubscribesAsync(
                 ).GetAsyncEnumerator();
                 while(
-                    await _profile.RunIteratorAsync(
-                        _domain.AccessToken,
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
                         async () =>
                         {
                             return await it.MoveNextAsync();
@@ -276,15 +177,8 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Chat.Model.EzSubscribe.FromModel(it.Current));
                 }
             });
-        #else
-            return new EzSubscribesIterator(
-                _domain.Subscribes(
-                ),
-                _domain,
-                _profile
-            );
-        #endif
         }
+        #endif
 
         public ulong SubscribeSubscribes(Action callback) {
             return this._domain.SubscribeSubscribes(callback);
@@ -294,6 +188,20 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
             this._domain.UnsubscribeSubscribes(callbackId);
         }
 
+        public Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain Room(
+            string roomName,
+            string password
+        ) {
+            return new Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain(
+                _domain.Room(
+                    roomName,
+                    password
+                ),
+                this._gameSession,
+                this._connection
+            );
+        }
+
         public Gs2.Unity.Gs2Chat.Domain.Model.EzSubscribeGameSessionDomain Subscribe(
             string roomName
         ) {
@@ -301,7 +209,8 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                 _domain.Subscribe(
                     roomName
                 ),
-                _profile
+                this._gameSession,
+                this._connection
             );
         }
 

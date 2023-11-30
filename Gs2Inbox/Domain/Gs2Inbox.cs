@@ -55,14 +55,14 @@ namespace Gs2.Unity.Gs2Inbox.Domain
 
     public class Gs2Inbox {
         private readonly Gs2.Gs2Inbox.Domain.Gs2Inbox _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
         public Gs2Inbox(
             Gs2.Gs2Inbox.Domain.Gs2Inbox domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._connection = connection;
         }
 
         public Gs2.Unity.Gs2Inbox.Domain.Model.EzNamespaceDomain Namespace(
@@ -72,7 +72,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain
                 _domain.Namespace(
                     namespaceName
                 ),
-                _profile
+                this._connection
             );
         }
 

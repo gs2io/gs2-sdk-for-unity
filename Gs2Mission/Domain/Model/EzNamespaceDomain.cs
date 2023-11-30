@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
 
     public partial class EzNamespaceDomain {
         private readonly Gs2.Gs2Mission.Domain.Model.NamespaceDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string Status => _domain.Status;
         public string Url => _domain.Url;
         public string UploadToken => _domain.UploadToken;
@@ -63,88 +63,76 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
 
         public EzNamespaceDomain(
             Gs2.Gs2Mission.Domain.Model.NamespaceDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._connection = connection;
         }
 
-        public class EzMissionGroupModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel>
-        {
-            private Gs2Iterator<Gs2.Gs2Mission.Model.MissionGroupModel> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2Mission.Domain.Model.NamespaceDomain _domain;
-        #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
-
-            public EzMissionGroupModelsIterator(
-                Gs2Iterator<Gs2.Gs2Mission.Model.MissionGroupModel> it,
-        #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2Mission.Domain.Model.NamespaceDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    null,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.MissionGroupModels(
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel> MissionGroupModels(
+        public Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzCounterModel> CounterModels(
         )
         {
-            return new EzMissionGroupModelsIterator(
-                _domain.MissionGroupModels(
-                ),
-                _profile
+            return new Gs2.Unity.Gs2Mission.Domain.Iterator.EzListCounterModelsIterator(
+                this._domain,
+                this._connection
             );
         }
 
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel> MissionGroupModelsAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel> MissionGroupModels(
-        #endif
+        #if GS2_ENABLE_UNITASK
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Mission.Model.EzCounterModel> CounterModelsAsync(
         )
         {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Mission.Model.EzCounterModel>(async (writer, token) =>
+            {
+                var it = _domain.CounterModelsAsync(
+                ).GetAsyncEnumerator();
+                while(
+                    await this._connection.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.CounterModelsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Mission.Model.EzCounterModel.FromModel(it.Current));
+                }
+            });
+        }
+        #endif
+
+        public ulong SubscribeCounterModels(Action callback) {
+            return this._domain.SubscribeCounterModels(callback);
+        }
+
+        public void UnsubscribeCounterModels(ulong callbackId) {
+            this._domain.UnsubscribeCounterModels(callbackId);
+        }
+
+        public Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel> MissionGroupModels(
+        )
+        {
+            return new Gs2.Unity.Gs2Mission.Domain.Iterator.EzListMissionGroupModelsIterator(
+                this._domain,
+                this._connection
+            );
+        }
+
         #if GS2_ENABLE_UNITASK
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel> MissionGroupModelsAsync(
+        )
+        {
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel>(async (writer, token) =>
             {
                 var it = _domain.MissionGroupModelsAsync(
                 ).GetAsyncEnumerator();
                 while(
-                    await _profile.RunIteratorAsync(
+                    await this._connection.RunIteratorAsync(
                         null,
                         async () =>
                         {
@@ -160,15 +148,8 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel.FromModel(it.Current));
                 }
             });
-        #else
-            return new EzMissionGroupModelsIterator(
-                _domain.MissionGroupModels(
-                ),
-                _domain,
-                _profile
-            );
-        #endif
         }
+        #endif
 
         public ulong SubscribeMissionGroupModels(Action callback) {
             return this._domain.SubscribeMissionGroupModels(callback);
@@ -185,117 +166,8 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                 _domain.MissionGroupModel(
                     missionGroupName
                 ),
-                _profile
+                this._connection
             );
-        }
-
-        public class EzCounterModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzCounterModel>
-        {
-            private Gs2Iterator<Gs2.Gs2Mission.Model.CounterModel> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2Mission.Domain.Model.NamespaceDomain _domain;
-        #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
-
-            public EzCounterModelsIterator(
-                Gs2Iterator<Gs2.Gs2Mission.Model.CounterModel> it,
-        #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2Mission.Domain.Model.NamespaceDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Mission.Model.EzCounterModel>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    null,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.CounterModels(
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Mission.Model.EzCounterModel>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Mission.Model.EzCounterModel.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzCounterModel> CounterModels(
-        )
-        {
-            return new EzCounterModelsIterator(
-                _domain.CounterModels(
-                ),
-                _profile
-            );
-        }
-
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Mission.Model.EzCounterModel> CounterModelsAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzCounterModel> CounterModels(
-        #endif
-        )
-        {
-        #if GS2_ENABLE_UNITASK
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Mission.Model.EzCounterModel>(async (writer, token) =>
-            {
-                var it = _domain.CounterModelsAsync(
-                ).GetAsyncEnumerator();
-                while(
-                    await _profile.RunIteratorAsync(
-                        null,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.CounterModelsAsync(
-                            ).GetAsyncEnumerator();
-                        }
-                    )
-                )
-                {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Mission.Model.EzCounterModel.FromModel(it.Current));
-                }
-            });
-        #else
-            return new EzCounterModelsIterator(
-                _domain.CounterModels(
-                ),
-                _domain,
-                _profile
-            );
-        #endif
-        }
-
-        public ulong SubscribeCounterModels(Action callback) {
-            return this._domain.SubscribeCounterModels(callback);
-        }
-
-        public void UnsubscribeCounterModels(ulong callbackId) {
-            this._domain.UnsubscribeCounterModels(callbackId);
         }
 
         public Gs2.Unity.Gs2Mission.Domain.Model.EzCounterModelDomain CounterModel(
@@ -305,7 +177,7 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                 _domain.CounterModel(
                     counterName
                 ),
-                _profile
+                this._connection
             );
         }
 
@@ -316,7 +188,7 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                 _domain.User(
                     userId
                 ),
-                _profile
+                this._connection
             );
         }
 
@@ -327,7 +199,8 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                 _domain.AccessToken(
                     gameSession.AccessToken
                 ),
-                _profile
+                gameSession,
+                this._connection
             );
         }
 

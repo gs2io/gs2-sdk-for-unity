@@ -52,17 +52,20 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
 
     public partial class EzDrawnPrizeGameSessionDomain {
         private readonly Gs2.Gs2Lottery.Domain.Model.DrawnPrizeAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public int Index => _domain?.Index ?? 0;
 
         public EzDrawnPrizeGameSessionDomain(
             Gs2.Gs2Lottery.Domain.Model.DrawnPrizeAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
         #if GS2_ENABLE_UNITASK
@@ -80,8 +83,8 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Lottery.Model.EzDrawnPrize> ModelAsync()
         {
-            var item = await _profile.RunAsync(
-                _domain.AccessToken,
+            var item = await _connection.RunAsync(
+                _gameSession,
                 async () =>
                 {
                     return await _domain.Model();
@@ -99,14 +102,13 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Lottery.Model.EzDrawnPrize> self)
             {
-                var future = _domain.Model();
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
+                var future = _connection.RunFuture(
+                    _gameSession,
                     () => {
-                    	return future = _domain.Model();
+                    	return _domain.Model();
                     }
                 );
+                yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;

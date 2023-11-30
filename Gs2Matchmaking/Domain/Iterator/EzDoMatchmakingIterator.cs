@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -27,6 +26,8 @@
 #pragma warning disable 1998
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core;
@@ -36,62 +37,58 @@ using Gs2.Core.Util;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
-#if GS2_ENABLE_UNITASK
-using System.Threading;
-using System.Collections.Generic;
-using Cysharp.Threading;
-using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Linq;
-#else
-using System.Collections;
-using UnityEngine.Events;
-using Gs2.Core.Exception;
-#endif
 
 namespace Gs2.Unity.Gs2Matchmaking.Domain.Iterator
 {
 
-    #if GS2_ENABLE_UNITASK
-    public class EzDoMatchmakingIterator {
-    #else
-    public class EzDoMatchmakingIterator : Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> {
-    #endif
-        private readonly Gs2.Gs2Matchmaking.Domain.Iterator.DoMatchmakingIterator _iterator;
+    public class EzDoMatchmakingIterator : Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzGathering>
+    {
+        private Gs2Iterator<Gs2.Gs2Matchmaking.Model.Gathering> _it;
+        private readonly Gs2.Gs2Matchmaking.Domain.Model.UserAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
+        private readonly Gs2.Unity.Gs2Matchmaking.Model.EzPlayer _player;
 
         public EzDoMatchmakingIterator(
-            Gs2.Gs2Matchmaking.Domain.Iterator.DoMatchmakingIterator iterator
-        ) {
-            this._iterator = iterator;
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> GetAsyncEnumerator(
-            CancellationToken cancellationToken = new CancellationToken()
+            Gs2.Gs2Matchmaking.Domain.Model.UserAccessTokenDomain domain,
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection,
+            Gs2.Unity.Gs2Matchmaking.Model.EzPlayer player
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Matchmaking.Model.EzGathering>(async (writer, token) =>
-            {
-            });
+            _domain = domain;
+            _gameSession = gameSession;
+            _connection = connection;
+            _player = player;
+            _it = _domain.DoMatchmaking(
+                this._player.ToModel()
+            );
         }
-
-        #else
 
         public override bool HasNext()
         {
-            return _iterator.HasNext();
+            return _it.HasNext();
         }
 
-        protected override IEnumerator Next(
-            Action<AsyncResult<Gs2.Unity.Gs2Matchmaking.Model.EzGathering>> callback
-        )
+        protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Matchmaking.Model.EzGathering>> callback)
         {
-            yield return _iterator;
-            callback.Invoke(new AsyncResult<Gs2.Unity.Gs2Matchmaking.Model.EzGathering>(
-                _iterator.Current == null ? null : Gs2.Unity.Gs2Matchmaking.Model.EzGathering.FromModel(_iterator.Current),
-                _iterator.Error
-            ));
+            yield return _connection.RunIterator(
+                _gameSession,
+                _it,
+                () =>
+                {
+                    return _it = _domain.DoMatchmaking(
+                        this._player.ToModel()
+                    );
+                }
+            );
+            callback.Invoke(
+                new AsyncResult<Gs2.Unity.Gs2Matchmaking.Model.EzGathering>(
+                    _it.Current == null ? null : Gs2.Unity.Gs2Matchmaking.Model.EzGathering.FromModel(_it.Current),
+                    _it.Error
+                )
+            );
         }
-
-        #endif
     }
+
 }

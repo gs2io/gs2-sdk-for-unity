@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
 
     public partial class EzDataObjectDomain {
         private readonly Gs2.Gs2Datastore.Domain.Model.DataObjectDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string UploadUrl => _domain.UploadUrl;
         public string FileUrl => _domain.FileUrl;
         public long? ContentLength => _domain.ContentLength;
@@ -64,10 +64,10 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
 
         public EzDataObjectDomain(
             Gs2.Gs2Datastore.Domain.Model.DataObjectDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._connection = connection;
         }
 
         [Obsolete("The name has been changed to PrepareDownloadByUserIdAndDataObjectNameFuture.")]
@@ -78,177 +78,45 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain> PrepareDownloadByUserIdAndDataObjectNameFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain> self)
             {
-                var future = this._domain.PrepareDownloadByUserIdAndNameFuture(
-                    new PrepareDownloadByUserIdAndDataObjectNameRequest()
+                var future = this._connection.RunFuture(
+                    null,
+                    () => this._domain.PrepareDownloadByUserIdAndNameFuture(
+                        new PrepareDownloadByUserIdAndDataObjectNameRequest()
+                    )
                 );
                 yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain(future.Result, _profile));
+                self.OnComplete(new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain(
+                    future.Result,
+                    this._connection
+                ));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain>(Impl);
         }
 
+        #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain> PrepareDownloadByUserIdAndDataObjectNameAsync(
-        #else
-        public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain> PrepareDownloadByUserIdAndDataObjectNameFuture(
-        #endif
         ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
+            var result = await this._connection.RunAsync(
                 null,
-                async () =>
-                {
-                    return await _domain.PrepareDownloadByUserIdAndNameAsync(
-                        new PrepareDownloadByUserIdAndDataObjectNameRequest()
-                    );
-                }
-            );
-            return new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain(result, _profile);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain> self)
-            {
-                var future = _domain.PrepareDownloadByUserIdAndNameFuture(
+                () => this._domain.PrepareDownloadByUserIdAndNameAsync(
                     new PrepareDownloadByUserIdAndDataObjectNameRequest()
-                );
-                yield return _profile.RunFuture(
-                    null,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.PrepareDownloadByUserIdAndNameFuture(
-                    		new PrepareDownloadByUserIdAndDataObjectNameRequest()
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain(result, _profile));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain>(Impl);
-        #endif
-        }
-
-        public class EzDataObjectHistoriesIterator : Gs2Iterator<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory>
-        {
-            private Gs2Iterator<Gs2.Gs2Datastore.Model.DataObjectHistory> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2Datastore.Domain.Model.DataObjectDomain _domain;
-        #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
-
-            public EzDataObjectHistoriesIterator(
-                Gs2Iterator<Gs2.Gs2Datastore.Model.DataObjectHistory> it,
-        #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2Datastore.Domain.Model.DataObjectDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    null,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.DataObjectHistories(
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public Gs2Iterator<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory> DataObjectHistories(
-        )
-        {
-            return new EzDataObjectHistoriesIterator(
-                _domain.DataObjectHistories(
-                ),
-                _profile
-            );
-        }
-
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory> DataObjectHistoriesAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory> DataObjectHistories(
-        #endif
-        )
-        {
-        #if GS2_ENABLE_UNITASK
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory>(async (writer, token) =>
-            {
-                var it = _domain.DataObjectHistoriesAsync(
-                ).GetAsyncEnumerator();
-                while(
-                    await _profile.RunIteratorAsync(
-                        null,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.DataObjectHistoriesAsync(
-                            ).GetAsyncEnumerator();
-                        }
-                    )
                 )
-                {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory.FromModel(it.Current));
-                }
-            });
-        #else
-            return new EzDataObjectHistoriesIterator(
-                _domain.DataObjectHistories(
-                ),
-                _domain,
-                _profile
             );
+            return new Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectDomain(
+                result,
+                this._connection
+            );
+        }
         #endif
-        }
-
-        public ulong SubscribeDataObjectHistories(Action callback) {
-            return this._domain.SubscribeDataObjectHistories(callback);
-        }
-
-        public void UnsubscribeDataObjectHistories(ulong callbackId) {
-            this._domain.UnsubscribeDataObjectHistories(callbackId);
-        }
 
         public Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectHistoryDomain DataObjectHistory(
             string generation
@@ -257,7 +125,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 _domain.DataObjectHistory(
                     generation
                 ),
-                _profile
+                this._connection
             );
         }
 
@@ -268,30 +136,9 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Datastore.Model.EzDataObject> ModelFuture()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Model.EzDataObject> self)
-            {
-                yield return ModelAsync().ToCoroutine(
-                    self.OnComplete,
-                    e =>
-                    {
-                        if (e is Gs2.Core.Exception.Gs2Exception e2) {
-                            self.OnError(e2);
-                        }
-                        else {
-                            UnityEngine.Debug.LogError(e.Message);
-                            self.OnError(new Gs2.Core.Exception.UnknownException(e.Message));
-                        }
-                    }
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Model.EzDataObject>(Impl);
-        }
-
         public async UniTask<Gs2.Unity.Gs2Datastore.Model.EzDataObject> ModelAsync()
         {
-            var item = await _profile.RunAsync(
+            var item = await this._connection.RunAsync(
                 null,
                 async () =>
                 {
@@ -305,19 +152,19 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 item
             );
         }
-        #else
+        #endif
+
         public IFuture<Gs2.Unity.Gs2Datastore.Model.EzDataObject> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Datastore.Model.EzDataObject> self)
             {
-                var future = _domain.ModelFuture();
-                yield return _profile.RunFuture(
+                var future = this._connection.RunFuture(
                     null,
-                    future,
                     () => {
-                    	return future = _domain.ModelFuture();
+                    	return _domain.ModelFuture();
                     }
                 );
+                yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
@@ -333,7 +180,6 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Datastore.Model.EzDataObject>(Impl);
         }
-        #endif
 
         public ulong Subscribe(Action<Gs2.Unity.Gs2Datastore.Model.EzDataObject> callback)
         {

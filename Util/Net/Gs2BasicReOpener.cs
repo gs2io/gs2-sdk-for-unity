@@ -34,24 +34,7 @@ namespace Gs2.Unity.Util
 
     public class Gs2BasicReopener : IReopener
     {
-        private IAuthenticator _authenticator;
-        private string _userId;
-        private string _password;
-        private GameSession _gameSession;
-        
         public ReOpenEvent onReOpen = new ReOpenEvent();
-
-        public override void SetAuthenticator(
-            IAuthenticator authenticator,
-            string userId,
-            string password,
-            GameSession gameSession
-        ) {
-            this._authenticator = authenticator;
-            this._userId = userId;
-            this._password = password;
-            this._gameSession = gameSession;
-        }
 
 #if GS2_ENABLE_UNITASK
 
@@ -62,11 +45,6 @@ namespace Gs2.Unity.Util
         {
             await session.ReOpenAsync();
             var result = await restSession.ReOpenAsync();
-            
-            if (this._authenticator != null && this._userId != null && this._password != null) {
-                var accessToken = await this._authenticator.AuthenticationAsync();
-                this._gameSession.AccessToken = accessToken;
-            }
             
             onReOpen.Invoke();
 
@@ -83,16 +61,6 @@ namespace Gs2.Unity.Util
             IEnumerator Impl(Gs2Future<OpenResult> result) {
                 yield return session.ReOpenFuture();
                 yield return restSession.ReOpenFuture();
-
-                if (this._authenticator != null && this._userId != null && this._password != null) {
-                    var future = this._authenticator.AuthenticationFuture();
-                    yield return future;
-                    if (future.Error != null) {
-                        result.OnError(future.Error);
-                        yield break;
-                    }
-                    this._gameSession.AccessToken = future.Result;
-                }
 
                 onReOpen.Invoke();
             }

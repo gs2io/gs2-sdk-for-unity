@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
 
     public partial class EzCheckerDomain {
         private readonly Gs2.Gs2Version.Domain.Model.CheckerDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string ProjectToken => _domain.ProjectToken;
         public Gs2.Unity.Gs2Version.Model.EzStatus[] Warnings => _domain.Warnings.Select(Gs2.Unity.Gs2Version.Model.EzStatus.FromModel).ToArray();
         public Gs2.Unity.Gs2Version.Model.EzStatus[] Errors => _domain.Errors.Select(Gs2.Unity.Gs2Version.Model.EzStatus.FromModel).ToArray();
@@ -64,10 +64,10 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
 
         public EzCheckerDomain(
             Gs2.Gs2Version.Domain.Model.CheckerDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._connection = connection;
         }
 
     }

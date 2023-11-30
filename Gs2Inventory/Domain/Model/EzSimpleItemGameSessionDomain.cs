@@ -52,7 +52,8 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
     public partial class EzSimpleItemGameSessionDomain {
         private readonly Gs2.Gs2Inventory.Domain.Model.SimpleItemAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string Body => _domain.Body;
         public string Signature => _domain.Signature;
         public string NamespaceName => _domain?.NamespaceName;
@@ -62,10 +63,12 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
         public EzSimpleItemGameSessionDomain(
             Gs2.Gs2Inventory.Domain.Model.SimpleItemAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
         [Obsolete("The name has been changed to GetSimpleItemWithSignatureFuture.")]
@@ -78,78 +81,51 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain> GetSimpleItemWithSignatureFuture(
             string keyId = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain> self)
             {
-                var future = this._domain.GetWithSignatureFuture(
-                    new GetSimpleItemWithSignatureRequest()
-                        .WithKeyId(keyId)
-                        .WithAccessToken(_domain.AccessToken.Token)
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.GetWithSignatureFuture(
+                        new GetSimpleItemWithSignatureRequest()
+                            .WithKeyId(keyId)
+                    )
                 );
                 yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(new Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain(future.Result, _profile));
+                self.OnComplete(new Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain>(Impl);
         }
 
+        #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain> GetSimpleItemWithSignatureAsync(
-        #else
-        public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain> GetSimpleItemWithSignatureFuture(
-        #endif
             string keyId = null
         ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.GetWithSignatureAsync(
-                        new GetSimpleItemWithSignatureRequest()
-                            .WithKeyId(keyId)
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
-            );
-            return new Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain(result, _profile);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain> self)
-            {
-                var future = _domain.GetWithSignatureFuture(
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.GetWithSignatureAsync(
                     new GetSimpleItemWithSignatureRequest()
                         .WithKeyId(keyId)
-                        .WithAccessToken(_domain.AccessToken.Token)
-                );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.GetWithSignatureFuture(
-                    		new GetSimpleItemWithSignatureRequest()
-                	        .WithKeyId(keyId)
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain(result, _profile));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain>(Impl);
-        #endif
+                )
+            );
+            return new Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
         }
+        #endif
 
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem> Model()
@@ -158,31 +134,10 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem> ModelFuture()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem> self)
-            {
-                yield return ModelAsync().ToCoroutine(
-                    self.OnComplete,
-                    e =>
-                    {
-                        if (e is Gs2.Core.Exception.Gs2Exception e2) {
-                            self.OnError(e2);
-                        }
-                        else {
-                            UnityEngine.Debug.LogError(e.Message);
-                            self.OnError(new Gs2.Core.Exception.UnknownException(e.Message));
-                        }
-                    }
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem>(Impl);
-        }
-
         public async UniTask<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem> ModelAsync()
         {
-            var item = await _profile.RunAsync(
-                _domain.AccessToken,
+            var item = await this._connection.RunAsync(
+                this._gameSession,
                 async () =>
                 {
                     return await _domain.ModelAsync();
@@ -195,19 +150,19 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
                 item
             );
         }
-        #else
+        #endif
+
         public IFuture<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem> self)
             {
-                var future = _domain.ModelFuture();
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
+                var future = this._connection.RunFuture(
+                    this._gameSession,
                     () => {
-                    	return future = _domain.ModelFuture();
+                    	return _domain.ModelFuture();
                     }
                 );
+                yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
@@ -223,7 +178,6 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem>(Impl);
         }
-        #endif
 
         public ulong Subscribe(Action<Gs2.Unity.Gs2Inventory.Model.EzSimpleItem> callback)
         {

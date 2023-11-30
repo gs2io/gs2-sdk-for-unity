@@ -55,14 +55,14 @@ namespace Gs2.Unity.Gs2LoginReward.Domain
 
     public class Gs2LoginReward {
         private readonly Gs2.Gs2LoginReward.Domain.Gs2LoginReward _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
         public Gs2LoginReward(
             Gs2.Gs2LoginReward.Domain.Gs2LoginReward domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._connection = connection;
         }
 
         public Gs2.Unity.Gs2LoginReward.Domain.Model.EzNamespaceDomain Namespace(
@@ -72,7 +72,7 @@ namespace Gs2.Unity.Gs2LoginReward.Domain
                 _domain.Namespace(
                     namespaceName
                 ),
-                _profile
+                this._connection
             );
         }
     }

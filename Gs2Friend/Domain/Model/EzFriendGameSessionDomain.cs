@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -52,17 +54,20 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
 
     public partial class EzFriendGameSessionDomain {
         private readonly Gs2.Gs2Friend.Domain.Model.FriendAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public bool? WithProfile => _domain?.WithProfile;
 
         public EzFriendGameSessionDomain(
             Gs2.Gs2Friend.Domain.Model.FriendAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
         public Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserGameSessionDomain FriendUser(
@@ -72,8 +77,75 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                 _domain.FriendUser(
                     targetUserId
                 ),
-                _profile
+                this._gameSession,
+                this._connection
             );
+        }
+
+        [Obsolete("The name has been changed to ModelFuture.")]
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzFriendUser> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Friend.Model.EzFriendUser> ModelAsync()
+        {
+            var item = await this._connection.RunAsync(
+                this._gameSession,
+                async () =>
+                {
+                    return await _domain.ModelAsync();
+                }
+            );
+            if (item == null) {
+                return null;
+            }
+            return Gs2.Unity.Gs2Friend.Model.EzFriendUser.FromModel(
+                item
+            );
+        }
+        #endif
+
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzFriendUser> ModelFuture()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzFriendUser> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => {
+                    	return _domain.ModelFuture();
+                    }
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Friend.Model.EzFriendUser.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Model.EzFriendUser>(Impl);
+        }
+
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Friend.Model.EzFriendUser> callback)
+        {
+            return this._domain.Subscribe(item => {
+                callback.Invoke(Gs2.Unity.Gs2Friend.Model.EzFriendUser.FromModel(
+                    item
+                ));
+            });
+        }
+
+        public void Unsubscribe(ulong callbackId)
+        {
+            this._domain.Unsubscribe(callbackId);
         }
 
     }

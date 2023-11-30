@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
 
     public partial class EzBallotDomain {
         private readonly Gs2.Gs2Matchmaking.Domain.Model.BallotDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string Body => _domain.Body;
         public string Signature => _domain.Signature;
         public string NamespaceName => _domain?.NamespaceName;
@@ -65,10 +65,10 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
 
         public EzBallotDomain(
             Gs2.Gs2Matchmaking.Domain.Model.BallotDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._connection = connection;
         }
 
         [Obsolete("The name has been changed to ModelFuture.")]
@@ -78,30 +78,9 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Matchmaking.Model.EzBallot> ModelFuture()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Model.EzBallot> self)
-            {
-                yield return ModelAsync().ToCoroutine(
-                    self.OnComplete,
-                    e =>
-                    {
-                        if (e is Gs2.Core.Exception.Gs2Exception e2) {
-                            self.OnError(e2);
-                        }
-                        else {
-                            UnityEngine.Debug.LogError(e.Message);
-                            self.OnError(new Gs2.Core.Exception.UnknownException(e.Message));
-                        }
-                    }
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Model.EzBallot>(Impl);
-        }
-
         public async UniTask<Gs2.Unity.Gs2Matchmaking.Model.EzBallot> ModelAsync()
         {
-            var item = await _profile.RunAsync(
+            var item = await this._connection.RunAsync(
                 null,
                 async () =>
                 {
@@ -115,19 +94,19 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                 item
             );
         }
-        #else
+        #endif
+
         public IFuture<Gs2.Unity.Gs2Matchmaking.Model.EzBallot> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Model.EzBallot> self)
             {
-                var future = _domain.ModelFuture();
-                yield return _profile.RunFuture(
+                var future = this._connection.RunFuture(
                     null,
-                    future,
                     () => {
-                    	return future = _domain.ModelFuture();
+                    	return _domain.ModelFuture();
                     }
                 );
+                yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
@@ -143,7 +122,6 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Model.EzBallot>(Impl);
         }
-        #endif
 
         public ulong Subscribe(Action<Gs2.Unity.Gs2Matchmaking.Model.EzBallot> callback)
         {

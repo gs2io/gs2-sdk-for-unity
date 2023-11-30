@@ -53,7 +53,8 @@ namespace Gs2.Unity.Gs2News.Domain.Model
     public partial class EzSetCookieRequestEntryGameSessionDomain {
 
         private Gs2.Gs2News.Domain.Model.SetCookieRequestEntryAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string Key => _domain.Key;
         public string Value => _domain.Value;
         public string NamespaceName => _domain?.NamespaceName;
@@ -61,10 +62,12 @@ namespace Gs2.Unity.Gs2News.Domain.Model
         
         public EzSetCookieRequestEntryGameSessionDomain(
             Gs2.Gs2News.Domain.Model.SetCookieRequestEntryAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             _domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
         
         #if GS2_ENABLE_UNITASK
@@ -82,7 +85,7 @@ namespace Gs2.Unity.Gs2News.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2News.Model.EzSetCookieRequestEntry> ModelAsync()
         {
-            var item = await _profile.RunAsync(
+            var item = await _connection.RunAsync(
                 null,
                 async () =>
                 {
@@ -101,14 +104,13 @@ namespace Gs2.Unity.Gs2News.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2News.Model.EzSetCookieRequestEntry> self)
             {
-                var future = _domain.ModelFuture();
-                yield return _profile.RunFuture(
-                    null,
-                    future,
+                var future = _connection.RunFuture(
+                    this._gameSession,
                     () => {
-                    	return future = _domain.ModelFuture();
+                    	return _domain.ModelFuture();
                     }
                 );
+                yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;

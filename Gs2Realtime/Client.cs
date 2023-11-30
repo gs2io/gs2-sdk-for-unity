@@ -23,12 +23,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Gs2.Gs2Quest;
-using Gs2.Gs2Quest.Model;
-using Gs2.Gs2Quest.Request;
-using Gs2.Gs2Quest.Result;
-using Gs2.Unity.Gs2Quest.Model;
-using Gs2.Unity.Gs2Quest.Result;
 using Gs2.Core;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
@@ -51,31 +45,23 @@ namespace Gs2.Unity.Gs2Realtime
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2RealtimeWebSocketClient _client;
 		private readonly Gs2RealtimeRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2RealtimeWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2RealtimeRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2RealtimeRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+            _restClient = new Gs2RealtimeRestClient(connection.RestSession);
 		}
 
         public IEnumerator Now(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Realtime.Result.EzNowResult>> callback
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
-                null,
+		        null,
                 cb => _client.Now(
                     new Gs2.Gs2Realtime.Request.NowRequest(),
                     r => cb.Invoke(
@@ -94,7 +80,7 @@ namespace Gs2.Unity.Gs2Realtime
                 string roomName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.GetRoom(

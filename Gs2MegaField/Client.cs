@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2MegaField
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2MegaFieldWebSocketClient _client;
 		private readonly Gs2MegaFieldRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2MegaFieldWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2MegaFieldRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2MegaFieldRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2MegaFieldWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2MegaFieldRestClient(connection.RestSession);
 		}
 
         public IEnumerator DescribeAreaModels(
@@ -66,7 +59,7 @@ namespace Gs2.Unity.Gs2MegaField
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribeAreaModels(
@@ -88,7 +81,7 @@ namespace Gs2.Unity.Gs2MegaField
                 string areaModelName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.GetAreaModel(
@@ -111,7 +104,7 @@ namespace Gs2.Unity.Gs2MegaField
                 string areaModelName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribeLayerModels(
@@ -135,7 +128,7 @@ namespace Gs2.Unity.Gs2MegaField
                 string layerModelName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _client.GetLayerModel(
@@ -163,7 +156,7 @@ namespace Gs2.Unity.Gs2MegaField
                 List<Gs2.Unity.Gs2MegaField.Model.EzScope> scopes = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.Action(

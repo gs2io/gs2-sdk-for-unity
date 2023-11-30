@@ -52,7 +52,8 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
 
     public partial class EzLotteryGameSessionDomain {
         private readonly Gs2.Gs2Lottery.Domain.Model.LotteryAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NamespaceName => _domain?.NamespaceName;
@@ -60,10 +61,12 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
 
         public EzLotteryGameSessionDomain(
             Gs2.Gs2Lottery.Domain.Model.LotteryAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
     }

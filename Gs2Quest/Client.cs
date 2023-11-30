@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2Quest
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2QuestWebSocketClient _client;
 		private readonly Gs2QuestRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2QuestWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2QuestRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2QuestRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2QuestWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2QuestRestClient(connection.RestSession);
 		}
 
         public IEnumerator DeleteProgress(
@@ -67,7 +60,7 @@ namespace Gs2.Unity.Gs2Quest
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DeleteProgress(
@@ -93,7 +86,7 @@ namespace Gs2.Unity.Gs2Quest
                 List<Gs2.Unity.Gs2Quest.Model.EzConfig> config = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.End(
@@ -123,7 +116,7 @@ namespace Gs2.Unity.Gs2Quest
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.GetProgress(
@@ -150,7 +143,7 @@ namespace Gs2.Unity.Gs2Quest
                 List<Gs2.Unity.Gs2Quest.Model.EzConfig> config = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.Start(
@@ -181,7 +174,7 @@ namespace Gs2.Unity.Gs2Quest
                 int? limit = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeCompletedQuestLists(
@@ -207,7 +200,7 @@ namespace Gs2.Unity.Gs2Quest
                 string questGroupName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.GetCompletedQuestList(
@@ -231,7 +224,7 @@ namespace Gs2.Unity.Gs2Quest
                 string questGroupName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.GetQuestGroupModel(
@@ -253,7 +246,7 @@ namespace Gs2.Unity.Gs2Quest
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribeQuestGroupModels(
@@ -276,7 +269,7 @@ namespace Gs2.Unity.Gs2Quest
                 string questName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.GetQuestModel(
@@ -300,7 +293,7 @@ namespace Gs2.Unity.Gs2Quest
                 string questGroupName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribeQuestModels(

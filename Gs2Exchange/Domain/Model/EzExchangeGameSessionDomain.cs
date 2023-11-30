@@ -52,7 +52,8 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
 
     public partial class EzExchangeGameSessionDomain {
         private readonly Gs2.Gs2Exchange.Domain.Model.ExchangeAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NamespaceName => _domain?.NamespaceName;
@@ -60,10 +61,12 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
 
         public EzExchangeGameSessionDomain(
             Gs2.Gs2Exchange.Domain.Model.ExchangeAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
         [Obsolete("The name has been changed to ExchangeFuture.")]
@@ -80,7 +83,6 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ExchangeFuture(
             string rateName,
             int count,
@@ -89,12 +91,14 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                var future = this._domain.ExchangeFuture(
-                    new ExchangeRequest()
-                        .WithRateName(rateName)
-                        .WithCount(count)
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
-                        .WithAccessToken(_domain.AccessToken.Token)
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.ExchangeFuture(
+                        new ExchangeRequest()
+                            .WithRateName(rateName)
+                            .WithCount(count)
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                    )
                 );
                 yield return future;
                 if (future.Error != null) {
@@ -106,64 +110,24 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
 
+        #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ExchangeAsync(
-        #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ExchangeFuture(
-        #endif
             string rateName,
             int count,
             Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
         ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.ExchangeAsync(
-                        new ExchangeRequest()
-                            .WithRateName(rateName)
-                            .WithCount(count)
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
-            );
-            return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
-            {
-                var future = _domain.ExchangeFuture(
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.ExchangeAsync(
                     new ExchangeRequest()
                         .WithRateName(rateName)
                         .WithCount(count)
                         .WithConfig(config?.Select(v => v.ToModel()).ToArray())
-                        .WithAccessToken(_domain.AccessToken.Token)
-                );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.ExchangeFuture(
-                    		new ExchangeRequest()
-                	        .WithRateName(rateName)
-                	        .WithCount(count)
-        	                .WithConfig(config?.Select(v => v.ToModel()).ToArray())
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
-        #endif
+                )
+            );
+            return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
         }
+        #endif
 
         [Obsolete("The name has been changed to IncrementalExchangeFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> IncrementalExchange(
@@ -179,7 +143,6 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> IncrementalExchangeFuture(
             string rateName,
             int count,
@@ -188,12 +151,14 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                var future = this._domain.IncrementalFuture(
-                    new IncrementalExchangeRequest()
-                        .WithRateName(rateName)
-                        .WithCount(count)
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
-                        .WithAccessToken(_domain.AccessToken.Token)
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.IncrementalFuture(
+                        new IncrementalExchangeRequest()
+                            .WithRateName(rateName)
+                            .WithCount(count)
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                    )
                 );
                 yield return future;
                 if (future.Error != null) {
@@ -205,64 +170,24 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
 
+        #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> IncrementalExchangeAsync(
-        #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> IncrementalExchangeFuture(
-        #endif
             string rateName,
             int count,
             Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
         ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.IncrementalAsync(
-                        new IncrementalExchangeRequest()
-                            .WithRateName(rateName)
-                            .WithCount(count)
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
-            );
-            return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
-            {
-                var future = _domain.IncrementalFuture(
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.IncrementalAsync(
                     new IncrementalExchangeRequest()
                         .WithRateName(rateName)
                         .WithCount(count)
                         .WithConfig(config?.Select(v => v.ToModel()).ToArray())
-                        .WithAccessToken(_domain.AccessToken.Token)
-                );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.IncrementalFuture(
-                    		new IncrementalExchangeRequest()
-                	        .WithRateName(rateName)
-                	        .WithCount(count)
-        	                .WithConfig(config?.Select(v => v.ToModel()).ToArray())
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
-        #endif
+                )
+            );
+            return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
         }
+        #endif
 
     }
 }

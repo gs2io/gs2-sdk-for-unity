@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -27,6 +26,8 @@
 #pragma warning disable 1998
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core;
@@ -36,62 +37,50 @@ using Gs2.Core.Util;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
-#if GS2_ENABLE_UNITASK
-using System.Threading;
-using System.Collections.Generic;
-using Cysharp.Threading;
-using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Linq;
-#else
-using System.Collections;
-using UnityEngine.Events;
-using Gs2.Core.Exception;
-#endif
 
 namespace Gs2.Unity.Gs2MegaField.Domain.Iterator
 {
 
-    #if GS2_ENABLE_UNITASK
-    public class EzDescribeAreaModelsIterator {
-    #else
-    public class EzDescribeAreaModelsIterator : Gs2Iterator<Gs2.Unity.Gs2MegaField.Model.EzAreaModel> {
-    #endif
-        private readonly Gs2.Gs2MegaField.Domain.Iterator.DescribeAreaModelsIterator _iterator;
+    public class EzDescribeAreaModelsIterator : Gs2Iterator<Gs2.Unity.Gs2MegaField.Model.EzAreaModel>
+    {
+        private Gs2Iterator<Gs2.Gs2MegaField.Model.AreaModel> _it;
+        private readonly Gs2.Gs2MegaField.Domain.Model.NamespaceDomain _domain;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
         public EzDescribeAreaModelsIterator(
-            Gs2.Gs2MegaField.Domain.Iterator.DescribeAreaModelsIterator iterator
-        ) {
-            this._iterator = iterator;
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2MegaField.Model.EzAreaModel> GetAsyncEnumerator(
-            CancellationToken cancellationToken = new CancellationToken()
+            Gs2.Gs2MegaField.Domain.Model.NamespaceDomain domain,
+            Gs2.Unity.Util.Gs2Connection connection
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2MegaField.Model.EzAreaModel>(async (writer, token) =>
-            {
-            });
+            _domain = domain;
+            _connection = connection;
+            _it = _domain.AreaModels(
+            );
         }
-
-        #else
 
         public override bool HasNext()
         {
-            return _iterator.HasNext();
+            return _it.HasNext();
         }
 
-        protected override IEnumerator Next(
-            Action<AsyncResult<Gs2.Unity.Gs2MegaField.Model.EzAreaModel>> callback
-        )
+        protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2MegaField.Model.EzAreaModel>> callback)
         {
-            yield return _iterator;
-            callback.Invoke(new AsyncResult<Gs2.Unity.Gs2MegaField.Model.EzAreaModel>(
-                _iterator.Current == null ? null : Gs2.Unity.Gs2MegaField.Model.EzAreaModel.FromModel(_iterator.Current),
-                _iterator.Error
-            ));
+            yield return _connection.RunIterator(
+                null,
+                _it,
+                () =>
+                {
+                    return _it = _domain.AreaModels(
+                    );
+                }
+            );
+            callback.Invoke(
+                new AsyncResult<Gs2.Unity.Gs2MegaField.Model.EzAreaModel>(
+                    _it.Current == null ? null : Gs2.Unity.Gs2MegaField.Model.EzAreaModel.FromModel(_it.Current),
+                    _it.Error
+                )
+            );
         }
-
-        #endif
     }
+
 }

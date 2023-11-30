@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -27,6 +26,8 @@
 #pragma warning disable 1998
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core;
@@ -36,62 +37,50 @@ using Gs2.Core.Util;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
-#if GS2_ENABLE_UNITASK
-using System.Threading;
-using System.Collections.Generic;
-using Cysharp.Threading;
-using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Linq;
-#else
-using System.Collections;
-using UnityEngine.Events;
-using Gs2.Core.Exception;
-#endif
 
 namespace Gs2.Unity.Gs2Enchant.Domain.Iterator
 {
 
-    #if GS2_ENABLE_UNITASK
-    public class EzDescribeBalanceParameterModelsIterator {
-    #else
-    public class EzDescribeBalanceParameterModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterModel> {
-    #endif
-        private readonly Gs2.Gs2Enchant.Domain.Iterator.DescribeBalanceParameterModelsIterator _iterator;
+    public class EzListBalanceParameterModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterModel>
+    {
+        private Gs2Iterator<Gs2.Gs2Enchant.Model.BalanceParameterModel> _it;
+        private readonly Gs2.Gs2Enchant.Domain.Model.NamespaceDomain _domain;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
-        public EzDescribeBalanceParameterModelsIterator(
-            Gs2.Gs2Enchant.Domain.Iterator.DescribeBalanceParameterModelsIterator iterator
-        ) {
-            this._iterator = iterator;
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterModel> GetAsyncEnumerator(
-            CancellationToken cancellationToken = new CancellationToken()
+        public EzListBalanceParameterModelsIterator(
+            Gs2.Gs2Enchant.Domain.Model.NamespaceDomain domain,
+            Gs2.Unity.Util.Gs2Connection connection
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterModel>(async (writer, token) =>
-            {
-            });
+            _domain = domain;
+            _connection = connection;
+            _it = _domain.BalanceParameterModels(
+            );
         }
-
-        #else
 
         public override bool HasNext()
         {
-            return _iterator.HasNext();
+            return _it.HasNext();
         }
 
-        protected override IEnumerator Next(
-            Action<AsyncResult<Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterModel>> callback
-        )
+        protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterModel>> callback)
         {
-            yield return _iterator;
-            callback.Invoke(new AsyncResult<Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterModel>(
-                _iterator.Current == null ? null : Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterModel.FromModel(_iterator.Current),
-                _iterator.Error
-            ));
+            yield return _connection.RunIterator(
+                null,
+                _it,
+                () =>
+                {
+                    return _it = _domain.BalanceParameterModels(
+                    );
+                }
+            );
+            callback.Invoke(
+                new AsyncResult<Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterModel>(
+                    _it.Current == null ? null : Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterModel.FromModel(_it.Current),
+                    _it.Error
+                )
+            );
         }
-
-        #endif
     }
+
 }

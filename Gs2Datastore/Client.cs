@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2Datastore
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2DatastoreWebSocketClient _client;
 		private readonly Gs2DatastoreRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2DatastoreWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2DatastoreRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2DatastoreRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2DatastoreWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2DatastoreRestClient(connection.RestSession);
 		}
 
         public IEnumerator DeleteDataObject(
@@ -68,7 +61,7 @@ namespace Gs2.Unity.Gs2Datastore
                 string dataObjectName = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DeleteDataObject(
@@ -93,7 +86,7 @@ namespace Gs2.Unity.Gs2Datastore
                 string dataObjectName = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DoneUpload(
@@ -120,7 +113,7 @@ namespace Gs2.Unity.Gs2Datastore
                 int? limit = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeDataObjects(
@@ -147,7 +140,7 @@ namespace Gs2.Unity.Gs2Datastore
                 string dataObjectId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.PrepareDownload(
@@ -172,7 +165,7 @@ namespace Gs2.Unity.Gs2Datastore
                 string dataObjectName = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.PrepareDownloadByUserIdAndDataObjectName(
@@ -197,7 +190,7 @@ namespace Gs2.Unity.Gs2Datastore
                 string dataObjectName = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.PrepareDownloadOwnData(
@@ -223,7 +216,7 @@ namespace Gs2.Unity.Gs2Datastore
                 string contentType = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.PrepareReUpload(
@@ -253,7 +246,7 @@ namespace Gs2.Unity.Gs2Datastore
                 bool? updateIfExists = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.PrepareUpload(
@@ -283,7 +276,7 @@ namespace Gs2.Unity.Gs2Datastore
                 string dataObjectId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.RestoreDataObject(
@@ -308,7 +301,7 @@ namespace Gs2.Unity.Gs2Datastore
                 List<string> allowUserIds = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.UpdateDataObject(
@@ -338,7 +331,7 @@ namespace Gs2.Unity.Gs2Datastore
                 int? limit = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeDataObjectHistories(

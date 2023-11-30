@@ -54,7 +54,8 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
 
     public partial class EzSpatialGameSessionDomain {
         private readonly Gs2.Gs2MegaField.Domain.Model.SpatialAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string AreaModelName => _domain?.AreaModelName;
@@ -62,10 +63,12 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
 
         public EzSpatialGameSessionDomain(
             Gs2.Gs2MegaField.Domain.Model.SpatialAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
         [Obsolete("The name has been changed to UpdateFuture.")]
@@ -80,7 +83,6 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]> UpdateFuture(
             Gs2.Unity.Gs2MegaField.Model.EzMyPosition position,
             Gs2.Unity.Gs2MegaField.Model.EzScope[] scopes = null
@@ -88,71 +90,46 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]> self)
             {
-                yield return UpdateAsync(
-                    position,
-                    scopes
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.ActionFuture(
+                        new ActionRequest()
+                            .WithPosition(position?.ToModel())
+                            .WithScopes(scopes?.Select(v => v.ToModel()).ToArray())
+                    )
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(future.Result.Select(v => new Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain(
+                    v,
+                    _connection
+                )).ToArray());
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]>(Impl);
         }
 
+        #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]> UpdateAsync(
-        #else
-        public IFuture<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]> UpdateFuture(
-        #endif
             Gs2.Unity.Gs2MegaField.Model.EzMyPosition position,
             Gs2.Unity.Gs2MegaField.Model.EzScope[] scopes = null
         ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.ActionAsync(
-                        new ActionRequest()
-                            .WithPosition(position?.ToModel())
-                            .WithScopes(scopes?.Select(v => v.ToModel()).ToArray())
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
-            );
-            return result.Select(v => new Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain(v, _profile)).ToArray();
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]> self)
-            {
-                var future = _domain.ActionFuture(
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.ActionAsync(
                     new ActionRequest()
                         .WithPosition(position?.ToModel())
                         .WithScopes(scopes?.Select(v => v.ToModel()).ToArray())
-                        .WithAccessToken(_domain.AccessToken.Token)
-                );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.ActionFuture(
-                    		new ActionRequest()
-            	            .WithPosition(position?.ToModel())
-        	                .WithScopes(scopes?.Select(v => v.ToModel()).ToArray())
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(result.Select(v => new Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain(v, _profile)).ToArray());
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]>(Impl);
-        #endif
+                )
+            );
+            return result.Select(v => new Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain(
+                v,
+                this._connection
+            )).ToArray();
         }
+        #endif
 
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2MegaField.Model.EzSpatial> Model()
@@ -161,22 +138,10 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2MegaField.Model.EzSpatial> ModelFuture()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2MegaField.Model.EzSpatial> self)
-            {
-                yield return ModelAsync().ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2MegaField.Model.EzSpatial>(Impl);
-        }
-
         public async UniTask<Gs2.Unity.Gs2MegaField.Model.EzSpatial> ModelAsync()
         {
-            var item = await _profile.RunAsync(
-                _domain.AccessToken,
+            var item = await this._connection.RunAsync(
+                this._gameSession,
                 async () =>
                 {
                     return await _domain.ModelAsync();
@@ -189,19 +154,19 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
                 item
             );
         }
-        #else
+        #endif
+
         public IFuture<Gs2.Unity.Gs2MegaField.Model.EzSpatial> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2MegaField.Model.EzSpatial> self)
             {
-                var future = _domain.ModelFuture();
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
+                var future = this._connection.RunFuture(
+                    this._gameSession,
                     () => {
-                    	return future = _domain.ModelFuture();
+                    	return _domain.ModelFuture();
                     }
                 );
+                yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
@@ -217,7 +182,6 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2MegaField.Model.EzSpatial>(Impl);
         }
-        #endif
 
         public ulong Subscribe(Action<Gs2.Unity.Gs2MegaField.Model.EzSpatial> callback)
         {

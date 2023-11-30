@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2Inbox
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2InboxWebSocketClient _client;
 		private readonly Gs2InboxRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2InboxWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2InboxRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2InboxRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2InboxWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2InboxRestClient(connection.RestSession);
 		}
 
         public IEnumerator Delete(
@@ -68,7 +61,7 @@ namespace Gs2.Unity.Gs2Inbox
                 string messageName = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DeleteMessage(
@@ -93,7 +86,7 @@ namespace Gs2.Unity.Gs2Inbox
                 string messageName = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.GetMessage(
@@ -120,7 +113,7 @@ namespace Gs2.Unity.Gs2Inbox
                 int? limit = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeMessages(
@@ -147,7 +140,7 @@ namespace Gs2.Unity.Gs2Inbox
                 string messageName = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.ReadMessage(
@@ -171,7 +164,7 @@ namespace Gs2.Unity.Gs2Inbox
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.ReceiveGlobalMessage(

@@ -53,17 +53,17 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
 
     public partial class EzQuestModelDomain {
         private readonly Gs2.Gs2Quest.Domain.Model.QuestModelDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string QuestGroupName => _domain?.QuestGroupName;
         public string QuestName => _domain?.QuestName;
 
         public EzQuestModelDomain(
             Gs2.Gs2Quest.Domain.Model.QuestModelDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._connection = connection;
         }
 
         [Obsolete("The name has been changed to ModelFuture.")]
@@ -73,30 +73,9 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Quest.Model.EzQuestModel> ModelFuture()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Quest.Model.EzQuestModel> self)
-            {
-                yield return ModelAsync().ToCoroutine(
-                    self.OnComplete,
-                    e =>
-                    {
-                        if (e is Gs2.Core.Exception.Gs2Exception e2) {
-                            self.OnError(e2);
-                        }
-                        else {
-                            UnityEngine.Debug.LogError(e.Message);
-                            self.OnError(new Gs2.Core.Exception.UnknownException(e.Message));
-                        }
-                    }
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Quest.Model.EzQuestModel>(Impl);
-        }
-
         public async UniTask<Gs2.Unity.Gs2Quest.Model.EzQuestModel> ModelAsync()
         {
-            var item = await _profile.RunAsync(
+            var item = await this._connection.RunAsync(
                 null,
                 async () =>
                 {
@@ -110,19 +89,19 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                 item
             );
         }
-        #else
+        #endif
+
         public IFuture<Gs2.Unity.Gs2Quest.Model.EzQuestModel> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Quest.Model.EzQuestModel> self)
             {
-                var future = _domain.ModelFuture();
-                yield return _profile.RunFuture(
+                var future = this._connection.RunFuture(
                     null,
-                    future,
                     () => {
-                    	return future = _domain.ModelFuture();
+                    	return _domain.ModelFuture();
                     }
                 );
+                yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
@@ -138,7 +117,6 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Quest.Model.EzQuestModel>(Impl);
         }
-        #endif
 
         public ulong Subscribe(Action<Gs2.Unity.Gs2Quest.Model.EzQuestModel> callback)
         {

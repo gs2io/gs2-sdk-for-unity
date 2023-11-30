@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
 
     public partial class EzSpatialDomain {
         private readonly Gs2.Gs2MegaField.Domain.Model.SpatialDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string AreaModelName => _domain?.AreaModelName;
@@ -61,98 +61,10 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
 
         public EzSpatialDomain(
             Gs2.Gs2MegaField.Domain.Model.SpatialDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
-        }
-
-        [Obsolete("The name has been changed to ModelFuture.")]
-        public IFuture<Gs2.Unity.Gs2MegaField.Model.EzSpatial> Model()
-        {
-            return ModelFuture();
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2MegaField.Model.EzSpatial> ModelFuture()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2MegaField.Model.EzSpatial> self)
-            {
-                yield return ModelAsync().ToCoroutine(
-                    self.OnComplete,
-                    e =>
-                    {
-                        if (e is Gs2.Core.Exception.Gs2Exception e2) {
-                            self.OnError(e2);
-                        }
-                        else {
-                            UnityEngine.Debug.LogError(e.Message);
-                            self.OnError(new Gs2.Core.Exception.UnknownException(e.Message));
-                        }
-                    }
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2MegaField.Model.EzSpatial>(Impl);
-        }
-
-        public async UniTask<Gs2.Unity.Gs2MegaField.Model.EzSpatial> ModelAsync()
-        {
-            var item = await _profile.RunAsync(
-                null,
-                async () =>
-                {
-                    return await _domain.ModelAsync();
-                }
-            );
-            if (item == null) {
-                return null;
-            }
-            return Gs2.Unity.Gs2MegaField.Model.EzSpatial.FromModel(
-                item
-            );
-        }
-        #else
-        public IFuture<Gs2.Unity.Gs2MegaField.Model.EzSpatial> ModelFuture()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2MegaField.Model.EzSpatial> self)
-            {
-                var future = _domain.ModelFuture();
-                yield return _profile.RunFuture(
-                    null,
-                    future,
-                    () => {
-                    	return future = _domain.ModelFuture();
-                    }
-                );
-                if (future.Error != null) {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var item = future.Result;
-                if (item == null) {
-                    self.OnComplete(null);
-                    yield break;
-                }
-                self.OnComplete(Gs2.Unity.Gs2MegaField.Model.EzSpatial.FromModel(
-                    item
-                ));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2MegaField.Model.EzSpatial>(Impl);
-        }
-        #endif
-
-        public ulong Subscribe(Action<Gs2.Unity.Gs2MegaField.Model.EzSpatial> callback)
-        {
-            return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2MegaField.Model.EzSpatial.FromModel(
-                    item
-                ));
-            });
-        }
-
-        public void Unsubscribe(ulong callbackId)
-        {
-            this._domain.Unsubscribe(callbackId);
+            this._connection = connection;
         }
 
     }

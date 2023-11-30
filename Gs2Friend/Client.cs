@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2Friend
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2FriendWebSocketClient _client;
 		private readonly Gs2FriendRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2FriendWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2FriendRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2FriendRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2FriendWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2FriendRestClient(connection.RestSession);
 		}
 
         public IEnumerator GetProfile(
@@ -67,7 +60,7 @@ namespace Gs2.Unity.Gs2Friend
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.GetProfile(
@@ -90,7 +83,7 @@ namespace Gs2.Unity.Gs2Friend
                 string userId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _client.GetPublicProfile(
@@ -116,7 +109,7 @@ namespace Gs2.Unity.Gs2Friend
                 string friendProfile = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.UpdateProfile(
@@ -145,7 +138,7 @@ namespace Gs2.Unity.Gs2Friend
                 string pageToken = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeFollows(
@@ -172,7 +165,7 @@ namespace Gs2.Unity.Gs2Friend
                 string targetUserId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.Follow(
@@ -198,7 +191,7 @@ namespace Gs2.Unity.Gs2Friend
                 bool? withProfile = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.GetFollow(
@@ -224,7 +217,7 @@ namespace Gs2.Unity.Gs2Friend
                 string targetUserId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.Unfollow(
@@ -249,7 +242,7 @@ namespace Gs2.Unity.Gs2Friend
                 string targetUserId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.DeleteFriend(
@@ -276,7 +269,7 @@ namespace Gs2.Unity.Gs2Friend
                 string pageToken = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeFriends(
@@ -304,7 +297,7 @@ namespace Gs2.Unity.Gs2Friend
                 bool? withProfile = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.GetFriend(
@@ -330,7 +323,7 @@ namespace Gs2.Unity.Gs2Friend
                 string targetUserId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.DeleteRequest(
@@ -354,7 +347,7 @@ namespace Gs2.Unity.Gs2Friend
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeSendRequests(
@@ -378,7 +371,7 @@ namespace Gs2.Unity.Gs2Friend
                 string targetUserId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.GetSendRequest(
@@ -403,7 +396,7 @@ namespace Gs2.Unity.Gs2Friend
                 string targetUserId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.SendRequest(
@@ -428,7 +421,7 @@ namespace Gs2.Unity.Gs2Friend
                 string fromUserId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.AcceptRequest(
@@ -452,7 +445,7 @@ namespace Gs2.Unity.Gs2Friend
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeReceiveRequests(
@@ -476,7 +469,7 @@ namespace Gs2.Unity.Gs2Friend
                 string fromUserId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.GetReceiveRequest(
@@ -501,7 +494,7 @@ namespace Gs2.Unity.Gs2Friend
                 string fromUserId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.RejectRequest(
@@ -525,7 +518,7 @@ namespace Gs2.Unity.Gs2Friend
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeBlackList(
@@ -549,7 +542,7 @@ namespace Gs2.Unity.Gs2Friend
                 string targetUserId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.RegisterBlackList(
@@ -574,7 +567,7 @@ namespace Gs2.Unity.Gs2Friend
                 string targetUserId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.UnregisterBlackList(

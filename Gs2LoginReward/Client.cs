@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2LoginReward
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2LoginRewardWebSocketClient _client;
 		private readonly Gs2LoginRewardRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2LoginRewardWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2LoginRewardRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2LoginRewardRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2LoginRewardWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2LoginRewardRestClient(connection.RestSession);
 		}
 
         public IEnumerator MissedReceive(
@@ -70,7 +63,7 @@ namespace Gs2.Unity.Gs2LoginReward
                 List<Gs2.Unity.Gs2LoginReward.Model.EzConfig> config = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.MissedReceive(
@@ -100,7 +93,7 @@ namespace Gs2.Unity.Gs2LoginReward
                 List<Gs2.Unity.Gs2LoginReward.Model.EzConfig> config = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.Receive(
@@ -127,7 +120,7 @@ namespace Gs2.Unity.Gs2LoginReward
                 string bonusModelName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.GetBonusModel(
@@ -149,7 +142,7 @@ namespace Gs2.Unity.Gs2LoginReward
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribeBonusModels(
@@ -172,7 +165,7 @@ namespace Gs2.Unity.Gs2LoginReward
                 string bonusModelName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.GetReceiveStatus(
@@ -196,7 +189,7 @@ namespace Gs2.Unity.Gs2LoginReward
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeReceiveStatuses(

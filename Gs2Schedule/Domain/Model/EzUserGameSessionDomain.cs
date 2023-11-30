@@ -52,96 +52,43 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
 
     public partial class EzUserGameSessionDomain {
         private readonly Gs2.Gs2Schedule.Domain.Model.UserAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserGameSessionDomain(
             Gs2.Gs2Schedule.Domain.Model.UserAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
-        public class EzTriggersIterator : Gs2Iterator<Gs2.Unity.Gs2Schedule.Model.EzTrigger>
-        {
-            private Gs2Iterator<Gs2.Gs2Schedule.Model.Trigger> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2Schedule.Domain.Model.UserAccessTokenDomain _domain;
-        #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
-
-            public EzTriggersIterator(
-                Gs2Iterator<Gs2.Gs2Schedule.Model.Trigger> it,
-        #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2Schedule.Domain.Model.UserAccessTokenDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Schedule.Model.EzTrigger>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    _domain.AccessToken,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.Triggers(
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Schedule.Model.EzTrigger>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Schedule.Model.EzTrigger.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
         public Gs2Iterator<Gs2.Unity.Gs2Schedule.Model.EzTrigger> Triggers(
         )
         {
-            return new EzTriggersIterator(
-                _domain.Triggers(
-                ),
-                _profile
+            return new Gs2.Unity.Gs2Schedule.Domain.Iterator.EzListTriggersIterator(
+                this._domain,
+                this._gameSession,
+                this._connection
             );
         }
 
+        #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Schedule.Model.EzTrigger> TriggersAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2Schedule.Model.EzTrigger> Triggers(
-        #endif
         )
         {
-        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Schedule.Model.EzTrigger>(async (writer, token) =>
             {
                 var it = _domain.TriggersAsync(
                 ).GetAsyncEnumerator();
                 while(
-                    await _profile.RunIteratorAsync(
-                        _domain.AccessToken,
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
                         async () =>
                         {
                             return await it.MoveNextAsync();
@@ -156,15 +103,8 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Schedule.Model.EzTrigger.FromModel(it.Current));
                 }
             });
-        #else
-            return new EzTriggersIterator(
-                _domain.Triggers(
-                ),
-                _domain,
-                _profile
-            );
-        #endif
         }
+        #endif
 
         public ulong SubscribeTriggers(Action callback) {
             return this._domain.SubscribeTriggers(callback);
@@ -174,94 +114,27 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
             this._domain.UnsubscribeTriggers(callbackId);
         }
 
-        public Gs2.Unity.Gs2Schedule.Domain.Model.EzTriggerGameSessionDomain Trigger(
-            string triggerName
-        ) {
-            return new Gs2.Unity.Gs2Schedule.Domain.Model.EzTriggerGameSessionDomain(
-                _domain.Trigger(
-                    triggerName
-                ),
-                _profile
-            );
-        }
-
-        public class EzEventsIterator : Gs2Iterator<Gs2.Unity.Gs2Schedule.Model.EzEvent>
-        {
-            private Gs2Iterator<Gs2.Gs2Schedule.Model.Event> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2Schedule.Domain.Model.UserAccessTokenDomain _domain;
-        #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
-
-            public EzEventsIterator(
-                Gs2Iterator<Gs2.Gs2Schedule.Model.Event> it,
-        #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2Schedule.Domain.Model.UserAccessTokenDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Schedule.Model.EzEvent>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    _domain.AccessToken,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.Events(
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Schedule.Model.EzEvent>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Schedule.Model.EzEvent.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
         public Gs2Iterator<Gs2.Unity.Gs2Schedule.Model.EzEvent> Events(
         )
         {
-            return new EzEventsIterator(
-                _domain.Events(
-                ),
-                _profile
+            return new Gs2.Unity.Gs2Schedule.Domain.Iterator.EzListEventsIterator(
+                this._domain,
+                this._gameSession,
+                this._connection
             );
         }
 
+        #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Schedule.Model.EzEvent> EventsAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2Schedule.Model.EzEvent> Events(
-        #endif
         )
         {
-        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Schedule.Model.EzEvent>(async (writer, token) =>
             {
                 var it = _domain.EventsAsync(
                 ).GetAsyncEnumerator();
                 while(
-                    await _profile.RunIteratorAsync(
-                        _domain.AccessToken,
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
                         async () =>
                         {
                             return await it.MoveNextAsync();
@@ -276,15 +149,8 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Schedule.Model.EzEvent.FromModel(it.Current));
                 }
             });
-        #else
-            return new EzEventsIterator(
-                _domain.Events(
-                ),
-                _domain,
-                _profile
-            );
-        #endif
         }
+        #endif
 
         public ulong SubscribeEvents(Action callback) {
             return this._domain.SubscribeEvents(callback);
@@ -294,6 +160,18 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
             this._domain.UnsubscribeEvents(callbackId);
         }
 
+        public Gs2.Unity.Gs2Schedule.Domain.Model.EzTriggerGameSessionDomain Trigger(
+            string triggerName
+        ) {
+            return new Gs2.Unity.Gs2Schedule.Domain.Model.EzTriggerGameSessionDomain(
+                _domain.Trigger(
+                    triggerName
+                ),
+                this._gameSession,
+                this._connection
+            );
+        }
+
         public Gs2.Unity.Gs2Schedule.Domain.Model.EzEventGameSessionDomain Event(
             string eventName
         ) {
@@ -301,7 +179,8 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
                 _domain.Event(
                     eventName
                 ),
-                _profile
+                this._gameSession,
+                this._connection
             );
         }
 

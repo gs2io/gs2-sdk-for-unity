@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -27,6 +26,8 @@
 #pragma warning disable 1998
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core;
@@ -36,62 +37,58 @@ using Gs2.Core.Util;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
-#if GS2_ENABLE_UNITASK
-using System.Threading;
-using System.Collections.Generic;
-using Cysharp.Threading;
-using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Linq;
-#else
-using System.Collections;
-using UnityEngine.Events;
-using Gs2.Core.Exception;
-#endif
 
 namespace Gs2.Unity.Gs2Inbox.Domain.Iterator
 {
 
-    #if GS2_ENABLE_UNITASK
-    public class EzDescribeMessagesIterator {
-    #else
-    public class EzDescribeMessagesIterator : Gs2Iterator<Gs2.Unity.Gs2Inbox.Model.EzMessage> {
-    #endif
-        private readonly Gs2.Gs2Inbox.Domain.Iterator.DescribeMessagesIterator _iterator;
+    public class EzListIterator : Gs2Iterator<Gs2.Unity.Gs2Inbox.Model.EzMessage>
+    {
+        private Gs2Iterator<Gs2.Gs2Inbox.Model.Message> _it;
+        private readonly Gs2.Gs2Inbox.Domain.Model.UserAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
+        private readonly bool? _isRead;
 
-        public EzDescribeMessagesIterator(
-            Gs2.Gs2Inbox.Domain.Iterator.DescribeMessagesIterator iterator
-        ) {
-            this._iterator = iterator;
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Inbox.Model.EzMessage> GetAsyncEnumerator(
-            CancellationToken cancellationToken = new CancellationToken()
+        public EzListIterator(
+            Gs2.Gs2Inbox.Domain.Model.UserAccessTokenDomain domain,
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection,
+            bool? isRead = null
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Inbox.Model.EzMessage>(async (writer, token) =>
-            {
-            });
+            _domain = domain;
+            _gameSession = gameSession;
+            _connection = connection;
+            _isRead = isRead;
+            _it = _domain.Messages(
+                this._isRead
+            );
         }
-
-        #else
 
         public override bool HasNext()
         {
-            return _iterator.HasNext();
+            return _it.HasNext();
         }
 
-        protected override IEnumerator Next(
-            Action<AsyncResult<Gs2.Unity.Gs2Inbox.Model.EzMessage>> callback
-        )
+        protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Inbox.Model.EzMessage>> callback)
         {
-            yield return _iterator;
-            callback.Invoke(new AsyncResult<Gs2.Unity.Gs2Inbox.Model.EzMessage>(
-                _iterator.Current == null ? null : Gs2.Unity.Gs2Inbox.Model.EzMessage.FromModel(_iterator.Current),
-                _iterator.Error
-            ));
+            yield return _connection.RunIterator(
+                _gameSession,
+                _it,
+                () =>
+                {
+                    return _it = _domain.Messages(
+                        this._isRead
+                    );
+                }
+            );
+            callback.Invoke(
+                new AsyncResult<Gs2.Unity.Gs2Inbox.Model.EzMessage>(
+                    _it.Current == null ? null : Gs2.Unity.Gs2Inbox.Model.EzMessage.FromModel(_it.Current),
+                    _it.Error
+                )
+            );
         }
-
-        #endif
     }
+
 }

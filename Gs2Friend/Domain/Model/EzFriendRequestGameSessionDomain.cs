@@ -53,17 +53,20 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
     public partial class EzFriendRequestGameSessionDomain {
 
         private Gs2.Gs2Friend.Domain.Model.FriendRequestAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string TargetUserId => _domain?.TargetUserId;
         
         public EzFriendRequestGameSessionDomain(
             Gs2.Gs2Friend.Domain.Model.FriendRequestAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
         public IFuture<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> Model()
@@ -86,7 +89,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
 
         public async UniTask<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> ModelAsync()
         {
-            var item = await _profile.RunAsync(
+            var item = await _connection.RunAsync(
                 null,
                 async () =>
                 {
@@ -105,14 +108,13 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> self)
             {
-                var future = _domain.ModelFuture();
-                yield return _profile.RunFuture(
+                var future = _connection.RunFuture(
                     null,
-                    future,
                     () => {
-                    	return future = _domain.ModelFuture();
+                    	return _domain.ModelFuture();
                     }
                 );
+                yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;

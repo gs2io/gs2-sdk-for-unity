@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -13,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -27,6 +28,8 @@
 #pragma warning disable 1998
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core;
@@ -36,62 +39,53 @@ using Gs2.Core.Util;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
-#if GS2_ENABLE_UNITASK
-using System.Threading;
-using System.Collections.Generic;
-using Cysharp.Threading;
-using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Linq;
-#else
-using System.Collections;
-using UnityEngine.Events;
-using Gs2.Core.Exception;
-#endif
 
 namespace Gs2.Unity.Gs2Account.Domain.Iterator
 {
 
-    #if GS2_ENABLE_UNITASK
-    public class EzDescribeTakeOversIterator {
-    #else
-    public class EzDescribeTakeOversIterator : Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzTakeOver> {
-    #endif
-        private readonly Gs2.Gs2Account.Domain.Iterator.DescribeTakeOversIterator _iterator;
+    public class EzListTakeOverSettingsIterator : Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzTakeOver>
+    {
+        private Gs2Iterator<Gs2.Gs2Account.Model.TakeOver> _it;
+        private readonly Gs2.Gs2Account.Domain.Model.AccountAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
-        public EzDescribeTakeOversIterator(
-            Gs2.Gs2Account.Domain.Iterator.DescribeTakeOversIterator iterator
-        ) {
-            this._iterator = iterator;
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Account.Model.EzTakeOver> GetAsyncEnumerator(
-            CancellationToken cancellationToken = new CancellationToken()
+        public EzListTakeOverSettingsIterator(
+            Gs2Iterator<Gs2.Gs2Account.Model.TakeOver> it,
+            Gs2.Gs2Account.Domain.Model.AccountAccessTokenDomain domain,
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Account.Model.EzTakeOver>(async (writer, token) =>
-            {
-            });
+            _it = it;
+            _domain = domain;
+            _gameSession = gameSession;
+            _connection = connection;
         }
-
-        #else
 
         public override bool HasNext()
         {
-            return _iterator.HasNext();
+            return _it.HasNext();
         }
 
-        protected override IEnumerator Next(
-            Action<AsyncResult<Gs2.Unity.Gs2Account.Model.EzTakeOver>> callback
-        )
+        protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Account.Model.EzTakeOver>> callback)
         {
-            yield return _iterator;
-            callback.Invoke(new AsyncResult<Gs2.Unity.Gs2Account.Model.EzTakeOver>(
-                _iterator.Current == null ? null : Gs2.Unity.Gs2Account.Model.EzTakeOver.FromModel(_iterator.Current),
-                _iterator.Error
-            ));
+            yield return _connection.RunIterator(
+                _gameSession,
+                _it,
+                () =>
+                {
+                    return _it = _domain.TakeOvers(
+                    );
+                }
+            );
+            callback.Invoke(
+                new AsyncResult<Gs2.Unity.Gs2Account.Model.EzTakeOver>(
+                    _it.Current == null ? null : Gs2.Unity.Gs2Account.Model.EzTakeOver.FromModel(_it.Current),
+                    _it.Error
+                )
+            );
         }
-
-        #endif
     }
+
 }

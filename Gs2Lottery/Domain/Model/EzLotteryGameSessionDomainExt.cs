@@ -58,21 +58,24 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
 #if !GS2_ENABLE_UNITASK
             private readonly Gs2.Gs2Lottery.Domain.Model.LotteryAccessTokenDomain _domain;
 #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
+            private readonly Gs2.Unity.Util.GameSession _gameSession;
+            private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
             public EzDrawnPrizesIterator(
                 Gs2Iterator<Gs2.Gs2Lottery.Model.DrawnPrize> it,
 #if !GS2_ENABLE_UNITASK
                 Gs2.Gs2Lottery.Domain.Model.LotteryAccessTokenDomain domain,
 #endif
-                Gs2.Unity.Util.Profile profile
+                Gs2.Unity.Util.GameSession gameSession,
+                Gs2.Unity.Util.Gs2Connection connection
             )
             {
                 _it = it;
 #if !GS2_ENABLE_UNITASK
                 _domain = domain;
 #endif
-                _profile = profile;
+                this._gameSession = gameSession;
+                this._connection = connection;
             }
 
             public override bool HasNext()
@@ -85,7 +88,7 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
 #if GS2_ENABLE_UNITASK
                 yield return _it.Next();
 #else
-                yield return _profile.RunIterator(
+                yield return this._connection.RunIterator(
                     null,
                     _it,
                     () =>
@@ -111,7 +114,8 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
             return new EzDrawnPrizesIterator(
                 _domain.DrawnPrizes(
                 ),
-                _profile
+                _gameSession,
+                _connection
             );
         }
 
@@ -127,8 +131,8 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
                 var it = _domain.DrawnPrizesAsync(
                 ).GetAsyncEnumerator();
                 while(
-                    await _profile.RunIteratorAsync(
-                        null,
+                    await _connection.RunIteratorAsync(
+                        _gameSession,
                         async () =>
                         {
                             return await it.MoveNextAsync();
@@ -148,7 +152,8 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
                 _domain.DrawnPrizes(
                 ),
                 _domain,
-                _profile
+                _gameSession,
+                this._connection
             );
 #endif
         }
@@ -168,7 +173,8 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
                 _domain.DrawnPrize(
                     index
                 ),
-                _profile
+                _gameSession,
+                _connection
             );
         }
     }

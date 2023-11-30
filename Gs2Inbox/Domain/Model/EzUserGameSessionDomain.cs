@@ -52,17 +52,20 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
 
     public partial class EzUserGameSessionDomain {
         private readonly Gs2.Gs2Inbox.Domain.Model.UserAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserGameSessionDomain(
             Gs2.Gs2Inbox.Domain.Model.UserAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
         [Obsolete("The name has been changed to ReceiveGlobalMessageFuture.")]
@@ -73,158 +76,73 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain[]> ReceiveGlobalMessageFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain[]> self)
             {
-                var future = this._domain.ReceiveGlobalMessageFuture(
-                    new ReceiveGlobalMessageRequest()
-                        .WithAccessToken(_domain.AccessToken.Token)
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.ReceiveGlobalMessageFuture(
+                        new ReceiveGlobalMessageRequest()
+                    )
                 );
                 yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(future.Result.Select(v => new Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain(v, _profile)).ToArray());
+                self.OnComplete(future.Result.Select(v => new Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain(
+                    v,
+                    this._gameSession,
+                    this._connection
+                )).ToArray());
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain[]>(Impl);
         }
 
+        #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain[]> ReceiveGlobalMessageAsync(
-        #else
-        public IFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain[]> ReceiveGlobalMessageFuture(
-        #endif
         ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.ReceiveGlobalMessageAsync(
-                        new ReceiveGlobalMessageRequest()
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
-            );
-            return result.Select(v => new Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain(v, _profile)).ToArray();
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain[]> self)
-            {
-                var future = _domain.ReceiveGlobalMessageFuture(
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.ReceiveGlobalMessageAsync(
                     new ReceiveGlobalMessageRequest()
-                        .WithAccessToken(_domain.AccessToken.Token)
-                );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.ReceiveGlobalMessageFuture(
-                    		new ReceiveGlobalMessageRequest()
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(result.Select(v => new Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain(v, _profile)).ToArray());
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain[]>(Impl);
-        #endif
+                )
+            );
+            return result.Select(v => new Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain(
+                v,
+                this._gameSession,
+                this._connection
+            )).ToArray();
         }
-
-        public class EzMessagesIterator : Gs2Iterator<Gs2.Unity.Gs2Inbox.Model.EzMessage>
-        {
-            private Gs2Iterator<Gs2.Gs2Inbox.Model.Message> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly bool? _isRead;
-            private readonly Gs2.Gs2Inbox.Domain.Model.UserAccessTokenDomain _domain;
         #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
 
-            public EzMessagesIterator(
-                Gs2Iterator<Gs2.Gs2Inbox.Model.Message> it,
-        #if !GS2_ENABLE_UNITASK
-                bool? isRead,
-                Gs2.Gs2Inbox.Domain.Model.UserAccessTokenDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _isRead = isRead;
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Inbox.Model.EzMessage>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    _domain.AccessToken,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.Messages(
-                            _isRead
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Inbox.Model.EzMessage>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Inbox.Model.EzMessage.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
         public Gs2Iterator<Gs2.Unity.Gs2Inbox.Model.EzMessage> Messages(
               bool? isRead = null
         )
         {
-            return new EzMessagesIterator(
-                _domain.Messages(
-                    isRead
-                ),
-                _profile
+            return new Gs2.Unity.Gs2Inbox.Domain.Iterator.EzListIterator(
+                this._domain,
+                this._gameSession,
+                this._connection,
+                isRead
             );
         }
 
+        #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Inbox.Model.EzMessage> MessagesAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2Inbox.Model.EzMessage> Messages(
-        #endif
               bool? isRead = null
         )
         {
-        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Inbox.Model.EzMessage>(async (writer, token) =>
             {
                 var it = _domain.MessagesAsync(
                     isRead
                 ).GetAsyncEnumerator();
                 while(
-                    await _profile.RunIteratorAsync(
-                        _domain.AccessToken,
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
                         async () =>
                         {
                             return await it.MoveNextAsync();
@@ -240,17 +158,8 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Inbox.Model.EzMessage.FromModel(it.Current));
                 }
             });
-        #else
-            return new EzMessagesIterator(
-                _domain.Messages(
-                    isRead
-                ),
-                isRead,
-                _domain,
-                _profile
-            );
-        #endif
         }
+        #endif
 
         public ulong SubscribeMessages(Action callback) {
             return this._domain.SubscribeMessages(callback);
@@ -267,7 +176,8 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
                 _domain.Message(
                     messageName
                 ),
-                _profile
+                this._gameSession,
+                this._connection
             );
         }
 

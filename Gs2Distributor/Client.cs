@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2Distributor
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2DistributorWebSocketClient _client;
 		private readonly Gs2DistributorRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2DistributorWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2DistributorRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2DistributorRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2DistributorWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2DistributorRestClient(connection.RestSession);
 		}
 
         public IEnumerator GetDistributorModel(
@@ -67,7 +60,7 @@ namespace Gs2.Unity.Gs2Distributor
                 string distributorName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.GetDistributorModel(
@@ -89,7 +82,7 @@ namespace Gs2.Unity.Gs2Distributor
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribeDistributorModels(
@@ -113,7 +106,7 @@ namespace Gs2.Unity.Gs2Distributor
                 string contextStack = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.RunStampSheet(
@@ -139,7 +132,7 @@ namespace Gs2.Unity.Gs2Distributor
                 string keyId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.RunStampSheetExpress(
@@ -163,7 +156,7 @@ namespace Gs2.Unity.Gs2Distributor
                 string keyId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.RunStampSheetExpressWithoutNamespace(
@@ -187,7 +180,7 @@ namespace Gs2.Unity.Gs2Distributor
                 string contextStack = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.RunStampSheetWithoutNamespace(
@@ -213,7 +206,7 @@ namespace Gs2.Unity.Gs2Distributor
                 string contextStack = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.RunStampTask(
@@ -239,7 +232,7 @@ namespace Gs2.Unity.Gs2Distributor
                 string contextStack = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.RunStampTaskWithoutNamespace(
@@ -264,7 +257,7 @@ namespace Gs2.Unity.Gs2Distributor
                 string transactionId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.GetStampSheetResult(

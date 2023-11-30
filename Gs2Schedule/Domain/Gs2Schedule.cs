@@ -55,14 +55,14 @@ namespace Gs2.Unity.Gs2Schedule.Domain
 
     public class Gs2Schedule {
         private readonly Gs2.Gs2Schedule.Domain.Gs2Schedule _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
         public Gs2Schedule(
             Gs2.Gs2Schedule.Domain.Gs2Schedule domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._connection = connection;
         }
 
         public Gs2.Unity.Gs2Schedule.Domain.Model.EzNamespaceDomain Namespace(
@@ -72,7 +72,7 @@ namespace Gs2.Unity.Gs2Schedule.Domain
                 _domain.Namespace(
                     namespaceName
                 ),
-                _profile
+                this._connection
             );
         }
     }

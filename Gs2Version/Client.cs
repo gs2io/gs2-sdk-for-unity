@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2Version
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2VersionWebSocketClient _client;
 		private readonly Gs2VersionRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2VersionWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2VersionRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2VersionRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2VersionWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2VersionRestClient(connection.RestSession);
 		}
 
         public IEnumerator GetVersionModel(
@@ -67,7 +60,7 @@ namespace Gs2.Unity.Gs2Version
                 string versionName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _client.GetVersionModel(
@@ -89,7 +82,7 @@ namespace Gs2.Unity.Gs2Version
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribeVersionModels(
@@ -112,7 +105,7 @@ namespace Gs2.Unity.Gs2Version
                 string versionName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.Accept(
@@ -137,7 +130,7 @@ namespace Gs2.Unity.Gs2Version
                 string versionName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.DeleteAcceptVersion(
@@ -163,7 +156,7 @@ namespace Gs2.Unity.Gs2Version
                 int? limit = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeAcceptVersions(
@@ -189,7 +182,7 @@ namespace Gs2.Unity.Gs2Version
                 List<Gs2.Unity.Gs2Version.Model.EzTargetVersion> targetVersions = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.CheckVersion(

@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2Enhance
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2EnhanceWebSocketClient _client;
 		private readonly Gs2EnhanceRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2EnhanceWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2EnhanceRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2EnhanceRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2EnhanceWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2EnhanceRestClient(connection.RestSession);
 		}
 
         public IEnumerator GetRateModel(
@@ -67,7 +60,7 @@ namespace Gs2.Unity.Gs2Enhance
                 string rateName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _client.GetRateModel(
@@ -89,7 +82,7 @@ namespace Gs2.Unity.Gs2Enhance
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribeRateModels(
@@ -111,7 +104,7 @@ namespace Gs2.Unity.Gs2Enhance
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.DeleteProgress(
@@ -135,7 +128,7 @@ namespace Gs2.Unity.Gs2Enhance
                 List<Gs2.Unity.Gs2Enhance.Model.EzConfig> config = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.End(
@@ -161,7 +154,7 @@ namespace Gs2.Unity.Gs2Enhance
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.GetProgress(
@@ -189,7 +182,7 @@ namespace Gs2.Unity.Gs2Enhance
                 List<Gs2.Unity.Gs2Enhance.Model.EzConfig> config = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.Start(
@@ -225,7 +218,7 @@ namespace Gs2.Unity.Gs2Enhance
                 List<Gs2.Unity.Gs2Enhance.Model.EzConfig> config = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DirectEnhance(

@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -27,6 +26,8 @@
 #pragma warning disable 1998
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core;
@@ -36,62 +37,50 @@ using Gs2.Core.Util;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
-#if GS2_ENABLE_UNITASK
-using System.Threading;
-using System.Collections.Generic;
-using Cysharp.Threading;
-using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Linq;
-#else
-using System.Collections;
-using UnityEngine.Events;
-using Gs2.Core.Exception;
-#endif
 
 namespace Gs2.Unity.Gs2Inventory.Domain.Iterator
 {
 
-    #if GS2_ENABLE_UNITASK
-    public class EzDescribeBigItemModelsIterator {
-    #else
-    public class EzDescribeBigItemModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzBigItemModel> {
-    #endif
-        private readonly Gs2.Gs2Inventory.Domain.Iterator.DescribeBigItemModelsIterator _iterator;
+    public class EzListBigItemModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzBigItemModel>
+    {
+        private Gs2Iterator<Gs2.Gs2Inventory.Model.BigItemModel> _it;
+        private readonly Gs2.Gs2Inventory.Domain.Model.BigInventoryModelDomain _domain;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
-        public EzDescribeBigItemModelsIterator(
-            Gs2.Gs2Inventory.Domain.Iterator.DescribeBigItemModelsIterator iterator
-        ) {
-            this._iterator = iterator;
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Inventory.Model.EzBigItemModel> GetAsyncEnumerator(
-            CancellationToken cancellationToken = new CancellationToken()
+        public EzListBigItemModelsIterator(
+            Gs2.Gs2Inventory.Domain.Model.BigInventoryModelDomain domain,
+            Gs2.Unity.Util.Gs2Connection connection
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Inventory.Model.EzBigItemModel>(async (writer, token) =>
-            {
-            });
+            _domain = domain;
+            _connection = connection;
+            _it = _domain.BigItemModels(
+            );
         }
-
-        #else
 
         public override bool HasNext()
         {
-            return _iterator.HasNext();
+            return _it.HasNext();
         }
 
-        protected override IEnumerator Next(
-            Action<AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzBigItemModel>> callback
-        )
+        protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzBigItemModel>> callback)
         {
-            yield return _iterator;
-            callback.Invoke(new AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzBigItemModel>(
-                _iterator.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzBigItemModel.FromModel(_iterator.Current),
-                _iterator.Error
-            ));
+            yield return _connection.RunIterator(
+                null,
+                _it,
+                () =>
+                {
+                    return _it = _domain.BigItemModels(
+                    );
+                }
+            );
+            callback.Invoke(
+                new AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzBigItemModel>(
+                    _it.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzBigItemModel.FromModel(_it.Current),
+                    _it.Error
+                )
+            );
         }
-
-        #endif
     }
+
 }

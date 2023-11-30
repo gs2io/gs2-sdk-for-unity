@@ -26,6 +26,7 @@
 // ReSharper disable NotAccessedField.Local
 
 #pragma warning disable 1998
+#pragma warning disable CS0169, CS0168
 
 using System;
 using System.Linq;
@@ -54,7 +55,7 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
 
     public partial class EzUserDomain {
         private readonly Gs2.Gs2SerialKey.Domain.Model.UserDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string Url => _domain.Url;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
@@ -62,10 +63,10 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
 
         public EzUserDomain(
             Gs2.Gs2SerialKey.Domain.Model.UserDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._connection = connection;
         }
 
         public Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyDomain SerialKey(
@@ -75,7 +76,7 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
                 _domain.SerialKey(
                     serialKeyCode
                 ),
-                _profile
+                this._connection
             );
         }
 

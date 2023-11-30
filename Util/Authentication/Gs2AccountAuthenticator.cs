@@ -1,9 +1,6 @@
+using System;
 using System.Collections;
 using System.Linq;
-#if GS2_ENABLE_UNITASK
-using Cysharp.Threading.Tasks;
-#endif
-using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Exception;
 using Gs2.Core.Model;
@@ -18,25 +15,28 @@ using Gs2.Gs2Gateway.Request;
 using Gs2.Gs2Version;
 using Gs2.Gs2Version.Request;
 using UnityEngine;
-using UnityEngine.Events;
+#if GS2_ENABLE_UNITASK
+using Gs2.Unity.Core;
+using Cysharp.Threading.Tasks;
+#endif
 
 namespace Gs2.Unity.Util
 {
     public class Gs2AccountAuthenticator : IAuthenticator
     {
-        private readonly Gs2WebSocketSession _session;
-        private readonly Gs2RestSession _restSession;
-        private readonly string _accountNamespaceName;
-        private readonly string _keyId;
-        private readonly string _userId;
-        private readonly string _password;
+        private readonly AccountSetting _accountSetting;
         private readonly GatewaySetting _gatewaySetting;
         private readonly VersionSetting _versionSetting;
+
+        [Obsolete("Already this member is not needed")]
+        internal string userId;
+        [Obsolete("Already this member is not needed")]
+        internal string password;
         
         public DetectVersionUpEvent onDetectVersionUp = new DetectVersionUpEvent();
-        
+
         public Gs2AccountAuthenticator(
-            Gs2WebSocketSession session,
+            Gs2WebSocketSession webSocketSession,
             Gs2RestSession restSession,
             string accountNamespaceName,
             string keyId,
@@ -44,48 +44,68 @@ namespace Gs2.Unity.Util
             string password,
             GatewaySetting gatewaySetting = null,
             VersionSetting versionSetting = null
-        )
-        {
-            _session = session;
-            _restSession = restSession;
-            _accountNamespaceName = accountNamespaceName;
-            _keyId = keyId;
-            _userId = userId;
-            _password = password;
-            _gatewaySetting = gatewaySetting;
-            _versionSetting = versionSetting;
+        ): this(
+            new AccountSetting {
+                accountNamespaceName = accountNamespaceName,
+                keyId = keyId
+            },
+            gatewaySetting,
+            versionSetting
+        ) {
+            this.userId = userId;
+            this.password = password;
+        }
+        
+        public Gs2AccountAuthenticator(
+            AccountSetting accountSetting,
+            GatewaySetting gatewaySetting = null,
+            VersionSetting versionSetting = null
+        ) {
+            this._accountSetting = accountSetting;
+            this._gatewaySetting = gatewaySetting ?? new GatewaySetting {
+                gatewayNamespaceName = "default",
+                allowConcurrentAccess = true
+            };
+            this._versionSetting = versionSetting;
         }
 
 #if GS2_ENABLE_UNITASK
 
-        public override async UniTask<AccessToken> AuthenticationAsync()
+        internal override async UniTask<AccessToken> AuthenticationAsync(
+            Gs2Connection connection,
+            string userId,
+            string password
+        )
         {
-            var accountClient = new Gs2AccountRestClient(_restSession);
-
-            if (this._session.IsDisconnected()) {
-                await this._session.ReOpenAsync();
+            if (connection.RestSession.IsDisconnected()) {
+                await connection.RestSession.ReOpenAsync();
             }
-            
-            string body = null;
-            string signature = null;
+            if (connection.WebSocketSession.IsDisconnected()) {
+                await connection.WebSocketSession.ReOpenAsync();
+            }
+
+            var accountClient = new Gs2AccountRestClient(connection.RestSession);
+
+            string body;
+            string signature;
             {
                 var result = await accountClient.AuthenticationAsync(
                     new AuthenticationRequest()
-                        .WithNamespaceName(_accountNamespaceName)
-                        .WithUserId(_userId)
-                        .WithPassword(_password)
-                        .WithKeyId(_keyId)
+                        .WithNamespaceName(this._accountSetting.accountNamespaceName)
+                        .WithUserId(userId)
+                        .WithPassword(password)
+                        .WithKeyId(this._accountSetting.keyId)
                 );
 
                 body = result.Body;
                 signature = result.Signature;
             }
 
-            var authClient = new Gs2AuthRestClient(_restSession);
+            var authClient = new Gs2AuthRestClient(connection.RestSession);
 
             var result2 = await authClient.LoginBySignatureAsync(
                 new LoginBySignatureRequest()
-                    .WithKeyId(_keyId)
+                    .WithKeyId(this._accountSetting.keyId)
                     .WithBody(body)
                     .WithSignature(signature)
             );
@@ -97,7 +117,7 @@ namespace Gs2.Unity.Util
             
             if (this._gatewaySetting != null) {
                 try {
-                    await new Gs2GatewayWebSocketClient(this._session).SetUserIdAsync(
+                    await new Gs2GatewayWebSocketClient(connection.WebSocketSession).SetUserIdAsync(
                         new SetUserIdRequest()
                             .WithNamespaceName(this._gatewaySetting.gatewayNamespaceName)
                             .WithAccessToken(accessToken.Token)
@@ -106,16 +126,19 @@ namespace Gs2.Unity.Util
                 }
                 catch (ConflictException) {
                 }
+                catch (NotFoundException) {
+                    Debug.Log("The GS2-Gateway namespace does not exist and could not be configured to receive notifications from the server.");
+                }
                 catch (SessionNotOpenException) {
-                    await this._session.ReOpenFuture();
+                    await connection.WebSocketSession.ReOpenFuture();
                     throw;
                 }
                 NeedReAuthentication = false;
-                this._session.OnDisconnect -= OnDisconnect;
-                this._session.OnDisconnect += OnDisconnect;
+                connection.WebSocketSession.OnDisconnect -= OnDisconnect;
+                connection.WebSocketSession.OnDisconnect += OnDisconnect;
             }
             if (this._versionSetting != null) {
-                var checkVersionResult = await new Gs2VersionRestClient(_restSession).CheckVersionAsync(
+                var checkVersionResult = await new Gs2VersionRestClient(connection.RestSession).CheckVersionAsync(
                     new CheckVersionRequest()
                         .WithNamespaceName(this._versionSetting.versionNamespaceName)
                         .WithAccessToken(accessToken.Token)
@@ -125,8 +148,8 @@ namespace Gs2.Unity.Util
                         )
                 );
                 if (checkVersionResult.ProjectToken != null) {
-                    _restSession.Credential.ProjectToken = checkVersionResult.ProjectToken;
-                    _session.Credential.ProjectToken = checkVersionResult.ProjectToken;
+                    connection.RestSession.Credential.ProjectToken = checkVersionResult.ProjectToken;
+                    connection.WebSocketSession.Credential.ProjectToken = checkVersionResult.ProjectToken;
                 }
                 if (checkVersionResult.Errors.Length > 0) {
                     onDetectVersionUp.Invoke();
@@ -151,21 +174,28 @@ namespace Gs2.Unity.Util
             NeedReAuthentication = true;
         }
         
-        public override Gs2Future<AccessToken> AuthenticationFuture()
+        internal override Gs2Future<AccessToken> AuthenticationFuture(
+            Gs2Connection connection,
+            string userId,
+            string password
+        )
         {
             IEnumerator Impl(Gs2Future<AccessToken> result) {
-                var accountClient = new Gs2AccountRestClient(this._restSession);
-
-                if (this._session.IsDisconnected()) {
-                    yield return this._session.ReOpenFuture();
+                if (connection.RestSession.IsDisconnected()) {
+                    yield return connection.RestSession.ReOpenFuture();
                 }
+                if (connection.WebSocketSession.IsDisconnected()) {
+                    yield return connection.WebSocketSession.ReOpenFuture();
+                }
+
+                var accountClient = new Gs2AccountRestClient(connection.RestSession);
 
                 var authenticationFuture = accountClient.AuthenticationFuture(
                     new AuthenticationRequest()
-                        .WithNamespaceName(_accountNamespaceName)
-                        .WithUserId(_userId)
-                        .WithPassword(_password)
-                        .WithKeyId(_keyId)
+                        .WithNamespaceName(this._accountSetting.accountNamespaceName)
+                        .WithUserId(userId)
+                        .WithPassword(password)
+                        .WithKeyId(this._accountSetting.keyId)
                 );
                 yield return authenticationFuture;
                 if (authenticationFuture.Error != null) {
@@ -180,11 +210,11 @@ namespace Gs2.Unity.Util
                     yield break;
                 }
 
-                var authClient = new Gs2AuthRestClient(this._restSession);
+                var authClient = new Gs2AuthRestClient(connection.RestSession);
 
                 var future2 = authClient.LoginBySignatureFuture(
                     new LoginBySignatureRequest()
-                        .WithKeyId(_keyId)
+                        .WithKeyId(this._accountSetting.keyId)
                         .WithBody(body)
                         .WithSignature(signature)
                 );
@@ -201,7 +231,7 @@ namespace Gs2.Unity.Util
                     .WithUserId(future2.Result.UserId);
                 
                 if (this._gatewaySetting != null) {
-                    var future = new Gs2GatewayWebSocketClient(this._session).SetUserIdFuture(
+                    var future = new Gs2GatewayWebSocketClient(connection.WebSocketSession).SetUserIdFuture(
                         new SetUserIdRequest()
                             .WithNamespaceName(this._gatewaySetting.gatewayNamespaceName)
                             .WithAccessToken(accessToken.Token)
@@ -211,8 +241,11 @@ namespace Gs2.Unity.Util
                     if (future.Error != null) {
                         if (future.Error is ConflictException) {
                         }
+                        else if (future.Error is NotFoundException) {
+                            Debug.Log("The GS2-Gateway namespace does not exist and could not be configured to receive notifications from the server.");
+                        }
                         else if (future.Error is SessionNotOpenException) {
-                            yield return this._session.ReOpenFuture();
+                            yield return connection.WebSocketSession.ReOpenFuture();
                             result.OnError(future.Error);
                             yield break;
                         }
@@ -222,11 +255,11 @@ namespace Gs2.Unity.Util
                         }
                     }
                     NeedReAuthentication = false;
-                    this._session.OnDisconnect -= OnDisconnect;
-                    this._session.OnDisconnect += OnDisconnect;
+                    connection.WebSocketSession.OnDisconnect -= OnDisconnect;
+                    connection.WebSocketSession.OnDisconnect += OnDisconnect;
                 }
-                if (this._versionSetting != null) {
-                    var future = new Gs2VersionRestClient(_restSession).CheckVersionFuture(
+                if (this._versionSetting != null && !string.IsNullOrEmpty(this._versionSetting.versionNamespaceName)) {
+                    var future = new Gs2VersionRestClient(connection.RestSession).CheckVersionFuture(
                         new CheckVersionRequest()
                             .WithNamespaceName(this._versionSetting.versionNamespaceName)
                             .WithAccessToken(accessToken.Token)
@@ -242,8 +275,8 @@ namespace Gs2.Unity.Util
                     }
                     var checkVersionResult = future.Result;
                     if (checkVersionResult.ProjectToken != null) {
-                        _restSession.Credential.ProjectToken = checkVersionResult.ProjectToken;
-                        _session.Credential.ProjectToken = checkVersionResult.ProjectToken;
+                        connection.RestSession.Credential.ProjectToken = checkVersionResult.ProjectToken;
+                        connection.WebSocketSession.Credential.ProjectToken = checkVersionResult.ProjectToken;
                     }
                     if (checkVersionResult.Errors.Length > 0) {
                         onDetectVersionUp.Invoke();
@@ -266,16 +299,6 @@ namespace Gs2.Unity.Util
             }
 
             return new Gs2InlineFuture<AccessToken>(Impl);
-        }
-        
-        public override IEnumerator Authentication(UnityAction<AsyncResult<AccessToken>> callback)
-        {
-            var future = AuthenticationFuture();
-            yield return future;
-            callback.Invoke(new AsyncResult<AccessToken>(
-                future.Result,
-                future.Error
-            ));
         }
     }
 }

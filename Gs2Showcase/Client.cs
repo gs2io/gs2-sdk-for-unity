@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2Showcase
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2ShowcaseWebSocketClient _client;
 		private readonly Gs2ShowcaseRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2ShowcaseWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2ShowcaseRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2ShowcaseRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2ShowcaseWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2ShowcaseRestClient(connection.RestSession);
 		}
 
         public IEnumerator Buy(
@@ -71,7 +64,7 @@ namespace Gs2.Unity.Gs2Showcase
                 List<Gs2.Unity.Gs2Showcase.Model.EzConfig> config = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.Buy(
@@ -101,7 +94,7 @@ namespace Gs2.Unity.Gs2Showcase
                 string showcaseName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.GetShowcase(
@@ -127,7 +120,7 @@ namespace Gs2.Unity.Gs2Showcase
                 string displayItemName = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.GetRandomDisplayItem(
@@ -153,7 +146,7 @@ namespace Gs2.Unity.Gs2Showcase
                 string showcaseName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeRandomDisplayItems(
@@ -181,7 +174,7 @@ namespace Gs2.Unity.Gs2Showcase
                 List<Gs2.Unity.Gs2Showcase.Model.EzConfig> config = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.RandomShowcaseBuy(

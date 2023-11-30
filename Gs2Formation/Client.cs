@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2Formation
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2FormationWebSocketClient _client;
 		private readonly Gs2FormationRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2FormationWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2FormationRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2FormationRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2FormationWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2FormationRestClient(connection.RestSession);
 		}
 
         public IEnumerator GetMoldModel(
@@ -67,7 +60,7 @@ namespace Gs2.Unity.Gs2Formation
                 string moldModelName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _client.GetMoldModel(
@@ -89,7 +82,7 @@ namespace Gs2.Unity.Gs2Formation
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribeMoldModels(
@@ -112,7 +105,7 @@ namespace Gs2.Unity.Gs2Formation
                 string moldModelName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.GetMold(
@@ -138,7 +131,7 @@ namespace Gs2.Unity.Gs2Formation
                 int? limit = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeMolds(
@@ -163,7 +156,7 @@ namespace Gs2.Unity.Gs2Formation
                 string moldModelName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _client.GetFormModel(
@@ -188,7 +181,7 @@ namespace Gs2.Unity.Gs2Formation
                 int index
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DeleteForm(
@@ -215,7 +208,7 @@ namespace Gs2.Unity.Gs2Formation
                 int index
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.GetForm(
@@ -243,7 +236,7 @@ namespace Gs2.Unity.Gs2Formation
                 string keyId = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.GetFormWithSignature(
@@ -272,7 +265,7 @@ namespace Gs2.Unity.Gs2Formation
                 int? limit = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeForms(
@@ -302,7 +295,7 @@ namespace Gs2.Unity.Gs2Formation
                 string keyId = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.SetFormWithSignature(
@@ -331,7 +324,7 @@ namespace Gs2.Unity.Gs2Formation
                 string propertyFormModelName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _client.GetPropertyFormModel(
@@ -353,7 +346,7 @@ namespace Gs2.Unity.Gs2Formation
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribePropertyFormModels(
@@ -376,7 +369,7 @@ namespace Gs2.Unity.Gs2Formation
                 string propertyId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DeletePropertyForm(
@@ -402,7 +395,7 @@ namespace Gs2.Unity.Gs2Formation
                 string propertyId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.GetPropertyForm(
@@ -430,7 +423,7 @@ namespace Gs2.Unity.Gs2Formation
                 string keyId = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.GetPropertyFormWithSignature(
@@ -459,7 +452,7 @@ namespace Gs2.Unity.Gs2Formation
                 int? limit = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribePropertyForms(
@@ -489,7 +482,7 @@ namespace Gs2.Unity.Gs2Formation
                 string keyId = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.SetPropertyFormWithSignature(

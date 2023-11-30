@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2Schedule
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2ScheduleWebSocketClient _client;
 		private readonly Gs2ScheduleRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2ScheduleWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2ScheduleRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2ScheduleRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2ScheduleWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2ScheduleRestClient(connection.RestSession);
 		}
 
         public IEnumerator GetTrigger(
@@ -68,7 +61,7 @@ namespace Gs2.Unity.Gs2Schedule
                 string triggerName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.GetTrigger(
@@ -92,7 +85,7 @@ namespace Gs2.Unity.Gs2Schedule
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeTriggers(
@@ -116,7 +109,7 @@ namespace Gs2.Unity.Gs2Schedule
                 string eventName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.GetEvent(
@@ -140,7 +133,7 @@ namespace Gs2.Unity.Gs2Schedule
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeEvents(

@@ -54,17 +54,20 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
 
     public partial class EzRankingGameSessionDomain {
         private readonly Gs2.Gs2Ranking.Domain.Model.RankingAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string CategoryName => _domain?.CategoryName;
 
         public EzRankingGameSessionDomain(
             Gs2.Gs2Ranking.Domain.Model.RankingAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
         [Obsolete("The name has been changed to PutScoreFuture.")]
@@ -79,7 +82,6 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain> PutScoreFuture(
             long score,
             string metadata = null
@@ -87,71 +89,48 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain> self)
             {
-                yield return PutScoreAsync(
-                    score,
-                    metadata
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.PutScoreFuture(
+                        new PutScoreRequest()
+                            .WithScore(score)
+                            .WithMetadata(metadata)
+                    )
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain>(Impl);
         }
 
+        #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain> PutScoreAsync(
-        #else
-        public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain> PutScoreFuture(
-        #endif
             long score,
             string metadata = null
         ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.PutScoreAsync(
-                        new PutScoreRequest()
-                            .WithScore(score)
-                            .WithMetadata(metadata)
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
-            );
-            return new Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain(result, _profile);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain> self)
-            {
-                var future = _domain.PutScoreFuture(
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.PutScoreAsync(
                     new PutScoreRequest()
                         .WithScore(score)
                         .WithMetadata(metadata)
-                        .WithAccessToken(_domain.AccessToken.Token)
-                );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.PutScoreFuture(
-                    		new PutScoreRequest()
-                	        .WithScore(score)
-                	        .WithMetadata(metadata)
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain(result, _profile));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain>(Impl);
-        #endif
+                )
+            );
+            return new Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
         }
+        #endif
 
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> Model(
@@ -162,26 +141,12 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> ModelFuture(
-            string scorerUserId
-        )
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Model.EzRanking> self)
-            {
-                yield return ModelAsync(scorerUserId).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking>(Impl);
-        }
-
         public async UniTask<Gs2.Unity.Gs2Ranking.Model.EzRanking> ModelAsync(
             string scorerUserId
         )
         {
-            var item = await _profile.RunAsync(
-                _domain.AccessToken,
+            var item = await this._connection.RunAsync(
+                this._gameSession,
                 async () =>
                 {
                     return await _domain.ModelAsync(scorerUserId);
@@ -194,21 +159,21 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 item
             );
         }
-        #else
+        #endif
+
         public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> ModelFuture(
             string scorerUserId
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Model.EzRanking> self)
             {
-                var future = _domain.ModelFuture(scorerUserId);
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
+                var future = this._connection.RunFuture(
+                    this._gameSession,
                     () => {
-                    	return future = _domain.ModelFuture(scorerUserId);
+                    	return _domain.ModelFuture(scorerUserId);
                     }
                 );
+                yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
@@ -224,7 +189,6 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking>(Impl);
         }
-        #endif
 
         public ulong Subscribe(
             Action<Gs2.Unity.Gs2Ranking.Model.EzRanking> callback,

@@ -54,7 +54,8 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
 
     public partial class EzUserGameSessionDomain {
         private readonly Gs2.Gs2Lottery.Domain.Model.UserAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NextPageToken => _domain.NextPageToken;
@@ -63,98 +64,35 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
 
         public EzUserGameSessionDomain(
             Gs2.Gs2Lottery.Domain.Model.UserAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
-        public Gs2.Unity.Gs2Lottery.Domain.Model.EzLotteryGameSessionDomain Lottery(
-        ) {
-            return new Gs2.Unity.Gs2Lottery.Domain.Model.EzLotteryGameSessionDomain(
-                _domain.Lottery(
-                ),
-                _profile
-            );
-        }
-
-        public class EzBoxesIterator : Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzBoxItems>
-        {
-            private Gs2Iterator<Gs2.Gs2Lottery.Model.BoxItems> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2Lottery.Domain.Model.UserAccessTokenDomain _domain;
-        #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
-
-            public EzBoxesIterator(
-                Gs2Iterator<Gs2.Gs2Lottery.Model.BoxItems> it,
-        #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2Lottery.Domain.Model.UserAccessTokenDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Lottery.Model.EzBoxItems>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    _domain.AccessToken,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.Boxes(
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Lottery.Model.EzBoxItems>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Lottery.Model.EzBoxItems.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
         public Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> Boxes(
         )
         {
-            return new EzBoxesIterator(
-                _domain.Boxes(
-                ),
-                _profile
+            return new Gs2.Unity.Gs2Lottery.Domain.Iterator.EzDescribeBoxesIterator(
+                this._domain,
+                this._gameSession,
+                this._connection
             );
         }
 
+        #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> BoxesAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzBoxItems> Boxes(
-        #endif
         )
         {
-        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Lottery.Model.EzBoxItems>(async (writer, token) =>
             {
                 var it = _domain.BoxesAsync(
                 ).GetAsyncEnumerator();
                 while(
-                    await _profile.RunIteratorAsync(
-                        _domain.AccessToken,
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
                         async () =>
                         {
                             return await it.MoveNextAsync();
@@ -169,15 +107,8 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Lottery.Model.EzBoxItems.FromModel(it.Current));
                 }
             });
-        #else
-            return new EzBoxesIterator(
-                _domain.Boxes(
-                ),
-                _domain,
-                _profile
-            );
-        #endif
         }
+        #endif
 
         public ulong SubscribeBoxes(
             Action callback,
@@ -193,102 +124,31 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
             this._domain.UnsubscribeBoxes(callbackId, prizeTableName);
         }
 
-        public Gs2.Unity.Gs2Lottery.Domain.Model.EzBoxItemsGameSessionDomain BoxItems(
-            string prizeTableName
-        ) {
-            return new Gs2.Unity.Gs2Lottery.Domain.Model.EzBoxItemsGameSessionDomain(
-                _domain.BoxItems(
-                    prizeTableName
-                ),
-                _profile
-            );
-        }
-
-        public class EzProbabilitiesIterator : Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzProbability>
-        {
-            private Gs2Iterator<Gs2.Gs2Lottery.Model.Probability> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly string _lotteryName;
-            private readonly Gs2.Gs2Lottery.Domain.Model.UserAccessTokenDomain _domain;
-        #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
-
-            public EzProbabilitiesIterator(
-                Gs2Iterator<Gs2.Gs2Lottery.Model.Probability> it,
-        #if !GS2_ENABLE_UNITASK
-                string lotteryName,
-                Gs2.Gs2Lottery.Domain.Model.UserAccessTokenDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _lotteryName = lotteryName;
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Lottery.Model.EzProbability>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    _domain.AccessToken,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.Probabilities(
-                            _lotteryName
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Lottery.Model.EzProbability>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Lottery.Model.EzProbability.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
         public Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzProbability> Probabilities(
               string lotteryName
         )
         {
-            return new EzProbabilitiesIterator(
-                _domain.Probabilities(
-                    lotteryName
-                ),
-                _profile
+            return new Gs2.Unity.Gs2Lottery.Domain.Iterator.EzListProbabilitiesIterator(
+                this._domain,
+                this._gameSession,
+                this._connection,
+                lotteryName
             );
         }
 
+        #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Lottery.Model.EzProbability> ProbabilitiesAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzProbability> Probabilities(
-        #endif
               string lotteryName
         )
         {
-        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Lottery.Model.EzProbability>(async (writer, token) =>
             {
                 var it = _domain.ProbabilitiesAsync(
                     lotteryName
                 ).GetAsyncEnumerator();
                 while(
-                    await _profile.RunIteratorAsync(
-                        _domain.AccessToken,
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
                         async () =>
                         {
                             return await it.MoveNextAsync();
@@ -304,17 +164,8 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Lottery.Model.EzProbability.FromModel(it.Current));
                 }
             });
-        #else
-            return new EzProbabilitiesIterator(
-                _domain.Probabilities(
-                    lotteryName
-                ),
-                lotteryName,
-                _domain,
-                _profile
-            );
-        #endif
         }
+        #endif
 
         public ulong SubscribeProbabilities(
             Action callback,
@@ -330,6 +181,28 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
             this._domain.UnsubscribeProbabilities(callbackId, lotteryName);
         }
 
+        public Gs2.Unity.Gs2Lottery.Domain.Model.EzLotteryGameSessionDomain Lottery(
+        ) {
+            return new Gs2.Unity.Gs2Lottery.Domain.Model.EzLotteryGameSessionDomain(
+                _domain.Lottery(
+                ),
+                this._gameSession,
+                this._connection
+            );
+        }
+
+        public Gs2.Unity.Gs2Lottery.Domain.Model.EzBoxItemsGameSessionDomain BoxItems(
+            string prizeTableName
+        ) {
+            return new Gs2.Unity.Gs2Lottery.Domain.Model.EzBoxItemsGameSessionDomain(
+                _domain.BoxItems(
+                    prizeTableName
+                ),
+                this._gameSession,
+                this._connection
+            );
+        }
+
         public Gs2.Unity.Gs2Lottery.Domain.Model.EzProbabilityGameSessionDomain Probability(
             string lotteryName,
             string prizeId
@@ -339,7 +212,8 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
                     lotteryName,
                     prizeId
                 ),
-                _profile
+                this._gameSession,
+                this._connection
             );
         }
 

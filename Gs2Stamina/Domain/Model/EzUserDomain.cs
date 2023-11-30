@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
 
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Stamina.Domain.Model.UserDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public int? OverflowValue => _domain.OverflowValue;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
@@ -61,119 +61,10 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
 
         public EzUserDomain(
             Gs2.Gs2Stamina.Domain.Model.UserDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
-        }
-
-        public class EzStaminasIterator : Gs2Iterator<Gs2.Unity.Gs2Stamina.Model.EzStamina>
-        {
-            private Gs2Iterator<Gs2.Gs2Stamina.Model.Stamina> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2Stamina.Domain.Model.UserDomain _domain;
-        #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
-
-            public EzStaminasIterator(
-                Gs2Iterator<Gs2.Gs2Stamina.Model.Stamina> it,
-        #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2Stamina.Domain.Model.UserDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Stamina.Model.EzStamina>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    null,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.Staminas(
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Stamina.Model.EzStamina>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Stamina.Model.EzStamina.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public Gs2Iterator<Gs2.Unity.Gs2Stamina.Model.EzStamina> Staminas(
-        )
-        {
-            return new EzStaminasIterator(
-                _domain.Staminas(
-                ),
-                _profile
-            );
-        }
-
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Stamina.Model.EzStamina> StaminasAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2Stamina.Model.EzStamina> Staminas(
-        #endif
-        )
-        {
-        #if GS2_ENABLE_UNITASK
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Stamina.Model.EzStamina>(async (writer, token) =>
-            {
-                var it = _domain.StaminasAsync(
-                ).GetAsyncEnumerator();
-                while(
-                    await _profile.RunIteratorAsync(
-                        null,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.StaminasAsync(
-                            ).GetAsyncEnumerator();
-                        }
-                    )
-                )
-                {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Stamina.Model.EzStamina.FromModel(it.Current));
-                }
-            });
-        #else
-            return new EzStaminasIterator(
-                _domain.Staminas(
-                ),
-                _domain,
-                _profile
-            );
-        #endif
-        }
-
-        public ulong SubscribeStaminas(Action callback) {
-            return this._domain.SubscribeStaminas(callback);
-        }
-
-        public void UnsubscribeStaminas(ulong callbackId) {
-            this._domain.UnsubscribeStaminas(callbackId);
+            this._connection = connection;
         }
 
         public Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaDomain Stamina(
@@ -183,7 +74,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
                 _domain.Stamina(
                     staminaName
                 ),
-                _profile
+                this._connection
             );
         }
 

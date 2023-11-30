@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
     public partial class EzBigInventoryDomain {
         private readonly Gs2.Gs2Inventory.Domain.Model.BigInventoryDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
@@ -61,119 +61,10 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
         public EzBigInventoryDomain(
             Gs2.Gs2Inventory.Domain.Model.BigInventoryDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
-        }
-
-        public class EzBigItemsIterator : Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzBigItem>
-        {
-            private Gs2Iterator<Gs2.Gs2Inventory.Model.BigItem> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2Inventory.Domain.Model.BigInventoryDomain _domain;
-        #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
-
-            public EzBigItemsIterator(
-                Gs2Iterator<Gs2.Gs2Inventory.Model.BigItem> it,
-        #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2Inventory.Domain.Model.BigInventoryDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzBigItem>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    null,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.BigItems(
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzBigItem>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzBigItem.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzBigItem> BigItems(
-        )
-        {
-            return new EzBigItemsIterator(
-                _domain.BigItems(
-                ),
-                _profile
-            );
-        }
-
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Inventory.Model.EzBigItem> BigItemsAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzBigItem> BigItems(
-        #endif
-        )
-        {
-        #if GS2_ENABLE_UNITASK
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Inventory.Model.EzBigItem>(async (writer, token) =>
-            {
-                var it = _domain.BigItemsAsync(
-                ).GetAsyncEnumerator();
-                while(
-                    await _profile.RunIteratorAsync(
-                        null,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.BigItemsAsync(
-                            ).GetAsyncEnumerator();
-                        }
-                    )
-                )
-                {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzBigItem.FromModel(it.Current));
-                }
-            });
-        #else
-            return new EzBigItemsIterator(
-                _domain.BigItems(
-                ),
-                _domain,
-                _profile
-            );
-        #endif
-        }
-
-        public ulong SubscribeBigItems(Action callback) {
-            return this._domain.SubscribeBigItems(callback);
-        }
-
-        public void UnsubscribeBigItems(ulong callbackId) {
-            this._domain.UnsubscribeBigItems(callbackId);
+            this._connection = connection;
         }
 
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzBigItemDomain BigItem(
@@ -183,7 +74,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
                 _domain.BigItem(
                     itemName
                 ),
-                _profile
+                this._connection
             );
         }
 

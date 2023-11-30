@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2JobQueue
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2JobQueueWebSocketClient _client;
 		private readonly Gs2JobQueueRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2JobQueueWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2JobQueueRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2JobQueueRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2JobQueueWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2JobQueueRestClient(connection.RestSession);
 		}
 
         public IEnumerator Run(
@@ -67,7 +60,7 @@ namespace Gs2.Unity.Gs2JobQueue
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.Run(
@@ -91,7 +84,7 @@ namespace Gs2.Unity.Gs2JobQueue
                 string jobName = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.GetJobResult(

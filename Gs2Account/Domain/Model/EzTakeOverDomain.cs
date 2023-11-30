@@ -26,6 +26,7 @@
 // ReSharper disable NotAccessedField.Local
 
 #pragma warning disable 1998
+#pragma warning disable CS0169, CS0168
 
 using System;
 using System.Linq;
@@ -54,90 +55,17 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
 
     public partial class EzTakeOverDomain {
         private readonly Gs2.Gs2Account.Domain.Model.TakeOverDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public int? Type => _domain?.Type;
 
         public EzTakeOverDomain(
             Gs2.Gs2Account.Domain.Model.TakeOverDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Account.Model.EzTakeOver> Model()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Model.EzTakeOver> self)
-            {
-                yield return ModelAsync().ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Model.EzTakeOver>(Impl);
-        }
-
-        public async UniTask<Gs2.Unity.Gs2Account.Model.EzTakeOver> ModelAsync()
-        {
-            var item = await _profile.RunAsync(
-                null,
-                async () =>
-                {
-                    return await _domain.ModelAsync();
-                }
-            );
-            if (item == null) {
-                return null;
-            }
-            return Gs2.Unity.Gs2Account.Model.EzTakeOver.FromModel(
-                item
-            );
-        }
-        #else
-        public IFuture<Gs2.Unity.Gs2Account.Model.EzTakeOver> Model()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Model.EzTakeOver> self)
-            {
-                var future = _domain.ModelFuture();
-                yield return _profile.RunFuture(
-                    null,
-                    future,
-                    () => {
-                    	return future = _domain.ModelFuture();
-                    }
-                );
-                if (future.Error != null) {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var item = future.Result;
-                if (item == null) {
-                    self.OnComplete(null);
-                    yield break;
-                }
-                self.OnComplete(Gs2.Unity.Gs2Account.Model.EzTakeOver.FromModel(
-                    item
-                ));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Model.EzTakeOver>(Impl);
-        }
-        #endif
-
-        public ulong Subscribe(Action<Gs2.Unity.Gs2Account.Model.EzTakeOver> callback)
-        {
-            return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2Account.Model.EzTakeOver.FromModel(
-                    item
-                ));
-            });
-        }
-
-        public void Unsubscribe(ulong callbackId)
-        {
-            this._domain.Unsubscribe(callbackId);
+            this._connection = connection;
         }
 
     }

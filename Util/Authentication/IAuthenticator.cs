@@ -11,13 +11,19 @@ namespace Gs2.Unity.Util
 {
     public abstract class IAuthenticator
     {
-        public UnityAction<AsyncResult<AccessToken>> Callback { get; set; }
         public bool NeedReAuthentication { get; protected set; }
 
 #if GS2_ENABLE_UNITASK
-        public abstract UniTask<AccessToken> AuthenticationAsync();
+        internal abstract UniTask<AccessToken> AuthenticationAsync(
+            Gs2Connection connection,
+            string userId,
+            string password
+        );
 #endif
-        public abstract Gs2Future<AccessToken> AuthenticationFuture();
-        public abstract IEnumerator Authentication(UnityAction<AsyncResult<AccessToken>> callback);
+        internal abstract Gs2Future<AccessToken> AuthenticationFuture(
+            Gs2Connection connection,
+            string userId,
+            string password
+        );
     }
 }

@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -27,6 +26,8 @@
 #pragma warning disable 1998
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core;
@@ -36,62 +37,58 @@ using Gs2.Core.Util;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
-#if GS2_ENABLE_UNITASK
-using System.Threading;
-using System.Collections.Generic;
-using Cysharp.Threading;
-using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Linq;
-#else
-using System.Collections;
-using UnityEngine.Events;
-using Gs2.Core.Exception;
-#endif
 
 namespace Gs2.Unity.Gs2Formation.Domain.Iterator
 {
 
-    #if GS2_ENABLE_UNITASK
-    public class EzDescribePropertyFormsIterator {
-    #else
-    public class EzDescribePropertyFormsIterator : Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzPropertyForm> {
-    #endif
-        private readonly Gs2.Gs2Formation.Domain.Iterator.DescribePropertyFormsIterator _iterator;
+    public class EzListPropertyFormsIterator : Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzPropertyForm>
+    {
+        private Gs2Iterator<Gs2.Gs2Formation.Model.PropertyForm> _it;
+        private readonly Gs2.Gs2Formation.Domain.Model.UserAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
+        private readonly string _propertyFormModelName;
 
-        public EzDescribePropertyFormsIterator(
-            Gs2.Gs2Formation.Domain.Iterator.DescribePropertyFormsIterator iterator
-        ) {
-            this._iterator = iterator;
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Formation.Model.EzPropertyForm> GetAsyncEnumerator(
-            CancellationToken cancellationToken = new CancellationToken()
+        public EzListPropertyFormsIterator(
+            Gs2.Gs2Formation.Domain.Model.UserAccessTokenDomain domain,
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection,
+            string propertyFormModelName
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Formation.Model.EzPropertyForm>(async (writer, token) =>
-            {
-            });
+            _domain = domain;
+            _gameSession = gameSession;
+            _connection = connection;
+            _propertyFormModelName = propertyFormModelName;
+            _it = _domain.PropertyForms(
+                this._propertyFormModelName
+            );
         }
-
-        #else
 
         public override bool HasNext()
         {
-            return _iterator.HasNext();
+            return _it.HasNext();
         }
 
-        protected override IEnumerator Next(
-            Action<AsyncResult<Gs2.Unity.Gs2Formation.Model.EzPropertyForm>> callback
-        )
+        protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Formation.Model.EzPropertyForm>> callback)
         {
-            yield return _iterator;
-            callback.Invoke(new AsyncResult<Gs2.Unity.Gs2Formation.Model.EzPropertyForm>(
-                _iterator.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzPropertyForm.FromModel(_iterator.Current),
-                _iterator.Error
-            ));
+            yield return _connection.RunIterator(
+                _gameSession,
+                _it,
+                () =>
+                {
+                    return _it = _domain.PropertyForms(
+                        this._propertyFormModelName
+                    );
+                }
+            );
+            callback.Invoke(
+                new AsyncResult<Gs2.Unity.Gs2Formation.Model.EzPropertyForm>(
+                    _it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzPropertyForm.FromModel(_it.Current),
+                    _it.Error
+                )
+            );
         }
-
-        #endif
     }
+
 }

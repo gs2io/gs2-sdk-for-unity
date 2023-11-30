@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using Gs2.Core.Net;
 using Gs2.Core.Domain;
+using Gs2.Core.Model;
 using Gs2.Unity.Util;
 using UnityEngine;
 using UnityEngine.Events;
@@ -27,13 +28,60 @@ using Cysharp.Threading.Tasks;
 
 namespace Gs2.Unity.Core
 {
+    public static class Gs2Client
+    {
+        public static Gs2Future<Gs2Domain> CreateFuture(
+            IGs2Credential credential,
+            Region region = Region.ApNortheast1,
+            string distributorNamespaceName = "default"
+        ) {
+            IEnumerator Impl(Gs2Future<Gs2Domain> self)
+            {
+                var connection = new Gs2Connection(
+                    credential,
+                    region
+                );
+                var future = connection.ConnectFuture();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var domain = new Gs2Domain(
+                    connection,
+                    distributorNamespaceName
+                );
+                self.OnComplete(domain);
+            }
+
+            return new Gs2InlineFuture<Gs2Domain>(Impl);
+        }
+        
+#if GS2_ENABLE_UNITASK
+        public static async UniTask<Gs2Domain> CreateAsync(
+            IGs2Credential credential,
+            Region region = Region.ApNortheast1,
+            string distributorNamespaceName = "default"
+        ) {
+            var connection = new Gs2Connection(
+                credential,
+                region
+            );
+            await connection.ConnectAsync();
+            return new Gs2Domain(
+                connection,
+                distributorNamespaceName
+            );
+        }
+#endif
+    }
+    
     public class Gs2Domain
     {
         private Gs2.Core.Domain.Gs2 _gs2;
         
         public Gs2Account.Domain.Gs2Account Account;
         public Gs2AdReward.Domain.Gs2AdReward AdReward;
-        public Gs2Auth.Domain.Gs2Auth Auth;
         public Gs2Chat.Domain.Gs2Chat Chat;
         public Gs2Datastore.Domain.Gs2Datastore Datastore;
         public Gs2Dictionary.Domain.Gs2Dictionary Dictionary;
@@ -70,53 +118,72 @@ namespace Gs2.Unity.Core
 
         public Gs2.Core.Domain.Gs2 Super => _gs2;
 
+        public Gs2Connection Connection { get; private set; }
+
+        [Obsolete("The method of initializing the SDK has changed; use Gs2Client.Create().")]
         public Gs2Domain(
             Profile profile,
             string distributorNamespaceName = null
-        )
-        {
+        ): this(
+            new Gs2Connection(
+                profile.Gs2RestSession.Credential,
+                profile.Gs2RestSession.Region
+            ) {
+                RestSession = profile.Gs2RestSession,
+                WebSocketSession = profile.Gs2Session
+            },
+            distributorNamespaceName
+        ) {
+            
+        }
+        
+        internal Gs2Domain(
+            Gs2Connection connection,
+            string distributorNamespaceName = null
+        ) {
+            Connection = connection;
+            
             _gs2 = new Gs2.Core.Domain.Gs2(
-                profile.Gs2RestSession,
-                profile.Gs2Session,
+                connection.RestSession,
+                connection.WebSocketSession,
                 distributorNamespaceName
             );
             
-            Account = new Gs2Account.Domain.Gs2Account(_gs2.Account, profile);
-            AdReward = new Gs2AdReward.Domain.Gs2AdReward(_gs2.AdReward, profile);
-            Auth = new Gs2Auth.Domain.Gs2Auth(_gs2.Auth, profile);
-            Chat = new Gs2Chat.Domain.Gs2Chat(_gs2.Chat, profile);
-            Datastore = new Gs2Datastore.Domain.Gs2Datastore(_gs2.Datastore, profile);
-            Dictionary = new Gs2Dictionary.Domain.Gs2Dictionary(_gs2.Dictionary, profile);
-            Distributor = new Gs2Distributor.Domain.Gs2Distributor(_gs2.Distributor, profile);
-            Enchant = new Gs2Enchant.Domain.Gs2Enchant(_gs2.Enchant, profile);
-            Enhance = new Gs2Enhance.Domain.Gs2Enhance(_gs2.Enhance, profile);
-            Exchange = new Gs2Exchange.Domain.Gs2Exchange(_gs2.Exchange, profile);
-            Experience = new Gs2Experience.Domain.Gs2Experience(_gs2.Experience, profile);
-            Formation = new Gs2Formation.Domain.Gs2Formation(_gs2.Formation, profile);
-            Friend = new Gs2Friend.Domain.Gs2Friend(_gs2.Friend, profile);
-            Gateway = new Gs2Gateway.Domain.Gs2Gateway(_gs2.Gateway, profile);
-            Idle = new Gs2Idle.Domain.Gs2Idle(_gs2.Idle, profile);
-            Inbox = new Gs2Inbox.Domain.Gs2Inbox(_gs2.Inbox, profile);
-            Inventory = new Gs2Inventory.Domain.Gs2Inventory(_gs2.Inventory, profile);
-            JobQueue = new Gs2JobQueue.Domain.Gs2JobQueue(_gs2.JobQueue, profile);
-            Limit = new Gs2Limit.Domain.Gs2Limit(_gs2.Limit, profile);
-            LoginReward = new Gs2LoginReward.Domain.Gs2LoginReward(_gs2.LoginReward, profile);
-            Lottery = new Gs2Lottery.Domain.Gs2Lottery(_gs2.Lottery, profile);
-            Matchmaking = new Gs2Matchmaking.Domain.Gs2Matchmaking(_gs2.Matchmaking, profile);
-            MegaField = new Gs2MegaField.Domain.Gs2MegaField(_gs2.MegaField, profile);
-            Mission = new Gs2Mission.Domain.Gs2Mission(_gs2.Mission, profile);
-            Money = new Gs2Money.Domain.Gs2Money(_gs2.Money, profile);
-            News = new Gs2News.Domain.Gs2News(_gs2.News, profile);
-            Quest = new Gs2Quest.Domain.Gs2Quest(_gs2.Quest, profile);
-            Ranking = new Gs2Ranking.Domain.Gs2Ranking(_gs2.Ranking, profile);
-            Realtime = new Gs2Realtime.Domain.Gs2Realtime(_gs2.Realtime, profile);
-            Schedule = new Gs2Schedule.Domain.Gs2Schedule(_gs2.Schedule, profile);
-            SerialKey = new Gs2SerialKey.Domain.Gs2SerialKey(_gs2.SerialKey, profile);
-            Showcase = new Gs2Showcase.Domain.Gs2Showcase(_gs2.Showcase, profile);
-            SkillTree = new Gs2SkillTree.Domain.Gs2SkillTree(_gs2.SkillTree, profile);
-            Stamina = new Gs2Stamina.Domain.Gs2Stamina(_gs2.Stamina, profile);
-            StateMachine = new Gs2StateMachine.Domain.Gs2StateMachine(_gs2.StateMachine, profile);
-            Version = new Gs2Version.Domain.Gs2Version(_gs2.Version, profile);
+            Account = new Gs2Account.Domain.Gs2Account(_gs2.Account, connection);
+            AdReward = new Gs2AdReward.Domain.Gs2AdReward(_gs2.AdReward, connection);
+            Chat = new Gs2Chat.Domain.Gs2Chat(_gs2.Chat, connection);
+            Datastore = new Gs2Datastore.Domain.Gs2Datastore(_gs2.Datastore, connection);
+            Dictionary = new Gs2Dictionary.Domain.Gs2Dictionary(_gs2.Dictionary, connection);
+            Distributor = new Gs2Distributor.Domain.Gs2Distributor(_gs2.Distributor, connection);
+            Enchant = new Gs2Enchant.Domain.Gs2Enchant(_gs2.Enchant, connection);
+            Enhance = new Gs2Enhance.Domain.Gs2Enhance(_gs2.Enhance, connection);
+            Exchange = new Gs2Exchange.Domain.Gs2Exchange(_gs2.Exchange, connection);
+            Experience = new Gs2Experience.Domain.Gs2Experience(_gs2.Experience, connection);
+            Formation = new Gs2Formation.Domain.Gs2Formation(_gs2.Formation, connection);
+            Friend = new Gs2Friend.Domain.Gs2Friend(_gs2.Friend, connection);
+            Gateway = new Gs2Gateway.Domain.Gs2Gateway(_gs2.Gateway, connection);
+            Idle = new Gs2Idle.Domain.Gs2Idle(_gs2.Idle, connection);
+            Inbox = new Gs2Inbox.Domain.Gs2Inbox(_gs2.Inbox, connection);
+            Inventory = new Gs2Inventory.Domain.Gs2Inventory(_gs2.Inventory, connection);
+            JobQueue = new Gs2JobQueue.Domain.Gs2JobQueue(_gs2.JobQueue, connection);
+            Limit = new Gs2Limit.Domain.Gs2Limit(_gs2.Limit, connection);
+            LoginReward = new Gs2LoginReward.Domain.Gs2LoginReward(_gs2.LoginReward, connection);
+            Lottery = new Gs2Lottery.Domain.Gs2Lottery(_gs2.Lottery, connection);
+            Matchmaking = new Gs2Matchmaking.Domain.Gs2Matchmaking(_gs2.Matchmaking, connection);
+            MegaField = new Gs2MegaField.Domain.Gs2MegaField(_gs2.MegaField, connection);
+            Mission = new Gs2Mission.Domain.Gs2Mission(_gs2.Mission, connection);
+            Money = new Gs2Money.Domain.Gs2Money(_gs2.Money, connection);
+            News = new Gs2News.Domain.Gs2News(_gs2.News, connection);
+            Quest = new Gs2Quest.Domain.Gs2Quest(_gs2.Quest, connection);
+            Ranking = new Gs2Ranking.Domain.Gs2Ranking(_gs2.Ranking, connection);
+            Realtime = new Gs2Realtime.Domain.Gs2Realtime(_gs2.Realtime, connection);
+            Schedule = new Gs2Schedule.Domain.Gs2Schedule(_gs2.Schedule, connection);
+            SerialKey = new Gs2SerialKey.Domain.Gs2SerialKey(_gs2.SerialKey, connection);
+            Showcase = new Gs2Showcase.Domain.Gs2Showcase(_gs2.Showcase, connection);
+            SkillTree = new Gs2SkillTree.Domain.Gs2SkillTree(_gs2.SkillTree, connection);
+            Stamina = new Gs2Stamina.Domain.Gs2Stamina(_gs2.Stamina, connection);
+            StateMachine = new Gs2StateMachine.Domain.Gs2StateMachine(_gs2.StateMachine, connection);
+            Version = new Gs2Version.Domain.Gs2Version(_gs2.Version, connection);
         }
 
         public void ClearCache()
@@ -132,54 +199,86 @@ namespace Gs2.Unity.Core
             _gs2.ClearCache<TKind>(parentKey, key);
         }
 
-#if GS2_ENABLE_UNITASK
-        public async UniTask DispatchAsync(
-            GameSession gameSession
+        public Gs2Future<GameSession> LoginFuture(
+            IAuthenticator authenticator,
+            string userId,
+            string password
         )
         {
-            await _gs2.DispatchAsync(
-                gameSession.AccessToken
+            IEnumerator Impl(Gs2Future<GameSession> self)
+            {
+                var gameSession = new GameSession(
+                    authenticator,
+                    Connection,
+                    userId,
+                    password
+                );
+                var future = gameSession.RefreshFuture();
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(gameSession);
+            }
+            return new Gs2InlineFuture<GameSession>(Impl);
+        }
+
+#if GS2_ENABLE_UNITASK
+        public async UniTask<GameSession> LoginAsync(
+            IAuthenticator authenticator,
+            string userId,
+            string password
+        )
+        {
+            var gameSession = new GameSession(
+                authenticator,
+                Connection,
+                userId,
+                password
             );
+            await gameSession.RefreshAsync();
+            return gameSession;
         }
 #endif
-        
+
         public Gs2Future<bool> DispatchFuture(
             GameSession gameSession
         )
         {
-            return _gs2.DispatchFuture(
-                gameSession.AccessToken
-            );
-        }
-        
-#if GS2_ENABLE_UNITASK
-        [Obsolete("Rename to DispatchAsync")]
-        public async UniTask Dispatch(
-#else
-        [Obsolete("Rename to DispatchFuture")]
-        public Gs2Future<bool> Dispatch(
-#endif
-            GameSession gameSession
-        )
-        {
-#if GS2_ENABLE_UNITASK
-            await _gs2.DispatchAsync(
-#else
-            return _gs2.DispatchFuture(
-#endif
+            return this._gs2.DispatchFuture(
                 gameSession.AccessToken
             );
         }
 
 #if GS2_ENABLE_UNITASK
-        public async UniTask Disconnect()
+        public async UniTask DispatchAsync(
+            GameSession gameSession
+        )
         {
-            await _gs2.Disconnect();
+            await this._gs2.DispatchAsync(
+                gameSession.AccessToken
+            );
         }
-#else
-        public IEnumerator Disconnect()
+#endif
+        [Obsolete("The name has been changed to DispatchFuture.")]
+        public IFuture<bool> Dispatch(
+            GameSession gameSession
+        )
         {
-            yield return _gs2.Disconnect();
+            return DispatchFuture(gameSession);
+        }
+        
+        public Gs2Future DisconnectFuture()
+        {
+            return _gs2.DisconnectFuture();
+        }
+        
+#if GS2_ENABLE_UNITASK
+        public async UniTask DisconnectAsync()
+        {
+            await _gs2.DisconnectAsync();
         }
 #endif
     }

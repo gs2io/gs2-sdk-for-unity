@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2AdReward
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2AdRewardWebSocketClient _client;
 		private readonly Gs2AdRewardRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2AdRewardWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2AdRewardRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2AdRewardRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2AdRewardWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2AdRewardRestClient(connection.RestSession);
 		}
 
         public IEnumerator GetPoint(
@@ -67,7 +60,7 @@ namespace Gs2.Unity.Gs2AdReward
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.GetPoint(

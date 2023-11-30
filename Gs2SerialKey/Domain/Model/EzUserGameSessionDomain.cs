@@ -52,7 +52,8 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
 
     public partial class EzUserGameSessionDomain {
         private readonly Gs2.Gs2SerialKey.Domain.Model.UserAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string Url => _domain.Url;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
@@ -60,10 +61,12 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
 
         public EzUserGameSessionDomain(
             Gs2.Gs2SerialKey.Domain.Model.UserAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
         public Gs2.Unity.Gs2SerialKey.Domain.Model.EzSerialKeyGameSessionDomain SerialKey(
@@ -73,7 +76,8 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
                 _domain.SerialKey(
                     serialKeyCode
                 ),
-                _profile
+                this._gameSession,
+                this._connection
             );
         }
 

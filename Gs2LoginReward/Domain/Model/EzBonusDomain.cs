@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
 
     public partial class EzBonusDomain {
         private readonly Gs2.Gs2LoginReward.Domain.Model.BonusDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NamespaceName => _domain?.NamespaceName;
@@ -61,10 +61,10 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
 
         public EzBonusDomain(
             Gs2.Gs2LoginReward.Domain.Model.BonusDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._connection = connection;
         }
 
     }

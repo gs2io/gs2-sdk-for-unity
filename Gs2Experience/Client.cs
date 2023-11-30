@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2Experience
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2ExperienceWebSocketClient _client;
 		private readonly Gs2ExperienceRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2ExperienceWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2ExperienceRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2ExperienceRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2ExperienceWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2ExperienceRestClient(connection.RestSession);
 		}
 
         public IEnumerator GetExperienceModel(
@@ -67,7 +60,7 @@ namespace Gs2.Unity.Gs2Experience
                 string experienceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.GetExperienceModel(
@@ -89,7 +82,7 @@ namespace Gs2.Unity.Gs2Experience
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribeExperienceModels(
@@ -113,7 +106,7 @@ namespace Gs2.Unity.Gs2Experience
                 string propertyId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.GetStatus(
@@ -141,7 +134,7 @@ namespace Gs2.Unity.Gs2Experience
                 string keyId = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.GetStatusWithSignature(
@@ -170,7 +163,7 @@ namespace Gs2.Unity.Gs2Experience
                 int? limit = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeStatuses(

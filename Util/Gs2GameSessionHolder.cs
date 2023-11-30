@@ -17,7 +17,7 @@ namespace Gs2.Unity.Util
         public GameSession GameSession { get; private set; }
 
         public UnityEvent OnLogin = new UnityEvent();
-        public bool Initialized => GameSession != null;
+        public bool Initialized => GameSession != null && GameSession.AccessToken != null;
 
         public void Awake()
         {
@@ -64,7 +64,7 @@ namespace Gs2.Unity.Util
                 var retryWaitSecond = 1;
                 while (true)
                 {
-                    var future = Gs2ClientHolder.Instance.Gs2.Dispatch(GameSession);
+                    var future = Gs2ClientHolder.Instance.Gs2.DispatchFuture(GameSession);
                     yield return future;
                     if (future.Error != null) {
                         Debug.LogError(future.Error.Message);
@@ -99,7 +99,7 @@ namespace Gs2.Unity.Util
             }
         }
 
-        public void UpdateAccessToken(GameSession gameSession)
+        public void UpdateGameSession(GameSession gameSession)
         {
             GameSession = gameSession;
             this.OnLogin.Invoke();

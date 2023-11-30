@@ -52,96 +52,43 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
 
     public partial class EzUserGameSessionDomain {
         private readonly Gs2.Gs2Dictionary.Domain.Model.UserAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserGameSessionDomain(
             Gs2.Gs2Dictionary.Domain.Model.UserAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
-        public class EzEntriesIterator : Gs2Iterator<Gs2.Unity.Gs2Dictionary.Model.EzEntry>
-        {
-            private Gs2Iterator<Gs2.Gs2Dictionary.Model.Entry> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2Dictionary.Domain.Model.UserAccessTokenDomain _domain;
-        #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
-
-            public EzEntriesIterator(
-                Gs2Iterator<Gs2.Gs2Dictionary.Model.Entry> it,
-        #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2Dictionary.Domain.Model.UserAccessTokenDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Dictionary.Model.EzEntry>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    _domain.AccessToken,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.Entries(
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Dictionary.Model.EzEntry>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Dictionary.Model.EzEntry.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
         public Gs2Iterator<Gs2.Unity.Gs2Dictionary.Model.EzEntry> Entries(
         )
         {
-            return new EzEntriesIterator(
-                _domain.Entries(
-                ),
-                _profile
+            return new Gs2.Unity.Gs2Dictionary.Domain.Iterator.EzListEntriesIterator(
+                this._domain,
+                this._gameSession,
+                this._connection
             );
         }
 
+        #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Dictionary.Model.EzEntry> EntriesAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2Dictionary.Model.EzEntry> Entries(
-        #endif
         )
         {
-        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Dictionary.Model.EzEntry>(async (writer, token) =>
             {
                 var it = _domain.EntriesAsync(
                 ).GetAsyncEnumerator();
                 while(
-                    await _profile.RunIteratorAsync(
-                        _domain.AccessToken,
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
                         async () =>
                         {
                             return await it.MoveNextAsync();
@@ -156,15 +103,8 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Dictionary.Model.EzEntry.FromModel(it.Current));
                 }
             });
-        #else
-            return new EzEntriesIterator(
-                _domain.Entries(
-                ),
-                _domain,
-                _profile
-            );
-        #endif
         }
+        #endif
 
         public ulong SubscribeEntries(Action callback) {
             return this._domain.SubscribeEntries(callback);
@@ -181,7 +121,8 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
                 _domain.Entry(
                     entryName
                 ),
-                _profile
+                this._gameSession,
+                this._connection
             );
         }
 

@@ -52,7 +52,8 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
 
     public partial class EzStaminaGameSessionDomain {
         private readonly Gs2.Gs2Stamina.Domain.Model.StaminaAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public int? OverflowValue => _domain.OverflowValue;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
@@ -60,10 +61,12 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
 
         public EzStaminaGameSessionDomain(
             Gs2.Gs2Stamina.Domain.Model.StaminaAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
         [Obsolete("The name has been changed to ConsumeFuture.")]
@@ -76,78 +79,51 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> ConsumeFuture(
             int consumeValue
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
             {
-                var future = this._domain.ConsumeFuture(
-                    new ConsumeStaminaRequest()
-                        .WithConsumeValue(consumeValue)
-                        .WithAccessToken(_domain.AccessToken.Token)
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.ConsumeFuture(
+                        new ConsumeStaminaRequest()
+                            .WithConsumeValue(consumeValue)
+                    )
                 );
                 yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(future.Result, _profile));
+                self.OnComplete(new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
         }
 
+        #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> ConsumeAsync(
-        #else
-        public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> ConsumeFuture(
-        #endif
             int consumeValue
         ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.ConsumeAsync(
-                        new ConsumeStaminaRequest()
-                            .WithConsumeValue(consumeValue)
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
-            );
-            return new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(result, _profile);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
-            {
-                var future = _domain.ConsumeFuture(
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.ConsumeAsync(
                     new ConsumeStaminaRequest()
                         .WithConsumeValue(consumeValue)
-                        .WithAccessToken(_domain.AccessToken.Token)
-                );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.ConsumeFuture(
-                    		new ConsumeStaminaRequest()
-                	        .WithConsumeValue(consumeValue)
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(result, _profile));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
-        #endif
+                )
+            );
+            return new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
         }
+        #endif
 
         [Obsolete("The name has been changed to SetMaxValueFuture.")]
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetMaxValue(
@@ -163,7 +139,6 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetMaxValueFuture(
             string signedStatusBody,
             string signedStatusSignature,
@@ -172,81 +147,51 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
             {
-                var future = this._domain.SetMaxValueByStatusFuture(
-                    new SetMaxValueByStatusRequest()
-                        .WithKeyId(keyId)
-                        .WithSignedStatusBody(signedStatusBody)
-                        .WithSignedStatusSignature(signedStatusSignature)
-                        .WithAccessToken(_domain.AccessToken.Token)
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.SetMaxValueByStatusFuture(
+                        new SetMaxValueByStatusRequest()
+                            .WithKeyId(keyId)
+                            .WithSignedStatusBody(signedStatusBody)
+                            .WithSignedStatusSignature(signedStatusSignature)
+                    )
                 );
                 yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(future.Result, _profile));
+                self.OnComplete(new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
         }
 
+        #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetMaxValueAsync(
-        #else
-        public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetMaxValueFuture(
-        #endif
             string signedStatusBody,
             string signedStatusSignature,
             string keyId = null
         ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.SetMaxValueByStatusAsync(
-                        new SetMaxValueByStatusRequest()
-                            .WithKeyId(keyId)
-                            .WithSignedStatusBody(signedStatusBody)
-                            .WithSignedStatusSignature(signedStatusSignature)
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
-            );
-            return new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(result, _profile);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
-            {
-                var future = _domain.SetMaxValueByStatusFuture(
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.SetMaxValueByStatusAsync(
                     new SetMaxValueByStatusRequest()
                         .WithKeyId(keyId)
                         .WithSignedStatusBody(signedStatusBody)
                         .WithSignedStatusSignature(signedStatusSignature)
-                        .WithAccessToken(_domain.AccessToken.Token)
-                );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.SetMaxValueByStatusFuture(
-                    		new SetMaxValueByStatusRequest()
-                	        .WithKeyId(keyId)
-                	        .WithSignedStatusBody(signedStatusBody)
-                	        .WithSignedStatusSignature(signedStatusSignature)
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(result, _profile));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
-        #endif
+                )
+            );
+            return new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
         }
+        #endif
 
         [Obsolete("The name has been changed to SetRecoverIntervalFuture.")]
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverInterval(
@@ -262,7 +207,6 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverIntervalFuture(
             string signedStatusBody,
             string signedStatusSignature,
@@ -271,81 +215,51 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
             {
-                var future = this._domain.SetRecoverIntervalByStatusFuture(
-                    new SetRecoverIntervalByStatusRequest()
-                        .WithKeyId(keyId)
-                        .WithSignedStatusBody(signedStatusBody)
-                        .WithSignedStatusSignature(signedStatusSignature)
-                        .WithAccessToken(_domain.AccessToken.Token)
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.SetRecoverIntervalByStatusFuture(
+                        new SetRecoverIntervalByStatusRequest()
+                            .WithKeyId(keyId)
+                            .WithSignedStatusBody(signedStatusBody)
+                            .WithSignedStatusSignature(signedStatusSignature)
+                    )
                 );
                 yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(future.Result, _profile));
+                self.OnComplete(new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
         }
 
+        #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverIntervalAsync(
-        #else
-        public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverIntervalFuture(
-        #endif
             string signedStatusBody,
             string signedStatusSignature,
             string keyId = null
         ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.SetRecoverIntervalByStatusAsync(
-                        new SetRecoverIntervalByStatusRequest()
-                            .WithKeyId(keyId)
-                            .WithSignedStatusBody(signedStatusBody)
-                            .WithSignedStatusSignature(signedStatusSignature)
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
-            );
-            return new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(result, _profile);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
-            {
-                var future = _domain.SetRecoverIntervalByStatusFuture(
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.SetRecoverIntervalByStatusAsync(
                     new SetRecoverIntervalByStatusRequest()
                         .WithKeyId(keyId)
                         .WithSignedStatusBody(signedStatusBody)
                         .WithSignedStatusSignature(signedStatusSignature)
-                        .WithAccessToken(_domain.AccessToken.Token)
-                );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.SetRecoverIntervalByStatusFuture(
-                    		new SetRecoverIntervalByStatusRequest()
-                	        .WithKeyId(keyId)
-                	        .WithSignedStatusBody(signedStatusBody)
-                	        .WithSignedStatusSignature(signedStatusSignature)
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(result, _profile));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
-        #endif
+                )
+            );
+            return new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
         }
+        #endif
 
         [Obsolete("The name has been changed to SetRecoverValueFuture.")]
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverValue(
@@ -361,7 +275,6 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverValueFuture(
             string signedStatusBody,
             string signedStatusSignature,
@@ -370,81 +283,51 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
             {
-                var future = this._domain.SetRecoverValueByStatusFuture(
-                    new SetRecoverValueByStatusRequest()
-                        .WithKeyId(keyId)
-                        .WithSignedStatusBody(signedStatusBody)
-                        .WithSignedStatusSignature(signedStatusSignature)
-                        .WithAccessToken(_domain.AccessToken.Token)
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.SetRecoverValueByStatusFuture(
+                        new SetRecoverValueByStatusRequest()
+                            .WithKeyId(keyId)
+                            .WithSignedStatusBody(signedStatusBody)
+                            .WithSignedStatusSignature(signedStatusSignature)
+                    )
                 );
                 yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(future.Result, _profile));
+                self.OnComplete(new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
         }
 
+        #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverValueAsync(
-        #else
-        public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverValueFuture(
-        #endif
             string signedStatusBody,
             string signedStatusSignature,
             string keyId = null
         ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.SetRecoverValueByStatusAsync(
-                        new SetRecoverValueByStatusRequest()
-                            .WithKeyId(keyId)
-                            .WithSignedStatusBody(signedStatusBody)
-                            .WithSignedStatusSignature(signedStatusSignature)
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
-            );
-            return new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(result, _profile);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
-            {
-                var future = _domain.SetRecoverValueByStatusFuture(
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.SetRecoverValueByStatusAsync(
                     new SetRecoverValueByStatusRequest()
                         .WithKeyId(keyId)
                         .WithSignedStatusBody(signedStatusBody)
                         .WithSignedStatusSignature(signedStatusSignature)
-                        .WithAccessToken(_domain.AccessToken.Token)
-                );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.SetRecoverValueByStatusFuture(
-                    		new SetRecoverValueByStatusRequest()
-                	        .WithKeyId(keyId)
-                	        .WithSignedStatusBody(signedStatusBody)
-                	        .WithSignedStatusSignature(signedStatusSignature)
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(result, _profile));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
-        #endif
+                )
+            );
+            return new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
         }
+        #endif
 
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Stamina.Model.EzStamina> Model()
@@ -453,31 +336,10 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Stamina.Model.EzStamina> ModelFuture()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Model.EzStamina> self)
-            {
-                yield return ModelAsync().ToCoroutine(
-                    self.OnComplete,
-                    e =>
-                    {
-                        if (e is Gs2.Core.Exception.Gs2Exception e2) {
-                            self.OnError(e2);
-                        }
-                        else {
-                            UnityEngine.Debug.LogError(e.Message);
-                            self.OnError(new Gs2.Core.Exception.UnknownException(e.Message));
-                        }
-                    }
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Model.EzStamina>(Impl);
-        }
-
         public async UniTask<Gs2.Unity.Gs2Stamina.Model.EzStamina> ModelAsync()
         {
-            var item = await _profile.RunAsync(
-                _domain.AccessToken,
+            var item = await this._connection.RunAsync(
+                this._gameSession,
                 async () =>
                 {
                     return await _domain.ModelAsync();
@@ -490,19 +352,19 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
                 item
             );
         }
-        #else
+        #endif
+
         public IFuture<Gs2.Unity.Gs2Stamina.Model.EzStamina> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Model.EzStamina> self)
             {
-                var future = _domain.ModelFuture();
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
+                var future = this._connection.RunFuture(
+                    this._gameSession,
                     () => {
-                    	return future = _domain.ModelFuture();
+                    	return _domain.ModelFuture();
                     }
                 );
+                yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
@@ -518,7 +380,6 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Model.EzStamina>(Impl);
         }
-        #endif
 
         public ulong Subscribe(Action<Gs2.Unity.Gs2Stamina.Model.EzStamina> callback)
         {

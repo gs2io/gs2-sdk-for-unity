@@ -52,7 +52,8 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
     public partial class EzBigItemGameSessionDomain {
         private readonly Gs2.Gs2Inventory.Domain.Model.BigItemAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string InventoryName => _domain?.InventoryName;
@@ -60,10 +61,12 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
         public EzBigItemGameSessionDomain(
             Gs2.Gs2Inventory.Domain.Model.BigItemAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
         [Obsolete("The name has been changed to ConsumeBigItemFuture.")]
@@ -76,78 +79,51 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzBigItemGameSessionDomain> ConsumeBigItemFuture(
             string consumeCount
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Domain.Model.EzBigItemGameSessionDomain> self)
             {
-                var future = this._domain.ConsumeFuture(
-                    new ConsumeBigItemRequest()
-                        .WithConsumeCount(consumeCount)
-                        .WithAccessToken(_domain.AccessToken.Token)
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.ConsumeFuture(
+                        new ConsumeBigItemRequest()
+                            .WithConsumeCount(consumeCount)
+                    )
                 );
                 yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(new Gs2.Unity.Gs2Inventory.Domain.Model.EzBigItemGameSessionDomain(future.Result, _profile));
+                self.OnComplete(new Gs2.Unity.Gs2Inventory.Domain.Model.EzBigItemGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzBigItemGameSessionDomain>(Impl);
         }
 
+        #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Inventory.Domain.Model.EzBigItemGameSessionDomain> ConsumeBigItemAsync(
-        #else
-        public IFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzBigItemGameSessionDomain> ConsumeBigItemFuture(
-        #endif
             string consumeCount
         ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.ConsumeAsync(
-                        new ConsumeBigItemRequest()
-                            .WithConsumeCount(consumeCount)
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
-            );
-            return new Gs2.Unity.Gs2Inventory.Domain.Model.EzBigItemGameSessionDomain(result, _profile);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Domain.Model.EzBigItemGameSessionDomain> self)
-            {
-                var future = _domain.ConsumeFuture(
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.ConsumeAsync(
                     new ConsumeBigItemRequest()
                         .WithConsumeCount(consumeCount)
-                        .WithAccessToken(_domain.AccessToken.Token)
-                );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.ConsumeFuture(
-                    		new ConsumeBigItemRequest()
-                	        .WithConsumeCount(consumeCount)
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Inventory.Domain.Model.EzBigItemGameSessionDomain(result, _profile));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Inventory.Domain.Model.EzBigItemGameSessionDomain>(Impl);
-        #endif
+                )
+            );
+            return new Gs2.Unity.Gs2Inventory.Domain.Model.EzBigItemGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
         }
+        #endif
 
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Inventory.Model.EzBigItem> Model()
@@ -156,31 +132,10 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Inventory.Model.EzBigItem> ModelFuture()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Model.EzBigItem> self)
-            {
-                yield return ModelAsync().ToCoroutine(
-                    self.OnComplete,
-                    e =>
-                    {
-                        if (e is Gs2.Core.Exception.Gs2Exception e2) {
-                            self.OnError(e2);
-                        }
-                        else {
-                            UnityEngine.Debug.LogError(e.Message);
-                            self.OnError(new Gs2.Core.Exception.UnknownException(e.Message));
-                        }
-                    }
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Inventory.Model.EzBigItem>(Impl);
-        }
-
         public async UniTask<Gs2.Unity.Gs2Inventory.Model.EzBigItem> ModelAsync()
         {
-            var item = await _profile.RunAsync(
-                _domain.AccessToken,
+            var item = await this._connection.RunAsync(
+                this._gameSession,
                 async () =>
                 {
                     return await _domain.ModelAsync();
@@ -193,19 +148,19 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
                 item
             );
         }
-        #else
+        #endif
+
         public IFuture<Gs2.Unity.Gs2Inventory.Model.EzBigItem> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Inventory.Model.EzBigItem> self)
             {
-                var future = _domain.ModelFuture();
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
+                var future = this._connection.RunFuture(
+                    this._gameSession,
                     () => {
-                    	return future = _domain.ModelFuture();
+                    	return _domain.ModelFuture();
                     }
                 );
+                yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
@@ -221,7 +176,6 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Inventory.Model.EzBigItem>(Impl);
         }
-        #endif
 
         public ulong Subscribe(Action<Gs2.Unity.Gs2Inventory.Model.EzBigItem> callback)
         {

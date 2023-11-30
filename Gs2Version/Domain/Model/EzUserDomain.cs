@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
 
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Version.Domain.Model.UserDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string Body => _domain.Body;
         public string Signature => _domain.Signature;
         public string NextPageToken => _domain.NextPageToken;
@@ -62,119 +62,10 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
 
         public EzUserDomain(
             Gs2.Gs2Version.Domain.Model.UserDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
-        }
-
-        public class EzAcceptVersionsIterator : Gs2Iterator<Gs2.Unity.Gs2Version.Model.EzAcceptVersion>
-        {
-            private Gs2Iterator<Gs2.Gs2Version.Model.AcceptVersion> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2Version.Domain.Model.UserDomain _domain;
-        #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
-
-            public EzAcceptVersionsIterator(
-                Gs2Iterator<Gs2.Gs2Version.Model.AcceptVersion> it,
-        #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2Version.Domain.Model.UserDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Version.Model.EzAcceptVersion>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    null,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.AcceptVersions(
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Version.Model.EzAcceptVersion>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Version.Model.EzAcceptVersion.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public Gs2Iterator<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> AcceptVersions(
-        )
-        {
-            return new EzAcceptVersionsIterator(
-                _domain.AcceptVersions(
-                ),
-                _profile
-            );
-        }
-
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> AcceptVersionsAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2Version.Model.EzAcceptVersion> AcceptVersions(
-        #endif
-        )
-        {
-        #if GS2_ENABLE_UNITASK
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Version.Model.EzAcceptVersion>(async (writer, token) =>
-            {
-                var it = _domain.AcceptVersionsAsync(
-                ).GetAsyncEnumerator();
-                while(
-                    await _profile.RunIteratorAsync(
-                        null,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.AcceptVersionsAsync(
-                            ).GetAsyncEnumerator();
-                        }
-                    )
-                )
-                {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Version.Model.EzAcceptVersion.FromModel(it.Current));
-                }
-            });
-        #else
-            return new EzAcceptVersionsIterator(
-                _domain.AcceptVersions(
-                ),
-                _domain,
-                _profile
-            );
-        #endif
-        }
-
-        public ulong SubscribeAcceptVersions(Action callback) {
-            return this._domain.SubscribeAcceptVersions(callback);
-        }
-
-        public void UnsubscribeAcceptVersions(ulong callbackId) {
-            this._domain.UnsubscribeAcceptVersions(callbackId);
+            this._connection = connection;
         }
 
         public Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionDomain AcceptVersion(
@@ -184,7 +75,7 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
                 _domain.AcceptVersion(
                     versionName
                 ),
-                _profile
+                this._connection
             );
         }
 

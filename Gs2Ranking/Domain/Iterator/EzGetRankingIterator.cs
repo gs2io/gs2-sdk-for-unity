@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -27,6 +26,8 @@
 #pragma warning disable 1998
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core;
@@ -36,62 +37,63 @@ using Gs2.Core.Util;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
-#if GS2_ENABLE_UNITASK
-using System.Threading;
-using System.Collections.Generic;
-using Cysharp.Threading;
-using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Linq;
-#else
-using System.Collections;
-using UnityEngine.Events;
-using Gs2.Core.Exception;
-#endif
 
 namespace Gs2.Unity.Gs2Ranking.Domain.Iterator
 {
 
-    #if GS2_ENABLE_UNITASK
-    public class EzDescribeRankingsIterator {
-    #else
-    public class EzDescribeRankingsIterator : Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzRanking> {
-    #endif
-        private readonly Gs2.Gs2Ranking.Domain.Iterator.DescribeRankingsIterator _iterator;
+    public class EzGetRankingIterator : Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzRanking>
+    {
+        private Gs2Iterator<Gs2.Gs2Ranking.Model.Ranking> _it;
+        private readonly Gs2.Gs2Ranking.Domain.Model.UserAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
+        private readonly string _categoryName;
+        private readonly string? _additionalScopeName;
 
-        public EzDescribeRankingsIterator(
-            Gs2.Gs2Ranking.Domain.Iterator.DescribeRankingsIterator iterator
-        ) {
-            this._iterator = iterator;
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking.Model.EzRanking> GetAsyncEnumerator(
-            CancellationToken cancellationToken = new CancellationToken()
+        public EzGetRankingIterator(
+            Gs2.Gs2Ranking.Domain.Model.UserAccessTokenDomain domain,
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection,
+            string categoryName,
+            string? additionalScopeName = null
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking.Model.EzRanking>(async (writer, token) =>
-            {
-            });
+            _domain = domain;
+            _gameSession = gameSession;
+            _connection = connection;
+            _categoryName = categoryName;
+            _additionalScopeName = additionalScopeName;
+            _it = _domain.Rankings(
+                this._categoryName,
+                this._additionalScopeName
+            );
         }
-
-        #else
 
         public override bool HasNext()
         {
-            return _iterator.HasNext();
+            return _it.HasNext();
         }
 
-        protected override IEnumerator Next(
-            Action<AsyncResult<Gs2.Unity.Gs2Ranking.Model.EzRanking>> callback
-        )
+        protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Ranking.Model.EzRanking>> callback)
         {
-            yield return _iterator;
-            callback.Invoke(new AsyncResult<Gs2.Unity.Gs2Ranking.Model.EzRanking>(
-                _iterator.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(_iterator.Current),
-                _iterator.Error
-            ));
+            yield return _connection.RunIterator(
+                _gameSession,
+                _it,
+                () =>
+                {
+                    return _it = _domain.Rankings(
+                        this._categoryName,
+                        this._additionalScopeName
+                    );
+                }
+            );
+            callback.Invoke(
+                new AsyncResult<Gs2.Unity.Gs2Ranking.Model.EzRanking>(
+                    _it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(_it.Current),
+                    _it.Error
+                )
+            );
         }
-
-        #endif
     }
+
 }

@@ -54,7 +54,8 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
 
     public partial class EzStatusGameSessionDomain {
         private readonly Gs2.Gs2Idle.Domain.Model.StatusAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NamespaceName => _domain?.NamespaceName;
@@ -63,10 +64,12 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
 
         public EzStatusGameSessionDomain(
             Gs2.Gs2Idle.Domain.Model.StatusAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
         [Obsolete("The name has been changed to PredictionFuture.")]
@@ -77,73 +80,45 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Core.Model.EzAcquireAction[]> PredictionFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Model.EzAcquireAction[]> self)
             {
-                yield return PredictionAsync(
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Core.Model.EzAcquireAction[]>(Impl);
-        }
-
-        public async UniTask<Gs2.Unity.Core.Model.EzAcquireAction[]> PredictionAsync(
-        #else
-        public IFuture<Gs2.Unity.Core.Model.EzAcquireAction[]> PredictionFuture(
-        #endif
-        ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.PredictionAsync(
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.PredictionFuture(
                         new PredictionRequest()
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
-            );
-            return result.Select(v => new Gs2.Unity.Core.Model.EzAcquireAction {
-                Action = v.Action,
-                Request = v.Request
-            }).ToArray();
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Model.EzAcquireAction[]> self)
-            {
-                var future = _domain.PredictionFuture(
-                    new PredictionRequest()
-                        .WithAccessToken(_domain.AccessToken.Token)
+                    )
                 );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.PredictionFuture(
-                    		new PredictionRequest()
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
+                yield return future;
+                if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
                 }
-                var result = future.Result;
-                self.OnComplete(result.Select(v => new Gs2.Unity.Core.Model.EzAcquireAction {
+                self.OnComplete(future.Result.Select(v => new Gs2.Unity.Core.Model.EzAcquireAction {
                     Action = v.Action,
                     Request = v.Request
                 }).ToArray());
             }
             return new Gs2InlineFuture<Gs2.Unity.Core.Model.EzAcquireAction[]>(Impl);
-        #endif
         }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Core.Model.EzAcquireAction[]> PredictionAsync(
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.PredictionAsync(
+                    new PredictionRequest()
+                )
+            );
+            return result.Select(v => new Gs2.Unity.Core.Model.EzAcquireAction {
+                Action = v.Action,
+                Request = v.Request
+            }).ToArray();
+        }
+        #endif
 
         [Obsolete("The name has been changed to ReceiveFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Receive(
@@ -153,67 +128,39 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                yield return ReceiveAsync(
-                ).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.ReceiveFuture(
+                        new ReceiveRequest()
+                    )
                 );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(future.Result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(future.Result));
             }
             return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveAsync(
-        #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveFuture(
-        #endif
-        ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.ReceiveAsync(
-                        new ReceiveRequest()
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
+        public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveAsync(
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.ReceiveAsync(
+                    new ReceiveRequest()
+                )
             );
             return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
-            {
-                var future = _domain.ReceiveFuture(
-                    new ReceiveRequest()
-                        .WithAccessToken(_domain.AccessToken.Token)
-                );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.ReceiveFuture(
-                    		new ReceiveRequest()
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
-        #endif
         }
+        #endif
 
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Idle.Model.EzStatus> Model()
@@ -222,22 +169,10 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Idle.Model.EzStatus> ModelFuture()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Idle.Model.EzStatus> self)
-            {
-                yield return ModelAsync().ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Idle.Model.EzStatus>(Impl);
-        }
-
         public async UniTask<Gs2.Unity.Gs2Idle.Model.EzStatus> ModelAsync()
         {
-            var item = await _profile.RunAsync(
-                _domain.AccessToken,
+            var item = await this._connection.RunAsync(
+                this._gameSession,
                 async () =>
                 {
                     return await _domain.ModelAsync();
@@ -250,19 +185,19 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
                 item
             );
         }
-        #else
+        #endif
+
         public IFuture<Gs2.Unity.Gs2Idle.Model.EzStatus> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Idle.Model.EzStatus> self)
             {
-                var future = _domain.ModelFuture();
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
+                var future = this._connection.RunFuture(
+                    this._gameSession,
                     () => {
-                    	return future = _domain.ModelFuture();
+                    	return _domain.ModelFuture();
                     }
                 );
+                yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
@@ -278,7 +213,6 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Idle.Model.EzStatus>(Impl);
         }
-        #endif
 
         public ulong Subscribe(Action<Gs2.Unity.Gs2Idle.Model.EzStatus> callback)
         {

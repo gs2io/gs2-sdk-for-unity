@@ -52,96 +52,43 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
     public partial class EzUserGameSessionDomain {
         private readonly Gs2.Gs2Inventory.Domain.Model.UserAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzUserGameSessionDomain(
             Gs2.Gs2Inventory.Domain.Model.UserAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
-        public class EzInventoriesIterator : Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzInventory>
-        {
-            private Gs2Iterator<Gs2.Gs2Inventory.Model.Inventory> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2Inventory.Domain.Model.UserAccessTokenDomain _domain;
-        #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
-
-            public EzInventoriesIterator(
-                Gs2Iterator<Gs2.Gs2Inventory.Model.Inventory> it,
-        #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2Inventory.Domain.Model.UserAccessTokenDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzInventory>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    _domain.AccessToken,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.Inventories(
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Inventory.Model.EzInventory>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzInventory.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
         public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzInventory> Inventories(
         )
         {
-            return new EzInventoriesIterator(
-                _domain.Inventories(
-                ),
-                _profile
+            return new Gs2.Unity.Gs2Inventory.Domain.Iterator.EzListInventoriesIterator(
+                this._domain,
+                this._gameSession,
+                this._connection
             );
         }
 
+        #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Inventory.Model.EzInventory> InventoriesAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzInventory> Inventories(
-        #endif
         )
         {
-        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Inventory.Model.EzInventory>(async (writer, token) =>
             {
                 var it = _domain.InventoriesAsync(
                 ).GetAsyncEnumerator();
                 while(
-                    await _profile.RunIteratorAsync(
-                        _domain.AccessToken,
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
                         async () =>
                         {
                             return await it.MoveNextAsync();
@@ -156,15 +103,8 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Inventory.Model.EzInventory.FromModel(it.Current));
                 }
             });
-        #else
-            return new EzInventoriesIterator(
-                _domain.Inventories(
-                ),
-                _domain,
-                _profile
-            );
-        #endif
         }
+        #endif
 
         public ulong SubscribeInventories(Action callback) {
             return this._domain.SubscribeInventories(callback);
@@ -181,7 +121,8 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
                 _domain.Inventory(
                     inventoryName
                 ),
-                _profile
+                this._gameSession,
+                this._connection
             );
         }
 
@@ -192,7 +133,8 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
                 _domain.SimpleInventory(
                     inventoryName
                 ),
-                _profile
+                this._gameSession,
+                this._connection
             );
         }
 
@@ -203,7 +145,8 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
                 _domain.BigInventory(
                     inventoryName
                 ),
-                _profile
+                this._gameSession,
+                this._connection
             );
         }
 

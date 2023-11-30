@@ -40,50 +40,50 @@ namespace Gs2.Unity
         public readonly Gs2Stamina.Client Stamina;
         public readonly Gs2StateMachine.Client StateMachine;
         public readonly Gs2Version.Client Version;
-        public readonly Profile Profile;
+        public readonly Gs2Connection Connection;
 
         public Client(
-            Profile profile
+            Gs2Connection connection
         )
         {
-            Profile = profile;
+            Connection = connection;
             
-            Account = new Gs2Account.Client(profile);
-            AdReward = new Gs2AdReward.Client(profile);
-            Auth = new Gs2Auth.Client(profile);
-            Chat = new Gs2Chat.Client(profile);
-            Datastore = new Gs2Datastore.Client(profile);
-            Dictionary = new Gs2Dictionary.Client(profile);
-            Distributor = new Gs2Distributor.Client(profile);
-            Enchant = new Gs2Enchant.Client(profile);
-            Enhance = new Gs2Enhance.Client(profile);
-            Exchange = new Gs2Exchange.Client(profile);
-            Experience = new Gs2Experience.Client(profile);
-            Formation = new Gs2Formation.Client(profile);
-            Friend = new Gs2Friend.Client(profile);
-            Gateway = new Gs2Gateway.Client(profile);
-            Idle = new Gs2Idle.Client(profile);
-            Inbox = new Gs2Inbox.Client(profile);
-            Inventory = new Gs2Inventory.Client(profile);
-            JobQueue = new Gs2JobQueue.Client(profile);
-            Limit = new Gs2Limit.Client(profile);
-            LoginReward = new Gs2LoginReward.Client(profile);
-            Lottery = new Gs2Lottery.Client(profile);
-            Matchmaking = new Gs2Matchmaking.Client(profile);
-            MegaField = new Gs2MegaField.Client(profile);
-            Mission = new Gs2Mission.Client(profile);
-            Money = new Gs2Money.Client(profile);
-            News = new Gs2News.Client(profile);
-            Quest = new Gs2Quest.Client(profile);
-            Ranking = new Gs2Ranking.Client(profile);
-            Realtime = new Gs2Realtime.Client(profile);
-            Schedule = new Gs2Schedule.Client(profile);
-            SerialKey = new Gs2SerialKey.Client(profile);
-            Showcase = new Gs2Showcase.Client(profile);
-            SkillTree = new Gs2SkillTree.Client(profile);
-            Stamina = new Gs2Stamina.Client(profile);
-            StateMachine = new Gs2StateMachine.Client(profile);
-            Version = new Gs2Version.Client(profile);
+            Account = new Gs2Account.Client(connection);
+            AdReward = new Gs2AdReward.Client(connection);
+            Auth = new Gs2Auth.Client(connection);
+            Chat = new Gs2Chat.Client(connection);
+            Datastore = new Gs2Datastore.Client(connection);
+            Dictionary = new Gs2Dictionary.Client(connection);
+            Distributor = new Gs2Distributor.Client(connection);
+            Enchant = new Gs2Enchant.Client(connection);
+            Enhance = new Gs2Enhance.Client(connection);
+            Exchange = new Gs2Exchange.Client(connection);
+            Experience = new Gs2Experience.Client(connection);
+            Formation = new Gs2Formation.Client(connection);
+            Friend = new Gs2Friend.Client(connection);
+            Gateway = new Gs2Gateway.Client(connection);
+            Idle = new Gs2Idle.Client(connection);
+            Inbox = new Gs2Inbox.Client(connection);
+            Inventory = new Gs2Inventory.Client(connection);
+            JobQueue = new Gs2JobQueue.Client(connection);
+            Limit = new Gs2Limit.Client(connection);
+            LoginReward = new Gs2LoginReward.Client(connection);
+            Lottery = new Gs2Lottery.Client(connection);
+            Matchmaking = new Gs2Matchmaking.Client(connection);
+            MegaField = new Gs2MegaField.Client(connection);
+            Mission = new Gs2Mission.Client(connection);
+            Money = new Gs2Money.Client(connection);
+            News = new Gs2News.Client(connection);
+            Quest = new Gs2Quest.Client(connection);
+            Ranking = new Gs2Ranking.Client(connection);
+            Realtime = new Gs2Realtime.Client(connection);
+            Schedule = new Gs2Schedule.Client(connection);
+            SerialKey = new Gs2SerialKey.Client(connection);
+            Showcase = new Gs2Showcase.Client(connection);
+            SkillTree = new Gs2SkillTree.Client(connection);
+            Stamina = new Gs2Stamina.Client(connection);
+            StateMachine = new Gs2StateMachine.Client(connection);
+            Version = new Gs2Version.Client(connection);
         }
     }
 }

@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
 
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Enhance.Domain.Model.UserDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public long? AcquireExperience => _domain.AcquireExperience;
@@ -63,10 +63,10 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
 
         public EzUserDomain(
             Gs2.Gs2Enhance.Domain.Model.UserDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._connection = connection;
         }
 
         public Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressDomain Progress(
@@ -74,7 +74,7 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
             return new Gs2.Unity.Gs2Enhance.Domain.Model.EzProgressDomain(
                 _domain.Progress(
                 ),
-                _profile
+                this._connection
             );
         }
 

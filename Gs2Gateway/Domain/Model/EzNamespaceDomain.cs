@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
 
     public partial class EzNamespaceDomain {
         private readonly Gs2.Gs2Gateway.Domain.Model.NamespaceDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string Status => _domain.Status;
         public string Url => _domain.Url;
         public string UploadToken => _domain.UploadToken;
@@ -62,10 +62,10 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
 
         public EzNamespaceDomain(
             Gs2.Gs2Gateway.Domain.Model.NamespaceDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._connection = connection;
         }
 
         public Gs2.Unity.Gs2Gateway.Domain.Model.EzUserDomain User(
@@ -75,7 +75,7 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
                 _domain.User(
                     userId
                 ),
-                _profile
+                this._connection
             );
         }
 
@@ -86,7 +86,8 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
                 _domain.AccessToken(
                     gameSession.AccessToken
                 ),
-                _profile
+                gameSession,
+                this._connection
             );
         }
 

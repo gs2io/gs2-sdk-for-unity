@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -53,7 +55,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
 
     public partial class EzNamespaceDomain {
         private readonly Gs2.Gs2Account.Domain.Model.NamespaceDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string Status => _domain.Status;
         public string Url => _domain.Url;
         public string UploadToken => _domain.UploadToken;
@@ -63,10 +65,10 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
 
         public EzNamespaceDomain(
             Gs2.Gs2Account.Domain.Model.NamespaceDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._connection = connection;
         }
 
         [Obsolete("The name has been changed to CreateFuture.")]
@@ -77,68 +79,45 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> CreateFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
             {
-                var future = this._domain.CreateAccountFuture(
-                    new CreateAccountRequest()
+                var future = this._connection.RunFuture(
+                    null,
+                    () => this._domain.CreateAccountFuture(
+                        new CreateAccountRequest()
+                    )
                 );
                 yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(future.Result, _profile));
+                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(
+                    future.Result,
+                    this._connection
+                ));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> CreateAsync(
-        #else
-        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> CreateFuture(
-        #endif
-        ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
+        public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> CreateAsync(
+        ) {
+            var result = await this._connection.RunAsync(
                 null,
-                async () =>
-                {
-                    return await _domain.CreateAccountAsync(
-                        new CreateAccountRequest()
-                    );
-                }
-            );
-            return new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(result, _profile);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
-            {
-                var future = _domain.CreateAccountFuture(
+                () => this._domain.CreateAccountAsync(
                     new CreateAccountRequest()
-                );
-                yield return _profile.RunFuture(
-                    null,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.CreateAccountFuture(
-                    		new CreateAccountRequest()
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(result, _profile));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
-        #endif
+                )
+            );
+            return new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(
+                result,
+                this._connection
+            );
         }
+        #endif
 
         [Obsolete("The name has been changed to DoTakeOverFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOver(
@@ -154,7 +133,6 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOverFuture(
             int type,
             string userIdentifier,
@@ -163,186 +141,49 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
             {
-                var future = this._domain.DoTakeOverFuture(
-                    new DoTakeOverRequest()
-                        .WithType(type)
-                        .WithUserIdentifier(userIdentifier)
-                        .WithPassword(password)
+                var future = this._connection.RunFuture(
+                    null,
+                    () => this._domain.DoTakeOverFuture(
+                        new DoTakeOverRequest()
+                            .WithType(type)
+                            .WithUserIdentifier(userIdentifier)
+                            .WithPassword(password)
+                    )
                 );
                 yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(future.Result, _profile));
+                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(
+                    future.Result,
+                    this._connection
+                ));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
         }
 
+        #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOverAsync(
-        #else
-        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOverFuture(
-        #endif
             int type,
             string userIdentifier,
             string password
         ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
+            var result = await this._connection.RunAsync(
                 null,
-                async () =>
-                {
-                    return await _domain.DoTakeOverAsync(
-                        new DoTakeOverRequest()
-                            .WithType(type)
-                            .WithUserIdentifier(userIdentifier)
-                            .WithPassword(password)
-                    );
-                }
-            );
-            return new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(result, _profile);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
-            {
-                var future = _domain.DoTakeOverFuture(
+                () => this._domain.DoTakeOverAsync(
                     new DoTakeOverRequest()
                         .WithType(type)
                         .WithUserIdentifier(userIdentifier)
                         .WithPassword(password)
-                );
-                yield return _profile.RunFuture(
-                    null,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.DoTakeOverFuture(
-                    		new DoTakeOverRequest()
-                	        .WithType(type)
-                	        .WithUserIdentifier(userIdentifier)
-                	        .WithPassword(password)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(result, _profile));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
-        #endif
-        }
-
-        public class EzAccountsIterator : Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzAccount>
-        {
-            private Gs2Iterator<Gs2.Gs2Account.Model.Account> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2Account.Domain.Model.NamespaceDomain _domain;
-        #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
-
-            public EzAccountsIterator(
-                Gs2Iterator<Gs2.Gs2Account.Model.Account> it,
-        #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2Account.Domain.Model.NamespaceDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Account.Model.EzAccount>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    null,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.Accounts(
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Account.Model.EzAccount>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Account.Model.EzAccount.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzAccount> Accounts(
-        )
-        {
-            return new EzAccountsIterator(
-                _domain.Accounts(
-                ),
-                _profile
-            );
-        }
-
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Account.Model.EzAccount> AccountsAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzAccount> Accounts(
-        #endif
-        )
-        {
-        #if GS2_ENABLE_UNITASK
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Account.Model.EzAccount>(async (writer, token) =>
-            {
-                var it = _domain.AccountsAsync(
-                ).GetAsyncEnumerator();
-                while(
-                    await _profile.RunIteratorAsync(
-                        null,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.AccountsAsync(
-                            ).GetAsyncEnumerator();
-                        }
-                    )
                 )
-                {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Account.Model.EzAccount.FromModel(it.Current));
-                }
-            });
-        #else
-            return new EzAccountsIterator(
-                _domain.Accounts(
-                ),
-                _domain,
-                _profile
             );
+            return new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(
+                result,
+                this._connection
+            );
+        }
         #endif
-        }
-
-        public ulong SubscribeAccounts(Action callback) {
-            return this._domain.SubscribeAccounts(callback);
-        }
-
-        public void UnsubscribeAccounts(ulong callbackId) {
-            this._domain.UnsubscribeAccounts(callbackId);
-        }
 
         public Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain Account(
             string userId
@@ -351,7 +192,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                 _domain.Account(
                     userId
                 ),
-                _profile
+                this._connection
             );
         }
 
@@ -362,7 +203,8 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                 _domain.AccessToken(
                     gameSession.AccessToken
                 ),
-                _profile
+                gameSession,
+                this._connection
             );
         }
 

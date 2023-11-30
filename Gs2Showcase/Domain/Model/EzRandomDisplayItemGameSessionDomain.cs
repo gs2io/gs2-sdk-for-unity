@@ -52,7 +52,8 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
 
     public partial class EzRandomDisplayItemGameSessionDomain {
         private readonly Gs2.Gs2Showcase.Domain.Model.RandomDisplayItemAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NamespaceName => _domain?.NamespaceName;
@@ -62,10 +63,12 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
 
         public EzRandomDisplayItemGameSessionDomain(
             Gs2.Gs2Showcase.Domain.Model.RandomDisplayItemAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
         [Obsolete("The name has been changed to RandomShowcaseBuyFuture.")]
@@ -80,7 +83,6 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> RandomShowcaseBuyFuture(
             int? quantity = null,
             Gs2.Unity.Gs2Showcase.Model.EzConfig[] config = null
@@ -88,11 +90,13 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
             {
-                var future = this._domain.RandomShowcaseBuyFuture(
-                    new RandomShowcaseBuyRequest()
-                        .WithQuantity(quantity)
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
-                        .WithAccessToken(_domain.AccessToken.Token)
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.RandomShowcaseBuyFuture(
+                        new RandomShowcaseBuyRequest()
+                            .WithQuantity(quantity)
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                    )
                 );
                 yield return future;
                 if (future.Error != null) {
@@ -104,60 +108,22 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
 
+        #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> RandomShowcaseBuyAsync(
-        #else
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> RandomShowcaseBuyFuture(
-        #endif
             int? quantity = null,
             Gs2.Unity.Gs2Showcase.Model.EzConfig[] config = null
         ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.RandomShowcaseBuyAsync(
-                        new RandomShowcaseBuyRequest()
-                            .WithQuantity(quantity)
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
-            );
-            return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
-            {
-                var future = _domain.RandomShowcaseBuyFuture(
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.RandomShowcaseBuyAsync(
                     new RandomShowcaseBuyRequest()
                         .WithQuantity(quantity)
                         .WithConfig(config?.Select(v => v.ToModel()).ToArray())
-                        .WithAccessToken(_domain.AccessToken.Token)
-                );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.RandomShowcaseBuyFuture(
-                    		new RandomShowcaseBuyRequest()
-                	        .WithQuantity(quantity)
-        	                .WithConfig(config?.Select(v => v.ToModel()).ToArray())
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
-        #endif
+                )
+            );
+            return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
         }
+        #endif
 
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem> Model()
@@ -166,31 +132,10 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem> ModelFuture()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem> self)
-            {
-                yield return ModelAsync().ToCoroutine(
-                    self.OnComplete,
-                    e =>
-                    {
-                        if (e is Gs2.Core.Exception.Gs2Exception e2) {
-                            self.OnError(e2);
-                        }
-                        else {
-                            UnityEngine.Debug.LogError(e.Message);
-                            self.OnError(new Gs2.Core.Exception.UnknownException(e.Message));
-                        }
-                    }
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem>(Impl);
-        }
-
         public async UniTask<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem> ModelAsync()
         {
-            var item = await _profile.RunAsync(
-                _domain.AccessToken,
+            var item = await this._connection.RunAsync(
+                this._gameSession,
                 async () =>
                 {
                     return await _domain.ModelAsync();
@@ -203,19 +148,19 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
                 item
             );
         }
-        #else
+        #endif
+
         public IFuture<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem> self)
             {
-                var future = _domain.ModelFuture();
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
+                var future = this._connection.RunFuture(
+                    this._gameSession,
                     () => {
-                    	return future = _domain.ModelFuture();
+                    	return _domain.ModelFuture();
                     }
                 );
+                yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
@@ -231,7 +176,6 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem>(Impl);
         }
-        #endif
 
         public ulong Subscribe(Action<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem> callback)
         {

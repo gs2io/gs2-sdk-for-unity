@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2Mission
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2MissionWebSocketClient _client;
 		private readonly Gs2MissionRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2MissionWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2MissionRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2MissionRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2MissionWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2MissionRestClient(connection.RestSession);
 		}
 
         public IEnumerator GetComplete(
@@ -68,7 +61,7 @@ namespace Gs2.Unity.Gs2Mission
                 string missionGroupName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.GetComplete(
@@ -94,7 +87,7 @@ namespace Gs2.Unity.Gs2Mission
                 int? limit = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeCompletes(
@@ -121,7 +114,7 @@ namespace Gs2.Unity.Gs2Mission
                 string missionTaskName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.Complete(
@@ -147,7 +140,7 @@ namespace Gs2.Unity.Gs2Mission
                 string counterName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.GetCounter(
@@ -173,7 +166,7 @@ namespace Gs2.Unity.Gs2Mission
                 int? limit = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeCounters(
@@ -198,7 +191,7 @@ namespace Gs2.Unity.Gs2Mission
                 string counterName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _client.GetCounterModel(
@@ -220,7 +213,7 @@ namespace Gs2.Unity.Gs2Mission
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribeCounterModels(
@@ -242,7 +235,7 @@ namespace Gs2.Unity.Gs2Mission
                 string missionGroupName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.GetMissionGroupModel(
@@ -264,7 +257,7 @@ namespace Gs2.Unity.Gs2Mission
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribeMissionGroupModels(
@@ -287,7 +280,7 @@ namespace Gs2.Unity.Gs2Mission
                 string missionTaskName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.GetMissionTaskModel(
@@ -311,7 +304,7 @@ namespace Gs2.Unity.Gs2Mission
                 string missionGroupName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribeMissionTaskModels(

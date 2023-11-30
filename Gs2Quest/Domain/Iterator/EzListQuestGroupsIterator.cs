@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2016 Game Server Services, Inc. or its affiliates. All Rights
  * Reserved.
@@ -27,6 +26,8 @@
 #pragma warning disable 1998
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core;
@@ -36,62 +37,50 @@ using Gs2.Core.Util;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
-#if GS2_ENABLE_UNITASK
-using System.Threading;
-using System.Collections.Generic;
-using Cysharp.Threading;
-using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Linq;
-#else
-using System.Collections;
-using UnityEngine.Events;
-using Gs2.Core.Exception;
-#endif
 
 namespace Gs2.Unity.Gs2Quest.Domain.Iterator
 {
 
-    #if GS2_ENABLE_UNITASK
-    public class EzDescribeQuestGroupModelsIterator {
-    #else
-    public class EzDescribeQuestGroupModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel> {
-    #endif
-        private readonly Gs2.Gs2Quest.Domain.Iterator.DescribeQuestGroupModelsIterator _iterator;
+    public class EzListQuestGroupsIterator : Gs2Iterator<Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel>
+    {
+        private Gs2Iterator<Gs2.Gs2Quest.Model.QuestGroupModel> _it;
+        private readonly Gs2.Gs2Quest.Domain.Model.NamespaceDomain _domain;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
-        public EzDescribeQuestGroupModelsIterator(
-            Gs2.Gs2Quest.Domain.Iterator.DescribeQuestGroupModelsIterator iterator
-        ) {
-            this._iterator = iterator;
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel> GetAsyncEnumerator(
-            CancellationToken cancellationToken = new CancellationToken()
+        public EzListQuestGroupsIterator(
+            Gs2.Gs2Quest.Domain.Model.NamespaceDomain domain,
+            Gs2.Unity.Util.Gs2Connection connection
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel>(async (writer, token) =>
-            {
-            });
+            _domain = domain;
+            _connection = connection;
+            _it = _domain.QuestGroupModels(
+            );
         }
-
-        #else
 
         public override bool HasNext()
         {
-            return _iterator.HasNext();
+            return _it.HasNext();
         }
 
-        protected override IEnumerator Next(
-            Action<AsyncResult<Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel>> callback
-        )
+        protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel>> callback)
         {
-            yield return _iterator;
-            callback.Invoke(new AsyncResult<Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel>(
-                _iterator.Current == null ? null : Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel.FromModel(_iterator.Current),
-                _iterator.Error
-            ));
+            yield return _connection.RunIterator(
+                null,
+                _it,
+                () =>
+                {
+                    return _it = _domain.QuestGroupModels(
+                    );
+                }
+            );
+            callback.Invoke(
+                new AsyncResult<Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel>(
+                    _it.Current == null ? null : Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel.FromModel(_it.Current),
+                    _it.Error
+                )
+            );
         }
-
-        #endif
     }
+
 }

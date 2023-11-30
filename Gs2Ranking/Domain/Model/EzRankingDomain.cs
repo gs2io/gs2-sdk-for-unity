@@ -26,6 +26,7 @@
 // ReSharper disable NotAccessedField.Local
 
 #pragma warning disable 1998
+#pragma warning disable CS0169, CS0168
 
 using System;
 using System.Linq;
@@ -54,39 +55,33 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
 
     public partial class EzRankingDomain {
         private readonly Gs2.Gs2Ranking.Domain.Model.RankingDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string CategoryName => _domain?.CategoryName;
 
         public EzRankingDomain(
             Gs2.Gs2Ranking.Domain.Model.RankingDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._connection = connection;
         }
 
-        #if GS2_ENABLE_UNITASK
+        [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> Model(
             string scorerUserId
         )
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Model.EzRanking> self)
-            {
-                yield return ModelAsync(scorerUserId).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking>(Impl);
+            return ModelFuture(scorerUserId);
         }
 
+        #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Ranking.Model.EzRanking> ModelAsync(
             string scorerUserId
         )
         {
-            var item = await _profile.RunAsync(
+            var item = await this._connection.RunAsync(
                 null,
                 async () =>
                 {
@@ -100,21 +95,21 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 item
             );
         }
-        #else
-        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> Model(
+        #endif
+
+        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> ModelFuture(
             string scorerUserId
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Model.EzRanking> self)
             {
-                var future = _domain.ModelFuture(scorerUserId);
-                yield return _profile.RunFuture(
+                var future = this._connection.RunFuture(
                     null,
-                    future,
                     () => {
-                        return future = _domain.ModelFuture(scorerUserId);
+                    	return _domain.ModelFuture(scorerUserId);
                     }
                 );
+                yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
@@ -130,74 +125,5 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking>(Impl);
         }
-        #endif
-
-        #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> Model(
-            string scorerUserId,
-            long index
-        )
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Model.EzRanking> self)
-            {
-                yield return ModelAsync(scorerUserId, index).ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking>(Impl);
-        }
-
-        public async UniTask<Gs2.Unity.Gs2Ranking.Model.EzRanking> ModelAsync(
-            string scorerUserId,
-            long index
-        )
-        {
-            var item = await _profile.RunAsync(
-                null,
-                async () =>
-                {
-                    return await _domain.Model(scorerUserId, index);
-                }
-            );
-            if (item == null) {
-                return null;
-            }
-            return Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(
-                item
-            );
-        }
-        #else
-        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> Model(
-            string scorerUserId,
-            long index
-        )
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Model.EzRanking> self)
-            {
-                var future = _domain.Model(scorerUserId, index);
-                yield return _profile.RunFuture(
-                    null,
-                    future,
-                    () => {
-                        return future = _domain.Model(scorerUserId, index);
-                    }
-                );
-                if (future.Error != null) {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var item = future.Result;
-                if (item == null) {
-                    self.OnComplete(null);
-                    yield break;
-                }
-                self.OnComplete(Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(
-                    item
-                ));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking>(Impl);
-        }
-        #endif
     }
 }

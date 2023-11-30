@@ -12,14 +12,6 @@ namespace Gs2.Unity.Util
 {
     public abstract class IReopener
     {
-        public UnityAction<AsyncResult<OpenResult>> Callback { get; set; }
-
-        public abstract void SetAuthenticator(
-            IAuthenticator authenticator,
-            string userId,
-            string password,
-            GameSession gameSession
-        );
 
 #if GS2_ENABLE_UNITASK
         public abstract UniTask<OpenResult> ReOpenAsync(Gs2WebSocketSession session, Gs2RestSession restSession);

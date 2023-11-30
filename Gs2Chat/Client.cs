@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2Chat
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2ChatWebSocketClient _client;
 		private readonly Gs2ChatRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2ChatWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2ChatRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2ChatRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2ChatWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2ChatRestClient(connection.RestSession);
 		}
 
         public IEnumerator CreateRoom(
@@ -71,7 +64,7 @@ namespace Gs2.Unity.Gs2Chat
                 List<string> whiteListUserIds = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.CreateRoom(
@@ -101,7 +94,7 @@ namespace Gs2.Unity.Gs2Chat
                 string roomName = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DeleteRoom(
@@ -125,7 +118,7 @@ namespace Gs2.Unity.Gs2Chat
                 string roomName = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.GetRoom(
@@ -152,7 +145,7 @@ namespace Gs2.Unity.Gs2Chat
                 string password = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeMessages(
@@ -182,7 +175,7 @@ namespace Gs2.Unity.Gs2Chat
                 string password = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.Post(
@@ -211,7 +204,7 @@ namespace Gs2.Unity.Gs2Chat
                 int? limit = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeSubscribes(
@@ -238,7 +231,7 @@ namespace Gs2.Unity.Gs2Chat
                 List<Gs2.Unity.Gs2Chat.Model.EzNotificationType> notificationTypes = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.Subscribe(
@@ -266,7 +259,7 @@ namespace Gs2.Unity.Gs2Chat
                 string roomName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.Unsubscribe(
@@ -292,7 +285,7 @@ namespace Gs2.Unity.Gs2Chat
                 List<Gs2.Unity.Gs2Chat.Model.EzNotificationType> notificationTypes = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.UpdateNotificationType(

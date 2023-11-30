@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2Auth
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2AuthWebSocketClient _client;
 		private readonly Gs2AuthRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2AuthWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2AuthRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2AuthRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2AuthWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2AuthRestClient(connection.RestSession);
 		}
 
         public IEnumerator Login(
@@ -68,7 +61,7 @@ namespace Gs2.Unity.Gs2Auth
                 string keyId = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.LoginBySignature(

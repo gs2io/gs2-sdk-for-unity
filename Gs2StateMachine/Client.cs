@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2StateMachine
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2StateMachineWebSocketClient _client;
 		private readonly Gs2StateMachineRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2StateMachineWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2StateMachineRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2StateMachineRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2StateMachineWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2StateMachineRestClient(connection.RestSession);
 		}
 
         public IEnumerator Emit(
@@ -70,7 +63,7 @@ namespace Gs2.Unity.Gs2StateMachine
                 string args = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.Emit(
@@ -97,7 +90,7 @@ namespace Gs2.Unity.Gs2StateMachine
                 string statusName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.ExitStateMachine(
@@ -122,7 +115,7 @@ namespace Gs2.Unity.Gs2StateMachine
                 string statusName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.GetStatus(
@@ -149,7 +142,7 @@ namespace Gs2.Unity.Gs2StateMachine
                 int? limit = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeStatuses(

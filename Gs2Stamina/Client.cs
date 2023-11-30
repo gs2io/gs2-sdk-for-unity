@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2Stamina
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2StaminaWebSocketClient _client;
 		private readonly Gs2StaminaRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2StaminaWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2StaminaRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2StaminaRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2StaminaWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2StaminaRestClient(connection.RestSession);
 		}
 
         public IEnumerator GetStaminaModel(
@@ -67,7 +60,7 @@ namespace Gs2.Unity.Gs2Stamina
                 string staminaName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _client.GetStaminaModel(
@@ -89,7 +82,7 @@ namespace Gs2.Unity.Gs2Stamina
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribeStaminaModels(
@@ -113,7 +106,7 @@ namespace Gs2.Unity.Gs2Stamina
                 int consumeValue
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.ConsumeStamina(
@@ -139,7 +132,7 @@ namespace Gs2.Unity.Gs2Stamina
                 string staminaName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.GetStamina(
@@ -165,7 +158,7 @@ namespace Gs2.Unity.Gs2Stamina
                 int? limit = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeStaminas(
@@ -194,7 +187,7 @@ namespace Gs2.Unity.Gs2Stamina
                 string keyId = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.SetMaxValueByStatus(
@@ -225,7 +218,7 @@ namespace Gs2.Unity.Gs2Stamina
                 string keyId = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.SetRecoverIntervalByStatus(
@@ -256,7 +249,7 @@ namespace Gs2.Unity.Gs2Stamina
                 string keyId = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.SetRecoverValueByStatus(

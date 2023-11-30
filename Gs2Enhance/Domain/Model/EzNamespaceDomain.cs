@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
 
     public partial class EzNamespaceDomain {
         private readonly Gs2.Gs2Enhance.Domain.Model.NamespaceDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string Status => _domain.Status;
         public string Url => _domain.Url;
         public string UploadToken => _domain.UploadToken;
@@ -63,88 +63,31 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
 
         public EzNamespaceDomain(
             Gs2.Gs2Enhance.Domain.Model.NamespaceDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._connection = connection;
         }
 
-        public class EzRateModelsIterator : Gs2Iterator<Gs2.Unity.Gs2Enhance.Model.EzRateModel>
-        {
-            private Gs2Iterator<Gs2.Gs2Enhance.Model.RateModel> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2Enhance.Domain.Model.NamespaceDomain _domain;
-        #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
-
-            public EzRateModelsIterator(
-                Gs2Iterator<Gs2.Gs2Enhance.Model.RateModel> it,
-        #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2Enhance.Domain.Model.NamespaceDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Enhance.Model.EzRateModel>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    null,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.RateModels(
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Enhance.Model.EzRateModel>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Enhance.Model.EzRateModel.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
         public Gs2Iterator<Gs2.Unity.Gs2Enhance.Model.EzRateModel> RateModels(
         )
         {
-            return new EzRateModelsIterator(
-                _domain.RateModels(
-                ),
-                _profile
+            return new Gs2.Unity.Gs2Enhance.Domain.Iterator.EzListRateModelsIterator(
+                this._domain,
+                this._connection
             );
         }
 
+        #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Enhance.Model.EzRateModel> RateModelsAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2Enhance.Model.EzRateModel> RateModels(
-        #endif
         )
         {
-        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Enhance.Model.EzRateModel>(async (writer, token) =>
             {
                 var it = _domain.RateModelsAsync(
                 ).GetAsyncEnumerator();
                 while(
-                    await _profile.RunIteratorAsync(
+                    await this._connection.RunIteratorAsync(
                         null,
                         async () =>
                         {
@@ -160,15 +103,8 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Enhance.Model.EzRateModel.FromModel(it.Current));
                 }
             });
-        #else
-            return new EzRateModelsIterator(
-                _domain.RateModels(
-                ),
-                _domain,
-                _profile
-            );
-        #endif
         }
+        #endif
 
         public ulong SubscribeRateModels(Action callback) {
             return this._domain.SubscribeRateModels(callback);
@@ -185,7 +121,7 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
                 _domain.RateModel(
                     rateName
                 ),
-                _profile
+                this._connection
             );
         }
 
@@ -196,7 +132,7 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
                 _domain.User(
                     userId
                 ),
-                _profile
+                this._connection
             );
         }
 
@@ -207,7 +143,8 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
                 _domain.AccessToken(
                     gameSession.AccessToken
                 ),
-                _profile
+                gameSession,
+                this._connection
             );
         }
 

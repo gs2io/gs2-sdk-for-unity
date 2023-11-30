@@ -52,7 +52,8 @@ namespace Gs2.Unity.Gs2News.Domain.Model
 
     public partial class EzNewsGameSessionDomain {
         private readonly Gs2.Gs2News.Domain.Model.NewsAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string BrowserUrl => _domain.BrowserUrl;
         public string ZipUrl => _domain.ZipUrl;
         public string NamespaceName => _domain?.NamespaceName;
@@ -60,10 +61,12 @@ namespace Gs2.Unity.Gs2News.Domain.Model
 
         public EzNewsGameSessionDomain(
             Gs2.Gs2News.Domain.Model.NewsAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
         [Obsolete("The name has been changed to GetContentsUrlFuture.")]
@@ -74,72 +77,47 @@ namespace Gs2.Unity.Gs2News.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]> GetContentsUrlFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]> self)
             {
-                var future = this._domain.WantGrantFuture(
-                    new WantGrantRequest()
-                        .WithAccessToken(_domain.AccessToken.Token)
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.WantGrantFuture(
+                        new WantGrantRequest()
+                    )
                 );
                 yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(future.Result.Select(v => new Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain(v, _profile)).ToArray());
+                self.OnComplete(future.Result.Select(v => new Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain(
+                    v,
+                    this._gameSession,
+                    this._connection
+                )).ToArray());
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]>(Impl);
         }
 
-        public async UniTask<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]> GetContentsUrlAsync(
-        #else
-        public IFuture<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]> GetContentsUrlFuture(
-        #endif
-        ) {
         #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.WantGrantAsync(
-                        new WantGrantRequest()
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
-            );
-            return result.Select(v => new Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain(v, _profile)).ToArray();
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]> self)
-            {
-                var future = _domain.WantGrantFuture(
+        public async UniTask<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]> GetContentsUrlAsync(
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.WantGrantAsync(
                     new WantGrantRequest()
-                        .WithAccessToken(_domain.AccessToken.Token)
-                );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.WantGrantFuture(
-                    		new WantGrantRequest()
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(result.Select(v => new Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain(v, _profile)).ToArray());
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain[]>(Impl);
-        #endif
+                )
+            );
+            return result.Select(v => new Gs2.Unity.Gs2News.Domain.Model.EzSetCookieRequestEntryGameSessionDomain(
+                v,
+                this._gameSession,
+                this._connection
+            )).ToArray();
         }
+        #endif
 
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2News.Model.EzNews> Model()
@@ -148,31 +126,10 @@ namespace Gs2.Unity.Gs2News.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2News.Model.EzNews> ModelFuture()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2News.Model.EzNews> self)
-            {
-                yield return ModelAsync().ToCoroutine(
-                    self.OnComplete,
-                    e =>
-                    {
-                        if (e is Gs2.Core.Exception.Gs2Exception e2) {
-                            self.OnError(e2);
-                        }
-                        else {
-                            UnityEngine.Debug.LogError(e.Message);
-                            self.OnError(new Gs2.Core.Exception.UnknownException(e.Message));
-                        }
-                    }
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2News.Model.EzNews>(Impl);
-        }
-
         public async UniTask<Gs2.Unity.Gs2News.Model.EzNews> ModelAsync()
         {
-            var item = await _profile.RunAsync(
-                _domain.AccessToken,
+            var item = await this._connection.RunAsync(
+                this._gameSession,
                 async () =>
                 {
                     return await _domain.ModelAsync();
@@ -185,19 +142,19 @@ namespace Gs2.Unity.Gs2News.Domain.Model
                 item
             );
         }
-        #else
+        #endif
+
         public IFuture<Gs2.Unity.Gs2News.Model.EzNews> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2News.Model.EzNews> self)
             {
-                var future = _domain.ModelFuture();
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
+                var future = this._connection.RunFuture(
+                    this._gameSession,
                     () => {
-                    	return future = _domain.ModelFuture();
+                    	return _domain.ModelFuture();
                     }
                 );
+                yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
@@ -213,7 +170,6 @@ namespace Gs2.Unity.Gs2News.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2News.Model.EzNews>(Impl);
         }
-        #endif
 
         public ulong Subscribe(Action<Gs2.Unity.Gs2News.Model.EzNews> callback)
         {

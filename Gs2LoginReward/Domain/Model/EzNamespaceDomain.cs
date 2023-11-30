@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
 
     public partial class EzNamespaceDomain {
         private readonly Gs2.Gs2LoginReward.Domain.Model.NamespaceDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string Status => _domain.Status;
         public string Url => _domain.Url;
         public string UploadToken => _domain.UploadToken;
@@ -63,110 +63,31 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
 
         public EzNamespaceDomain(
             Gs2.Gs2LoginReward.Domain.Model.NamespaceDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._connection = connection;
         }
 
-        public Gs2.Unity.Gs2LoginReward.Domain.Model.EzUserDomain User(
-            string userId
-        ) {
-            return new Gs2.Unity.Gs2LoginReward.Domain.Model.EzUserDomain(
-                _domain.User(
-                    userId
-                ),
-                _profile
-            );
-        }
-
-        public EzUserGameSessionDomain Me(
-            Gs2.Unity.Util.GameSession gameSession
-        ) {
-            return new EzUserGameSessionDomain(
-                _domain.AccessToken(
-                    gameSession.AccessToken
-                ),
-                _profile
-            );
-        }
-
-        public class EzBonusModelsIterator : Gs2Iterator<Gs2.Unity.Gs2LoginReward.Model.EzBonusModel>
-        {
-            private Gs2Iterator<Gs2.Gs2LoginReward.Model.BonusModel> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2LoginReward.Domain.Model.NamespaceDomain _domain;
-        #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
-
-            public EzBonusModelsIterator(
-                Gs2Iterator<Gs2.Gs2LoginReward.Model.BonusModel> it,
-        #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2LoginReward.Domain.Model.NamespaceDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2LoginReward.Model.EzBonusModel>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    null,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.BonusModels(
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2LoginReward.Model.EzBonusModel>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2LoginReward.Model.EzBonusModel.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
         public Gs2Iterator<Gs2.Unity.Gs2LoginReward.Model.EzBonusModel> BonusModels(
         )
         {
-            return new EzBonusModelsIterator(
-                _domain.BonusModels(
-                ),
-                _profile
+            return new Gs2.Unity.Gs2LoginReward.Domain.Iterator.EzListBonusModelsIterator(
+                this._domain,
+                this._connection
             );
         }
 
+        #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2LoginReward.Model.EzBonusModel> BonusModelsAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2LoginReward.Model.EzBonusModel> BonusModels(
-        #endif
         )
         {
-        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2LoginReward.Model.EzBonusModel>(async (writer, token) =>
             {
                 var it = _domain.BonusModelsAsync(
                 ).GetAsyncEnumerator();
                 while(
-                    await _profile.RunIteratorAsync(
+                    await this._connection.RunIteratorAsync(
                         null,
                         async () =>
                         {
@@ -182,15 +103,8 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2LoginReward.Model.EzBonusModel.FromModel(it.Current));
                 }
             });
-        #else
-            return new EzBonusModelsIterator(
-                _domain.BonusModels(
-                ),
-                _domain,
-                _profile
-            );
-        #endif
         }
+        #endif
 
         public ulong SubscribeBonusModels(Action callback) {
             return this._domain.SubscribeBonusModels(callback);
@@ -200,6 +114,29 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
             this._domain.UnsubscribeBonusModels(callbackId);
         }
 
+        public Gs2.Unity.Gs2LoginReward.Domain.Model.EzUserDomain User(
+            string userId
+        ) {
+            return new Gs2.Unity.Gs2LoginReward.Domain.Model.EzUserDomain(
+                _domain.User(
+                    userId
+                ),
+                this._connection
+            );
+        }
+
+        public EzUserGameSessionDomain Me(
+            Gs2.Unity.Util.GameSession gameSession
+        ) {
+            return new EzUserGameSessionDomain(
+                _domain.AccessToken(
+                    gameSession.AccessToken
+                ),
+                gameSession,
+                this._connection
+            );
+        }
+
         public Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusModelDomain BonusModel(
             string bonusModelName
         ) {
@@ -207,7 +144,7 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                 _domain.BonusModel(
                     bonusModelName
                 ),
-                _profile
+                this._connection
             );
         }
 

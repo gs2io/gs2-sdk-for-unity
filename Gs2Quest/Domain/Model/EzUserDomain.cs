@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
 
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Quest.Domain.Model.UserDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NextPageToken => _domain.NextPageToken;
@@ -62,119 +62,10 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
 
         public EzUserDomain(
             Gs2.Gs2Quest.Domain.Model.UserDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
-        }
-
-        public class EzProgressesIterator : Gs2Iterator<Gs2.Unity.Gs2Quest.Model.EzProgress>
-        {
-            private Gs2Iterator<Gs2.Gs2Quest.Model.Progress> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2Quest.Domain.Model.UserDomain _domain;
-        #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
-
-            public EzProgressesIterator(
-                Gs2Iterator<Gs2.Gs2Quest.Model.Progress> it,
-        #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2Quest.Domain.Model.UserDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Quest.Model.EzProgress>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    null,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.Progresses(
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Quest.Model.EzProgress>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Quest.Model.EzProgress.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public Gs2Iterator<Gs2.Unity.Gs2Quest.Model.EzProgress> Progresses(
-        )
-        {
-            return new EzProgressesIterator(
-                _domain.Progresses(
-                ),
-                _profile
-            );
-        }
-
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Quest.Model.EzProgress> ProgressesAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2Quest.Model.EzProgress> Progresses(
-        #endif
-        )
-        {
-        #if GS2_ENABLE_UNITASK
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Quest.Model.EzProgress>(async (writer, token) =>
-            {
-                var it = _domain.ProgressesAsync(
-                ).GetAsyncEnumerator();
-                while(
-                    await _profile.RunIteratorAsync(
-                        null,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.ProgressesAsync(
-                            ).GetAsyncEnumerator();
-                        }
-                    )
-                )
-                {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Quest.Model.EzProgress.FromModel(it.Current));
-                }
-            });
-        #else
-            return new EzProgressesIterator(
-                _domain.Progresses(
-                ),
-                _domain,
-                _profile
-            );
-        #endif
-        }
-
-        public ulong SubscribeProgresses(Action callback) {
-            return this._domain.SubscribeProgresses(callback);
-        }
-
-        public void UnsubscribeProgresses(ulong callbackId) {
-            this._domain.UnsubscribeProgresses(callbackId);
+            this._connection = connection;
         }
 
         public Gs2.Unity.Gs2Quest.Domain.Model.EzProgressDomain Progress(
@@ -182,117 +73,8 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             return new Gs2.Unity.Gs2Quest.Domain.Model.EzProgressDomain(
                 _domain.Progress(
                 ),
-                _profile
+                this._connection
             );
-        }
-
-        public class EzCompletedQuestListsIterator : Gs2Iterator<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList>
-        {
-            private Gs2Iterator<Gs2.Gs2Quest.Model.CompletedQuestList> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2Quest.Domain.Model.UserDomain _domain;
-        #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
-
-            public EzCompletedQuestListsIterator(
-                Gs2Iterator<Gs2.Gs2Quest.Model.CompletedQuestList> it,
-        #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2Quest.Domain.Model.UserDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    null,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.CompletedQuestLists(
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public Gs2Iterator<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList> CompletedQuestLists(
-        )
-        {
-            return new EzCompletedQuestListsIterator(
-                _domain.CompletedQuestLists(
-                ),
-                _profile
-            );
-        }
-
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList> CompletedQuestListsAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList> CompletedQuestLists(
-        #endif
-        )
-        {
-        #if GS2_ENABLE_UNITASK
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList>(async (writer, token) =>
-            {
-                var it = _domain.CompletedQuestListsAsync(
-                ).GetAsyncEnumerator();
-                while(
-                    await _profile.RunIteratorAsync(
-                        null,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.CompletedQuestListsAsync(
-                            ).GetAsyncEnumerator();
-                        }
-                    )
-                )
-                {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList.FromModel(it.Current));
-                }
-            });
-        #else
-            return new EzCompletedQuestListsIterator(
-                _domain.CompletedQuestLists(
-                ),
-                _domain,
-                _profile
-            );
-        #endif
-        }
-
-        public ulong SubscribeCompletedQuestLists(Action callback) {
-            return this._domain.SubscribeCompletedQuestLists(callback);
-        }
-
-        public void UnsubscribeCompletedQuestLists(ulong callbackId) {
-            this._domain.UnsubscribeCompletedQuestLists(callbackId);
         }
 
         public Gs2.Unity.Gs2Quest.Domain.Model.EzCompletedQuestListDomain CompletedQuestList(
@@ -302,7 +84,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                 _domain.CompletedQuestList(
                     questGroupName
                 ),
-                _profile
+                this._connection
             );
         }
 

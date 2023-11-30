@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2Ranking
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2RankingWebSocketClient _client;
 		private readonly Gs2RankingRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2RankingWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2RankingRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2RankingRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2RankingWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2RankingRestClient(connection.RestSession);
 		}
 
         public IEnumerator GetCategory(
@@ -67,7 +60,7 @@ namespace Gs2.Unity.Gs2Ranking
                 string categoryName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.GetCategoryModel(
@@ -89,7 +82,7 @@ namespace Gs2.Unity.Gs2Ranking
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribeCategoryModels(
@@ -112,7 +105,7 @@ namespace Gs2.Unity.Gs2Ranking
                 string categoryName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeSubscribesByCategoryName(
@@ -138,7 +131,7 @@ namespace Gs2.Unity.Gs2Ranking
                 string targetUserId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.Subscribe(
@@ -165,7 +158,7 @@ namespace Gs2.Unity.Gs2Ranking
                 string targetUserId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.Unsubscribe(
@@ -192,7 +185,7 @@ namespace Gs2.Unity.Gs2Ranking
                 string additionalScopeName = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribeNearRankings(
@@ -221,7 +214,7 @@ namespace Gs2.Unity.Gs2Ranking
                 string uniqueId = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.GetRanking(
@@ -253,7 +246,7 @@ namespace Gs2.Unity.Gs2Ranking
                 long? startIndex = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeRankings(
@@ -284,7 +277,7 @@ namespace Gs2.Unity.Gs2Ranking
                 string metadata = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.PutScore(
@@ -313,7 +306,7 @@ namespace Gs2.Unity.Gs2Ranking
                 string uniqueId = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.GetScore(
@@ -343,7 +336,7 @@ namespace Gs2.Unity.Gs2Ranking
                 string pageToken = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeScores(

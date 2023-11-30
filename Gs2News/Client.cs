@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2News
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2NewsWebSocketClient _client;
 		private readonly Gs2NewsRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2NewsWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2NewsRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2NewsRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2NewsWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2NewsRestClient(connection.RestSession);
 		}
 
         public IEnumerator GetContentsUrl(
@@ -67,7 +60,7 @@ namespace Gs2.Unity.Gs2News
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.WantGrant(
@@ -90,7 +83,7 @@ namespace Gs2.Unity.Gs2News
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeNews(

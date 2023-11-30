@@ -52,7 +52,8 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
 
     public partial class EzCounterGameSessionDomain {
         private readonly Gs2.Gs2Limit.Domain.Model.CounterAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string LimitName => _domain?.LimitName;
@@ -60,10 +61,12 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
 
         public EzCounterGameSessionDomain(
             Gs2.Gs2Limit.Domain.Model.CounterAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
         [Obsolete("The name has been changed to CountUpFuture.")]
@@ -78,7 +81,6 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
             );
         }
 
-        #if GS2_ENABLE_UNITASK
         public IFuture<Gs2.Unity.Gs2Limit.Domain.Model.EzCounterGameSessionDomain> CountUpFuture(
             int? countUpValue = null,
             int? maxValue = null
@@ -86,76 +88,48 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Limit.Domain.Model.EzCounterGameSessionDomain> self)
             {
-                var future = this._domain.CountUpFuture(
-                    new CountUpRequest()
-                        .WithCountUpValue(countUpValue)
-                        .WithMaxValue(maxValue)
-                        .WithAccessToken(_domain.AccessToken.Token)
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.CountUpFuture(
+                        new CountUpRequest()
+                            .WithCountUpValue(countUpValue)
+                            .WithMaxValue(maxValue)
+                    )
                 );
                 yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(new Gs2.Unity.Gs2Limit.Domain.Model.EzCounterGameSessionDomain(future.Result, _profile));
+                self.OnComplete(new Gs2.Unity.Gs2Limit.Domain.Model.EzCounterGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Limit.Domain.Model.EzCounterGameSessionDomain>(Impl);
         }
 
+        #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Limit.Domain.Model.EzCounterGameSessionDomain> CountUpAsync(
-        #else
-        public IFuture<Gs2.Unity.Gs2Limit.Domain.Model.EzCounterGameSessionDomain> CountUpFuture(
-        #endif
             int? countUpValue = null,
             int? maxValue = null
         ) {
-        #if GS2_ENABLE_UNITASK
-            var result = await _profile.RunAsync(
-                _domain.AccessToken,
-                async () =>
-                {
-                    return await _domain.CountUpAsync(
-                        new CountUpRequest()
-                            .WithCountUpValue(countUpValue)
-                            .WithMaxValue(maxValue)
-                            .WithAccessToken(_domain.AccessToken.Token)
-                    );
-                }
-            );
-            return new Gs2.Unity.Gs2Limit.Domain.Model.EzCounterGameSessionDomain(result, _profile);
-        #else
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Limit.Domain.Model.EzCounterGameSessionDomain> self)
-            {
-                var future = _domain.CountUpFuture(
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.CountUpAsync(
                     new CountUpRequest()
                         .WithCountUpValue(countUpValue)
                         .WithMaxValue(maxValue)
-                        .WithAccessToken(_domain.AccessToken.Token)
-                );
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
-                    () =>
-        			{
-                		return future = _domain.CountUpFuture(
-                    		new CountUpRequest()
-                	        .WithCountUpValue(countUpValue)
-                	        .WithMaxValue(maxValue)
-                    	    .WithAccessToken(_domain.AccessToken.Token)
-        		        );
-        			}
-                );
-                if (future.Error != null)
-                {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var result = future.Result;
-                self.OnComplete(new Gs2.Unity.Gs2Limit.Domain.Model.EzCounterGameSessionDomain(result, _profile));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Limit.Domain.Model.EzCounterGameSessionDomain>(Impl);
-        #endif
+                )
+            );
+            return new Gs2.Unity.Gs2Limit.Domain.Model.EzCounterGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
         }
+        #endif
 
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Limit.Model.EzCounter> Model()
@@ -164,31 +138,10 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Limit.Model.EzCounter> ModelFuture()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Limit.Model.EzCounter> self)
-            {
-                yield return ModelAsync().ToCoroutine(
-                    self.OnComplete,
-                    e =>
-                    {
-                        if (e is Gs2.Core.Exception.Gs2Exception e2) {
-                            self.OnError(e2);
-                        }
-                        else {
-                            UnityEngine.Debug.LogError(e.Message);
-                            self.OnError(new Gs2.Core.Exception.UnknownException(e.Message));
-                        }
-                    }
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Limit.Model.EzCounter>(Impl);
-        }
-
         public async UniTask<Gs2.Unity.Gs2Limit.Model.EzCounter> ModelAsync()
         {
-            var item = await _profile.RunAsync(
-                _domain.AccessToken,
+            var item = await this._connection.RunAsync(
+                this._gameSession,
                 async () =>
                 {
                     return await _domain.ModelAsync();
@@ -201,19 +154,19 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
                 item
             );
         }
-        #else
+        #endif
+
         public IFuture<Gs2.Unity.Gs2Limit.Model.EzCounter> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Limit.Model.EzCounter> self)
             {
-                var future = _domain.ModelFuture();
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
+                var future = this._connection.RunFuture(
+                    this._gameSession,
                     () => {
-                    	return future = _domain.ModelFuture();
+                    	return _domain.ModelFuture();
                     }
                 );
+                yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
@@ -229,7 +182,6 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Limit.Model.EzCounter>(Impl);
         }
-        #endif
 
         public ulong Subscribe(Action<Gs2.Unity.Gs2Limit.Model.EzCounter> callback)
         {

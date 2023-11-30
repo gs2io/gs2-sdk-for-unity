@@ -52,7 +52,8 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
 
     public partial class EzMoldGameSessionDomain {
         private readonly Gs2.Gs2Formation.Domain.Model.MoldAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NextPageToken => _domain.NextPageToken;
@@ -62,89 +63,35 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
 
         public EzMoldGameSessionDomain(
             Gs2.Gs2Formation.Domain.Model.MoldAccessTokenDomain domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._gameSession = gameSession;
+            this._connection = connection;
         }
 
-        public class EzFormsIterator : Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzForm>
-        {
-            private Gs2Iterator<Gs2.Gs2Formation.Model.Form> _it;
-        #if !GS2_ENABLE_UNITASK
-            private readonly Gs2.Gs2Formation.Domain.Model.MoldAccessTokenDomain _domain;
-        #endif
-            private readonly Gs2.Unity.Util.Profile _profile;
-
-            public EzFormsIterator(
-                Gs2Iterator<Gs2.Gs2Formation.Model.Form> it,
-        #if !GS2_ENABLE_UNITASK
-                Gs2.Gs2Formation.Domain.Model.MoldAccessTokenDomain domain,
-        #endif
-                Gs2.Unity.Util.Profile profile
-            )
-            {
-                _it = it;
-        #if !GS2_ENABLE_UNITASK
-                _domain = domain;
-        #endif
-                _profile = profile;
-            }
-
-            public override bool HasNext()
-            {
-                return _it.HasNext();
-            }
-
-            protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Formation.Model.EzForm>> callback)
-            {
-        #if GS2_ENABLE_UNITASK
-                yield return _it.Next();
-        #else
-                yield return _profile.RunIterator(
-                    _domain.AccessToken,
-                    _it,
-                    () =>
-                    {
-                        return _it = _domain.Forms(
-                        );
-                    }
-                );
-        #endif
-                callback.Invoke(
-                    new AsyncResult<Gs2.Unity.Gs2Formation.Model.EzForm>(
-                        _it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzForm.FromModel(_it.Current),
-                        _it.Error
-                    )
-                );
-            }
-        }
-
-        #if GS2_ENABLE_UNITASK
         public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzForm> Forms(
         )
         {
-            return new EzFormsIterator(
-                _domain.Forms(
-                ),
-                _profile
+            return new Gs2.Unity.Gs2Formation.Domain.Iterator.EzListFormsIterator(
+                this._domain,
+                this._gameSession,
+                this._connection
             );
         }
 
+        #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Formation.Model.EzForm> FormsAsync(
-        #else
-        public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzForm> Forms(
-        #endif
         )
         {
-        #if GS2_ENABLE_UNITASK
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Formation.Model.EzForm>(async (writer, token) =>
             {
                 var it = _domain.FormsAsync(
                 ).GetAsyncEnumerator();
                 while(
-                    await _profile.RunIteratorAsync(
-                        _domain.AccessToken,
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
                         async () =>
                         {
                             return await it.MoveNextAsync();
@@ -159,15 +106,8 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                     await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Formation.Model.EzForm.FromModel(it.Current));
                 }
             });
-        #else
-            return new EzFormsIterator(
-                _domain.Forms(
-                ),
-                _domain,
-                _profile
-            );
-        #endif
         }
+        #endif
 
         public ulong SubscribeForms(Action callback) {
             return this._domain.SubscribeForms(callback);
@@ -184,7 +124,8 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                 _domain.Form(
                     index
                 ),
-                _profile
+                this._gameSession,
+                this._connection
             );
         }
 
@@ -195,31 +136,10 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Formation.Model.EzMold> ModelFuture()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Model.EzMold> self)
-            {
-                yield return ModelAsync().ToCoroutine(
-                    self.OnComplete,
-                    e =>
-                    {
-                        if (e is Gs2.Core.Exception.Gs2Exception e2) {
-                            self.OnError(e2);
-                        }
-                        else {
-                            UnityEngine.Debug.LogError(e.Message);
-                            self.OnError(new Gs2.Core.Exception.UnknownException(e.Message));
-                        }
-                    }
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Model.EzMold>(Impl);
-        }
-
         public async UniTask<Gs2.Unity.Gs2Formation.Model.EzMold> ModelAsync()
         {
-            var item = await _profile.RunAsync(
-                _domain.AccessToken,
+            var item = await this._connection.RunAsync(
+                this._gameSession,
                 async () =>
                 {
                     return await _domain.ModelAsync();
@@ -232,19 +152,19 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
                 item
             );
         }
-        #else
+        #endif
+
         public IFuture<Gs2.Unity.Gs2Formation.Model.EzMold> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Model.EzMold> self)
             {
-                var future = _domain.ModelFuture();
-                yield return _profile.RunFuture(
-                    _domain.AccessToken,
-                    future,
+                var future = this._connection.RunFuture(
+                    this._gameSession,
                     () => {
-                    	return future = _domain.ModelFuture();
+                    	return _domain.ModelFuture();
                     }
                 );
+                yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
@@ -260,7 +180,6 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Model.EzMold>(Impl);
         }
-        #endif
 
         public ulong Subscribe(Action<Gs2.Unity.Gs2Formation.Model.EzMold> callback)
         {

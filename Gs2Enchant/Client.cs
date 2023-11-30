@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2Enchant
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2EnchantWebSocketClient _client;
 		private readonly Gs2EnchantRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2EnchantWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2EnchantRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2EnchantRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2EnchantWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2EnchantRestClient(connection.RestSession);
 		}
 
         public IEnumerator GetBalanceParameterModel(
@@ -67,7 +60,7 @@ namespace Gs2.Unity.Gs2Enchant
                 string parameterName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _client.GetBalanceParameterModel(
@@ -89,7 +82,7 @@ namespace Gs2.Unity.Gs2Enchant
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribeBalanceParameterModels(
@@ -113,7 +106,7 @@ namespace Gs2.Unity.Gs2Enchant
                 string propertyId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.GetBalanceParameterStatus(
@@ -141,7 +134,7 @@ namespace Gs2.Unity.Gs2Enchant
                 int? limit = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeBalanceParameterStatuses(
@@ -167,7 +160,7 @@ namespace Gs2.Unity.Gs2Enchant
                 string parameterName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _client.GetRarityParameterModel(
@@ -189,7 +182,7 @@ namespace Gs2.Unity.Gs2Enchant
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribeRarityParameterModels(
@@ -213,7 +206,7 @@ namespace Gs2.Unity.Gs2Enchant
                 string propertyId
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.GetRarityParameterStatus(
@@ -241,7 +234,7 @@ namespace Gs2.Unity.Gs2Enchant
                 int? limit = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeRarityParameterStatuses(
@@ -272,7 +265,7 @@ namespace Gs2.Unity.Gs2Enchant
                 int parameterCount
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.VerifyRarityParameterStatus(

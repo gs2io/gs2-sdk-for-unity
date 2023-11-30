@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2Lottery
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2LotteryWebSocketClient _client;
 		private readonly Gs2LotteryRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2LotteryWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2LotteryRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2LotteryRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2LotteryWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2LotteryRestClient(connection.RestSession);
 		}
 
         public IEnumerator DescribeBoxes(
@@ -69,7 +62,7 @@ namespace Gs2.Unity.Gs2Lottery
                 int? limit = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeBoxes(
@@ -95,7 +88,7 @@ namespace Gs2.Unity.Gs2Lottery
                 string prizeTableName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.GetBox(
@@ -120,7 +113,7 @@ namespace Gs2.Unity.Gs2Lottery
                 string prizeTableName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.ResetBox(
@@ -145,7 +138,7 @@ namespace Gs2.Unity.Gs2Lottery
                 string lotteryName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeProbabilities(
@@ -169,7 +162,7 @@ namespace Gs2.Unity.Gs2Lottery
                 string lotteryName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _client.GetLotteryModel(
@@ -191,7 +184,7 @@ namespace Gs2.Unity.Gs2Lottery
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribeLotteryModels(

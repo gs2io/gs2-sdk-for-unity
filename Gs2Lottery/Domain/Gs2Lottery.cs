@@ -55,14 +55,14 @@ namespace Gs2.Unity.Gs2Lottery.Domain
 
     public class Gs2Lottery {
         private readonly Gs2.Gs2Lottery.Domain.Gs2Lottery _domain;
-        private readonly Gs2.Unity.Util.Profile _profile;
+        private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
         public Gs2Lottery(
             Gs2.Gs2Lottery.Domain.Gs2Lottery domain,
-            Gs2.Unity.Util.Profile profile
+            Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._profile = profile;
+            this._connection = connection;
         }
 
         public Gs2.Unity.Gs2Lottery.Domain.Model.EzNamespaceDomain Namespace(
@@ -72,7 +72,7 @@ namespace Gs2.Unity.Gs2Lottery.Domain
                 _domain.Namespace(
                     namespaceName
                 ),
-                _profile
+                this._connection
             );
         }
 

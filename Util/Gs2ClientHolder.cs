@@ -21,9 +21,6 @@ namespace Gs2.Unity.Util
     [AddComponentMenu("GS2/Core/Gs2ClientHolder")]
     public class Gs2ClientHolder : MonoBehaviour
     {
-        private Profile _profile;
-        public Profile Profile => _profile;
-        
         public Gs2Domain Gs2 { get; private set; }
         public bool Initialized => Gs2 != null;
         
@@ -102,60 +99,26 @@ namespace Gs2.Unity.Util
                 ), null);
                 yield break;
             }
-            _profile = new Profile(
-                environment.clientId,
-                environment.clientSecret,
-                new Gs2BasicReopener(),
+            var future = Gs2Client.CreateFuture(
+                new BasicGs2Credential(
+                    environment.clientId,
+                    environment.clientSecret
+                ),
                 environment.region,
                 distributorNamespace == null ? null : distributorNamespace.NamespaceName
             );
-            var initializeFuture = _profile.InitializeFuture();
-            yield return initializeFuture;
-            if (initializeFuture.Error != null)
+            yield return future;
+            if (future.Error != null)
             {
-                onError.Invoke(initializeFuture.Error, null);
+                onError.Invoke(future.Error, null);
                 yield break;
             }
             
-            Gs2 = initializeFuture.Result;
+            Gs2 = future.Result;
 
             onInitialized.Invoke();
         }
         
-#if GS2_ENABLE_UNITASK
-        public async UniTask StartAsync()
-        {
-            var environment = environments.FirstOrDefault(
-                v => v.name == this.activeEnvironmentName
-            );
-            if (environment == null) {
-                onError.Invoke(new CanIgnoreException(
-                    new UnknownException(new [] {
-                        new RequestError(
-                            "environment",
-                            "prefab.GS2ClientHolder.activeEnvironmentName.error.notFound"
-                        )
-                    })
-                ), null);
-                return;
-            }
-            _profile = new Profile(
-                environment.clientId,
-                environment.clientSecret,
-                new Gs2BasicReopener(),
-                environment.region
-            );
-            await _profile.InitializeAsync();
-            
-            Gs2 = new Gs2Domain(
-                _profile,
-                distributorNamespace.namespaceName
-            );
-            
-            onInitialized.Invoke();
-        }
-#endif
-
         public void DebugErrorHandler(Gs2Exception e, Func<IEnumerator> retry) {
             if (e is CanIgnoreException) {
                 return;

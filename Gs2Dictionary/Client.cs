@@ -43,22 +43,15 @@ namespace Gs2.Unity.Gs2Dictionary
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public partial class Client
 	{
-		private readonly Gs2.Unity.Util.Profile _profile;
+		private readonly Gs2.Unity.Util.Gs2Connection _connection;
 		private readonly Gs2DictionaryWebSocketClient _client;
 		private readonly Gs2DictionaryRestClient _restClient;
 
-		public Client(Gs2.Unity.Util.Profile profile)
+		public Client(Gs2.Unity.Util.Gs2Connection connection)
 		{
-			_profile = profile;
-			_client = new Gs2DictionaryWebSocketClient(profile.Gs2Session);
-			if (profile.checkRevokeCertificate)
-			{
-				_restClient = new Gs2DictionaryRestClient(profile.Gs2RestSession);
-			}
-			else
-			{
-				_restClient = new Gs2DictionaryRestClient(profile.Gs2RestSession, new DisabledCertificateHandler());
-			}
+			_connection = connection;
+			_client = new Gs2DictionaryWebSocketClient(connection.WebSocketSession);
+            _restClient = new Gs2DictionaryRestClient(connection.RestSession);
 		}
 
         public IEnumerator GetEntryModel(
@@ -67,7 +60,7 @@ namespace Gs2.Unity.Gs2Dictionary
                 string entryName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _client.GetEntryModel(
@@ -89,7 +82,7 @@ namespace Gs2.Unity.Gs2Dictionary
                 string namespaceName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
                 null,
                 cb => _restClient.DescribeEntryModels(
@@ -112,7 +105,7 @@ namespace Gs2.Unity.Gs2Dictionary
                 string entryModelName
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _client.GetEntry(
@@ -138,7 +131,7 @@ namespace Gs2.Unity.Gs2Dictionary
                 string keyId = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.GetEntryWithSignature(
@@ -165,7 +158,7 @@ namespace Gs2.Unity.Gs2Dictionary
                 string pageToken = null
         )
 		{
-            yield return _profile.Run(
+            yield return _connection.Run(
                 callback,
 		        session,
                 cb => _restClient.DescribeEntries(
