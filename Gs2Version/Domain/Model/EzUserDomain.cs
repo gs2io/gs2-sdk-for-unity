@@ -54,9 +54,9 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Version.Domain.Model.UserDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string Body => _domain.Body;
-        public string Signature => _domain.Signature;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? Body => _domain.Body;
+        public string? Signature => _domain.Signature;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 

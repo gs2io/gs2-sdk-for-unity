@@ -54,9 +54,9 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         private readonly Gs2.Gs2Formation.Domain.Model.PropertyFormAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string Body => _domain.Body;
-        public string Signature => _domain.Signature;
-        public string TransactionId => _domain.TransactionId;
+        public string? Body => _domain.Body;
+        public string? Signature => _domain.Signature;
+        public string? TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;

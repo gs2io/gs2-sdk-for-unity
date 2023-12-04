@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         private readonly Gs2.Gs2Ranking.Domain.Model.UserAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? NextPageToken => _domain.NextPageToken;
         public bool? Processing => _domain.Processing;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
@@ -184,7 +184,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
 
         public Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzRanking> Rankings(
               string categoryName,
-              string additionalScopeName = null
+              string? additionalScopeName = null
         )
         {
             return new Gs2.Unity.Gs2Ranking.Domain.Iterator.EzGetRankingIterator(
@@ -199,7 +199,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking.Model.EzRanking> RankingsAsync(
               string categoryName,
-              string additionalScopeName = null
+              string? additionalScopeName = null
         )
         {
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking.Model.EzRanking>(async (writer, token) =>
@@ -323,7 +323,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         public Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain Score(
             string categoryName,
             string scorerUserId,
-            string uniqueId = null
+            string? uniqueId = null
         ) {
             return new Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain(
                 _domain.Score(

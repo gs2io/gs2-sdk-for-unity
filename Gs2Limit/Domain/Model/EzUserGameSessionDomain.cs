@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
         private readonly Gs2.Gs2Limit.Domain.Model.UserAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
@@ -69,7 +69,7 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Limit.Model.EzCounter> Counters(
-              string limitName = null
+              string? limitName = null
         )
         {
             return new Gs2.Unity.Gs2Limit.Domain.Iterator.EzListCountersIterator(
@@ -82,7 +82,7 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Limit.Model.EzCounter> CountersAsync(
-              string limitName = null
+              string? limitName = null
         )
         {
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Limit.Model.EzCounter>(async (writer, token) =>

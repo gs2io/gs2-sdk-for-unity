@@ -54,8 +54,8 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
     public partial class EzNamespaceDomain {
         private readonly Gs2.Gs2MegaField.Domain.Model.NamespaceDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string Status => _domain.Status;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? Status => _domain.Status;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
 
         public EzNamespaceDomain(

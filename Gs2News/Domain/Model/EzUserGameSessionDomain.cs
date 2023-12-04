@@ -54,8 +54,8 @@ namespace Gs2.Unity.Gs2News.Domain.Model
         private readonly Gs2.Gs2News.Domain.Model.UserAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string ContentHash => _domain.ContentHash;
-        public string TemplateHash => _domain.TemplateHash;
+        public string? ContentHash => _domain.ContentHash;
+        public string? TemplateHash => _domain.TemplateHash;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 

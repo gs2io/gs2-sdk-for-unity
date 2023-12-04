@@ -54,10 +54,10 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Datastore.Domain.Model.UserDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string UploadUrl => _domain.UploadUrl;
-        public string FileUrl => _domain.FileUrl;
+        public string? UploadUrl => _domain.UploadUrl;
+        public string? FileUrl => _domain.FileUrl;
         public long? ContentLength => _domain.ContentLength;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 

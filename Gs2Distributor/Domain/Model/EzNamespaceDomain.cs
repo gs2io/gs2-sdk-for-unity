@@ -54,12 +54,12 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
     public partial class EzNamespaceDomain {
         private readonly Gs2.Gs2Distributor.Domain.Model.NamespaceDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string Status => _domain.Status;
-        public string Result => _domain.Result;
-        public string ContextStack => _domain.ContextStack;
+        public string? Status => _domain.Status;
+        public string? Result => _domain.Result;
+        public string? ContextStack => _domain.ContextStack;
         public string[] TaskResults => _domain.TaskResults;
-        public string SheetResult => _domain.SheetResult;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? SheetResult => _domain.SheetResult;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
 
         public EzNamespaceDomain(

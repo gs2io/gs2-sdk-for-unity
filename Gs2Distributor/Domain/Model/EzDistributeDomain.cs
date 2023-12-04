@@ -55,10 +55,10 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
         private readonly Gs2.Gs2Distributor.Domain.Model.DistributeDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string InboxNamespaceId => _domain.InboxNamespaceId;
-        public string Result => _domain.Result;
-        public string ContextStack => _domain.ContextStack;
+        public string? Result => _domain.Result;
+        public string? ContextStack => _domain.ContextStack;
         public string[] TaskResults => _domain.TaskResults;
-        public string SheetResult => _domain.SheetResult;
+        public string? SheetResult => _domain.SheetResult;
         public string NamespaceName => _domain?.NamespaceName;
 
         public EzDistributeDomain(

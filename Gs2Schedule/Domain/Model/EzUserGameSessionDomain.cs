@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
         private readonly Gs2.Gs2Schedule.Domain.Model.UserAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 

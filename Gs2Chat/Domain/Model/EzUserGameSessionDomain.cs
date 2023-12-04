@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         private readonly Gs2.Gs2Chat.Domain.Model.UserAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
@@ -70,9 +70,9 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
 
         [Obsolete("The name has been changed to CreateRoomFuture.")]
         public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> CreateRoom(
-            string name = null,
-            string metadata = null,
-            string password = null,
+            string? name = null,
+            string? metadata = null,
+            string? password = null,
             string[] whiteListUserIds = null
         )
         {
@@ -85,9 +85,9 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         }
 
         public IFuture<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> CreateRoomFuture(
-            string name = null,
-            string metadata = null,
-            string password = null,
+            string? name = null,
+            string? metadata = null,
+            string? password = null,
             string[] whiteListUserIds = null
         )
         {
@@ -119,9 +119,9 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain> CreateRoomAsync(
-            string name = null,
-            string metadata = null,
-            string password = null,
+            string? name = null,
+            string? metadata = null,
+            string? password = null,
             string[] whiteListUserIds = null
         ) {
             var result = await this._connection.RunAsync(

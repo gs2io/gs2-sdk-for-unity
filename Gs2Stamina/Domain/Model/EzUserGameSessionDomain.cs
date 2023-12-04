@@ -55,7 +55,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public int? OverflowValue => _domain.OverflowValue;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 

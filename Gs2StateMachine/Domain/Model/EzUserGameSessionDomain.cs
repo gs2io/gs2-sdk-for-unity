@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
         private readonly Gs2.Gs2StateMachine.Domain.Model.UserAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
@@ -69,7 +69,7 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2StateMachine.Model.EzStatus> Statuses(
-              string status = null
+              string? status = null
         )
         {
             return new Gs2.Unity.Gs2StateMachine.Domain.Iterator.EzListStatusesIterator(
@@ -82,7 +82,7 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2StateMachine.Model.EzStatus> StatusesAsync(
-              string status = null
+              string? status = null
         )
         {
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2StateMachine.Model.EzStatus>(async (writer, token) =>

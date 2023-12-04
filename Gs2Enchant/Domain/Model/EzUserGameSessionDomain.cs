@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
         private readonly Gs2.Gs2Enchant.Domain.Model.UserAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
@@ -69,7 +69,7 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterStatus> BalanceParameterStatuses(
-              string parameterName = null
+              string? parameterName = null
         )
         {
             return new Gs2.Unity.Gs2Enchant.Domain.Iterator.EzListBalanceParameterStatusesIterator(
@@ -82,7 +82,7 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterStatus> BalanceParameterStatusesAsync(
-              string parameterName = null
+              string? parameterName = null
         )
         {
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterStatus>(async (writer, token) =>
@@ -120,7 +120,7 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Enchant.Model.EzRarityParameterStatus> RarityParameterStatuses(
-              string parameterName = null
+              string? parameterName = null
         )
         {
             return new Gs2.Unity.Gs2Enchant.Domain.Iterator.EzListRarityParameterStatusesIterator(
@@ -133,7 +133,7 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Enchant.Model.EzRarityParameterStatus> RarityParameterStatusesAsync(
-              string parameterName = null
+              string? parameterName = null
         )
         {
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Enchant.Model.EzRarityParameterStatus>(async (writer, token) =>

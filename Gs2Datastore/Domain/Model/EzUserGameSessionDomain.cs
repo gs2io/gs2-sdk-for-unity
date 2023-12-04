@@ -54,10 +54,10 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         private readonly Gs2.Gs2Datastore.Domain.Model.UserAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string UploadUrl => _domain.UploadUrl;
-        public string FileUrl => _domain.FileUrl;
+        public string? UploadUrl => _domain.UploadUrl;
+        public string? FileUrl => _domain.FileUrl;
         public long? ContentLength => _domain.ContentLength;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
@@ -73,9 +73,9 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
 
         [Obsolete("The name has been changed to PrepareUploadFuture.")]
         public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareUpload(
-            string name = null,
-            string scope = null,
-            string contentType = null,
+            string? name = null,
+            string? scope = null,
+            string? contentType = null,
             string[] allowUserIds = null,
             bool? updateIfExists = null
         )
@@ -90,9 +90,9 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         }
 
         public IFuture<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareUploadFuture(
-            string name = null,
-            string scope = null,
-            string contentType = null,
+            string? name = null,
+            string? scope = null,
+            string? contentType = null,
             string[] allowUserIds = null,
             bool? updateIfExists = null
         )
@@ -126,9 +126,9 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain> PrepareUploadAsync(
-            string name = null,
-            string scope = null,
-            string contentType = null,
+            string? name = null,
+            string? scope = null,
+            string? contentType = null,
             string[] allowUserIds = null,
             bool? updateIfExists = null
         ) {
@@ -208,7 +208,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #endif
 
         public Gs2Iterator<Gs2.Unity.Gs2Datastore.Model.EzDataObject> DataObjects(
-              string status = null
+              string? status = null
         )
         {
             return new Gs2.Unity.Gs2Datastore.Domain.Iterator.EzListMyDataObjectsIterator(
@@ -221,7 +221,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Datastore.Model.EzDataObject> DataObjectsAsync(
-              string status = null
+              string? status = null
         )
         {
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Datastore.Model.EzDataObject>(async (writer, token) =>

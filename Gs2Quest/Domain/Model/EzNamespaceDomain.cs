@@ -54,11 +54,11 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
     public partial class EzNamespaceDomain {
         private readonly Gs2.Gs2Quest.Domain.Model.NamespaceDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string Status => _domain.Status;
-        public string Url => _domain.Url;
-        public string UploadToken => _domain.UploadToken;
-        public string UploadUrl => _domain.UploadUrl;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? Status => _domain.Status;
+        public string? Url => _domain.Url;
+        public string? UploadToken => _domain.UploadToken;
+        public string? UploadUrl => _domain.UploadUrl;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
 
         public EzNamespaceDomain(

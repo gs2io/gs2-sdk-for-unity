@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
     public partial class EzSerialKeyDomain {
         private readonly Gs2.Gs2SerialKey.Domain.Model.SerialKeyDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string Url => _domain.Url;
+        public string? Url => _domain.Url;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string SerialKeyCode => _domain?.SerialKeyCode;

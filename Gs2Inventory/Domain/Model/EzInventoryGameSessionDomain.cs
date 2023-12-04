@@ -55,7 +55,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public long? OverflowCount => _domain.OverflowCount;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string InventoryName => _domain?.InventoryName;

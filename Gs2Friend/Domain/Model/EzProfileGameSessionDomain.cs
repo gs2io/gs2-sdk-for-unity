@@ -69,9 +69,9 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
 
         [Obsolete("The name has been changed to UpdateProfileFuture.")]
         public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzProfileGameSessionDomain> UpdateProfile(
-            string publicProfile = null,
-            string followerProfile = null,
-            string friendProfile = null
+            string? publicProfile = null,
+            string? followerProfile = null,
+            string? friendProfile = null
         )
         {
             return UpdateProfileFuture(
@@ -82,9 +82,9 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
 
         public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzProfileGameSessionDomain> UpdateProfileFuture(
-            string publicProfile = null,
-            string followerProfile = null,
-            string friendProfile = null
+            string? publicProfile = null,
+            string? followerProfile = null,
+            string? friendProfile = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzProfileGameSessionDomain> self)
@@ -114,9 +114,9 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzProfileGameSessionDomain> UpdateProfileAsync(
-            string publicProfile = null,
-            string followerProfile = null,
-            string friendProfile = null
+            string? publicProfile = null,
+            string? followerProfile = null,
+            string? friendProfile = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,

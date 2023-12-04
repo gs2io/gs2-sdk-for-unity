@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2JobQueue.Domain.Model
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public bool? AutoRun => _domain.AutoRun;
         public bool? IsLastJob => _domain.IsLastJob;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 

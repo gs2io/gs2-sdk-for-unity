@@ -54,8 +54,8 @@ namespace Gs2.Unity.Gs2News.Domain.Model
     public partial class EzNewsDomain {
         private readonly Gs2.Gs2News.Domain.Model.NewsDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string BrowserUrl => _domain.BrowserUrl;
-        public string ZipUrl => _domain.ZipUrl;
+        public string? BrowserUrl => _domain.BrowserUrl;
+        public string? ZipUrl => _domain.ZipUrl;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 

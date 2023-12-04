@@ -54,10 +54,10 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         private readonly Gs2.Gs2Exchange.Domain.Model.UserAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string TransactionId => _domain.TransactionId;
+        public string? TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public long? UnlockAt => _domain.UnlockAt;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
@@ -72,7 +72,7 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Exchange.Model.EzAwait> Awaits(
-              string rateName = null
+              string? rateName = null
         )
         {
             return new Gs2.Unity.Gs2Exchange.Domain.Iterator.EzListAwaitsIterator(
@@ -85,7 +85,7 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Exchange.Model.EzAwait> AwaitsAsync(
-              string rateName = null
+              string? rateName = null
         )
         {
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Exchange.Model.EzAwait>(async (writer, token) =>

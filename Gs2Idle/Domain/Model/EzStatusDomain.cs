@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
     public partial class EzStatusDomain {
         private readonly Gs2.Gs2Idle.Domain.Model.StatusDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string TransactionId => _domain.TransactionId;
+        public string? TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;

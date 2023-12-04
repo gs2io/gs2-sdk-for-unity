@@ -54,8 +54,8 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Matchmaking.Domain.Model.UserDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string NextPageToken => _domain.NextPageToken;
-        public string MatchmakingContextToken => _domain.MatchmakingContextToken;
+        public string? NextPageToken => _domain.NextPageToken;
+        public string? MatchmakingContextToken => _domain.MatchmakingContextToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 

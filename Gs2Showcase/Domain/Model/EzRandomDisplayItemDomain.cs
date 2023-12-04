@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
     public partial class EzRandomDisplayItemDomain {
         private readonly Gs2.Gs2Showcase.Domain.Model.RandomDisplayItemDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string TransactionId => _domain.TransactionId;
+        public string? TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;

@@ -54,8 +54,8 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
     public partial class EzSimpleItemDomain {
         private readonly Gs2.Gs2Inventory.Domain.Model.SimpleItemDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string Body => _domain.Body;
-        public string Signature => _domain.Signature;
+        public string? Body => _domain.Body;
+        public string? Signature => _domain.Signature;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string InventoryName => _domain?.InventoryName;

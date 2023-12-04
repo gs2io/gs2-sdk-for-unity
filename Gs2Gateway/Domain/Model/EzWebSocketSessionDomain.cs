@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
     public partial class EzWebSocketSessionDomain {
         private readonly Gs2.Gs2Gateway.Domain.Model.WebSocketSessionDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string Protocol => _domain.Protocol;
+        public string? Protocol => _domain.Protocol;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 

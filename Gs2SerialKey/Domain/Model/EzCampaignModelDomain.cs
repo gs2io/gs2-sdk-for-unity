@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
     public partial class EzCampaignModelDomain {
         private readonly Gs2.Gs2SerialKey.Domain.Model.CampaignModelDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string CampaignModelName => _domain?.CampaignModelName;
 

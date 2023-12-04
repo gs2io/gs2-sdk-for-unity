@@ -54,9 +54,9 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
     public partial class EzStatusDomain {
         private readonly Gs2.Gs2Experience.Domain.Model.StatusDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string Body => _domain.Body;
-        public string Signature => _domain.Signature;
-        public string TransactionId => _domain.TransactionId;
+        public string? Body => _domain.Body;
+        public string? Signature => _domain.Signature;
+        public string? TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;

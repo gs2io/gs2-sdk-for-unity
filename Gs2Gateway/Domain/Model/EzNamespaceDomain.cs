@@ -54,10 +54,10 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
     public partial class EzNamespaceDomain {
         private readonly Gs2.Gs2Gateway.Domain.Model.NamespaceDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string Status => _domain.Status;
-        public string Url => _domain.Url;
-        public string UploadToken => _domain.UploadToken;
-        public string UploadUrl => _domain.UploadUrl;
+        public string? Status => _domain.Status;
+        public string? Url => _domain.Url;
+        public string? UploadToken => _domain.UploadToken;
+        public string? UploadUrl => _domain.UploadUrl;
         public string NamespaceName => _domain?.NamespaceName;
 
         public EzNamespaceDomain(

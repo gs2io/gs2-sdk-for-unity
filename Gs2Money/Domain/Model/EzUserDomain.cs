@@ -55,7 +55,7 @@ namespace Gs2.Unity.Gs2Money.Domain.Model
         private readonly Gs2.Gs2Money.Domain.Model.UserDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public float? Price => _domain.Price;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 

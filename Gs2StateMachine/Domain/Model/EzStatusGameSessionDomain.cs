@@ -71,7 +71,7 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
         [Obsolete("The name has been changed to EmitFuture.")]
         public IFuture<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> Emit(
             string eventName,
-            string args = null
+            string? args = null
         )
         {
             return EmitFuture(
@@ -82,7 +82,7 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
 
         public IFuture<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> EmitFuture(
             string eventName,
-            string args = null
+            string? args = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> self)
@@ -112,7 +112,7 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
         #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> EmitAsync(
             string eventName,
-            string args = null
+            string? args = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
