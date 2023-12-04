@@ -1,6 +1,7 @@
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
 #endif
+using System;
 using Gs2.Core.Net;
 using Gs2.Core.Result;
 using Gs2.Core;
@@ -10,6 +11,7 @@ using UnityEngine.Events;
 
 namespace Gs2.Unity.Util
 {
+    [Obsolete("")]
     public abstract class IReopener
     {
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 #if GS2_ENABLE_UNITASK
@@ -32,6 +33,7 @@ namespace Gs2.Unity.Util
         
     }
 
+    [Obsolete("")]
     public class Gs2BasicReopener : IReopener
     {
         public ReOpenEvent onReOpen = new ReOpenEvent();

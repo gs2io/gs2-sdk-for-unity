@@ -77,11 +77,8 @@ namespace Gs2.Unity.Util
             string password
         )
         {
-            if (connection.RestSession.IsDisconnected()) {
-                await connection.RestSession.ReOpenAsync();
-            }
-            if (connection.WebSocketSession.IsDisconnected()) {
-                await connection.WebSocketSession.ReOpenAsync();
+            if (connection.IsDisconnected()) {
+                await connection.ConnectAsync();
             }
 
             var accountClient = new Gs2AccountRestClient(connection.RestSession);
@@ -181,11 +178,8 @@ namespace Gs2.Unity.Util
         )
         {
             IEnumerator Impl(Gs2Future<AccessToken> result) {
-                if (connection.RestSession.IsDisconnected()) {
-                    yield return connection.RestSession.ReOpenFuture();
-                }
-                if (connection.WebSocketSession.IsDisconnected()) {
-                    yield return connection.WebSocketSession.ReOpenFuture();
+                if (connection.IsDisconnected()) {
+                    yield return connection.ConnectFuture();
                 }
 
                 var accountClient = new Gs2AccountRestClient(connection.RestSession);
