@@ -53,7 +53,7 @@ using Cysharp.Threading.Tasks.Linq;
 namespace Gs2.Unity.Gs2Ranking.Domain
 {
 
-    public class Gs2Ranking {
+    public partial class Gs2Ranking {
         private readonly Gs2.Gs2Ranking.Domain.Gs2Ranking _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
