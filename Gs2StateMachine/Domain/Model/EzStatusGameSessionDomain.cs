@@ -130,6 +130,62 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
         }
         #endif
 
+        [Obsolete("The name has been changed to ReportFuture.")]
+        public IFuture<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> Report(
+            Gs2.Unity.Gs2StateMachine.Model.EzEvent[] events = null
+        )
+        {
+            return ReportFuture(
+                events
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> ReportFuture(
+            Gs2.Unity.Gs2StateMachine.Model.EzEvent[] events = null
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.ReportFuture(
+                        new ReportRequest()
+                            .WithEvents(events?.Select(v => v.ToModel()).ToArray())
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> ReportAsync(
+            Gs2.Unity.Gs2StateMachine.Model.EzEvent[] events = null
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.ReportAsync(
+                    new ReportRequest()
+                        .WithEvents(events?.Select(v => v.ToModel()).ToArray())
+                )
+            );
+            return new Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
         [Obsolete("The name has been changed to ExitFuture.")]
         public IFuture<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> Exit(
         )

@@ -161,5 +161,34 @@ namespace Gs2.Unity.Gs2StateMachine
                 )
             );
 		}
+
+        public IEnumerator Report(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2StateMachine.Result.EzReportResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string statusName,
+                List<Gs2.Unity.Gs2StateMachine.Model.EzEvent> events = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.Report(
+                    new Gs2.Gs2StateMachine.Request.ReportRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithStatusName(statusName)
+                        .WithEvents(events?.Select(v => {
+                            return v?.ToModel();
+                        }).ToArray()),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2StateMachine.Result.EzReportResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2StateMachine.Result.EzReportResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
     }
 }

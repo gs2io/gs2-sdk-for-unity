@@ -37,6 +37,12 @@ namespace Gs2.Unity.Gs2StateMachine.Model
 		[SerializeField]
 		public string Name;
 		[SerializeField]
+		public string EnableSpeculativeExecution;
+		[SerializeField]
+		public string StateMachineDefinition;
+		[SerializeField]
+		public Gs2.Unity.Gs2StateMachine.Model.EzRandomStatus RandomStatus;
+		[SerializeField]
 		public List<Gs2.Unity.Gs2StateMachine.Model.EzStackEntry> Stacks;
 		[SerializeField]
 		public List<Gs2.Unity.Gs2StateMachine.Model.EzVariable> Variables;
@@ -52,6 +58,9 @@ namespace Gs2.Unity.Gs2StateMachine.Model
             return new Gs2.Gs2StateMachine.Model.Status {
                 StatusId = StatusId,
                 Name = Name,
+                EnableSpeculativeExecution = EnableSpeculativeExecution,
+                StateMachineDefinition = StateMachineDefinition,
+                RandomStatus = RandomStatus?.ToModel(),
                 Stacks = Stacks?.Select(v => {
                     return v.ToModel();
                 }).ToArray(),
@@ -69,6 +78,9 @@ namespace Gs2.Unity.Gs2StateMachine.Model
             return new EzStatus {
                 StatusId = model.StatusId == null ? null : model.StatusId,
                 Name = model.Name == null ? null : model.Name,
+                EnableSpeculativeExecution = model.EnableSpeculativeExecution == null ? null : model.EnableSpeculativeExecution,
+                StateMachineDefinition = model.StateMachineDefinition == null ? null : model.StateMachineDefinition,
+                RandomStatus = model.RandomStatus == null ? null : Gs2.Unity.Gs2StateMachine.Model.EzRandomStatus.FromModel(model.RandomStatus),
                 Stacks = model.Stacks == null ? new List<Gs2.Unity.Gs2StateMachine.Model.EzStackEntry>() : model.Stacks.Select(v => {
                     return Gs2.Unity.Gs2StateMachine.Model.EzStackEntry.FromModel(v);
                 }).ToList(),

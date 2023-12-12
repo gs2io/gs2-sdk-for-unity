@@ -28,6 +28,16 @@ namespace Gs2.Editor.ResourceTree.Gs2StateMachine.Editor
             EditorGUILayout.TextField("NamespaceId", item.NamespaceId);
             EditorGUILayout.TextField("Name", item.Name);
             EditorGUILayout.TextField("Description", item.Description);
+            EditorGUILayout.TextField("SupportSpeculativeExecution", item.SupportSpeculativeExecution);
+            if (item.TransactionSetting == null) {
+                EditorGUILayout.TextField("TransactionSetting", "");
+            }
+            else {
+                EditorGUILayout.LabelField("TransactionSetting");
+                EditorGUI.indentLevel++;
+                TransactionSettingEditorExt.OnGUI(item.TransactionSetting);
+                EditorGUI.indentLevel--;
+            }
             if (item.StartScript == null) {
                 EditorGUILayout.TextField("StartScript", "");
             }
