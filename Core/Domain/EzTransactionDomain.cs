@@ -12,11 +12,6 @@ namespace Gs2.Unity.Core.Domain
     {
         private readonly TransactionAccessTokenDomain _domain;
         
-        public bool AutoRunStampSheet => this._domain.AutoRunStampSheet;
-        public string TransactionId => this._domain.TransactionId;
-        public string StampSheet => this._domain.StampSheet;
-        public string StampSheetEncryptionKey => this._domain.StampSheetEncryptionKey;
-
         public EzTransactionDomain(
             TransactionAccessTokenDomain domain
         ) {
@@ -31,15 +26,14 @@ namespace Gs2.Unity.Core.Domain
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(this);
+                self.OnComplete(new EzTransactionDomain(future.Result));
             }
             return new Gs2InlineFuture<EzTransactionDomain>(Impl);
         }
         
 #if GS2_ENABLE_UNITASK
         public async UniTask<EzTransactionDomain> WaitAsync(bool all = false) {
-            await this._domain.WaitAsync(all);
-            return this;
+            return new EzTransactionDomain(await this._domain.WaitAsync(all));
         }
 #endif
     }

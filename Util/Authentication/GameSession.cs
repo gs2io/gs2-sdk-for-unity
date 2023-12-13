@@ -39,6 +39,8 @@ namespace Gs2.Unity.Util
         
         public AccessToken AccessToken;
         
+        public string UserId => this.AccessToken.UserId;
+        
         public GameSession(
             IAuthenticator authenticator,
             Gs2Connection connection,
