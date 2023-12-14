@@ -53,7 +53,7 @@ using Cysharp.Threading.Tasks.Linq;
 namespace Gs2.Unity.Gs2JobQueue.Domain
 {
 
-    public class Gs2JobQueue {
+    public partial class Gs2JobQueue {
         private readonly Gs2.Gs2JobQueue.Domain.Gs2JobQueue _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
