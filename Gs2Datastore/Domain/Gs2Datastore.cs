@@ -53,7 +53,7 @@ using Cysharp.Threading.Tasks.Linq;
 namespace Gs2.Unity.Gs2Datastore.Domain
 {
 
-    public class Gs2Datastore {
+    public partial class Gs2Datastore {
         private readonly Gs2.Gs2Datastore.Domain.Gs2Datastore _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 

@@ -53,7 +53,7 @@ using Cysharp.Threading.Tasks.Linq;
 namespace Gs2.Unity.Gs2SkillTree.Domain
 {
 
-    public class Gs2SkillTree {
+    public partial class Gs2SkillTree {
         private readonly Gs2.Gs2SkillTree.Domain.Gs2SkillTree _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 

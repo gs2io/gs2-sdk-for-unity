@@ -53,7 +53,7 @@ using Cysharp.Threading.Tasks.Linq;
 namespace Gs2.Unity.Gs2Schedule.Domain
 {
 
-    public class Gs2Schedule {
+    public partial class Gs2Schedule {
         private readonly Gs2.Gs2Schedule.Domain.Gs2Schedule _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 

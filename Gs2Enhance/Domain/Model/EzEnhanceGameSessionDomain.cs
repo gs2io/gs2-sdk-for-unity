@@ -76,14 +76,16 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
             string rateName,
             string targetItemSetId,
             Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials,
-            Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
         )
         {
             return EnhanceFuture(
                 rateName,
                 targetItemSetId,
                 materials,
-                config
+                config,
+                speculativeExecute
             );
         }
 
@@ -91,7 +93,8 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
             string rateName,
             string targetItemSetId,
             Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials,
-            Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -103,7 +106,8 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
                             .WithRateName(rateName)
                             .WithTargetItemSetId(targetItemSetId)
                             .WithMaterials(materials?.Select(v => v.ToModel()).ToArray())
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                        speculativeExecute
                     )
                 );
                 yield return future;
@@ -121,7 +125,8 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
             string rateName,
             string targetItemSetId,
             Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials,
-            Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -130,7 +135,8 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
                         .WithRateName(rateName)
                         .WithTargetItemSetId(targetItemSetId)
                         .WithMaterials(materials?.Select(v => v.ToModel()).ToArray())
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                    speculativeExecute
                 )
             );
             return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);

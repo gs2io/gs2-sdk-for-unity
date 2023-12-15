@@ -53,7 +53,7 @@ using Cysharp.Threading.Tasks.Linq;
 namespace Gs2.Unity.Gs2MegaField.Domain
 {
 
-    public class Gs2MegaField {
+    public partial class Gs2MegaField {
         private readonly Gs2.Gs2MegaField.Domain.Gs2MegaField _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 

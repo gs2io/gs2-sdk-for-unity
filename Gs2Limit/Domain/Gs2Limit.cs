@@ -53,7 +53,7 @@ using Cysharp.Threading.Tasks.Linq;
 namespace Gs2.Unity.Gs2Limit.Domain
 {
 
-    public class Gs2Limit {
+    public partial class Gs2Limit {
         private readonly Gs2.Gs2Limit.Domain.Gs2Limit _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 

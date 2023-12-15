@@ -75,14 +75,16 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             string questGroupName,
             string questName,
             bool? force = null,
-            Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
         )
         {
             return StartFuture(
                 questGroupName,
                 questName,
                 force,
-                config
+                config,
+                speculativeExecute
             );
         }
 
@@ -90,7 +92,8 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             string questGroupName,
             string questName,
             bool? force = null,
-            Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -102,7 +105,8 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                             .WithQuestGroupName(questGroupName)
                             .WithQuestName(questName)
                             .WithForce(force)
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                        speculativeExecute
                     )
                 );
                 yield return future;
@@ -120,7 +124,8 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             string questGroupName,
             string questName,
             bool? force = null,
-            Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -129,7 +134,8 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                         .WithQuestGroupName(questGroupName)
                         .WithQuestName(questName)
                         .WithForce(force)
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                    speculativeExecute
                 )
             );
             return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);

@@ -53,7 +53,7 @@ using Cysharp.Threading.Tasks.Linq;
 namespace Gs2.Unity.Gs2SerialKey.Domain
 {
 
-    public class Gs2SerialKey {
+    public partial class Gs2SerialKey {
         private readonly Gs2.Gs2SerialKey.Domain.Gs2SerialKey _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 

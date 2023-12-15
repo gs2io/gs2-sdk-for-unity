@@ -53,7 +53,7 @@ using Cysharp.Threading.Tasks.Linq;
 namespace Gs2.Unity.Gs2Chat.Domain
 {
 
-    public class Gs2Chat {
+    public partial class Gs2Chat {
         private readonly Gs2.Gs2Chat.Domain.Gs2Chat _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 

@@ -53,7 +53,7 @@ using Cysharp.Threading.Tasks.Linq;
 namespace Gs2.Unity.Gs2News.Domain
 {
 
-    public class Gs2News {
+    public partial class Gs2News {
         private readonly Gs2.Gs2News.Domain.Gs2News _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 

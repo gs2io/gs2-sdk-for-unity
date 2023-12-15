@@ -53,7 +53,7 @@ using Cysharp.Threading.Tasks.Linq;
 namespace Gs2.Unity.Gs2Matchmaking.Domain
 {
 
-    public class Gs2Matchmaking {
+    public partial class Gs2Matchmaking {
         private readonly Gs2.Gs2Matchmaking.Domain.Gs2Matchmaking _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 

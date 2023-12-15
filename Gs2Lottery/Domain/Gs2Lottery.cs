@@ -53,7 +53,7 @@ using Cysharp.Threading.Tasks.Linq;
 namespace Gs2.Unity.Gs2Lottery.Domain
 {
 
-    public class Gs2Lottery {
+    public partial class Gs2Lottery {
         private readonly Gs2.Gs2Lottery.Domain.Gs2Lottery _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 

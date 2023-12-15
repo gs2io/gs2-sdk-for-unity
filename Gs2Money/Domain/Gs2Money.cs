@@ -53,7 +53,7 @@ using Cysharp.Threading.Tasks.Linq;
 namespace Gs2.Unity.Gs2Money.Domain
 {
 
-    public class Gs2Money {
+    public partial class Gs2Money {
         private readonly Gs2.Gs2Money.Domain.Gs2Money _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 

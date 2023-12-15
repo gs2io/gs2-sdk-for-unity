@@ -53,7 +53,7 @@ using Cysharp.Threading.Tasks.Linq;
 namespace Gs2.Unity.Gs2Formation.Domain
 {
 
-    public class Gs2Formation {
+    public partial class Gs2Formation {
         private readonly Gs2.Gs2Formation.Domain.Gs2Formation _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 

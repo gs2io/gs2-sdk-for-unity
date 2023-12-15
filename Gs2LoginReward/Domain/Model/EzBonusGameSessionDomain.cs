@@ -72,18 +72,21 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
         [Obsolete("The name has been changed to ReceiveFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Receive(
             string bonusModelName,
-            Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
         )
         {
             return ReceiveFuture(
                 bonusModelName,
-                config
+                config,
+                speculativeExecute
             );
         }
 
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveFuture(
             string bonusModelName,
-            Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -93,7 +96,8 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                     () => this._domain.ReceiveFuture(
                         new ReceiveRequest()
                             .WithBonusModelName(bonusModelName)
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                        speculativeExecute
                     )
                 );
                 yield return future;
@@ -109,14 +113,16 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
         #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveAsync(
             string bonusModelName,
-            Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.ReceiveAsync(
                     new ReceiveRequest()
                         .WithBonusModelName(bonusModelName)
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                    speculativeExecute
                 )
             );
             return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
@@ -127,20 +133,23 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> MissedReceive(
             string bonusModelName,
             int stepNumber,
-            Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
         )
         {
             return MissedReceiveFuture(
                 bonusModelName,
                 stepNumber,
-                config
+                config,
+                speculativeExecute
             );
         }
 
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> MissedReceiveFuture(
             string bonusModelName,
             int stepNumber,
-            Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -151,7 +160,8 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                         new MissedReceiveRequest()
                             .WithBonusModelName(bonusModelName)
                             .WithStepNumber(stepNumber)
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                        speculativeExecute
                     )
                 );
                 yield return future;
@@ -168,7 +178,8 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> MissedReceiveAsync(
             string bonusModelName,
             int stepNumber,
-            Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -176,7 +187,8 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                     new MissedReceiveRequest()
                         .WithBonusModelName(bonusModelName)
                         .WithStepNumber(stepNumber)
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                    speculativeExecute
                 )
             );
             return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);

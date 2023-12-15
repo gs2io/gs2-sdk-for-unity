@@ -73,20 +73,23 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> End(
             bool isComplete,
             Gs2.Unity.Gs2Quest.Model.EzReward[] rewards = null,
-            Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
         )
         {
             return EndFuture(
                 isComplete,
                 rewards,
-                config
+                config,
+                speculativeExecute
             );
         }
 
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> EndFuture(
             bool isComplete,
             Gs2.Unity.Gs2Quest.Model.EzReward[] rewards = null,
-            Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -97,7 +100,8 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                         new EndRequest()
                             .WithRewards(rewards?.Select(v => v.ToModel()).ToArray())
                             .WithIsComplete(isComplete)
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                        speculativeExecute
                     )
                 );
                 yield return future;
@@ -114,7 +118,8 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> EndAsync(
             bool isComplete,
             Gs2.Unity.Gs2Quest.Model.EzReward[] rewards = null,
-            Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -122,7 +127,8 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                     new EndRequest()
                         .WithRewards(rewards?.Select(v => v.ToModel()).ToArray())
                         .WithIsComplete(isComplete)
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                    speculativeExecute
                 )
             );
             return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
@@ -244,6 +250,40 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         {
             this._domain.Unsubscribe(callbackId);
         }
+
+        #if UNITY_2017_1_OR_NEWER
+        public Gs2Future<ulong> SubscribeWithInitialCallFuture(Action<Gs2.Unity.Gs2Quest.Model.EzProgress> callback)
+        {
+            IEnumerator Impl(IFuture<ulong> self)
+            {
+                var future = ModelFuture();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                var callbackId = Subscribe(callback);
+                callback.Invoke(item);
+                self.OnComplete(callbackId);
+            }
+            return new Gs2InlineFuture<ulong>(Impl);
+        }
+        #endif
+
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
+        public async UniTask<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Quest.Model.EzProgress> callback)
+            #else
+        public async Task<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Quest.Model.EzProgress> callback)
+            #endif
+        {
+            var item = await ModelAsync();
+            var callbackId = Subscribe(callback);
+            callback.Invoke(item);
+            return callbackId;
+        }
+        #endif
 
     }
 }

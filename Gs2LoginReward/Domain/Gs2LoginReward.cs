@@ -53,7 +53,7 @@ using Cysharp.Threading.Tasks.Linq;
 namespace Gs2.Unity.Gs2LoginReward.Domain
 {
 
-    public class Gs2LoginReward {
+    public partial class Gs2LoginReward {
         private readonly Gs2.Gs2LoginReward.Domain.Gs2LoginReward _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 

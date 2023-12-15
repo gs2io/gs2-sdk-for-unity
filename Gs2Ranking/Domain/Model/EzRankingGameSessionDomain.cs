@@ -73,7 +73,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         [Obsolete("The name has been changed to PutScoreFuture.")]
         public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain> PutScore(
             long score,
-            string metadata = null
+            string? metadata = null
         )
         {
             return PutScoreFuture(
@@ -84,7 +84,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
 
         public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain> PutScoreFuture(
             long score,
-            string metadata = null
+            string? metadata = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain> self)
@@ -114,7 +114,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain> PutScoreAsync(
             long score,
-            string metadata = null
+            string? metadata = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,

@@ -53,7 +53,7 @@ using Cysharp.Threading.Tasks.Linq;
 namespace Gs2.Unity.Gs2Dictionary.Domain
 {
 
-    public class Gs2Dictionary {
+    public partial class Gs2Dictionary {
         private readonly Gs2.Gs2Dictionary.Domain.Gs2Dictionary _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 

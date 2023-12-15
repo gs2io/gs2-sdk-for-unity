@@ -73,20 +73,23 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Exchange(
             string rateName,
             int count,
-            Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
         )
         {
             return ExchangeFuture(
                 rateName,
                 count,
-                config
+                config,
+                speculativeExecute
             );
         }
 
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ExchangeFuture(
             string rateName,
             int count,
-            Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -97,7 +100,8 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                         new ExchangeRequest()
                             .WithRateName(rateName)
                             .WithCount(count)
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                        speculativeExecute
                     )
                 );
                 yield return future;
@@ -114,7 +118,8 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ExchangeAsync(
             string rateName,
             int count,
-            Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -122,7 +127,8 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                     new ExchangeRequest()
                         .WithRateName(rateName)
                         .WithCount(count)
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                    speculativeExecute
                 )
             );
             return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
@@ -133,20 +139,23 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> IncrementalExchange(
             string rateName,
             int count,
-            Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
         )
         {
             return IncrementalExchangeFuture(
                 rateName,
                 count,
-                config
+                config,
+                speculativeExecute
             );
         }
 
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> IncrementalExchangeFuture(
             string rateName,
             int count,
-            Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -157,7 +166,8 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                         new IncrementalExchangeRequest()
                             .WithRateName(rateName)
                             .WithCount(count)
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                        speculativeExecute
                     )
                 );
                 yield return future;
@@ -174,7 +184,8 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> IncrementalExchangeAsync(
             string rateName,
             int count,
-            Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null
+            Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -182,7 +193,8 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                     new IncrementalExchangeRequest()
                         .WithRateName(rateName)
                         .WithCount(count)
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                    speculativeExecute
                 )
             );
             return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
