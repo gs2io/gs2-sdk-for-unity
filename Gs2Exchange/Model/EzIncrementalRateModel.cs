@@ -47,6 +47,8 @@ namespace Gs2.Unity.Gs2Exchange.Model
 		[SerializeField]
 		public string ExchangeCountId;
 		[SerializeField]
+		public int MaximumExchangeCount;
+		[SerializeField]
 		public List<Gs2.Unity.Core.Model.EzAcquireAction> AcquireActions;
 
         public Gs2.Gs2Exchange.Model.IncrementalRateModel ToModel()
@@ -59,6 +61,7 @@ namespace Gs2.Unity.Gs2Exchange.Model
                 BaseValue = BaseValue,
                 CoefficientValue = CoefficientValue,
                 ExchangeCountId = ExchangeCountId,
+                MaximumExchangeCount = MaximumExchangeCount,
                 AcquireActions = AcquireActions?.Select(v => {
                     return v.ToModel();
                 }).ToArray(),
@@ -75,6 +78,7 @@ namespace Gs2.Unity.Gs2Exchange.Model
                 BaseValue = model.BaseValue ?? 0,
                 CoefficientValue = model.CoefficientValue ?? 0,
                 ExchangeCountId = model.ExchangeCountId == null ? null : model.ExchangeCountId,
+                MaximumExchangeCount = model.MaximumExchangeCount ?? 0,
                 AcquireActions = model.AcquireActions == null ? new List<Gs2.Unity.Core.Model.EzAcquireAction>() : model.AcquireActions.Select(v => {
                     return Gs2.Unity.Core.Model.EzAcquireAction.FromModel(v);
                 }).ToList(),

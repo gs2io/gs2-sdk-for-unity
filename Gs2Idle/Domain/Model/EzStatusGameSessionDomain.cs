@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
         private readonly Gs2.Gs2Idle.Domain.Model.StatusAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string TransactionId => _domain.TransactionId;
+        public string? TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
@@ -122,13 +122,16 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
 
         [Obsolete("The name has been changed to ReceiveFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Receive(
+            bool speculativeExecute = true
         )
         {
             return ReceiveFuture(
+                speculativeExecute
             );
         }
 
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveFuture(
+            bool speculativeExecute = true
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -136,7 +139,8 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
                 var future = this._connection.RunFuture(
                     this._gameSession,
                     () => this._domain.ReceiveFuture(
-                        new ReceiveRequest()
+                        new ReceiveRequest(),
+                        speculativeExecute
                     )
                 );
                 yield return future;
@@ -151,11 +155,13 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveAsync(
+            bool speculativeExecute = true
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.ReceiveAsync(
-                    new ReceiveRequest()
+                    new ReceiveRequest(),
+                    speculativeExecute
                 )
             );
             return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
@@ -227,6 +233,40 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
         {
             this._domain.Unsubscribe(callbackId);
         }
+
+        #if UNITY_2017_1_OR_NEWER
+        public Gs2Future<ulong> SubscribeWithInitialCallFuture(Action<Gs2.Unity.Gs2Idle.Model.EzStatus> callback)
+        {
+            IEnumerator Impl(IFuture<ulong> self)
+            {
+                var future = ModelFuture();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                var callbackId = Subscribe(callback);
+                callback.Invoke(item);
+                self.OnComplete(callbackId);
+            }
+            return new Gs2InlineFuture<ulong>(Impl);
+        }
+        #endif
+
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
+        public async UniTask<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Idle.Model.EzStatus> callback)
+            #else
+        public async Task<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Idle.Model.EzStatus> callback)
+            #endif
+        {
+            var item = await ModelAsync();
+            var callbackId = Subscribe(callback);
+            callback.Invoke(item);
+            return callbackId;
+        }
+        #endif
 
     }
 }
