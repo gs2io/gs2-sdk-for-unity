@@ -132,6 +132,11 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Showcase.Model.EzShowcase>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2Showcase.Model.EzShowcase> callback)
         {
             return this._domain.Subscribe(item => {

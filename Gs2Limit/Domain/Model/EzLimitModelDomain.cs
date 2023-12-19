@@ -117,6 +117,11 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Limit.Model.EzLimitModel>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2Limit.Model.EzLimitModel> callback)
         {
             return this._domain.Subscribe(item => {

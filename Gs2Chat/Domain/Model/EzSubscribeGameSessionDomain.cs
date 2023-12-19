@@ -282,6 +282,11 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Chat.Model.EzSubscribe>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2Chat.Model.EzSubscribe> callback)
         {
             return this._domain.Subscribe(item => {

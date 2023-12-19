@@ -187,6 +187,11 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Model.EzProfile>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2Friend.Model.EzProfile> callback)
         {
             return this._domain.Subscribe(item => {

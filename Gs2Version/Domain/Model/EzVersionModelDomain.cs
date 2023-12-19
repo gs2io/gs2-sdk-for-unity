@@ -117,6 +117,11 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Version.Model.EzVersionModel>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2Version.Model.EzVersionModel> callback)
         {
             return this._domain.Subscribe(item => {

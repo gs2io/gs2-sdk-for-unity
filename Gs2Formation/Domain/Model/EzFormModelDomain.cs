@@ -117,6 +117,11 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Model.EzFormModel>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2Formation.Model.EzFormModel> callback)
         {
             return this._domain.Subscribe(item => {

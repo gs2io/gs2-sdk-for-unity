@@ -176,6 +176,11 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> callback)
         {
             return this._domain.Subscribe(item => {

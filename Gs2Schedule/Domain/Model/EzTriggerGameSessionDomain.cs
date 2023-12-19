@@ -120,6 +120,11 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Schedule.Model.EzTrigger>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2Schedule.Model.EzTrigger> callback)
         {
             return this._domain.Subscribe(item => {

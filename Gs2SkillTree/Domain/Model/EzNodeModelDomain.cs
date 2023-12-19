@@ -117,6 +117,11 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2SkillTree.Model.EzNodeModel>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2SkillTree.Model.EzNodeModel> callback)
         {
             return this._domain.Subscribe(item => {

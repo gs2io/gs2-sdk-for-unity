@@ -176,6 +176,11 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Mission.Model.EzComplete>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2Mission.Model.EzComplete> callback)
         {
             return this._domain.Subscribe(item => {

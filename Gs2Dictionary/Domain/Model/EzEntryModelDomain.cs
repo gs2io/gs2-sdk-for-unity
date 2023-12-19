@@ -117,6 +117,11 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Dictionary.Model.EzEntryModel>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2Dictionary.Model.EzEntryModel> callback)
         {
             return this._domain.Subscribe(item => {

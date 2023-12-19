@@ -120,6 +120,11 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2LoginReward.Model.EzReceiveStatus>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2LoginReward.Model.EzReceiveStatus> callback)
         {
             return this._domain.Subscribe(item => {

@@ -130,6 +130,11 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Chat.Model.EzRoom>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2Chat.Model.EzRoom> callback)
         {
             return this._domain.Subscribe(item => {

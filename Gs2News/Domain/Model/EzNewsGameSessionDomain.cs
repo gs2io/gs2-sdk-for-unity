@@ -171,6 +171,11 @@ namespace Gs2.Unity.Gs2News.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2News.Model.EzNews>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2News.Model.EzNews> callback)
         {
             return this._domain.Subscribe(item => {

@@ -381,6 +381,11 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Model.EzStamina>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2Stamina.Model.EzStamina> callback)
         {
             return this._domain.Subscribe(item => {

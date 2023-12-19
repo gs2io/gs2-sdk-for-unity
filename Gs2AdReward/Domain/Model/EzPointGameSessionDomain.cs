@@ -119,6 +119,11 @@ namespace Gs2.Unity.Gs2AdReward.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2AdReward.Model.EzPoint>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2AdReward.Model.EzPoint> callback)
         {
             return this._domain.Subscribe(item => {

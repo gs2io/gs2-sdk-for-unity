@@ -122,6 +122,11 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking.Model.EzScore>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2Ranking.Model.EzScore> callback)
         {
             return this._domain.Subscribe(item => {
