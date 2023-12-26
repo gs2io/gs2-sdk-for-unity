@@ -93,6 +93,7 @@ namespace Gs2.Unity.Core
         public Gs2Formation.Domain.Gs2Formation Formation;
         public Gs2Friend.Domain.Gs2Friend Friend;
         public Gs2Gateway.Domain.Gs2Gateway Gateway;
+        public Gs2Grade.Domain.Gs2Grade Grade;
         public Gs2Idle.Domain.Gs2Idle Idle;
         public Gs2Inbox.Domain.Gs2Inbox Inbox;
         public Gs2Inventory.Domain.Gs2Inventory Inventory;
@@ -162,6 +163,7 @@ namespace Gs2.Unity.Core
             Formation = new Gs2Formation.Domain.Gs2Formation(_gs2.Formation, connection);
             Friend = new Gs2Friend.Domain.Gs2Friend(_gs2.Friend, connection);
             Gateway = new Gs2Gateway.Domain.Gs2Gateway(_gs2.Gateway, connection);
+            Grade = new Gs2Grade.Domain.Gs2Grade(_gs2.Grade, connection);
             Idle = new Gs2Idle.Domain.Gs2Idle(_gs2.Idle, connection);
             Inbox = new Gs2Inbox.Domain.Gs2Inbox(_gs2.Inbox, connection);
             Inventory = new Gs2Inventory.Domain.Gs2Inventory(_gs2.Inventory, connection);

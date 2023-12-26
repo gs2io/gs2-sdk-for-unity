@@ -19,6 +19,7 @@ using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Core.Domain;
+using Gs2.Unity.Gs2Inventory.Model;
 using Gs2.Unity.Util;
 using Gs2.Util.LitJson;
 using UnityEngine.Events;
@@ -121,7 +122,7 @@ namespace Gs2.Unity.Core.Model
 							request.ItemName,
 							request.ItemSetName
 						);
-						d.Subscribe(v =>
+						d.Subscribe((EzItemSet v) =>
 						{
 							onCauseChange.Invoke();
 						});
@@ -151,7 +152,7 @@ namespace Gs2.Unity.Core.Model
 							request.ItemName,
 							request.ItemSetName
 						);
-						d.Subscribe(v =>
+						d.Subscribe((EzItemSet v) =>
 						{
 							onCauseChange.Invoke();
 						});

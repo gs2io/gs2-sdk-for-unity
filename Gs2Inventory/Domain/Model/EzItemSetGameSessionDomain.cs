@@ -56,8 +56,8 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         private readonly Gs2.Gs2Inventory.Domain.Model.ItemSetAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string Body => _domain.Body;
-        public string Signature => _domain.Signature;
+        public string? Body => _domain.Body;
+        public string? Signature => _domain.Signature;
         public long? OverflowCount => _domain.OverflowCount;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
@@ -247,12 +247,22 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]> callback)
+        {
+            return this._domain.Subscribe(item => {
+                callback.Invoke(item.Select(Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel).ToArray());
+            });
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2Inventory.Model.EzItemSet> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel(
-                    item
-                ));
+                callback.Invoke(Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel(item));
             });
         }
 
@@ -260,6 +270,54 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         {
             this._domain.Unsubscribe(callbackId);
         }
+
+        #if UNITY_2017_1_OR_NEWER
+        public Gs2Future<ulong> SubscribeWithInitialCallFuture(Action<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]> callback)
+        {
+            IEnumerator Impl(IFuture<ulong> self)
+            {
+                var future = ModelFuture();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                var callbackId = Subscribe(callback);
+                callback.Invoke(item);
+                self.OnComplete(callbackId);
+            }
+            return new Gs2InlineFuture<ulong>(Impl);
+        }
+        #endif
+
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+#if UNITY_2017_1_OR_NEWER
+        public async UniTask<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]> callback)
+#else
+        public async Task<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]> callback)
+#endif
+        {
+            var item = await ModelAsync();
+            var callbackId = Subscribe(callback);
+            callback.Invoke(item);
+            return callbackId;
+        }
+#endif
+
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+#if UNITY_2017_1_OR_NEWER
+        public async UniTask<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Inventory.Model.EzItemSet> callback)
+#else
+        public async Task<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Inventory.Model.EzItemSet> callback)
+#endif
+        {
+            var item = await ModelAsync();
+            var callbackId = Subscribe(callback);
+            callback.Invoke(item.Length == 0 ? null : item[0]);
+            return callbackId;
+        }
+#endif
 
     }
 }

@@ -18,6 +18,7 @@ namespace Gs2.Unity
         public readonly Gs2Formation.Client Formation;
         public readonly Gs2Friend.Client Friend;
         public readonly Gs2Gateway.Client Gateway;
+        public readonly Gs2Grade.Client Grade;
         public readonly Gs2Idle.Client Idle;
         public readonly Gs2Inbox.Client Inbox;
         public readonly Gs2Inventory.Client Inventory;
@@ -62,6 +63,7 @@ namespace Gs2.Unity
             Formation = new Gs2Formation.Client(connection);
             Friend = new Gs2Friend.Client(connection);
             Gateway = new Gs2Gateway.Client(connection);
+            Grade = new Gs2Grade.Client(connection);
             Idle = new Gs2Idle.Client(connection);
             Inbox = new Gs2Inbox.Client(connection);
             Inventory = new Gs2Inventory.Client(connection);
