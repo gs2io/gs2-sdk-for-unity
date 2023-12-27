@@ -32,11 +32,17 @@ namespace Gs2.Unity.Gs2Grade.Result
 	{
 		[SerializeField]
 		public Gs2.Unity.Gs2Grade.Model.EzStatus Item;
+		[SerializeField]
+		public string ExperienceNamespaceName;
+		[SerializeField]
+		public Gs2.Unity.Gs2Experience.Model.EzStatus ExperienceStatus;
 
         public static EzApplyRankCapResult FromModel(Gs2.Gs2Grade.Result.ApplyRankCapResult model)
         {
             return new EzApplyRankCapResult {
                 Item = model.Item == null ? null : Gs2.Unity.Gs2Grade.Model.EzStatus.FromModel(model.Item),
+                ExperienceNamespaceName = model.ExperienceNamespaceName == null ? null : model.ExperienceNamespaceName,
+                ExperienceStatus = model.ExperienceStatus == null ? null : Gs2.Unity.Gs2Experience.Model.EzStatus.FromModel(model.ExperienceStatus),
             };
         }
     }

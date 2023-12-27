@@ -54,6 +54,7 @@ namespace Gs2.Unity.Gs2Grade.Domain.Model
         private readonly Gs2.Gs2Grade.Domain.Model.UserAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
+        public string ExperienceNamespaceName => _domain.ExperienceNamespaceName;
         public string? TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string? NextPageToken => _domain.NextPageToken;

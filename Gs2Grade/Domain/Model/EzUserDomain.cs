@@ -54,6 +54,7 @@ namespace Gs2.Unity.Gs2Grade.Domain.Model
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Grade.Domain.Model.UserDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
+        public string ExperienceNamespaceName => _domain.ExperienceNamespaceName;
         public string? TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string? NextPageToken => _domain.NextPageToken;
