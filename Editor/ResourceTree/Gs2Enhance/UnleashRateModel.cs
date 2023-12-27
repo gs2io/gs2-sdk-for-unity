@@ -24,40 +24,59 @@ using UnityEngine;
 
 namespace Gs2.Editor.ResourceTree.Gs2Enhance
 {
-    public sealed class Namespace : AbstractTreeViewItem
+    public sealed class UnleashRateModel : AbstractTreeViewItem
     {
-        private Gs2.Gs2Enhance.Model.Namespace _item;
-        public string NamespaceName => _item.Name;
+        private Gs2.Gs2Enhance.Model.UnleashRateModel _item;
+        private Namespace _parent;
+        public string NamespaceName => _parent.NamespaceName;
+        public string RateName => _item.Name;
 
-        public Namespace(
+        public UnleashRateModel(
                 int id,
-                Gs2.Gs2Enhance.Model.Namespace item
+                Namespace parent,
+                Gs2.Gs2Enhance.Model.UnleashRateModel item
         ) {
             this.id = id = id * 100;
-            this.depth = 2;
+            this.depth = 4;
             this.icon = EditorGUIUtility.ObjectContent(null, typeof(GameObject)).image.ToTexture2D();
             this.displayName = item.Name;
             this.children = new TreeViewItem[] {
-                new RateModelHolder(++id, this),
-                new UnleashRateModelHolder(++id, this)
             }.ToList();
+            this._parent = parent;
             this._item = item;
         }
 
         public override ScriptableObject ToScriptableObject() {
-            var instance = Gs2.Unity.Gs2Enhance.ScriptableObject.Namespace.New(
+            Gs2.Unity.Gs2Enhance.ScriptableObject.Namespace parent = null;
+            var guids = AssetDatabase.FindAssets("t:Gs2.Unity.Gs2Enhance.ScriptableObject.Namespace");
+            foreach (var guid in guids) {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var item = AssetDatabase.LoadAssetAtPath<Gs2.Unity.Gs2Enhance.ScriptableObject.Namespace>(path);
+                if (
+                    item.NamespaceName == NamespaceName
+                ) {
+                    parent = item;
+                }
+            }
+            if (parent == null) {
+                Debug.LogError("Gs2.Unity.Gs2Enhance.ScriptableObject.Namespace not found.");
+                return null;
+            }
+            var instance = Gs2.Unity.Gs2Enhance.ScriptableObject.UnleashRateModel.New(
+                parent,
                 this._item.Name
             );
-            instance.name = this._item.Name + "Namespace";
+            instance.name = this._item.Name + "UnleashRateModel";
             return instance;
         }
 
         public override void OnGUI() {
-            NamespaceEditorExt.OnGUI(this._item);
+            UnleashRateModelEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
                 var directory = "Assets/Gs2/Resources/Enhance";
                 directory += "/Namespace" + "/" + NamespaceName;
+                directory += "/UnleashRateModel" + "/" + RateName;
 
                 CreateFolder(directory);
 
