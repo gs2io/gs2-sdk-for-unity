@@ -116,7 +116,7 @@ namespace Gs2.Unity.Gs2Lottery
             yield return _connection.Run(
                 callback,
 		        session,
-                cb => _client.ResetBox(
+                cb => _restClient.ResetBox(
                     new Gs2.Gs2Lottery.Request.ResetBoxRequest()
                         .WithNamespaceName(namespaceName)
                         .WithPrizeTableName(prizeTableName)

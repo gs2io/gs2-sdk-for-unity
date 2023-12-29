@@ -30,10 +30,13 @@ namespace Gs2.Unity.Gs2Lottery.Result
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzResetBoxResult
 	{
+		[SerializeField]
+		public Gs2.Unity.Gs2Lottery.Model.EzBoxItems Item;
 
         public static EzResetBoxResult FromModel(Gs2.Gs2Lottery.Result.ResetBoxResult model)
         {
             return new EzResetBoxResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Lottery.Model.EzBoxItems.FromModel(model.Item),
             };
         }
     }
