@@ -39,6 +39,8 @@ namespace Gs2.Unity.Gs2Money.Model
 		[SerializeField]
 		public int Free;
 		[SerializeField]
+		public bool ShareFree;
+		[SerializeField]
 		public long UpdatedAt;
 
         public Gs2.Gs2Money.Model.Wallet ToModel()
@@ -47,6 +49,7 @@ namespace Gs2.Unity.Gs2Money.Model
                 Slot = Slot,
                 Paid = Paid,
                 Free = Free,
+                ShareFree = ShareFree,
                 UpdatedAt = UpdatedAt,
             };
         }
@@ -57,6 +60,7 @@ namespace Gs2.Unity.Gs2Money.Model
                 Slot = model.Slot ?? 0,
                 Paid = model.Paid ?? 0,
                 Free = model.Free ?? 0,
+                ShareFree = model.ShareFree ?? false,
                 UpdatedAt = model.UpdatedAt ?? 0,
             };
         }
