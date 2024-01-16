@@ -35,6 +35,7 @@ namespace Gs2.Unity.Util
         
         public DetectVersionUpEvent onDetectVersionUp = new DetectVersionUpEvent();
 
+        [Obsolete("Migration to Gs2AccountAuthenticator(AccountSetting, GatewaySetting, VersionSetting)")]
         public Gs2AccountAuthenticator(
             Gs2WebSocketSession webSocketSession,
             Gs2RestSession restSession,
