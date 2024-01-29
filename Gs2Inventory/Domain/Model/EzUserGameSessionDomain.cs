@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         }
         #endif
 
-        public ulong SubscribeInventories(Action callback) {
-            return this._domain.SubscribeInventories(callback);
+        public ulong SubscribeInventories(
+            Action<Gs2.Unity.Gs2Inventory.Model.EzInventory[]> callback
+        ) {
+            return this._domain.SubscribeInventories(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Inventory.Model.EzInventory.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeInventories(ulong callbackId) {
-            this._domain.UnsubscribeInventories(callbackId);
+        public void UnsubscribeInventories(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeInventories(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzInventoryGameSessionDomain Inventory(

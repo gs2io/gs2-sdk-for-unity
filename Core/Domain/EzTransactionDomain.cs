@@ -26,14 +26,15 @@ namespace Gs2.Unity.Core.Domain
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(new EzTransactionDomain(future.Result));
+                self.OnComplete(future.Result == null ? null : new EzTransactionDomain(future.Result));
             }
             return new Gs2InlineFuture<EzTransactionDomain>(Impl);
         }
         
 #if GS2_ENABLE_UNITASK
         public async UniTask<EzTransactionDomain> WaitAsync(bool all = false) {
-            return new EzTransactionDomain(await this._domain.WaitAsync(all));
+            var next = await this._domain.WaitAsync(all);
+            return next == null ? null : new EzTransactionDomain(next);
         }
 #endif
     }

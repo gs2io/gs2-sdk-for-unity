@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         }
         #endif
 
-        public ulong SubscribeStaminaModels(Action callback) {
-            return this._domain.SubscribeStaminaModels(callback);
+        public ulong SubscribeStaminaModels(
+            Action<Gs2.Unity.Gs2Stamina.Model.EzStaminaModel[]> callback
+        ) {
+            return this._domain.SubscribeStaminaModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Stamina.Model.EzStaminaModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeStaminaModels(ulong callbackId) {
-            this._domain.UnsubscribeStaminaModels(callbackId);
+        public void UnsubscribeStaminaModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeStaminaModels(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaModelDomain StaminaModel(

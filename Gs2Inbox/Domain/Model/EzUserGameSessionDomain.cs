@@ -161,12 +161,26 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         }
         #endif
 
-        public ulong SubscribeMessages(Action callback) {
-            return this._domain.SubscribeMessages(callback);
+        public ulong SubscribeMessages(
+            Action<Gs2.Unity.Gs2Inbox.Model.EzMessage[]> callback,
+            bool? isRead = null
+        ) {
+            return this._domain.SubscribeMessages(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Inbox.Model.EzMessage.FromModel).ToArray());
+                },
+                isRead
+            );
         }
 
-        public void UnsubscribeMessages(ulong callbackId) {
-            this._domain.UnsubscribeMessages(callbackId);
+        public void UnsubscribeMessages(
+            ulong callbackId,
+            bool? isRead = null
+        ) {
+            this._domain.UnsubscribeMessages(
+                callbackId,
+                isRead
+            );
         }
 
         public Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain Message(

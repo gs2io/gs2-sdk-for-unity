@@ -198,12 +198,26 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         }
         #endif
 
-        public ulong SubscribeDoMatchmaking(Action callback) {
-            return this._domain.SubscribeDoMatchmaking(callback);
+        public ulong SubscribeDoMatchmaking(
+            Action<Gs2.Unity.Gs2Matchmaking.Model.EzGathering[]> callback,
+            Gs2.Unity.Gs2Matchmaking.Model.EzPlayer player
+        ) {
+            return this._domain.SubscribeDoMatchmaking(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Matchmaking.Model.EzGathering.FromModel).ToArray());
+                },
+                player.ToModel()
+            );
         }
 
-        public void UnsubscribeDoMatchmaking(ulong callbackId) {
-            this._domain.UnsubscribeDoMatchmaking(callbackId);
+        public void UnsubscribeDoMatchmaking(
+            ulong callbackId,
+            Gs2.Unity.Gs2Matchmaking.Model.EzPlayer player
+        ) {
+            this._domain.UnsubscribeDoMatchmaking(
+                callbackId,
+                player.ToModel()
+            );
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzRating> Ratings(
@@ -244,12 +258,22 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         }
         #endif
 
-        public ulong SubscribeRatings(Action callback) {
-            return this._domain.SubscribeRatings(callback);
+        public ulong SubscribeRatings(
+            Action<Gs2.Unity.Gs2Matchmaking.Model.EzRating[]> callback
+        ) {
+            return this._domain.SubscribeRatings(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Matchmaking.Model.EzRating.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeRatings(ulong callbackId) {
-            this._domain.UnsubscribeRatings(callbackId);
+        public void UnsubscribeRatings(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeRatings(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain Gathering(

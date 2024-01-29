@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
         }
         #endif
 
-        public ulong SubscribeRandomDisplayItems(Action callback) {
-            return this._domain.SubscribeRandomDisplayItems(callback);
+        public ulong SubscribeRandomDisplayItems(
+            Action<Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem[]> callback
+        ) {
+            return this._domain.SubscribeRandomDisplayItems(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeRandomDisplayItems(ulong callbackId) {
-            this._domain.UnsubscribeRandomDisplayItems(callbackId);
+        public void UnsubscribeRandomDisplayItems(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeRandomDisplayItems(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomDisplayItemGameSessionDomain RandomDisplayItem(

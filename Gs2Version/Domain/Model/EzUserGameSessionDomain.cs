@@ -108,12 +108,22 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
         }
         #endif
 
-        public ulong SubscribeAcceptVersions(Action callback) {
-            return this._domain.SubscribeAcceptVersions(callback);
+        public ulong SubscribeAcceptVersions(
+            Action<Gs2.Unity.Gs2Version.Model.EzAcceptVersion[]> callback
+        ) {
+            return this._domain.SubscribeAcceptVersions(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Version.Model.EzAcceptVersion.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeAcceptVersions(ulong callbackId) {
-            this._domain.UnsubscribeAcceptVersions(callbackId);
+        public void UnsubscribeAcceptVersions(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeAcceptVersions(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain AcceptVersion(

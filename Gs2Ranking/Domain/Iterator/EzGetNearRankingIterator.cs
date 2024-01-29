@@ -67,8 +67,8 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Iterator
             _score = score;
             _it = _domain.NearRankings(
                 this._categoryName,
-                this._additionalScopeName,
-                this._score
+                this._score,
+                this._additionalScopeName
             );
         }
 
@@ -86,8 +86,8 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Iterator
                 {
                     return _it = _domain.NearRankings(
                         this._categoryName,
-                        this._additionalScopeName,
-                        this._score
+                        this._score,
+                        this._additionalScopeName
                     );
                 }
             );

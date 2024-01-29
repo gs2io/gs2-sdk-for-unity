@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
         }
         #endif
 
-        public ulong SubscribeReceiveStatuses(Action callback) {
-            return this._domain.SubscribeReceiveStatuses(callback);
+        public ulong SubscribeReceiveStatuses(
+            Action<Gs2.Unity.Gs2LoginReward.Model.EzReceiveStatus[]> callback
+        ) {
+            return this._domain.SubscribeReceiveStatuses(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2LoginReward.Model.EzReceiveStatus.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeReceiveStatuses(ulong callbackId) {
-            this._domain.UnsubscribeReceiveStatuses(callbackId);
+        public void UnsubscribeReceiveStatuses(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeReceiveStatuses(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain Bonus(

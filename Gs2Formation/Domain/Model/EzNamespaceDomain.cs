@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
         #endif
 
-        public ulong SubscribeMoldModels(Action callback) {
-            return this._domain.SubscribeMoldModels(callback);
+        public ulong SubscribeMoldModels(
+            Action<Gs2.Unity.Gs2Formation.Model.EzMoldModel[]> callback
+        ) {
+            return this._domain.SubscribeMoldModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Formation.Model.EzMoldModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeMoldModels(ulong callbackId) {
-            this._domain.UnsubscribeMoldModels(callbackId);
+        public void UnsubscribeMoldModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeMoldModels(
+                callbackId
+            );
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel> PropertyFormModels(
@@ -151,12 +161,22 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
         #endif
 
-        public ulong SubscribePropertyFormModels(Action callback) {
-            return this._domain.SubscribePropertyFormModels(callback);
+        public ulong SubscribePropertyFormModels(
+            Action<Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel[]> callback
+        ) {
+            return this._domain.SubscribePropertyFormModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribePropertyFormModels(ulong callbackId) {
-            this._domain.UnsubscribePropertyFormModels(callbackId);
+        public void UnsubscribePropertyFormModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribePropertyFormModels(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Formation.Domain.Model.EzMoldModelDomain MoldModel(

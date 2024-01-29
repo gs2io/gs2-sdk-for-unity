@@ -250,12 +250,26 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         }
         #endif
 
-        public ulong SubscribeDataObjects(Action callback) {
-            return this._domain.SubscribeDataObjects(callback);
+        public ulong SubscribeDataObjects(
+            Action<Gs2.Unity.Gs2Datastore.Model.EzDataObject[]> callback,
+            string? status = null
+        ) {
+            return this._domain.SubscribeDataObjects(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Datastore.Model.EzDataObject.FromModel).ToArray());
+                },
+                status
+            );
         }
 
-        public void UnsubscribeDataObjects(ulong callbackId) {
-            this._domain.UnsubscribeDataObjects(callbackId);
+        public void UnsubscribeDataObjects(
+            ulong callbackId,
+            string? status = null
+        ) {
+            this._domain.UnsubscribeDataObjects(
+                callbackId,
+                status
+            );
         }
 
         public Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain DataObject(

@@ -174,12 +174,26 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         }
         #endif
 
-        public ulong SubscribeSubscribeUsers(Action callback) {
-            return this._domain.SubscribeSubscribeUsers(callback);
+        public ulong SubscribeSubscribeUsers(
+            Action<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser[]> callback,
+            string categoryName
+        ) {
+            return this._domain.SubscribeSubscribeUsers(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser.FromModel).ToArray());
+                },
+                categoryName
+            );
         }
 
-        public void UnsubscribeSubscribeUsers(ulong callbackId) {
-            this._domain.UnsubscribeSubscribeUsers(callbackId);
+        public void UnsubscribeSubscribeUsers(
+            ulong callbackId,
+            string categoryName
+        ) {
+            this._domain.UnsubscribeSubscribeUsers(
+                callbackId,
+                categoryName
+            );
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzRanking> Rankings(
@@ -230,12 +244,30 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         }
         #endif
 
-        public ulong SubscribeRankings(Action callback) {
-            return this._domain.SubscribeRankings(callback);
+        public ulong SubscribeRankings(
+            Action<Gs2.Unity.Gs2Ranking.Model.EzRanking[]> callback,
+            string categoryName,
+            string? additionalScopeName = null
+        ) {
+            return this._domain.SubscribeRankings(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel).ToArray());
+                },
+                categoryName,
+                additionalScopeName
+            );
         }
 
-        public void UnsubscribeRankings(ulong callbackId) {
-            this._domain.UnsubscribeRankings(callbackId);
+        public void UnsubscribeRankings(
+            ulong callbackId,
+            string categoryName,
+            string? additionalScopeName = null
+        ) {
+            this._domain.UnsubscribeRankings(
+                callbackId,
+                categoryName,
+                additionalScopeName
+            );
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzScore> Scores(
@@ -286,12 +318,30 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         }
         #endif
 
-        public ulong SubscribeScores(Action callback) {
-            return this._domain.SubscribeScores(callback);
+        public ulong SubscribeScores(
+            Action<Gs2.Unity.Gs2Ranking.Model.EzScore[]> callback,
+            string categoryName,
+            string scorerUserId
+        ) {
+            return this._domain.SubscribeScores(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Ranking.Model.EzScore.FromModel).ToArray());
+                },
+                categoryName,
+                scorerUserId
+            );
         }
 
-        public void UnsubscribeScores(ulong callbackId) {
-            this._domain.UnsubscribeScores(callbackId);
+        public void UnsubscribeScores(
+            ulong callbackId,
+            string categoryName,
+            string scorerUserId
+        ) {
+            this._domain.UnsubscribeScores(
+                callbackId,
+                categoryName,
+                scorerUserId
+            );
         }
 
         public Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain SubscribeUser(

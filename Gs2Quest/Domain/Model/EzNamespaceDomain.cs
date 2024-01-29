@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         }
         #endif
 
-        public ulong SubscribeQuestGroupModels(Action callback) {
-            return this._domain.SubscribeQuestGroupModels(callback);
+        public ulong SubscribeQuestGroupModels(
+            Action<Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel[]> callback
+        ) {
+            return this._domain.SubscribeQuestGroupModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Quest.Model.EzQuestGroupModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeQuestGroupModels(ulong callbackId) {
-            this._domain.UnsubscribeQuestGroupModels(callbackId);
+        public void UnsubscribeQuestGroupModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeQuestGroupModels(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Quest.Domain.Model.EzQuestGroupModelDomain QuestGroupModel(

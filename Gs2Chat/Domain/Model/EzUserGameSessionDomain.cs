@@ -180,12 +180,22 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         }
         #endif
 
-        public ulong SubscribeSubscribes(Action callback) {
-            return this._domain.SubscribeSubscribes(callback);
+        public ulong SubscribeSubscribes(
+            Action<Gs2.Unity.Gs2Chat.Model.EzSubscribe[]> callback
+        ) {
+            return this._domain.SubscribeSubscribes(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Chat.Model.EzSubscribe.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeSubscribes(ulong callbackId) {
-            this._domain.UnsubscribeSubscribes(callbackId);
+        public void UnsubscribeSubscribes(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeSubscribes(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain Room(

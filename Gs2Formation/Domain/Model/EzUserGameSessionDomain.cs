@@ -108,12 +108,22 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
         #endif
 
-        public ulong SubscribeMolds(Action callback) {
-            return this._domain.SubscribeMolds(callback);
+        public ulong SubscribeMolds(
+            Action<Gs2.Unity.Gs2Formation.Model.EzMold[]> callback
+        ) {
+            return this._domain.SubscribeMolds(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Formation.Model.EzMold.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeMolds(ulong callbackId) {
-            this._domain.UnsubscribeMolds(callbackId);
+        public void UnsubscribeMolds(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeMolds(
+                callbackId
+            );
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzPropertyForm> PropertyForms(
@@ -159,12 +169,26 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
         #endif
 
-        public ulong SubscribePropertyForms(Action callback) {
-            return this._domain.SubscribePropertyForms(callback);
+        public ulong SubscribePropertyForms(
+            Action<Gs2.Unity.Gs2Formation.Model.EzPropertyForm[]> callback,
+            string propertyFormModelName
+        ) {
+            return this._domain.SubscribePropertyForms(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Formation.Model.EzPropertyForm.FromModel).ToArray());
+                },
+                propertyFormModelName
+            );
         }
 
-        public void UnsubscribePropertyForms(ulong callbackId) {
-            this._domain.UnsubscribePropertyForms(callbackId);
+        public void UnsubscribePropertyForms(
+            ulong callbackId,
+            string propertyFormModelName
+        ) {
+            this._domain.UnsubscribePropertyForms(
+                callbackId,
+                propertyFormModelName
+            );
         }
 
         public Gs2.Unity.Gs2Formation.Domain.Model.EzMoldGameSessionDomain Mold(

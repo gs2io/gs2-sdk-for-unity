@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
         }
         #endif
 
-        public ulong SubscribeEntries(Action callback) {
-            return this._domain.SubscribeEntries(callback);
+        public ulong SubscribeEntries(
+            Action<Gs2.Unity.Gs2Dictionary.Model.EzEntry[]> callback
+        ) {
+            return this._domain.SubscribeEntries(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Dictionary.Model.EzEntry.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeEntries(ulong callbackId) {
-            this._domain.UnsubscribeEntries(callbackId);
+        public void UnsubscribeEntries(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeEntries(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain Entry(

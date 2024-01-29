@@ -180,12 +180,22 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         }
         #endif
 
-        public ulong SubscribeCompletedQuestLists(Action callback) {
-            return this._domain.SubscribeCompletedQuestLists(callback);
+        public ulong SubscribeCompletedQuestLists(
+            Action<Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList[]> callback
+        ) {
+            return this._domain.SubscribeCompletedQuestLists(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Quest.Model.EzCompletedQuestList.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeCompletedQuestLists(ulong callbackId) {
-            this._domain.UnsubscribeCompletedQuestLists(callbackId);
+        public void UnsubscribeCompletedQuestLists(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeCompletedQuestLists(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain Progress(

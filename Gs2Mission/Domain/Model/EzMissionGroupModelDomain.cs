@@ -102,12 +102,22 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         }
         #endif
 
-        public ulong SubscribeMissionTaskModels(Action callback) {
-            return this._domain.SubscribeMissionTaskModels(callback);
+        public ulong SubscribeMissionTaskModels(
+            Action<Gs2.Unity.Gs2Mission.Model.EzMissionTaskModel[]> callback
+        ) {
+            return this._domain.SubscribeMissionTaskModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Mission.Model.EzMissionTaskModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeMissionTaskModels(ulong callbackId) {
-            this._domain.UnsubscribeMissionTaskModels(callbackId);
+        public void UnsubscribeMissionTaskModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeMissionTaskModels(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Mission.Domain.Model.EzMissionTaskModelDomain MissionTaskModel(

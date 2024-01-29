@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
         }
         #endif
 
-        public ulong SubscribeExperienceModels(Action callback) {
-            return this._domain.SubscribeExperienceModels(callback);
+        public ulong SubscribeExperienceModels(
+            Action<Gs2.Unity.Gs2Experience.Model.EzExperienceModel[]> callback
+        ) {
+            return this._domain.SubscribeExperienceModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Experience.Model.EzExperienceModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeExperienceModels(ulong callbackId) {
-            this._domain.UnsubscribeExperienceModels(callbackId);
+        public void UnsubscribeExperienceModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeExperienceModels(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Experience.Domain.Model.EzExperienceModelDomain ExperienceModel(

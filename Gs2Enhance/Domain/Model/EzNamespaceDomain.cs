@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
         }
         #endif
 
-        public ulong SubscribeRateModels(Action callback) {
-            return this._domain.SubscribeRateModels(callback);
+        public ulong SubscribeRateModels(
+            Action<Gs2.Unity.Gs2Enhance.Model.EzRateModel[]> callback
+        ) {
+            return this._domain.SubscribeRateModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Enhance.Model.EzRateModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeRateModels(ulong callbackId) {
-            this._domain.UnsubscribeRateModels(callbackId);
+        public void UnsubscribeRateModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeRateModels(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Enhance.Domain.Model.EzRateModelDomain RateModel(

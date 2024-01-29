@@ -111,12 +111,26 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
         }
         #endif
 
-        public ulong SubscribeCounters(Action callback) {
-            return this._domain.SubscribeCounters(callback);
+        public ulong SubscribeCounters(
+            Action<Gs2.Unity.Gs2Limit.Model.EzCounter[]> callback,
+            string? limitName = null
+        ) {
+            return this._domain.SubscribeCounters(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Limit.Model.EzCounter.FromModel).ToArray());
+                },
+                limitName
+            );
         }
 
-        public void UnsubscribeCounters(ulong callbackId) {
-            this._domain.UnsubscribeCounters(callbackId);
+        public void UnsubscribeCounters(
+            ulong callbackId,
+            string? limitName = null
+        ) {
+            this._domain.UnsubscribeCounters(
+                callbackId,
+                limitName
+            );
         }
 
         public Gs2.Unity.Gs2Limit.Domain.Model.EzCounterGameSessionDomain Counter(

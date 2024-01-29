@@ -378,12 +378,22 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         }
         #endif
 
-        public ulong SubscribeDataObjectHistories(Action callback) {
-            return this._domain.SubscribeDataObjectHistories(callback);
+        public ulong SubscribeDataObjectHistories(
+            Action<Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory[]> callback
+        ) {
+            return this._domain.SubscribeDataObjectHistories(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Datastore.Model.EzDataObjectHistory.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeDataObjectHistories(ulong callbackId) {
-            this._domain.UnsubscribeDataObjectHistories(callbackId);
+        public void UnsubscribeDataObjectHistories(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeDataObjectHistories(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectHistoryGameSessionDomain DataObjectHistory(

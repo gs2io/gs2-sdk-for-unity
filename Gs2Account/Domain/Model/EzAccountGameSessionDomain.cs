@@ -57,9 +57,9 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public Gs2.Unity.Gs2Account.Model.EzBanStatus[] BanStatuses => _domain.BanStatuses.Select(Gs2.Unity.Gs2Account.Model.EzBanStatus.FromModel).ToArray();
-        public string Body => _domain.Body;
-        public string Signature => _domain.Signature;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? Body => _domain.Body;
+        public string? Signature => _domain.Signature;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
@@ -113,12 +113,22 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
         #endif
 
-        public ulong SubscribeTakeOvers(Action callback) {
-            return this._domain.SubscribeTakeOvers(callback);
+        public ulong SubscribeTakeOvers(
+            Action<Gs2.Unity.Gs2Account.Model.EzTakeOver[]> callback
+        ) {
+            return this._domain.SubscribeTakeOvers(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Account.Model.EzTakeOver.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeTakeOvers(ulong callbackId) {
-            this._domain.UnsubscribeTakeOvers(callbackId);
+        public void UnsubscribeTakeOvers(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeTakeOvers(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain TakeOver(

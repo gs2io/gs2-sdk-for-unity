@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2Grade.Domain.Model
         }
         #endif
 
-        public ulong SubscribeGradeModels(Action callback) {
-            return this._domain.SubscribeGradeModels(callback);
+        public ulong SubscribeGradeModels(
+            Action<Gs2.Unity.Gs2Grade.Model.EzGradeModel[]> callback
+        ) {
+            return this._domain.SubscribeGradeModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Grade.Model.EzGradeModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeGradeModels(ulong callbackId) {
-            this._domain.UnsubscribeGradeModels(callbackId);
+        public void UnsubscribeGradeModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeGradeModels(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Grade.Domain.Model.EzGradeModelDomain GradeModel(

@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Ranking.Domain.Model.UserDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? NextPageToken => _domain.NextPageToken;
         public bool? Processing => _domain.Processing;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
@@ -72,7 +72,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         public Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzRanking> NearRankings(
               string categoryName,
               long score,
-              string additionalScopeName = null
+              string? additionalScopeName = null
         )
         {
             return new Gs2.Unity.Gs2Ranking.Domain.Iterator.EzGetNearRankingIterator(
@@ -88,15 +88,15 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking.Model.EzRanking> NearRankingsAsync(
               string categoryName,
               long score,
-              string additionalScopeName = null
+              string? additionalScopeName = null
         )
         {
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking.Model.EzRanking>(async (writer, token) =>
             {
                 var it = _domain.NearRankingsAsync(
                     categoryName,
-                    additionalScopeName,
-                    score
+                    score,
+                    additionalScopeName
                 ).GetAsyncEnumerator();
                 while(
                     await this._connection.RunIteratorAsync(
@@ -108,8 +108,8 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                         () => {
                             it = _domain.NearRankingsAsync(
                                 categoryName,
-                                additionalScopeName,
-                                score
+                                score,
+                                additionalScopeName
                             ).GetAsyncEnumerator();
                         }
                     )
@@ -121,12 +121,34 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         }
         #endif
 
-        public ulong SubscribeNearRankings(Action callback) {
-            return this._domain.SubscribeNearRankings(callback);
+        public ulong SubscribeNearRankings(
+            Action<Gs2.Unity.Gs2Ranking.Model.EzRanking[]> callback,
+            string categoryName,
+            long score,
+            string? additionalScopeName = null
+        ) {
+            return this._domain.SubscribeNearRankings(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel).ToArray());
+                },
+                categoryName,
+                score,
+                additionalScopeName
+            );
         }
 
-        public void UnsubscribeNearRankings(ulong callbackId) {
-            this._domain.UnsubscribeNearRankings(callbackId);
+        public void UnsubscribeNearRankings(
+            ulong callbackId,
+            string categoryName,
+            long score,
+            string? additionalScopeName = null
+        ) {
+            this._domain.UnsubscribeNearRankings(
+                callbackId,
+                categoryName,
+                score,
+                additionalScopeName
+            );
         }
 
         public Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserDomain SubscribeUser(
@@ -156,7 +178,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         public Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreDomain Score(
             string categoryName,
             string scorerUserId,
-            string uniqueId = null
+            string? uniqueId = null
         ) {
             return new Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreDomain(
                 _domain.Score(

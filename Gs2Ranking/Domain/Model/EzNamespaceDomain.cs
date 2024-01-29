@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         }
         #endif
 
-        public ulong SubscribeCategoryModels(Action callback) {
-            return this._domain.SubscribeCategoryModels(callback);
+        public ulong SubscribeCategoryModels(
+            Action<Gs2.Unity.Gs2Ranking.Model.EzCategoryModel[]> callback
+        ) {
+            return this._domain.SubscribeCategoryModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Ranking.Model.EzCategoryModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeCategoryModels(ulong callbackId) {
-            this._domain.UnsubscribeCategoryModels(callbackId);
+        public void UnsubscribeCategoryModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeCategoryModels(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Ranking.Domain.Model.EzCategoryModelDomain CategoryModel(

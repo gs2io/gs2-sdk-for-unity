@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         }
         #endif
 
-        public ulong SubscribeInventoryModels(Action callback) {
-            return this._domain.SubscribeInventoryModels(callback);
+        public ulong SubscribeInventoryModels(
+            Action<Gs2.Unity.Gs2Inventory.Model.EzInventoryModel[]> callback
+        ) {
+            return this._domain.SubscribeInventoryModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Inventory.Model.EzInventoryModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeInventoryModels(ulong callbackId) {
-            this._domain.UnsubscribeInventoryModels(callbackId);
+        public void UnsubscribeInventoryModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeInventoryModels(
+                callbackId
+            );
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzSimpleInventoryModel> SimpleInventoryModels(
@@ -151,12 +161,22 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         }
         #endif
 
-        public ulong SubscribeSimpleInventoryModels(Action callback) {
-            return this._domain.SubscribeSimpleInventoryModels(callback);
+        public ulong SubscribeSimpleInventoryModels(
+            Action<Gs2.Unity.Gs2Inventory.Model.EzSimpleInventoryModel[]> callback
+        ) {
+            return this._domain.SubscribeSimpleInventoryModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Inventory.Model.EzSimpleInventoryModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeSimpleInventoryModels(ulong callbackId) {
-            this._domain.UnsubscribeSimpleInventoryModels(callbackId);
+        public void UnsubscribeSimpleInventoryModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeSimpleInventoryModels(
+                callbackId
+            );
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzBigInventoryModel> BigInventoryModels(
@@ -196,12 +216,22 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         }
         #endif
 
-        public ulong SubscribeBigInventoryModels(Action callback) {
-            return this._domain.SubscribeBigInventoryModels(callback);
+        public ulong SubscribeBigInventoryModels(
+            Action<Gs2.Unity.Gs2Inventory.Model.EzBigInventoryModel[]> callback
+        ) {
+            return this._domain.SubscribeBigInventoryModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Inventory.Model.EzBigInventoryModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeBigInventoryModels(ulong callbackId) {
-            this._domain.UnsubscribeBigInventoryModels(callbackId);
+        public void UnsubscribeBigInventoryModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeBigInventoryModels(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzInventoryModelDomain InventoryModel(

@@ -107,12 +107,22 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
         }
         #endif
 
-        public ulong SubscribeDistributorModels(Action callback) {
-            return this._domain.SubscribeDistributorModels(callback);
+        public ulong SubscribeDistributorModels(
+            Action<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel[]> callback
+        ) {
+            return this._domain.SubscribeDistributorModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Distributor.Model.EzDistributorModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeDistributorModels(ulong callbackId) {
-            this._domain.UnsubscribeDistributorModels(callbackId);
+        public void UnsubscribeDistributorModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeDistributorModels(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Distributor.Domain.Model.EzDistributorModelDomain DistributorModel(

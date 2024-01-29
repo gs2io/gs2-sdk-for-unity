@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         }
         #endif
 
-        public ulong SubscribeRateModels(Action callback) {
-            return this._domain.SubscribeRateModels(callback);
+        public ulong SubscribeRateModels(
+            Action<Gs2.Unity.Gs2Exchange.Model.EzRateModel[]> callback
+        ) {
+            return this._domain.SubscribeRateModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Exchange.Model.EzRateModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeRateModels(ulong callbackId) {
-            this._domain.UnsubscribeRateModels(callbackId);
+        public void UnsubscribeRateModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeRateModels(
+                callbackId
+            );
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Exchange.Model.EzIncrementalRateModel> IncrementalRateModels(
@@ -151,12 +161,22 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         }
         #endif
 
-        public ulong SubscribeIncrementalRateModels(Action callback) {
-            return this._domain.SubscribeIncrementalRateModels(callback);
+        public ulong SubscribeIncrementalRateModels(
+            Action<Gs2.Unity.Gs2Exchange.Model.EzIncrementalRateModel[]> callback
+        ) {
+            return this._domain.SubscribeIncrementalRateModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Exchange.Model.EzIncrementalRateModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeIncrementalRateModels(ulong callbackId) {
-            this._domain.UnsubscribeIncrementalRateModels(callbackId);
+        public void UnsubscribeIncrementalRateModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeIncrementalRateModels(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Exchange.Domain.Model.EzRateModelDomain RateModel(

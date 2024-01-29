@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
         }
         #endif
 
-        public ulong SubscribeVersionModels(Action callback) {
-            return this._domain.SubscribeVersionModels(callback);
+        public ulong SubscribeVersionModels(
+            Action<Gs2.Unity.Gs2Version.Model.EzVersionModel[]> callback
+        ) {
+            return this._domain.SubscribeVersionModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Version.Model.EzVersionModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeVersionModels(ulong callbackId) {
-            this._domain.UnsubscribeVersionModels(callbackId);
+        public void UnsubscribeVersionModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeVersionModels(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Version.Domain.Model.EzVersionModelDomain VersionModel(

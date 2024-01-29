@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
         }
         #endif
 
-        public ulong SubscribeLotteryModels(Action callback) {
-            return this._domain.SubscribeLotteryModels(callback);
+        public ulong SubscribeLotteryModels(
+            Action<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel[]> callback
+        ) {
+            return this._domain.SubscribeLotteryModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Lottery.Model.EzLotteryModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeLotteryModels(ulong callbackId) {
-            this._domain.UnsubscribeLotteryModels(callbackId);
+        public void UnsubscribeLotteryModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeLotteryModels(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Lottery.Domain.Model.EzUserDomain User(

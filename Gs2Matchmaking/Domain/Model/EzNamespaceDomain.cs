@@ -244,12 +244,22 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         }
         #endif
 
-        public ulong SubscribeRatingModels(Action callback) {
-            return this._domain.SubscribeRatingModels(callback);
+        public ulong SubscribeRatingModels(
+            Action<Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel[]> callback
+        ) {
+            return this._domain.SubscribeRatingModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeRatingModels(ulong callbackId) {
-            this._domain.UnsubscribeRatingModels(callbackId);
+        public void UnsubscribeRatingModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeRatingModels(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzUserDomain User(

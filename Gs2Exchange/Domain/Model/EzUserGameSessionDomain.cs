@@ -114,12 +114,26 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         }
         #endif
 
-        public ulong SubscribeAwaits(Action callback) {
-            return this._domain.SubscribeAwaits(callback);
+        public ulong SubscribeAwaits(
+            Action<Gs2.Unity.Gs2Exchange.Model.EzAwait[]> callback,
+            string? rateName = null
+        ) {
+            return this._domain.SubscribeAwaits(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Exchange.Model.EzAwait.FromModel).ToArray());
+                },
+                rateName
+            );
         }
 
-        public void UnsubscribeAwaits(ulong callbackId) {
-            this._domain.UnsubscribeAwaits(callbackId);
+        public void UnsubscribeAwaits(
+            ulong callbackId,
+            string? rateName = null
+        ) {
+            this._domain.UnsubscribeAwaits(
+                callbackId,
+                rateName
+            );
         }
 
         public Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain Exchange(

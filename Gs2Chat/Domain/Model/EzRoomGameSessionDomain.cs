@@ -221,12 +221,22 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         }
         #endif
 
-        public ulong SubscribeMessages(Action callback) {
-            return this._domain.SubscribeMessages(callback);
+        public ulong SubscribeMessages(
+            Action<Gs2.Unity.Gs2Chat.Model.EzMessage[]> callback
+        ) {
+            return this._domain.SubscribeMessages(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Chat.Model.EzMessage.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeMessages(ulong callbackId) {
-            this._domain.UnsubscribeMessages(callbackId);
+        public void UnsubscribeMessages(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeMessages(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Chat.Domain.Model.EzMessageGameSessionDomain Message(
@@ -293,6 +303,11 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Chat.Model.EzRoom>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2Chat.Model.EzRoom> callback)
         {
             return this._domain.Subscribe(item => {
@@ -306,6 +321,40 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         {
             this._domain.Unsubscribe(callbackId);
         }
+
+        #if UNITY_2017_1_OR_NEWER
+        public Gs2Future<ulong> SubscribeWithInitialCallFuture(Action<Gs2.Unity.Gs2Chat.Model.EzRoom> callback)
+        {
+            IEnumerator Impl(IFuture<ulong> self)
+            {
+                var future = ModelFuture();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                var callbackId = Subscribe(callback);
+                callback.Invoke(item);
+                self.OnComplete(callbackId);
+            }
+            return new Gs2InlineFuture<ulong>(Impl);
+        }
+        #endif
+
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
+        public async UniTask<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Chat.Model.EzRoom> callback)
+            #else
+        public async Task<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Chat.Model.EzRoom> callback)
+            #endif
+        {
+            var item = await ModelAsync();
+            var callbackId = Subscribe(callback);
+            callback.Invoke(item);
+            return callbackId;
+        }
+        #endif
 
     }
 }

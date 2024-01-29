@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         }
         #endif
 
-        public ulong SubscribeCompletes(Action callback) {
-            return this._domain.SubscribeCompletes(callback);
+        public ulong SubscribeCompletes(
+            Action<Gs2.Unity.Gs2Mission.Model.EzComplete[]> callback
+        ) {
+            return this._domain.SubscribeCompletes(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Mission.Model.EzComplete.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeCompletes(ulong callbackId) {
-            this._domain.UnsubscribeCompletes(callbackId);
+        public void UnsubscribeCompletes(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeCompletes(
+                callbackId
+            );
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzCounter> Counters(
@@ -152,12 +162,22 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         }
         #endif
 
-        public ulong SubscribeCounters(Action callback) {
-            return this._domain.SubscribeCounters(callback);
+        public ulong SubscribeCounters(
+            Action<Gs2.Unity.Gs2Mission.Model.EzCounter[]> callback
+        ) {
+            return this._domain.SubscribeCounters(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Mission.Model.EzCounter.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeCounters(ulong callbackId) {
-            this._domain.UnsubscribeCounters(callbackId);
+        public void UnsubscribeCounters(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeCounters(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain Counter(

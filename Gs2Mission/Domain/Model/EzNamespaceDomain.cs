@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         }
         #endif
 
-        public ulong SubscribeCounterModels(Action callback) {
-            return this._domain.SubscribeCounterModels(callback);
+        public ulong SubscribeCounterModels(
+            Action<Gs2.Unity.Gs2Mission.Model.EzCounterModel[]> callback
+        ) {
+            return this._domain.SubscribeCounterModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Mission.Model.EzCounterModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeCounterModels(ulong callbackId) {
-            this._domain.UnsubscribeCounterModels(callbackId);
+        public void UnsubscribeCounterModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeCounterModels(
+                callbackId
+            );
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel> MissionGroupModels(
@@ -151,12 +161,22 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         }
         #endif
 
-        public ulong SubscribeMissionGroupModels(Action callback) {
-            return this._domain.SubscribeMissionGroupModels(callback);
+        public ulong SubscribeMissionGroupModels(
+            Action<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel[]> callback
+        ) {
+            return this._domain.SubscribeMissionGroupModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeMissionGroupModels(ulong callbackId) {
-            this._domain.UnsubscribeMissionGroupModels(callbackId);
+        public void UnsubscribeMissionGroupModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeMissionGroupModels(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Mission.Domain.Model.EzMissionGroupModelDomain MissionGroupModel(

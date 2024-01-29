@@ -102,12 +102,22 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
         }
         #endif
 
-        public ulong SubscribeLayerModels(Action callback) {
-            return this._domain.SubscribeLayerModels(callback);
+        public ulong SubscribeLayerModels(
+            Action<Gs2.Unity.Gs2MegaField.Model.EzLayerModel[]> callback
+        ) {
+            return this._domain.SubscribeLayerModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2MegaField.Model.EzLayerModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeLayerModels(ulong callbackId) {
-            this._domain.UnsubscribeLayerModels(callbackId);
+        public void UnsubscribeLayerModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeLayerModels(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2MegaField.Domain.Model.EzLayerModelDomain LayerModel(

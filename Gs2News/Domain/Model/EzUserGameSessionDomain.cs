@@ -107,12 +107,22 @@ namespace Gs2.Unity.Gs2News.Domain.Model
         }
         #endif
 
-        public ulong SubscribeNewses(Action callback) {
-            return this._domain.SubscribeNewses(callback);
+        public ulong SubscribeNewses(
+            Action<Gs2.Unity.Gs2News.Model.EzNews[]> callback
+        ) {
+            return this._domain.SubscribeNewses(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2News.Model.EzNews.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeNewses(ulong callbackId) {
-            this._domain.UnsubscribeNewses(callbackId);
+        public void UnsubscribeNewses(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeNewses(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2News.Domain.Model.EzNewsGameSessionDomain News(

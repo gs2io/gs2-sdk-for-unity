@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
         }
         #endif
 
-        public ulong SubscribeTriggers(Action callback) {
-            return this._domain.SubscribeTriggers(callback);
+        public ulong SubscribeTriggers(
+            Action<Gs2.Unity.Gs2Schedule.Model.EzTrigger[]> callback
+        ) {
+            return this._domain.SubscribeTriggers(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Schedule.Model.EzTrigger.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeTriggers(ulong callbackId) {
-            this._domain.UnsubscribeTriggers(callbackId);
+        public void UnsubscribeTriggers(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeTriggers(
+                callbackId
+            );
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Schedule.Model.EzEvent> Events(
@@ -152,12 +162,22 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
         }
         #endif
 
-        public ulong SubscribeEvents(Action callback) {
-            return this._domain.SubscribeEvents(callback);
+        public ulong SubscribeEvents(
+            Action<Gs2.Unity.Gs2Schedule.Model.EzEvent[]> callback
+        ) {
+            return this._domain.SubscribeEvents(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Schedule.Model.EzEvent.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeEvents(ulong callbackId) {
-            this._domain.UnsubscribeEvents(callbackId);
+        public void UnsubscribeEvents(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeEvents(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Schedule.Domain.Model.EzTriggerGameSessionDomain Trigger(

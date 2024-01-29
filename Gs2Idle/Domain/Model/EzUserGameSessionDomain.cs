@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
         }
         #endif
 
-        public ulong SubscribeStatuses(Action callback) {
-            return this._domain.SubscribeStatuses(callback);
+        public ulong SubscribeStatuses(
+            Action<Gs2.Unity.Gs2Idle.Model.EzStatus[]> callback
+        ) {
+            return this._domain.SubscribeStatuses(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Idle.Model.EzStatus.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeStatuses(ulong callbackId) {
-            this._domain.UnsubscribeStatuses(callbackId);
+        public void UnsubscribeStatuses(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeStatuses(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Idle.Domain.Model.EzStatusGameSessionDomain Status(

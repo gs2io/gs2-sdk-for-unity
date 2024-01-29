@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
         }
         #endif
 
-        public ulong SubscribeLimitModels(Action callback) {
-            return this._domain.SubscribeLimitModels(callback);
+        public ulong SubscribeLimitModels(
+            Action<Gs2.Unity.Gs2Limit.Model.EzLimitModel[]> callback
+        ) {
+            return this._domain.SubscribeLimitModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Limit.Model.EzLimitModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeLimitModels(ulong callbackId) {
-            this._domain.UnsubscribeLimitModels(callbackId);
+        public void UnsubscribeLimitModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeLimitModels(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Limit.Domain.Model.EzLimitModelDomain LimitModel(

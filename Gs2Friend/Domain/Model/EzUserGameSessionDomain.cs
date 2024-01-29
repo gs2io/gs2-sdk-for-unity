@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         private readonly Gs2.Gs2Friend.Domain.Model.UserAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
@@ -170,17 +170,25 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #endif
 
         public ulong SubscribeFollows(
-            Action callback,
-            bool withProfile
+            Action<Gs2.Unity.Gs2Friend.Model.EzFollowUser[]> callback,
+            bool? withProfile = null
         ) {
-            return this._domain.SubscribeFollows(callback, withProfile);
+            return this._domain.SubscribeFollows(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Friend.Model.EzFollowUser.FromModel).ToArray());
+                },
+                withProfile
+            );
         }
 
         public void UnsubscribeFollows(
             ulong callbackId,
-            bool withProfile
+            bool? withProfile = null
         ) {
-            this._domain.UnsubscribeFollows(callbackId, withProfile);
+            this._domain.UnsubscribeFollows(
+                callbackId,
+                withProfile
+            );
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Friend.Model.EzFriendUser> Friends(
@@ -227,17 +235,25 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #endif
 
         public ulong SubscribeFriends(
-            Action callback,
-            bool withProfile
+            Action<Gs2.Unity.Gs2Friend.Model.EzFriendUser[]> callback,
+            bool? withProfile = null
         ) {
-            return this._domain.SubscribeFriends(callback, withProfile);
+            return this._domain.SubscribeFriends(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Friend.Model.EzFriendUser.FromModel).ToArray());
+                },
+                withProfile
+            );
         }
 
         public void UnsubscribeFriends(
             ulong callbackId,
-            bool withProfile
+            bool? withProfile = null
         ) {
-            this._domain.UnsubscribeFriends(callbackId, withProfile);
+            this._domain.UnsubscribeFriends(
+                callbackId,
+                withProfile
+            );
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> SendRequests(
@@ -278,12 +294,22 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
         #endif
 
-        public ulong SubscribeSendRequests(Action callback) {
-            return this._domain.SubscribeSendRequests(callback);
+        public ulong SubscribeSendRequests(
+            Action<Gs2.Unity.Gs2Friend.Model.EzFriendRequest[]> callback
+        ) {
+            return this._domain.SubscribeSendRequests(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Friend.Model.EzFriendRequest.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeSendRequests(ulong callbackId) {
-            this._domain.UnsubscribeSendRequests(callbackId);
+        public void UnsubscribeSendRequests(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeSendRequests(
+                callbackId
+            );
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> ReceiveRequests(
@@ -324,12 +350,22 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
         #endif
 
-        public ulong SubscribeReceiveRequests(Action callback) {
-            return this._domain.SubscribeReceiveRequests(callback);
+        public ulong SubscribeReceiveRequests(
+            Action<Gs2.Unity.Gs2Friend.Model.EzFriendRequest[]> callback
+        ) {
+            return this._domain.SubscribeReceiveRequests(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Friend.Model.EzFriendRequest.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeReceiveRequests(ulong callbackId) {
-            this._domain.UnsubscribeReceiveRequests(callbackId);
+        public void UnsubscribeReceiveRequests(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeReceiveRequests(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Friend.Domain.Model.EzProfileGameSessionDomain Profile(

@@ -109,12 +109,22 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
         #endif
 
-        public ulong SubscribeForms(Action callback) {
-            return this._domain.SubscribeForms(callback);
+        public ulong SubscribeForms(
+            Action<Gs2.Unity.Gs2Formation.Model.EzForm[]> callback
+        ) {
+            return this._domain.SubscribeForms(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Formation.Model.EzForm.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeForms(ulong callbackId) {
-            this._domain.UnsubscribeForms(callbackId);
+        public void UnsubscribeForms(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeForms(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain Form(

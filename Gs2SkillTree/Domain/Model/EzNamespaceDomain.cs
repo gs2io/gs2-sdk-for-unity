@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         }
         #endif
 
-        public ulong SubscribeNodeModels(Action callback) {
-            return this._domain.SubscribeNodeModels(callback);
+        public ulong SubscribeNodeModels(
+            Action<Gs2.Unity.Gs2SkillTree.Model.EzNodeModel[]> callback
+        ) {
+            return this._domain.SubscribeNodeModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2SkillTree.Model.EzNodeModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeNodeModels(ulong callbackId) {
-            this._domain.UnsubscribeNodeModels(callbackId);
+        public void UnsubscribeNodeModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeNodeModels(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2SkillTree.Domain.Model.EzNodeModelDomain NodeModel(

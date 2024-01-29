@@ -56,9 +56,9 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
         private readonly Gs2.Gs2Lottery.Domain.Model.UserAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string TransactionId => _domain.TransactionId;
+        public string? TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
@@ -111,17 +111,21 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
         #endif
 
         public ulong SubscribeBoxes(
-            Action callback,
-            string prizeTableName
+            Action<Gs2.Unity.Gs2Lottery.Model.EzBoxItems[]> callback
         ) {
-            return this._domain.SubscribeBoxes(callback, prizeTableName);
+            return this._domain.SubscribeBoxes(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Lottery.Model.EzBoxItems.FromModel).ToArray());
+                }
+            );
         }
 
         public void UnsubscribeBoxes(
-            ulong callbackId,
-            string prizeTableName
+            ulong callbackId
         ) {
-            this._domain.UnsubscribeBoxes(callbackId, prizeTableName);
+            this._domain.UnsubscribeBoxes(
+                callbackId
+            );
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzProbability> Probabilities(
@@ -168,17 +172,25 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
         #endif
 
         public ulong SubscribeProbabilities(
-            Action callback,
+            Action<Gs2.Unity.Gs2Lottery.Model.EzProbability[]> callback,
             string lotteryName
         ) {
-            return this._domain.SubscribeProbabilities(callback, lotteryName);
+            return this._domain.SubscribeProbabilities(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Lottery.Model.EzProbability.FromModel).ToArray());
+                },
+                lotteryName
+            );
         }
 
         public void UnsubscribeProbabilities(
             ulong callbackId,
             string lotteryName
         ) {
-            this._domain.UnsubscribeProbabilities(callbackId, lotteryName);
+            this._domain.UnsubscribeProbabilities(
+                callbackId,
+                lotteryName
+            );
         }
 
         public Gs2.Unity.Gs2Lottery.Domain.Model.EzLotteryGameSessionDomain Lottery(

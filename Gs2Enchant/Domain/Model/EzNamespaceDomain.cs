@@ -106,12 +106,22 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
         }
         #endif
 
-        public ulong SubscribeBalanceParameterModels(Action callback) {
-            return this._domain.SubscribeBalanceParameterModels(callback);
+        public ulong SubscribeBalanceParameterModels(
+            Action<Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterModel[]> callback
+        ) {
+            return this._domain.SubscribeBalanceParameterModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeBalanceParameterModels(ulong callbackId) {
-            this._domain.UnsubscribeBalanceParameterModels(callbackId);
+        public void UnsubscribeBalanceParameterModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeBalanceParameterModels(
+                callbackId
+            );
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Enchant.Model.EzRarityParameterModel> RarityParameterModels(
@@ -151,12 +161,22 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
         }
         #endif
 
-        public ulong SubscribeRarityParameterModels(Action callback) {
-            return this._domain.SubscribeRarityParameterModels(callback);
+        public ulong SubscribeRarityParameterModels(
+            Action<Gs2.Unity.Gs2Enchant.Model.EzRarityParameterModel[]> callback
+        ) {
+            return this._domain.SubscribeRarityParameterModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Enchant.Model.EzRarityParameterModel.FromModel).ToArray());
+                }
+            );
         }
 
-        public void UnsubscribeRarityParameterModels(ulong callbackId) {
-            this._domain.UnsubscribeRarityParameterModels(callbackId);
+        public void UnsubscribeRarityParameterModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeRarityParameterModels(
+                callbackId
+            );
         }
 
         public Gs2.Unity.Gs2Enchant.Domain.Model.EzBalanceParameterModelDomain BalanceParameterModel(
