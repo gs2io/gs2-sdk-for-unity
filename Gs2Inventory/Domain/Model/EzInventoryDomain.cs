@@ -70,7 +70,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetDomain ItemSet(
             string itemName,
-            string itemSetName
+            string? itemSetName = null
         ) {
             return new Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetDomain(
                 _domain.ItemSet(

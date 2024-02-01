@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Iterator
             Gs2.Gs2Enchant.Domain.Model.UserAccessTokenDomain domain,
             Gs2.Unity.Util.GameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection,
-            string parameterName = null
+            string? parameterName = null
         )
         {
             _domain = domain;
@@ -61,7 +61,7 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Iterator
             _connection = connection;
             _parameterName = parameterName;
             _it = _domain.BalanceParameterStatuses(
-                this._parameterName
+                parameterName
             );
         }
 

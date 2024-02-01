@@ -27,6 +27,7 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2News.ScriptableObject
 {
+    [CreateAssetMenu(fileName = "OwnSetCookieRequestEntry", menuName = "Game Server Services/Gs2News/OwnSetCookieRequestEntry")]
     public class OwnSetCookieRequestEntry : UnityEngine.ScriptableObject
     {
         public Namespace Namespace;

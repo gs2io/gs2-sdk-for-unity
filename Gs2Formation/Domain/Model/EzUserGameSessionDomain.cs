@@ -127,7 +127,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzPropertyForm> PropertyForms(
-              string propertyFormModelName
+            string propertyFormModelName
         )
         {
             return new Gs2.Unity.Gs2Formation.Domain.Iterator.EzListPropertyFormsIterator(

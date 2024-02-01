@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Iterator
             Gs2.Gs2Exchange.Domain.Model.UserAccessTokenDomain domain,
             Gs2.Unity.Util.GameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection,
-            string rateName = null
+            string? rateName = null
         )
         {
             _domain = domain;
@@ -61,7 +61,7 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Iterator
             _connection = connection;
             _rateName = rateName;
             _it = _domain.Awaits(
-                this._rateName
+                rateName
             );
         }
 

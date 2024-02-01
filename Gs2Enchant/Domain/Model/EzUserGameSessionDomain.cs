@@ -69,7 +69,7 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterStatus> BalanceParameterStatuses(
-              string? parameterName = null
+            string? parameterName = null
         )
         {
             return new Gs2.Unity.Gs2Enchant.Domain.Iterator.EzListBalanceParameterStatusesIterator(
@@ -134,7 +134,7 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Enchant.Model.EzRarityParameterStatus> RarityParameterStatuses(
-              string? parameterName = null
+            string? parameterName = null
         )
         {
             return new Gs2.Unity.Gs2Enchant.Domain.Iterator.EzListRarityParameterStatusesIterator(

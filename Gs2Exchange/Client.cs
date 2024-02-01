@@ -89,7 +89,7 @@ namespace Gs2.Unity.Gs2Exchange
             yield return _connection.Run(
                 callback,
 		        session,
-                cb => _client.DeleteAwait(
+                cb => _restClient.DeleteAwait(
                     new Gs2.Gs2Exchange.Request.DeleteAwaitRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
@@ -114,7 +114,7 @@ namespace Gs2.Unity.Gs2Exchange
             yield return _connection.Run(
                 callback,
 		        session,
-                cb => _client.GetAwait(
+                cb => _restClient.GetAwait(
                     new Gs2.Gs2Exchange.Request.GetAwaitRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)

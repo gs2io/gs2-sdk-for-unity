@@ -61,7 +61,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Iterator
             _connection = connection;
             _propertyFormModelName = propertyFormModelName;
             _it = _domain.PropertyForms(
-                this._propertyFormModelName
+                propertyFormModelName
             );
         }
 

@@ -72,7 +72,7 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Exchange.Model.EzAwait> Awaits(
-              string? rateName = null
+            string? rateName = null
         )
         {
             return new Gs2.Unity.Gs2Exchange.Domain.Iterator.EzListAwaitsIterator(

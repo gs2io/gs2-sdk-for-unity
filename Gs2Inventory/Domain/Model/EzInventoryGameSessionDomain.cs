@@ -128,7 +128,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain ItemSet(
             string itemName,
-            string itemSetName
+            string? itemSetName = null
         ) {
             return new Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain(
                 _domain.ItemSet(
