@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -57,7 +55,6 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         private readonly Gs2.Gs2Ranking.Domain.Model.UserDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string? NextPageToken => _domain.NextPageToken;
-        public bool? Processing => _domain.Processing;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
@@ -69,116 +66,10 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             this._connection = connection;
         }
 
-        public Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzRanking> NearRankings(
-              string categoryName,
-              long score,
-              string? additionalScopeName = null
-        )
-        {
-            return new Gs2.Unity.Gs2Ranking.Domain.Iterator.EzGetNearRankingIterator(
-                this._domain,
-                this._connection,
-                categoryName,
-                score,
-                additionalScopeName
-            );
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking.Model.EzRanking> NearRankingsAsync(
-              string categoryName,
-              long score,
-              string? additionalScopeName = null
-        )
-        {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking.Model.EzRanking>(async (writer, token) =>
-            {
-                var it = _domain.NearRankingsAsync(
-                    categoryName,
-                    score,
-                    additionalScopeName
-                ).GetAsyncEnumerator();
-                while(
-                    await this._connection.RunIteratorAsync(
-                        null,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.NearRankingsAsync(
-                                categoryName,
-                                score,
-                                additionalScopeName
-                            ).GetAsyncEnumerator();
-                        }
-                    )
-                )
-                {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(it.Current));
-                }
-            });
-        }
-        #endif
-
-        public ulong SubscribeNearRankings(
-            Action<Gs2.Unity.Gs2Ranking.Model.EzRanking[]> callback,
-            string categoryName,
-            long score,
-            string? additionalScopeName = null
-        ) {
-            return this._domain.SubscribeNearRankings(
-                items => {
-                    callback.Invoke(items.Select(Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel).ToArray());
-                },
-                categoryName,
-                score,
-                additionalScopeName
-            );
-        }
-
-        public void UnsubscribeNearRankings(
-            ulong callbackId,
-            string categoryName,
-            long score,
-            string? additionalScopeName = null
-        ) {
-            this._domain.UnsubscribeNearRankings(
-                callbackId,
-                categoryName,
-                score,
-                additionalScopeName
-            );
-        }
-
-        public Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserDomain SubscribeUser(
-            string categoryName,
-            string targetUserId
-        ) {
-            return new Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserDomain(
-                _domain.SubscribeUser(
-                    categoryName,
-                    targetUserId
-                ),
-                this._connection
-            );
-        }
-
-        public Gs2.Unity.Gs2Ranking.Domain.Model.EzRankingDomain Ranking(
-            string categoryName
-        ) {
-            return new Gs2.Unity.Gs2Ranking.Domain.Model.EzRankingDomain(
-                _domain.Ranking(
-                    categoryName
-                ),
-                this._connection
-            );
-        }
-
         public Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreDomain Score(
             string categoryName,
             string scorerUserId,
-            string? uniqueId = null
+            string uniqueId
         ) {
             return new Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreDomain(
                 _domain.Score(

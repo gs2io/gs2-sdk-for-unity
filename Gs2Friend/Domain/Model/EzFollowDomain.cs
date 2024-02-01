@@ -31,9 +31,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
-using Gs2.Gs2Lottery.Domain.Iterator;
-using Gs2.Gs2Lottery.Request;
-using Gs2.Gs2Lottery.Result;
+using Gs2.Gs2Friend.Domain.Iterator;
+using Gs2.Gs2Friend.Request;
+using Gs2.Gs2Friend.Result;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using Gs2.Core;
@@ -48,23 +48,34 @@ using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
 #endif
 
-namespace Gs2.Unity.Gs2Lottery.Domain.Model
+namespace Gs2.Unity.Gs2Friend.Domain.Model
 {
 
-    public partial class EzProbabilityDomain {
-        private readonly Gs2.Gs2Lottery.Domain.Model.ProbabilityDomain _domain;
+    public partial class EzFollowDomain {
+        private readonly Gs2.Gs2Friend.Domain.Model.FollowDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
-        public string LotteryName => _domain?.LotteryName;
-        public string PrizeId => _domain?.PrizeId;
+        public bool? WithProfile => _domain?.WithProfile;
 
-        public EzProbabilityDomain(
-            Gs2.Gs2Lottery.Domain.Model.ProbabilityDomain domain,
+        public EzFollowDomain(
+            Gs2.Gs2Friend.Domain.Model.FollowDomain domain,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
             this._connection = connection;
+        }
+
+        public Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserDomain FollowUser(
+            string targetUserId
+        ) {
+            return new Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserDomain(
+                _domain.FollowUser(
+                    targetUserId
+                ),
+                this._connection
+            );
         }
 
     }

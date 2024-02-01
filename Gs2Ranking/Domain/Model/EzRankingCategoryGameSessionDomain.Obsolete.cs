@@ -24,16 +24,15 @@
 // ReSharper disable NotAccessedField.Local
 
 #pragma warning disable 1998
-#pragma warning disable CS0169, CS0168
 
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
-using Gs2.Gs2Lottery.Domain.Iterator;
-using Gs2.Gs2Lottery.Request;
-using Gs2.Gs2Lottery.Result;
+using Gs2.Gs2Ranking.Domain.Iterator;
+using Gs2.Gs2Ranking.Request;
+using Gs2.Gs2Ranking.Result;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using Gs2.Core;
@@ -48,23 +47,33 @@ using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
 #endif
 
-namespace Gs2.Unity.Gs2Lottery.Domain.Model
+namespace Gs2.Unity.Gs2Ranking.Domain.Model
 {
 
-    public partial class EzProbabilityDomain {
-        private readonly Gs2.Gs2Lottery.Domain.Model.ProbabilityDomain _domain;
-        private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string NamespaceName => _domain?.NamespaceName;
-        public string UserId => _domain?.UserId;
-        public string LotteryName => _domain?.LotteryName;
-        public string PrizeId => _domain?.PrizeId;
+    public partial class EzRankingCategoryGameSessionDomain {
+        
 
-        public EzProbabilityDomain(
-            Gs2.Gs2Lottery.Domain.Model.ProbabilityDomain domain,
-            Gs2.Unity.Util.Gs2Connection connection
+        [Obsolete("The name has been changed to ModelFuture.")]
+        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> Model(
+            string scorerUserId
+        )
+        {
+            return ModelFuture(scorerUserId);
+        }
+
+#if GS2_ENABLE_UNITASK
+        public UniTask<Gs2.Unity.Gs2Ranking.Model.EzRanking> ModelAsync(
+            string scorerUserId
         ) {
-            this._domain = domain;
-            this._connection = connection;
+            return this.Ranking(scorerUserId).ModelAsync();
+        }
+#endif
+
+        public IFuture<Gs2.Unity.Gs2Ranking.Model.EzRanking> ModelFuture(
+            string scorerUserId
+        )
+        {
+            return this.Ranking(scorerUserId).ModelFuture();
         }
 
     }

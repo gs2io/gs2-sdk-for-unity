@@ -93,18 +93,5 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             );
         }
 
-        public Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserDomain FollowUser(
-            string targetUserId,
-            bool withProfile
-        ) {
-            return new Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserDomain(
-                _domain.FollowUser(
-                    targetUserId,
-                    withProfile
-                ),
-                this._connection
-            );
-        }
-
     }
 }

@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable InconsistentNaming
 // ReSharper disable Unity.NoNullPropagation
@@ -32,9 +34,11 @@ namespace Gs2.Unity.Gs2Ranking.ScriptableObject
     {
         public Namespace Namespace;
         public string categoryName;
+        public string additionalScopeName;
 
         public string NamespaceName => this.Namespace?.NamespaceName;
         public string CategoryName => this.categoryName;
+        public string AdditionalScopeName => this.additionalScopeName;
 
 #if UNITY_INCLUDE_TESTS
         public static CategoryModel Load(

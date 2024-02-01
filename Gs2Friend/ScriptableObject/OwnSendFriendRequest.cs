@@ -15,11 +15,18 @@
  *
  * deny overwrite
  */
+// ReSharper disable InconsistentNaming
+// ReSharper disable Unity.NoNullPropagation
+
+#pragma warning disable CS0109 // Member does not hide an inherited member; new keyword is not required
+#pragma warning disable CS0108, CS0114
+
 #if UNITY_INCLUDE_TESTS
 using UnityEditor;
 #endif
 using UnityEngine;
 
+// ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Friend.ScriptableObject
 {
     [CreateAssetMenu(fileName = "OwnSendFriendRequest", menuName = "Game Server Services/Gs2Friend/OwnSendFriendRequest")]
@@ -27,11 +34,9 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
     {
         public Namespace Namespace;
         public string targetUserId;
-        public bool withProfile;
 
         public string NamespaceName => this.Namespace.NamespaceName;
         public string TargetUserId => this.targetUserId;
-        public bool WithProfile => this.withProfile;
 
 #if UNITY_INCLUDE_TESTS
         public static OwnSendFriendRequest Load(
@@ -43,28 +48,23 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
             );
         }
 #endif
-
         public static OwnSendFriendRequest New(
-            Namespace Namespace,
-            string targetUserId,
-            bool withProfile
+            Namespace @namespace,
+            string targetUserId
         )
         {
             var instance = CreateInstance<OwnSendFriendRequest>();
             instance.name = "Runtime";
-            instance.Namespace = Namespace;
+            instance.Namespace = @namespace;
             instance.targetUserId = targetUserId;
-            instance.withProfile = withProfile;
             return instance;
         }
-
         public OwnSendFriendRequest Clone()
         {
             var instance = CreateInstance<OwnSendFriendRequest>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
             instance.targetUserId = targetUserId;
-            instance.withProfile = withProfile;
             return instance;
         }
     }

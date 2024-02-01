@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -77,72 +75,6 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                 ),
                 this._connection
             );
-        }
-
-        [Obsolete("The name has been changed to ModelFuture.")]
-        public IFuture<Gs2.Unity.Gs2Friend.Model.EzFriendUser> Model()
-        {
-            return ModelFuture();
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Friend.Model.EzFriendUser> ModelAsync()
-        {
-            var item = await this._connection.RunAsync(
-                null,
-                async () =>
-                {
-                    return await _domain.ModelAsync();
-                }
-            );
-            if (item == null) {
-                return null;
-            }
-            return Gs2.Unity.Gs2Friend.Model.EzFriendUser.FromModel(
-                item
-            );
-        }
-        #endif
-
-        public IFuture<Gs2.Unity.Gs2Friend.Model.EzFriendUser> ModelFuture()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzFriendUser> self)
-            {
-                var future = this._connection.RunFuture(
-                    null,
-                    () => {
-                    	return _domain.ModelFuture();
-                    }
-                );
-                yield return future;
-                if (future.Error != null) {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var item = future.Result;
-                if (item == null) {
-                    self.OnComplete(null);
-                    yield break;
-                }
-                self.OnComplete(Gs2.Unity.Gs2Friend.Model.EzFriendUser.FromModel(
-                    item
-                ));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Model.EzFriendUser>(Impl);
-        }
-
-        public ulong Subscribe(Action<Gs2.Unity.Gs2Friend.Model.EzFriendUser> callback)
-        {
-            return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2Friend.Model.EzFriendUser.FromModel(
-                    item
-                ));
-            });
-        }
-
-        public void Unsubscribe(ulong callbackId)
-        {
-            this._domain.Unsubscribe(callbackId);
         }
 
     }

@@ -56,6 +56,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
+        public bool? WithProfile => _domain?.WithProfile;
         public string TargetUserId => _domain?.TargetUserId;
 
         public EzFollowUserGameSessionDomain(

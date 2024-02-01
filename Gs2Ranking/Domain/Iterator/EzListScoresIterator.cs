@@ -64,8 +64,8 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Iterator
             _categoryName = categoryName;
             _scorerUserId = scorerUserId;
             _it = _domain.Scores(
-                this._categoryName,
-                this._scorerUserId
+                categoryName,
+                scorerUserId
             );
         }
 

@@ -24,16 +24,15 @@
 // ReSharper disable NotAccessedField.Local
 
 #pragma warning disable 1998
-#pragma warning disable CS0169, CS0168
 
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
-using Gs2.Gs2Lottery.Domain.Iterator;
-using Gs2.Gs2Lottery.Request;
-using Gs2.Gs2Lottery.Result;
+using Gs2.Gs2Friend.Domain.Iterator;
+using Gs2.Gs2Friend.Request;
+using Gs2.Gs2Friend.Result;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using Gs2.Core;
@@ -48,112 +47,92 @@ using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
 #endif
 
-namespace Gs2.Unity.Gs2Lottery.Domain.Model
+namespace Gs2.Unity.Gs2Friend.Domain.Model
 {
 
-    public partial class EzNamespaceDomain {
-        private readonly Gs2.Gs2Lottery.Domain.Model.NamespaceDomain _domain;
+    public partial class EzFollowGameSessionDomain {
+        private readonly Gs2.Gs2Friend.Domain.Model.FollowAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string? Status => _domain.Status;
-        public string? Url => _domain.Url;
-        public string? UploadToken => _domain.UploadToken;
-        public string? UploadUrl => _domain.UploadUrl;
         public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
+        public string UserId => _domain?.UserId;
+        public bool? WithProfile => _domain?.WithProfile;
 
-        public EzNamespaceDomain(
-            Gs2.Gs2Lottery.Domain.Model.NamespaceDomain domain,
+        public EzFollowGameSessionDomain(
+            Gs2.Gs2Friend.Domain.Model.FollowAccessTokenDomain domain,
+            Gs2.Unity.Util.GameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
+            this._gameSession = gameSession;
             this._connection = connection;
         }
 
-        public Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel> LotteryModels(
+        public Gs2Iterator<Gs2.Unity.Gs2Friend.Model.EzFollowUser> Follows(
         )
         {
-            return new Gs2.Unity.Gs2Lottery.Domain.Iterator.EzListLotteryModelsIterator(
+            return new Gs2.Unity.Gs2Friend.Domain.Iterator.EzDescribeFollowUsersIterator(
                 this._domain,
+                this._gameSession,
                 this._connection
             );
         }
 
         #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel> LotteryModelsAsync(
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Friend.Model.EzFollowUser> FollowsAsync(
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel>(async (writer, token) =>
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Friend.Model.EzFollowUser>(async (writer, token) =>
             {
-                var it = _domain.LotteryModelsAsync(
+                var it = _domain.FollowsAsync(
                 ).GetAsyncEnumerator();
                 while(
                     await this._connection.RunIteratorAsync(
-                        null,
+                        this._gameSession,
                         async () =>
                         {
                             return await it.MoveNextAsync();
                         },
                         () => {
-                            it = _domain.LotteryModelsAsync(
+                            it = _domain.FollowsAsync(
                             ).GetAsyncEnumerator();
                         }
                     )
                 )
                 {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Lottery.Model.EzLotteryModel.FromModel(it.Current));
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Friend.Model.EzFollowUser.FromModel(it.Current));
                 }
             });
         }
         #endif
 
-        public ulong SubscribeLotteryModels(
-            Action<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel[]> callback
+        public ulong SubscribeFollows(
+            Action<Gs2.Unity.Gs2Friend.Model.EzFollowUser[]> callback
         ) {
-            return this._domain.SubscribeLotteryModels(
+            return this._domain.SubscribeFollows(
                 items => {
-                    callback.Invoke(items.Select(Gs2.Unity.Gs2Lottery.Model.EzLotteryModel.FromModel).ToArray());
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Friend.Model.EzFollowUser.FromModel).ToArray());
                 }
             );
         }
 
-        public void UnsubscribeLotteryModels(
+        public void UnsubscribeFollows(
             ulong callbackId
         ) {
-            this._domain.UnsubscribeLotteryModels(
+            this._domain.UnsubscribeFollows(
                 callbackId
             );
         }
 
-        public Gs2.Unity.Gs2Lottery.Domain.Model.EzLotteryModelDomain LotteryModel(
-            string lotteryName
+        public Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain FollowUser(
+            string targetUserId
         ) {
-            return new Gs2.Unity.Gs2Lottery.Domain.Model.EzLotteryModelDomain(
-                _domain.LotteryModel(
-                    lotteryName
+            return new Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain(
+                _domain.FollowUser(
+                    targetUserId
                 ),
-                this._connection
-            );
-        }
-
-        public Gs2.Unity.Gs2Lottery.Domain.Model.EzUserDomain User(
-            string userId
-        ) {
-            return new Gs2.Unity.Gs2Lottery.Domain.Model.EzUserDomain(
-                _domain.User(
-                    userId
-                ),
-                this._connection
-            );
-        }
-
-        public EzUserGameSessionDomain Me(
-            Gs2.Unity.Util.GameSession gameSession
-        ) {
-            return new EzUserGameSessionDomain(
-                _domain.AccessToken(
-                    gameSession.AccessToken
-                ),
-                gameSession,
+                this._gameSession,
                 this._connection
             );
         }

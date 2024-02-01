@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -46,24 +44,20 @@ namespace Gs2.Unity.Gs2Friend.Domain.Iterator
     public class EzDescribeFollowUsersIterator : Gs2Iterator<Gs2.Unity.Gs2Friend.Model.EzFollowUser>
     {
         private Gs2Iterator<Gs2.Gs2Friend.Model.FollowUser> _it;
-        private readonly Gs2.Gs2Friend.Domain.Model.UserAccessTokenDomain _domain;
+        private readonly Gs2.Gs2Friend.Domain.Model.FollowAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        private readonly bool? _withProfile;
 
         public EzDescribeFollowUsersIterator(
-            Gs2.Gs2Friend.Domain.Model.UserAccessTokenDomain domain,
+            Gs2.Gs2Friend.Domain.Model.FollowAccessTokenDomain domain,
             Gs2.Unity.Util.GameSession gameSession,
-            Gs2.Unity.Util.Gs2Connection connection,
-            bool? withProfile
+            Gs2.Unity.Util.Gs2Connection connection
         )
         {
             _domain = domain;
             _gameSession = gameSession;
             _connection = connection;
-            _withProfile = withProfile;
             _it = _domain.Follows(
-                this._withProfile
             );
         }
 
@@ -80,7 +74,6 @@ namespace Gs2.Unity.Gs2Friend.Domain.Iterator
                 () =>
                 {
                     return _it = _domain.Follows(
-                        this._withProfile
                     );
                 }
             );

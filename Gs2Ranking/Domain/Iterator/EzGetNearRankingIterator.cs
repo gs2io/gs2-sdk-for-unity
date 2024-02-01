@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -46,29 +44,21 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Iterator
     public class EzGetNearRankingIterator : Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzRanking>
     {
         private Gs2Iterator<Gs2.Gs2Ranking.Model.Ranking> _it;
-        private readonly Gs2.Gs2Ranking.Domain.Model.UserDomain _domain;
+        private readonly Gs2.Gs2Ranking.Domain.Model.RankingCategoryDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        private readonly string _categoryName;
-        private readonly string? _additionalScopeName;
         private readonly long? _score;
 
         public EzGetNearRankingIterator(
-            Gs2.Gs2Ranking.Domain.Model.UserDomain domain,
+            Gs2.Gs2Ranking.Domain.Model.RankingCategoryDomain domain,
             Gs2.Unity.Util.Gs2Connection connection,
-            string categoryName,
-            long? score,
-            string? additionalScopeName = null
+            long score
         )
         {
             _domain = domain;
             _connection = connection;
-            _categoryName = categoryName;
-            _additionalScopeName = additionalScopeName;
             _score = score;
             _it = _domain.NearRankings(
-                this._categoryName,
-                this._score,
-                this._additionalScopeName
+                score
             );
         }
 
@@ -85,9 +75,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Iterator
                 () =>
                 {
                     return _it = _domain.NearRankings(
-                        this._categoryName,
-                        this._score,
-                        this._additionalScopeName
+                        this._score
                     );
                 }
             );

@@ -24,7 +24,6 @@
 // ReSharper disable NotAccessedField.Local
 
 #pragma warning disable 1998
-#pragma warning disable CS0169, CS0168
 
 using System;
 using System.Linq;
@@ -51,21 +50,58 @@ using System.Collections.Generic;
 namespace Gs2.Unity.Gs2Lottery.Domain.Model
 {
 
-    public partial class EzProbabilityDomain {
-        private readonly Gs2.Gs2Lottery.Domain.Model.ProbabilityDomain _domain;
-        private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string NamespaceName => _domain?.NamespaceName;
-        public string UserId => _domain?.UserId;
-        public string LotteryName => _domain?.LotteryName;
-        public string PrizeId => _domain?.PrizeId;
-
-        public EzProbabilityDomain(
-            Gs2.Gs2Lottery.Domain.Model.ProbabilityDomain domain,
-            Gs2.Unity.Util.Gs2Connection connection
-        ) {
-            this._domain = domain;
-            this._connection = connection;
+    public partial class EzUserGameSessionDomain {
+#if UNITY_2017_1_OR_NEWER
+        [Obsolete("Probabilities() -> Lottery().Probabilities()")]
+        public Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzProbability> Probabilities(
+            string lotteryName
+        )
+        {
+            return this.Lottery(
+                lotteryName
+            ).Probabilities();
         }
+#endif
 
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+        [Obsolete("ProbabilitiesAsync() -> Lottery().ProbabilitiesAsync()")]
+    #if GS2_ENABLE_UNITASK
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Lottery.Model.EzProbability> ProbabilitiesAsync(
+    #else
+        public DescribeProbabilitiesIterator ProbabilitiesAsync(
+    #endif
+            string lotteryName
+        ) {
+            return this.Lottery(
+                lotteryName
+            ).ProbabilitiesAsync();
+        }
+#endif
+        
+        [Obsolete("SubscribeProbabilities() -> Lottery().SubscribeProbabilities()")]
+        public ulong SubscribeProbabilities(
+            Action<Gs2.Unity.Gs2Lottery.Model.EzProbability[]> callback,
+            string lotteryName
+        )
+        {
+            return this.Lottery(
+                lotteryName
+            ).SubscribeProbabilities(
+                callback
+            );
+        }
+        
+        [Obsolete("UnsubscribeProbabilities() -> Lottery().UnsubscribeProbabilities()")]
+        public void UnsubscribeProbabilities(
+            ulong callbackId,
+            string lotteryName
+        )
+        {
+            this.Lottery(
+                lotteryName
+            ).UnsubscribeProbabilities(
+                callbackId
+            );
+        }
     }
 }

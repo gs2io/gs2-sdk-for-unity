@@ -31,9 +31,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
-using Gs2.Gs2Lottery.Domain.Iterator;
-using Gs2.Gs2Lottery.Request;
-using Gs2.Gs2Lottery.Result;
+using Gs2.Gs2Ranking.Domain.Iterator;
+using Gs2.Gs2Ranking.Request;
+using Gs2.Gs2Ranking.Result;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using Gs2.Core;
@@ -48,43 +48,47 @@ using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
 #endif
 
-namespace Gs2.Unity.Gs2Lottery.Domain.Model
+namespace Gs2.Unity.Gs2Ranking.Domain.Model
 {
 
-    public partial class EzNamespaceDomain {
-        private readonly Gs2.Gs2Lottery.Domain.Model.NamespaceDomain _domain;
+    public partial class EzRankingCategoryDomain {
+        private readonly Gs2.Gs2Ranking.Domain.Model.RankingCategoryDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string? Status => _domain.Status;
-        public string? Url => _domain.Url;
-        public string? UploadToken => _domain.UploadToken;
-        public string? UploadUrl => _domain.UploadUrl;
         public string? NextPageToken => _domain.NextPageToken;
+        public bool? Processing => _domain.Processing;
         public string NamespaceName => _domain?.NamespaceName;
+        public string UserId => _domain?.UserId;
+        public string CategoryName => _domain?.CategoryName;
+        public string AdditionalScopeName => _domain?.AdditionalScopeName;
 
-        public EzNamespaceDomain(
-            Gs2.Gs2Lottery.Domain.Model.NamespaceDomain domain,
+        public EzRankingCategoryDomain(
+            Gs2.Gs2Ranking.Domain.Model.RankingCategoryDomain domain,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
             this._connection = connection;
         }
 
-        public Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel> LotteryModels(
+        public Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzRanking> NearRankings(
+            long score
         )
         {
-            return new Gs2.Unity.Gs2Lottery.Domain.Iterator.EzListLotteryModelsIterator(
+            return new Gs2.Unity.Gs2Ranking.Domain.Iterator.EzGetNearRankingIterator(
                 this._domain,
-                this._connection
+                this._connection,
+                score
             );
         }
 
         #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel> LotteryModelsAsync(
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking.Model.EzRanking> NearRankingsAsync(
+              long score
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel>(async (writer, token) =>
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking.Model.EzRanking>(async (writer, token) =>
             {
-                var it = _domain.LotteryModelsAsync(
+                var it = _domain.NearRankingsAsync(
+                    score
                 ).GetAsyncEnumerator();
                 while(
                     await this._connection.RunIteratorAsync(
@@ -94,66 +98,61 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
                             return await it.MoveNextAsync();
                         },
                         () => {
-                            it = _domain.LotteryModelsAsync(
+                            it = _domain.NearRankingsAsync(
+                                score
                             ).GetAsyncEnumerator();
                         }
                     )
                 )
                 {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Lottery.Model.EzLotteryModel.FromModel(it.Current));
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(it.Current));
                 }
             });
         }
         #endif
 
-        public ulong SubscribeLotteryModels(
-            Action<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel[]> callback
+        public ulong SubscribeNearRankings(
+            Action<Gs2.Unity.Gs2Ranking.Model.EzRanking[]> callback,
+            long score
         ) {
-            return this._domain.SubscribeLotteryModels(
+            return this._domain.SubscribeNearRankings(
                 items => {
-                    callback.Invoke(items.Select(Gs2.Unity.Gs2Lottery.Model.EzLotteryModel.FromModel).ToArray());
-                }
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel).ToArray());
+                },
+                score
             );
         }
 
-        public void UnsubscribeLotteryModels(
-            ulong callbackId
+        public void UnsubscribeNearRankings(
+            ulong callbackId,
+            long score
         ) {
-            this._domain.UnsubscribeLotteryModels(
-                callbackId
+            this._domain.UnsubscribeNearRankings(
+                callbackId,
+                score
             );
         }
 
-        public Gs2.Unity.Gs2Lottery.Domain.Model.EzLotteryModelDomain LotteryModel(
-            string lotteryName
+        public Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserDomain SubscribeUser(
+            string targetUserId
         ) {
-            return new Gs2.Unity.Gs2Lottery.Domain.Model.EzLotteryModelDomain(
-                _domain.LotteryModel(
-                    lotteryName
+            return new Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserDomain(
+                _domain.SubscribeUser(
+                    targetUserId
                 ),
                 this._connection
             );
         }
 
-        public Gs2.Unity.Gs2Lottery.Domain.Model.EzUserDomain User(
-            string userId
+        public Gs2.Unity.Gs2Ranking.Domain.Model.EzRankingDomain Ranking(
+            string scorerUserId = null,
+            long? index = null
         ) {
-            return new Gs2.Unity.Gs2Lottery.Domain.Model.EzUserDomain(
-                _domain.User(
-                    userId
+            return new Gs2.Unity.Gs2Ranking.Domain.Model.EzRankingDomain(
+                _domain.Ranking(
+                    scorerUserId,
+                    index
                 ),
-                this._connection
-            );
-        }
-
-        public EzUserGameSessionDomain Me(
-            Gs2.Unity.Util.GameSession gameSession
-        ) {
-            return new EzUserGameSessionDomain(
-                _domain.AccessToken(
-                    gameSession.AccessToken
-                ),
-                gameSession,
                 this._connection
             );
         }

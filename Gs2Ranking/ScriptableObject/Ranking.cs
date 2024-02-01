@@ -31,6 +31,7 @@ namespace Gs2.Unity.Gs2Ranking.ScriptableObject
         public string NamespaceName => this.User.NamespaceName;
         public string UserId => this.User.UserId;
         public string CategoryName => this.CategoryModel.CategoryName;
+        public string AdditionalScopeName => this.CategoryModel.AdditionalScopeName;
         public long Index => this.index;
 
 #if UNITY_INCLUDE_TESTS

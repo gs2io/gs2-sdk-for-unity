@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -128,75 +126,12 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
             );
         }
 
-        public Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzProbability> Probabilities(
-              string lotteryName
-        )
-        {
-            return new Gs2.Unity.Gs2Lottery.Domain.Iterator.EzListProbabilitiesIterator(
-                this._domain,
-                this._gameSession,
-                this._connection,
-                lotteryName
-            );
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Lottery.Model.EzProbability> ProbabilitiesAsync(
-              string lotteryName
-        )
-        {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Lottery.Model.EzProbability>(async (writer, token) =>
-            {
-                var it = _domain.ProbabilitiesAsync(
-                    lotteryName
-                ).GetAsyncEnumerator();
-                while(
-                    await this._connection.RunIteratorAsync(
-                        this._gameSession,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.ProbabilitiesAsync(
-                                lotteryName
-                            ).GetAsyncEnumerator();
-                        }
-                    )
-                )
-                {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Lottery.Model.EzProbability.FromModel(it.Current));
-                }
-            });
-        }
-        #endif
-
-        public ulong SubscribeProbabilities(
-            Action<Gs2.Unity.Gs2Lottery.Model.EzProbability[]> callback,
-            string lotteryName
-        ) {
-            return this._domain.SubscribeProbabilities(
-                items => {
-                    callback.Invoke(items.Select(Gs2.Unity.Gs2Lottery.Model.EzProbability.FromModel).ToArray());
-                },
-                lotteryName
-            );
-        }
-
-        public void UnsubscribeProbabilities(
-            ulong callbackId,
-            string lotteryName
-        ) {
-            this._domain.UnsubscribeProbabilities(
-                callbackId,
-                lotteryName
-            );
-        }
-
         public Gs2.Unity.Gs2Lottery.Domain.Model.EzLotteryGameSessionDomain Lottery(
+            string lotteryName
         ) {
             return new Gs2.Unity.Gs2Lottery.Domain.Model.EzLotteryGameSessionDomain(
                 _domain.Lottery(
+                    lotteryName
                 ),
                 this._gameSession,
                 this._connection
@@ -209,20 +144,6 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
             return new Gs2.Unity.Gs2Lottery.Domain.Model.EzBoxItemsGameSessionDomain(
                 _domain.BoxItems(
                     prizeTableName
-                ),
-                this._gameSession,
-                this._connection
-            );
-        }
-
-        public Gs2.Unity.Gs2Lottery.Domain.Model.EzProbabilityGameSessionDomain Probability(
-            string lotteryName,
-            string prizeId
-        ) {
-            return new Gs2.Unity.Gs2Lottery.Domain.Model.EzProbabilityGameSessionDomain(
-                _domain.Probability(
-                    lotteryName,
-                    prizeId
                 ),
                 this._gameSession,
                 this._connection

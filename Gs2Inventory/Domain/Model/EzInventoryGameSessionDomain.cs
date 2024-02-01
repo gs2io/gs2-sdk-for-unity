@@ -118,16 +118,6 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             );
         }
 
-        public ulong SubscribeItemSets(
-            Action<Gs2.Unity.Gs2Inventory.Model.EzItemSet> callback
-        ) {
-            return this._domain.SubscribeItemSets(
-                item => {
-                    callback.Invoke(Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel(item));
-                }
-            );
-        }
-
         public void UnsubscribeItemSets(
             ulong callbackId
         ) {

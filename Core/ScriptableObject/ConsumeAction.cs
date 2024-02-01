@@ -74,22 +74,5 @@ namespace Gs2.Unity.UiKit.Core.Consume
         }
 
         public string Id => ToRequest().UniqueKey();
-
-        public static ConsumeAction operator *(ConsumeAction x, int y) {
-            var request = x.ToRequest() * y;
-            return New(
-                x.Action,
-                JsonMapper.ToJson(request.ToJson())
-            );
-        }
-
-        public static ConsumeAction operator +(ConsumeAction x, ConsumeAction y) {
-            var request1 = x.ToRequest();
-            var request2 = y.ToRequest();
-            return New(
-                x.Action,
-                JsonMapper.ToJson((request1 + request2).ToJson())
-            );
-        }
     }
 }

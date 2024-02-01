@@ -44,28 +44,20 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Iterator
     public class EzGetRankingIterator : Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzRanking>
     {
         private Gs2Iterator<Gs2.Gs2Ranking.Model.Ranking> _it;
-        private readonly Gs2.Gs2Ranking.Domain.Model.UserAccessTokenDomain _domain;
+        private readonly Gs2.Gs2Ranking.Domain.Model.RankingCategoryAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        private readonly string _categoryName;
-        private readonly string? _additionalScopeName;
 
         public EzGetRankingIterator(
-            Gs2.Gs2Ranking.Domain.Model.UserAccessTokenDomain domain,
+            Gs2.Gs2Ranking.Domain.Model.RankingCategoryAccessTokenDomain domain,
             Gs2.Unity.Util.GameSession gameSession,
-            Gs2.Unity.Util.Gs2Connection connection,
-            string categoryName,
-            string? additionalScopeName = null
+            Gs2.Unity.Util.Gs2Connection connection
         )
         {
             _domain = domain;
             _gameSession = gameSession;
             _connection = connection;
-            _categoryName = categoryName;
-            _additionalScopeName = additionalScopeName;
             _it = _domain.Rankings(
-                this._categoryName,
-                this._additionalScopeName
             );
         }
 
@@ -82,8 +74,6 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Iterator
                 () =>
                 {
                     return _it = _domain.Rankings(
-                        this._categoryName,
-                        this._additionalScopeName
                     );
                 }
             );

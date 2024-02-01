@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -126,73 +124,8 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
         #endif
 
-        public Gs2Iterator<Gs2.Unity.Gs2Friend.Model.EzFollowUser> Follows(
-              bool? withProfile = null
-        )
-        {
-            return new Gs2.Unity.Gs2Friend.Domain.Iterator.EzDescribeFollowUsersIterator(
-                this._domain,
-                this._gameSession,
-                this._connection,
-                withProfile
-            );
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Friend.Model.EzFollowUser> FollowsAsync(
-              bool? withProfile = null
-        )
-        {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Friend.Model.EzFollowUser>(async (writer, token) =>
-            {
-                var it = _domain.FollowsAsync(
-                    withProfile
-                ).GetAsyncEnumerator();
-                while(
-                    await this._connection.RunIteratorAsync(
-                        this._gameSession,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.FollowsAsync(
-                                withProfile
-                            ).GetAsyncEnumerator();
-                        }
-                    )
-                )
-                {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Friend.Model.EzFollowUser.FromModel(it.Current));
-                }
-            });
-        }
-        #endif
-
-        public ulong SubscribeFollows(
-            Action<Gs2.Unity.Gs2Friend.Model.EzFollowUser[]> callback,
-            bool? withProfile = null
-        ) {
-            return this._domain.SubscribeFollows(
-                items => {
-                    callback.Invoke(items.Select(Gs2.Unity.Gs2Friend.Model.EzFollowUser.FromModel).ToArray());
-                },
-                withProfile
-            );
-        }
-
-        public void UnsubscribeFollows(
-            ulong callbackId,
-            bool? withProfile = null
-        ) {
-            this._domain.UnsubscribeFollows(
-                callbackId,
-                withProfile
-            );
-        }
-
         public Gs2Iterator<Gs2.Unity.Gs2Friend.Model.EzFriendUser> Friends(
-              bool? withProfile = null
+            bool? withProfile = null
         )
         {
             return new Gs2.Unity.Gs2Friend.Domain.Iterator.EzDescribeFriendsIterator(
@@ -388,13 +321,11 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             );
         }
 
-        public Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain FollowUser(
-            string targetUserId,
+        public Gs2.Unity.Gs2Friend.Domain.Model.EzFollowGameSessionDomain Follow(
             bool withProfile
         ) {
-            return new Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain(
-                _domain.FollowUser(
-                    targetUserId,
+            return new Gs2.Unity.Gs2Friend.Domain.Model.EzFollowGameSessionDomain(
+                _domain.Follow(
                     withProfile
                 ),
                 this._gameSession,

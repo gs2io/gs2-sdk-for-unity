@@ -67,5 +67,110 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             this._connection = connection;
         }
 
+        [Obsolete("The name has been changed to ModelFuture.")]
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzFriendUser> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Friend.Model.EzFriendUser> ModelAsync()
+        {
+            var item = await this._connection.RunAsync(
+                null,
+                async () =>
+                {
+                    return await _domain.ModelAsync();
+                }
+            );
+            if (item == null) {
+                return null;
+            }
+            return Gs2.Unity.Gs2Friend.Model.EzFriendUser.FromModel(
+                item
+            );
+        }
+        #endif
+
+        public IFuture<Gs2.Unity.Gs2Friend.Model.EzFriendUser> ModelFuture()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzFriendUser> self)
+            {
+                var future = this._connection.RunFuture(
+                    null,
+                    () => {
+                    	return _domain.ModelFuture();
+                    }
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Friend.Model.EzFriendUser.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Model.EzFriendUser>(Impl);
+        }
+
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Friend.Model.EzFriendUser> callback)
+        {
+            return this._domain.Subscribe(item => {
+                callback.Invoke(Gs2.Unity.Gs2Friend.Model.EzFriendUser.FromModel(
+                    item
+                ));
+            });
+        }
+
+        public void Unsubscribe(ulong callbackId)
+        {
+            this._domain.Unsubscribe(callbackId);
+        }
+
+        #if UNITY_2017_1_OR_NEWER
+        public Gs2Future<ulong> SubscribeWithInitialCallFuture(Action<Gs2.Unity.Gs2Friend.Model.EzFriendUser> callback)
+        {
+            IEnumerator Impl(IFuture<ulong> self)
+            {
+                var future = ModelFuture();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                var callbackId = Subscribe(callback);
+                callback.Invoke(item);
+                self.OnComplete(callbackId);
+            }
+            return new Gs2InlineFuture<ulong>(Impl);
+        }
+        #endif
+
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
+        public async UniTask<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Friend.Model.EzFriendUser> callback)
+            #else
+        public async Task<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Friend.Model.EzFriendUser> callback)
+            #endif
+        {
+            var item = await ModelAsync();
+            var callbackId = Subscribe(callback);
+            callback.Invoke(item);
+            return callbackId;
+        }
+        #endif
+
     }
 }

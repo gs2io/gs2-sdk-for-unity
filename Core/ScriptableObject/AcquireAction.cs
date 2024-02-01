@@ -74,22 +74,5 @@ namespace Gs2.Unity.UiKit.Core.Acquire
         }
 
         public string Id => ToRequest().UniqueKey();
-
-        public static AcquireAction operator *(AcquireAction x, int y) {
-            var request = x.ToRequest() * y;
-            return New(
-                x.Action,
-                JsonMapper.ToJson(request.ToJson())
-            );
-        }
-
-        public static AcquireAction operator +(AcquireAction x, AcquireAction y) {
-            var request1 = x.ToRequest();
-            var request2 = y.ToRequest();
-            return New(
-                x.Action,
-                JsonMapper.ToJson((request1 + request2).ToJson())
-            );
-        }
     }
 }

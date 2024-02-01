@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable InconsistentNaming
 // ReSharper disable Unity.NoNullPropagation
@@ -31,11 +33,9 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
     public class OwnReceiveFriendRequest : UnityEngine.ScriptableObject
     {
         public Namespace Namespace;
-        public string targetUserId;
         public string fromUserId;
 
         public string NamespaceName => this.Namespace.NamespaceName;
-        public string TargetUserId => this.targetUserId;
         public string FromUserId => this.fromUserId;
 
 #if UNITY_INCLUDE_TESTS
@@ -50,14 +50,12 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
 #endif
         public static OwnReceiveFriendRequest New(
             Namespace @namespace,
-            string targetUserId,
             string fromUserId
         )
         {
             var instance = CreateInstance<OwnReceiveFriendRequest>();
             instance.name = "Runtime";
             instance.Namespace = @namespace;
-            instance.targetUserId = targetUserId;
             instance.fromUserId = fromUserId;
             return instance;
         }
@@ -66,7 +64,6 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
             var instance = CreateInstance<OwnReceiveFriendRequest>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
-            instance.targetUserId = targetUserId;
             instance.fromUserId = fromUserId;
             return instance;
         }

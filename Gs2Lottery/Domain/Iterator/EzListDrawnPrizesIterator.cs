@@ -38,26 +38,23 @@ using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
-namespace Gs2.Unity.Gs2Friend.Domain.Iterator
+namespace Gs2.Unity.Gs2Lottery.Domain.Iterator
 {
 
-    public class EzDescribeSendRequestsIterator : Gs2Iterator<Gs2.Unity.Gs2Friend.Model.EzFriendRequest>
+    public class EzListDrawnPrizesIterator : Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzDrawnPrize>
     {
-        private Gs2Iterator<Gs2.Gs2Friend.Model.FriendRequest> _it;
-        private readonly Gs2.Gs2Friend.Domain.Model.UserAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private Gs2Iterator<Gs2.Gs2Lottery.Model.DrawnPrize> _it;
+        private readonly Gs2.Gs2Lottery.Domain.Model.NamespaceDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
-        public EzDescribeSendRequestsIterator(
-            Gs2.Gs2Friend.Domain.Model.UserAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+        public EzListDrawnPrizesIterator(
+            Gs2.Gs2Lottery.Domain.Model.NamespaceDomain domain,
             Gs2.Unity.Util.Gs2Connection connection
         )
         {
             _domain = domain;
-            _gameSession = gameSession;
             _connection = connection;
-            _it = _domain.SendRequests(
+            _it = _domain.DrawnPrizes(
             );
         }
 
@@ -66,20 +63,20 @@ namespace Gs2.Unity.Gs2Friend.Domain.Iterator
             return _it.HasNext();
         }
 
-        protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Friend.Model.EzFriendRequest>> callback)
+        protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Lottery.Model.EzDrawnPrize>> callback)
         {
             yield return _connection.RunIterator(
-                _gameSession,
+                null,
                 _it,
                 () =>
                 {
-                    return _it = _domain.SendRequests(
+                    return _it = _domain.DrawnPrizes(
                     );
                 }
             );
             callback.Invoke(
-                new AsyncResult<Gs2.Unity.Gs2Friend.Model.EzFriendRequest>(
-                    _it.Current == null ? null : Gs2.Unity.Gs2Friend.Model.EzFriendRequest.FromModel(_it.Current),
+                new AsyncResult<Gs2.Unity.Gs2Lottery.Model.EzDrawnPrize>(
+                    _it.Current == null ? null : Gs2.Unity.Gs2Lottery.Model.EzDrawnPrize.FromModel(_it.Current),
                     _it.Error
                 )
             );

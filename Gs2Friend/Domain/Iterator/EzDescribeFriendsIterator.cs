@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Iterator
             Gs2.Gs2Friend.Domain.Model.UserAccessTokenDomain domain,
             Gs2.Unity.Util.GameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection,
-            bool? withProfile
+            bool? withProfile = null
         )
         {
             _domain = domain;
@@ -61,7 +61,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Iterator
             _connection = connection;
             _withProfile = withProfile;
             _it = _domain.Friends(
-                this._withProfile
+                withProfile
             );
         }
 

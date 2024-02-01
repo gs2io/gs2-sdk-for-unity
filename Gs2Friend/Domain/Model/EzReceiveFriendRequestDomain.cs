@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -58,6 +56,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
+        public string TargetUserId => _domain?.TargetUserId;
         public string FromUserId => _domain?.FromUserId;
 
         public EzReceiveFriendRequestDomain(
@@ -120,6 +119,11 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Model.EzFriendRequest>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> callback)
         {
             return this._domain.Subscribe(item => {
@@ -133,6 +137,40 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         {
             this._domain.Unsubscribe(callbackId);
         }
+
+        #if UNITY_2017_1_OR_NEWER
+        public Gs2Future<ulong> SubscribeWithInitialCallFuture(Action<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> callback)
+        {
+            IEnumerator Impl(IFuture<ulong> self)
+            {
+                var future = ModelFuture();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                var callbackId = Subscribe(callback);
+                callback.Invoke(item);
+                self.OnComplete(callbackId);
+            }
+            return new Gs2InlineFuture<ulong>(Impl);
+        }
+        #endif
+
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
+        public async UniTask<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> callback)
+            #else
+        public async Task<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> callback)
+            #endif
+        {
+            var item = await ModelAsync();
+            var callbackId = Subscribe(callback);
+            callback.Invoke(item);
+            return callbackId;
+        }
+        #endif
 
     }
 }

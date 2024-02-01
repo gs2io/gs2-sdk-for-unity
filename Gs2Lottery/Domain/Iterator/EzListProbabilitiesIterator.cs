@@ -44,24 +44,20 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Iterator
     public class EzListProbabilitiesIterator : Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzProbability>
     {
         private Gs2Iterator<Gs2.Gs2Lottery.Model.Probability> _it;
-        private readonly Gs2.Gs2Lottery.Domain.Model.UserAccessTokenDomain _domain;
+        private readonly Gs2.Gs2Lottery.Domain.Model.LotteryAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        private readonly string _lotteryName;
 
         public EzListProbabilitiesIterator(
-            Gs2.Gs2Lottery.Domain.Model.UserAccessTokenDomain domain,
+            Gs2.Gs2Lottery.Domain.Model.LotteryAccessTokenDomain domain,
             Gs2.Unity.Util.GameSession gameSession,
-            Gs2.Unity.Util.Gs2Connection connection,
-            string lotteryName
+            Gs2.Unity.Util.Gs2Connection connection
         )
         {
             _domain = domain;
             _gameSession = gameSession;
             _connection = connection;
-            _lotteryName = lotteryName;
             _it = _domain.Probabilities(
-                this._lotteryName
             );
         }
 
@@ -78,7 +74,6 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Iterator
                 () =>
                 {
                     return _it = _domain.Probabilities(
-                        this._lotteryName
                     );
                 }
             );

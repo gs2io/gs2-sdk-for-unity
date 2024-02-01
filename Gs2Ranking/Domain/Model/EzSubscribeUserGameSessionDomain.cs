@@ -57,6 +57,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string CategoryName => _domain?.CategoryName;
+        public string AdditionalScopeName => _domain?.AdditionalScopeName;
         public string TargetUserId => _domain?.TargetUserId;
 
         public EzSubscribeUserGameSessionDomain(
