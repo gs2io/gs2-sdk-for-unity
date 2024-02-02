@@ -39,6 +39,8 @@ namespace Gs2.Unity.Gs2Exchange.Model
 		[SerializeField]
 		public string Name;
 		[SerializeField]
+		public List<Gs2.Unity.Gs2Exchange.Model.EzConfig> Config;
+		[SerializeField]
 		public long ExchangedAt;
 
         public Gs2.Gs2Exchange.Model.Await ToModel()
@@ -47,6 +49,9 @@ namespace Gs2.Unity.Gs2Exchange.Model
                 UserId = UserId,
                 RateName = RateName,
                 Name = Name,
+                Config = Config?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
                 ExchangedAt = ExchangedAt,
             };
         }
@@ -57,6 +62,9 @@ namespace Gs2.Unity.Gs2Exchange.Model
                 UserId = model.UserId == null ? null : model.UserId,
                 RateName = model.RateName == null ? null : model.RateName,
                 Name = model.Name == null ? null : model.Name,
+                Config = model.Config == null ? new List<Gs2.Unity.Gs2Exchange.Model.EzConfig>() : model.Config.Select(v => {
+                    return Gs2.Unity.Gs2Exchange.Model.EzConfig.FromModel(v);
+                }).ToList(),
                 ExchangedAt = model.ExchangedAt ?? 0,
             };
         }
