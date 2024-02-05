@@ -55,6 +55,15 @@ namespace Gs2.Editor.ResourceTree.Gs2Formation.Editor
                 ScriptSettingEditorExt.OnGUI(item.UpdateFormScript);
                 EditorGUI.indentLevel--;
             }
+            if (item.UpdatePropertyFormScript == null) {
+                EditorGUILayout.TextField("UpdatePropertyFormScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("UpdatePropertyFormScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.UpdatePropertyFormScript);
+                EditorGUI.indentLevel--;
+            }
             if (item.LogSetting == null) {
                 EditorGUILayout.TextField("LogSetting", "");
             }
