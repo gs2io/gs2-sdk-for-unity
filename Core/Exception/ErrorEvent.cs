@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 namespace Gs2.Unity.Util
 {
+    [Serializable]
     public class ErrorEvent : UnityEvent<Gs2Exception, Func<IEnumerator>>
     {
         
