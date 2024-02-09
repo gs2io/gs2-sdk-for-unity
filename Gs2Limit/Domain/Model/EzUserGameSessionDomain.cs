@@ -69,7 +69,7 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Limit.Model.EzCounter> Counters(
-              string? limitName = null
+            string? limitName = null
         )
         {
             return new Gs2.Unity.Gs2Limit.Domain.Iterator.EzListCountersIterator(

@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -197,28 +199,6 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             });
         }
         #endif
-
-        public ulong SubscribeDoMatchmaking(
-            Action<Gs2.Unity.Gs2Matchmaking.Model.EzGathering[]> callback,
-            Gs2.Unity.Gs2Matchmaking.Model.EzPlayer player
-        ) {
-            return this._domain.SubscribeDoMatchmaking(
-                items => {
-                    callback.Invoke(items.Select(Gs2.Unity.Gs2Matchmaking.Model.EzGathering.FromModel).ToArray());
-                },
-                player.ToModel()
-            );
-        }
-
-        public void UnsubscribeDoMatchmaking(
-            ulong callbackId,
-            Gs2.Unity.Gs2Matchmaking.Model.EzPlayer player
-        ) {
-            this._domain.UnsubscribeDoMatchmaking(
-                callbackId,
-                player.ToModel()
-            );
-        }
 
         public Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzRating> Ratings(
         )

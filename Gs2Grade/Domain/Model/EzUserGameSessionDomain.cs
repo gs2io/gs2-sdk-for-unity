@@ -72,7 +72,7 @@ namespace Gs2.Unity.Gs2Grade.Domain.Model
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Grade.Model.EzStatus> Statuses(
-              string? gradeName = null
+            string? gradeName = null
         )
         {
             return new Gs2.Unity.Gs2Grade.Domain.Iterator.EzListStatusesIterator(

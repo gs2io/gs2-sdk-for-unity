@@ -119,7 +119,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         #endif
 
         public Gs2Iterator<Gs2.Unity.Gs2Inbox.Model.EzMessage> Messages(
-              bool? isRead = null
+            bool? isRead = null
         )
         {
             return new Gs2.Unity.Gs2Inbox.Domain.Iterator.EzListIterator(

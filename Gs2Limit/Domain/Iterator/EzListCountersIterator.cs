@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Limit.Domain.Iterator
             Gs2.Gs2Limit.Domain.Model.UserAccessTokenDomain domain,
             Gs2.Unity.Util.GameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection,
-            string limitName = null
+            string? limitName = null
         )
         {
             _domain = domain;
@@ -61,7 +61,7 @@ namespace Gs2.Unity.Gs2Limit.Domain.Iterator
             _connection = connection;
             _limitName = limitName;
             _it = _domain.Counters(
-                this._limitName
+                limitName
             );
         }
 

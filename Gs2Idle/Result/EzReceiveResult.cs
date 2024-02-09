@@ -33,6 +33,8 @@ namespace Gs2.Unity.Gs2Idle.Result
 		[SerializeField]
 		public List<Gs2.Unity.Core.Model.EzAcquireAction> Items;
 		[SerializeField]
+		public Gs2.Unity.Gs2Idle.Model.EzStatus Status;
+		[SerializeField]
 		public string TransactionId;
 		[SerializeField]
 		public string StampSheet;
@@ -47,6 +49,7 @@ namespace Gs2.Unity.Gs2Idle.Result
                 Items = model.Items == null ? new List<Gs2.Unity.Core.Model.EzAcquireAction>() : model.Items.Select(v => {
                     return Gs2.Unity.Core.Model.EzAcquireAction.FromModel(v);
                 }).ToList(),
+                Status = model.Status == null ? null : Gs2.Unity.Gs2Idle.Model.EzStatus.FromModel(model.Status),
                 TransactionId = model.TransactionId == null ? null : model.TransactionId,
                 StampSheet = model.StampSheet == null ? null : model.StampSheet,
                 StampSheetEncryptionKeyId = model.StampSheetEncryptionKeyId == null ? null : model.StampSheetEncryptionKeyId,

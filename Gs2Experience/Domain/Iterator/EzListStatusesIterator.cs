@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Experience.Domain.Iterator
             Gs2.Gs2Experience.Domain.Model.UserAccessTokenDomain domain,
             Gs2.Unity.Util.GameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection,
-            string experienceName = null
+            string? experienceName = null
         )
         {
             _domain = domain;
@@ -61,7 +61,7 @@ namespace Gs2.Unity.Gs2Experience.Domain.Iterator
             _connection = connection;
             _experienceName = experienceName;
             _it = _domain.Statuses(
-                this._experienceName
+                experienceName
             );
         }
 

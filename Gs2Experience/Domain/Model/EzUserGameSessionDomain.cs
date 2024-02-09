@@ -71,7 +71,7 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Experience.Model.EzStatus> Statuses(
-              string? experienceName = null
+            string? experienceName = null
         )
         {
             return new Gs2.Unity.Gs2Experience.Domain.Iterator.EzListStatusesIterator(

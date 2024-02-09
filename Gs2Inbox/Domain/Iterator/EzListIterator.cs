@@ -61,7 +61,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Iterator
             _connection = connection;
             _isRead = isRead;
             _it = _domain.Messages(
-                this._isRead
+                isRead
             );
         }
 

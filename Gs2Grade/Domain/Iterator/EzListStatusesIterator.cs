@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Grade.Domain.Iterator
             Gs2.Gs2Grade.Domain.Model.UserAccessTokenDomain domain,
             Gs2.Unity.Util.GameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection,
-            string gradeName = null
+            string? gradeName = null
         )
         {
             _domain = domain;
@@ -61,7 +61,7 @@ namespace Gs2.Unity.Gs2Grade.Domain.Iterator
             _connection = connection;
             _gradeName = gradeName;
             _it = _domain.Statuses(
-                this._gradeName
+                gradeName
             );
         }
 
