@@ -33,12 +33,15 @@ namespace Gs2.Unity.Gs2Distributor.Result
 		[SerializeField]
 		public string ContextStack;
 		[SerializeField]
+		public int StatusCode;
+		[SerializeField]
 		public string Result;
 
         public static EzRunStampTaskWithoutNamespaceResult FromModel(Gs2.Gs2Distributor.Result.RunStampTaskWithoutNamespaceResult model)
         {
             return new EzRunStampTaskWithoutNamespaceResult {
                 ContextStack = model.ContextStack == null ? null : model.ContextStack,
+                StatusCode = model.StatusCode ?? 0,
                 Result = model.Result == null ? null : model.Result,
             };
         }

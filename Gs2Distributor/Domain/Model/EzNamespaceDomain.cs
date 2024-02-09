@@ -57,7 +57,10 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
         public string? Status => _domain.Status;
         public string? Result => _domain.Result;
         public string? ContextStack => _domain.ContextStack;
+        public int? StatusCode => _domain.StatusCode;
+        public int[] TaskResultCodes => _domain.TaskResultCodes;
         public string[] TaskResults => _domain.TaskResults;
+        public int? SheetResultCode => _domain.SheetResultCode;
         public string? SheetResult => _domain.SheetResult;
         public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;

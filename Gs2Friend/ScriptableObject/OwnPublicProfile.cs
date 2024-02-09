@@ -45,8 +45,7 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
         }
 #endif
         public static OwnPublicProfile New(
-            Namespace @namespace,
-            string userId
+            Namespace @namespace
         )
         {
             var instance = CreateInstance<OwnPublicProfile>();

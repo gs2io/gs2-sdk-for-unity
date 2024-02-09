@@ -49,7 +49,6 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
 #endif
         public static OwnFriendUser New(
             OwnFriend @friend,
-            string userId,
             string targetUserId
         )
         {

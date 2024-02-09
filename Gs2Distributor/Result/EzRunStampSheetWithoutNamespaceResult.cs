@@ -31,11 +31,14 @@ namespace Gs2.Unity.Gs2Distributor.Result
 	public class EzRunStampSheetWithoutNamespaceResult
 	{
 		[SerializeField]
+		public int StatusCode;
+		[SerializeField]
 		public string Result;
 
         public static EzRunStampSheetWithoutNamespaceResult FromModel(Gs2.Gs2Distributor.Result.RunStampSheetWithoutNamespaceResult model)
         {
             return new EzRunStampSheetWithoutNamespaceResult {
+                StatusCode = model.StatusCode ?? 0,
                 Result = model.Result == null ? null : model.Result,
             };
         }

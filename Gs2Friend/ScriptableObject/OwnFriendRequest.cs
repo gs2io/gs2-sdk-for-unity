@@ -48,7 +48,6 @@ namespace Gs2.Unity.Gs2Friend.ScriptableObject
 #endif
         public static OwnFriendRequest New(
             Namespace @namespace,
-            string userId,
             string targetUserId
         )
         {

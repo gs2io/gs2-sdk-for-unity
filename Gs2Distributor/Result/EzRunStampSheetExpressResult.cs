@@ -31,16 +31,24 @@ namespace Gs2.Unity.Gs2Distributor.Result
 	public class EzRunStampSheetExpressResult
 	{
 		[SerializeField]
+		public List<int> TaskResultCodes;
+		[SerializeField]
 		public List<string> TaskResults;
+		[SerializeField]
+		public int SheetResultCode;
 		[SerializeField]
 		public string SheetResult;
 
         public static EzRunStampSheetExpressResult FromModel(Gs2.Gs2Distributor.Result.RunStampSheetExpressResult model)
         {
             return new EzRunStampSheetExpressResult {
+                TaskResultCodes = model.TaskResultCodes == null ? new List<int>() : model.TaskResultCodes.Select(v => {
+                    return v;
+                }).ToList(),
                 TaskResults = model.TaskResults == null ? new List<string>() : model.TaskResults.Select(v => {
                     return v;
                 }).ToList(),
+                SheetResultCode = model.SheetResultCode ?? 0,
                 SheetResult = model.SheetResult == null ? null : model.SheetResult,
             };
         }
