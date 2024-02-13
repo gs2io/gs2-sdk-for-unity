@@ -31,8 +31,10 @@ namespace Gs2.Unity.Gs2SkillTree.ScriptableObject
     public class OwnStatus : UnityEngine.ScriptableObject
     {
         public Namespace Namespace;
+        public string propertyId;
 
         public string NamespaceName => this.Namespace.NamespaceName;
+        public string PropertyId => this.propertyId;
 
 #if UNITY_INCLUDE_TESTS
         public static OwnStatus Load(
@@ -45,12 +47,14 @@ namespace Gs2.Unity.Gs2SkillTree.ScriptableObject
         }
 #endif
         public static OwnStatus New(
-            Namespace @namespace
+            Namespace @namespace,
+            string propertyId
         )
         {
             var instance = CreateInstance<OwnStatus>();
             instance.name = "Runtime";
             instance.Namespace = @namespace;
+            instance.propertyId = propertyId;
             return instance;
         }
         public OwnStatus Clone()
@@ -58,6 +62,7 @@ namespace Gs2.Unity.Gs2SkillTree.ScriptableObject
             var instance = CreateInstance<OwnStatus>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
+            instance.propertyId = propertyId;
             return instance;
         }
     }

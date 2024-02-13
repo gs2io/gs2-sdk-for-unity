@@ -58,6 +58,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
+        public string PropertyId => _domain?.PropertyId;
 
         public EzStatusDomain(
             Gs2.Gs2SkillTree.Domain.Model.StatusDomain domain,

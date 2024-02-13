@@ -54,6 +54,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
     public partial class EzUserDomain {
         private readonly Gs2.Gs2SkillTree.Domain.Model.UserDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
@@ -66,9 +67,11 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         }
 
         public Gs2.Unity.Gs2SkillTree.Domain.Model.EzStatusDomain Status(
+            string propertyId
         ) {
             return new Gs2.Unity.Gs2SkillTree.Domain.Model.EzStatusDomain(
                 _domain.Status(
+                    propertyId
                 ),
                 this._connection
             );
