@@ -262,7 +262,9 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         public ulong Subscribe(Action<Gs2.Unity.Gs2Inventory.Model.EzItemSet> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel(item));
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Inventory.Model.EzItemSet.FromModel(
+                    item
+                ));
             });
         }
 
@@ -291,33 +293,33 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         }
         #endif
 
-#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
-#if UNITY_2017_1_OR_NEWER
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]> callback)
-#else
+            #else
         public async Task<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Inventory.Model.EzItemSet[]> callback)
-#endif
+            #endif
         {
             var item = await ModelAsync();
             var callbackId = Subscribe(callback);
             callback.Invoke(item);
             return callbackId;
         }
-#endif
+        #endif
 
-#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
-#if UNITY_2017_1_OR_NEWER
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Inventory.Model.EzItemSet> callback)
-#else
+            #else
         public async Task<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Inventory.Model.EzItemSet> callback)
-#endif
+            #endif
         {
             var item = await ModelAsync();
             var callbackId = Subscribe(callback);
             callback.Invoke(item.Length == 0 ? null : item[0]);
             return callbackId;
         }
-#endif
+        #endif
 
     }
 }

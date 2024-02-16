@@ -245,7 +245,7 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
         public ulong Subscribe(Action<Gs2.Unity.Gs2Quest.Model.EzProgress> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2Quest.Model.EzProgress.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Quest.Model.EzProgress.FromModel(
                     item
                 ));
             });

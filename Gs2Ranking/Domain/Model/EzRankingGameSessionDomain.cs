@@ -131,7 +131,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         public ulong Subscribe(Action<Gs2.Unity.Gs2Ranking.Model.EzRanking> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(
                     item
                 ));
             });

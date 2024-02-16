@@ -134,7 +134,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         public ulong Subscribe(Action<Gs2.Unity.Gs2Formation.Model.EzMoldModel> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2Formation.Model.EzMoldModel.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Formation.Model.EzMoldModel.FromModel(
                     item
                 ));
             });

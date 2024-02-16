@@ -125,7 +125,7 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
         public ulong Subscribe(Action<Gs2.Unity.Gs2Dictionary.Model.EzEntryModel> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2Dictionary.Model.EzEntryModel.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Dictionary.Model.EzEntryModel.FromModel(
                     item
                 ));
             });

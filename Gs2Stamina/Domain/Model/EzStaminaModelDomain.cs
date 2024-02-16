@@ -125,7 +125,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         public ulong Subscribe(Action<Gs2.Unity.Gs2Stamina.Model.EzStaminaModel> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2Stamina.Model.EzStaminaModel.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Stamina.Model.EzStaminaModel.FromModel(
                     item
                 ));
             });

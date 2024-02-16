@@ -184,7 +184,7 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         public ulong Subscribe(Action<Gs2.Unity.Gs2Mission.Model.EzComplete> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2Mission.Model.EzComplete.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Mission.Model.EzComplete.FromModel(
                     item
                 ));
             });

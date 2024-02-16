@@ -125,7 +125,7 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
         public ulong Subscribe(Action<Gs2.Unity.Gs2Lottery.Model.EzLotteryModel> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2Lottery.Model.EzLotteryModel.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Lottery.Model.EzLotteryModel.FromModel(
                     item
                 ));
             });

@@ -126,7 +126,7 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
         public ulong Subscribe(Action<Gs2.Unity.Gs2MegaField.Model.EzLayerModel> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2MegaField.Model.EzLayerModel.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2MegaField.Model.EzLayerModel.FromModel(
                     item
                 ));
             });

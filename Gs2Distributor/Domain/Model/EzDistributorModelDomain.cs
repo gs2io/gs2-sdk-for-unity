@@ -125,7 +125,7 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
         public ulong Subscribe(Action<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2Distributor.Model.EzDistributorModel.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Distributor.Model.EzDistributorModel.FromModel(
                     item
                 ));
             });

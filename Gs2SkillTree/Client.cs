@@ -101,7 +101,8 @@ namespace Gs2.Unity.Gs2SkillTree
         public IEnumerator GetStatus(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2SkillTree.Result.EzGetStatusResult>> callback,
 		        GameSession session,
-                string namespaceName
+                string namespaceName,
+                string propertyId
         )
 		{
             yield return _connection.Run(
@@ -110,7 +111,8 @@ namespace Gs2.Unity.Gs2SkillTree
                 cb => _restClient.GetStatus(
                     new Gs2.Gs2SkillTree.Request.GetStatusRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithAccessToken(session.AccessToken.Token),
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithPropertyId(propertyId),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2SkillTree.Result.EzGetStatusResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2SkillTree.Result.EzGetStatusResult.FromModel(r.Result),
@@ -125,7 +127,8 @@ namespace Gs2.Unity.Gs2SkillTree
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2SkillTree.Result.EzReleaseResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                List<string> nodeModelNames
+                List<string> nodeModelNames,
+                string propertyId
         )
 		{
             yield return _connection.Run(
@@ -137,7 +140,8 @@ namespace Gs2.Unity.Gs2SkillTree
                         .WithAccessToken(session.AccessToken.Token)
                         .WithNodeModelNames(nodeModelNames?.Select(v => {
                             return v;
-                        }).ToArray()),
+                        }).ToArray())
+                        .WithPropertyId(propertyId),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2SkillTree.Result.EzReleaseResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2SkillTree.Result.EzReleaseResult.FromModel(r.Result),
@@ -151,7 +155,8 @@ namespace Gs2.Unity.Gs2SkillTree
         public IEnumerator Reset(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2SkillTree.Result.EzResetResult>> callback,
 		        GameSession session,
-                string namespaceName
+                string namespaceName,
+                string propertyId
         )
 		{
             yield return _connection.Run(
@@ -160,7 +165,8 @@ namespace Gs2.Unity.Gs2SkillTree
                 cb => _restClient.Reset(
                     new Gs2.Gs2SkillTree.Request.ResetRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithAccessToken(session.AccessToken.Token),
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithPropertyId(propertyId),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2SkillTree.Result.EzResetResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2SkillTree.Result.EzResetResult.FromModel(r.Result),
@@ -175,7 +181,8 @@ namespace Gs2.Unity.Gs2SkillTree
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2SkillTree.Result.EzRestrainResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                List<string> nodeModelNames
+                List<string> nodeModelNames,
+                string propertyId
         )
 		{
             yield return _connection.Run(
@@ -187,7 +194,8 @@ namespace Gs2.Unity.Gs2SkillTree
                         .WithAccessToken(session.AccessToken.Token)
                         .WithNodeModelNames(nodeModelNames?.Select(v => {
                             return v;
-                        }).ToArray()),
+                        }).ToArray())
+                        .WithPropertyId(propertyId),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2SkillTree.Result.EzRestrainResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2SkillTree.Result.EzRestrainResult.FromModel(r.Result),

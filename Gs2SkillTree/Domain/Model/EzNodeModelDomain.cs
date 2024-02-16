@@ -125,7 +125,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         public ulong Subscribe(Action<Gs2.Unity.Gs2SkillTree.Model.EzNodeModel> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2SkillTree.Model.EzNodeModel.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2SkillTree.Model.EzNodeModel.FromModel(
                     item
                 ));
             });

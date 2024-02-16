@@ -129,7 +129,7 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
         public ulong Subscribe(Action<Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterStatus> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterStatus.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Enchant.Model.EzBalanceParameterStatus.FromModel(
                     item
                 ));
             });

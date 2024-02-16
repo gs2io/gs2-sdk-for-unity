@@ -234,7 +234,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         public ulong Subscribe(Action<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2Matchmaking.Model.EzGathering.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Matchmaking.Model.EzGathering.FromModel(
                     item
                 ));
             });

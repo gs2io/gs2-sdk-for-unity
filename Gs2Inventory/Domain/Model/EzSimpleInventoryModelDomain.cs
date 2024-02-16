@@ -191,7 +191,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         public ulong Subscribe(Action<Gs2.Unity.Gs2Inventory.Model.EzSimpleInventoryModel> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2Inventory.Model.EzSimpleInventoryModel.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Inventory.Model.EzSimpleInventoryModel.FromModel(
                     item
                 ));
             });

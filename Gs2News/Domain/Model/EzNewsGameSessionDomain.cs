@@ -179,7 +179,7 @@ namespace Gs2.Unity.Gs2News.Domain.Model
         public ulong Subscribe(Action<Gs2.Unity.Gs2News.Model.EzNews> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2News.Model.EzNews.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2News.Model.EzNews.FromModel(
                     item
                 ));
             });

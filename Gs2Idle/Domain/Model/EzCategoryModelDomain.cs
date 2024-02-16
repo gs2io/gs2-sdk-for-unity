@@ -125,7 +125,7 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
         public ulong Subscribe(Action<Gs2.Unity.Gs2Idle.Model.EzCategoryModel> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2Idle.Model.EzCategoryModel.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Idle.Model.EzCategoryModel.FromModel(
                     item
                 ));
             });
