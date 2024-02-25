@@ -110,6 +110,7 @@ namespace Gs2.Unity.Core
         public Gs2Ranking.Domain.Gs2Ranking Ranking;
         public Gs2Realtime.Domain.Gs2Realtime Realtime;
         public Gs2Schedule.Domain.Gs2Schedule Schedule;
+        public Gs2SeasonRating.Domain.Gs2SeasonRating SeasonRating;
         public Gs2SerialKey.Domain.Gs2SerialKey SerialKey;
         public Gs2Showcase.Domain.Gs2Showcase Showcase;
         public Gs2SkillTree.Domain.Gs2SkillTree SkillTree;
@@ -180,6 +181,7 @@ namespace Gs2.Unity.Core
             Ranking = new Gs2Ranking.Domain.Gs2Ranking(_gs2.Ranking, connection);
             Realtime = new Gs2Realtime.Domain.Gs2Realtime(_gs2.Realtime, connection);
             Schedule = new Gs2Schedule.Domain.Gs2Schedule(_gs2.Schedule, connection);
+            SeasonRating = new Gs2SeasonRating.Domain.Gs2SeasonRating(_gs2.SeasonRating, connection);
             SerialKey = new Gs2SerialKey.Domain.Gs2SerialKey(_gs2.SerialKey, connection);
             Showcase = new Gs2Showcase.Domain.Gs2Showcase(_gs2.Showcase, connection);
             SkillTree = new Gs2SkillTree.Domain.Gs2SkillTree(_gs2.SkillTree, connection);
