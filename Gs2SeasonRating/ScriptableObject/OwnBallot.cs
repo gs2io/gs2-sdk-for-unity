@@ -30,8 +30,16 @@ namespace Gs2.Unity.Gs2SeasonRating.ScriptableObject
     public class OwnBallot : UnityEngine.ScriptableObject
     {
         public Namespace Namespace;
+        public string seasonName;
+        public string sessionName;
+        public int numberOfPlayer;
+        public string keyId;
 
         public string NamespaceName => this.Namespace.NamespaceName;
+        public string SeasonName => this.seasonName;
+        public string SessionName => this.sessionName;
+        public int NumberOfPlayer => this.numberOfPlayer;
+        public string KeyId => this.keyId;
 
 #if UNITY_INCLUDE_TESTS
         public static OwnBallot Load(
@@ -44,12 +52,20 @@ namespace Gs2.Unity.Gs2SeasonRating.ScriptableObject
         }
 #endif
         public static OwnBallot New(
-            Namespace @namespace
+            Namespace @namespace,
+            string seasonName,
+            string sessionName,
+            int numberOfPlayer,
+            string keyId
         )
         {
             var instance = CreateInstance<OwnBallot>();
             instance.name = "Runtime";
             instance.Namespace = @namespace;
+            instance.seasonName = seasonName;
+            instance.sessionName = sessionName;
+            instance.numberOfPlayer = numberOfPlayer;
+            instance.keyId = keyId;
             return instance;
         }
         public OwnBallot Clone()
@@ -57,6 +73,10 @@ namespace Gs2.Unity.Gs2SeasonRating.ScriptableObject
             var instance = CreateInstance<OwnBallot>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
+            instance.seasonName = seasonName;
+            instance.sessionName = sessionName;
+            instance.numberOfPlayer = numberOfPlayer;
+            instance.keyId = keyId;
             return instance;
         }
     }

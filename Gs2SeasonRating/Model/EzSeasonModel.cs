@@ -33,6 +33,8 @@ namespace Gs2.Unity.Gs2SeasonRating.Model
 	public class EzSeasonModel
 	{
 		[SerializeField]
+		public string SeasonModelId;
+		[SerializeField]
 		public string Name;
 		[SerializeField]
 		public string Metadata;
@@ -44,6 +46,7 @@ namespace Gs2.Unity.Gs2SeasonRating.Model
         public Gs2.Gs2SeasonRating.Model.SeasonModel ToModel()
         {
             return new Gs2.Gs2SeasonRating.Model.SeasonModel {
+                SeasonModelId = SeasonModelId,
                 Name = Name,
                 Metadata = Metadata,
                 Tiers = Tiers?.Select(v => {
@@ -56,6 +59,7 @@ namespace Gs2.Unity.Gs2SeasonRating.Model
         public static EzSeasonModel FromModel(Gs2.Gs2SeasonRating.Model.SeasonModel model)
         {
             return new EzSeasonModel {
+                SeasonModelId = model.SeasonModelId == null ? null : model.SeasonModelId,
                 Name = model.Name == null ? null : model.Name,
                 Metadata = model.Metadata == null ? null : model.Metadata,
                 Tiers = model.Tiers == null ? new List<Gs2.Unity.Gs2SeasonRating.Model.EzTierModel>() : model.Tiers.Select(v => {

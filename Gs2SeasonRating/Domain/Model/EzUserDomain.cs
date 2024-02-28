@@ -66,9 +66,17 @@ namespace Gs2.Unity.Gs2SeasonRating.Domain.Model
         }
 
         public Gs2.Unity.Gs2SeasonRating.Domain.Model.EzBallotDomain Ballot(
+            string seasonName,
+            string sessionName,
+            int numberOfPlayer,
+            string keyId
         ) {
             return new Gs2.Unity.Gs2SeasonRating.Domain.Model.EzBallotDomain(
                 _domain.Ballot(
+                    seasonName,
+                    sessionName,
+                    numberOfPlayer,
+                    keyId
                 ),
                 this._connection
             );

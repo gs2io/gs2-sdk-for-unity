@@ -35,6 +35,7 @@ namespace Gs2.Unity
         public readonly Gs2Ranking.Client Ranking;
         public readonly Gs2Realtime.Client Realtime;
         public readonly Gs2Schedule.Client Schedule;
+        public readonly Gs2SeasonRating.Client SeasonRating;
         public readonly Gs2SerialKey.Client SerialKey;
         public readonly Gs2Showcase.Client Showcase;
         public readonly Gs2SkillTree.Client SkillTree;
@@ -80,6 +81,7 @@ namespace Gs2.Unity
             Ranking = new Gs2Ranking.Client(connection);
             Realtime = new Gs2Realtime.Client(connection);
             Schedule = new Gs2Schedule.Client(connection);
+            SeasonRating = new Gs2SeasonRating.Client(connection);
             SerialKey = new Gs2SerialKey.Client(connection);
             Showcase = new Gs2Showcase.Client(connection);
             SkillTree = new Gs2SkillTree.Client(connection);

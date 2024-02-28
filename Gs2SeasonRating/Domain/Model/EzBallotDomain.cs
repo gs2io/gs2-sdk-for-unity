@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -54,10 +56,12 @@ namespace Gs2.Unity.Gs2SeasonRating.Domain.Model
     public partial class EzBallotDomain {
         private readonly Gs2.Gs2SeasonRating.Domain.Model.BallotDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string? Body => _domain.Body;
-        public string? Signature => _domain.Signature;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
+        public string SeasonName => _domain?.SeasonName;
+        public string SessionName => _domain?.SessionName;
+        public int? NumberOfPlayer => _domain?.NumberOfPlayer;
+        public string KeyId => _domain?.KeyId;
 
         public EzBallotDomain(
             Gs2.Gs2SeasonRating.Domain.Model.BallotDomain domain,
@@ -68,13 +72,13 @@ namespace Gs2.Unity.Gs2SeasonRating.Domain.Model
         }
 
         [Obsolete("The name has been changed to ModelFuture.")]
-        public IFuture<Gs2.Unity.Gs2SeasonRating.Model.EzBallot> Model()
+        public IFuture<Gs2.Unity.Gs2SeasonRating.Model.EzSignedBallot> Model()
         {
             return ModelFuture();
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2SeasonRating.Model.EzBallot> ModelAsync()
+        public async UniTask<Gs2.Unity.Gs2SeasonRating.Model.EzSignedBallot> ModelAsync()
         {
             var item = await this._connection.RunAsync(
                 null,
@@ -86,15 +90,15 @@ namespace Gs2.Unity.Gs2SeasonRating.Domain.Model
             if (item == null) {
                 return null;
             }
-            return Gs2.Unity.Gs2SeasonRating.Model.EzBallot.FromModel(
+            return Gs2.Unity.Gs2SeasonRating.Model.EzSignedBallot.FromModel(
                 item
             );
         }
         #endif
 
-        public IFuture<Gs2.Unity.Gs2SeasonRating.Model.EzBallot> ModelFuture()
+        public IFuture<Gs2.Unity.Gs2SeasonRating.Model.EzSignedBallot> ModelFuture()
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2SeasonRating.Model.EzBallot> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2SeasonRating.Model.EzSignedBallot> self)
             {
                 var future = this._connection.RunFuture(
                     null,
@@ -112,11 +116,11 @@ namespace Gs2.Unity.Gs2SeasonRating.Domain.Model
                     self.OnComplete(null);
                     yield break;
                 }
-                self.OnComplete(Gs2.Unity.Gs2SeasonRating.Model.EzBallot.FromModel(
+                self.OnComplete(Gs2.Unity.Gs2SeasonRating.Model.EzSignedBallot.FromModel(
                     item
                 ));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2SeasonRating.Model.EzBallot>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Gs2SeasonRating.Model.EzSignedBallot>(Impl);
         }
 
         public void Invalidate()
@@ -124,10 +128,10 @@ namespace Gs2.Unity.Gs2SeasonRating.Domain.Model
             this._domain.Invalidate();
         }
 
-        public ulong Subscribe(Action<Gs2.Unity.Gs2SeasonRating.Model.EzBallot> callback)
+        public ulong Subscribe(Action<Gs2.Unity.Gs2SeasonRating.Model.EzSignedBallot> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(item == null ? null : Gs2.Unity.Gs2SeasonRating.Model.EzBallot.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2SeasonRating.Model.EzSignedBallot.FromModel(
                     item
                 ));
             });
@@ -139,7 +143,7 @@ namespace Gs2.Unity.Gs2SeasonRating.Domain.Model
         }
 
         #if UNITY_2017_1_OR_NEWER
-        public Gs2Future<ulong> SubscribeWithInitialCallFuture(Action<Gs2.Unity.Gs2SeasonRating.Model.EzBallot> callback)
+        public Gs2Future<ulong> SubscribeWithInitialCallFuture(Action<Gs2.Unity.Gs2SeasonRating.Model.EzSignedBallot> callback)
         {
             IEnumerator Impl(IFuture<ulong> self)
             {
@@ -160,9 +164,9 @@ namespace Gs2.Unity.Gs2SeasonRating.Domain.Model
 
         #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
             #if UNITY_2017_1_OR_NEWER
-        public async UniTask<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2SeasonRating.Model.EzBallot> callback)
+        public async UniTask<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2SeasonRating.Model.EzSignedBallot> callback)
             #else
-        public async Task<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2SeasonRating.Model.EzBallot> callback)
+        public async Task<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2SeasonRating.Model.EzSignedBallot> callback)
             #endif
         {
             var item = await ModelAsync();

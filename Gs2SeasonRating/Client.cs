@@ -103,7 +103,9 @@ namespace Gs2.Unity.Gs2SeasonRating
 		        GameSession session,
                 string namespaceName,
                 string seasonName,
-                string sessionName
+                string sessionName,
+                int numberOfPlayer,
+                string keyId = null
         )
 		{
             yield return _connection.Run(
@@ -114,7 +116,9 @@ namespace Gs2.Unity.Gs2SeasonRating
                         .WithNamespaceName(namespaceName)
                         .WithSeasonName(seasonName)
                         .WithSessionName(sessionName)
-                        .WithAccessToken(session.AccessToken.Token),
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithNumberOfPlayer(numberOfPlayer)
+                        .WithKeyId(keyId),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2SeasonRating.Result.EzCreateVoteResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2SeasonRating.Result.EzCreateVoteResult.FromModel(r.Result),

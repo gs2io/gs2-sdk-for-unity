@@ -29,6 +29,7 @@ namespace Gs2.Editor.ResourceTree.Gs2SeasonRating.Editor
             EditorGUILayout.TextField("Name", item.Name);
             EditorGUILayout.TextField("Metadata", item.Metadata);
             EditorGUILayout.TextField("ExperienceModelId", item.ExperienceModelId);
+            EditorGUILayout.TextField("ChallengePeriodEventId", item.ChallengePeriodEventId);
             EditorGUI.EndDisabledGroup();
         }
     }
