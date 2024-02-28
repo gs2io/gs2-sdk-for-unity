@@ -35,6 +35,9 @@ namespace Gs2.Editor.ResourceTree.Gs2Matchmaking.Editor
             EditorGUILayout.TextField("CompleteMatchmakingTriggerType", item.CompleteMatchmakingTriggerType);
             EditorGUILayout.TextField("CompleteMatchmakingTriggerRealtimeNamespaceId", item.CompleteMatchmakingTriggerRealtimeNamespaceId);
             EditorGUILayout.TextField("CompleteMatchmakingTriggerScriptId", item.CompleteMatchmakingTriggerScriptId);
+            EditorGUILayout.TextField("EnableCollaborateSeasonRating", item.EnableCollaborateSeasonRating);
+            EditorGUILayout.TextField("CollaborateSeasonRatingNamespaceId", item.CollaborateSeasonRatingNamespaceId);
+            EditorGUILayout.TextField("CollaborateSeasonRatingTtl", item.CollaborateSeasonRatingTtl?.ToString());
             if (item.ChangeRatingScript == null) {
                 EditorGUILayout.TextField("ChangeRatingScript", "");
             }

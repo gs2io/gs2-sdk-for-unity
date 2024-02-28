@@ -300,7 +300,9 @@ namespace Gs2.Unity.Gs2Matchmaking
 		        GameSession session,
                 string namespaceName,
                 string ratingName,
-                string gatheringName
+                string gatheringName,
+                int numberOfPlayer,
+                string keyId = null
         )
 		{
             yield return _connection.Run(
@@ -311,7 +313,9 @@ namespace Gs2.Unity.Gs2Matchmaking
                         .WithNamespaceName(namespaceName)
                         .WithRatingName(ratingName)
                         .WithGatheringName(gatheringName)
-                        .WithAccessToken(session.AccessToken.Token),
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithNumberOfPlayer(numberOfPlayer)
+                        .WithKeyId(keyId),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzCreateVoteResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Matchmaking.Result.EzCreateVoteResult.FromModel(r.Result),
