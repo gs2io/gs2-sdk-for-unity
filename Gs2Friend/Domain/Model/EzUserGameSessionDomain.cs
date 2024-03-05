@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -301,6 +303,43 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             );
         }
 
+        public Gs2Iterator<string> BlackListUsers(
+        ) {
+            return new Gs2.Unity.Gs2Friend.Domain.Iterator.EzBlackListUsersIterator(
+                this._domain,
+                this._gameSession,
+                this._connection
+            );
+        }
+        
+        #if GS2_ENABLE_UNITASK
+        public IUniTaskAsyncEnumerable<string> BlackListUsersAsync(
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<string>(async (writer, token) =>
+            {
+                var it = _domain.BlackListUsersAsync(
+                ).GetAsyncEnumerator();
+                while(
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.BlackListUsersAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    await writer.YieldAsync(it.Current == null ? null : it.Current);
+                }
+            });
+        }
+        #endif
+        
         public Gs2.Unity.Gs2Friend.Domain.Model.EzProfileGameSessionDomain Profile(
         ) {
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzProfileGameSessionDomain(
