@@ -61,7 +61,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Iterator
             _connection = connection;
             _status = status;
             _it = _domain.DataObjects(
-                this._status
+                status
             );
         }
 

@@ -69,7 +69,7 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2StateMachine.Model.EzStatus> Statuses(
-              string? status = null
+            string? status = null
         )
         {
             return new Gs2.Unity.Gs2StateMachine.Domain.Iterator.EzListStatusesIterator(

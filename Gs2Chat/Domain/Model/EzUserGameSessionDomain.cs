@@ -200,7 +200,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
 
         public Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain Room(
             string roomName,
-            string password
+            string? password = null
         ) {
             return new Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain(
                 _domain.Room(

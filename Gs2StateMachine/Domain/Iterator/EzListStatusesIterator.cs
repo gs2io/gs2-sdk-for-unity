@@ -61,7 +61,7 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Iterator
             _connection = connection;
             _status = status;
             _it = _domain.Statuses(
-                this._status
+                status
             );
         }
 

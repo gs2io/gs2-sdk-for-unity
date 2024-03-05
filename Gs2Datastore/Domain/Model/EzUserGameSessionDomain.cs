@@ -208,7 +208,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         #endif
 
         public Gs2Iterator<Gs2.Unity.Gs2Datastore.Model.EzDataObject> DataObjects(
-              string? status = null
+            string? status = null
         )
         {
             return new Gs2.Unity.Gs2Datastore.Domain.Iterator.EzListMyDataObjectsIterator(

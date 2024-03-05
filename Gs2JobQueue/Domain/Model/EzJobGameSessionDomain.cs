@@ -143,7 +143,7 @@ namespace Gs2.Unity.Gs2JobQueue.Domain.Model
         public ulong Subscribe(Action<Gs2.Unity.Gs2JobQueue.Model.EzJob> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2JobQueue.Model.EzJob.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2JobQueue.Model.EzJob.FromModel(
                     item
                 ));
             });
