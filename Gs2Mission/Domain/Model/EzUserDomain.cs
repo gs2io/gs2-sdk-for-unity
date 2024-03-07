@@ -54,6 +54,7 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Mission.Domain.Model.UserDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
+        public Gs2.Unity.Gs2Mission.Model.EzComplete[] ChangedCompletes => _domain.ChangedCompletes.Select(Gs2.Unity.Gs2Mission.Model.EzComplete.FromModel).ToArray();
         public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
@@ -66,23 +67,23 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             this._connection = connection;
         }
 
-        public Gs2.Unity.Gs2Mission.Domain.Model.EzCounterDomain Counter(
-            string counterName
-        ) {
-            return new Gs2.Unity.Gs2Mission.Domain.Model.EzCounterDomain(
-                _domain.Counter(
-                    counterName
-                ),
-                this._connection
-            );
-        }
-
         public Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteDomain Complete(
             string missionGroupName
         ) {
             return new Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteDomain(
                 _domain.Complete(
                     missionGroupName
+                ),
+                this._connection
+            );
+        }
+
+        public Gs2.Unity.Gs2Mission.Domain.Model.EzCounterDomain Counter(
+            string counterName
+        ) {
+            return new Gs2.Unity.Gs2Mission.Domain.Model.EzCounterDomain(
+                _domain.Counter(
+                    counterName
                 ),
                 this._connection
             );

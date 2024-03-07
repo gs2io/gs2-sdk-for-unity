@@ -54,6 +54,7 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         private readonly Gs2.Gs2Mission.Domain.Model.UserAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
+        public Gs2.Unity.Gs2Mission.Model.EzComplete[] ChangedCompletes => _domain.ChangedCompletes.Select(Gs2.Unity.Gs2Mission.Model.EzComplete.FromModel).ToArray();
         public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
@@ -180,24 +181,24 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             );
         }
 
-        public Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain Counter(
-            string counterName
-        ) {
-            return new Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain(
-                _domain.Counter(
-                    counterName
-                ),
-                this._gameSession,
-                this._connection
-            );
-        }
-
         public Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain Complete(
             string missionGroupName
         ) {
             return new Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain(
                 _domain.Complete(
                     missionGroupName
+                ),
+                this._gameSession,
+                this._connection
+            );
+        }
+
+        public Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain Counter(
+            string counterName
+        ) {
+            return new Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain(
+                _domain.Counter(
+                    counterName
                 ),
                 this._gameSession,
                 this._connection
