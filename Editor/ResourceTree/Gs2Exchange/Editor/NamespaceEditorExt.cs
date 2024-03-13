@@ -48,6 +48,15 @@ namespace Gs2.Editor.ResourceTree.Gs2Exchange.Editor
                 ScriptSettingEditorExt.OnGUI(item.ExchangeScript);
                 EditorGUI.indentLevel--;
             }
+            if (item.IncrementalExchangeScript == null) {
+                EditorGUILayout.TextField("IncrementalExchangeScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("IncrementalExchangeScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.IncrementalExchangeScript);
+                EditorGUI.indentLevel--;
+            }
             if (item.LogSetting == null) {
                 EditorGUILayout.TextField("LogSetting", "");
             }
