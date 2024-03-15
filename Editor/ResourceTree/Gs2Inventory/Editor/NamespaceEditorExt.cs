@@ -73,6 +73,24 @@ namespace Gs2.Editor.ResourceTree.Gs2Inventory.Editor
                 ScriptSettingEditorExt.OnGUI(item.SimpleItemConsumeScript);
                 EditorGUI.indentLevel--;
             }
+            if (item.BigItemAcquireScript == null) {
+                EditorGUILayout.TextField("BigItemAcquireScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("BigItemAcquireScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.BigItemAcquireScript);
+                EditorGUI.indentLevel--;
+            }
+            if (item.BigItemConsumeScript == null) {
+                EditorGUILayout.TextField("BigItemConsumeScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("BigItemConsumeScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.BigItemConsumeScript);
+                EditorGUI.indentLevel--;
+            }
             if (item.LogSetting == null) {
                 EditorGUILayout.TextField("LogSetting", "");
             }
