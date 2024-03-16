@@ -42,6 +42,8 @@ namespace Gs2.Unity.Gs2Quest.Model
 		public long RandomSeed;
 		[SerializeField]
 		public List<Gs2.Unity.Gs2Quest.Model.EzReward> Rewards;
+		[SerializeField]
+		public List<Gs2.Unity.Gs2Quest.Model.EzReward> FailedRewards;
 
         public Gs2.Gs2Quest.Model.Progress ToModel()
         {
@@ -51,6 +53,9 @@ namespace Gs2.Unity.Gs2Quest.Model
                 QuestModelId = QuestModelId,
                 RandomSeed = RandomSeed,
                 Rewards = Rewards?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
+                FailedRewards = FailedRewards?.Select(v => {
                     return v.ToModel();
                 }).ToArray(),
             };
@@ -64,6 +69,9 @@ namespace Gs2.Unity.Gs2Quest.Model
                 QuestModelId = model.QuestModelId == null ? null : model.QuestModelId,
                 RandomSeed = model.RandomSeed ?? 0,
                 Rewards = model.Rewards == null ? new List<Gs2.Unity.Gs2Quest.Model.EzReward>() : model.Rewards.Select(v => {
+                    return Gs2.Unity.Gs2Quest.Model.EzReward.FromModel(v);
+                }).ToList(),
+                FailedRewards = model.FailedRewards == null ? new List<Gs2.Unity.Gs2Quest.Model.EzReward>() : model.FailedRewards.Select(v => {
                     return Gs2.Unity.Gs2Quest.Model.EzReward.FromModel(v);
                 }).ToList(),
             };
