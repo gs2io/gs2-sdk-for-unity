@@ -39,9 +39,13 @@ namespace Gs2.Unity.Gs2Exchange.Model
 		[SerializeField]
 		public string Name;
 		[SerializeField]
+		public int SkipSeconds;
+		[SerializeField]
 		public List<Gs2.Unity.Gs2Exchange.Model.EzConfig> Config;
 		[SerializeField]
 		public long ExchangedAt;
+		[SerializeField]
+		public long AcquirableAt;
 
         public Gs2.Gs2Exchange.Model.Await ToModel()
         {
@@ -49,10 +53,12 @@ namespace Gs2.Unity.Gs2Exchange.Model
                 UserId = UserId,
                 RateName = RateName,
                 Name = Name,
+                SkipSeconds = SkipSeconds,
                 Config = Config?.Select(v => {
                     return v.ToModel();
                 }).ToArray(),
                 ExchangedAt = ExchangedAt,
+                AcquirableAt = AcquirableAt,
             };
         }
 
@@ -62,10 +68,12 @@ namespace Gs2.Unity.Gs2Exchange.Model
                 UserId = model.UserId == null ? null : model.UserId,
                 RateName = model.RateName == null ? null : model.RateName,
                 Name = model.Name == null ? null : model.Name,
+                SkipSeconds = model.SkipSeconds ?? 0,
                 Config = model.Config == null ? new List<Gs2.Unity.Gs2Exchange.Model.EzConfig>() : model.Config.Select(v => {
                     return Gs2.Unity.Gs2Exchange.Model.EzConfig.FromModel(v);
                 }).ToList(),
                 ExchangedAt = model.ExchangedAt ?? 0,
+                AcquirableAt = model.AcquirableAt ?? 0,
             };
         }
     }

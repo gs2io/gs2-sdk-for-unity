@@ -30,7 +30,6 @@ namespace Gs2.Editor.ResourceTree.Gs2Exchange.Editor
             EditorGUILayout.TextField("Metadata", item.Metadata);
             EditorGUILayout.TextField("TimingType", item.TimingType);
             EditorGUILayout.TextField("LockTime", item.LockTime?.ToString());
-            EditorGUILayout.TextField("EnableSkip", item.EnableSkip?.ToString());
             EditorGUI.EndDisabledGroup();
         }
     }

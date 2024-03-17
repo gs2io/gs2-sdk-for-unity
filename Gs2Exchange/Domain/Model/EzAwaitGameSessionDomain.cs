@@ -54,7 +54,6 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         private readonly Gs2.Gs2Exchange.Domain.Model.AwaitAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public long? UnlockAt => _domain.UnlockAt;
         public string? TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NamespaceName => _domain?.NamespaceName;
@@ -112,54 +111,6 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                 this._gameSession,
                 () => this._domain.AcquireAsync(
                     new AcquireRequest(),
-                    speculativeExecute
-                )
-            );
-            return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
-        }
-        #endif
-
-        [Obsolete("The name has been changed to SkipFuture.")]
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Skip(
-            bool speculativeExecute = true
-        )
-        {
-            return SkipFuture(
-                speculativeExecute
-            );
-        }
-
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> SkipFuture(
-            bool speculativeExecute = true
-        )
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
-            {
-                var future = this._connection.RunFuture(
-                    this._gameSession,
-                    () => this._domain.SkipFuture(
-                        new SkipRequest(),
-                        speculativeExecute
-                    )
-                );
-                yield return future;
-                if (future.Error != null) {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                self.OnComplete(future.Result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(future.Result));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> SkipAsync(
-            bool speculativeExecute = true
-        ) {
-            var result = await this._connection.RunAsync(
-                this._gameSession,
-                () => this._domain.SkipAsync(
-                    new SkipRequest(),
                     speculativeExecute
                 )
             );

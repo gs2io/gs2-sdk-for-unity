@@ -156,31 +156,6 @@ namespace Gs2.Unity.Gs2Exchange
             );
 		}
 
-        public IEnumerator Skip(
-		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzSkipResult>> callback,
-		        GameSession session,
-                string namespaceName,
-                string awaitName = null
-        )
-		{
-            yield return _connection.Run(
-                callback,
-		        session,
-                cb => _restClient.Skip(
-                    new Gs2.Gs2Exchange.Request.SkipRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithAccessToken(session.AccessToken.Token)
-                        .WithAwaitName(awaitName),
-                    r => cb.Invoke(
-                        new AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzSkipResult>(
-                            r.Result == null ? null : Gs2.Unity.Gs2Exchange.Result.EzSkipResult.FromModel(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
         public IEnumerator GetRateModel(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzGetRateModelResult>> callback,
                 string namespaceName,
