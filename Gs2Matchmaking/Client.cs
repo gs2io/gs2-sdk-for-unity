@@ -147,6 +147,31 @@ namespace Gs2.Unity.Gs2Matchmaking
             );
 		}
 
+        public IEnumerator EarlyCompleteMatchmaking(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzEarlyCompleteMatchmakingResult>> callback,
+		        GameSession session,
+                string namespaceName,
+                string gatheringName = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.EarlyComplete(
+                    new Gs2.Gs2Matchmaking.Request.EarlyCompleteRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithGatheringName(gatheringName)
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzEarlyCompleteMatchmakingResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Matchmaking.Result.EzEarlyCompleteMatchmakingResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator GetGathering(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzGetGatheringResult>> callback,
                 string namespaceName,
