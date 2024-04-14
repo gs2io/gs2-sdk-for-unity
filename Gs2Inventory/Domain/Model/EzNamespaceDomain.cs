@@ -246,7 +246,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         }
 
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzUserDomain User(
-            string userId
+            string userId = null
         ) {
             return new Gs2.Unity.Gs2Inventory.Domain.Model.EzUserDomain(
                 _domain.User(

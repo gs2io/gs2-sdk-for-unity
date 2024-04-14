@@ -68,21 +68,21 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             this._connection = connection;
         }
 
-        public Gs2.Unity.Gs2Quest.Domain.Model.EzProgressDomain Progress(
-        ) {
-            return new Gs2.Unity.Gs2Quest.Domain.Model.EzProgressDomain(
-                _domain.Progress(
-                ),
-                this._connection
-            );
-        }
-
         public Gs2.Unity.Gs2Quest.Domain.Model.EzCompletedQuestListDomain CompletedQuestList(
             string questGroupName
         ) {
             return new Gs2.Unity.Gs2Quest.Domain.Model.EzCompletedQuestListDomain(
                 _domain.CompletedQuestList(
                     questGroupName
+                ),
+                this._connection
+            );
+        }
+
+        public Gs2.Unity.Gs2Quest.Domain.Model.EzProgressDomain Progress(
+        ) {
+            return new Gs2.Unity.Gs2Quest.Domain.Model.EzProgressDomain(
+                _domain.Progress(
                 ),
                 this._connection
             );

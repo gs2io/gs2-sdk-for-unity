@@ -78,7 +78,7 @@ namespace Gs2.Editor.ResourceTree.Gs2SerialKey
             if (GUILayout.Button("Create Reference Object")) {
                 var directory = "Assets/Gs2/Resources/SerialKey";
                 directory += "/Namespace" + "/" + NamespaceName;
-                directory += "/CampaignModelMaster" + "/" + CampaignModelName;
+                directory += "/CampaignModel" + "/" + CampaignModelName;
                 directory += "/IssueJob" + "/" + IssueJobName;
 
                 CreateFolder(directory);

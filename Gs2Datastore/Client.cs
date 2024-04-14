@@ -326,7 +326,7 @@ namespace Gs2.Unity.Gs2Datastore
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzListDataObjectHistoriesResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string dataObjectName,
+                string dataObjectName = null,
                 string pageToken = null,
                 int? limit = null
         )

@@ -67,11 +67,11 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
             this._connection = connection;
         }
 
-        public Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomShowcaseGameSessionDomain RandomShowcase(
+        public Gs2.Unity.Gs2Showcase.Domain.Model.EzShowcaseGameSessionDomain Showcase(
             string showcaseName
         ) {
-            return new Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomShowcaseGameSessionDomain(
-                _domain.RandomShowcase(
+            return new Gs2.Unity.Gs2Showcase.Domain.Model.EzShowcaseGameSessionDomain(
+                _domain.Showcase(
                     showcaseName
                 ),
                 this._gameSession,
@@ -79,11 +79,11 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
             );
         }
 
-        public Gs2.Unity.Gs2Showcase.Domain.Model.EzShowcaseGameSessionDomain Showcase(
+        public Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomShowcaseGameSessionDomain RandomShowcase(
             string showcaseName
         ) {
-            return new Gs2.Unity.Gs2Showcase.Domain.Model.EzShowcaseGameSessionDomain(
-                _domain.Showcase(
+            return new Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomShowcaseGameSessionDomain(
+                _domain.RandomShowcase(
                     showcaseName
                 ),
                 this._gameSession,

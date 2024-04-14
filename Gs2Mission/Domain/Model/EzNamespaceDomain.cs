@@ -190,17 +190,6 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             );
         }
 
-        public Gs2.Unity.Gs2Mission.Domain.Model.EzCounterModelDomain CounterModel(
-            string counterName
-        ) {
-            return new Gs2.Unity.Gs2Mission.Domain.Model.EzCounterModelDomain(
-                _domain.CounterModel(
-                    counterName
-                ),
-                this._connection
-            );
-        }
-
         public Gs2.Unity.Gs2Mission.Domain.Model.EzUserDomain User(
             string userId
         ) {
@@ -220,6 +209,17 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                     gameSession.AccessToken
                 ),
                 gameSession,
+                this._connection
+            );
+        }
+
+        public Gs2.Unity.Gs2Mission.Domain.Model.EzCounterModelDomain CounterModel(
+            string counterName
+        ) {
+            return new Gs2.Unity.Gs2Mission.Domain.Model.EzCounterModelDomain(
+                _domain.CounterModel(
+                    counterName
+                ),
                 this._connection
             );
         }

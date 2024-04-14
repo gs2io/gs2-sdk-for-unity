@@ -325,8 +325,8 @@ namespace Gs2.Unity.Gs2Matchmaking
 		        GameSession session,
                 string namespaceName,
                 string ratingName,
-                string gatheringName,
                 int numberOfPlayer,
+                string gatheringName = null,
                 string keyId = null
         )
 		{

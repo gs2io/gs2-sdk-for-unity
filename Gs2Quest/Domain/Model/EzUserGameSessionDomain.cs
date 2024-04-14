@@ -198,22 +198,22 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             );
         }
 
-        public Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain Progress(
-        ) {
-            return new Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain(
-                _domain.Progress(
-                ),
-                this._gameSession,
-                this._connection
-            );
-        }
-
         public Gs2.Unity.Gs2Quest.Domain.Model.EzCompletedQuestListGameSessionDomain CompletedQuestList(
             string questGroupName
         ) {
             return new Gs2.Unity.Gs2Quest.Domain.Model.EzCompletedQuestListGameSessionDomain(
                 _domain.CompletedQuestList(
                     questGroupName
+                ),
+                this._gameSession,
+                this._connection
+            );
+        }
+
+        public Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain Progress(
+        ) {
+            return new Gs2.Unity.Gs2Quest.Domain.Model.EzProgressGameSessionDomain(
+                _domain.Progress(
                 ),
                 this._gameSession,
                 this._connection

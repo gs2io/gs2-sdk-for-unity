@@ -103,8 +103,8 @@ namespace Gs2.Unity.Gs2SeasonRating
 		        GameSession session,
                 string namespaceName,
                 string seasonName,
-                string sessionName,
                 int numberOfPlayer,
+                string sessionName = null,
                 string keyId = null
         )
 		{
