@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -28,59 +26,54 @@
 #pragma warning disable 1998
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
-using Gs2.Gs2Friend.Domain.Iterator;
-using Gs2.Gs2Friend.Request;
-using Gs2.Gs2Friend.Result;
+using Gs2.Core.Util;
+using Gs2.Gs2Buff.Domain.Iterator;
+using Gs2.Gs2Buff.Model;
+using Gs2.Gs2Buff.Domain.Model;
+using Gs2.Gs2Buff.Request;
+using Gs2.Gs2Buff.Result;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
-using Gs2.Core.Util;
-using UnityEngine.Scripting;
 using System.Collections;
+using UnityEngine.Events;
+using UnityEngine.Scripting;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
-using System.Collections.Generic;
 #endif
 
-namespace Gs2.Unity.Gs2Friend.Domain.Model
+namespace Gs2.Unity.Gs2Buff.Domain
 {
 
-    public partial class EzFriendGameSessionDomain {
-        private readonly Gs2.Gs2Friend.Domain.Model.FriendAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+    public partial class Gs2Buff {
+        private readonly Gs2.Gs2Buff.Domain.Gs2Buff _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string NamespaceName => _domain?.NamespaceName;
-        public string UserId => _domain?.UserId;
-        public bool? WithProfile => _domain?.WithProfile;
 
-        public EzFriendGameSessionDomain(
-            Gs2.Gs2Friend.Domain.Model.FriendAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+        public Gs2Buff(
+            Gs2.Gs2Buff.Domain.Gs2Buff domain,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._gameSession = gameSession;
             this._connection = connection;
         }
 
-        public Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserGameSessionDomain FriendUser(
-            string targetUserId
+        public Gs2.Unity.Gs2Buff.Domain.Model.EzNamespaceDomain Namespace(
+            string namespaceName
         ) {
-            return new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserGameSessionDomain(
-                _domain.FriendUser(
-                    targetUserId
+            return new Gs2.Unity.Gs2Buff.Domain.Model.EzNamespaceDomain(
+                _domain.Namespace(
+                    namespaceName
                 ),
-                this._gameSession,
                 this._connection
             );
         }
-
     }
 }

@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -26,15 +24,16 @@
 // ReSharper disable NotAccessedField.Local
 
 #pragma warning disable 1998
+#pragma warning disable CS0169, CS0168
 
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
-using Gs2.Gs2Friend.Domain.Iterator;
-using Gs2.Gs2Friend.Request;
-using Gs2.Gs2Friend.Result;
+using Gs2.Gs2Buff.Domain.Iterator;
+using Gs2.Gs2Buff.Request;
+using Gs2.Gs2Buff.Result;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using Gs2.Core;
@@ -49,89 +48,34 @@ using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
 #endif
 
-namespace Gs2.Unity.Gs2Friend.Domain.Model
+namespace Gs2.Unity.Gs2Buff.Domain.Model
 {
 
-    public partial class EzFriendUserGameSessionDomain {
-        private readonly Gs2.Gs2Friend.Domain.Model.FriendUserAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+    public partial class EzBuffEntryModelDomain {
+        private readonly Gs2.Gs2Buff.Domain.Model.BuffEntryModelDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
-        public string UserId => _domain?.UserId;
-        public bool? WithProfile => _domain?.WithProfile;
-        public string TargetUserId => _domain?.TargetUserId;
+        public string BuffEntryName => _domain?.BuffEntryName;
 
-        public EzFriendUserGameSessionDomain(
-            Gs2.Gs2Friend.Domain.Model.FriendUserAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+        public EzBuffEntryModelDomain(
+            Gs2.Gs2Buff.Domain.Model.BuffEntryModelDomain domain,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
-            this._gameSession = gameSession;
             this._connection = connection;
         }
 
-        [Obsolete("The name has been changed to DeleteFriendFuture.")]
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserGameSessionDomain> DeleteFriend(
-        )
-        {
-            return DeleteFriendFuture(
-            );
-        }
-
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserGameSessionDomain> DeleteFriendFuture(
-        )
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserGameSessionDomain> self)
-            {
-                var future = this._connection.RunFuture(
-                    this._gameSession,
-                    () => this._domain.DeleteFuture(
-                        new DeleteFriendRequest()
-                    )
-                );
-                yield return future;
-                if (future.Error != null) {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserGameSessionDomain(
-                    future.Result,
-                    this._gameSession,
-                    this._connection
-                ));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserGameSessionDomain>(Impl);
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserGameSessionDomain> DeleteFriendAsync(
-        ) {
-            var result = await this._connection.RunAsync(
-                this._gameSession,
-                () => this._domain.DeleteAsync(
-                    new DeleteFriendRequest()
-                )
-            );
-            return new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserGameSessionDomain(
-                result,
-                this._gameSession,
-                this._connection
-            );
-        }
-        #endif
-
         [Obsolete("The name has been changed to ModelFuture.")]
-        public IFuture<Gs2.Unity.Gs2Friend.Model.EzFriendUser> Model()
+        public IFuture<Gs2.Unity.Gs2Buff.Model.EzBuffEntryModel> Model()
         {
             return ModelFuture();
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Friend.Model.EzFriendUser> ModelAsync()
+        public async UniTask<Gs2.Unity.Gs2Buff.Model.EzBuffEntryModel> ModelAsync()
         {
             var item = await this._connection.RunAsync(
-                this._gameSession,
+                null,
                 async () =>
                 {
                     return await _domain.ModelAsync();
@@ -140,18 +84,18 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             if (item == null) {
                 return null;
             }
-            return Gs2.Unity.Gs2Friend.Model.EzFriendUser.FromModel(
+            return Gs2.Unity.Gs2Buff.Model.EzBuffEntryModel.FromModel(
                 item
             );
         }
         #endif
 
-        public IFuture<Gs2.Unity.Gs2Friend.Model.EzFriendUser> ModelFuture()
+        public IFuture<Gs2.Unity.Gs2Buff.Model.EzBuffEntryModel> ModelFuture()
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzFriendUser> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Buff.Model.EzBuffEntryModel> self)
             {
                 var future = this._connection.RunFuture(
-                    this._gameSession,
+                    null,
                     () => {
                     	return _domain.ModelFuture();
                     }
@@ -166,11 +110,11 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                     self.OnComplete(null);
                     yield break;
                 }
-                self.OnComplete(Gs2.Unity.Gs2Friend.Model.EzFriendUser.FromModel(
+                self.OnComplete(Gs2.Unity.Gs2Buff.Model.EzBuffEntryModel.FromModel(
                     item
                 ));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Model.EzFriendUser>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Buff.Model.EzBuffEntryModel>(Impl);
         }
 
         public void Invalidate()
@@ -178,10 +122,10 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             this._domain.Invalidate();
         }
 
-        public ulong Subscribe(Action<Gs2.Unity.Gs2Friend.Model.EzFriendUser> callback)
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Buff.Model.EzBuffEntryModel> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Friend.Model.EzFriendUser.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Buff.Model.EzBuffEntryModel.FromModel(
                     item
                 ));
             });
@@ -193,7 +137,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
 
         #if UNITY_2017_1_OR_NEWER
-        public Gs2Future<ulong> SubscribeWithInitialCallFuture(Action<Gs2.Unity.Gs2Friend.Model.EzFriendUser> callback)
+        public Gs2Future<ulong> SubscribeWithInitialCallFuture(Action<Gs2.Unity.Gs2Buff.Model.EzBuffEntryModel> callback)
         {
             IEnumerator Impl(IFuture<ulong> self)
             {
@@ -214,9 +158,9 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
 
         #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
             #if UNITY_2017_1_OR_NEWER
-        public async UniTask<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Friend.Model.EzFriendUser> callback)
+        public async UniTask<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Buff.Model.EzBuffEntryModel> callback)
             #else
-        public async Task<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Friend.Model.EzFriendUser> callback)
+        public async Task<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Buff.Model.EzBuffEntryModel> callback)
             #endif
         {
             var item = await ModelAsync();

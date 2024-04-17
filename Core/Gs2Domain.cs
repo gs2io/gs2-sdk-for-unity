@@ -82,6 +82,7 @@ namespace Gs2.Unity.Core
         
         public Gs2Account.Domain.Gs2Account Account;
         public Gs2AdReward.Domain.Gs2AdReward AdReward;
+        public Gs2Buff.Domain.Gs2Buff Buff;
         public Gs2Chat.Domain.Gs2Chat Chat;
         public Gs2Datastore.Domain.Gs2Datastore Datastore;
         public Gs2Dictionary.Domain.Gs2Dictionary Dictionary;
@@ -138,7 +139,22 @@ namespace Gs2.Unity.Core
         ) {
             
         }
-        
+
+        public Gs2Domain(
+            Gs2.Core.Domain.Gs2 gs2
+        ): this(
+            new Gs2Connection(
+                gs2.RestSession.Credential,
+                gs2.RestSession.Region
+            ) {
+                RestSession = gs2.RestSession,
+                WebSocketSession = gs2.WebSocketSession
+            },
+            gs2.DistributorNamespaceName
+        ) {
+            this._gs2 = gs2;
+        }
+
         internal Gs2Domain(
             Gs2Connection connection,
             string distributorNamespaceName = null
@@ -153,6 +169,7 @@ namespace Gs2.Unity.Core
             
             Account = new Gs2Account.Domain.Gs2Account(_gs2.Account, connection);
             AdReward = new Gs2AdReward.Domain.Gs2AdReward(_gs2.AdReward, connection);
+            Buff = new Gs2Buff.Domain.Gs2Buff(_gs2.Buff, connection);
             Chat = new Gs2Chat.Domain.Gs2Chat(_gs2.Chat, connection);
             Datastore = new Gs2Datastore.Domain.Gs2Datastore(_gs2.Datastore, connection);
             Dictionary = new Gs2Dictionary.Domain.Gs2Dictionary(_gs2.Dictionary, connection);

@@ -69,56 +69,6 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             this._connection = connection;
         }
 
-        [Obsolete("The name has been changed to FollowFuture.")]
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> Follow(
-        )
-        {
-            return FollowFuture(
-            );
-        }
-
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> FollowFuture(
-        )
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> self)
-            {
-                var future = this._connection.RunFuture(
-                    this._gameSession,
-                    () => this._domain.FollowFuture(
-                        new FollowRequest()
-                    )
-                );
-                yield return future;
-                if (future.Error != null) {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain(
-                    future.Result,
-                    this._gameSession,
-                    this._connection
-                ));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain>(Impl);
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> FollowAsync(
-        ) {
-            var result = await this._connection.RunAsync(
-                this._gameSession,
-                () => this._domain.FollowAsync(
-                    new FollowRequest()
-                )
-            );
-            return new Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain(
-                result,
-                this._gameSession,
-                this._connection
-            );
-        }
-        #endif
-
         [Obsolete("The name has been changed to UnfollowFuture.")]
         public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> Unfollow(
         )

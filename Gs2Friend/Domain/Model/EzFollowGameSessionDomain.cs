@@ -69,6 +69,62 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             this._connection = connection;
         }
 
+        [Obsolete("The name has been changed to FollowFuture.")]
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> Follow(
+            string targetUserId
+        )
+        {
+            return FollowFuture(
+                targetUserId
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> FollowFuture(
+            string targetUserId
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.FollowFuture(
+                        new FollowRequest()
+                            .WithTargetUserId(targetUserId)
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain> FollowAsync(
+            string targetUserId
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.FollowAsync(
+                    new FollowRequest()
+                        .WithTargetUserId(targetUserId)
+                )
+            );
+            return new Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
         public Gs2Iterator<Gs2.Unity.Gs2Friend.Model.EzFollowUser> Follows(
         )
         {

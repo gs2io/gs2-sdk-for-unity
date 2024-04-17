@@ -32,9 +32,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
-using Gs2.Gs2Friend.Domain.Iterator;
-using Gs2.Gs2Friend.Request;
-using Gs2.Gs2Friend.Result;
+using Gs2.Gs2Buff.Domain.Iterator;
+using Gs2.Gs2Buff.Request;
+using Gs2.Gs2Buff.Result;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using Gs2.Core;
@@ -42,6 +42,7 @@ using Gs2.Core.Domain;
 using Gs2.Core.Util;
 using UnityEngine.Scripting;
 using System.Collections;
+using Gs2.Unity.Core;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
@@ -49,19 +50,18 @@ using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
 #endif
 
-namespace Gs2.Unity.Gs2Friend.Domain.Model
+namespace Gs2.Unity.Gs2Buff.Domain.Model
 {
 
-    public partial class EzFriendGameSessionDomain {
-        private readonly Gs2.Gs2Friend.Domain.Model.FriendAccessTokenDomain _domain;
+    public partial class EzBuffGameSessionDomain {
+        private readonly Gs2.Gs2Buff.Domain.Model.BuffAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.GameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
-        public bool? WithProfile => _domain?.WithProfile;
 
-        public EzFriendGameSessionDomain(
-            Gs2.Gs2Friend.Domain.Model.FriendAccessTokenDomain domain,
+        public EzBuffGameSessionDomain(
+            Gs2.Gs2Buff.Domain.Model.BuffAccessTokenDomain domain,
             Gs2.Unity.Util.GameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
@@ -70,17 +70,49 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             this._connection = connection;
         }
 
-        public Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserGameSessionDomain FriendUser(
-            string targetUserId
-        ) {
-            return new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendUserGameSessionDomain(
-                _domain.FriendUser(
-                    targetUserId
-                ),
-                this._gameSession,
-                this._connection
+        [Obsolete("The name has been changed to ApplyBuffFuture.")]
+        public IFuture<Gs2.Unity.Core.Gs2Domain> ApplyBuff(
+        )
+        {
+            return ApplyBuffFuture(
             );
         }
+
+        public IFuture<Gs2.Unity.Core.Gs2Domain> ApplyBuffFuture(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Gs2Domain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.ApplyFuture(
+                        new ApplyBuffRequest()
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2Domain(
+                    future.Result
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Core.Gs2Domain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Core.Gs2Domain> ApplyBuffAsync(
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.ApplyAsync(
+                    new ApplyBuffRequest()
+                )
+            );
+            return new Gs2Domain(result);
+        }
+        #endif
 
     }
 }
