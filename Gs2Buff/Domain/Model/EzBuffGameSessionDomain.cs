@@ -59,6 +59,7 @@ namespace Gs2.Unity.Gs2Buff.Domain.Model
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
+        public Gs2.Unity.Gs2Buff.Model.EzBuffEntryModel[] BuffEntryModels => _domain?.BuffEntryModels?.Select(Gs2.Unity.Gs2Buff.Model.EzBuffEntryModel.FromModel).ToArray();
 
         public EzBuffGameSessionDomain(
             Gs2.Gs2Buff.Domain.Model.BuffAccessTokenDomain domain,

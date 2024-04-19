@@ -140,33 +140,9 @@ namespace Gs2.Unity.Core
             
         }
 
-        public Gs2Domain(
-            Gs2.Core.Domain.Gs2 gs2
-        ): this(
-            new Gs2Connection(
-                gs2.RestSession.Credential,
-                gs2.RestSession.Region
-            ) {
-                RestSession = gs2.RestSession,
-                WebSocketSession = gs2.WebSocketSession
-            },
-            gs2.DistributorNamespaceName
+        private void Initialize(
+            Gs2Connection connection
         ) {
-            this._gs2 = gs2;
-        }
-
-        internal Gs2Domain(
-            Gs2Connection connection,
-            string distributorNamespaceName = null
-        ) {
-            Connection = connection;
-            
-            _gs2 = new Gs2.Core.Domain.Gs2(
-                connection.RestSession,
-                connection.WebSocketSession,
-                distributorNamespaceName
-            );
-            
             Account = new Gs2Account.Domain.Gs2Account(_gs2.Account, connection);
             AdReward = new Gs2AdReward.Domain.Gs2AdReward(_gs2.AdReward, connection);
             Buff = new Gs2Buff.Domain.Gs2Buff(_gs2.Buff, connection);
@@ -205,6 +181,37 @@ namespace Gs2.Unity.Core
             Stamina = new Gs2Stamina.Domain.Gs2Stamina(_gs2.Stamina, connection);
             StateMachine = new Gs2StateMachine.Domain.Gs2StateMachine(_gs2.StateMachine, connection);
             Version = new Gs2Version.Domain.Gs2Version(_gs2.Version, connection);
+        }
+
+        public Gs2Domain(
+            Gs2.Core.Domain.Gs2 gs2
+        ): this(
+            new Gs2Connection(
+                gs2.RestSession.Credential,
+                gs2.RestSession.Region
+            ) {
+                RestSession = gs2.RestSession,
+                WebSocketSession = gs2.WebSocketSession
+            },
+            gs2.DistributorNamespaceName
+        ) {
+            this._gs2 = gs2;
+            Initialize(Connection);
+        }
+
+        internal Gs2Domain(
+            Gs2Connection connection,
+            string distributorNamespaceName = null
+        ) {
+            Connection = connection;
+            
+            _gs2 = new Gs2.Core.Domain.Gs2(
+                connection.RestSession,
+                connection.WebSocketSession,
+                distributorNamespaceName
+            );
+            
+            Initialize(connection);
         }
 
         public void ClearCache()
