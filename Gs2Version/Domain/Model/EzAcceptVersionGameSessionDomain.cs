@@ -70,13 +70,16 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
 
         [Obsolete("The name has been changed to AcceptFuture.")]
         public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> Accept(
+            Gs2.Unity.Gs2Version.Model.EzVersion version = null
         )
         {
             return AcceptFuture(
+                version
             );
         }
 
         public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> AcceptFuture(
+            Gs2.Unity.Gs2Version.Model.EzVersion version = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> self)
@@ -85,6 +88,7 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
                     this._gameSession,
                     () => this._domain.AcceptFuture(
                         new AcceptRequest()
+                            .WithVersion(version?.ToModel())
                     )
                 );
                 yield return future;
@@ -103,11 +107,13 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> AcceptAsync(
+            Gs2.Unity.Gs2Version.Model.EzVersion version = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.AcceptAsync(
                     new AcceptRequest()
+                        .WithVersion(version?.ToModel())
                 )
             );
             return new Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain(

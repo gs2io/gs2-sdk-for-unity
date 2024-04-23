@@ -102,7 +102,8 @@ namespace Gs2.Unity.Gs2Version
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Version.Result.EzAcceptResult>> callback,
 		        GameSession session,
                 string namespaceName,
-                string versionName
+                string versionName,
+                Gs2.Unity.Gs2Version.Model.EzVersion version = null
         )
 		{
             yield return _connection.Run(
@@ -112,7 +113,8 @@ namespace Gs2.Unity.Gs2Version
                     new Gs2.Gs2Version.Request.AcceptRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
-                        .WithVersionName(versionName),
+                        .WithVersionName(versionName)
+                        .WithVersion(version?.ToModel()),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Version.Result.EzAcceptResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Version.Result.EzAcceptResult.FromModel(r.Result),
