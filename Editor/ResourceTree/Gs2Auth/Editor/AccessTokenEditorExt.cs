@@ -27,6 +27,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Auth.Editor
             EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.TextField("Token", item.Token);
             EditorGUILayout.TextField("UserId", item.UserId);
+            EditorGUILayout.TextField("FederationFromUserId", item.FederationFromUserId);
             EditorGUILayout.TextField("Expire", UnixTime.FromUnixTime(item.Expire ?? 0).ToString(CultureInfo.CurrentUICulture));
             EditorGUILayout.TextField("TimeOffset", item.TimeOffset?.ToString());
             EditorGUI.EndDisabledGroup();
