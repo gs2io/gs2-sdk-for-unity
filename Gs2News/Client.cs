@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2News
 
         public IEnumerator GetContentsUrl(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2News.Result.EzGetContentsUrlResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName
         )
 		{
@@ -79,7 +79,7 @@ namespace Gs2.Unity.Gs2News
 
         public IEnumerator ListNewses(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2News.Result.EzListNewsesResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName
         )
 		{

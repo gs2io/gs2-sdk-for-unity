@@ -100,7 +100,7 @@ namespace Gs2.Unity.Gs2Dictionary
 
         public IEnumerator GetEntry(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzGetEntryResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string entryModelName
         )
@@ -125,7 +125,7 @@ namespace Gs2.Unity.Gs2Dictionary
 
         public IEnumerator GetEntryWithSignature(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzGetEntryWithSignatureResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string entryModelName,
                 string keyId = null
@@ -152,7 +152,7 @@ namespace Gs2.Unity.Gs2Dictionary
 
         public IEnumerator ListEntries(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzListEntriesResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 int? limit = null,
                 string pageToken = null

@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2Exchange
 
         public IEnumerator Acquire(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzAcquireResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string awaitName = null
         )
@@ -81,7 +81,7 @@ namespace Gs2.Unity.Gs2Exchange
 
         public IEnumerator DeleteAwait(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzDeleteAwaitResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string awaitName = null
         )
@@ -106,7 +106,7 @@ namespace Gs2.Unity.Gs2Exchange
 
         public IEnumerator GetAwait(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzGetAwaitResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string awaitName = null
         )
@@ -131,7 +131,7 @@ namespace Gs2.Unity.Gs2Exchange
 
         public IEnumerator ListAwaits(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzListAwaitsResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string rateName = null,
                 string pageToken = null
@@ -246,7 +246,7 @@ namespace Gs2.Unity.Gs2Exchange
 
         public IEnumerator Exchange(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzExchangeResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string rateName,
                 int count,
@@ -277,7 +277,7 @@ namespace Gs2.Unity.Gs2Exchange
 
         public IEnumerator IncrementalExchange(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Exchange.Result.EzIncrementalExchangeResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string rateName,
                 int count,

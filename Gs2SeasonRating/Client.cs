@@ -100,7 +100,7 @@ namespace Gs2.Unity.Gs2SeasonRating
 
         public IEnumerator CreateVote(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2SeasonRating.Result.EzCreateVoteResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string seasonName,
                 int numberOfPlayer,

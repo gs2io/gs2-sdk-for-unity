@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
 
     public partial class EzEntryGameSessionDomain {
         private readonly Gs2.Gs2Dictionary.Domain.Model.EntryAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string? Body => _domain.Body;
         public string? Signature => _domain.Signature;
@@ -64,7 +64,7 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
 
         public EzEntryGameSessionDomain(
             Gs2.Gs2Dictionary.Domain.Model.EntryAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;

@@ -52,7 +52,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
 
     public partial class EzFormGameSessionDomain {
         private readonly Gs2.Gs2Formation.Domain.Model.FormAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string? Body => _domain.Body;
         public string? Signature => _domain.Signature;
@@ -65,7 +65,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
 
         public EzFormGameSessionDomain(
             Gs2.Gs2Formation.Domain.Model.FormAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;

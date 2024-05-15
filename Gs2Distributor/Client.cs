@@ -252,7 +252,7 @@ namespace Gs2.Unity.Gs2Distributor
 
         public IEnumerator GetStampSheetResult(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzGetStampSheetResultResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string transactionId
         )

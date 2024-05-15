@@ -100,7 +100,7 @@ namespace Gs2.Unity.Gs2Buff
 
         public IEnumerator ApplyBuff(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Buff.Result.EzApplyBuffResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName
         )
 		{

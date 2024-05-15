@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2Inbox
 
         public IEnumerator Delete(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzDeleteResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string messageName = null
         )
@@ -81,7 +81,7 @@ namespace Gs2.Unity.Gs2Inbox
 
         public IEnumerator Get(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzGetResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string messageName = null
         )
@@ -106,7 +106,7 @@ namespace Gs2.Unity.Gs2Inbox
 
         public IEnumerator List(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzListResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 bool? isRead = null,
                 string pageToken = null,
@@ -135,7 +135,7 @@ namespace Gs2.Unity.Gs2Inbox
 
         public IEnumerator Read(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzReadResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string messageName = null
         )
@@ -160,7 +160,7 @@ namespace Gs2.Unity.Gs2Inbox
 
         public IEnumerator ReceiveGlobalMessage(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzReceiveGlobalMessageResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName
         )
 		{

@@ -52,7 +52,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
 
     public partial class EzMessageGameSessionDomain {
         private readonly Gs2.Gs2Inbox.Domain.Model.MessageAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string? TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
@@ -62,7 +62,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
 
         public EzMessageGameSessionDomain(
             Gs2.Gs2Inbox.Domain.Model.MessageAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;

@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2Friend
 
         public IEnumerator GetProfile(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzGetProfileResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName
         )
 		{
@@ -102,7 +102,7 @@ namespace Gs2.Unity.Gs2Friend
 
         public IEnumerator UpdateProfile(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzUpdateProfileResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string publicProfile = null,
                 string followerProfile = null,
@@ -131,7 +131,7 @@ namespace Gs2.Unity.Gs2Friend
 
         public IEnumerator DescribeFollowUsers(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzDescribeFollowUsersResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 bool? withProfile = null,
                 int? limit = null,
@@ -160,7 +160,7 @@ namespace Gs2.Unity.Gs2Friend
 
         public IEnumerator Follow(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzFollowResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string targetUserId
         )
@@ -185,7 +185,7 @@ namespace Gs2.Unity.Gs2Friend
 
         public IEnumerator GetFollowUser(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzGetFollowUserResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string targetUserId,
                 bool? withProfile = null
@@ -212,7 +212,7 @@ namespace Gs2.Unity.Gs2Friend
 
         public IEnumerator Unfollow(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzUnfollowResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string targetUserId
         )
@@ -237,7 +237,7 @@ namespace Gs2.Unity.Gs2Friend
 
         public IEnumerator DeleteFriend(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzDeleteFriendResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string targetUserId
         )
@@ -262,7 +262,7 @@ namespace Gs2.Unity.Gs2Friend
 
         public IEnumerator DescribeFriends(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzDescribeFriendsResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 bool? withProfile = null,
                 int? limit = null,
@@ -291,7 +291,7 @@ namespace Gs2.Unity.Gs2Friend
 
         public IEnumerator GetFriend(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzGetFriendResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string targetUserId,
                 bool? withProfile = null
@@ -318,7 +318,7 @@ namespace Gs2.Unity.Gs2Friend
 
         public IEnumerator DeleteRequest(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzDeleteRequestResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string targetUserId
         )
@@ -343,7 +343,7 @@ namespace Gs2.Unity.Gs2Friend
 
         public IEnumerator DescribeSendRequests(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzDescribeSendRequestsResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName
         )
 		{
@@ -366,7 +366,7 @@ namespace Gs2.Unity.Gs2Friend
 
         public IEnumerator GetSendRequest(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzGetSendRequestResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string targetUserId
         )
@@ -391,7 +391,7 @@ namespace Gs2.Unity.Gs2Friend
 
         public IEnumerator SendRequest(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzSendRequestResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string targetUserId
         )
@@ -416,7 +416,7 @@ namespace Gs2.Unity.Gs2Friend
 
         public IEnumerator Accept(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzAcceptResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string fromUserId
         )
@@ -441,7 +441,7 @@ namespace Gs2.Unity.Gs2Friend
 
         public IEnumerator DescribeReceiveRequests(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzDescribeReceiveRequestsResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName
         )
 		{
@@ -464,7 +464,7 @@ namespace Gs2.Unity.Gs2Friend
 
         public IEnumerator GetReceiveRequest(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzGetReceiveRequestResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string fromUserId
         )
@@ -489,7 +489,7 @@ namespace Gs2.Unity.Gs2Friend
 
         public IEnumerator Reject(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzRejectResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string fromUserId
         )
@@ -514,7 +514,7 @@ namespace Gs2.Unity.Gs2Friend
 
         public IEnumerator GetBlackList(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzGetBlackListResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName
         )
 		{
@@ -537,7 +537,7 @@ namespace Gs2.Unity.Gs2Friend
 
         public IEnumerator RegisterBlackList(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzRegisterBlackListResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string targetUserId
         )
@@ -562,7 +562,7 @@ namespace Gs2.Unity.Gs2Friend
 
         public IEnumerator UnregisterBlackList(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzUnregisterBlackListResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string targetUserId
         )

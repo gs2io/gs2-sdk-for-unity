@@ -100,7 +100,7 @@ namespace Gs2.Unity.Gs2Stamina
 
         public IEnumerator Consume(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Stamina.Result.EzConsumeResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string staminaName,
                 int consumeValue
@@ -127,7 +127,7 @@ namespace Gs2.Unity.Gs2Stamina
 
         public IEnumerator GetStamina(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Stamina.Result.EzGetStaminaResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string staminaName
         )
@@ -152,7 +152,7 @@ namespace Gs2.Unity.Gs2Stamina
 
         public IEnumerator ListStaminas(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Stamina.Result.EzListStaminasResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string pageToken = null,
                 int? limit = null
@@ -179,7 +179,7 @@ namespace Gs2.Unity.Gs2Stamina
 
         public IEnumerator SetMaxValue(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Stamina.Result.EzSetMaxValueResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string staminaName,
                 string signedStatusBody,
@@ -210,7 +210,7 @@ namespace Gs2.Unity.Gs2Stamina
 
         public IEnumerator SetRecoverInterval(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Stamina.Result.EzSetRecoverIntervalResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string staminaName,
                 string signedStatusBody,
@@ -241,7 +241,7 @@ namespace Gs2.Unity.Gs2Stamina
 
         public IEnumerator SetRecoverValue(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Stamina.Result.EzSetRecoverValueResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string staminaName,
                 string signedStatusBody,

@@ -14,7 +14,7 @@ namespace Gs2.Unity.Util
     [AddComponentMenu("GS2/Core/Gs2GameSessionHolder")]
     public class Gs2GameSessionHolder : MonoBehaviour
     {
-        public GameSession GameSession { get; private set; }
+        public IGameSession GameSession { get; private set; }
 
         public UnityEvent OnLogin = new UnityEvent();
         public bool Initialized => GameSession != null && GameSession.AccessToken != null;
@@ -99,7 +99,7 @@ namespace Gs2.Unity.Util
             }
         }
 
-        public void UpdateGameSession(GameSession gameSession)
+        public void UpdateGameSession(IGameSession gameSession)
         {
             GameSession = gameSession;
             this.OnLogin.Invoke();

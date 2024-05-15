@@ -52,7 +52,7 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
 
     public partial class EzCounterGameSessionDomain {
         private readonly Gs2.Gs2Mission.Domain.Model.CounterAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public Gs2.Unity.Gs2Mission.Model.EzComplete[] ChangedCompletes => _domain.ChangedCompletes.Select(Gs2.Unity.Gs2Mission.Model.EzComplete.FromModel).ToArray();
         public string NamespaceName => _domain?.NamespaceName;
@@ -61,7 +61,7 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
 
         public EzCounterGameSessionDomain(
             Gs2.Gs2Mission.Domain.Model.CounterAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;

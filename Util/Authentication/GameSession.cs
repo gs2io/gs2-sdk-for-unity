@@ -14,31 +14,23 @@
  * permissions and limitations under the License.
  */
 
-using System;
 using System.Collections;
-using Gs2.Core;
 using Gs2.Core.Domain;
-using Gs2.Core.Exception;
-using Gs2.Core.Net;
-using Gs2.Core.Result;
 using Gs2.Gs2Auth.Model;
-using UnityEngine.Events;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 #endif
 
 namespace Gs2.Unity.Util
 {
-    public class GameSession
+    public class GameSession : IGameSession
     {
         private readonly IAuthenticator _authenticator;
         private readonly Gs2Connection _connection;
         private readonly string _userId;
         private readonly string _password;
-        
-        public AccessToken AccessToken;
-        
+        public AccessToken AccessToken { get; set; }
+
         public string UserId => this.AccessToken.UserId;
         
         public GameSession(

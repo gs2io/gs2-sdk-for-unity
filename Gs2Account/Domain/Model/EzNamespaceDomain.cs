@@ -197,7 +197,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
 
         public EzAccountGameSessionDomain Me(
-            Gs2.Unity.Util.GameSession gameSession
+            Gs2.Unity.Util.IGameSession gameSession
         ) {
             return new EzAccountGameSessionDomain(
                 _domain.AccessToken(

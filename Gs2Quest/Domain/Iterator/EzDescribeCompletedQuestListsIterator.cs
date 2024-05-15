@@ -45,12 +45,12 @@ namespace Gs2.Unity.Gs2Quest.Domain.Iterator
     {
         private Gs2Iterator<Gs2.Gs2Quest.Model.CompletedQuestList> _it;
         private readonly Gs2.Gs2Quest.Domain.Model.UserAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
         public EzDescribeCompletedQuestListsIterator(
             Gs2.Gs2Quest.Domain.Model.UserAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         )
         {

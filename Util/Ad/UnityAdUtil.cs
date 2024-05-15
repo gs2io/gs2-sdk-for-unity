@@ -82,7 +82,7 @@ namespace Gs2.Unity.Util
         public static IEnumerator View(
             UnityAction<AsyncResult<object>> callback,
             string placement,
-            GameSession session
+            IGameSession session
         ) {
             var future = ViewFuture(
                 placement, 
@@ -97,7 +97,7 @@ namespace Gs2.Unity.Util
         
         public static Gs2Future<object> ViewFuture(
             string placement,
-            GameSession session
+            IGameSession session
         )
         {
             IEnumerator Impl(Gs2Future<object> result) {
@@ -166,7 +166,7 @@ namespace Gs2.Unity.Util
         
         public static async UniTask ViewAsync(
             string placement,
-            GameSession session
+            IGameSession session
         ) {
             var future = ViewFuture(
                 placement, 

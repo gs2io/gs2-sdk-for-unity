@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2Schedule
 
         public IEnumerator GetTrigger(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Schedule.Result.EzGetTriggerResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string triggerName
         )
@@ -81,7 +81,7 @@ namespace Gs2.Unity.Gs2Schedule
 
         public IEnumerator ListTriggers(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Schedule.Result.EzListTriggersResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName
         )
 		{
@@ -104,7 +104,7 @@ namespace Gs2.Unity.Gs2Schedule
 
         public IEnumerator GetEvent(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Schedule.Result.EzGetEventResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string eventName
         )
@@ -129,7 +129,7 @@ namespace Gs2.Unity.Gs2Schedule
 
         public IEnumerator ListEvents(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Schedule.Result.EzListEventsResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName
         )
 		{

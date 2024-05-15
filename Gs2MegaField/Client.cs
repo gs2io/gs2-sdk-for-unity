@@ -148,7 +148,7 @@ namespace Gs2.Unity.Gs2MegaField
 
         public IEnumerator Update(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2MegaField.Result.EzUpdateResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string areaModelName,
                 string layerModelName,

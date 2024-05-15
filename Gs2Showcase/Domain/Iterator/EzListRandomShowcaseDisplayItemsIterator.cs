@@ -45,12 +45,12 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Iterator
     {
         private Gs2Iterator<Gs2.Gs2Showcase.Model.RandomDisplayItem> _it;
         private readonly Gs2.Gs2Showcase.Domain.Model.RandomShowcaseAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
         public EzListRandomShowcaseDisplayItemsIterator(
             Gs2.Gs2Showcase.Domain.Model.RandomShowcaseAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         )
         {

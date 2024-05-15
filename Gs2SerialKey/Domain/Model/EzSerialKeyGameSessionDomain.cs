@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
 
     public partial class EzSerialKeyGameSessionDomain {
         private readonly Gs2.Gs2SerialKey.Domain.Model.SerialKeyAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string Url => _domain.Url;
         public string NamespaceName => _domain?.NamespaceName;
@@ -63,7 +63,7 @@ namespace Gs2.Unity.Gs2SerialKey.Domain.Model
 
         public EzSerialKeyGameSessionDomain(
             Gs2.Gs2SerialKey.Domain.Model.SerialKeyAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;

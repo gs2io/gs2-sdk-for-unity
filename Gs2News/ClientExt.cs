@@ -46,7 +46,7 @@ namespace Gs2.Unity.Gs2News
         /// <param name="namespaceName">ネームスペースの名前</param>
         public IEnumerator DownloadZip(
             UnityAction<AsyncResult<byte[]>> callback,
-            GameSession session,
+            IGameSession session,
             string namespaceName
         )
         {

@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2Quest
 
         public IEnumerator DeleteProgress(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Quest.Result.EzDeleteProgressResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName
         )
 		{
@@ -79,7 +79,7 @@ namespace Gs2.Unity.Gs2Quest
 
         public IEnumerator End(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Quest.Result.EzEndResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 bool isComplete,
                 List<Gs2.Unity.Gs2Quest.Model.EzReward> rewards = null,
@@ -112,7 +112,7 @@ namespace Gs2.Unity.Gs2Quest
 
         public IEnumerator GetProgress(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Quest.Result.EzGetProgressResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName
         )
 		{
@@ -135,7 +135,7 @@ namespace Gs2.Unity.Gs2Quest
 
         public IEnumerator Start(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Quest.Result.EzStartResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string questGroupName,
                 string questName,
@@ -168,7 +168,7 @@ namespace Gs2.Unity.Gs2Quest
 
         public IEnumerator DescribeCompletedQuestLists(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Quest.Result.EzDescribeCompletedQuestListsResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string pageToken = null,
                 int? limit = null
@@ -195,7 +195,7 @@ namespace Gs2.Unity.Gs2Quest
 
         public IEnumerator GetCompletedQuestList(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Quest.Result.EzGetCompletedQuestListResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string questGroupName
         )

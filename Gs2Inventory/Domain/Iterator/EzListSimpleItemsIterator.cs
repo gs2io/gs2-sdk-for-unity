@@ -45,12 +45,12 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Iterator
     {
         private Gs2Iterator<Gs2.Gs2Inventory.Model.SimpleItem> _it;
         private readonly Gs2.Gs2Inventory.Domain.Model.SimpleInventoryAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
         public EzListSimpleItemsIterator(
             Gs2.Gs2Inventory.Domain.Model.SimpleInventoryAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         )
         {

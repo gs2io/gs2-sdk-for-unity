@@ -100,7 +100,7 @@ namespace Gs2.Unity.Gs2Version
 
         public IEnumerator Accept(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Version.Result.EzAcceptResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string versionName,
                 Gs2.Unity.Gs2Version.Model.EzVersion version = null
@@ -127,7 +127,7 @@ namespace Gs2.Unity.Gs2Version
 
         public IEnumerator Delete(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Version.Result.EzDeleteResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string versionName
         )
@@ -152,7 +152,7 @@ namespace Gs2.Unity.Gs2Version
 
         public IEnumerator List(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Version.Result.EzListResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string pageToken = null,
                 int? limit = null
@@ -179,7 +179,7 @@ namespace Gs2.Unity.Gs2Version
 
         public IEnumerator CheckVersion(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Version.Result.EzCheckVersionResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 List<Gs2.Unity.Gs2Version.Model.EzTargetVersion> targetVersions = null
         )

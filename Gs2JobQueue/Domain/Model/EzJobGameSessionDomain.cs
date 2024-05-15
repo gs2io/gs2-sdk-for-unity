@@ -52,7 +52,7 @@ namespace Gs2.Unity.Gs2JobQueue.Domain.Model
 
     public partial class EzJobGameSessionDomain {
         private readonly Gs2.Gs2JobQueue.Domain.Model.JobAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public bool? AutoRun => _domain.AutoRun;
         public bool? IsLastJob => _domain.IsLastJob;
@@ -63,7 +63,7 @@ namespace Gs2.Unity.Gs2JobQueue.Domain.Model
 
         public EzJobGameSessionDomain(
             Gs2.Gs2JobQueue.Domain.Model.JobAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;

@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2Limit
 
         public IEnumerator CountUp(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Limit.Result.EzCountUpResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string limitName,
                 string counterName,
@@ -87,7 +87,7 @@ namespace Gs2.Unity.Gs2Limit
 
         public IEnumerator GetCounter(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Limit.Result.EzGetCounterResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string limitName,
                 string counterName
@@ -114,7 +114,7 @@ namespace Gs2.Unity.Gs2Limit
 
         public IEnumerator ListCounters(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Limit.Result.EzListCountersResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string limitName = null,
                 string pageToken = null,

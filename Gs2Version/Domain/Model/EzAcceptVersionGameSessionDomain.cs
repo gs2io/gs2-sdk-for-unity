@@ -52,7 +52,7 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
 
     public partial class EzAcceptVersionGameSessionDomain {
         private readonly Gs2.Gs2Version.Domain.Model.AcceptVersionAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
@@ -60,7 +60,7 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
 
         public EzAcceptVersionGameSessionDomain(
             Gs2.Gs2Version.Domain.Model.AcceptVersionAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;

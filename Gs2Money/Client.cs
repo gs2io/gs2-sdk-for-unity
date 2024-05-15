@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2Money
 
         public IEnumerator Get(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Money.Result.EzGetResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 int slot
         )
@@ -81,7 +81,7 @@ namespace Gs2.Unity.Gs2Money
 
         public IEnumerator Withdraw(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Money.Result.EzWithdrawResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 int slot,
                 int count,

@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2LoginReward
 
         public IEnumerator MissedReceive(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2LoginReward.Result.EzMissedReceiveResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string bonusModelName,
                 int stepNumber,
@@ -87,7 +87,7 @@ namespace Gs2.Unity.Gs2LoginReward
 
         public IEnumerator Receive(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2LoginReward.Result.EzReceiveResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string bonusModelName,
                 List<Gs2.Unity.Gs2LoginReward.Model.EzConfig> config = null
@@ -160,7 +160,7 @@ namespace Gs2.Unity.Gs2LoginReward
 
         public IEnumerator GetReceiveStatus(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2LoginReward.Result.EzGetReceiveStatusResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string bonusModelName
         )
@@ -185,7 +185,7 @@ namespace Gs2.Unity.Gs2LoginReward
 
         public IEnumerator ListReceiveStatuss(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2LoginReward.Result.EzListReceiveStatussResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName
         )
 		{

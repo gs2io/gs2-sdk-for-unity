@@ -95,6 +95,7 @@ namespace Gs2.Unity.Core
         public Gs2Friend.Domain.Gs2Friend Friend;
         public Gs2Gateway.Domain.Gs2Gateway Gateway;
         public Gs2Grade.Domain.Gs2Grade Grade;
+        public Gs2Guild.Domain.Gs2Guild Guild;
         public Gs2Idle.Domain.Gs2Idle Idle;
         public Gs2Inbox.Domain.Gs2Inbox Inbox;
         public Gs2Inventory.Domain.Gs2Inventory Inventory;
@@ -158,6 +159,7 @@ namespace Gs2.Unity.Core
             Friend = new Gs2Friend.Domain.Gs2Friend(_gs2.Friend, connection);
             Gateway = new Gs2Gateway.Domain.Gs2Gateway(_gs2.Gateway, connection);
             Grade = new Gs2Grade.Domain.Gs2Grade(_gs2.Grade, connection);
+            Guild = new Gs2Guild.Domain.Gs2Guild(_gs2.Guild, connection);
             Idle = new Gs2Idle.Domain.Gs2Idle(_gs2.Idle, connection);
             Inbox = new Gs2Inbox.Domain.Gs2Inbox(_gs2.Inbox, connection);
             Inventory = new Gs2Inventory.Domain.Gs2Inventory(_gs2.Inventory, connection);
@@ -272,7 +274,7 @@ namespace Gs2.Unity.Core
 #endif
 
         public Gs2Future<bool> DispatchFuture(
-            GameSession gameSession
+            IGameSession gameSession
         )
         {
             return this._gs2.DispatchFuture(
@@ -282,7 +284,7 @@ namespace Gs2.Unity.Core
 
 #if GS2_ENABLE_UNITASK
         public async UniTask DispatchAsync(
-            GameSession gameSession
+            IGameSession gameSession
         )
         {
             await this._gs2.DispatchAsync(
@@ -292,7 +294,7 @@ namespace Gs2.Unity.Core
 #endif
         [Obsolete("The name has been changed to DispatchFuture.")]
         public IFuture<bool> Dispatch(
-            GameSession gameSession
+            IGameSession gameSession
         )
         {
             return DispatchFuture(gameSession);

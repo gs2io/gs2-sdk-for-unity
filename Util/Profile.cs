@@ -136,7 +136,7 @@ namespace Gs2.Unity.Util
         }
 
 #if GS2_ENABLE_UNITASK
-        public async UniTask<GameSession> LoginAsync(
+        public async UniTask<IGameSession> LoginAsync(
             IAuthenticator authenticator
         )
         {
@@ -152,11 +152,11 @@ namespace Gs2.Unity.Util
 #endif
 
         [Obsolete("The method of initializing the SDK has changed; use Gs2Client.Create().")]
-        public Gs2Future<GameSession> LoginFuture(
+        public Gs2Future<IGameSession> LoginFuture(
             IAuthenticator authenticator
         )
         {
-            IEnumerator Impl(Gs2Future<GameSession> self) {
+            IEnumerator Impl(Gs2Future<IGameSession> self) {
                 var gameSession = new GameSession(
                     authenticator,
                     this._connection,
@@ -172,19 +172,19 @@ namespace Gs2.Unity.Util
                 }
                 self.OnComplete(gameSession);
             }
-            return new Gs2InlineFuture<GameSession>(Impl);
+            return new Gs2InlineFuture<IGameSession>(Impl);
         }
 
         [Obsolete("The method of initializing the SDK has changed; use Gs2Client.Create().")]
         public IEnumerator Login(
             IAuthenticator authenticator,
-            UnityAction<AsyncResult<GameSession>> callback
+            UnityAction<AsyncResult<IGameSession>> callback
         ) {
             var future = LoginFuture(
                 authenticator
             );
             yield return future;
-            callback.Invoke(new AsyncResult<GameSession>(
+            callback.Invoke(new AsyncResult<IGameSession>(
                 future.Result,
                 future.Error
             ));

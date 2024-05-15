@@ -100,7 +100,7 @@ namespace Gs2.Unity.Gs2Ranking
 
         public IEnumerator ListSubscribes(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzListSubscribesResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string categoryName
         )
@@ -125,7 +125,7 @@ namespace Gs2.Unity.Gs2Ranking
 
         public IEnumerator Subscribe(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzSubscribeResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string categoryName,
                 string targetUserId
@@ -152,7 +152,7 @@ namespace Gs2.Unity.Gs2Ranking
 
         public IEnumerator Unsubscribe(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzUnsubscribeResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string categoryName,
                 string targetUserId
@@ -206,7 +206,7 @@ namespace Gs2.Unity.Gs2Ranking
 
         public IEnumerator GetRank(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzGetRankResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string categoryName,
                 string scorerUserId,
@@ -237,7 +237,7 @@ namespace Gs2.Unity.Gs2Ranking
 
         public IEnumerator GetRanking(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzGetRankingResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string categoryName,
                 string additionalScopeName = null,
@@ -270,7 +270,7 @@ namespace Gs2.Unity.Gs2Ranking
 
         public IEnumerator PutScore(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzPutScoreResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string categoryName,
                 long score,
@@ -299,7 +299,7 @@ namespace Gs2.Unity.Gs2Ranking
 
         public IEnumerator GetScore(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzGetScoreResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string categoryName,
                 string scorerUserId,
@@ -328,7 +328,7 @@ namespace Gs2.Unity.Gs2Ranking
 
         public IEnumerator ListScores(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking.Result.EzListScoresResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string categoryName,
                 string scorerUserId,

@@ -33,7 +33,7 @@ namespace Gs2.Unity.Core.Model
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public static class EzConsumeActionExt
 	{
-		public static Gs2Future<bool> Satisfy(this EzConsumeAction self, Gs2Domain domain, GameSession session, Action onCauseChange) 
+		public static Gs2Future<bool> Satisfy(this EzConsumeAction self, Gs2Domain domain, IGameSession session, Action onCauseChange) 
 		{
 			IEnumerator Impl(Gs2Future<bool> result)
 			{

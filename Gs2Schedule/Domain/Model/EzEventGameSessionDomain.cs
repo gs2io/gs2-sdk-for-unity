@@ -52,7 +52,7 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
 
     public partial class EzEventGameSessionDomain {
         private readonly Gs2.Gs2Schedule.Domain.Model.EventAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public bool? InSchedule => _domain.InSchedule;
         public long? ScheduleStartAt => _domain.ScheduleStartAt;
@@ -63,7 +63,7 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
 
         public EzEventGameSessionDomain(
             Gs2.Gs2Schedule.Domain.Model.EventAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;

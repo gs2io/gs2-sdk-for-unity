@@ -104,7 +104,7 @@ namespace Gs2.Unity.Gs2Account
 
         public IEnumerator AddTakeOverSetting(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzAddTakeOverSettingResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 int type,
                 string userIdentifier,
@@ -133,7 +133,7 @@ namespace Gs2.Unity.Gs2Account
 
         public IEnumerator DeleteTakeOverSetting(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzDeleteTakeOverSettingResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 int type
         )
@@ -185,7 +185,7 @@ namespace Gs2.Unity.Gs2Account
 
         public IEnumerator Get(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzGetResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 int type
         )
@@ -210,7 +210,7 @@ namespace Gs2.Unity.Gs2Account
 
         public IEnumerator ListTakeOverSettings(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzListTakeOverSettingsResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string pageToken = null,
                 int? limit = null
@@ -237,7 +237,7 @@ namespace Gs2.Unity.Gs2Account
 
         public IEnumerator UpdateTakeOverSetting(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzUpdateTakeOverSettingResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 int type,
                 string oldPassword,

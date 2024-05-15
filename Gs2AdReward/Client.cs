@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2AdReward
 
         public IEnumerator GetPoint(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2AdReward.Result.EzGetPointResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName
         )
 		{

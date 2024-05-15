@@ -52,7 +52,7 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
 
     public partial class EzRandomDisplayItemGameSessionDomain {
         private readonly Gs2.Gs2Showcase.Domain.Model.RandomDisplayItemAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string? TransactionId => _domain.TransactionId;
         public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
@@ -63,7 +63,7 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
 
         public EzRandomDisplayItemGameSessionDomain(
             Gs2.Gs2Showcase.Domain.Model.RandomDisplayItemAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;

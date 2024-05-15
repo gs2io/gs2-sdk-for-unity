@@ -52,7 +52,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
 
     public partial class EzStaminaGameSessionDomain {
         private readonly Gs2.Gs2Stamina.Domain.Model.StaminaAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public int? OverflowValue => _domain.OverflowValue;
         public string NamespaceName => _domain?.NamespaceName;
@@ -61,7 +61,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
 
         public EzStaminaGameSessionDomain(
             Gs2.Gs2Stamina.Domain.Model.StaminaAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;

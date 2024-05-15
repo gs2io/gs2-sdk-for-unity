@@ -100,7 +100,7 @@ namespace Gs2.Unity.Gs2Experience
 
         public IEnumerator GetStatus(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Experience.Result.EzGetStatusResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string experienceName,
                 string propertyId
@@ -127,7 +127,7 @@ namespace Gs2.Unity.Gs2Experience
 
         public IEnumerator GetStatusWithSignature(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Experience.Result.EzGetStatusWithSignatureResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string experienceName,
                 string propertyId,
@@ -156,7 +156,7 @@ namespace Gs2.Unity.Gs2Experience
 
         public IEnumerator ListStatuses(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Experience.Result.EzListStatusesResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string experienceName = null,
                 string pageToken = null,

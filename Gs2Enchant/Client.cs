@@ -100,7 +100,7 @@ namespace Gs2.Unity.Gs2Enchant
 
         public IEnumerator GetBalanceParameterStatus(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Enchant.Result.EzGetBalanceParameterStatusResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string parameterName,
                 string propertyId
@@ -127,7 +127,7 @@ namespace Gs2.Unity.Gs2Enchant
 
         public IEnumerator ListBalanceParameterStatuses(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Enchant.Result.EzListBalanceParameterStatusesResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string parameterName = null,
                 string pageToken = null,
@@ -200,7 +200,7 @@ namespace Gs2.Unity.Gs2Enchant
 
         public IEnumerator GetRarityParameterStatus(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Enchant.Result.EzGetRarityParameterStatusResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string parameterName,
                 string propertyId
@@ -227,7 +227,7 @@ namespace Gs2.Unity.Gs2Enchant
 
         public IEnumerator ListRarityParameterStatuses(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Enchant.Result.EzListRarityParameterStatusesResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string parameterName = null,
                 string pageToken = null,
@@ -256,7 +256,7 @@ namespace Gs2.Unity.Gs2Enchant
 
         public IEnumerator VerifyRarityParameterStatus(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Enchant.Result.EzVerifyRarityParameterStatusResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string parameterName,
                 string propertyId,

@@ -100,7 +100,7 @@ namespace Gs2.Unity.Gs2Idle
 
         public IEnumerator GetStatus(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Idle.Result.EzGetStatusResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string categoryName
         )
@@ -125,7 +125,7 @@ namespace Gs2.Unity.Gs2Idle
 
         public IEnumerator ListStatuses(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Idle.Result.EzListStatusesResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string pageToken = null,
                 int? limit = null
@@ -152,7 +152,7 @@ namespace Gs2.Unity.Gs2Idle
 
         public IEnumerator Prediction(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Idle.Result.EzPredictionResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string categoryName
         )
@@ -177,7 +177,7 @@ namespace Gs2.Unity.Gs2Idle
 
         public IEnumerator Receive(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Idle.Result.EzReceiveResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string categoryName
         )

@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2Datastore
 
         public IEnumerator DeleteDataObject(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzDeleteDataObjectResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string dataObjectName = null
         )
@@ -81,7 +81,7 @@ namespace Gs2.Unity.Gs2Datastore
 
         public IEnumerator DoneUpload(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzDoneUploadResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string dataObjectName = null
         )
@@ -106,7 +106,7 @@ namespace Gs2.Unity.Gs2Datastore
 
         public IEnumerator ListMyDataObjects(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzListMyDataObjectsResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string status = null,
                 string pageToken = null,
@@ -135,7 +135,7 @@ namespace Gs2.Unity.Gs2Datastore
 
         public IEnumerator PrepareDownload(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzPrepareDownloadResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string dataObjectId
         )
@@ -185,7 +185,7 @@ namespace Gs2.Unity.Gs2Datastore
 
         public IEnumerator PrepareDownloadOwnData(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzPrepareDownloadOwnDataResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string dataObjectName = null
         )
@@ -210,7 +210,7 @@ namespace Gs2.Unity.Gs2Datastore
 
         public IEnumerator PrepareReUpload(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzPrepareReUploadResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string dataObjectName = null,
                 string contentType = null
@@ -237,7 +237,7 @@ namespace Gs2.Unity.Gs2Datastore
 
         public IEnumerator PrepareUpload(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzPrepareUploadResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string name = null,
                 string scope = null,
@@ -295,7 +295,7 @@ namespace Gs2.Unity.Gs2Datastore
 
         public IEnumerator UpdateDataObject(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzUpdateDataObjectResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string scope = null,
                 List<string> allowUserIds = null
@@ -324,7 +324,7 @@ namespace Gs2.Unity.Gs2Datastore
 
         public IEnumerator ListDataObjectHistories(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Datastore.Result.EzListDataObjectHistoriesResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string dataObjectName = null,
                 string pageToken = null,

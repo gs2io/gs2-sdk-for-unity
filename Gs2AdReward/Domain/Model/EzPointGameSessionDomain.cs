@@ -52,14 +52,14 @@ namespace Gs2.Unity.Gs2AdReward.Domain.Model
 
     public partial class EzPointGameSessionDomain {
         private readonly Gs2.Gs2AdReward.Domain.Model.PointAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
         public EzPointGameSessionDomain(
             Gs2.Gs2AdReward.Domain.Model.PointAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;

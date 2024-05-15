@@ -52,7 +52,7 @@ namespace Gs2.Unity.Gs2News.Domain.Model
 
     public partial class EzNewsGameSessionDomain {
         private readonly Gs2.Gs2News.Domain.Model.NewsAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string? BrowserUrl => _domain.BrowserUrl;
         public string? ZipUrl => _domain.ZipUrl;
@@ -61,7 +61,7 @@ namespace Gs2.Unity.Gs2News.Domain.Model
 
         public EzNewsGameSessionDomain(
             Gs2.Gs2News.Domain.Model.NewsAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;

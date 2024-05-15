@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2StateMachine
 
         public IEnumerator Emit(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2StateMachine.Result.EzEmitResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string statusName,
                 string eventName,
@@ -85,7 +85,7 @@ namespace Gs2.Unity.Gs2StateMachine
 
         public IEnumerator Exit(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2StateMachine.Result.EzExitResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string statusName
         )
@@ -110,7 +110,7 @@ namespace Gs2.Unity.Gs2StateMachine
 
         public IEnumerator GetStatus(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2StateMachine.Result.EzGetStatusResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string statusName
         )
@@ -135,7 +135,7 @@ namespace Gs2.Unity.Gs2StateMachine
 
         public IEnumerator ListStatuses(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2StateMachine.Result.EzListStatusesResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string status = null,
                 string pageToken = null,
@@ -164,7 +164,7 @@ namespace Gs2.Unity.Gs2StateMachine
 
         public IEnumerator Report(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2StateMachine.Result.EzReportResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string statusName,
                 List<Gs2.Unity.Gs2StateMachine.Model.EzEvent> events = null

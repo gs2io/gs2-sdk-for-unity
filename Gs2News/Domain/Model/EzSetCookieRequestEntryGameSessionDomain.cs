@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2News.Domain.Model
     public partial class EzSetCookieRequestEntryGameSessionDomain {
 
         private Gs2.Gs2News.Domain.Model.SetCookieRequestEntryAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string Key => _domain.Key;
         public string Value => _domain.Value;
@@ -62,7 +62,7 @@ namespace Gs2.Unity.Gs2News.Domain.Model
         
         public EzSetCookieRequestEntryGameSessionDomain(
             Gs2.Gs2News.Domain.Model.SetCookieRequestEntryAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             _domain = domain;

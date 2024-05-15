@@ -52,7 +52,7 @@ namespace Gs2.Unity.Gs2Money.Domain.Model
 
     public partial class EzUserGameSessionDomain {
         private readonly Gs2.Gs2Money.Domain.Model.UserAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public float? Price => _domain.Price;
         public string? NextPageToken => _domain.NextPageToken;
@@ -61,7 +61,7 @@ namespace Gs2.Unity.Gs2Money.Domain.Model
 
         public EzUserGameSessionDomain(
             Gs2.Gs2Money.Domain.Model.UserAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;

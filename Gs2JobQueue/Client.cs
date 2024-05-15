@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2JobQueue
 
         public IEnumerator Run(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2JobQueue.Result.EzRunResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName
         )
 		{
@@ -79,7 +79,7 @@ namespace Gs2.Unity.Gs2JobQueue
 
         public IEnumerator GetResult(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2JobQueue.Result.EzGetResultResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string jobName = null
         )

@@ -100,7 +100,7 @@ namespace Gs2.Unity.Gs2Grade
 
         public IEnumerator ApplyRankCap(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Grade.Result.EzApplyRankCapResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string gradeName,
                 string propertyId
@@ -127,7 +127,7 @@ namespace Gs2.Unity.Gs2Grade
 
         public IEnumerator GetStatus(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Grade.Result.EzGetStatusResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string gradeName,
                 string propertyId
@@ -154,7 +154,7 @@ namespace Gs2.Unity.Gs2Grade
 
         public IEnumerator ListStatuses(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Grade.Result.EzListStatusesResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string gradeName = null,
                 string pageToken = null,

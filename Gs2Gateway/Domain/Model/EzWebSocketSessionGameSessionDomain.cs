@@ -52,7 +52,7 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
 
     public partial class EzWebSocketSessionGameSessionDomain {
         private readonly Gs2.Gs2Gateway.Domain.Model.WebSocketSessionAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string? Protocol => _domain.Protocol;
         public string NamespaceName => _domain?.NamespaceName;
@@ -60,7 +60,7 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
 
         public EzWebSocketSessionGameSessionDomain(
             Gs2.Gs2Gateway.Domain.Model.WebSocketSessionAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;

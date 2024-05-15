@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
 
     public partial class EzAccountGameSessionDomain {
         private readonly Gs2.Gs2Account.Domain.Model.AccountAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public Gs2.Unity.Gs2Account.Model.EzBanStatus[] BanStatuses => _domain.BanStatuses.Select(Gs2.Unity.Gs2Account.Model.EzBanStatus.FromModel).ToArray();
         public string? Body => _domain.Body;
@@ -65,7 +65,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
 
         public EzAccountGameSessionDomain(
             Gs2.Gs2Account.Domain.Model.AccountAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;

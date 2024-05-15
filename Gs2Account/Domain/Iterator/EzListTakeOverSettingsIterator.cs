@@ -47,13 +47,13 @@ namespace Gs2.Unity.Gs2Account.Domain.Iterator
     {
         private Gs2Iterator<Gs2.Gs2Account.Model.TakeOver> _it;
         private readonly Gs2.Gs2Account.Domain.Model.AccountAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
         public EzListTakeOverSettingsIterator(
             Gs2Iterator<Gs2.Gs2Account.Model.TakeOver> it,
             Gs2.Gs2Account.Domain.Model.AccountAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         )
         {

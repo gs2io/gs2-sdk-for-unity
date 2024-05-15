@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2Matchmaking
 
         public IEnumerator CancelMatchmaking(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzCancelMatchmakingResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string gatheringName = null
         )
@@ -81,7 +81,7 @@ namespace Gs2.Unity.Gs2Matchmaking
 
         public IEnumerator CreateGathering(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzCreateGatheringResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 Gs2.Unity.Gs2Matchmaking.Model.EzPlayer player,
                 List<Gs2.Unity.Gs2Matchmaking.Model.EzAttributeRange> attributeRanges = null,
@@ -122,7 +122,7 @@ namespace Gs2.Unity.Gs2Matchmaking
 
         public IEnumerator DoMatchmaking(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzDoMatchmakingResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 Gs2.Unity.Gs2Matchmaking.Model.EzPlayer player,
                 string matchmakingContextToken = null
@@ -149,7 +149,7 @@ namespace Gs2.Unity.Gs2Matchmaking
 
         public IEnumerator EarlyCompleteMatchmaking(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzEarlyCompleteMatchmakingResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string gatheringName = null
         )
@@ -197,7 +197,7 @@ namespace Gs2.Unity.Gs2Matchmaking
 
         public IEnumerator UpdateGathering(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzUpdateGatheringResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string gatheringName = null,
                 List<Gs2.Unity.Gs2Matchmaking.Model.EzAttributeRange> attributeRanges = null
@@ -270,7 +270,7 @@ namespace Gs2.Unity.Gs2Matchmaking
 
         public IEnumerator GetRating(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzGetRatingResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string ratingName
         )
@@ -295,7 +295,7 @@ namespace Gs2.Unity.Gs2Matchmaking
 
         public IEnumerator ListRatings(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzListRatingsResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string pageToken = null,
                 int? limit = null
@@ -322,7 +322,7 @@ namespace Gs2.Unity.Gs2Matchmaking
 
         public IEnumerator CreateVote(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzCreateVoteResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string ratingName,
                 int numberOfPlayer,

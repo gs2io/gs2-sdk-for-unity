@@ -100,7 +100,7 @@ namespace Gs2.Unity.Util
         public delegate IFuture<T> RetryAction<T>();
         
         public Gs2Future<T> RunFuture<T>(
-            GameSession gameSession,
+            IGameSession gameSession,
             Func<IFuture<T>> requestAction
         )
         {
@@ -168,7 +168,7 @@ namespace Gs2.Unity.Util
         
         public IEnumerator Run<T>(
             UnityAction<AsyncResult<T>> callback,
-            GameSession gameSession,
+            IGameSession gameSession,
             RequestAction<T> requestAction)
         {
             bool isReopenTried = false;
@@ -235,7 +235,7 @@ namespace Gs2.Unity.Util
 #if GS2_ENABLE_UNITASK
 
         public async UniTask<T> RunAsync<T>(
-            GameSession gameSession,
+            IGameSession gameSession,
             Func<UniTask<T>> requestActionAsync
         )
         {
@@ -280,7 +280,7 @@ namespace Gs2.Unity.Util
         public delegate Gs2Iterator<T> RetryIterator<T>();
 
         public IEnumerator RunIterator<T>(
-            GameSession gameSession,
+            IGameSession gameSession,
             Gs2Iterator<T> requestIterator,
             RetryIterator<T> retryIterator)
         {
@@ -339,7 +339,7 @@ namespace Gs2.Unity.Util
         public delegate void RetryAction();
         
         public async UniTask<bool> RunIteratorAsync(
-            GameSession gameSession,
+            IGameSession gameSession,
             Func<UniTask<bool>> requestActionAsync,
             RetryAction retryAction)
         {

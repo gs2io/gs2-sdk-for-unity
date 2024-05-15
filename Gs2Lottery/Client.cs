@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2Lottery
 
         public IEnumerator DescribeBoxes(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Lottery.Result.EzDescribeBoxesResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string pageToken = null,
                 int? limit = null
@@ -83,7 +83,7 @@ namespace Gs2.Unity.Gs2Lottery
 
         public IEnumerator GetBox(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Lottery.Result.EzGetBoxResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string prizeTableName
         )
@@ -108,7 +108,7 @@ namespace Gs2.Unity.Gs2Lottery
 
         public IEnumerator ResetBox(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Lottery.Result.EzResetBoxResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string prizeTableName
         )
@@ -133,7 +133,7 @@ namespace Gs2.Unity.Gs2Lottery
 
         public IEnumerator ListProbabilities(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Lottery.Result.EzListProbabilitiesResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string lotteryName
         )

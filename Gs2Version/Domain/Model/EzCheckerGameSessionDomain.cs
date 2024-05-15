@@ -52,7 +52,7 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
 
     public partial class EzCheckerGameSessionDomain {
         private readonly Gs2.Gs2Version.Domain.Model.CheckerAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string? ProjectToken => _domain.ProjectToken;
         public Gs2.Unity.Gs2Version.Model.EzStatus[] Warnings => _domain.Warnings.Select(Gs2.Unity.Gs2Version.Model.EzStatus.FromModel).ToArray();
@@ -64,7 +64,7 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
 
         public EzCheckerGameSessionDomain(
             Gs2.Gs2Version.Domain.Model.CheckerAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;

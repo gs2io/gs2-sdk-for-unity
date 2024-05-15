@@ -59,7 +59,7 @@ namespace Gs2.Unity.Gs2Realtime.Domain
         
 #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2DateTime> Gs2DateTimeAsync(
-            GameSession gameSession
+            IGameSession gameSession
         )
         {
             var item = await this._connection.RunAsync(
@@ -84,7 +84,7 @@ namespace Gs2.Unity.Gs2Realtime.Domain
 #endif
 
         public IFuture<Gs2DateTime> Gs2DateTimeFuture(
-            GameSession gameSession
+            IGameSession gameSession
         )
         {
             IEnumerator Impl(Gs2Future<Gs2DateTime> self)

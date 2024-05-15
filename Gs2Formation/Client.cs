@@ -100,7 +100,7 @@ namespace Gs2.Unity.Gs2Formation
 
         public IEnumerator GetMold(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetMoldResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string moldModelName
         )
@@ -125,7 +125,7 @@ namespace Gs2.Unity.Gs2Formation
 
         public IEnumerator ListMolds(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzListMoldsResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string pageToken = null,
                 int? limit = null
@@ -175,7 +175,7 @@ namespace Gs2.Unity.Gs2Formation
 
         public IEnumerator DeleteForm(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzDeleteFormResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string moldModelName,
                 int index
@@ -202,7 +202,7 @@ namespace Gs2.Unity.Gs2Formation
 
         public IEnumerator GetForm(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetFormResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string moldModelName,
                 int index
@@ -229,7 +229,7 @@ namespace Gs2.Unity.Gs2Formation
 
         public IEnumerator GetFormWithSignature(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetFormWithSignatureResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string moldModelName,
                 int index,
@@ -258,7 +258,7 @@ namespace Gs2.Unity.Gs2Formation
 
         public IEnumerator ListForms(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzListFormsResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string moldModelName,
                 string pageToken = null,
@@ -287,7 +287,7 @@ namespace Gs2.Unity.Gs2Formation
 
         public IEnumerator SetForm(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzSetFormResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string moldModelName,
                 int index,
@@ -364,7 +364,7 @@ namespace Gs2.Unity.Gs2Formation
 
         public IEnumerator DeletePropertyForm(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzDeletePropertyFormResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string propertyId
         )
@@ -389,7 +389,7 @@ namespace Gs2.Unity.Gs2Formation
 
         public IEnumerator GetPropertyForm(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetPropertyFormResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string propertyFormModelName,
                 string propertyId
@@ -416,7 +416,7 @@ namespace Gs2.Unity.Gs2Formation
 
         public IEnumerator GetPropertyFormWithSignature(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzGetPropertyFormWithSignatureResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string propertyFormModelName,
                 string propertyId,
@@ -445,7 +445,7 @@ namespace Gs2.Unity.Gs2Formation
 
         public IEnumerator ListPropertyForms(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzListPropertyFormsResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string propertyFormModelName,
                 string pageToken = null,
@@ -474,7 +474,7 @@ namespace Gs2.Unity.Gs2Formation
 
         public IEnumerator SetPropertyForm(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Formation.Result.EzSetPropertyFormResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string propertyFormModelName,
                 string propertyId,

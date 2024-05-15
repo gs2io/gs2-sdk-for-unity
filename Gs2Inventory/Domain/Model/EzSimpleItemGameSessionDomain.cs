@@ -52,7 +52,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
     public partial class EzSimpleItemGameSessionDomain {
         private readonly Gs2.Gs2Inventory.Domain.Model.SimpleItemAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string? Body => _domain.Body;
         public string? Signature => _domain.Signature;
@@ -63,7 +63,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
         public EzSimpleItemGameSessionDomain(
             Gs2.Gs2Inventory.Domain.Model.SimpleItemAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;

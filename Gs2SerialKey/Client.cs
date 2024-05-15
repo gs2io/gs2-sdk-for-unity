@@ -102,7 +102,7 @@ namespace Gs2.Unity.Gs2SerialKey
 
         public IEnumerator UseSerialCode(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2SerialKey.Result.EzUseSerialCodeResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string code
         )

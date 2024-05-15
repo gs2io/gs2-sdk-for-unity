@@ -100,7 +100,7 @@ namespace Gs2.Unity.Gs2Enhance
 
         public IEnumerator DeleteProgress(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Enhance.Result.EzDeleteProgressResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName
         )
 		{
@@ -123,7 +123,7 @@ namespace Gs2.Unity.Gs2Enhance
 
         public IEnumerator End(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Enhance.Result.EzEndResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 List<Gs2.Unity.Gs2Enhance.Model.EzConfig> config = null
         )
@@ -150,7 +150,7 @@ namespace Gs2.Unity.Gs2Enhance
 
         public IEnumerator GetProgress(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Enhance.Result.EzGetProgressResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName
         )
 		{
@@ -173,7 +173,7 @@ namespace Gs2.Unity.Gs2Enhance
 
         public IEnumerator Start(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Enhance.Result.EzStartResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string rateName,
                 string targetItemSetId,
@@ -210,7 +210,7 @@ namespace Gs2.Unity.Gs2Enhance
 
         public IEnumerator Enhance(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Enhance.Result.EzEnhanceResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string rateName,
                 string targetItemSetId,

@@ -47,14 +47,14 @@ namespace Gs2.Unity.Gs2Chat.Domain.Iterator
     {
         private Gs2Iterator<Gs2.Gs2Chat.Model.Message> _it;
         private readonly Gs2.Gs2Chat.Domain.Model.RoomAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         private readonly string? _password;
         private readonly long _startAt;
 
         public EzListMessagesIterator(
             Gs2.Gs2Chat.Domain.Model.RoomAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         )
         {

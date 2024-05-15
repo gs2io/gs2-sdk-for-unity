@@ -52,7 +52,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
 
     public partial class EzRankingCategoryGameSessionDomain {
         private readonly Gs2.Gs2Ranking.Domain.Model.RankingCategoryAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string? NextPageToken => _domain.NextPageToken;
         public bool? Processing => _domain.Processing;
@@ -63,7 +63,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
 
         public EzRankingCategoryGameSessionDomain(
             Gs2.Gs2Ranking.Domain.Model.RankingCategoryAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;

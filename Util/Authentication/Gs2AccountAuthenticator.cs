@@ -16,7 +16,6 @@ using Gs2.Gs2Version;
 using Gs2.Gs2Version.Request;
 using UnityEngine;
 #if GS2_ENABLE_UNITASK
-using Gs2.Unity.Core;
 using Cysharp.Threading.Tasks;
 #endif
 
@@ -24,6 +23,8 @@ namespace Gs2.Unity.Util
 {
     public class Gs2AccountAuthenticator : IAuthenticator
     {
+        public bool NeedReAuthentication { get; internal set; }
+
         private readonly AccountSetting _accountSetting;
         private readonly GatewaySetting _gatewaySetting;
         private readonly VersionSetting _versionSetting;
@@ -72,7 +73,7 @@ namespace Gs2.Unity.Util
 
 #if GS2_ENABLE_UNITASK
 
-        internal override async UniTask<AccessToken> AuthenticationAsync(
+        public async UniTask<AccessToken> AuthenticationAsync(
             Gs2Connection connection,
             string userId,
             string password
@@ -172,7 +173,7 @@ namespace Gs2.Unity.Util
             NeedReAuthentication = true;
         }
         
-        internal override Gs2Future<AccessToken> AuthenticationFuture(
+        public Gs2Future<AccessToken> AuthenticationFuture(
             Gs2Connection connection,
             string userId,
             string password

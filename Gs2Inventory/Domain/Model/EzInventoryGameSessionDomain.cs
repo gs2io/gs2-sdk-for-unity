@@ -52,7 +52,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
     public partial class EzInventoryGameSessionDomain {
         private readonly Gs2.Gs2Inventory.Domain.Model.InventoryAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public long? OverflowCount => _domain.OverflowCount;
         public string? NextPageToken => _domain.NextPageToken;
@@ -62,7 +62,7 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
 
         public EzInventoryGameSessionDomain(
             Gs2.Gs2Inventory.Domain.Model.InventoryAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;

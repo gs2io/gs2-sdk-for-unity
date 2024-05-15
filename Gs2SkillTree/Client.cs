@@ -100,7 +100,7 @@ namespace Gs2.Unity.Gs2SkillTree
 
         public IEnumerator GetStatus(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2SkillTree.Result.EzGetStatusResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string propertyId
         )
@@ -125,7 +125,7 @@ namespace Gs2.Unity.Gs2SkillTree
 
         public IEnumerator Release(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2SkillTree.Result.EzReleaseResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 List<string> nodeModelNames,
                 string propertyId
@@ -154,7 +154,7 @@ namespace Gs2.Unity.Gs2SkillTree
 
         public IEnumerator Reset(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2SkillTree.Result.EzResetResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string propertyId
         )
@@ -179,7 +179,7 @@ namespace Gs2.Unity.Gs2SkillTree
 
         public IEnumerator Restrain(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2SkillTree.Result.EzRestrainResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 List<string> nodeModelNames,
                 string propertyId

@@ -45,12 +45,12 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Iterator
     {
         private Gs2Iterator<Gs2.Gs2Ranking.Model.Ranking> _it;
         private readonly Gs2.Gs2Ranking.Domain.Model.RankingCategoryAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
         public EzGetRankingIterator(
             Gs2.Gs2Ranking.Domain.Model.RankingCategoryAccessTokenDomain domain,
-            Gs2.Unity.Util.GameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         )
         {

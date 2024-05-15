@@ -149,7 +149,7 @@ namespace Gs2.Unity.Gs2Inventory
 
         public IEnumerator GetInventory(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetInventoryResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string inventoryName
         )
@@ -174,7 +174,7 @@ namespace Gs2.Unity.Gs2Inventory
 
         public IEnumerator ListInventories(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListInventoriesResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string pageToken = null,
                 int? limit = null
@@ -201,7 +201,7 @@ namespace Gs2.Unity.Gs2Inventory
 
         public IEnumerator Consume(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzConsumeResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string inventoryName,
                 string itemName,
@@ -232,7 +232,7 @@ namespace Gs2.Unity.Gs2Inventory
 
         public IEnumerator GetItem(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetItemResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string inventoryName,
                 string itemName
@@ -259,7 +259,7 @@ namespace Gs2.Unity.Gs2Inventory
 
         public IEnumerator GetItemWithSignature(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetItemWithSignatureResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string inventoryName,
                 string itemName,
@@ -290,7 +290,7 @@ namespace Gs2.Unity.Gs2Inventory
 
         public IEnumerator ListItems(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListItemsResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string inventoryName,
                 string pageToken = null,
@@ -411,7 +411,7 @@ namespace Gs2.Unity.Gs2Inventory
 
         public IEnumerator ConsumeSimpleItems(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzConsumeSimpleItemsResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string inventoryName,
                 List<Gs2.Unity.Gs2Inventory.Model.EzConsumeCount> consumeCounts
@@ -440,7 +440,7 @@ namespace Gs2.Unity.Gs2Inventory
 
         public IEnumerator GetSimpleItem(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetSimpleItemResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string inventoryName,
                 string itemName
@@ -467,7 +467,7 @@ namespace Gs2.Unity.Gs2Inventory
 
         public IEnumerator GetSimpleItemWithSignature(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetSimpleItemWithSignatureResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string inventoryName,
                 string itemName,
@@ -496,7 +496,7 @@ namespace Gs2.Unity.Gs2Inventory
 
         public IEnumerator ListSimpleItems(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListSimpleItemsResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string inventoryName,
                 string pageToken = null,
@@ -617,7 +617,7 @@ namespace Gs2.Unity.Gs2Inventory
 
         public IEnumerator ConsumeBigItem(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzConsumeBigItemResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string inventoryName,
                 string itemName,
@@ -646,7 +646,7 @@ namespace Gs2.Unity.Gs2Inventory
 
         public IEnumerator GetBigItem(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzGetBigItemResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string inventoryName,
                 string itemName
@@ -673,7 +673,7 @@ namespace Gs2.Unity.Gs2Inventory
 
         public IEnumerator ListBigItems(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inventory.Result.EzListBigItemsResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string inventoryName,
                 string pageToken = null,

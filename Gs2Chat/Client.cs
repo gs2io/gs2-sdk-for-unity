@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2Chat
 
         public IEnumerator CreateRoom(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzCreateRoomResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string name = null,
                 string metadata = null,
@@ -89,7 +89,7 @@ namespace Gs2.Unity.Gs2Chat
 
         public IEnumerator DeleteRoom(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzDeleteRoomResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string roomName = null
         )
@@ -137,7 +137,7 @@ namespace Gs2.Unity.Gs2Chat
 
         public IEnumerator ListMessages(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzListMessagesResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string roomName,
                 long? startAt = null,
@@ -167,7 +167,7 @@ namespace Gs2.Unity.Gs2Chat
 
         public IEnumerator Post(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzPostResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string roomName,
                 string metadata,
@@ -198,7 +198,7 @@ namespace Gs2.Unity.Gs2Chat
 
         public IEnumerator ListSubscribeRooms(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzListSubscribeRoomsResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string pageToken = null,
                 int? limit = null
@@ -225,7 +225,7 @@ namespace Gs2.Unity.Gs2Chat
 
         public IEnumerator Subscribe(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzSubscribeResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string roomName,
                 List<Gs2.Unity.Gs2Chat.Model.EzNotificationType> notificationTypes = null
@@ -254,7 +254,7 @@ namespace Gs2.Unity.Gs2Chat
 
         public IEnumerator Unsubscribe(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzUnsubscribeResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string roomName
         )
@@ -279,7 +279,7 @@ namespace Gs2.Unity.Gs2Chat
 
         public IEnumerator UpdateSubscribeSetting(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzUpdateSubscribeSettingResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string roomName,
                 List<Gs2.Unity.Gs2Chat.Model.EzNotificationType> notificationTypes = null

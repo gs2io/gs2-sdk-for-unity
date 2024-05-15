@@ -155,7 +155,7 @@ namespace Gs2.Unity.Gs2Datastore
 		/// <param name="updateIfExists">既にデータが存在する場合にエラーとするか、データを更新するか</param>
 		public IEnumerator Upload(
 			UnityAction<AsyncResult<EzUploadResult>> callback,
-			GameSession session,
+			IGameSession session,
 			string namespaceName,
 			string scope,
 			List<string> allowUserIds,
@@ -283,7 +283,7 @@ namespace Gs2.Unity.Gs2Datastore
 		/// <param name="data">アップロードするデータ</param>
 		public IEnumerator ReUpload(
 			UnityAction<AsyncResult<EzReUploadResult>> callback,
-			GameSession session,
+			IGameSession session,
 			string namespaceName,
 			EzDataObject dataObject,
 			byte[] data
@@ -401,7 +401,7 @@ namespace Gs2.Unity.Gs2Datastore
 		/// <param name="dataObjectId">データのID</param>
 		public IEnumerator Download(
 			UnityAction<AsyncResult<EzDownloadResult>> callback,
-			GameSession session,
+			IGameSession session,
 			string namespaceName,
 			string dataObjectId
 		)
@@ -507,7 +507,7 @@ namespace Gs2.Unity.Gs2Datastore
 		/// <param name="dataObjectName">データの名前</param>
 		public IEnumerator DownloadOwnData(
 			UnityAction<AsyncResult<EzDownloadResult>> callback,
-			GameSession session,
+			IGameSession session,
 			string namespaceName,
 			string dataObjectName
 		)

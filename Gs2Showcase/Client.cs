@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2Showcase
 
         public IEnumerator Buy(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Showcase.Result.EzBuyResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string showcaseName,
                 string displayItemId = null,
@@ -89,7 +89,7 @@ namespace Gs2.Unity.Gs2Showcase
 
         public IEnumerator GetShowcase(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Showcase.Result.EzGetShowcaseResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string showcaseName
         )
@@ -114,7 +114,7 @@ namespace Gs2.Unity.Gs2Showcase
 
         public IEnumerator GetRandomShowcaseDisplayItem(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Showcase.Result.EzGetRandomShowcaseDisplayItemResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string showcaseName,
                 string displayItemName = null
@@ -141,7 +141,7 @@ namespace Gs2.Unity.Gs2Showcase
 
         public IEnumerator ListRandomShowcaseDisplayItems(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Showcase.Result.EzListRandomShowcaseDisplayItemsResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string showcaseName
         )
@@ -166,7 +166,7 @@ namespace Gs2.Unity.Gs2Showcase
 
         public IEnumerator RandomShowcaseBuy(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Showcase.Result.EzRandomShowcaseBuyResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string showcaseName,
                 string displayItemName = null,

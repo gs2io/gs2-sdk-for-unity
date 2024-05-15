@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2Gateway
 
         public IEnumerator SetUserId(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Gateway.Result.EzSetUserIdResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 bool? allowConcurrentAccess = null
         )

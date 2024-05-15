@@ -56,7 +56,7 @@ namespace Gs2.Unity.Gs2Mission
 
         public IEnumerator GetComplete(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Mission.Result.EzGetCompleteResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string missionGroupName
         )
@@ -81,7 +81,7 @@ namespace Gs2.Unity.Gs2Mission
 
         public IEnumerator ListCompletes(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Mission.Result.EzListCompletesResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string pageToken = null,
                 int? limit = null
@@ -108,7 +108,7 @@ namespace Gs2.Unity.Gs2Mission
 
         public IEnumerator ReceiveRewards(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Mission.Result.EzReceiveRewardsResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string missionGroupName,
                 string missionTaskName
@@ -135,7 +135,7 @@ namespace Gs2.Unity.Gs2Mission
 
         public IEnumerator GetCounter(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Mission.Result.EzGetCounterResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string counterName
         )
@@ -160,7 +160,7 @@ namespace Gs2.Unity.Gs2Mission
 
         public IEnumerator ListCounters(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Mission.Result.EzListCountersResult>> callback,
-		        GameSession session,
+		        IGameSession session,
                 string namespaceName,
                 string pageToken = null,
                 int? limit = null
