@@ -195,6 +195,30 @@ namespace Gs2.Unity.Gs2Matchmaking
             );
 		}
 
+        public IEnumerator Ping(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzPingResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string gatheringName = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.Ping(
+                    new Gs2.Gs2Matchmaking.Request.PingRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithGatheringName(gatheringName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzPingResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Matchmaking.Result.EzPingResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator UpdateGathering(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzUpdateGatheringResult>> callback,
 		        IGameSession session,

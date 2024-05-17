@@ -181,6 +181,81 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
         }
         #endif
 
+        public Gs2Iterator<Gs2.Unity.Gs2Guild.Model.EzGuild> SearchGuilds(
+            string guildModelName,
+            string? displayName = null,
+            int[]? attributes1 = null,
+            int[]? attributes2 = null,
+            int[]? attributes3 = null,
+            int[]? attributes4 = null,
+            int[]? attributes5 = null,
+            string[]? joinPolicies = null,
+            bool? includeFullMembersGuild = null
+        )
+        {
+            return new Gs2.Unity.Gs2Guild.Domain.Iterator.EzListGuildsIterator(
+                this._domain,
+                this._gameSession,
+                this._connection,
+                guildModelName,
+                displayName,
+                attributes1,
+                attributes2,
+                attributes3,
+                attributes4,
+                attributes5, 
+                joinPolicies, 
+                includeFullMembersGuild
+            );
+        }
+
+#if GS2_ENABLE_UNITASK
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Guild.Model.EzGuild> SearchGuildsAsync(
+            string guildModelName,
+            string? displayName = null,
+            int[]? attributes1 = null,
+            int[]? attributes2 = null,
+            int[]? attributes3 = null,
+            int[]? attributes4 = null,
+            int[]? attributes5 = null,
+            string[]? joinPolicies = null,
+            bool? includeFullMembersGuild = null
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Guild.Model.EzGuild>(async (writer, token) =>
+            {
+                var it = _domain.SearchGuildsAsync(
+                    guildModelName,
+                    displayName,
+                    attributes1,
+                    attributes2,
+                    attributes3,
+                    attributes4,
+                    attributes5, 
+                    joinPolicies, 
+                    includeFullMembersGuild
+                ).GetAsyncEnumerator();
+                while(
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.SearchGuildsAsync(
+                                guildModelName
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Guild.Model.EzGuild.FromModel(it.Current));
+                }
+            });
+        }
+#endif
+
         [Obsolete("The name has been changed to SendRequestFuture.")]
         public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildDomain> SendRequest(
             string guildModelName,
