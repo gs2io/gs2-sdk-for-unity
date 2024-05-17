@@ -78,6 +78,17 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             );
         }
 
+        public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzRatingDomain Rating(
+            string ratingName
+        ) {
+            return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzRatingDomain(
+                _domain.Rating(
+                    ratingName
+                ),
+                this._connection
+            );
+        }
+
         public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzBallotDomain Ballot(
             string ratingName,
             string gatheringName,
@@ -90,17 +101,6 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
                     gatheringName,
                     numberOfPlayer,
                     keyId
-                ),
-                this._connection
-            );
-        }
-
-        public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzRatingDomain Rating(
-            string ratingName
-        ) {
-            return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzRatingDomain(
-                _domain.Rating(
-                    ratingName
                 ),
                 this._connection
             );

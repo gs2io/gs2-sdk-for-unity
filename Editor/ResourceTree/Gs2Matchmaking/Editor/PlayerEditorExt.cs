@@ -27,6 +27,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Matchmaking.Editor
             EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.TextField("UserId", item.UserId);
             EditorGUILayout.TextField("RoleName", item.RoleName);
+            EditorGUILayout.TextField("CreatedAt", UnixTime.FromUnixTime(item.CreatedAt ?? 0).ToString(CultureInfo.CurrentUICulture));
             EditorGUI.EndDisabledGroup();
         }
     }

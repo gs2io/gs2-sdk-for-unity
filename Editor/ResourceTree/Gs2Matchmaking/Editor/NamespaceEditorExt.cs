@@ -29,6 +29,8 @@ namespace Gs2.Editor.ResourceTree.Gs2Matchmaking.Editor
             EditorGUILayout.TextField("Name", item.Name);
             EditorGUILayout.TextField("Description", item.Description);
             EditorGUILayout.TextField("EnableRating", item.EnableRating?.ToString());
+            EditorGUILayout.TextField("EnableDisconnectDetection", item.EnableDisconnectDetection);
+            EditorGUILayout.TextField("DisconnectDetectionTimeoutSeconds", item.DisconnectDetectionTimeoutSeconds?.ToString());
             EditorGUILayout.TextField("CreateGatheringTriggerType", item.CreateGatheringTriggerType);
             EditorGUILayout.TextField("CreateGatheringTriggerRealtimeNamespaceId", item.CreateGatheringTriggerRealtimeNamespaceId);
             EditorGUILayout.TextField("CreateGatheringTriggerScriptId", item.CreateGatheringTriggerScriptId);
