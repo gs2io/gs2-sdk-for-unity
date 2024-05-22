@@ -46,6 +46,24 @@ namespace Gs2.Editor.ResourceTree.Gs2AdReward.Editor
                 UnityAdEditorExt.OnGUI(item.UnityAd);
                 EditorGUI.indentLevel--;
             }
+            if (item.AcquirePointScript == null) {
+                EditorGUILayout.TextField("AcquirePointScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("AcquirePointScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.AcquirePointScript);
+                EditorGUI.indentLevel--;
+            }
+            if (item.ConsumePointScript == null) {
+                EditorGUILayout.TextField("ConsumePointScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("ConsumePointScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.ConsumePointScript);
+                EditorGUI.indentLevel--;
+            }
             if (item.ChangePointNotification == null) {
                 EditorGUILayout.TextField("ChangePointNotification", "");
             }

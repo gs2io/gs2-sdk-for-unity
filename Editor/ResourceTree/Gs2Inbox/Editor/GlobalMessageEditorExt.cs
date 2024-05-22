@@ -38,6 +38,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Inbox.Editor
                 EditorGUI.indentLevel--;
             }
             EditorGUILayout.TextField("ExpiresAt", UnixTime.FromUnixTime(item.ExpiresAt ?? 0).ToString(CultureInfo.CurrentUICulture));
+            EditorGUILayout.TextField("MessageReceptionPeriodEventId", item.MessageReceptionPeriodEventId);
             EditorGUI.EndDisabledGroup();
         }
     }
