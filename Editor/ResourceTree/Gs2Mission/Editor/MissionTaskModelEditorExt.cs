@@ -28,9 +28,16 @@ namespace Gs2.Editor.ResourceTree.Gs2Mission.Editor
             EditorGUILayout.TextField("MissionTaskId", item.MissionTaskId);
             EditorGUILayout.TextField("Name", item.Name);
             EditorGUILayout.TextField("Metadata", item.Metadata);
-            EditorGUILayout.TextField("CounterName", item.CounterName);
-            EditorGUILayout.TextField("TargetResetType", item.TargetResetType);
-            EditorGUILayout.TextField("TargetValue", item.TargetValue?.ToString());
+            EditorGUILayout.TextField("VerifyCompleteType", item.VerifyCompleteType);
+            if (item.TargetCounter == null) {
+                EditorGUILayout.TextField("TargetCounter", "");
+            }
+            else {
+                EditorGUILayout.LabelField("TargetCounter");
+                EditorGUI.indentLevel++;
+                TargetCounterModelEditorExt.OnGUI(item.TargetCounter);
+                EditorGUI.indentLevel--;
+            }
             EditorGUILayout.TextField("ChallengePeriodEventId", item.ChallengePeriodEventId);
             EditorGUILayout.TextField("PremiseMissionTaskName", item.PremiseMissionTaskName);
             EditorGUI.EndDisabledGroup();
