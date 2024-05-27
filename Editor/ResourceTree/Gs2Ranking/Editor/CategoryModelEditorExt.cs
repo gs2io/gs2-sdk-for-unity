@@ -30,16 +30,20 @@ namespace Gs2.Editor.ResourceTree.Gs2Ranking.Editor
             EditorGUILayout.TextField("Metadata", item.Metadata);
             EditorGUILayout.TextField("MinimumValue", item.MinimumValue?.ToString());
             EditorGUILayout.TextField("MaximumValue", item.MaximumValue?.ToString());
+            EditorGUILayout.TextField("Sum", item.Sum?.ToString());
             EditorGUILayout.TextField("OrderDirection", item.OrderDirection);
             EditorGUILayout.TextField("Scope", item.Scope);
-            EditorGUILayout.TextField("UniqueByUserId", item.UniqueByUserId?.ToString());
-            EditorGUILayout.TextField("Sum", item.Sum?.ToString());
-            EditorGUILayout.TextField("CalculateFixedTimingHour", item.CalculateFixedTimingHour?.ToString());
-            EditorGUILayout.TextField("CalculateFixedTimingMinute", item.CalculateFixedTimingMinute?.ToString());
-            EditorGUILayout.TextField("CalculateIntervalMinutes", item.CalculateIntervalMinutes?.ToString());
+            if (item.GlobalRankingSetting == null) {
+                EditorGUILayout.TextField("GlobalRankingSetting", "");
+            }
+            else {
+                EditorGUILayout.LabelField("GlobalRankingSetting");
+                EditorGUI.indentLevel++;
+                GlobalRankingSettingEditorExt.OnGUI(item.GlobalRankingSetting);
+                EditorGUI.indentLevel--;
+            }
             EditorGUILayout.TextField("EntryPeriodEventId", item.EntryPeriodEventId);
             EditorGUILayout.TextField("AccessPeriodEventId", item.AccessPeriodEventId);
-            EditorGUILayout.TextField("Generation", item.Generation);
             EditorGUI.EndDisabledGroup();
         }
     }

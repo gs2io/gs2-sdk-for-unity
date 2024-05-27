@@ -37,6 +37,10 @@ namespace Gs2.Unity.Gs2Ranking.Model
 		[SerializeField]
 		public string Metadata;
 		[SerializeField]
+		public string Scope;
+		[SerializeField]
+		public Gs2.Unity.Gs2Ranking.Model.EzGlobalRankingSetting GlobalRankingSetting;
+		[SerializeField]
 		public string EntryPeriodEventId;
 		[SerializeField]
 		public string AccessPeriodEventId;
@@ -46,6 +50,8 @@ namespace Gs2.Unity.Gs2Ranking.Model
             return new Gs2.Gs2Ranking.Model.CategoryModel {
                 Name = Name,
                 Metadata = Metadata,
+                Scope = Scope,
+                GlobalRankingSetting = GlobalRankingSetting?.ToModel(),
                 EntryPeriodEventId = EntryPeriodEventId,
                 AccessPeriodEventId = AccessPeriodEventId,
             };
@@ -56,6 +62,8 @@ namespace Gs2.Unity.Gs2Ranking.Model
             return new EzCategoryModel {
                 Name = model.Name == null ? null : model.Name,
                 Metadata = model.Metadata == null ? null : model.Metadata,
+                Scope = model.Scope == null ? null : model.Scope,
+                GlobalRankingSetting = model.GlobalRankingSetting == null ? null : Gs2.Unity.Gs2Ranking.Model.EzGlobalRankingSetting.FromModel(model.GlobalRankingSetting),
                 EntryPeriodEventId = model.EntryPeriodEventId == null ? null : model.EntryPeriodEventId,
                 AccessPeriodEventId = model.AccessPeriodEventId == null ? null : model.AccessPeriodEventId,
             };
