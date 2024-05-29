@@ -28,6 +28,15 @@ namespace Gs2.Editor.ResourceTree.Gs2Buff.Editor
             EditorGUILayout.TextField("NamespaceId", item.NamespaceId);
             EditorGUILayout.TextField("Name", item.Name);
             EditorGUILayout.TextField("Description", item.Description);
+            if (item.ApplyBuffScript == null) {
+                EditorGUILayout.TextField("ApplyBuffScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("ApplyBuffScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.ApplyBuffScript);
+                EditorGUI.indentLevel--;
+            }
             if (item.LogSetting == null) {
                 EditorGUILayout.TextField("LogSetting", "");
             }

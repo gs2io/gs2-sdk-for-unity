@@ -19,25 +19,14 @@ using Gs2.Core.Util;
 using Gs2.Editor.ResourceTree.Core.Editor;
 using UnityEditor;
 
-namespace Gs2.Editor.ResourceTree.Gs2Inbox.Editor
+namespace Gs2.Editor.ResourceTree.Gs2Buff.Editor
 {
-    public static class GlobalMessageEditorExt
+    public static class OverrideBuffRateEditorExt
     {
-        public static void OnGUI(Gs2.Gs2Inbox.Model.GlobalMessage item) {
+        public static void OnGUI(Gs2.Gs2Buff.Model.OverrideBuffRate item) {
             EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.TextField("GlobalMessageId", item.GlobalMessageId);
             EditorGUILayout.TextField("Name", item.Name);
-            EditorGUILayout.TextField("Metadata", item.Metadata);
-            if (item.ExpiresTimeSpan == null) {
-                EditorGUILayout.TextField("ExpiresTimeSpan", "");
-            }
-            else {
-                EditorGUILayout.LabelField("ExpiresTimeSpan");
-                EditorGUI.indentLevel++;
-                TimeSpanEditorExt.OnGUI(item.ExpiresTimeSpan);
-                EditorGUI.indentLevel--;
-            }
-            EditorGUILayout.TextField("MessageReceptionPeriodEventId", item.MessageReceptionPeriodEventId);
+            EditorGUILayout.TextField("Rate", item.Rate?.ToString());
             EditorGUI.EndDisabledGroup();
         }
     }
