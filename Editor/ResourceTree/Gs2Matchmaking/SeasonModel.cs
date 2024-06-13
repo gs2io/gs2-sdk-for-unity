@@ -24,40 +24,59 @@ using UnityEngine;
 
 namespace Gs2.Editor.ResourceTree.Gs2Matchmaking
 {
-    public sealed class Namespace : AbstractTreeViewItem
+    public sealed class SeasonModel : AbstractTreeViewItem
     {
-        private Gs2.Gs2Matchmaking.Model.Namespace _item;
-        public string NamespaceName => _item.Name;
+        private Gs2.Gs2Matchmaking.Model.SeasonModel _item;
+        private Namespace _parent;
+        public string NamespaceName => _parent.NamespaceName;
+        public string SeasonName => _item.Name;
 
-        public Namespace(
+        public SeasonModel(
                 int id,
-                Gs2.Gs2Matchmaking.Model.Namespace item
+                Namespace parent,
+                Gs2.Gs2Matchmaking.Model.SeasonModel item
         ) {
             this.id = id = id * 100;
-            this.depth = 2;
+            this.depth = 4;
             this.icon = EditorGUIUtility.ObjectContent(null, typeof(GameObject)).image.ToTexture2D();
             this.displayName = item.Name;
             this.children = new TreeViewItem[] {
-                new RatingModelHolder(++id, this),
-                new SeasonModelHolder(++id, this)
             }.ToList();
+            this._parent = parent;
             this._item = item;
         }
 
         public override ScriptableObject ToScriptableObject() {
-            var instance = Gs2.Unity.Gs2Matchmaking.ScriptableObject.Namespace.New(
+            Gs2.Unity.Gs2Matchmaking.ScriptableObject.Namespace parent = null;
+            var guids = AssetDatabase.FindAssets("t:Gs2.Unity.Gs2Matchmaking.ScriptableObject.Namespace");
+            foreach (var guid in guids) {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var item = AssetDatabase.LoadAssetAtPath<Gs2.Unity.Gs2Matchmaking.ScriptableObject.Namespace>(path);
+                if (
+                    item.NamespaceName == NamespaceName
+                ) {
+                    parent = item;
+                }
+            }
+            if (parent == null) {
+                Debug.LogError("Gs2.Unity.Gs2Matchmaking.ScriptableObject.Namespace not found.");
+                return null;
+            }
+            var instance = Gs2.Unity.Gs2Matchmaking.ScriptableObject.SeasonModel.New(
+                parent,
                 this._item.Name
             );
-            instance.name = this._item.Name + "Namespace";
+            instance.name = this._item.Name + "SeasonModel";
             return instance;
         }
 
         public override void OnGUI() {
-            NamespaceEditorExt.OnGUI(this._item);
+            SeasonModelEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
                 var directory = "Assets/Gs2/Resources/Matchmaking";
                 directory += "/Namespace" + "/" + NamespaceName;
+                directory += "/SeasonModel" + "/" + SeasonName;
 
                 CreateFolder(directory);
 

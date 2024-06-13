@@ -262,6 +262,61 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             );
         }
 
+        public Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzSeasonModel> SeasonModels(
+        )
+        {
+            return new Gs2.Unity.Gs2Matchmaking.Domain.Iterator.EzListSeasonModelsIterator(
+                this._domain,
+                this._connection
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Matchmaking.Model.EzSeasonModel> SeasonModelsAsync(
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Matchmaking.Model.EzSeasonModel>(async (writer, token) =>
+            {
+                var it = _domain.SeasonModelsAsync(
+                ).GetAsyncEnumerator();
+                while(
+                    await this._connection.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.SeasonModelsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Matchmaking.Model.EzSeasonModel.FromModel(it.Current));
+                }
+            });
+        }
+        #endif
+
+        public ulong SubscribeSeasonModels(
+            Action<Gs2.Unity.Gs2Matchmaking.Model.EzSeasonModel[]> callback
+        ) {
+            return this._domain.SubscribeSeasonModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Matchmaking.Model.EzSeasonModel.FromModel).ToArray());
+                }
+            );
+        }
+
+        public void UnsubscribeSeasonModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeSeasonModels(
+                callbackId
+            );
+        }
+
         public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzUserDomain User(
             string userId
         ) {
@@ -291,6 +346,17 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzRatingModelDomain(
                 _domain.RatingModel(
                     ratingName
+                ),
+                this._connection
+            );
+        }
+
+        public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzSeasonModelDomain SeasonModel(
+            string seasonName
+        ) {
+            return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzSeasonModelDomain(
+                _domain.SeasonModel(
+                    seasonName
                 ),
                 this._connection
             );

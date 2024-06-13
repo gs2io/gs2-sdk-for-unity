@@ -436,5 +436,157 @@ namespace Gs2.Unity.Gs2Matchmaking
                 )
             );
 		}
+
+        public IEnumerator GetJoinedSeasonGathering(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzGetJoinedSeasonGatheringResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string seasonName,
+                long season
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _client.GetJoinedSeasonGathering(
+                    new Gs2.Gs2Matchmaking.Request.GetJoinedSeasonGatheringRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithSeasonName(seasonName)
+                        .WithSeason(season)
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzGetJoinedSeasonGatheringResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Matchmaking.Result.EzGetJoinedSeasonGatheringResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListJoinedSeasonGatherings(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzListJoinedSeasonGatheringsResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string seasonName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribeJoinedSeasonGatherings(
+                    new Gs2.Gs2Matchmaking.Request.DescribeJoinedSeasonGatheringsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithSeasonName(seasonName)
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzListJoinedSeasonGatheringsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Matchmaking.Result.EzListJoinedSeasonGatheringsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator DoSeasonMatchmaking(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzDoSeasonMatchmakingResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string seasonName,
+                string matchmakingContextToken = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.DoSeasonMatchmaking(
+                    new Gs2.Gs2Matchmaking.Request.DoSeasonMatchmakingRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithSeasonName(seasonName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithMatchmakingContextToken(matchmakingContextToken),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzDoSeasonMatchmakingResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Matchmaking.Result.EzDoSeasonMatchmakingResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator GetSeasonGathering(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzGetSeasonGatheringResult>> callback,
+                string namespaceName,
+                string seasonName,
+                long season,
+                long tier,
+                string seasonGatheringName = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+                null,
+                cb => _restClient.GetSeasonGathering(
+                    new Gs2.Gs2Matchmaking.Request.GetSeasonGatheringRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithSeasonName(seasonName)
+                        .WithSeason(season)
+                        .WithTier(tier)
+                        .WithSeasonGatheringName(seasonGatheringName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzGetSeasonGatheringResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Matchmaking.Result.EzGetSeasonGatheringResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator GetSeasonModel(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzGetSeasonModelResult>> callback,
+                string namespaceName,
+                string seasonName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+                null,
+                cb => _client.GetSeasonModel(
+                    new Gs2.Gs2Matchmaking.Request.GetSeasonModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithSeasonName(seasonName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzGetSeasonModelResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Matchmaking.Result.EzGetSeasonModelResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListSeasonModels(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzListSeasonModelsResult>> callback,
+                string namespaceName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeSeasonModels(
+                    new Gs2.Gs2Matchmaking.Request.DescribeSeasonModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzListSeasonModelsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Matchmaking.Result.EzListSeasonModelsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
     }
 }
