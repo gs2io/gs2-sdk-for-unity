@@ -28,6 +28,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Buff.Editor
             EditorGUILayout.TextField("BuffEntryModelId", item.BuffEntryModelId);
             EditorGUILayout.TextField("Name", item.Name);
             EditorGUILayout.TextField("Metadata", item.Metadata);
+            EditorGUILayout.TextField("Expression", item.Expression);
             EditorGUILayout.TextField("TargetType", item.TargetType);
             if (item.TargetModel == null) {
                 EditorGUILayout.TextField("TargetModel", "");
@@ -47,7 +48,6 @@ namespace Gs2.Editor.ResourceTree.Gs2Buff.Editor
                 BuffTargetActionEditorExt.OnGUI(item.TargetAction);
                 EditorGUI.indentLevel--;
             }
-            EditorGUILayout.TextField("Expression", item.Expression);
             EditorGUILayout.TextField("Priority", item.Priority?.ToString());
             EditorGUILayout.TextField("ApplyPeriodScheduleEventId", item.ApplyPeriodScheduleEventId);
             EditorGUI.EndDisabledGroup();
