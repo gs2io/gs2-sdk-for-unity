@@ -250,6 +250,31 @@ namespace Gs2.Unity.Gs2Distributor
             );
 		}
 
+        public IEnumerator SetDefaultConfig(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzSetDefaultConfigResult>> callback,
+		        IGameSession session,
+                List<Gs2.Unity.Gs2Distributor.Model.EzConfig> config
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.SetTransactionDefaultConfig(
+                    new Gs2.Gs2Distributor.Request.SetTransactionDefaultConfigRequest()
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithConfig(config?.Select(v => {
+                            return v?.ToModel();
+                        }).ToArray()),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzSetDefaultConfigResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Distributor.Result.EzSetDefaultConfigResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator GetStampSheetResult(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzGetStampSheetResultResult>> callback,
 		        IGameSession session,
