@@ -107,6 +107,7 @@ namespace Gs2.Unity.Core
         public Gs2MegaField.Domain.Gs2MegaField MegaField;
         public Gs2Mission.Domain.Gs2Mission Mission;
         public Gs2Money.Domain.Gs2Money Money;
+        public Gs2Money2.Domain.Gs2Money2 Money2;
         public Gs2News.Domain.Gs2News News;
         public Gs2Quest.Domain.Gs2Quest Quest;
         public Gs2Ranking.Domain.Gs2Ranking Ranking;
@@ -171,6 +172,7 @@ namespace Gs2.Unity.Core
             MegaField = new Gs2MegaField.Domain.Gs2MegaField(_gs2.MegaField, connection);
             Mission = new Gs2Mission.Domain.Gs2Mission(_gs2.Mission, connection);
             Money = new Gs2Money.Domain.Gs2Money(_gs2.Money, connection);
+            Money2 = new Gs2Money2.Domain.Gs2Money2(_gs2.Money2, connection);
             News = new Gs2News.Domain.Gs2News(_gs2.News, connection);
             Quest = new Gs2Quest.Domain.Gs2Quest(_gs2.Quest, connection);
             Ranking = new Gs2Ranking.Domain.Gs2Ranking(_gs2.Ranking, connection);

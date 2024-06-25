@@ -31,9 +31,11 @@ namespace Gs2.Unity
         public readonly Gs2MegaField.Client MegaField;
         public readonly Gs2Mission.Client Mission;
         public readonly Gs2Money.Client Money;
+        public readonly Gs2Money2.Client Money2;
         public readonly Gs2News.Client News;
         public readonly Gs2Quest.Client Quest;
         public readonly Gs2Ranking.Client Ranking;
+        public readonly Gs2Ranking2.Client Ranking2;
         public readonly Gs2Realtime.Client Realtime;
         public readonly Gs2Schedule.Client Schedule;
         public readonly Gs2SeasonRating.Client SeasonRating;
@@ -78,9 +80,11 @@ namespace Gs2.Unity
             MegaField = new Gs2MegaField.Client(connection);
             Mission = new Gs2Mission.Client(connection);
             Money = new Gs2Money.Client(connection);
+            Money2 = new Gs2Money2.Client(connection);
             News = new Gs2News.Client(connection);
             Quest = new Gs2Quest.Client(connection);
             Ranking = new Gs2Ranking.Client(connection);
+            Ranking2 = new Gs2Ranking2.Client(connection);
             Realtime = new Gs2Realtime.Client(connection);
             Schedule = new Gs2Schedule.Client(connection);
             SeasonRating = new Gs2SeasonRating.Client(connection);
