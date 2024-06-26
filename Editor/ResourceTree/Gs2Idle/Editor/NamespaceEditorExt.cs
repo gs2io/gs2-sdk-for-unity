@@ -46,6 +46,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Idle.Editor
                 ScriptSettingEditorExt.OnGUI(item.ReceiveScript);
                 EditorGUI.indentLevel--;
             }
+            EditorGUILayout.TextField("OverrideAcquireActionsScriptId", item.OverrideAcquireActionsScriptId);
             if (item.LogSetting == null) {
                 EditorGUILayout.TextField("LogSetting", "");
             }
