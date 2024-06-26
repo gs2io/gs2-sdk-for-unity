@@ -24,41 +24,59 @@ using UnityEngine;
 
 namespace Gs2.Editor.ResourceTree.Gs2Money2
 {
-    public sealed class Namespace : AbstractTreeViewItem
+    public sealed class UnusedBalance : AbstractTreeViewItem
     {
-        private Gs2.Gs2Money2.Model.Namespace _item;
-        public string NamespaceName => _item.Name;
+        private Gs2.Gs2Money2.Model.UnusedBalance _item;
+        private Namespace _parent;
+        public string NamespaceName => _parent.NamespaceName;
+        public string Currency => _item.Currency;
 
-        public Namespace(
+        public UnusedBalance(
                 int id,
-                Gs2.Gs2Money2.Model.Namespace item
+                Namespace parent,
+                Gs2.Gs2Money2.Model.UnusedBalance item
         ) {
             this.id = id = id * 100;
-            this.depth = 2;
+            this.depth = 4;
             this.icon = EditorGUIUtility.ObjectContent(null, typeof(GameObject)).image.ToTexture2D();
-            this.displayName = item.Name;
+            this.displayName = item.Currency;
             this.children = new TreeViewItem[] {
-                new StoreContentModelHolder(++id, this),
-                new DailyTransactionHistoryHolder(++id, this),
-                new UnusedBalanceHolder(++id, this)
             }.ToList();
+            this._parent = parent;
             this._item = item;
         }
 
         public override ScriptableObject ToScriptableObject() {
-            var instance = Gs2.Unity.Gs2Money2.ScriptableObject.Namespace.New(
-                this._item.Name
+            Gs2.Unity.Gs2Money2.ScriptableObject.Namespace parent = null;
+            var guids = AssetDatabase.FindAssets("t:Gs2.Unity.Gs2Money2.ScriptableObject.Namespace");
+            foreach (var guid in guids) {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var item = AssetDatabase.LoadAssetAtPath<Gs2.Unity.Gs2Money2.ScriptableObject.Namespace>(path);
+                if (
+                    item.NamespaceName == NamespaceName
+                ) {
+                    parent = item;
+                }
+            }
+            if (parent == null) {
+                Debug.LogError("Gs2.Unity.Gs2Money2.ScriptableObject.Namespace not found.");
+                return null;
+            }
+            var instance = Gs2.Unity.Gs2Money2.ScriptableObject.UnusedBalance.New(
+                parent,
+                this._item.Currency
             );
-            instance.name = this._item.Name + "Namespace";
+            instance.name = this._item.Currency + "UnusedBalance";
             return instance;
         }
 
         public override void OnGUI() {
-            NamespaceEditorExt.OnGUI(this._item);
+            UnusedBalanceEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
                 var directory = "Assets/Gs2/Resources/Money2";
                 directory += "/Namespace" + "/" + NamespaceName;
+                directory += "/UnusedBalance" + "/" + Currency;
 
                 CreateFolder(directory);
 
