@@ -13,5 +13,7 @@ namespace Gs2.Unity.Gs2Realtime.Exception
         {
             Args = args;
         }
+
+        public override int StatusCode => 0;
     }
 }

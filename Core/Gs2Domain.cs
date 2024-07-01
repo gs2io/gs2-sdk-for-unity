@@ -74,6 +74,55 @@ namespace Gs2.Unity.Core
             );
         }
 #endif
+        
+        public static Gs2Future<Gs2Domain> CreateChaosFuture(
+            IGs2Credential credential,
+            float chaos,
+            Region region = Region.ApNortheast1,
+            string distributorNamespaceName = "default"
+        ) {
+            IEnumerator Impl(Gs2Future<Gs2Domain> self)
+            {
+                var connection = new Gs2Connection(
+                    credential,
+                    region,
+                    chaos
+                );
+                var future = connection.ConnectFuture();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var domain = new Gs2Domain(
+                    connection,
+                    distributorNamespaceName
+                );
+                self.OnComplete(domain);
+            }
+
+            return new Gs2InlineFuture<Gs2Domain>(Impl);
+        }
+        
+#if GS2_ENABLE_UNITASK
+        public static async UniTask<Gs2Domain> CreateChaosAsync(
+            IGs2Credential credential,
+            float chaos,
+            Region region = Region.ApNortheast1,
+            string distributorNamespaceName = "default"
+        ) {
+            var connection = new Gs2Connection(
+                credential,
+                region,
+                chaos
+            );
+            await connection.ConnectAsync();
+            return new Gs2Domain(
+                connection,
+                distributorNamespaceName
+            );
+        }
+#endif
     }
     
     public class Gs2Domain

@@ -16,5 +16,7 @@ namespace Gs2.Unity.Gs2Realtime.Exception
         {
             Profile = profile;
         }
+
+        public override int StatusCode => 500;
     }
 }

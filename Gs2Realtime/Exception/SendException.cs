@@ -14,5 +14,7 @@ namespace Gs2.Unity.Gs2Realtime.Exception
         {
             SendFailedMessage = sendFailedMessage;
         }
+
+        public override int StatusCode => 500;
     }
 }

@@ -28,6 +28,15 @@ namespace Gs2.Unity.Util
             WebSocketSession = new Gs2WebSocketSession(credential, region);
         }
 
+        public Gs2Connection(
+            IGs2Credential credential,
+            Region region,
+            float chaos
+        ) {
+            RestSession = new Gs2.Core.Net.Chaos.ChaosGs2RestSession(credential, chaos, region);
+            WebSocketSession = new Gs2WebSocketSession(credential, region);
+        }
+
         public Gs2Future<OpenResult> ConnectFuture() {
             IEnumerator Impl(Gs2Future<OpenResult> self)
             {

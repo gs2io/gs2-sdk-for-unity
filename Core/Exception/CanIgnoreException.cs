@@ -12,5 +12,7 @@ namespace Gs2.Unity.Core.Exception
         {
             Original = original;
         }
+
+        public override int StatusCode => Original.StatusCode;
     }
 }
