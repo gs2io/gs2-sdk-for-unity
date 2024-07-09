@@ -13,6 +13,9 @@ namespace Gs2.Unity.Core.Exception
             Original = original;
         }
 
+        public override bool RecommendRetry => Original.RecommendRetry;
+        public override bool RecommendAutoRetry => Original.RecommendAutoRetry;
+
         public override int StatusCode => Original.StatusCode;
     }
 }

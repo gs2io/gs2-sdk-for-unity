@@ -17,6 +17,9 @@ namespace Gs2.Unity.Gs2Realtime.Exception
             Profile = profile;
         }
 
+        public override bool RecommendRetry => true;
+        public override bool RecommendAutoRetry => false;
+
         public override int StatusCode => 500;
     }
 }

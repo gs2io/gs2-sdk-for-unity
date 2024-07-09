@@ -15,6 +15,9 @@ namespace Gs2.Unity.Gs2Realtime.Exception
             SendFailedMessage = sendFailedMessage;
         }
 
+        public override bool RecommendRetry => true;
+        public override bool RecommendAutoRetry => false;
+
         public override int StatusCode => 500;
     }
 }
