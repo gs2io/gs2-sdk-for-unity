@@ -77,8 +77,6 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         )
         {
             return new Gs2.Unity.Gs2Account.Domain.Iterator.EzListTakeOverSettingsIterator(
-                _domain.TakeOvers(
-                ),
                 this._domain,
                 this._gameSession,
                 this._connection
@@ -131,12 +129,82 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             );
         }
 
+        public Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzPlatformId> PlatformIds(
+        )
+        {
+            return new Gs2.Unity.Gs2Account.Domain.Iterator.EzListPlatformIdSettingsIterator(
+                this._domain,
+                this._gameSession,
+                this._connection
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Account.Model.EzPlatformId> PlatformIdsAsync(
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Account.Model.EzPlatformId>(async (writer, token) =>
+            {
+                var it = _domain.PlatformIdsAsync(
+                ).GetAsyncEnumerator();
+                while(
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.PlatformIdsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Account.Model.EzPlatformId.FromModel(it.Current));
+                }
+            });
+        }
+        #endif
+
+        public ulong SubscribePlatformIds(
+            Action<Gs2.Unity.Gs2Account.Model.EzPlatformId[]> callback
+        ) {
+            return this._domain.SubscribePlatformIds(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Account.Model.EzPlatformId.FromModel).ToArray());
+                }
+            );
+        }
+
+        public void UnsubscribePlatformIds(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribePlatformIds(
+                callbackId
+            );
+        }
+
         public Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain TakeOver(
             int type
         ) {
             return new Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain(
                 _domain.TakeOver(
                     type
+                ),
+                this._gameSession,
+                this._connection
+            );
+        }
+
+        public Gs2.Unity.Gs2Account.Domain.Model.EzPlatformIdGameSessionDomain PlatformId(
+            int type,
+            string userIdentifier
+        ) {
+            return new Gs2.Unity.Gs2Account.Domain.Model.EzPlatformIdGameSessionDomain(
+                _domain.PlatformId(
+                    type,
+                    userIdentifier
                 ),
                 this._gameSession,
                 this._connection

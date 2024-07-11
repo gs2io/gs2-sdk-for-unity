@@ -57,9 +57,9 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         private readonly Gs2.Gs2Account.Domain.Model.AccountDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public Gs2.Unity.Gs2Account.Model.EzBanStatus[] BanStatuses => _domain.BanStatuses.Select(Gs2.Unity.Gs2Account.Model.EzBanStatus.FromModel).ToArray();
-        public string Body => _domain.Body;
-        public string Signature => _domain.Signature;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? Body => _domain.Body;
+        public string? Signature => _domain.Signature;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
@@ -142,6 +142,19 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             );
         }
 
+        public Gs2.Unity.Gs2Account.Domain.Model.EzPlatformIdDomain PlatformId(
+            int type,
+            string userIdentifier
+        ) {
+            return new Gs2.Unity.Gs2Account.Domain.Model.EzPlatformIdDomain(
+                _domain.PlatformId(
+                    type,
+                    userIdentifier
+                ),
+                this._connection
+            );
+        }
+
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Model.EzAccount> Model()
         {
@@ -194,10 +207,15 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Model.EzAccount>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2Account.Model.EzAccount> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2Account.Model.EzAccount.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Account.Model.EzAccount.FromModel(
                     item
                 ));
             });
@@ -207,6 +225,40 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         {
             this._domain.Unsubscribe(callbackId);
         }
+
+        #if UNITY_2017_1_OR_NEWER
+        public Gs2Future<ulong> SubscribeWithInitialCallFuture(Action<Gs2.Unity.Gs2Account.Model.EzAccount> callback)
+        {
+            IEnumerator Impl(IFuture<ulong> self)
+            {
+                var future = ModelFuture();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                var callbackId = Subscribe(callback);
+                callback.Invoke(item);
+                self.OnComplete(callbackId);
+            }
+            return new Gs2InlineFuture<ulong>(Impl);
+        }
+        #endif
+
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
+        public async UniTask<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Account.Model.EzAccount> callback)
+            #else
+        public async Task<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Account.Model.EzAccount> callback)
+            #endif
+        {
+            var item = await ModelAsync();
+            var callbackId = Subscribe(callback);
+            callback.Invoke(item);
+            return callbackId;
+        }
+        #endif
 
     }
 }

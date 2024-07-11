@@ -41,14 +41,14 @@ using UnityEngine.Scripting;
 namespace Gs2.Unity.Gs2Account.Domain.Iterator
 {
 
-    public class EzListTakeOverSettingsIterator : Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzTakeOver>
+    public class EzListPlatformIdSettingsIterator : Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzPlatformId>
     {
-        private Gs2Iterator<Gs2.Gs2Account.Model.TakeOver> _it;
+        private Gs2Iterator<Gs2.Gs2Account.Model.PlatformId> _it;
         private readonly Gs2.Gs2Account.Domain.Model.AccountAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
-        public EzListTakeOverSettingsIterator(
+        public EzListPlatformIdSettingsIterator(
             Gs2.Gs2Account.Domain.Model.AccountAccessTokenDomain domain,
             Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
@@ -57,7 +57,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Iterator
             _domain = domain;
             _gameSession = gameSession;
             _connection = connection;
-            _it = _domain.TakeOvers(
+            _it = _domain.PlatformIds(
             );
         }
 
@@ -66,20 +66,20 @@ namespace Gs2.Unity.Gs2Account.Domain.Iterator
             return _it.HasNext();
         }
 
-        protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Account.Model.EzTakeOver>> callback)
+        protected override IEnumerator Next(Action<AsyncResult<Gs2.Unity.Gs2Account.Model.EzPlatformId>> callback)
         {
             yield return _connection.RunIterator(
                 _gameSession,
                 _it,
                 () =>
                 {
-                    return _it = _domain.TakeOvers(
+                    return _it = _domain.PlatformIds(
                     );
                 }
             );
             callback.Invoke(
-                new AsyncResult<Gs2.Unity.Gs2Account.Model.EzTakeOver>(
-                    _it.Current == null ? null : Gs2.Unity.Gs2Account.Model.EzTakeOver.FromModel(_it.Current),
+                new AsyncResult<Gs2.Unity.Gs2Account.Model.EzPlatformId>(
+                    _it.Current == null ? null : Gs2.Unity.Gs2Account.Model.EzPlatformId.FromModel(_it.Current),
                     _it.Error
                 )
             );

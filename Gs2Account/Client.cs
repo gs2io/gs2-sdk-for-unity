@@ -263,5 +263,135 @@ namespace Gs2.Unity.Gs2Account
                 )
             );
 		}
+
+        public IEnumerator AddPlatformIdSetting(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzAddPlatformIdSettingResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                int type,
+                string userIdentifier
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _client.CreatePlatformId(
+                    new Gs2.Gs2Account.Request.CreatePlatformIdRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithType(type)
+                        .WithUserIdentifier(userIdentifier),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Account.Result.EzAddPlatformIdSettingResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Account.Result.EzAddPlatformIdSettingResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator DeletePlatformIdSetting(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzDeletePlatformIdSettingResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                int type
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _client.DeletePlatformId(
+                    new Gs2.Gs2Account.Request.DeletePlatformIdRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithType(type),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Account.Result.EzDeletePlatformIdSettingResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Account.Result.EzDeletePlatformIdSettingResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator FindPlatformUser(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzFindPlatformUserResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                int type,
+                string userIdentifier
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _client.FindPlatformId(
+                    new Gs2.Gs2Account.Request.FindPlatformIdRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithType(type)
+                        .WithUserIdentifier(userIdentifier),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Account.Result.EzFindPlatformUserResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Account.Result.EzFindPlatformUserResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator GetPlatformId(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzGetPlatformIdResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                int type
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _client.GetPlatformId(
+                    new Gs2.Gs2Account.Request.GetPlatformIdRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithType(type),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Account.Result.EzGetPlatformIdResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Account.Result.EzGetPlatformIdResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListPlatformIdSettings(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzListPlatformIdSettingsResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string pageToken = null,
+                int? limit = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribePlatformIds(
+                    new Gs2.Gs2Account.Request.DescribePlatformIdsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Account.Result.EzListPlatformIdSettingsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Account.Result.EzListPlatformIdSettingsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
     }
 }
