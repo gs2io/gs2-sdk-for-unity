@@ -32,6 +32,9 @@ namespace Gs2.Editor.ResourceTree.Gs2Schedule.Editor
             EditorGUILayout.TextField("EndDayOfWeek", item.EndDayOfWeek);
             EditorGUILayout.TextField("BeginHour", item.BeginHour?.ToString());
             EditorGUILayout.TextField("EndHour", item.EndHour?.ToString());
+            EditorGUILayout.TextField("AnchorTimestamp", UnixTime.FromUnixTime(item.AnchorTimestamp ?? 0).ToString(CultureInfo.CurrentUICulture));
+            EditorGUILayout.TextField("ActiveDays", item.ActiveDays?.ToString());
+            EditorGUILayout.TextField("InactiveDays", item.InactiveDays?.ToString());
             EditorGUI.EndDisabledGroup();
         }
     }
