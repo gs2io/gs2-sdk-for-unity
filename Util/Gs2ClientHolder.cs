@@ -89,13 +89,12 @@ namespace Gs2.Unity.Util
                 v => v.name == this.activeEnvironmentName
             );
             if (environment == null) {
-                onError.Invoke(new CanIgnoreException(
-                    new UnknownException(new [] {
+                onError.Invoke(new UnknownException(new [] {
                         new RequestError(
                             "environment",
                             "prefab.GS2ClientHolder.activeEnvironmentName.error.notFound"
                         )
-                    })
+                    }
                 ), null);
                 yield break;
             }
