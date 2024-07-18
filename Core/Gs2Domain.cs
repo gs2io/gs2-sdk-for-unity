@@ -160,6 +160,7 @@ namespace Gs2.Unity.Core
         public Gs2News.Domain.Gs2News News;
         public Gs2Quest.Domain.Gs2Quest Quest;
         public Gs2Ranking.Domain.Gs2Ranking Ranking;
+        public Gs2Ranking2.Domain.Gs2Ranking2 Ranking2;
         public Gs2Realtime.Domain.Gs2Realtime Realtime;
         public Gs2Schedule.Domain.Gs2Schedule Schedule;
         public Gs2SeasonRating.Domain.Gs2SeasonRating SeasonRating;
@@ -225,6 +226,7 @@ namespace Gs2.Unity.Core
             News = new Gs2News.Domain.Gs2News(_gs2.News, connection);
             Quest = new Gs2Quest.Domain.Gs2Quest(_gs2.Quest, connection);
             Ranking = new Gs2Ranking.Domain.Gs2Ranking(_gs2.Ranking, connection);
+            Ranking2 = new Gs2Ranking2.Domain.Gs2Ranking2(_gs2.Ranking2, connection);
             Realtime = new Gs2Realtime.Domain.Gs2Realtime(_gs2.Realtime, connection);
             Schedule = new Gs2Schedule.Domain.Gs2Schedule(_gs2.Schedule, connection);
             SeasonRating = new Gs2SeasonRating.Domain.Gs2SeasonRating(_gs2.SeasonRating, connection);
