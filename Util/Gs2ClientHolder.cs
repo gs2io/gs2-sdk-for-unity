@@ -39,8 +39,8 @@ namespace Gs2.Unity.Util
         
         public event UnityAction OnInitialized
         {
-            add => onInitialized.AddListener(value);
-            remove => onInitialized.RemoveListener(value);
+            add => this.onInitialized.AddListener(value);
+            remove => this.onInitialized.RemoveListener(value);
         }
         
         [SerializeField]
@@ -48,8 +48,8 @@ namespace Gs2.Unity.Util
         
         public event UnityAction<Gs2Exception, Func<IEnumerator>> OnError
         {
-            add => onError.AddListener(value);
-            remove => onError.RemoveListener(value);
+            add => this.onError.AddListener(value);
+            remove => this.onError.RemoveListener(value);
         }
 
         protected internal static Gs2ClientHolder _instance;
@@ -89,7 +89,7 @@ namespace Gs2.Unity.Util
                 v => v.name == this.activeEnvironmentName
             );
             if (environment == null) {
-                onError.Invoke(new UnknownException(new [] {
+                this.onError.Invoke(new UnknownException(new [] {
                         new RequestError(
                             "environment",
                             "prefab.GS2ClientHolder.activeEnvironmentName.error.notFound"
@@ -104,7 +104,7 @@ namespace Gs2.Unity.Util
                     environment.clientSecret
                 ),
                 environment.region,
-                distributorNamespace == null ? null : distributorNamespace.NamespaceName
+                this.distributorNamespace == null ? "default" : this.distributorNamespace.NamespaceName
             );
             yield return future;
             if (future.Error != null)
@@ -115,7 +115,7 @@ namespace Gs2.Unity.Util
             
             Gs2 = future.Result;
 
-            onInitialized.Invoke();
+            this.onInitialized.Invoke();
         }
         
         public void DebugErrorHandler(Gs2Exception e, Func<IEnumerator> retry) {
