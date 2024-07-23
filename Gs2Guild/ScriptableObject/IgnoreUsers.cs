@@ -27,44 +27,41 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Guild.ScriptableObject
 {
-    [CreateAssetMenu(fileName = "OwnReceiveMemberRequest", menuName = "Game Server Services/Gs2Guild/OwnReceiveMemberRequest")]
-    public class OwnReceiveMemberRequest : UnityEngine.ScriptableObject
+    [CreateAssetMenu(fileName = "IgnoreUsers", menuName = "Game Server Services/Gs2Guild/IgnoreUsers")]
+    public class IgnoreUsers : UnityEngine.ScriptableObject
     {
         public Guild Guild;
-        public string fromUserId;
 
-        public string NamespaceName => this.Guild.NamespaceName;
-        public string GuildModelName => this.Guild.GuildModelName;
-        public string GuildName => this.Guild.GuildName;
-        public string FromUserId => this.fromUserId;
+        public string NamespaceName => this.Guild?.NamespaceName;
+        public string GuildModelName => this.Guild?.GuildModelName;
+        public string GuildName => this.Guild?.GuildName;
 
 #if UNITY_INCLUDE_TESTS
-        public static OwnReceiveMemberRequest Load(
+        public static IgnoreUsers Load(
             string assetPath
         )
         {
             return Instantiate(
-                AssetDatabase.LoadAssetAtPath<OwnReceiveMemberRequest>(assetPath)
+                AssetDatabase.LoadAssetAtPath<IgnoreUsers>(assetPath)
             );
         }
 #endif
-        public static OwnReceiveMemberRequest New(
-            Guild @guild,
-            string fromUserId
+
+        public static IgnoreUsers New(
+            Guild Guild
         )
         {
-            var instance = CreateInstance<OwnReceiveMemberRequest>();
-            instance.name = "Runtime";
-            instance.Guild = @guild;
-            instance.fromUserId = fromUserId;
-            return instance;
-        }
-        public OwnReceiveMemberRequest Clone()
-        {
-            var instance = CreateInstance<OwnReceiveMemberRequest>();
+            var instance = CreateInstance<IgnoreUsers>();
             instance.name = "Runtime";
             instance.Guild = Guild;
-            instance.fromUserId = fromUserId;
+            return instance;
+        }
+
+        public IgnoreUsers Clone()
+        {
+            var instance = CreateInstance<IgnoreUsers>();
+            instance.name = "Runtime";
+            instance.Guild = Guild;
             return instance;
         }
     }

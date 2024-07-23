@@ -51,44 +51,19 @@ using System.Collections.Generic;
 namespace Gs2.Unity.Gs2Guild.Domain.Model
 {
 
-    public partial class EzUserDomain {
-        private readonly Gs2.Gs2Guild.Domain.Model.UserDomain _domain;
+    public partial class EzIgnoreUserDomain {
+        private readonly Gs2.Gs2Guild.Domain.Model.IgnoreUserDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
-        public string UserId => _domain?.UserId;
+        public string GuildModelName => _domain?.GuildModelName;
+        public string GuildName => _domain?.GuildName;
 
-        public EzUserDomain(
-            Gs2.Gs2Guild.Domain.Model.UserDomain domain,
+        public EzIgnoreUserDomain(
+            Gs2.Gs2Guild.Domain.Model.IgnoreUserDomain domain,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
             this._connection = connection;
-        }
-
-        public Gs2.Unity.Gs2Guild.Domain.Model.EzSendMemberRequestDomain SendMemberRequest(
-            string guildModelName,
-            string guildName
-        ) {
-            return new Gs2.Unity.Gs2Guild.Domain.Model.EzSendMemberRequestDomain(
-                _domain.SendMemberRequest(
-                    guildModelName,
-                    guildName
-                ),
-                this._connection
-            );
-        }
-
-        public Gs2.Unity.Gs2Guild.Domain.Model.EzJoinedGuildDomain JoinedGuild(
-            string guildModelName,
-            string guildName
-        ) {
-            return new Gs2.Unity.Gs2Guild.Domain.Model.EzJoinedGuildDomain(
-                _domain.JoinedGuild(
-                    guildModelName,
-                    guildName
-                ),
-                this._connection
-            );
         }
 
     }

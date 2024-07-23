@@ -70,12 +70,10 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
         }
 
         public Gs2.Unity.Gs2Guild.Domain.Model.EzReceiveMemberRequestDomain ReceiveMemberRequest(
-            string targetGuildName,
             string fromUserId
         ) {
             return new Gs2.Unity.Gs2Guild.Domain.Model.EzReceiveMemberRequestDomain(
                 _domain.ReceiveMemberRequest(
-                    targetGuildName,
                     fromUserId
                 ),
                 this._connection

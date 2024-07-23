@@ -31,7 +31,6 @@ namespace Gs2.Editor.ResourceTree.Gs2Guild
         public string NamespaceName => _parent.NamespaceName;
         public string GuildModelName => _parent.GuildModelName;
         public string GuildName => _parent.GuildName;
-        public string TargetGuildName => _item.TargetGuildName;
         public string FromUserId => _item.UserId;
 
         public ReceiveMemberRequest(
@@ -42,7 +41,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Guild
             this.id = id = id * 100;
             this.depth = 6;
             this.icon = EditorGUIUtility.ObjectContent(null, typeof(GameObject)).image.ToTexture2D();
-            this.displayName = item.TargetGuildName + item.UserId;
+            this.displayName = item.UserId;
             this.children = new TreeViewItem[] {
             }.ToList();
             this._parent = parent;
@@ -69,10 +68,9 @@ namespace Gs2.Editor.ResourceTree.Gs2Guild
             }
             var instance = Gs2.Unity.Gs2Guild.ScriptableObject.OwnReceiveMemberRequest.New(
                 parent,
-                this._item.TargetGuildName,
                 this._item.UserId
             );
-            instance.name = this._item.TargetGuildName +this._item.UserId + "ReceiveMemberRequest";
+            instance.name = this._item.UserId + "ReceiveMemberRequest";
             return instance;
         }
 
@@ -84,7 +82,6 @@ namespace Gs2.Editor.ResourceTree.Gs2Guild
                 directory += "/Namespace" + "/" + NamespaceName;
                 directory += "/Guild" + "/" + GuildModelName;
                 directory += "/Guild" + "/" + GuildName;
-                directory += "/ReceiveMemberRequest" + "/" + TargetGuildName;
                 directory += "/" + FromUserId;
 
                 CreateFolder(directory);

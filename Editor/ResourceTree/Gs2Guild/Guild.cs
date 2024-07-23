@@ -43,7 +43,8 @@ namespace Gs2.Editor.ResourceTree.Gs2Guild
             this.displayName = item.GuildModelName + item.Name;
             this.children = new TreeViewItem[] {
                 new InboxHolder(++id, this),
-                new ReceiveMemberRequestHolder(++id, this)
+                new ReceiveMemberRequestHolder(++id, this),
+                new IgnoreUserHolder(++id, this)
             }.ToList();
             this._parent = parent;
             this._item = item;
