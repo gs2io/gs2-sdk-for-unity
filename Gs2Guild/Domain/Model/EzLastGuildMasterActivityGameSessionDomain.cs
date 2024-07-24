@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -26,7 +24,6 @@
 // ReSharper disable NotAccessedField.Local
 
 #pragma warning disable 1998
-#pragma warning disable CS0169, CS0168
 
 using System;
 using System.Linq;
@@ -43,7 +40,6 @@ using Gs2.Core.Domain;
 using Gs2.Core.Util;
 using UnityEngine.Scripting;
 using System.Collections;
-using Gs2.Unity.Util;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
@@ -54,82 +50,57 @@ using System.Collections.Generic;
 namespace Gs2.Unity.Gs2Guild.Domain.Model
 {
 
-    public partial class EzGuildDomain {
-        private readonly Gs2.Gs2Guild.Domain.Model.GuildDomain _domain;
+    public partial class EzLastGuildMasterActivityGameSessionDomain {
+        private readonly Gs2.Gs2Guild.Domain.Model.LastGuildMasterActivityAccessTokenDomain _domain;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string GuildModelName => _domain?.GuildModelName;
         public string GuildName => _domain?.GuildName;
 
-        public EzGuildDomain(
-            Gs2.Gs2Guild.Domain.Model.GuildDomain domain,
+        public EzLastGuildMasterActivityGameSessionDomain(
+            Gs2.Gs2Guild.Domain.Model.LastGuildMasterActivityAccessTokenDomain domain,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
+            this._gameSession = gameSession;
             this._connection = connection;
         }
 
-        public Gs2.Unity.Gs2Guild.Domain.Model.EzReceiveMemberRequestDomain ReceiveMemberRequest(
-            string fromUserId
-        ) {
-            return new Gs2.Unity.Gs2Guild.Domain.Model.EzReceiveMemberRequestDomain(
-                _domain.ReceiveMemberRequest(
-                    fromUserId
-                ),
-                this._connection
-            );
+        [Obsolete("The name has been changed to ModelFuture.")]
+        public IFuture<Gs2.Unity.Gs2Guild.Model.EzLastGuildMasterActivity> Model()
+        {
+            return ModelFuture();
         }
-
-        public Gs2.Unity.Gs2Guild.Domain.Model.EzIgnoreUserDomain IgnoreUser(
-        ) {
-            return new Gs2.Unity.Gs2Guild.Domain.Model.EzIgnoreUserDomain(
-                _domain.IgnoreUser(
-                ),
-                this._connection
-            );
-        }
-
-        public Gs2.Unity.Gs2Guild.Domain.Model.EzLastGuildMasterActivityDomain LastGuildMasterActivity(
-        ) {
-            return new Gs2.Unity.Gs2Guild.Domain.Model.EzLastGuildMasterActivityDomain(
-                _domain.LastGuildMasterActivity(
-                ),
-                this._connection
-            );
-        }
-
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Guild.Model.EzGuild> ModelAsync(
-            GameSession gameSession
-        )
+        public async UniTask<Gs2.Unity.Gs2Guild.Model.EzLastGuildMasterActivity> ModelAsync()
         {
             var item = await this._connection.RunAsync(
-                null,
+                this._gameSession,
                 async () =>
                 {
-                    return await _domain.ModelAsync(gameSession.AccessToken);
+                    return await _domain.ModelAsync();
                 }
             );
             if (item == null) {
                 return null;
             }
-            return Gs2.Unity.Gs2Guild.Model.EzGuild.FromModel(
+            return Gs2.Unity.Gs2Guild.Model.EzLastGuildMasterActivity.FromModel(
                 item
             );
         }
         #endif
 
-        public IFuture<Gs2.Unity.Gs2Guild.Model.EzGuild> ModelFuture(
-            GameSession gameSession
-        )
+        public IFuture<Gs2.Unity.Gs2Guild.Model.EzLastGuildMasterActivity> ModelFuture()
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Guild.Model.EzGuild> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Guild.Model.EzLastGuildMasterActivity> self)
             {
                 var future = this._connection.RunFuture(
-                    null,
+                    this._gameSession,
                     () => {
-                    	return _domain.ModelFuture(gameSession.AccessToken);
+                    	return _domain.ModelFuture();
                     }
                 );
                 yield return future;
@@ -142,11 +113,11 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
                     self.OnComplete(null);
                     yield break;
                 }
-                self.OnComplete(Gs2.Unity.Gs2Guild.Model.EzGuild.FromModel(
+                self.OnComplete(Gs2.Unity.Gs2Guild.Model.EzLastGuildMasterActivity.FromModel(
                     item
                 ));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Guild.Model.EzGuild>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Guild.Model.EzLastGuildMasterActivity>(Impl);
         }
 
         public void Invalidate()
@@ -154,13 +125,10 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
             this._domain.Invalidate();
         }
 
-        public ulong Subscribe(
-            GameSession gameSession,
-            Action<Gs2.Unity.Gs2Guild.Model.EzGuild> callback
-        )
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Guild.Model.EzLastGuildMasterActivity> callback)
         {
-            return this._domain.Subscribe(gameSession.AccessToken, item => {
-                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Guild.Model.EzGuild.FromModel(
+            return this._domain.Subscribe(item => {
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Guild.Model.EzLastGuildMasterActivity.FromModel(
                     item
                 ));
             });
@@ -172,21 +140,18 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
         }
 
         #if UNITY_2017_1_OR_NEWER
-        public Gs2Future<ulong> SubscribeWithInitialCallFuture(
-            GameSession gameSession,
-            Action<Gs2.Unity.Gs2Guild.Model.EzGuild> callback
-        )
+        public Gs2Future<ulong> SubscribeWithInitialCallFuture(Action<Gs2.Unity.Gs2Guild.Model.EzLastGuildMasterActivity> callback)
         {
             IEnumerator Impl(IFuture<ulong> self)
             {
-                var future = ModelFuture(gameSession);
+                var future = ModelFuture();
                 yield return future;
                 if (future.Error != null) {
                     self.OnError(future.Error);
                     yield break;
                 }
                 var item = future.Result;
-                var callbackId = Subscribe(gameSession, callback);
+                var callbackId = Subscribe(callback);
                 callback.Invoke(item);
                 self.OnComplete(callbackId);
             }
@@ -196,22 +161,17 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
 
         #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
             #if UNITY_2017_1_OR_NEWER
-        public async UniTask<ulong> SubscribeWithInitialCallAsync(
-            GameSession gameSession,
-            Action<Gs2.Unity.Gs2Guild.Model.EzGuild> callback
-        )
+        public async UniTask<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Guild.Model.EzLastGuildMasterActivity> callback)
             #else
-        public async Task<ulong> SubscribeWithInitialCallAsync(
-            GameSession gameSession,
-            Action<Gs2.Unity.Gs2Guild.Model.EzGuild> callback
-        )
+        public async Task<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Guild.Model.EzLastGuildMasterActivity> callback)
             #endif
         {
-            var item = await ModelAsync(gameSession);
-            var callbackId = Subscribe(gameSession, callback);
+            var item = await ModelAsync();
+            var callbackId = Subscribe(callback);
             callback.Invoke(item);
             return callbackId;
         }
         #endif
+
     }
 }
