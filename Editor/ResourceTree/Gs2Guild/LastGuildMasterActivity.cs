@@ -26,59 +26,55 @@ using UnityEngine;
 
 namespace Gs2.Editor.ResourceTree.Gs2Guild
 {
-    public sealed class Guild : AbstractTreeViewItem
+    public sealed class LastGuildMasterActivity : AbstractTreeViewItem
     {
-        private Gs2.Gs2Guild.Model.Guild _item;
-        private Namespace _parent;
+        private Gs2.Gs2Guild.Model.LastGuildMasterActivity _item;
+        private Guild _parent;
         public string NamespaceName => _parent.NamespaceName;
-        public string GuildModelName => _item.GuildModelName;
-        public string GuildName => _item.Name;
+        public string GuildModelName => _parent.GuildModelName;
+        public string GuildName => _parent.GuildName;
 
-        public Guild(
+        public LastGuildMasterActivity(
                 int id,
-                Namespace parent,
-                Gs2.Gs2Guild.Model.Guild item
+                Guild parent,
+                Gs2.Gs2Guild.Model.LastGuildMasterActivity item
         ) {
             this.id = id = id * 100;
-            this.depth = 4;
+            this.depth = 6;
             this.icon = EditorGUIUtility.ObjectContent(null, typeof(GameObject)).image.ToTexture2D();
-            this.displayName = item.GuildModelName + item.Name;
             this.children = new TreeViewItem[] {
-                new InboxHolder(++id, this),
-                new ReceiveMemberRequestHolder(++id, this),
-                new IgnoreUserHolder(++id, this)
             }.ToList();
             this._parent = parent;
             this._item = item;
         }
 
         public override ScriptableObject ToScriptableObject() {
-            Gs2.Unity.Gs2Guild.ScriptableObject.Namespace parent = null;
-            var guids = AssetDatabase.FindAssets("t:Gs2.Unity.Gs2Guild.ScriptableObject.Namespace");
+            Gs2.Unity.Gs2Guild.ScriptableObject.Guild parent = null;
+            var guids = AssetDatabase.FindAssets("t:Gs2.Unity.Gs2Guild.ScriptableObject.Guild");
             foreach (var guid in guids) {
                 var path = AssetDatabase.GUIDToAssetPath(guid);
-                var item = AssetDatabase.LoadAssetAtPath<Gs2.Unity.Gs2Guild.ScriptableObject.Namespace>(path);
+                var item = AssetDatabase.LoadAssetAtPath<Gs2.Unity.Gs2Guild.ScriptableObject.Guild>(path);
                 if (
-                    item.NamespaceName == NamespaceName
+                    item.NamespaceName == NamespaceName &&
+                    item.GuildModelName == GuildModelName &&
+                    item.GuildName == GuildName
                 ) {
                     parent = item;
                 }
             }
             if (parent == null) {
-                Debug.LogError("Gs2.Unity.Gs2Guild.ScriptableObject.Namespace not found.");
+                Debug.LogError("Gs2.Unity.Gs2Guild.ScriptableObject.Guild not found.");
                 return null;
             }
-            var instance = Gs2.Unity.Gs2Guild.ScriptableObject.Guild.New(
-                parent,
-                this._item.GuildModelName,
-                this._item.Name
+            var instance = Gs2.Unity.Gs2Guild.ScriptableObject.LastGuildMasterActivity.New(
+                parent
             );
-            instance.name = this._item.GuildModelName +this._item.Name + "Guild";
+            instance.name =  "LastGuildMasterActivity";
             return instance;
         }
 
         public override void OnGUI() {
-            GuildEditorExt.OnGUI(this._item);
+            LastGuildMasterActivityEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
                 var directory = "Assets/Gs2/Resources/Guild";

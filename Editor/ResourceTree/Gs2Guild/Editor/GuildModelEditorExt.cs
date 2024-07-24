@@ -30,6 +30,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Guild.Editor
             EditorGUILayout.TextField("Metadata", item.Metadata);
             EditorGUILayout.TextField("DefaultMaximumMemberCount", item.DefaultMaximumMemberCount?.ToString());
             EditorGUILayout.TextField("MaximumMemberCount", item.MaximumMemberCount?.ToString());
+            EditorGUILayout.TextField("InactivityPeriodDays", item.InactivityPeriodDays?.ToString());
             EditorGUILayout.TextField("GuildMasterRole", item.GuildMasterRole);
             EditorGUILayout.TextField("GuildMemberDefaultRole", item.GuildMemberDefaultRole);
             EditorGUILayout.TextField("RejoinCoolTimeMinutes", item.RejoinCoolTimeMinutes?.ToString());

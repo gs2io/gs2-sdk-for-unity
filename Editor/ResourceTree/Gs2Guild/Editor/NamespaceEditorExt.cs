@@ -73,6 +73,42 @@ namespace Gs2.Editor.ResourceTree.Gs2Guild.Editor
                 NotificationSettingEditorExt.OnGUI(item.RemoveRequestNotification);
                 EditorGUI.indentLevel--;
             }
+            if (item.CreateGuildScript == null) {
+                EditorGUILayout.TextField("CreateGuildScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("CreateGuildScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.CreateGuildScript);
+                EditorGUI.indentLevel--;
+            }
+            if (item.JoinGuildScript == null) {
+                EditorGUILayout.TextField("JoinGuildScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("JoinGuildScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.JoinGuildScript);
+                EditorGUI.indentLevel--;
+            }
+            if (item.LeaveGuildScript == null) {
+                EditorGUILayout.TextField("LeaveGuildScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("LeaveGuildScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.LeaveGuildScript);
+                EditorGUI.indentLevel--;
+            }
+            if (item.ChangeRoleScript == null) {
+                EditorGUILayout.TextField("ChangeRoleScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("ChangeRoleScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.ChangeRoleScript);
+                EditorGUI.indentLevel--;
+            }
             if (item.LogSetting == null) {
                 EditorGUILayout.TextField("LogSetting", "");
             }
