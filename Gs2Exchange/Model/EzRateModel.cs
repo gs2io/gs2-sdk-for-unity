@@ -41,6 +41,8 @@ namespace Gs2.Unity.Gs2Exchange.Model
 		[SerializeField]
 		public int LockTime;
 		[SerializeField]
+		public List<Gs2.Unity.Core.Model.EzVerifyAction> VerifyActions;
+		[SerializeField]
 		public List<Gs2.Unity.Core.Model.EzConsumeAction> ConsumeActions;
 		[SerializeField]
 		public List<Gs2.Unity.Core.Model.EzAcquireAction> AcquireActions;
@@ -52,6 +54,9 @@ namespace Gs2.Unity.Gs2Exchange.Model
                 Metadata = Metadata,
                 TimingType = TimingType,
                 LockTime = LockTime,
+                VerifyActions = VerifyActions?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
                 ConsumeActions = ConsumeActions?.Select(v => {
                     return v.ToModel();
                 }).ToArray(),
@@ -68,6 +73,9 @@ namespace Gs2.Unity.Gs2Exchange.Model
                 Metadata = model.Metadata == null ? null : model.Metadata,
                 TimingType = model.TimingType == null ? null : model.TimingType,
                 LockTime = model.LockTime ?? 0,
+                VerifyActions = model.VerifyActions == null ? new List<Gs2.Unity.Core.Model.EzVerifyAction>() : model.VerifyActions.Select(v => {
+                    return Gs2.Unity.Core.Model.EzVerifyAction.FromModel(v);
+                }).ToList(),
                 ConsumeActions = model.ConsumeActions == null ? new List<Gs2.Unity.Core.Model.EzConsumeAction>() : model.ConsumeActions.Select(v => {
                     return Gs2.Unity.Core.Model.EzConsumeAction.FromModel(v);
                 }).ToList(),

@@ -118,6 +118,15 @@ namespace Gs2.Editor.ResourceTree.Gs2Friend.Editor
                 NotificationSettingEditorExt.OnGUI(item.ReceiveRequestNotification);
                 EditorGUI.indentLevel--;
             }
+            if (item.CancelRequestNotification == null) {
+                EditorGUILayout.TextField("CancelRequestNotification", "");
+            }
+            else {
+                EditorGUILayout.LabelField("CancelRequestNotification");
+                EditorGUI.indentLevel++;
+                NotificationSettingEditorExt.OnGUI(item.CancelRequestNotification);
+                EditorGUI.indentLevel--;
+            }
             if (item.AcceptRequestNotification == null) {
                 EditorGUILayout.TextField("AcceptRequestNotification", "");
             }
@@ -125,6 +134,24 @@ namespace Gs2.Editor.ResourceTree.Gs2Friend.Editor
                 EditorGUILayout.LabelField("AcceptRequestNotification");
                 EditorGUI.indentLevel++;
                 NotificationSettingEditorExt.OnGUI(item.AcceptRequestNotification);
+                EditorGUI.indentLevel--;
+            }
+            if (item.RejectRequestNotification == null) {
+                EditorGUILayout.TextField("RejectRequestNotification", "");
+            }
+            else {
+                EditorGUILayout.LabelField("RejectRequestNotification");
+                EditorGUI.indentLevel++;
+                NotificationSettingEditorExt.OnGUI(item.RejectRequestNotification);
+                EditorGUI.indentLevel--;
+            }
+            if (item.DeleteFriendNotification == null) {
+                EditorGUILayout.TextField("DeleteFriendNotification", "");
+            }
+            else {
+                EditorGUILayout.LabelField("DeleteFriendNotification");
+                EditorGUI.indentLevel++;
+                NotificationSettingEditorExt.OnGUI(item.DeleteFriendNotification);
                 EditorGUI.indentLevel--;
             }
             if (item.LogSetting == null) {

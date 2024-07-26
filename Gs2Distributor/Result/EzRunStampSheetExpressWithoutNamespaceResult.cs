@@ -31,6 +31,10 @@ namespace Gs2.Unity.Gs2Distributor.Result
 	public class EzRunStampSheetExpressWithoutNamespaceResult
 	{
 		[SerializeField]
+		public List<int> VerifyTaskResultCodes;
+		[SerializeField]
+		public List<string> VerifyTaskResults;
+		[SerializeField]
 		public List<int> TaskResultCodes;
 		[SerializeField]
 		public List<string> TaskResults;
@@ -42,6 +46,12 @@ namespace Gs2.Unity.Gs2Distributor.Result
         public static EzRunStampSheetExpressWithoutNamespaceResult FromModel(Gs2.Gs2Distributor.Result.RunStampSheetExpressWithoutNamespaceResult model)
         {
             return new EzRunStampSheetExpressWithoutNamespaceResult {
+                VerifyTaskResultCodes = model.VerifyTaskResultCodes == null ? new List<int>() : model.VerifyTaskResultCodes.Select(v => {
+                    return v;
+                }).ToList(),
+                VerifyTaskResults = model.VerifyTaskResults == null ? new List<string>() : model.VerifyTaskResults.Select(v => {
+                    return v;
+                }).ToList(),
                 TaskResultCodes = model.TaskResultCodes == null ? new List<int>() : model.TaskResultCodes.Select(v => {
                     return v;
                 }).ToList(),

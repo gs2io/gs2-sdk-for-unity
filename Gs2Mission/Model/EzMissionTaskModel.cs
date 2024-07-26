@@ -41,7 +41,7 @@ namespace Gs2.Unity.Gs2Mission.Model
 		[SerializeField]
 		public Gs2.Unity.Gs2Mission.Model.EzTargetCounterModel TargetCounter;
 		[SerializeField]
-		public List<Gs2.Unity.Core.Model.EzConsumeAction> VerifyCompleteConsumeActions;
+		public List<Gs2.Unity.Core.Model.EzVerifyAction> VerifyCompleteConsumeActions;
 		[SerializeField]
 		public List<Gs2.Unity.Core.Model.EzAcquireAction> CompleteAcquireActions;
 		[SerializeField]
@@ -83,8 +83,8 @@ namespace Gs2.Unity.Gs2Mission.Model
                 Metadata = model.Metadata == null ? null : model.Metadata,
                 VerifyCompleteType = model.VerifyCompleteType == null ? null : model.VerifyCompleteType,
                 TargetCounter = model.TargetCounter == null ? null : Gs2.Unity.Gs2Mission.Model.EzTargetCounterModel.FromModel(model.TargetCounter),
-                VerifyCompleteConsumeActions = model.VerifyCompleteConsumeActions == null ? new List<Gs2.Unity.Core.Model.EzConsumeAction>() : model.VerifyCompleteConsumeActions.Select(v => {
-                    return Gs2.Unity.Core.Model.EzConsumeAction.FromModel(v);
+                VerifyCompleteConsumeActions = model.VerifyCompleteConsumeActions == null ? new List<Gs2.Unity.Core.Model.EzVerifyAction>() : model.VerifyCompleteConsumeActions.Select(v => {
+                    return Gs2.Unity.Core.Model.EzVerifyAction.FromModel(v);
                 }).ToList(),
                 CompleteAcquireActions = model.CompleteAcquireActions == null ? new List<Gs2.Unity.Core.Model.EzAcquireAction>() : model.CompleteAcquireActions.Select(v => {
                     return Gs2.Unity.Core.Model.EzAcquireAction.FromModel(v);

@@ -37,6 +37,8 @@ namespace Gs2.Unity.Gs2SkillTree.Model
 		[SerializeField]
 		public string Metadata;
 		[SerializeField]
+		public List<Gs2.Unity.Core.Model.EzVerifyAction> ReleaseVerifyActions;
+		[SerializeField]
 		public List<Gs2.Unity.Core.Model.EzConsumeAction> ReleaseConsumeActions;
 		[SerializeField]
 		public List<Gs2.Unity.Core.Model.EzAcquireAction> ReturnAcquireActions;
@@ -48,6 +50,9 @@ namespace Gs2.Unity.Gs2SkillTree.Model
             return new Gs2.Gs2SkillTree.Model.NodeModel {
                 Name = Name,
                 Metadata = Metadata,
+                ReleaseVerifyActions = ReleaseVerifyActions?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
                 ReleaseConsumeActions = ReleaseConsumeActions?.Select(v => {
                     return v.ToModel();
                 }).ToArray(),
@@ -63,6 +68,9 @@ namespace Gs2.Unity.Gs2SkillTree.Model
             return new EzNodeModel {
                 Name = model.Name == null ? null : model.Name,
                 Metadata = model.Metadata == null ? null : model.Metadata,
+                ReleaseVerifyActions = model.ReleaseVerifyActions == null ? new List<Gs2.Unity.Core.Model.EzVerifyAction>() : model.ReleaseVerifyActions.Select(v => {
+                    return Gs2.Unity.Core.Model.EzVerifyAction.FromModel(v);
+                }).ToList(),
                 ReleaseConsumeActions = model.ReleaseConsumeActions == null ? new List<Gs2.Unity.Core.Model.EzConsumeAction>() : model.ReleaseConsumeActions.Select(v => {
                     return Gs2.Unity.Core.Model.EzConsumeAction.FromModel(v);
                 }).ToList(),

@@ -88,10 +88,28 @@ namespace Gs2.Unity.Gs2Friend.Domain
             remove => _domain.OnAcceptRequestNotification -= value;
         }
 
+        public event UnityAction<RejectRequestNotification> OnRejectRequestNotification
+        {
+            add => _domain.OnRejectRequestNotification += value;
+            remove => _domain.OnRejectRequestNotification -= value;
+        }
+
+        public event UnityAction<DeleteFriendNotification> OnDeleteFriendNotification
+        {
+            add => _domain.OnDeleteFriendNotification += value;
+            remove => _domain.OnDeleteFriendNotification -= value;
+        }
+
         public event UnityAction<ReceiveRequestNotification> OnReceiveRequestNotification
         {
             add => _domain.OnReceiveRequestNotification += value;
             remove => _domain.OnReceiveRequestNotification -= value;
+        }
+
+        public event UnityAction<CancelRequestNotification> OnCancelRequestNotification
+        {
+            add => _domain.OnCancelRequestNotification += value;
+            remove => _domain.OnCancelRequestNotification -= value;
         }
     }
 }

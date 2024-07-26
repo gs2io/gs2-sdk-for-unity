@@ -49,6 +49,8 @@ namespace Gs2.Unity.Gs2LoginReward.Model
 		[SerializeField]
 		public string MissedReceiveRelief;
 		[SerializeField]
+		public List<Gs2.Unity.Core.Model.EzVerifyAction> MissedReceiveReliefVerifyActions;
+		[SerializeField]
 		public List<Gs2.Unity.Core.Model.EzConsumeAction> MissedReceiveReliefConsumeActions;
 
         public Gs2.Gs2LoginReward.Model.BonusModel ToModel()
@@ -64,6 +66,9 @@ namespace Gs2.Unity.Gs2LoginReward.Model
                     return v.ToModel();
                 }).ToArray(),
                 MissedReceiveRelief = MissedReceiveRelief,
+                MissedReceiveReliefVerifyActions = MissedReceiveReliefVerifyActions?.Select(v => {
+                    return v.ToModel();
+                }).ToArray(),
                 MissedReceiveReliefConsumeActions = MissedReceiveReliefConsumeActions?.Select(v => {
                     return v.ToModel();
                 }).ToArray(),
@@ -83,6 +88,9 @@ namespace Gs2.Unity.Gs2LoginReward.Model
                     return Gs2.Unity.Gs2LoginReward.Model.EzReward.FromModel(v);
                 }).ToList(),
                 MissedReceiveRelief = model.MissedReceiveRelief == null ? null : model.MissedReceiveRelief,
+                MissedReceiveReliefVerifyActions = model.MissedReceiveReliefVerifyActions == null ? new List<Gs2.Unity.Core.Model.EzVerifyAction>() : model.MissedReceiveReliefVerifyActions.Select(v => {
+                    return Gs2.Unity.Core.Model.EzVerifyAction.FromModel(v);
+                }).ToList(),
                 MissedReceiveReliefConsumeActions = model.MissedReceiveReliefConsumeActions == null ? new List<Gs2.Unity.Core.Model.EzConsumeAction>() : model.MissedReceiveReliefConsumeActions.Select(v => {
                     return Gs2.Unity.Core.Model.EzConsumeAction.FromModel(v);
                 }).ToList(),
