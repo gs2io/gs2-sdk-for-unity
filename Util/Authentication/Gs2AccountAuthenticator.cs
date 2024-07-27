@@ -14,6 +14,7 @@ using Gs2.Gs2Gateway;
 using Gs2.Gs2Gateway.Request;
 using Gs2.Gs2Version;
 using Gs2.Gs2Version.Request;
+using Gs2.Unity.Gs2Version.Model;
 using UnityEngine;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
@@ -151,7 +152,7 @@ namespace Gs2.Unity.Util
                     connection.WebSocketSession.Credential.ProjectToken = checkVersionResult.ProjectToken;
                 }
                 if (checkVersionResult.Errors.Length > 0) {
-                    onDetectVersionUp.Invoke();
+                    this.onDetectVersionUp.Invoke(checkVersionResult.Errors.Select(EzStatus.FromModel).ToArray());
                     
                     throw new UnauthorizedException(
                         new[] {
@@ -275,7 +276,7 @@ namespace Gs2.Unity.Util
                         connection.WebSocketSession.Credential.ProjectToken = checkVersionResult.ProjectToken;
                     }
                     if (checkVersionResult.Errors.Length > 0) {
-                        onDetectVersionUp.Invoke();
+                        this.onDetectVersionUp.Invoke(checkVersionResult.Errors.Select(EzStatus.FromModel).ToArray());
 
                         result.OnError(
                             new UnauthorizedException(

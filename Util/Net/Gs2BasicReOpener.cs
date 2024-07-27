@@ -19,6 +19,7 @@ using Gs2.Gs2Gateway;
 using Gs2.Gs2Gateway.Request;
 using Gs2.Gs2Version;
 using Gs2.Gs2Version.Request;
+using Gs2.Unity.Gs2Version.Model;
 using UnityEngine.Events;
 
 namespace Gs2.Unity.Util
@@ -28,7 +29,7 @@ namespace Gs2.Unity.Util
         
     }
 
-    public class DetectVersionUpEvent : UnityEvent
+    public class DetectVersionUpEvent : UnityEvent<EzStatus[]>
     {
         
     }
