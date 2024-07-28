@@ -50,57 +50,22 @@ using System.Collections.Generic;
 namespace Gs2.Unity.Gs2Showcase.Domain.Model
 {
 
-    public partial class EzUserGameSessionDomain {
-        private readonly Gs2.Gs2Showcase.Domain.Model.UserAccessTokenDomain _domain;
+    public partial class EzRandomShowcaseStatusGameSessionDomain {
+        private readonly Gs2.Gs2Showcase.Domain.Model.RandomShowcaseStatusAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
+        public string ShowcaseName => _domain?.ShowcaseName;
 
-        public EzUserGameSessionDomain(
-            Gs2.Gs2Showcase.Domain.Model.UserAccessTokenDomain domain,
+        public EzRandomShowcaseStatusGameSessionDomain(
+            Gs2.Gs2Showcase.Domain.Model.RandomShowcaseStatusAccessTokenDomain domain,
             Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
             this._gameSession = gameSession;
             this._connection = connection;
-        }
-
-        public Gs2.Unity.Gs2Showcase.Domain.Model.EzShowcaseGameSessionDomain Showcase(
-            string showcaseName
-        ) {
-            return new Gs2.Unity.Gs2Showcase.Domain.Model.EzShowcaseGameSessionDomain(
-                _domain.Showcase(
-                    showcaseName
-                ),
-                this._gameSession,
-                this._connection
-            );
-        }
-
-        public Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomShowcaseGameSessionDomain RandomShowcase(
-            string showcaseName
-        ) {
-            return new Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomShowcaseGameSessionDomain(
-                _domain.RandomShowcase(
-                    showcaseName
-                ),
-                this._gameSession,
-                this._connection
-            );
-        }
-
-        public Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomShowcaseStatusGameSessionDomain RandomShowcaseStatus(
-            string showcaseName
-        ) {
-            return new Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomShowcaseStatusGameSessionDomain(
-                _domain.RandomShowcaseStatus(
-                    showcaseName
-                ),
-                this._gameSession,
-                this._connection
-            );
         }
 
     }

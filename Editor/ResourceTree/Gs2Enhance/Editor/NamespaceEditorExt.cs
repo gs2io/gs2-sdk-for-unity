@@ -28,7 +28,6 @@ namespace Gs2.Editor.ResourceTree.Gs2Enhance.Editor
             EditorGUILayout.TextField("NamespaceId", item.NamespaceId);
             EditorGUILayout.TextField("Name", item.Name);
             EditorGUILayout.TextField("Description", item.Description);
-            EditorGUILayout.TextField("EnableDirectEnhance", item.EnableDirectEnhance?.ToString());
             if (item.TransactionSetting == null) {
                 EditorGUILayout.TextField("TransactionSetting", "");
             }

@@ -250,6 +250,58 @@ namespace Gs2.Unity.Gs2Distributor
             );
 		}
 
+        public IEnumerator RunVerifyTask(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzRunVerifyTaskResult>> callback,
+                string namespaceName,
+                string verifyTask,
+                string keyId,
+                string contextStack = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+                null,
+                cb => _restClient.RunVerifyTask(
+                    new Gs2.Gs2Distributor.Request.RunVerifyTaskRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithVerifyTask(verifyTask)
+                        .WithKeyId(keyId)
+                        .WithContextStack(contextStack),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzRunVerifyTaskResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Distributor.Result.EzRunVerifyTaskResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator RunVerifyTaskWithoutNamespace(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzRunVerifyTaskWithoutNamespaceResult>> callback,
+                string verifyTask,
+                string keyId,
+                string contextStack = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+                null,
+                cb => _restClient.RunVerifyTaskWithoutNamespace(
+                    new Gs2.Gs2Distributor.Request.RunVerifyTaskWithoutNamespaceRequest()
+                        .WithVerifyTask(verifyTask)
+                        .WithKeyId(keyId)
+                        .WithContextStack(contextStack),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzRunVerifyTaskWithoutNamespaceResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Distributor.Result.EzRunVerifyTaskWithoutNamespaceResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator SetDefaultConfig(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzSetDefaultConfigResult>> callback,
 		        IGameSession session,
