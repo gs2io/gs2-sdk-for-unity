@@ -132,6 +132,62 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
         #endif
 
+        [Obsolete("The name has been changed to AddTakeOverSettingOpenIdConnectFuture.")]
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> AddTakeOverSettingOpenIdConnect(
+            string idToken
+        )
+        {
+            return AddTakeOverSettingOpenIdConnectFuture(
+                idToken
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> AddTakeOverSettingOpenIdConnectFuture(
+            string idToken
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.CreateOpenIdConnectFuture(
+                        new CreateTakeOverOpenIdConnectRequest()
+                            .WithIdToken(idToken)
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> AddTakeOverSettingOpenIdConnectAsync(
+            string idToken
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.CreateOpenIdConnectAsync(
+                    new CreateTakeOverOpenIdConnectRequest()
+                        .WithIdToken(idToken)
+                )
+            );
+            return new Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
         [Obsolete("The name has been changed to UpdateTakeOverSettingFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> UpdateTakeOverSetting(
             string oldPassword,
@@ -296,10 +352,15 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Model.EzTakeOver>(Impl);
         }
 
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
         public ulong Subscribe(Action<Gs2.Unity.Gs2Account.Model.EzTakeOver> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2Account.Model.EzTakeOver.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Account.Model.EzTakeOver.FromModel(
                     item
                 ));
             });

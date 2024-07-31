@@ -59,6 +59,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         public Gs2.Unity.Gs2Account.Model.EzBanStatus[] BanStatuses => _domain.BanStatuses.Select(Gs2.Unity.Gs2Account.Model.EzBanStatus.FromModel).ToArray();
         public string? Body => _domain.Body;
         public string? Signature => _domain.Signature;
+        public string? AuthorizationUrl => _domain.AuthorizationUrl;
         public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
@@ -72,6 +73,62 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             this._gameSession = gameSession;
             this._connection = connection;
         }
+
+        [Obsolete("The name has been changed to GetAuthorizationUrlFuture.")]
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountGameSessionDomain> GetAuthorizationUrl(
+            int type
+        )
+        {
+            return GetAuthorizationUrlFuture(
+                type
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountGameSessionDomain> GetAuthorizationUrlFuture(
+            int type
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountGameSessionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.GetAuthorizationUrlFuture(
+                        new GetAuthorizationUrlRequest()
+                            .WithType(type)
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzAccountGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountGameSessionDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzAccountGameSessionDomain> GetAuthorizationUrlAsync(
+            int type
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.GetAuthorizationUrlAsync(
+                    new GetAuthorizationUrlRequest()
+                        .WithType(type)
+                )
+            );
+            return new Gs2.Unity.Gs2Account.Domain.Model.EzAccountGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
 
         public Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzTakeOver> TakeOvers(
         )

@@ -8,7 +8,8 @@
         "UnityEngine.Purchasing",
         "UnityEngine.Purchasing.Stores",
         "UnityEngine.Advertisements",
-        "MaxSdk.Scripts"
+        "MaxSdk.Scripts",
+        "unity-webview"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -37,6 +38,11 @@
             "name": "com.cysharp.unitask",
             "expression": "",
             "define": "GS2_ENABLE_UNITASK"
+        },
+        {
+            "name": "net.gree.unity-webview",
+            "expression": "",
+            "define": "GS2_ENABLE_GREE_WEBVIEW"
         }
     ],
     "noEngineReferences": false

@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -56,11 +54,11 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
     public partial class EzNamespaceDomain {
         private readonly Gs2.Gs2Account.Domain.Model.NamespaceDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string Status => _domain.Status;
-        public string Url => _domain.Url;
-        public string UploadToken => _domain.UploadToken;
-        public string UploadUrl => _domain.UploadUrl;
-        public string NextPageToken => _domain.NextPageToken;
+        public string? Status => _domain.Status;
+        public string? Url => _domain.Url;
+        public string? UploadToken => _domain.UploadToken;
+        public string? UploadUrl => _domain.UploadUrl;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
 
         public EzNamespaceDomain(
@@ -176,6 +174,66 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                         .WithType(type)
                         .WithUserIdentifier(userIdentifier)
                         .WithPassword(password)
+                )
+            );
+            return new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(
+                result,
+                this._connection
+            );
+        }
+        #endif
+
+        [Obsolete("The name has been changed to DoTakeOverOpenIdConnectFuture.")]
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOverOpenIdConnect(
+            int type,
+            string idToken
+        )
+        {
+            return DoTakeOverOpenIdConnectFuture(
+                type,
+                idToken
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOverOpenIdConnectFuture(
+            int type,
+            string idToken
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    null,
+                    () => this._domain.DoTakeOverOpenIdConnectFuture(
+                        new DoTakeOverOpenIdConnectRequest()
+                            .WithType(type)
+                            .WithIdToken(idToken)
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(
+                    future.Result,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOverOpenIdConnectAsync(
+            int type,
+            string idToken
+        ) {
+            var result = await this._connection.RunAsync(
+                null,
+                () => this._domain.DoTakeOverOpenIdConnectAsync(
+                    new DoTakeOverOpenIdConnectRequest()
+                        .WithType(type)
+                        .WithIdToken(idToken)
                 )
             );
             return new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(

@@ -131,6 +131,33 @@ namespace Gs2.Unity.Gs2Account
             );
 		}
 
+        public IEnumerator AddTakeOverSettingOpenIdConnect(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzAddTakeOverSettingOpenIdConnectResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                int type,
+                string idToken
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _client.CreateTakeOverOpenIdConnect(
+                    new Gs2.Gs2Account.Request.CreateTakeOverOpenIdConnectRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithType(type)
+                        .WithIdToken(idToken),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Account.Result.EzAddTakeOverSettingOpenIdConnectResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Account.Result.EzAddTakeOverSettingOpenIdConnectResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator DeleteTakeOverSetting(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzDeleteTakeOverSettingResult>> callback,
 		        IGameSession session,
@@ -183,6 +210,31 @@ namespace Gs2.Unity.Gs2Account
             );
 		}
 
+        public IEnumerator DoTakeOverOpenIdConnect(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzDoTakeOverOpenIdConnectResult>> callback,
+                string namespaceName,
+                int type,
+                string idToken
+        )
+		{
+            yield return _connection.Run(
+                callback,
+                null,
+                cb => _client.DoTakeOverOpenIdConnect(
+                    new Gs2.Gs2Account.Request.DoTakeOverOpenIdConnectRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithType(type)
+                        .WithIdToken(idToken),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Account.Result.EzDoTakeOverOpenIdConnectResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Account.Result.EzDoTakeOverOpenIdConnectResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator Get(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzGetResult>> callback,
 		        IGameSession session,
@@ -201,6 +253,31 @@ namespace Gs2.Unity.Gs2Account
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Account.Result.EzGetResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Account.Result.EzGetResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator GetAuthorizationUrl(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzGetAuthorizationUrlResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                int type
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _client.GetAuthorizationUrl(
+                    new Gs2.Gs2Account.Request.GetAuthorizationUrlRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithType(type),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Account.Result.EzGetAuthorizationUrlResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Account.Result.EzGetAuthorizationUrlResult.FromModel(r.Result),
                             r.Error
                         )
                     )

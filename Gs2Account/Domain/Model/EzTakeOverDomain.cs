@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -56,9 +54,12 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
     public partial class EzTakeOverDomain {
         private readonly Gs2.Gs2Account.Domain.Model.TakeOverDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
+        public string? AuthorizationUrl => _domain.AuthorizationUrl;
+        public string? Payload => _domain.Payload;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public int? Type => _domain?.Type;
+        public string UserIdentifier => _domain?.UserIdentifier;
 
         public EzTakeOverDomain(
             Gs2.Gs2Account.Domain.Model.TakeOverDomain domain,
