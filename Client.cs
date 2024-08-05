@@ -25,6 +25,7 @@ namespace Gs2.Unity
         public readonly Gs2Inventory.Client Inventory;
         public readonly Gs2JobQueue.Client JobQueue;
         public readonly Gs2Limit.Client Limit;
+        public readonly Gs2Log.Client Log;
         public readonly Gs2LoginReward.Client LoginReward;
         public readonly Gs2Lottery.Client Lottery;
         public readonly Gs2Matchmaking.Client Matchmaking;
@@ -74,6 +75,7 @@ namespace Gs2.Unity
             Inventory = new Gs2Inventory.Client(connection);
             JobQueue = new Gs2JobQueue.Client(connection);
             Limit = new Gs2Limit.Client(connection);
+            Log = new Gs2Log.Client(connection);
             LoginReward = new Gs2LoginReward.Client(connection);
             Lottery = new Gs2Lottery.Client(connection);
             Matchmaking = new Gs2Matchmaking.Client(connection);
