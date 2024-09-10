@@ -39,13 +39,22 @@ namespace Gs2.Editor.ResourceTree.Gs2Money2.Editor
                 PlatformSettingEditorExt.OnGUI(item.PlatformSetting);
                 EditorGUI.indentLevel--;
             }
-            if (item.ChangeBalanceScript == null) {
-                EditorGUILayout.TextField("ChangeBalanceScript", "");
+            if (item.DepositBalanceScript == null) {
+                EditorGUILayout.TextField("DepositBalanceScript", "");
             }
             else {
-                EditorGUILayout.LabelField("ChangeBalanceScript");
+                EditorGUILayout.LabelField("DepositBalanceScript");
                 EditorGUI.indentLevel++;
-                ScriptSettingEditorExt.OnGUI(item.ChangeBalanceScript);
+                ScriptSettingEditorExt.OnGUI(item.DepositBalanceScript);
+                EditorGUI.indentLevel--;
+            }
+            if (item.WithdrawBalanceScript == null) {
+                EditorGUILayout.TextField("WithdrawBalanceScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("WithdrawBalanceScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.WithdrawBalanceScript);
                 EditorGUI.indentLevel--;
             }
             if (item.LogSetting == null) {
