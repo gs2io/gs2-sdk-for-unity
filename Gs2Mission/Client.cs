@@ -194,7 +194,7 @@ namespace Gs2.Unity.Gs2Mission
             yield return _connection.Run(
                 callback,
                 null,
-                cb => _client.GetCounterModel(
+                cb => _restClient.GetCounterModel(
                     new Gs2.Gs2Mission.Request.GetCounterModelRequest()
                         .WithNamespaceName(namespaceName)
                         .WithCounterName(counterName),

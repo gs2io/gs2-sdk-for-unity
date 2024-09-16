@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 
 using System.Globalization;
@@ -23,7 +25,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Mission.Editor
 {
     public static class VerifyActionEditorExt
     {
-        public static void OnGUI(Gs2.Gs2Mission.Model.VerifyAction item) {
+        public static void OnGUI(Gs2.Core.Model.VerifyAction item) {
             EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.TextField("Action", item.Action);
             EditorGUILayout.TextField("Request", item.Request);

@@ -19,17 +19,15 @@ using Gs2.Core.Util;
 using Gs2.Editor.ResourceTree.Core.Editor;
 using UnityEditor;
 
-namespace Gs2.Editor.ResourceTree.Gs2Mission.Editor
+namespace Gs2.Editor.ResourceTree.Gs2Account.Editor
 {
-    public static class TargetCounterModelEditorExt
+    public static class BanStatusEditorExt
     {
-        public static void OnGUI(Gs2.Gs2Mission.Model.TargetCounterModel item) {
+        public static void OnGUI(Gs2.Gs2Account.Model.BanStatus item) {
             EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.TextField("CounterName", item.CounterName);
-            EditorGUILayout.TextField("ScopeType", item.ScopeType);
-            EditorGUILayout.TextField("ResetType", item.ResetType);
-            EditorGUILayout.TextField("ConditionName", item.ConditionName);
-            EditorGUILayout.TextField("Value", item.Value?.ToString());
+            EditorGUILayout.TextField("Name", item.Name);
+            EditorGUILayout.TextField("Reason", item.Reason);
+            EditorGUILayout.TextField("ReleaseTimestamp", UnixTime.FromUnixTime(item.ReleaseTimestamp ?? 0).ToString(CultureInfo.CurrentUICulture));
             EditorGUI.EndDisabledGroup();
         }
     }

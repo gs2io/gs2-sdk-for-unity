@@ -25,7 +25,9 @@ namespace Gs2.Editor.ResourceTree.Gs2Mission.Editor
     {
         public static void OnGUI(Gs2.Gs2Mission.Model.ScopedValue item) {
             EditorGUI.BeginDisabledGroup(true);
+            EditorGUILayout.TextField("ScopeType", item.ScopeType);
             EditorGUILayout.TextField("ResetType", item.ResetType);
+            EditorGUILayout.TextField("ConditionName", item.ConditionName);
             EditorGUILayout.TextField("Value", item.Value?.ToString());
             EditorGUILayout.TextField("NextResetAt", UnixTime.FromUnixTime(item.NextResetAt ?? 0).ToString(CultureInfo.CurrentUICulture));
             EditorGUILayout.TextField("UpdatedAt", UnixTime.FromUnixTime(item.UpdatedAt ?? 0).ToString(CultureInfo.CurrentUICulture));

@@ -25,10 +25,21 @@ namespace Gs2.Editor.ResourceTree.Gs2Mission.Editor
     {
         public static void OnGUI(Gs2.Gs2Mission.Model.CounterScopeModel item) {
             EditorGUI.BeginDisabledGroup(true);
+            EditorGUILayout.TextField("ScopeType", item.ScopeType);
             EditorGUILayout.TextField("ResetType", item.ResetType);
             EditorGUILayout.TextField("ResetDayOfMonth", item.ResetDayOfMonth?.ToString());
             EditorGUILayout.TextField("ResetDayOfWeek", item.ResetDayOfWeek);
             EditorGUILayout.TextField("ResetHour", item.ResetHour?.ToString());
+            EditorGUILayout.TextField("ConditionName", item.ConditionName);
+            if (item.Condition == null) {
+                EditorGUILayout.TextField("Condition", "");
+            }
+            else {
+                EditorGUILayout.LabelField("Condition");
+                EditorGUI.indentLevel++;
+                VerifyActionEditorExt.OnGUI(item.Condition);
+                EditorGUI.indentLevel--;
+            }
             EditorGUI.EndDisabledGroup();
         }
     }

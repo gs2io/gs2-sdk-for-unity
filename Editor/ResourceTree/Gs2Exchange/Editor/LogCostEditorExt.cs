@@ -19,17 +19,13 @@ using Gs2.Core.Util;
 using Gs2.Editor.ResourceTree.Core.Editor;
 using UnityEditor;
 
-namespace Gs2.Editor.ResourceTree.Gs2Mission.Editor
+namespace Gs2.Editor.ResourceTree.Gs2Exchange.Editor
 {
-    public static class TargetCounterModelEditorExt
+    public static class LogCostEditorExt
     {
-        public static void OnGUI(Gs2.Gs2Mission.Model.TargetCounterModel item) {
+        public static void OnGUI(Gs2.Gs2Exchange.Model.LogCost item) {
             EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.TextField("CounterName", item.CounterName);
-            EditorGUILayout.TextField("ScopeType", item.ScopeType);
-            EditorGUILayout.TextField("ResetType", item.ResetType);
-            EditorGUILayout.TextField("ConditionName", item.ConditionName);
-            EditorGUILayout.TextField("Value", item.Value?.ToString());
+            EditorGUILayout.TextField("Base", item.Base?.ToString());
             EditorGUI.EndDisabledGroup();
         }
     }
