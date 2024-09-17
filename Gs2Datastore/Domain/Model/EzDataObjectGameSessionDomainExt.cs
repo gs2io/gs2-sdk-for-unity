@@ -60,6 +60,49 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             return DownloadFuture();
         }
 
+        public Gs2Future<byte[]> DownloadOwnFuture(
+        )
+        {
+            IEnumerator Impl(Gs2Future<byte[]> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => {
+                        return _domain.DownloadOwnFuture(
+                        );
+                    }
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(future.Result);
+            }
+            return new Gs2InlineFuture<byte[]>(Impl);
+        }
+
+#if GS2_ENABLE_UNITASK
+        public async UniTask<byte[]> DownloadOwnAsync(
+        )
+        {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                async () =>
+                {
+                    return await _domain.DownloadOwnAsync();
+                }
+            );
+            return result;
+        }
+#endif
+        [Obsolete("The name has been changed to DownloadOwn.")]
+        public IFuture<byte[]> DownloadOwn()
+        {
+            return DownloadOwnFuture();
+        }
+
         public Gs2Future<EzDataObjectGameSessionDomain> ReUploadFuture(
             byte[] data
         )

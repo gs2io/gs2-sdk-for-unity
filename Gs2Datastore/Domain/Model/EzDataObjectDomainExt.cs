@@ -46,6 +46,30 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             return DownloadFuture();
         }
 
+        public Gs2Future<byte[]> DownloadByUserIdAndDataObjectNameFuture()
+        {
+            IEnumerator Impl(Gs2Future<byte[]> self)
+            {
+                var future = this._domain.DownloadByUserIdAndDataObjectNameFuture(
+                );
+                yield return future;
+                if (future.Error != null)
+                {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(future.Result);
+            }
+            return new Gs2InlineFuture<byte[]>(Impl);
+        }
+
+#if GS2_ENABLE_UNITASK
+        public async UniTask<byte[]> DownloadByUserIdAndDataObjectNameAsync()
+        {
+            return await this._domain.DownloadByUserIdAndDataObjectNameAsync();
+        }
+#endif
+        
         public Gs2Future<EzDataObject> ReUploadFuture(
             byte[] data
         )

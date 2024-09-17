@@ -85,7 +85,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             {
                 var future = this._connection.RunFuture(
                     null,
-                    () => this._domain.PrepareDownloadByUserIdAndNameFuture(
+                    () => this._domain.PrepareDownloadByUserIdAndDataObjectNameFuture(
                         new PrepareDownloadByUserIdAndDataObjectNameRequest()
                     )
                 );
@@ -107,7 +107,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         ) {
             var result = await this._connection.RunAsync(
                 null,
-                () => this._domain.PrepareDownloadByUserIdAndNameAsync(
+                () => this._domain.PrepareDownloadByUserIdAndDataObjectNameAsync(
                     new PrepareDownloadByUserIdAndDataObjectNameRequest()
                 )
             );
