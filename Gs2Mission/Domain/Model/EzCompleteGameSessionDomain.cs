@@ -124,6 +124,60 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         }
         #endif
 
+        [Obsolete("The name has been changed to BatchReceiveRewardsFuture.")]
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> BatchReceiveRewards(
+            string[] missionTaskNames,
+            bool speculativeExecute = true
+        )
+        {
+            return BatchReceiveRewardsFuture(
+                missionTaskNames,
+                speculativeExecute
+            );
+        }
+
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> BatchReceiveRewardsFuture(
+            string[] missionTaskNames,
+            bool speculativeExecute = true
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.BatchFuture(
+                        new BatchCompleteRequest()
+                            .WithMissionTaskNames(missionTaskNames),
+                        speculativeExecute
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(future.Result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(future.Result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> BatchReceiveRewardsAsync(
+            string[] missionTaskNames,
+            bool speculativeExecute = true
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.BatchAsync(
+                    new BatchCompleteRequest()
+                        .WithMissionTaskNames(missionTaskNames),
+                    speculativeExecute
+                )
+            );
+            return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
+        }
+        #endif
+
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Mission.Model.EzComplete> Model()
         {

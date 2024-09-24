@@ -151,7 +151,6 @@ namespace Gs2.Unity.Gs2Chat
                 cb => _restClient.DescribeMessages(
                     new Gs2.Gs2Chat.Request.DescribeMessagesRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithAccessToken(session.AccessToken.Token)
                         .WithRoomName(roomName)
                         .WithStartAt(startAt)
                         .WithLimit(limit)

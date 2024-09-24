@@ -54,6 +54,35 @@ namespace Gs2.Unity.Gs2Mission
             _restClient = new Gs2MissionRestClient(connection.RestSession);
 		}
 
+        public IEnumerator BatchReceiveRewards(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Mission.Result.EzBatchReceiveRewardsResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string missionGroupName,
+                List<string> missionTaskNames
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.BatchComplete(
+                    new Gs2.Gs2Mission.Request.BatchCompleteRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithMissionGroupName(missionGroupName)
+                        .WithMissionTaskNames(missionTaskNames?.Select(v => {
+                            return v;
+                        }).ToArray())
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Mission.Result.EzBatchReceiveRewardsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Mission.Result.EzBatchReceiveRewardsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator GetComplete(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Mission.Result.EzGetCompleteResult>> callback,
 		        IGameSession session,
