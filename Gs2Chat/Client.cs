@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 
 using Gs2.Gs2Chat;
@@ -135,6 +137,35 @@ namespace Gs2.Unity.Gs2Chat
             );
 		}
 
+        public IEnumerator ListLatestMessages(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzListLatestMessagesResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string roomName,
+                int? limit = null,
+                string password = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribeLatestMessages(
+                    new Gs2.Gs2Chat.Request.DescribeLatestMessagesRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRoomName(roomName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithLimit(limit)
+                        .WithPassword(password),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Chat.Result.EzListLatestMessagesResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Chat.Result.EzListLatestMessagesResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator ListMessages(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzListMessagesResult>> callback,
 		        IGameSession session,
@@ -152,6 +183,7 @@ namespace Gs2.Unity.Gs2Chat
                     new Gs2.Gs2Chat.Request.DescribeMessagesRequest()
                         .WithNamespaceName(namespaceName)
                         .WithRoomName(roomName)
+                        .WithAccessToken(session.AccessToken.Token)
                         .WithStartAt(startAt)
                         .WithLimit(limit)
                         .WithPassword(password),

@@ -29,6 +29,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Chat.Editor
             EditorGUILayout.TextField("Name", item.Name);
             EditorGUILayout.TextField("Description", item.Description);
             EditorGUILayout.TextField("AllowCreateRoom", item.AllowCreateRoom?.ToString());
+            EditorGUILayout.TextField("MessageLifeTimeDays", item.MessageLifeTimeDays?.ToString());
             if (item.PostMessageScript == null) {
                 EditorGUILayout.TextField("PostMessageScript", "");
             }
