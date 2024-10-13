@@ -163,7 +163,7 @@ namespace Gs2.Unity.Gs2Enchant
             yield return _connection.Run(
                 callback,
                 null,
-                cb => _client.GetRarityParameterModel(
+                cb => _restClient.GetRarityParameterModel(
                     new Gs2.Gs2Enchant.Request.GetRarityParameterModelRequest()
                         .WithNamespaceName(namespaceName)
                         .WithParameterName(parameterName),

@@ -29,7 +29,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Dictionary
         private Gs2.Gs2Dictionary.Model.EntryModel _item;
         private Namespace _parent;
         public string NamespaceName => _parent.NamespaceName;
-        public string EntryName => _item.Name;
+        public string EntryModelName => _item.Name;
 
         public EntryModel(
                 int id,
@@ -77,7 +77,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Dictionary
             if (GUILayout.Button("Create Reference Object")) {
                 var directory = "Assets/Gs2/Resources/Dictionary";
                 directory += "/Namespace" + "/" + NamespaceName;
-                directory += "/EntryModel" + "/" + EntryName;
+                directory += "/EntryModel" + "/" + EntryModelName;
 
                 CreateFolder(directory);
 

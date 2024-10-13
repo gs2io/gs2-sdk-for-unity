@@ -60,7 +60,7 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
         public string? Signature => _domain.Signature;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
-        public string EntryName => _domain?.EntryName;
+        public string EntryModelName => _domain?.EntryModelName;
 
         public EzEntryGameSessionDomain(
             Gs2.Gs2Dictionary.Domain.Model.EntryAccessTokenDomain domain,

@@ -33,7 +33,7 @@ namespace Gs2.Unity.Gs2Guild.Result
 		[SerializeField]
 		public Gs2.Unity.Gs2Guild.Model.EzGuild Item;
 
-        public static EzDeleteGuildResult FromModel(Gs2.Gs2Guild.Result.UpdateGuildResult model)
+        public static EzDeleteGuildResult FromModel(Gs2.Gs2Guild.Result.DeleteGuildResult model)
         {
             return new EzDeleteGuildResult {
                 Item = model.Item == null ? null : Gs2.Unity.Gs2Guild.Model.EzGuild.FromModel(model.Item),

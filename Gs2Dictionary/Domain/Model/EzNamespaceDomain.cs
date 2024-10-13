@@ -125,11 +125,11 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
         }
 
         public Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryModelDomain EntryModel(
-            string entryName
+            string entryModelName
         ) {
             return new Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryModelDomain(
                 _domain.EntryModel(
-                    entryName
+                    entryModelName
                 ),
                 this._connection
             );

@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -56,7 +58,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
-        public string TargetUserId => _domain?.TargetUserId;
+        public string TargetUserId => _domain?.UserId;
         public string FromUserId => _domain?.FromUserId;
 
         public EzReceiveFriendRequestGameSessionDomain(

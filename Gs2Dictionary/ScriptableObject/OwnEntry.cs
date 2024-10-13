@@ -44,13 +44,13 @@ namespace Gs2.Unity.Gs2Dictionary.ScriptableObject
 #endif
         public new static OwnEntry New(
             Namespace @namespace,
-            string entryName
+            string entryModelName
         )
         {
             var instance = CreateInstance<OwnEntry>();
             instance.name = "Runtime";
             instance.Namespace = @namespace;
-            instance.entryName = entryName;
+            instance.entryModelName = entryModelName;
             return instance;
         }
         public new OwnEntry Clone()
@@ -58,7 +58,7 @@ namespace Gs2.Unity.Gs2Dictionary.ScriptableObject
             var instance = CreateInstance<OwnEntry>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
-            instance.entryName = entryName;
+            instance.entryModelName = entryModelName;
             return instance;
         }
     }

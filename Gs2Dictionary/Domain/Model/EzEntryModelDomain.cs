@@ -55,7 +55,7 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
         private readonly Gs2.Gs2Dictionary.Domain.Model.EntryModelDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
-        public string EntryName => _domain?.EntryName;
+        public string EntryModelName => _domain?.EntryModelName;
 
         public EzEntryModelDomain(
             Gs2.Gs2Dictionary.Domain.Model.EntryModelDomain domain,

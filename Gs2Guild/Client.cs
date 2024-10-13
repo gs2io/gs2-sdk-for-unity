@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 
 using Gs2.Gs2Guild;
@@ -182,8 +180,8 @@ namespace Gs2.Unity.Gs2Guild
             yield return _connection.Run(
                 callback,
 		        session,
-                cb => _restClient.UpdateGuild(
-                    new Gs2.Gs2Guild.Request.UpdateGuildRequest()
+                cb => _restClient.DeleteGuild(
+                    new Gs2.Gs2Guild.Request.DeleteGuildRequest()
                         .WithNamespaceName(namespaceName)
                         .WithGuildModelName(guildModelName)
                         .WithAccessToken(session.AccessToken.Token),
@@ -202,7 +200,7 @@ namespace Gs2.Unity.Gs2Guild
 		        IGameSession session,
                 string namespaceName,
                 string guildModelName,
-                string guildName
+                string guildName = null
         )
 		{
             yield return _connection.Run(
@@ -236,6 +234,7 @@ namespace Gs2.Unity.Gs2Guild
                 List<int> attributes5 = null,
                 List<string> joinPolicies = null,
                 bool? includeFullMembersGuild = null,
+                string orderBy = null,
                 string pageToken = null,
                 int? limit = null
         )
@@ -267,6 +266,7 @@ namespace Gs2.Unity.Gs2Guild
                             return v;
                         }).ToArray())
                         .WithIncludeFullMembersGuild(includeFullMembersGuild)
+                        .WithOrderBy(orderBy)
                         .WithPageToken(pageToken)
                         .WithLimit(limit),
                     r => cb.Invoke(
@@ -593,6 +593,166 @@ namespace Gs2.Unity.Gs2Guild
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Guild.Result.EzListJoinedGuildsResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Guild.Result.EzListJoinedGuildsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator AddIgnoreUser(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Guild.Result.EzAddIgnoreUserResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string guildModelName,
+                string userId
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.AddIgnoreUser(
+                    new Gs2.Gs2Guild.Request.AddIgnoreUserRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithGuildModelName(guildModelName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithUserId(userId),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Guild.Result.EzAddIgnoreUserResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Guild.Result.EzAddIgnoreUserResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator DeleteIgnoreUser(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Guild.Result.EzDeleteIgnoreUserResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string guildModelName,
+                string userId
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _client.DeleteIgnoreUser(
+                    new Gs2.Gs2Guild.Request.DeleteIgnoreUserRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithGuildModelName(guildModelName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithUserId(userId),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Guild.Result.EzDeleteIgnoreUserResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Guild.Result.EzDeleteIgnoreUserResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator GetIgnoreUser(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Guild.Result.EzGetIgnoreUserResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string guildModelName,
+                string userId
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _client.GetIgnoreUser(
+                    new Gs2.Gs2Guild.Request.GetIgnoreUserRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithGuildModelName(guildModelName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithUserId(userId),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Guild.Result.EzGetIgnoreUserResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Guild.Result.EzGetIgnoreUserResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListIgnoreUsers(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Guild.Result.EzListIgnoreUsersResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string guildModelName,
+                string pageToken = null,
+                int? limit = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribeIgnoreUsers(
+                    new Gs2.Gs2Guild.Request.DescribeIgnoreUsersRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithGuildModelName(guildModelName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Guild.Result.EzListIgnoreUsersResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Guild.Result.EzListIgnoreUsersResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator GetLastGuildMasterActivity(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Guild.Result.EzGetLastGuildMasterActivityResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string guildModelName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.GetLastGuildMasterActivity(
+                    new Gs2.Gs2Guild.Request.GetLastGuildMasterActivityRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithGuildModelName(guildModelName)
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Guild.Result.EzGetLastGuildMasterActivityResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Guild.Result.EzGetLastGuildMasterActivityResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator PromoteSeniorMember(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Guild.Result.EzPromoteSeniorMemberResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string guildModelName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.PromoteSeniorMember(
+                    new Gs2.Gs2Guild.Request.PromoteSeniorMemberRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithGuildModelName(guildModelName)
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Guild.Result.EzPromoteSeniorMemberResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Guild.Result.EzPromoteSeniorMemberResult.FromModel(r.Result),
                             r.Error
                         )
                     )

@@ -31,10 +31,10 @@ namespace Gs2.Unity.Gs2Dictionary.ScriptableObject
     public class EntryModel : UnityEngine.ScriptableObject
     {
         public Namespace Namespace;
-        public string entryName;
+        public string entryModelName;
 
         public string NamespaceName => this.Namespace?.NamespaceName;
-        public string EntryName => this.entryName;
+        public string EntryModelName => this.entryModelName;
 
 #if UNITY_INCLUDE_TESTS
         public static EntryModel Load(
@@ -49,13 +49,13 @@ namespace Gs2.Unity.Gs2Dictionary.ScriptableObject
 
         public static EntryModel New(
             Namespace Namespace,
-            string entryName
+            string entryModelName
         )
         {
             var instance = CreateInstance<EntryModel>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
-            instance.entryName = entryName;
+            instance.entryModelName = entryModelName;
             return instance;
         }
 
@@ -64,7 +64,7 @@ namespace Gs2.Unity.Gs2Dictionary.ScriptableObject
             var instance = CreateInstance<EntryModel>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
-            instance.entryName = entryName;
+            instance.entryModelName = entryModelName;
             return instance;
         }
     }
