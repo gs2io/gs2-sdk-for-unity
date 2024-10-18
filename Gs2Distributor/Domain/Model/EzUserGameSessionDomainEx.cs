@@ -97,5 +97,41 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
         }
         #endif
 
+        public IFuture<Gs2.Unity.Core.Gs2Domain> FreezeMasterDataFuture(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Gs2Domain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.FreezeMasterDataFuture(
+                        new FreezeMasterDataRequest()
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2Domain(
+                    future.Result
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Core.Gs2Domain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Core.Gs2Domain> FreezeMasterDataAsync(
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.FreezeMasterDataAsync(
+                    new FreezeMasterDataRequest()
+                )
+            );
+            return new Gs2Domain(result);
+        }
+        #endif
+
     }
 }

@@ -98,6 +98,29 @@ namespace Gs2.Unity.Gs2Distributor
             );
 		}
 
+        public IEnumerator FreezeMasterData(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzFreezeMasterDataResult>> callback,
+		        IGameSession session,
+                string namespaceName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.FreezeMasterData(
+                    new Gs2.Gs2Distributor.Request.FreezeMasterDataRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzFreezeMasterDataResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Distributor.Result.EzFreezeMasterDataResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator RunStampSheet(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzRunStampSheetResult>> callback,
                 string namespaceName,
