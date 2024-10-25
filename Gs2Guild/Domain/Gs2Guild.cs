@@ -88,6 +88,12 @@ namespace Gs2.Unity.Gs2Guild.Domain
             remove => _domain.OnRemoveRequestNotification -= value;
         }
 
+        public event UnityAction<ChangeNotification> OnChangeNotification
+        {
+            add => _domain.OnChangeNotification += value;
+            remove => _domain.OnChangeNotification -= value;
+        }
+
         public event UnityAction<JoinNotification> OnJoinNotification
         {
             add => _domain.OnJoinNotification += value;

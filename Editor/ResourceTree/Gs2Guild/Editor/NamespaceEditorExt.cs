@@ -28,6 +28,15 @@ namespace Gs2.Editor.ResourceTree.Gs2Guild.Editor
             EditorGUILayout.TextField("NamespaceId", item.NamespaceId);
             EditorGUILayout.TextField("Name", item.Name);
             EditorGUILayout.TextField("Description", item.Description);
+            if (item.ChangeNotification == null) {
+                EditorGUILayout.TextField("ChangeNotification", "");
+            }
+            else {
+                EditorGUILayout.LabelField("ChangeNotification");
+                EditorGUI.indentLevel++;
+                NotificationSettingEditorExt.OnGUI(item.ChangeNotification);
+                EditorGUI.indentLevel--;
+            }
             if (item.JoinNotification == null) {
                 EditorGUILayout.TextField("JoinNotification", "");
             }
@@ -80,6 +89,15 @@ namespace Gs2.Editor.ResourceTree.Gs2Guild.Editor
                 EditorGUILayout.LabelField("CreateGuildScript");
                 EditorGUI.indentLevel++;
                 ScriptSettingEditorExt.OnGUI(item.CreateGuildScript);
+                EditorGUI.indentLevel--;
+            }
+            if (item.UpdateGuildScript == null) {
+                EditorGUILayout.TextField("UpdateGuildScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("UpdateGuildScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.UpdateGuildScript);
                 EditorGUI.indentLevel--;
             }
             if (item.JoinGuildScript == null) {
