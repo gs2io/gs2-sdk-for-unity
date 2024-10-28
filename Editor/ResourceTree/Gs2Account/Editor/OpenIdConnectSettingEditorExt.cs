@@ -31,6 +31,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Account.Editor
             EditorGUILayout.TextField("AppleTeamId", item.AppleTeamId);
             EditorGUILayout.TextField("AppleKeyId", item.AppleKeyId);
             EditorGUILayout.TextField("ApplePrivateKeyPem", item.ApplePrivateKeyPem);
+            EditorGUILayout.TextField("DoneEndpointUrl", item.DoneEndpointUrl);
             EditorGUI.EndDisabledGroup();
         }
     }
