@@ -324,6 +324,35 @@ namespace Gs2.Unity.Gs2Guild
             );
 		}
 
+        public IEnumerator UpdateGuildMemberRole(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Guild.Result.EzUpdateGuildMemberRoleResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string guildModelName,
+                string targetUserId,
+                string roleName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.UpdateMemberRole(
+                    new Gs2.Gs2Guild.Request.UpdateMemberRoleRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithGuildModelName(guildModelName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithTargetUserId(targetUserId)
+                        .WithRoleName(roleName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Guild.Result.EzUpdateGuildMemberRoleResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Guild.Result.EzUpdateGuildMemberRoleResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator AcceptRequest(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Guild.Result.EzAcceptRequestResult>> callback,
 		        IGameSession session,
