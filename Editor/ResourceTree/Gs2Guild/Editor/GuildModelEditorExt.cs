@@ -34,6 +34,8 @@ namespace Gs2.Editor.ResourceTree.Gs2Guild.Editor
             EditorGUILayout.TextField("GuildMasterRole", item.GuildMasterRole);
             EditorGUILayout.TextField("GuildMemberDefaultRole", item.GuildMemberDefaultRole);
             EditorGUILayout.TextField("RejoinCoolTimeMinutes", item.RejoinCoolTimeMinutes?.ToString());
+            EditorGUILayout.TextField("MaxConcurrentJoinGuilds", item.MaxConcurrentJoinGuilds?.ToString());
+            EditorGUILayout.TextField("MaxConcurrentGuildMasterCount", item.MaxConcurrentGuildMasterCount?.ToString());
             EditorGUI.EndDisabledGroup();
         }
     }

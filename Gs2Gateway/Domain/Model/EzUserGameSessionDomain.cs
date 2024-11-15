@@ -55,6 +55,7 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
         private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string? Protocol => _domain.Protocol;
+        public string[] SendConnectionIds => _domain.SendConnectionIds;
         public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
