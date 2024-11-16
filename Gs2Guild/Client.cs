@@ -125,6 +125,35 @@ namespace Gs2.Unity.Gs2Guild
             );
 		}
 
+        public IEnumerator BatchUpdateGuildMemberRole(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Guild.Result.EzBatchUpdateGuildMemberRoleResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string guildModelName,
+                List<Gs2.Unity.Gs2Guild.Model.EzMember> members
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.BatchUpdateMemberRole(
+                    new Gs2.Gs2Guild.Request.BatchUpdateMemberRoleRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithGuildModelName(guildModelName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithMembers(members?.Select(v => {
+                            return v?.ToModel();
+                        }).ToArray()),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Guild.Result.EzBatchUpdateGuildMemberRoleResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Guild.Result.EzBatchUpdateGuildMemberRoleResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator CreateGuild(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Guild.Result.EzCreateGuildResult>> callback,
 		        IGameSession session,
