@@ -81,5 +81,11 @@ namespace Gs2.Unity.Gs2Distributor.Domain
             add => _domain.OnAutoRunStampSheetNotification += value;
             remove => _domain.OnAutoRunStampSheetNotification -= value;
         }
+
+        public event UnityAction<AutoRunTransactionNotification> OnAutoRunTransactionNotification
+        {
+            add => _domain.OnAutoRunTransactionNotification += value;
+            remove => _domain.OnAutoRunTransactionNotification -= value;
+        }
     }
 }

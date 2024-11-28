@@ -374,5 +374,30 @@ namespace Gs2.Unity.Gs2Distributor
                 )
             );
 		}
+
+        public IEnumerator GetTransactionResult(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzGetTransactionResultResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string transactionId
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.GetTransactionResult(
+                    new Gs2.Gs2Distributor.Request.GetTransactionResultRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithTransactionId(transactionId),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzGetTransactionResultResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Distributor.Result.EzGetTransactionResultResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
     }
 }

@@ -54,8 +54,6 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
         private readonly Gs2.Gs2Enhance.Domain.Model.EnhanceAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string? TransactionId => _domain.TransactionId;
-        public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public long? AcquireExperience => _domain.AcquireExperience;
         public float? BonusRate => _domain.BonusRate;
         public string NamespaceName => _domain?.NamespaceName;

@@ -54,8 +54,6 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
     public partial class EzProgressDomain {
         private readonly Gs2.Gs2Quest.Domain.Model.ProgressDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string? TransactionId => _domain.TransactionId;
-        public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 

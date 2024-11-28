@@ -54,8 +54,6 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         private readonly Gs2.Gs2Exchange.Domain.Model.AwaitAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string? TransactionId => _domain.TransactionId;
-        public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string AwaitName => _domain?.AwaitName;

@@ -42,6 +42,12 @@ namespace Gs2.Unity.Gs2LoginReward.Result
 		public string StampSheetEncryptionKeyId;
 		[SerializeField]
 		public bool AutoRunStampSheet;
+		[SerializeField]
+		public bool AtomicCommit;
+		[SerializeField]
+		public string Transaction;
+		[SerializeField]
+		public Gs2.Unity.Core.Model.EzTransactionResult TransactionResult;
 
         public static EzMissedReceiveResult FromModel(Gs2.Gs2LoginReward.Result.MissedReceiveResult model)
         {
@@ -52,6 +58,9 @@ namespace Gs2.Unity.Gs2LoginReward.Result
                 StampSheet = model.StampSheet == null ? null : model.StampSheet,
                 StampSheetEncryptionKeyId = model.StampSheetEncryptionKeyId == null ? null : model.StampSheetEncryptionKeyId,
                 AutoRunStampSheet = model.AutoRunStampSheet ?? false,
+                AtomicCommit = model.AtomicCommit ?? false,
+                Transaction = model.Transaction == null ? null : model.Transaction,
+                TransactionResult = model.TransactionResult == null ? null : Gs2.Unity.Core.Model.EzTransactionResult.FromModel(model.TransactionResult),
             };
         }
     }

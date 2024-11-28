@@ -26,8 +26,10 @@ namespace Gs2.Editor.ResourceTree.Gs2Exchange.Editor
         public static void OnGUI(Gs2.Gs2Exchange.Model.TransactionSetting item) {
             EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.TextField("EnableAutoRun", item.EnableAutoRun?.ToString());
+            EditorGUILayout.TextField("EnableAtomicCommit", item.EnableAtomicCommit?.ToString());
+            EditorGUILayout.TextField("TransactionUseDistributor", item.TransactionUseDistributor?.ToString());
+            EditorGUILayout.TextField("AcquireActionUseJobQueue", item.AcquireActionUseJobQueue?.ToString());
             EditorGUILayout.TextField("DistributorNamespaceId", item.DistributorNamespaceId);
-            EditorGUILayout.TextField("KeyId", item.KeyId);
             EditorGUILayout.TextField("QueueNamespaceId", item.QueueNamespaceId);
             EditorGUI.EndDisabledGroup();
         }

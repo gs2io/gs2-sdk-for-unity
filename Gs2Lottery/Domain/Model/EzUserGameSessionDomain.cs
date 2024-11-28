@@ -54,8 +54,6 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
         private readonly Gs2.Gs2Lottery.Domain.Model.UserAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string? TransactionId => _domain.TransactionId;
-        public bool? AutoRunStampSheet => _domain.AutoRunStampSheet;
         public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;

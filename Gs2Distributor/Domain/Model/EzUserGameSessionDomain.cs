@@ -79,5 +79,17 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
             );
         }
 
+        public Gs2.Unity.Gs2Distributor.Domain.Model.EzTransactionResultGameSessionDomain TransactionResult(
+            string transactionId
+        ) {
+            return new Gs2.Unity.Gs2Distributor.Domain.Model.EzTransactionResultGameSessionDomain(
+                _domain.TransactionResult(
+                    transactionId
+                ),
+                this._gameSession,
+                this._connection
+            );
+        }
+
     }
 }

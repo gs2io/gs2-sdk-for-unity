@@ -76,5 +76,16 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
             );
         }
 
+        public Gs2.Unity.Gs2Distributor.Domain.Model.EzTransactionResultDomain TransactionResult(
+            string transactionId
+        ) {
+            return new Gs2.Unity.Gs2Distributor.Domain.Model.EzTransactionResultDomain(
+                _domain.TransactionResult(
+                    transactionId
+                ),
+                this._connection
+            );
+        }
+
     }
 }

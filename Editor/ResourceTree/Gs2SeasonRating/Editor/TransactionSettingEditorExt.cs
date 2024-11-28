@@ -25,6 +25,9 @@ namespace Gs2.Editor.ResourceTree.Gs2SeasonRating.Editor
     {
         public static void OnGUI(Gs2.Gs2SeasonRating.Model.TransactionSetting item) {
             EditorGUI.BeginDisabledGroup(true);
+            EditorGUILayout.TextField("EnableAtomicCommit", item.EnableAtomicCommit?.ToString());
+            EditorGUILayout.TextField("TransactionUseDistributor", item.TransactionUseDistributor?.ToString());
+            EditorGUILayout.TextField("AcquireActionUseJobQueue", item.AcquireActionUseJobQueue?.ToString());
             EditorGUILayout.TextField("DistributorNamespaceId", item.DistributorNamespaceId);
             EditorGUILayout.TextField("QueueNamespaceId", item.QueueNamespaceId);
             EditorGUI.EndDisabledGroup();

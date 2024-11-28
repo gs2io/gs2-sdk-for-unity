@@ -38,6 +38,15 @@ namespace Gs2.Editor.ResourceTree.Gs2Distributor.Editor
                 NotificationSettingEditorExt.OnGUI(item.AutoRunStampSheetNotification);
                 EditorGUI.indentLevel--;
             }
+            if (item.AutoRunTransactionNotification == null) {
+                EditorGUILayout.TextField("AutoRunTransactionNotification", "");
+            }
+            else {
+                EditorGUILayout.LabelField("AutoRunTransactionNotification");
+                EditorGUI.indentLevel++;
+                NotificationSettingEditorExt.OnGUI(item.AutoRunTransactionNotification);
+                EditorGUI.indentLevel--;
+            }
             if (item.LogSetting == null) {
                 EditorGUILayout.TextField("LogSetting", "");
             }
