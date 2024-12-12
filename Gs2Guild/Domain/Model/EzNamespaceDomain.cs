@@ -159,5 +159,18 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
                 this._connection
             );
         }
+        
+        public Gs2.Unity.Gs2Guild.Domain.Model.EzGuildDomain Guild(
+            string guildModelName,
+            string guildName
+        ) {
+            return new Gs2.Unity.Gs2Guild.Domain.Model.EzGuildDomain(
+                _domain.Guild(
+                    guildModelName,
+                    guildName
+                ),
+                this._connection
+            );
+        }
     }
 }

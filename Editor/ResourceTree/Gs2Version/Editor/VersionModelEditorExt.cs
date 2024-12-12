@@ -59,6 +59,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Version.Editor
             }
             EditorGUILayout.TextField("NeedSignature", item.NeedSignature?.ToString());
             EditorGUILayout.TextField("SignatureKeyId", item.SignatureKeyId);
+            EditorGUILayout.TextField("ApproveRequirement", item.ApproveRequirement);
             EditorGUI.EndDisabledGroup();
         }
     }

@@ -136,5 +136,17 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
             );
         }
 
+        public Gs2.Unity.Gs2Dictionary.Domain.Model.EzLikeGameSessionDomain Like(
+            string entryModelName
+        ) {
+            return new Gs2.Unity.Gs2Dictionary.Domain.Model.EzLikeGameSessionDomain(
+                _domain.Like(
+                    entryModelName
+                ),
+                this._gameSession,
+                this._connection
+            );
+        }
+
     }
 }
