@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -26,7 +24,6 @@
 // ReSharper disable NotAccessedField.Local
 
 #pragma warning disable 1998
-#pragma warning disable CS0169, CS0168
 
 using System;
 using System.Linq;
@@ -55,7 +52,7 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
 
     public partial class EzGuildGameSessionDomain {
         private readonly Gs2.Gs2Guild.Domain.Model.GuildAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.GuildGameSession _gameSession;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string GuildModelName => _domain?.GuildModelName;
@@ -63,69 +60,13 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
 
         public EzGuildGameSessionDomain(
             Gs2.Gs2Guild.Domain.Model.GuildAccessTokenDomain domain,
-            Gs2.Unity.Util.GuildGameSession gameSession,
+            Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
             this._gameSession = gameSession;
             this._connection = connection;
         }
-
-        [Obsolete("The name has been changed to DeleteGuildFuture.")]
-        public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> DeleteGuild(
-            string accessToken
-        )
-        {
-            return DeleteGuildFuture(
-                accessToken
-            );
-        }
-
-        public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> DeleteGuildFuture(
-            string accessToken
-        )
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> self)
-            {
-                var future = this._connection.RunFuture(
-                    this._gameSession,
-                    () => this._domain.UpdateFuture(
-                        new UpdateGuildRequest()
-                            .WithAccessToken(accessToken)
-                    )
-                );
-                yield return future;
-                if (future.Error != null) {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                self.OnComplete(new Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain(
-                    future.Result,
-                    this._gameSession,
-                    this._connection
-                ));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain>(Impl);
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> DeleteGuildAsync(
-            string accessToken
-        ) {
-            var result = await this._connection.RunAsync(
-                this._gameSession,
-                () => this._domain.UpdateAsync(
-                    new UpdateGuildRequest()
-                        .WithAccessToken(accessToken)
-                )
-            );
-            return new Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain(
-                result,
-                this._gameSession,
-                this._connection
-            );
-        }
-        #endif
 
         [Obsolete("The name has been changed to UpdateGuildFuture.")]
         public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> UpdateGuild(
@@ -227,6 +168,130 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
                         .WithJoinPolicy(joinPolicy)
                         .WithCustomRoles(customRoles?.Select(v => v.ToModel()).ToArray())
                         .WithGuildMemberDefaultRole(guildMemberDefaultRole)
+                )
+            );
+            return new Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
+        [Obsolete("The name has been changed to UpdateGuildMemberRoleFuture.")]
+        public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> UpdateGuildMemberRole(
+            string accessToken,
+            string targetUserId,
+            string roleName
+        )
+        {
+            return UpdateGuildMemberRoleFuture(
+                accessToken,
+                targetUserId,
+                roleName
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> UpdateGuildMemberRoleFuture(
+            string accessToken,
+            string targetUserId,
+            string roleName
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.UpdateMemberRoleFuture(
+                        new UpdateMemberRoleRequest()
+                            .WithAccessToken(accessToken)
+                            .WithTargetUserId(targetUserId)
+                            .WithRoleName(roleName)
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> UpdateGuildMemberRoleAsync(
+            string accessToken,
+            string targetUserId,
+            string roleName
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.UpdateMemberRoleAsync(
+                    new UpdateMemberRoleRequest()
+                        .WithAccessToken(accessToken)
+                        .WithTargetUserId(targetUserId)
+                        .WithRoleName(roleName)
+                )
+            );
+            return new Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
+        [Obsolete("The name has been changed to DeleteGuildFuture.")]
+        public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> DeleteGuild(
+            string accessToken
+        )
+        {
+            return DeleteGuildFuture(
+                accessToken
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> DeleteGuildFuture(
+            string accessToken
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.DeleteFuture(
+                        new DeleteGuildRequest()
+                            .WithAccessToken(accessToken)
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> DeleteGuildAsync(
+            string accessToken
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.DeleteAsync(
+                    new DeleteGuildRequest()
+                        .WithAccessToken(accessToken)
                 )
             );
             return new Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain(
