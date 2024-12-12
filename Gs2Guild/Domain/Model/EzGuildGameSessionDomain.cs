@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -164,6 +166,64 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
                         .WithJoinPolicy(joinPolicy)
                         .WithCustomRoles(customRoles?.Select(v => v.ToModel()).ToArray())
                         .WithGuildMemberDefaultRole(guildMemberDefaultRole)
+                )
+            );
+            return new Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
+        [Obsolete("The name has been changed to DeleteMemberFromGuildFuture.")]
+        public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> DeleteMemberFromGuild(
+            string targetUserId
+        )
+        {
+            return DeleteMemberFromGuildFuture(
+                targetUserId
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> DeleteMemberFromGuildFuture(
+            string targetUserId
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.DeleteMemberFuture(
+                        new DeleteMemberRequest()
+                            .WithAccessToken(this._gameSession.AccessToken.Token)
+                            .WithTargetUserId(targetUserId)
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> DeleteMemberFromGuildAsync(
+            string targetUserId
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.DeleteMemberAsync(
+                    new DeleteMemberRequest()
+                        .WithAccessToken(this._gameSession.AccessToken.Token)
+                        .WithTargetUserId(targetUserId)
                 )
             );
             return new Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain(
