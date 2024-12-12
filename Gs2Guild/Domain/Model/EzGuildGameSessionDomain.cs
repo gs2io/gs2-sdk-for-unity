@@ -70,7 +70,6 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
 
         [Obsolete("The name has been changed to UpdateGuildFuture.")]
         public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> UpdateGuild(
-            string accessToken,
             string displayName,
             string joinPolicy,
             int? attribute1 = null,
@@ -83,7 +82,6 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
         )
         {
             return UpdateGuildFuture(
-                accessToken,
                 displayName,
                 joinPolicy,
                 attribute1,
@@ -97,7 +95,6 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
         }
 
         public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> UpdateGuildFuture(
-            string accessToken,
             string displayName,
             string joinPolicy,
             int? attribute1 = null,
@@ -115,7 +112,7 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
                     this._gameSession,
                     () => this._domain.UpdateFuture(
                         new UpdateGuildRequest()
-                            .WithAccessToken(accessToken)
+                        .WithAccessToken(this._gameSession.AccessToken.Token)
                             .WithDisplayName(displayName)
                             .WithAttribute1(attribute1)
                             .WithAttribute2(attribute2)
@@ -143,7 +140,6 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> UpdateGuildAsync(
-            string accessToken,
             string displayName,
             string joinPolicy,
             int? attribute1 = null,
@@ -158,7 +154,7 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
                 this._gameSession,
                 () => this._domain.UpdateAsync(
                     new UpdateGuildRequest()
-                        .WithAccessToken(accessToken)
+                        .WithAccessToken(this._gameSession.AccessToken.Token)
                         .WithDisplayName(displayName)
                         .WithAttribute1(attribute1)
                         .WithAttribute2(attribute2)
@@ -180,20 +176,17 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
 
         [Obsolete("The name has been changed to UpdateGuildMemberRoleFuture.")]
         public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> UpdateGuildMemberRole(
-            string accessToken,
             string targetUserId,
             string roleName
         )
         {
             return UpdateGuildMemberRoleFuture(
-                accessToken,
                 targetUserId,
                 roleName
             );
         }
 
         public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> UpdateGuildMemberRoleFuture(
-            string accessToken,
             string targetUserId,
             string roleName
         )
@@ -204,7 +197,7 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
                     this._gameSession,
                     () => this._domain.UpdateMemberRoleFuture(
                         new UpdateMemberRoleRequest()
-                            .WithAccessToken(accessToken)
+                        .WithAccessToken(this._gameSession.AccessToken.Token)
                             .WithTargetUserId(targetUserId)
                             .WithRoleName(roleName)
                     )
@@ -225,7 +218,6 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> UpdateGuildMemberRoleAsync(
-            string accessToken,
             string targetUserId,
             string roleName
         ) {
@@ -233,7 +225,7 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
                 this._gameSession,
                 () => this._domain.UpdateMemberRoleAsync(
                     new UpdateMemberRoleRequest()
-                        .WithAccessToken(accessToken)
+                        .WithAccessToken(this._gameSession.AccessToken.Token)
                         .WithTargetUserId(targetUserId)
                         .WithRoleName(roleName)
                 )
@@ -248,16 +240,13 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
 
         [Obsolete("The name has been changed to DeleteGuildFuture.")]
         public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> DeleteGuild(
-            string accessToken
         )
         {
             return DeleteGuildFuture(
-                accessToken
             );
         }
 
         public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> DeleteGuildFuture(
-            string accessToken
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> self)
@@ -266,7 +255,7 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
                     this._gameSession,
                     () => this._domain.DeleteFuture(
                         new DeleteGuildRequest()
-                            .WithAccessToken(accessToken)
+                        .WithAccessToken(this._gameSession.AccessToken.Token)
                     )
                 );
                 yield return future;
@@ -285,13 +274,12 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> DeleteGuildAsync(
-            string accessToken
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.DeleteAsync(
                     new DeleteGuildRequest()
-                        .WithAccessToken(accessToken)
+                        .WithAccessToken(this._gameSession.AccessToken.Token)
                 )
             );
             return new Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain(
@@ -304,18 +292,15 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
 
         [Obsolete("The name has been changed to AddIgnoreUserFuture.")]
         public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzIgnoreUserGameSessionDomain> AddIgnoreUser(
-            string accessToken,
             string userId
         )
         {
             return AddIgnoreUserFuture(
-                accessToken,
                 userId
             );
         }
 
         public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzIgnoreUserGameSessionDomain> AddIgnoreUserFuture(
-            string accessToken,
             string userId
         )
         {
@@ -325,7 +310,7 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
                     this._gameSession,
                     () => this._domain.AddIgnoreUserFuture(
                         new AddIgnoreUserRequest()
-                            .WithAccessToken(accessToken)
+                        .WithAccessToken(this._gameSession.AccessToken.Token)
                             .WithUserId(userId)
                     )
                 );
@@ -345,14 +330,13 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Guild.Domain.Model.EzIgnoreUserGameSessionDomain> AddIgnoreUserAsync(
-            string accessToken,
             string userId
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.AddIgnoreUserAsync(
                     new AddIgnoreUserRequest()
-                        .WithAccessToken(accessToken)
+                        .WithAccessToken(this._gameSession.AccessToken.Token)
                         .WithUserId(userId)
                 )
             );
@@ -366,16 +350,13 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
 
         [Obsolete("The name has been changed to PromoteSeniorMemberFuture.")]
         public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzLastGuildMasterActivityGameSessionDomain> PromoteSeniorMember(
-            string accessToken
         )
         {
             return PromoteSeniorMemberFuture(
-                accessToken
             );
         }
 
         public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzLastGuildMasterActivityGameSessionDomain> PromoteSeniorMemberFuture(
-            string accessToken
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Guild.Domain.Model.EzLastGuildMasterActivityGameSessionDomain> self)
@@ -384,7 +365,7 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
                     this._gameSession,
                     () => this._domain.PromoteSeniorMemberFuture(
                         new PromoteSeniorMemberRequest()
-                            .WithAccessToken(accessToken)
+                        .WithAccessToken(this._gameSession.AccessToken.Token)
                     )
                 );
                 yield return future;
@@ -403,13 +384,12 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Guild.Domain.Model.EzLastGuildMasterActivityGameSessionDomain> PromoteSeniorMemberAsync(
-            string accessToken
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.PromoteSeniorMemberAsync(
                     new PromoteSeniorMemberRequest()
-                        .WithAccessToken(accessToken)
+                        .WithAccessToken(this._gameSession.AccessToken.Token)
                 )
             );
             return new Gs2.Unity.Gs2Guild.Domain.Model.EzLastGuildMasterActivityGameSessionDomain(
