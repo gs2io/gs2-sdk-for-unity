@@ -121,6 +121,35 @@ namespace Gs2.Unity.Gs2Distributor
             );
 		}
 
+        public IEnumerator FreezeMasterDataBySignedTimestamp(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzFreezeMasterDataBySignedTimestampResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string body,
+                string signature,
+                string keyId
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.FreezeMasterDataBySignedTimestamp(
+                    new Gs2.Gs2Distributor.Request.FreezeMasterDataBySignedTimestampRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithBody(body)
+                        .WithSignature(signature)
+                        .WithKeyId(keyId),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzFreezeMasterDataBySignedTimestampResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Distributor.Result.EzFreezeMasterDataBySignedTimestampResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator RunStampSheet(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzRunStampSheetResult>> callback,
                 string namespaceName,

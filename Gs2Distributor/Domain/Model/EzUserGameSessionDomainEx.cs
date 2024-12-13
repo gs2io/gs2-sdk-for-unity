@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -120,7 +122,7 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Core.Gs2Domain>(Impl);
         }
 
-        #if GS2_ENABLE_UNITASK
+#if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Core.Gs2Domain> FreezeMasterDataAsync(
         ) {
             var result = await this._connection.RunAsync(
@@ -131,7 +133,55 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
             );
             return new Gs2Domain(result);
         }
-        #endif
+#endif
+
+        public IFuture<Gs2.Unity.Core.Gs2Domain> FreezeMasterDataBySignedTimestampFuture(
+            string body,
+            string signature,
+            string keyId
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Gs2Domain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.FreezeMasterDataBySignedTimestampFuture(
+                        new FreezeMasterDataBySignedTimestampRequest()
+                            .WithBody(body)
+                            .WithSignature(signature)
+                            .WithKeyId(keyId)
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2Domain(
+                    future.Result
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Core.Gs2Domain>(Impl);
+        }
+
+#if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Core.Gs2Domain> FreezeMasterDataBySignedTimestampAsync(
+            string body,
+            string signature,
+            string keyId
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.FreezeMasterDataBySignedTimestampAsync(
+                    new FreezeMasterDataBySignedTimestampRequest()
+                        .WithBody(body)
+                        .WithSignature(signature)
+                        .WithKeyId(keyId)
+                )
+            );
+            return new Gs2Domain(result);
+        }
+#endif
 
     }
 }

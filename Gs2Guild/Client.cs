@@ -224,6 +224,33 @@ namespace Gs2.Unity.Gs2Guild
             );
 		}
 
+        public IEnumerator DeleteMemberFromGuild(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Guild.Result.EzDeleteMemberFromGuildResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string guildModelName,
+                string targetUserId
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.DeleteMember(
+                    new Gs2.Gs2Guild.Request.DeleteMemberRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithGuildModelName(guildModelName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithTargetUserId(targetUserId),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Guild.Result.EzDeleteMemberFromGuildResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Guild.Result.EzDeleteMemberFromGuildResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator GetGuild(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Guild.Result.EzGetGuildResult>> callback,
 		        IGameSession session,
