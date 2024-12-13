@@ -42,6 +42,7 @@ using Gs2.Core.Domain;
 using Gs2.Core.Util;
 using UnityEngine.Scripting;
 using System.Collections;
+using Gs2.Unity.Gs2Guild.Model;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
@@ -288,6 +289,64 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
                         .WithAccessToken(this._gameSession.AccessToken.Token)
                         .WithTargetUserId(targetUserId)
                         .WithRoleName(roleName)
+                )
+            );
+            return new Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
+        [Obsolete("The name has been changed to UpdateGuildMemberRoleFuture.")]
+        public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> BatchUpdateGuildMemberRole(
+            EzMember[] members
+        )
+        {
+            return BatchUpdateGuildMemberRoleFuture(
+                members
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> BatchUpdateGuildMemberRoleFuture(
+            EzMember[] members
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.BatchUpdateMemberRoleFuture(
+                        new BatchUpdateMemberRoleRequest()
+                        .WithAccessToken(this._gameSession.AccessToken.Token)
+                        .WithMembers(members.Select(v => v.ToModel()).ToArray())
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain> BatchUpdateGuildMemberRoleAsync(
+            EzMember[] members
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.BatchUpdateMemberRoleAsync(
+                    new BatchUpdateMemberRoleRequest()
+                        .WithAccessToken(this._gameSession.AccessToken.Token)
+                        .WithMembers(members.Select(v => v.ToModel()).ToArray())
                 )
             );
             return new Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain(
