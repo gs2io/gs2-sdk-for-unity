@@ -35,6 +35,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Ranking2.Editor
             EditorGUILayout.TextField("OrderDirection", item.OrderDirection);
             EditorGUILayout.TextField("EntryPeriodEventId", item.EntryPeriodEventId);
             EditorGUILayout.TextField("AccessPeriodEventId", item.AccessPeriodEventId);
+            EditorGUILayout.TextField("RewardCalculationIndex", item.RewardCalculationIndex);
             EditorGUI.EndDisabledGroup();
         }
     }

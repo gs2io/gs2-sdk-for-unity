@@ -98,6 +98,29 @@ namespace Gs2.Unity.Gs2Distributor
             );
 		}
 
+        public IEnumerator BatchExecuteApi(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzBatchExecuteApiResult>> callback,
+                List<Gs2.Unity.Gs2Distributor.Model.EzBatchRequestPayload> requestPayloads
+        )
+		{
+            yield return _connection.Run(
+                callback,
+                null,
+                cb => _restClient.BatchExecuteApi(
+                    new Gs2.Gs2Distributor.Request.BatchExecuteApiRequest()
+                        .WithRequestPayloads(requestPayloads?.Select(v => {
+                            return v?.ToModel();
+                        }).ToArray()),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzBatchExecuteApiResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Distributor.Result.EzBatchExecuteApiResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator FreezeMasterData(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzFreezeMasterDataResult>> callback,
 		        IGameSession session,

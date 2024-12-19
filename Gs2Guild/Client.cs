@@ -685,6 +685,33 @@ namespace Gs2.Unity.Gs2Guild
             );
 		}
 
+        public IEnumerator WithdrawGuild(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Guild.Result.EzWithdrawGuildResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string guildModelName,
+                string guildName = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.Withdrawal(
+                    new Gs2.Gs2Guild.Request.WithdrawalRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithGuildModelName(guildModelName)
+                        .WithGuildName(guildName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Guild.Result.EzWithdrawGuildResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Guild.Result.EzWithdrawGuildResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator AddIgnoreUser(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Guild.Result.EzAddIgnoreUserResult>> callback,
 		        IGameSession session,

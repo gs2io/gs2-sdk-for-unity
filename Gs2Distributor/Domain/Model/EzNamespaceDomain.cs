@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -74,6 +76,60 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
             this._domain = domain;
             this._connection = connection;
         }
+
+        [Obsolete("The name has been changed to BatchExecuteApiFuture.")]
+        public IFuture<Gs2.Unity.Gs2Distributor.Domain.Model.EzNamespaceDomain> BatchExecuteApi(
+            Gs2.Unity.Gs2Distributor.Model.EzBatchRequestPayload[] requestPayloads
+        )
+        {
+            return BatchExecuteApiFuture(
+                requestPayloads
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Distributor.Domain.Model.EzNamespaceDomain> BatchExecuteApiFuture(
+            Gs2.Unity.Gs2Distributor.Model.EzBatchRequestPayload[] requestPayloads
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Distributor.Domain.Model.EzNamespaceDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    null,
+                    () => this._domain.BatchExecuteApiFuture(
+                        new BatchExecuteApiRequest()
+                            .WithRequestPayloads(requestPayloads?.Select(v => v.ToModel()).ToArray())
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Distributor.Domain.Model.EzNamespaceDomain(
+                    future.Result,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Distributor.Domain.Model.EzNamespaceDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Distributor.Domain.Model.EzNamespaceDomain> BatchExecuteApiAsync(
+            Gs2.Unity.Gs2Distributor.Model.EzBatchRequestPayload[] requestPayloads
+        ) {
+            var result = await this._connection.RunAsync(
+                null,
+                () => this._domain.BatchExecuteApiAsync(
+                    new BatchExecuteApiRequest()
+                        .WithRequestPayloads(requestPayloads?.Select(v => v.ToModel()).ToArray())
+                )
+            );
+            return new Gs2.Unity.Gs2Distributor.Domain.Model.EzNamespaceDomain(
+                result,
+                this._connection
+            );
+        }
+        #endif
 
         public Gs2Iterator<Gs2.Unity.Gs2Distributor.Model.EzDistributorModel> DistributorModels(
         )
