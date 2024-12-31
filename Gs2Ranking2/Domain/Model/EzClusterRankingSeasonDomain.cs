@@ -12,13 +12,15 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
 // ReSharper disable CheckNamespace
 // ReSharper disable PartialTypeWithSinglePart
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable MemberCanBePrivate.Cluster
+// ReSharper disable UnusedAutoPropertyAccessor.Cluster
 // ReSharper disable UseObjectOrCollectionInitializer
 // ReSharper disable ArrangeThisQualifier
 // ReSharper disable NotAccessedField.Local
@@ -41,6 +43,7 @@ using Gs2.Core.Domain;
 using Gs2.Core.Util;
 using UnityEngine.Scripting;
 using System.Collections;
+using Gs2.Unity.Util;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
@@ -68,16 +71,46 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             this._connection = connection;
         }
 
-        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataDomain ClusterRankingData(
-            string userId
-        ) {
-            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataDomain(
-                _domain.ClusterRankingData(
-                    userId
-                ),
+        public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData> ClusterRankings(
+            GameSession gameSession
+        )
+        {
+            return new Gs2.Unity.Gs2Ranking2.Domain.Iterator.EzListClusterRankingsIterator(
+                this._domain,
+                gameSession,
                 this._connection
             );
         }
 
+#if GS2_ENABLE_UNITASK
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData> ClusterRankingsAsync(
+            GameSession gameSession
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData>(async (writer, token) =>
+            {
+                var it = _domain.ClusterRankingsAsync(
+                    gameSession.AccessToken
+                ).GetAsyncEnumerator();
+                while(
+                    await this._connection.RunIteratorAsync(
+                        gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.ClusterRankingsAsync(
+                                gameSession.AccessToken
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData.FromModel(it.Current));
+                }
+            });
+        }
+#endif
     }
 }
