@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -65,6 +67,16 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             this._connection = connection;
         }
 
+        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingSeasonDomain ClusterRankingSeason(
+            string clusterName,
+            long? season = null
+        ) {
+            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingSeasonDomain(
+                this._domain.ClusterRankingSeason(clusterName, season),
+                this._connection
+            );
+        }
+        
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingModel> Model()
         {
