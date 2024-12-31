@@ -143,13 +143,11 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
 
         public Gs2.Unity.Gs2Account.Domain.Model.EzPlatformIdDomain PlatformId(
-            int type,
-            string userIdentifier
+            int type
         ) {
             return new Gs2.Unity.Gs2Account.Domain.Model.EzPlatformIdDomain(
                 _domain.PlatformId(
-                    type,
-                    userIdentifier
+                    type
                 ),
                 this._connection
             );

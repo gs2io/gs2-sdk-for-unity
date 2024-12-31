@@ -57,7 +57,6 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public int? Type => _domain?.Type;
-        public string UserIdentifier => _domain?.UserIdentifier;
 
         public EzPlatformIdDomain(
             Gs2.Gs2Account.Domain.Model.PlatformIdDomain domain,

@@ -255,13 +255,11 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
 
         public Gs2.Unity.Gs2Account.Domain.Model.EzPlatformIdGameSessionDomain PlatformId(
-            int type,
-            string userIdentifier
+            int type
         ) {
             return new Gs2.Unity.Gs2Account.Domain.Model.EzPlatformIdGameSessionDomain(
                 _domain.PlatformId(
-                    type,
-                    userIdentifier
+                    type
                 ),
                 this._gameSession,
                 this._connection
