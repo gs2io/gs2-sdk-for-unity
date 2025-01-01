@@ -70,6 +70,11 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             this._connection = connection;
         }
 
+        public void InvalidateGlobalRankings()
+        {
+            this._domain.InvalidateGlobalRankings();
+        }
+
         public Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataDomain GlobalRankingData(
             string userId
         ) {

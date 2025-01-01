@@ -71,6 +71,11 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             this._connection = connection;
         }
 
+        public void InvalidateClusterRankings()
+        {
+            this._domain.InvalidateClusterRankings();
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData> ClusterRankings(
             GameSession gameSession
         )
