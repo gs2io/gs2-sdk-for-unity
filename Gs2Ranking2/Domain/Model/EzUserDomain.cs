@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -68,7 +70,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
 
         public Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingScoreDomain GlobalRankingScore(
             string rankingName,
-            long season
+            long? season = null
         ) {
             return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingScoreDomain(
                 _domain.GlobalRankingScore(
@@ -81,7 +83,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
 
         public Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingReceivedRewardDomain GlobalRankingReceivedReward(
             string rankingName,
-            long season
+            long? season = null
         ) {
             return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingReceivedRewardDomain(
                 _domain.GlobalRankingReceivedReward(
@@ -95,7 +97,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         public Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingReceivedRewardDomain ClusterRankingReceivedReward(
             string rankingName,
             string clusterName,
-            long season
+            long? season = null
         ) {
             return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingReceivedRewardDomain(
                 _domain.ClusterRankingReceivedReward(
@@ -110,7 +112,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         public Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingScoreDomain ClusterRankingScore(
             string rankingName,
             string clusterName,
-            long season
+            long? season = null
         ) {
             return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingScoreDomain(
                 _domain.ClusterRankingScore(
