@@ -87,7 +87,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData> GlobalRankings(
-            GameSession gameSession
+            IGameSession gameSession
         )
         {
             return new Gs2.Unity.Gs2Ranking2.Domain.Iterator.EzListGlobalRankingsIterator(
@@ -99,7 +99,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
 
 #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData> GlobalRankingsAsync(
-            GameSession gameSession
+            IGameSession gameSession
         )
         {
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData>(async (writer, token) =>

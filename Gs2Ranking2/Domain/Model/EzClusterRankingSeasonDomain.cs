@@ -77,7 +77,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData> ClusterRankings(
-            GameSession gameSession
+            IGameSession gameSession
         )
         {
             return new Gs2.Unity.Gs2Ranking2.Domain.Iterator.EzListClusterRankingsIterator(
@@ -89,7 +89,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
 
 #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData> ClusterRankingsAsync(
-            GameSession gameSession
+            IGameSession gameSession
         )
         {
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData>(async (writer, token) =>
