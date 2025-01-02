@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -582,7 +584,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
 
         public Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingScoreGameSessionDomain GlobalRankingScore(
             string rankingName,
-            long season
+            long? season = null
         ) {
             return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingScoreGameSessionDomain(
                 _domain.GlobalRankingScore(
@@ -596,7 +598,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
 
         public Gs2.Unity.Gs2Ranking2.Domain.Model.EzSubscribeRankingSeasonGameSessionDomain SubscribeRankingSeason(
             string rankingName,
-            long season
+            long? season = null
         ) {
             return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzSubscribeRankingSeasonGameSessionDomain(
                 _domain.SubscribeRankingSeason(
@@ -622,7 +624,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
 
         public Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingReceivedRewardGameSessionDomain GlobalRankingReceivedReward(
             string rankingName,
-            long season
+            long? season = null
         ) {
             return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingReceivedRewardGameSessionDomain(
                 _domain.GlobalRankingReceivedReward(
@@ -637,7 +639,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         public Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingReceivedRewardGameSessionDomain ClusterRankingReceivedReward(
             string rankingName,
             string clusterName,
-            long season
+            long? season = null
         ) {
             return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingReceivedRewardGameSessionDomain(
                 _domain.ClusterRankingReceivedReward(
@@ -653,7 +655,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         public Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingScoreGameSessionDomain ClusterRankingScore(
             string rankingName,
             string clusterName,
-            long season
+            long? season = null
         ) {
             return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingScoreGameSessionDomain(
                 _domain.ClusterRankingScore(
