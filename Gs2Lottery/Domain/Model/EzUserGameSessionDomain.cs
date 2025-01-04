@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
             );
         }
 
+        public void InvalidateBoxes(
+        ) {
+            this._domain.InvalidateBoxes(
+            );
+        }
+
         public Gs2.Unity.Gs2Lottery.Domain.Model.EzLotteryGameSessionDomain Lottery(
             string lotteryName
         ) {

@@ -181,6 +181,12 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             );
         }
 
+        public void InvalidateSimpleItems(
+        ) {
+            this._domain.InvalidateSimpleItems(
+            );
+        }
+
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemGameSessionDomain SimpleItem(
             string itemName
         ) {

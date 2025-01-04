@@ -120,6 +120,12 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             );
         }
 
+        public void InvalidateMissionTaskModels(
+        ) {
+            this._domain.InvalidateMissionTaskModels(
+            );
+        }
+
         public Gs2.Unity.Gs2Mission.Domain.Model.EzMissionTaskModelDomain MissionTaskModel(
             string missionTaskName
         ) {

@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Buff.Domain.Model
             );
         }
 
+        public void InvalidateBuffEntryModels(
+        ) {
+            this._domain.InvalidateBuffEntryModels(
+            );
+        }
+
         public Gs2.Unity.Gs2Buff.Domain.Model.EzBuffEntryModelDomain BuffEntryModel(
             string buffEntryName
         ) {

@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
             );
         }
 
+        public void InvalidateRateModels(
+        ) {
+            this._domain.InvalidateRateModels(
+            );
+        }
+
         public Gs2.Unity.Gs2Enhance.Domain.Model.EzRateModelDomain RateModel(
             string rateName
         ) {

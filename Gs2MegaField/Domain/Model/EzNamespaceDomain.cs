@@ -121,6 +121,12 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
             );
         }
 
+        public void InvalidateAreaModels(
+        ) {
+            this._domain.InvalidateAreaModels(
+            );
+        }
+
         public Gs2.Unity.Gs2MegaField.Domain.Model.EzAreaModelDomain AreaModel(
             string areaModelName
         ) {

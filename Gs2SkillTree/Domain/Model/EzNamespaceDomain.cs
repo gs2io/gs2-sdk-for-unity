@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
             );
         }
 
+        public void InvalidateNodeModels(
+        ) {
+            this._domain.InvalidateNodeModels(
+            );
+        }
+
         public Gs2.Unity.Gs2SkillTree.Domain.Model.EzNodeModelDomain NodeModel(
             string nodeModelName
         ) {

@@ -126,6 +126,12 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             );
         }
 
+        public void InvalidateItemSets(
+        ) {
+            this._domain.InvalidateItemSets(
+            );
+        }
+
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzItemSetGameSessionDomain ItemSet(
             string itemName,
             string? itemSetName = null

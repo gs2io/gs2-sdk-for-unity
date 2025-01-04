@@ -126,6 +126,12 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
             );
         }
 
+        public void InvalidateAcceptVersions(
+        ) {
+            this._domain.InvalidateAcceptVersions(
+            );
+        }
+
         public Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain AcceptVersion(
             string versionName
         ) {

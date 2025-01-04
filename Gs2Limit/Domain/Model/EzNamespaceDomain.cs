@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
             );
         }
 
+        public void InvalidateLimitModels(
+        ) {
+            this._domain.InvalidateLimitModels(
+            );
+        }
+
         public Gs2.Unity.Gs2Limit.Domain.Model.EzLimitModelDomain LimitModel(
             string limitName
         ) {

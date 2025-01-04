@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
             );
         }
 
+        public void InvalidateRateModels(
+        ) {
+            this._domain.InvalidateRateModels(
+            );
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Exchange.Model.EzIncrementalRateModel> IncrementalRateModels(
         )
         {
@@ -176,6 +182,12 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         ) {
             this._domain.UnsubscribeIncrementalRateModels(
                 callbackId
+            );
+        }
+
+        public void InvalidateIncrementalRateModels(
+        ) {
+            this._domain.InvalidateIncrementalRateModels(
             );
         }
 

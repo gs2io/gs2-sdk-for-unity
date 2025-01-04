@@ -198,6 +198,12 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
             );
         }
 
+        public void InvalidateSubscribes(
+        ) {
+            this._domain.InvalidateSubscribes(
+            );
+        }
+
         public Gs2.Unity.Gs2Chat.Domain.Model.EzRoomGameSessionDomain Room(
             string roomName,
             string? password = null

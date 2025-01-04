@@ -125,6 +125,12 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             );
         }
 
+        public void InvalidateForms(
+        ) {
+            this._domain.InvalidateForms(
+            );
+        }
+
         public Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain Form(
             int index
         ) {

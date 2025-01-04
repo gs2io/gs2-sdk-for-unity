@@ -245,6 +245,12 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             );
         }
 
+        public void InvalidateSubscribeUsers(
+        ) {
+            this._domain.InvalidateSubscribeUsers(
+            );
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzRanking> Rankings(
         )
         {
@@ -298,6 +304,12 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         ) {
             this._domain.UnsubscribeRankings(
                 callbackId
+            );
+        }
+
+        public void InvalidateRankings(
+        ) {
+            this._domain.InvalidateRankings(
             );
         }
 

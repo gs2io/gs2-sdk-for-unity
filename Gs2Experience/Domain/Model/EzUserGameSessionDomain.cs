@@ -133,6 +133,14 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
             );
         }
 
+        public void InvalidateStatuses(
+            string? experienceName = null
+        ) {
+            this._domain.InvalidateStatuses(
+                experienceName
+            );
+        }
+
         public Gs2.Unity.Gs2Experience.Domain.Model.EzStatusGameSessionDomain Status(
             string experienceName,
             string propertyId

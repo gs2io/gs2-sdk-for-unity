@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Experience.Domain.Model
             );
         }
 
+        public void InvalidateExperienceModels(
+        ) {
+            this._domain.InvalidateExperienceModels(
+            );
+        }
+
         public Gs2.Unity.Gs2Experience.Domain.Model.EzExperienceModelDomain ExperienceModel(
             string experienceName
         ) {

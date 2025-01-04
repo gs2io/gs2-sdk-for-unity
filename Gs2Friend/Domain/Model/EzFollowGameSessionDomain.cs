@@ -181,6 +181,12 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             );
         }
 
+        public void InvalidateFollows(
+        ) {
+            this._domain.InvalidateFollows(
+            );
+        }
+
         public Gs2.Unity.Gs2Friend.Domain.Model.EzFollowUserGameSessionDomain FollowUser(
             string targetUserId
         ) {

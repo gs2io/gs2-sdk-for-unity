@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             );
         }
 
+        public void InvalidateInventoryModels(
+        ) {
+            this._domain.InvalidateInventoryModels(
+            );
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzSimpleInventoryModel> SimpleInventoryModels(
         )
         {
@@ -179,6 +185,12 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             );
         }
 
+        public void InvalidateSimpleInventoryModels(
+        ) {
+            this._domain.InvalidateSimpleInventoryModels(
+            );
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Inventory.Model.EzBigInventoryModel> BigInventoryModels(
         )
         {
@@ -231,6 +243,12 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
         ) {
             this._domain.UnsubscribeBigInventoryModels(
                 callbackId
+            );
+        }
+
+        public void InvalidateBigInventoryModels(
+        ) {
+            this._domain.InvalidateBigInventoryModels(
             );
         }
 

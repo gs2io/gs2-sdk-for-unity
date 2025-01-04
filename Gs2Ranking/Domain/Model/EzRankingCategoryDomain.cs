@@ -133,6 +133,14 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             );
         }
 
+        public void InvalidateNearRankings(
+            long score
+        ) {
+            this._domain.InvalidateNearRankings(
+                score
+            );
+        }
+
         public Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserDomain SubscribeUser(
             string targetUserId
         ) {

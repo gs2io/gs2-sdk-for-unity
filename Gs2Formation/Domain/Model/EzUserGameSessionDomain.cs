@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             );
         }
 
+        public void InvalidateMolds(
+        ) {
+            this._domain.InvalidateMolds(
+            );
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Formation.Model.EzPropertyForm> PropertyForms(
             string propertyFormModelName
         )
@@ -185,6 +191,14 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         ) {
             this._domain.UnsubscribePropertyForms(
                 callbackId,
+                propertyFormModelName
+            );
+        }
+
+        public void InvalidatePropertyForms(
+            string propertyFormModelName
+        ) {
+            this._domain.InvalidatePropertyForms(
                 propertyFormModelName
             );
         }

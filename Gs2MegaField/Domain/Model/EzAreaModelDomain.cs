@@ -120,6 +120,12 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
             );
         }
 
+        public void InvalidateLayerModels(
+        ) {
+            this._domain.InvalidateLayerModels(
+            );
+        }
+
         public Gs2.Unity.Gs2MegaField.Domain.Model.EzLayerModelDomain LayerModel(
             string layerModelName
         ) {

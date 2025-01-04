@@ -125,6 +125,12 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             );
         }
 
+        public void InvalidateCompletes(
+        ) {
+            this._domain.InvalidateCompletes(
+            );
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzCounter> Counters(
         )
         {
@@ -178,6 +184,12 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         ) {
             this._domain.UnsubscribeCounters(
                 callbackId
+            );
+        }
+
+        public void InvalidateCounters(
+        ) {
+            this._domain.InvalidateCounters(
             );
         }
 

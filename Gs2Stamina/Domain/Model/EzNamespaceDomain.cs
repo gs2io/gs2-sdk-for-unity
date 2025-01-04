@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
             );
         }
 
+        public void InvalidateStaminaModels(
+        ) {
+            this._domain.InvalidateStaminaModels(
+            );
+        }
+
         public Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaModelDomain StaminaModel(
             string staminaName
         ) {

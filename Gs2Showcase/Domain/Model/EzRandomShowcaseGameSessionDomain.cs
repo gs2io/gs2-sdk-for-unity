@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
             );
         }
 
+        public void InvalidateRandomDisplayItems(
+        ) {
+            this._domain.InvalidateRandomDisplayItems(
+            );
+        }
+
         public Gs2.Unity.Gs2Showcase.Domain.Model.EzRandomDisplayItemGameSessionDomain RandomDisplayItem(
             string displayItemName
         ) {

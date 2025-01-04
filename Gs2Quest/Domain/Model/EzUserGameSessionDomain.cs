@@ -196,6 +196,12 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             );
         }
 
+        public void InvalidateCompletedQuestLists(
+        ) {
+            this._domain.InvalidateCompletedQuestLists(
+            );
+        }
+
         public Gs2.Unity.Gs2Quest.Domain.Model.EzCompletedQuestListGameSessionDomain CompletedQuestList(
             string questGroupName
         ) {

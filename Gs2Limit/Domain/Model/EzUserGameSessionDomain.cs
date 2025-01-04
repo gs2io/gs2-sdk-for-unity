@@ -133,6 +133,14 @@ namespace Gs2.Unity.Gs2Limit.Domain.Model
             );
         }
 
+        public void InvalidateCounters(
+            string? limitName = null
+        ) {
+            this._domain.InvalidateCounters(
+                limitName
+            );
+        }
+
         public Gs2.Unity.Gs2Limit.Domain.Model.EzCounterGameSessionDomain Counter(
             string limitName,
             string counterName

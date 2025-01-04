@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
             );
         }
 
+        public void InvalidateEntryModels(
+        ) {
+            this._domain.InvalidateEntryModels(
+            );
+        }
+
         public Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryModelDomain EntryModel(
             string entryModelName
         ) {

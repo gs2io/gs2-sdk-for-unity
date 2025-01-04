@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             );
         }
 
+        public void InvalidateInventories(
+        ) {
+            this._domain.InvalidateInventories(
+            );
+        }
+
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzInventoryGameSessionDomain Inventory(
             string inventoryName
         ) {

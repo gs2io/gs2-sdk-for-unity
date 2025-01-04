@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
             );
         }
 
+        public void InvalidateStatuses(
+        ) {
+            this._domain.InvalidateStatuses(
+            );
+        }
+
         public Gs2.Unity.Gs2Idle.Domain.Model.EzStatusGameSessionDomain Status(
             string categoryName
         ) {

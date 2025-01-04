@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
             );
         }
 
+        public void InvalidateTriggers(
+        ) {
+            this._domain.InvalidateTriggers(
+            );
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Schedule.Model.EzEvent> Events(
         )
         {
@@ -177,6 +183,12 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
         ) {
             this._domain.UnsubscribeEvents(
                 callbackId
+            );
+        }
+
+        public void InvalidateEvents(
+        ) {
+            this._domain.InvalidateEvents(
             );
         }
 

@@ -183,6 +183,14 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
             );
         }
 
+        public void InvalidateMessages(
+            bool? isRead = null
+        ) {
+            this._domain.InvalidateMessages(
+                isRead
+            );
+        }
+
         public Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain Message(
             string messageName
         ) {

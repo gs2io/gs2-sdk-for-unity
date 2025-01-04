@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             );
         }
 
+        public void InvalidateGlobalRankingModels(
+        ) {
+            this._domain.InvalidateGlobalRankingModels(
+            );
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingModel> ClusterRankingModels(
         )
         {
@@ -179,6 +185,12 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             );
         }
 
+        public void InvalidateClusterRankingModels(
+        ) {
+            this._domain.InvalidateClusterRankingModels(
+            );
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzSubscribeRankingModel> SubscribeRankingModels(
         )
         {
@@ -231,6 +243,12 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         ) {
             this._domain.UnsubscribeSubscribeRankingModels(
                 callbackId
+            );
+        }
+
+        public void InvalidateSubscribeRankingModels(
+        ) {
+            this._domain.InvalidateSubscribeRankingModels(
             );
         }
 

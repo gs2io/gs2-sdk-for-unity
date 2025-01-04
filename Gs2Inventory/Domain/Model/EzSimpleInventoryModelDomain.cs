@@ -120,6 +120,12 @@ namespace Gs2.Unity.Gs2Inventory.Domain.Model
             );
         }
 
+        public void InvalidateSimpleItemModels(
+        ) {
+            this._domain.InvalidateSimpleItemModels(
+            );
+        }
+
         public Gs2.Unity.Gs2Inventory.Domain.Model.EzSimpleItemModelDomain SimpleItemModel(
             string itemName
         ) {

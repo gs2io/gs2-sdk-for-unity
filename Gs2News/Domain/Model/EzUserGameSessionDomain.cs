@@ -125,6 +125,12 @@ namespace Gs2.Unity.Gs2News.Domain.Model
             );
         }
 
+        public void InvalidateNewses(
+        ) {
+            this._domain.InvalidateNewses(
+            );
+        }
+
         public Gs2.Unity.Gs2News.Domain.Model.EzNewsGameSessionDomain News(
         ) {
             return new Gs2.Unity.Gs2News.Domain.Model.EzNewsGameSessionDomain(

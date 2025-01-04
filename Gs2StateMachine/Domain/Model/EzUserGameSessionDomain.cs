@@ -133,6 +133,14 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
             );
         }
 
+        public void InvalidateStatuses(
+            string? status = null
+        ) {
+            this._domain.InvalidateStatuses(
+                status
+            );
+        }
+
         public Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain Status(
             string statusName
         ) {

@@ -272,6 +272,14 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             );
         }
 
+        public void InvalidateDataObjects(
+            string? status = null
+        ) {
+            this._domain.InvalidateDataObjects(
+                status
+            );
+        }
+
         public Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectGameSessionDomain DataObject(
             string dataObjectName
         ) {

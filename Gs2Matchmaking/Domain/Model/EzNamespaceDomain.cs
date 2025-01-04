@@ -262,6 +262,12 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             );
         }
 
+        public void InvalidateRatingModels(
+        ) {
+            this._domain.InvalidateRatingModels(
+            );
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzSeasonModel> SeasonModels(
         )
         {
@@ -314,6 +320,12 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         ) {
             this._domain.UnsubscribeSeasonModels(
                 callbackId
+            );
+        }
+
+        public void InvalidateSeasonModels(
+        ) {
+            this._domain.InvalidateSeasonModels(
             );
         }
 

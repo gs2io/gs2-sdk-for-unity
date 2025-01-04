@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             );
         }
 
+        public void InvalidateQuestGroupModels(
+        ) {
+            this._domain.InvalidateQuestGroupModels(
+            );
+        }
+
         public Gs2.Unity.Gs2Quest.Domain.Model.EzQuestGroupModelDomain QuestGroupModel(
             string questGroupName
         ) {

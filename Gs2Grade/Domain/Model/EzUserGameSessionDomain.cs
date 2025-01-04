@@ -134,6 +134,14 @@ namespace Gs2.Unity.Gs2Grade.Domain.Model
             );
         }
 
+        public void InvalidateStatuses(
+            string? gradeName = null
+        ) {
+            this._domain.InvalidateStatuses(
+                gradeName
+            );
+        }
+
         public Gs2.Unity.Gs2Grade.Domain.Model.EzStatusGameSessionDomain Status(
             string gradeName,
             string propertyId

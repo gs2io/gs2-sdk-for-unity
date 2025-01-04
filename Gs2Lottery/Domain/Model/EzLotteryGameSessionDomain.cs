@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
             );
         }
 
+        public void InvalidateProbabilities(
+        ) {
+            this._domain.InvalidateProbabilities(
+            );
+        }
+
         public Gs2.Unity.Gs2Lottery.Domain.Model.EzProbabilityGameSessionDomain Probability(
             string prizeId
         ) {

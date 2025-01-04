@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Idle.Domain.Model
             );
         }
 
+        public void InvalidateCategoryModels(
+        ) {
+            this._domain.InvalidateCategoryModels(
+            );
+        }
+
         public Gs2.Unity.Gs2Idle.Domain.Model.EzCategoryModelDomain CategoryModel(
             string categoryName
         ) {

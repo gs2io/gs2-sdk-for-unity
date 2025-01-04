@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Grade.Domain.Model
             );
         }
 
+        public void InvalidateGradeModels(
+        ) {
+            this._domain.InvalidateGradeModels(
+            );
+        }
+
         public Gs2.Unity.Gs2Grade.Domain.Model.EzGradeModelDomain GradeModel(
             string gradeName
         ) {

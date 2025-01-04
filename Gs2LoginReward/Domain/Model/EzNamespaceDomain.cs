@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
             );
         }
 
+        public void InvalidateBonusModels(
+        ) {
+            this._domain.InvalidateBonusModels(
+            );
+        }
+
         public Gs2.Unity.Gs2LoginReward.Domain.Model.EzUserDomain User(
             string userId
         ) {

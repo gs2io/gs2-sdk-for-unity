@@ -120,6 +120,12 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             );
         }
 
+        public void InvalidateQuestModels(
+        ) {
+            this._domain.InvalidateQuestModels(
+            );
+        }
+
         public Gs2.Unity.Gs2Quest.Domain.Model.EzQuestModelDomain QuestModel(
             string questName
         ) {

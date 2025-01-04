@@ -127,6 +127,12 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             );
         }
 
+        public void InvalidateJoinedSeasonGatherings(
+        ) {
+            this._domain.InvalidateJoinedSeasonGatherings(
+            );
+        }
+
         public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzSeasonGatheringGameSessionDomain SeasonGathering(
             long tier,
             string seasonGatheringName

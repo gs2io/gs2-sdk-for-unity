@@ -396,6 +396,12 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             );
         }
 
+        public void InvalidateDataObjectHistories(
+        ) {
+            this._domain.InvalidateDataObjectHistories(
+            );
+        }
+
         public Gs2.Unity.Gs2Datastore.Domain.Model.EzDataObjectHistoryGameSessionDomain DataObjectHistory(
             string generation
         ) {

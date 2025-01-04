@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
             );
         }
 
+        public void InvalidateReceiveStatuses(
+        ) {
+            this._domain.InvalidateReceiveStatuses(
+            );
+        }
+
         public Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain Bonus(
         ) {
             return new Gs2.Unity.Gs2LoginReward.Domain.Model.EzBonusGameSessionDomain(

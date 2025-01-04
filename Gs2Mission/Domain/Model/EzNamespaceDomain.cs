@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             );
         }
 
+        public void InvalidateCounterModels(
+        ) {
+            this._domain.InvalidateCounterModels(
+            );
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel> MissionGroupModels(
         )
         {
@@ -176,6 +182,12 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         ) {
             this._domain.UnsubscribeMissionGroupModels(
                 callbackId
+            );
+        }
+
+        public void InvalidateMissionGroupModels(
+        ) {
+            this._domain.InvalidateMissionGroupModels(
             );
         }
 

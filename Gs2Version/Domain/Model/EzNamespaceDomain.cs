@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
             );
         }
 
+        public void InvalidateVersionModels(
+        ) {
+            this._domain.InvalidateVersionModels(
+            );
+        }
+
         public Gs2.Unity.Gs2Version.Domain.Model.EzVersionModelDomain VersionModel(
             string versionName
         ) {

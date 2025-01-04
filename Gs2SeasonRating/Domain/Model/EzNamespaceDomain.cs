@@ -262,6 +262,12 @@ namespace Gs2.Unity.Gs2SeasonRating.Domain.Model
             );
         }
 
+        public void InvalidateSeasonModels(
+        ) {
+            this._domain.InvalidateSeasonModels(
+            );
+        }
+
         public Gs2.Unity.Gs2SeasonRating.Domain.Model.EzSeasonModelDomain SeasonModel(
             string seasonName
         ) {

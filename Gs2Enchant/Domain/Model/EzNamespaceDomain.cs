@@ -124,6 +124,12 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
             );
         }
 
+        public void InvalidateBalanceParameterModels(
+        ) {
+            this._domain.InvalidateBalanceParameterModels(
+            );
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Enchant.Model.EzRarityParameterModel> RarityParameterModels(
         )
         {
@@ -176,6 +182,12 @@ namespace Gs2.Unity.Gs2Enchant.Domain.Model
         ) {
             this._domain.UnsubscribeRarityParameterModels(
                 callbackId
+            );
+        }
+
+        public void InvalidateRarityParameterModels(
+        ) {
+            this._domain.InvalidateRarityParameterModels(
             );
         }
 

@@ -133,6 +133,14 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
             );
         }
 
+        public void InvalidateAwaits(
+            string? rateName = null
+        ) {
+            this._domain.InvalidateAwaits(
+                rateName
+            );
+        }
+
         public Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain Exchange(
         ) {
             return new Gs2.Unity.Gs2Exchange.Domain.Model.EzExchangeGameSessionDomain(
