@@ -212,6 +212,78 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         }
         #endif
 
+        [Obsolete("The name has been changed to PutSubscribeRankingFuture.")]
+        public IFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzSubscribeRankingScoreGameSessionDomain> PutSubscribeRanking(
+            string rankingName,
+            string clusterName,
+            long score,
+            string? metadata = null
+        )
+        {
+            return PutSubscribeRankingFuture(
+                rankingName,
+                clusterName,
+                score,
+                metadata
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzSubscribeRankingScoreGameSessionDomain> PutSubscribeRankingFuture(
+            string rankingName,
+            string clusterName,
+            long score,
+            string? metadata = null
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking2.Domain.Model.EzSubscribeRankingScoreGameSessionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.PutSubscribeRankingScoreFuture(
+                        new PutSubscribeRankingScoreRequest()
+                            .WithRankingName(rankingName)
+                            .WithScore(score)
+                            .WithMetadata(metadata)
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Ranking2.Domain.Model.EzSubscribeRankingScoreGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzSubscribeRankingScoreGameSessionDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Ranking2.Domain.Model.EzSubscribeRankingScoreGameSessionDomain> PutSubscribeRankingAsync(
+            string rankingName,
+            string clusterName,
+            long score,
+            string? metadata = null
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.PutSubscribeRankingScoreAsync(
+                    new PutSubscribeRankingScoreRequest()
+                        .WithRankingName(rankingName)
+                        .WithScore(score)
+                        .WithMetadata(metadata)
+                )
+            );
+            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzSubscribeRankingScoreGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
         public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingReceivedReward> GlobalRankingReceivedRewards(
             string? rankingName = null,
             long? season = null
