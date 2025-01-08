@@ -215,14 +215,12 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         [Obsolete("The name has been changed to PutSubscribeRankingFuture.")]
         public IFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzSubscribeRankingScoreGameSessionDomain> PutSubscribeRanking(
             string rankingName,
-            string clusterName,
             long score,
             string? metadata = null
         )
         {
             return PutSubscribeRankingFuture(
                 rankingName,
-                clusterName,
                 score,
                 metadata
             );
@@ -230,7 +228,6 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
 
         public IFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzSubscribeRankingScoreGameSessionDomain> PutSubscribeRankingFuture(
             string rankingName,
-            string clusterName,
             long score,
             string? metadata = null
         )
@@ -263,7 +260,6 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Ranking2.Domain.Model.EzSubscribeRankingScoreGameSessionDomain> PutSubscribeRankingAsync(
             string rankingName,
-            string clusterName,
             long score,
             string? metadata = null
         ) {
