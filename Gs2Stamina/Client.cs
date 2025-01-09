@@ -98,6 +98,31 @@ namespace Gs2.Unity.Gs2Stamina
             );
 		}
 
+        public IEnumerator Apply(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Stamina.Result.EzApplyResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string staminaName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _client.ApplyStamina(
+                    new Gs2.Gs2Stamina.Request.ApplyStaminaRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithStaminaName(staminaName)
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Stamina.Result.EzApplyResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Stamina.Result.EzApplyResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator Consume(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Stamina.Result.EzConsumeResult>> callback,
 		        IGameSession session,

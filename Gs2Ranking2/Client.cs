@@ -591,7 +591,7 @@ namespace Gs2.Unity.Gs2Ranking2
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking2.Result.EzListSubscribesResult>> callback,
 		        IGameSession session,
                 string namespaceName,
-                string rankingName = null,
+                string rankingName,
                 string pageToken = null,
                 int? limit = null
         )

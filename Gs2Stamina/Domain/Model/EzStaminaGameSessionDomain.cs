@@ -125,6 +125,56 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         }
         #endif
 
+        [Obsolete("The name has been changed to ApplyFuture.")]
+        public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> Apply(
+        )
+        {
+            return ApplyFuture(
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> ApplyFuture(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.ApplyFuture(
+                        new ApplyStaminaRequest()
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> ApplyAsync(
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.ApplyAsync(
+                    new ApplyStaminaRequest()
+                )
+            );
+            return new Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
         [Obsolete("The name has been changed to SetMaxValueFuture.")]
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetMaxValue(
             string signedStatusBody,

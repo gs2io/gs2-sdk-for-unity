@@ -53,7 +53,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Iterator
             Gs2.Gs2Ranking2.Domain.Model.UserAccessTokenDomain domain,
             Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection,
-            string? rankingName = null
+            string rankingName
         )
         {
             _domain = domain;
