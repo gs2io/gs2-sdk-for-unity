@@ -37,7 +37,7 @@ namespace Gs2.Unity.Gs2Ranking2.Model
 		[SerializeField]
 		public long Season;
 		[SerializeField]
-		public string UserId;
+		public string ScorerUserId;
 		[SerializeField]
 		public int Index;
 		[SerializeField]
@@ -54,7 +54,7 @@ namespace Gs2.Unity.Gs2Ranking2.Model
             return new Gs2.Gs2Ranking2.Model.SubscribeRankingData {
                 RankingName = RankingName,
                 Season = Season,
-                UserId = UserId,
+                ScorerUserId = ScorerUserId,
                 Index = Index,
                 Rank = Rank,
                 Score = Score,
@@ -68,7 +68,7 @@ namespace Gs2.Unity.Gs2Ranking2.Model
             return new EzSubscribeRankingData {
                 RankingName = model.RankingName == null ? null : model.RankingName,
                 Season = model.Season ?? 0,
-                UserId = model.UserId == null ? null : model.UserId,
+                ScorerUserId = model.ScorerUserId == null ? null : model.ScorerUserId,
                 Index = model.Index ?? 0,
                 Rank = model.Rank ?? 0,
                 Score = model.Score ?? 0,
