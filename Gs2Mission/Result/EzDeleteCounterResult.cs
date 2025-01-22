@@ -28,14 +28,14 @@ namespace Gs2.Unity.Gs2Mission.Result
 	[Preserve]
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
-	public class EzGetCounterResult
+	public class EzDeleteCounterResult
 	{
 		[SerializeField]
 		public Gs2.Unity.Gs2Mission.Model.EzCounter Item;
 
-        public static EzGetCounterResult FromModel(Gs2.Gs2Mission.Result.GetCounterResult model)
+        public static EzDeleteCounterResult FromModel(Gs2.Gs2Mission.Result.DeleteCounterResult model)
         {
-            return new EzGetCounterResult {
+            return new EzDeleteCounterResult {
                 Item = model.Item == null ? null : Gs2.Unity.Gs2Mission.Model.EzCounter.FromModel(model.Item),
             };
         }

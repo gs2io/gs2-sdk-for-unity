@@ -162,8 +162,8 @@ namespace Gs2.Unity.Gs2Mission
             );
 		}
 
-        public IEnumerator GetCounter(
-		        UnityAction<AsyncResult<Gs2.Unity.Gs2Mission.Result.EzGetCounterResult>> callback,
+        public IEnumerator DeleteCounter(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Mission.Result.EzDeleteCounterResult>> callback,
 		        IGameSession session,
                 string namespaceName,
                 string counterName
@@ -174,6 +174,31 @@ namespace Gs2.Unity.Gs2Mission
 		        session,
                 cb => _client.DeleteCounter(
                     new Gs2.Gs2Mission.Request.DeleteCounterRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithCounterName(counterName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Mission.Result.EzDeleteCounterResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Mission.Result.EzDeleteCounterResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator GetCounter(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Mission.Result.EzGetCounterResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string counterName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _client.GetCounter(
+                    new Gs2.Gs2Mission.Request.GetCounterRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithCounterName(counterName),

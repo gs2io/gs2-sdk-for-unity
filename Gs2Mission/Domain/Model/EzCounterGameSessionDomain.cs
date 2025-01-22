@@ -69,15 +69,15 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             this._connection = connection;
         }
 
-        [Obsolete("The name has been changed to GetCounterFuture.")]
-        public IFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> GetCounter(
+        [Obsolete("The name has been changed to DeleteCounterFuture.")]
+        public IFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> DeleteCounter(
         )
         {
-            return GetCounterFuture(
+            return DeleteCounterFuture(
             );
         }
 
-        public IFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> GetCounterFuture(
+        public IFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> DeleteCounterFuture(
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> self)
@@ -103,7 +103,7 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> GetCounterAsync(
+        public async UniTask<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> DeleteCounterAsync(
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
