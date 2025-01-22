@@ -69,6 +69,56 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             this._connection = connection;
         }
 
+        [Obsolete("The name has been changed to GetCounterFuture.")]
+        public IFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> GetCounter(
+        )
+        {
+            return GetCounterFuture(
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> GetCounterFuture(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.DeleteFuture(
+                        new DeleteCounterRequest()
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> GetCounterAsync(
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.DeleteAsync(
+                    new DeleteCounterRequest()
+                )
+            );
+            return new Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Mission.Model.EzCounter> Model()
         {

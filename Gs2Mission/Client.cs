@@ -172,8 +172,8 @@ namespace Gs2.Unity.Gs2Mission
             yield return _connection.Run(
                 callback,
 		        session,
-                cb => _client.GetCounter(
-                    new Gs2.Gs2Mission.Request.GetCounterRequest()
+                cb => _client.DeleteCounter(
+                    new Gs2.Gs2Mission.Request.DeleteCounterRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithCounterName(counterName),

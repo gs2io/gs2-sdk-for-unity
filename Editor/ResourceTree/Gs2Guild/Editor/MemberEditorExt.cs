@@ -27,6 +27,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Guild.Editor
             EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.TextField("UserId", item.UserId);
             EditorGUILayout.TextField("RoleName", item.RoleName);
+            EditorGUILayout.TextField("Metadata", item.Metadata);
             EditorGUILayout.TextField("JoinedAt", UnixTime.FromUnixTime(item.JoinedAt ?? 0).ToString(CultureInfo.CurrentUICulture));
             EditorGUI.EndDisabledGroup();
         }

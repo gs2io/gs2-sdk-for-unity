@@ -37,6 +37,8 @@ namespace Gs2.Unity.Gs2Guild.Model
 		[SerializeField]
 		public string RoleName;
 		[SerializeField]
+		public string Metadata;
+		[SerializeField]
 		public long JoinedAt;
 
         public Gs2.Gs2Guild.Model.Member ToModel()
@@ -44,6 +46,7 @@ namespace Gs2.Unity.Gs2Guild.Model
             return new Gs2.Gs2Guild.Model.Member {
                 UserId = UserId,
                 RoleName = RoleName,
+                Metadata = Metadata,
                 JoinedAt = JoinedAt,
             };
         }
@@ -53,6 +56,7 @@ namespace Gs2.Unity.Gs2Guild.Model
             return new EzMember {
                 UserId = model.UserId == null ? null : model.UserId,
                 RoleName = model.RoleName == null ? null : model.RoleName,
+                Metadata = model.Metadata == null ? null : model.Metadata,
                 JoinedAt = model.JoinedAt ?? 0,
             };
         }

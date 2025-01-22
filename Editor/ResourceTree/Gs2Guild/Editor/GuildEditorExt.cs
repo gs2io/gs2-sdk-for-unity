@@ -34,6 +34,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Guild.Editor
             EditorGUILayout.TextField("Attribute3", item.Attribute3?.ToString());
             EditorGUILayout.TextField("Attribute4", item.Attribute4?.ToString());
             EditorGUILayout.TextField("Attribute5", item.Attribute5?.ToString());
+            EditorGUILayout.TextField("Metadata", item.Metadata);
             EditorGUILayout.TextField("JoinPolicy", item.JoinPolicy);
             EditorGUILayout.TextField("GuildMemberDefaultRole", item.GuildMemberDefaultRole);
             EditorGUILayout.TextField("CurrentMaximumMemberCount", item.CurrentMaximumMemberCount?.ToString());

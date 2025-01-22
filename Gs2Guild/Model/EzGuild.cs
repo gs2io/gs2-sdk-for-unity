@@ -49,6 +49,8 @@ namespace Gs2.Unity.Gs2Guild.Model
 		[SerializeField]
 		public int Attribute5;
 		[SerializeField]
+		public string Metadata;
+		[SerializeField]
 		public string JoinPolicy;
 		[SerializeField]
 		public List<Gs2.Unity.Gs2Guild.Model.EzRoleModel> CustomRoles;
@@ -66,6 +68,7 @@ namespace Gs2.Unity.Gs2Guild.Model
                 Attribute3 = Attribute3,
                 Attribute4 = Attribute4,
                 Attribute5 = Attribute5,
+                Metadata = Metadata,
                 JoinPolicy = JoinPolicy,
                 CustomRoles = CustomRoles?.Select(v => {
                     return v.ToModel();
@@ -87,6 +90,7 @@ namespace Gs2.Unity.Gs2Guild.Model
                 Attribute3 = model.Attribute3 ?? 0,
                 Attribute4 = model.Attribute4 ?? 0,
                 Attribute5 = model.Attribute5 ?? 0,
+                Metadata = model.Metadata == null ? null : model.Metadata,
                 JoinPolicy = model.JoinPolicy == null ? null : model.JoinPolicy,
                 CustomRoles = model.CustomRoles == null ? new List<Gs2.Unity.Gs2Guild.Model.EzRoleModel>() : model.CustomRoles.Select(v => {
                     return Gs2.Unity.Gs2Guild.Model.EzRoleModel.FromModel(v);

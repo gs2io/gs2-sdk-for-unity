@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-using Gs2.Gs2Mission.Model;
+using Gs2.Gs2Guild.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -23,20 +23,20 @@ using UnityEngine;
 using UnityEngine.Scripting;
 
 // ReSharper disable once CheckNamespace
-namespace Gs2.Unity.Gs2Mission.Result
+namespace Gs2.Unity.Gs2Guild.Result
 {
 	[Preserve]
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
-	public class EzGetCounterResult
+	public class EzUpdateMemberMetadataResult
 	{
 		[SerializeField]
-		public Gs2.Unity.Gs2Mission.Model.EzCounter Item;
+		public Gs2.Unity.Gs2Guild.Model.EzGuild Item;
 
-        public static EzGetCounterResult FromModel(Gs2.Gs2Mission.Result.DeleteCounterResult model)
+        public static EzUpdateMemberMetadataResult FromModel(Gs2.Gs2Guild.Result.UpdateMemberMetadataResult model)
         {
-            return new EzGetCounterResult {
-                Item = model.Item == null ? null : Gs2.Unity.Gs2Mission.Model.EzCounter.FromModel(model.Item),
+            return new EzUpdateMemberMetadataResult {
+                Item = model.Item == null ? null : Gs2.Unity.Gs2Guild.Model.EzGuild.FromModel(model.Item),
             };
         }
     }
