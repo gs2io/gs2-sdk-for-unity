@@ -271,18 +271,21 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
         [Obsolete("The name has been changed to SendRequestFuture.")]
         public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildDomain> SendRequest(
             string guildModelName,
-            string targetGuildName
+            string targetGuildName,
+            string? metadata = null
         )
         {
             return SendRequestFuture(
                 guildModelName,
-                targetGuildName
+                targetGuildName,
+                metadata
             );
         }
 
         public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildDomain> SendRequestFuture(
             string guildModelName,
-            string targetGuildName
+            string targetGuildName,
+            string? metadata = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildDomain> self)
@@ -293,6 +296,7 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
                         new SendRequestRequest()
                             .WithGuildModelName(guildModelName)
                             .WithTargetGuildName(targetGuildName)
+                            .WithMetadata(metadata)
                     )
                 );
                 yield return future;
@@ -311,7 +315,8 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
         #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildDomain> SendRequestAsync(
             string guildModelName,
-            string targetGuildName
+            string targetGuildName,
+            string? metadata = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -319,6 +324,7 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
                     new SendRequestRequest()
                         .WithGuildModelName(guildModelName)
                         .WithTargetGuildName(targetGuildName)
+                        .WithMetadata(metadata)
                 )
             );
             return new Gs2.Unity.Gs2Guild.Domain.Model.EzGuildDomain(
