@@ -83,6 +83,8 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
             int? attribute3 = null,
             int? attribute4 = null,
             int? attribute5 = null,
+            string? metadata = null,
+            string? memberMetadata = null,
             Gs2.Unity.Gs2Guild.Model.EzRoleModel[] customRoles = null,
             string? guildMemberDefaultRole = null
         )
@@ -96,6 +98,8 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
                 attribute3,
                 attribute4,
                 attribute5,
+                metadata,
+                memberMetadata,
                 customRoles,
                 guildMemberDefaultRole
             );
@@ -110,6 +114,8 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
             int? attribute3 = null,
             int? attribute4 = null,
             int? attribute5 = null,
+            string? metadata = null,
+            string? memberMetadata = null,
             Gs2.Unity.Gs2Guild.Model.EzRoleModel[] customRoles = null,
             string? guildMemberDefaultRole = null
         )
@@ -127,6 +133,8 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
                             .WithAttribute3(attribute3)
                             .WithAttribute4(attribute4)
                             .WithAttribute5(attribute5)
+                            .WithMetadata(metadata)
+                            .WithMemberMetadata(memberMetadata)
                             .WithJoinPolicy(joinPolicy)
                             .WithCustomRoles(customRoles?.Select(v => v.ToModel()).ToArray())
                             .WithGuildMemberDefaultRole(guildMemberDefaultRole)
@@ -155,6 +163,8 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
             int? attribute3 = null,
             int? attribute4 = null,
             int? attribute5 = null,
+            string? metadata = null,
+            string? memberMetadata = null,
             Gs2.Unity.Gs2Guild.Model.EzRoleModel[] customRoles = null,
             string? guildMemberDefaultRole = null
         ) {
@@ -169,6 +179,8 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
                         .WithAttribute3(attribute3)
                         .WithAttribute4(attribute4)
                         .WithAttribute5(attribute5)
+                        .WithMetadata(metadata)
+                        .WithMemberMetadata(memberMetadata)
                         .WithJoinPolicy(joinPolicy)
                         .WithCustomRoles(customRoles?.Select(v => v.ToModel()).ToArray())
                         .WithGuildMemberDefaultRole(guildMemberDefaultRole)
@@ -443,6 +455,14 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
             );
         }
 
+        public void InvalidateSendRequests(
+            string guildModelName
+        ) {
+            this._domain.InvalidateSendRequests(
+                guildModelName
+            );
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Guild.Model.EzJoinedGuild> JoinedGuilds(
             string? guildModelName = null
         )
@@ -504,6 +524,14 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
         ) {
             this._domain.UnsubscribeJoinedGuilds(
                 callbackId,
+                guildModelName
+            );
+        }
+
+        public void InvalidateJoinedGuilds(
+            string? guildModelName = null
+        ) {
+            this._domain.InvalidateJoinedGuilds(
                 guildModelName
             );
         }
