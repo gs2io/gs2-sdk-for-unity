@@ -49,6 +49,18 @@ using System.Collections.Generic;
 
 namespace Gs2.Unity.Gs2Schedule.Domain.Model
 {
+    public partial class EzEventGameSessionDomain
+    {
+        public Gs2.Unity.Gs2Schedule.Domain.Model.EzRepeatScheduleGameSessionDomain RepeatSchedule(
+        ) {
+            return new Gs2.Unity.Gs2Schedule.Domain.Model.EzRepeatScheduleGameSessionDomain(
+                _domain.RepeatSchedule(
+                ),
+                this._gameSession,
+                this._connection
+            );
+        }
+    }
 
     public partial class EzRepeatScheduleGameSessionDomain {
         private readonly Gs2.Gs2Schedule.Domain.Model.RepeatScheduleAccessTokenDomain _domain;

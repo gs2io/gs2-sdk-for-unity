@@ -50,6 +50,17 @@ using System.Collections.Generic;
 
 namespace Gs2.Unity.Gs2Schedule.Domain.Model
 {
+    public partial class EzEventDomain
+    {
+        public Gs2.Unity.Gs2Schedule.Domain.Model.EzRepeatScheduleDomain RepeatSchedule(
+        ) {
+            return new Gs2.Unity.Gs2Schedule.Domain.Model.EzRepeatScheduleDomain(
+                _domain.RepeatSchedule(
+                ),
+                this._connection
+            );
+        }
+    }
 
     public partial class EzRepeatScheduleDomain {
         private readonly Gs2.Gs2Schedule.Domain.Model.RepeatScheduleDomain _domain;
