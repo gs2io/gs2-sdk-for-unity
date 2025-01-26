@@ -176,6 +176,56 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         }
         #endif
 
+        [Obsolete("The name has been changed to EvaluateCompleteFuture.")]
+        public IFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain> EvaluateComplete(
+        )
+        {
+            return EvaluateCompleteFuture(
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain> EvaluateCompleteFuture(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.EvaluateFuture(
+                        new EvaluateCompleteRequest()
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain> EvaluateCompleteAsync(
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.EvaluateAsync(
+                    new EvaluateCompleteRequest()
+                )
+            );
+            return new Gs2.Unity.Gs2Mission.Domain.Model.EzCompleteGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Mission.Model.EzComplete> Model()
         {

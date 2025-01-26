@@ -40,6 +40,8 @@ namespace Gs2.Editor.ResourceTree.Gs2Mission.Editor
                 VerifyActionEditorExt.OnGUI(item.Condition);
                 EditorGUI.indentLevel--;
             }
+            EditorGUILayout.TextField("AnchorTimestamp", UnixTime.FromUnixTime(item.AnchorTimestamp ?? 0).ToString(CultureInfo.CurrentUICulture));
+            EditorGUILayout.TextField("Days", item.Days?.ToString());
             EditorGUI.EndDisabledGroup();
         }
     }

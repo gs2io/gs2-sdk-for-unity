@@ -83,6 +83,31 @@ namespace Gs2.Unity.Gs2Mission
             );
 		}
 
+        public IEnumerator EvaluateComplete(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Mission.Result.EzEvaluateCompleteResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string missionGroupName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.EvaluateComplete(
+                    new Gs2.Gs2Mission.Request.EvaluateCompleteRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithMissionGroupName(missionGroupName)
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Mission.Result.EzEvaluateCompleteResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Mission.Result.EzEvaluateCompleteResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator GetComplete(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Mission.Result.EzGetCompleteResult>> callback,
 		        IGameSession session,

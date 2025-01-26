@@ -642,7 +642,8 @@ namespace Gs2.Unity.Gs2Guild
 		        IGameSession session,
                 string namespaceName,
                 string guildModelName,
-                string targetGuildName
+                string targetGuildName,
+                string metadata = null
         )
 		{
             yield return _connection.Run(
@@ -653,7 +654,8 @@ namespace Gs2.Unity.Gs2Guild
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithGuildModelName(guildModelName)
-                        .WithTargetGuildName(targetGuildName),
+                        .WithTargetGuildName(targetGuildName)
+                        .WithMetadata(metadata),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Guild.Result.EzSendRequestResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Guild.Result.EzSendRequestResult.FromModel(r.Result),
