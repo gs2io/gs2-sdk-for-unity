@@ -69,6 +69,68 @@ namespace Gs2.Unity.Gs2Money2.Domain.Model
             this._connection = connection;
         }
 
+        public Gs2Iterator<Gs2.Unity.Gs2Money2.Model.EzWallet> Wallets(
+        )
+        {
+            return new Gs2.Unity.Gs2Money2.Domain.Iterator.EzListIterator(
+                this._domain,
+                this._gameSession,
+                this._connection
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Money2.Model.EzWallet> WalletsAsync(
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Money2.Model.EzWallet>(async (writer, token) =>
+            {
+                var it = _domain.WalletsAsync(
+                ).GetAsyncEnumerator();
+                while(
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.WalletsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Money2.Model.EzWallet.FromModel(it.Current));
+                }
+            });
+        }
+        #endif
+
+        public ulong SubscribeWallets(
+            Action<Gs2.Unity.Gs2Money2.Model.EzWallet[]> callback
+        ) {
+            return this._domain.SubscribeWallets(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Money2.Model.EzWallet.FromModel).ToArray());
+                }
+            );
+        }
+
+        public void UnsubscribeWallets(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeWallets(
+                callbackId
+            );
+        }
+
+        public void InvalidateWallets(
+        ) {
+            this._domain.InvalidateWallets(
+            );
+        }
+
         public Gs2.Unity.Gs2Money2.Domain.Model.EzWalletGameSessionDomain Wallet(
             int slot
         ) {

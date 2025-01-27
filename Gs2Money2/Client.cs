@@ -79,6 +79,29 @@ namespace Gs2.Unity.Gs2Money2
             );
 		}
 
+        public IEnumerator List(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Money2.Result.EzListResult>> callback,
+		        IGameSession session,
+                string namespaceName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribeWallets(
+                    new Gs2.Gs2Money2.Request.DescribeWalletsRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Money2.Result.EzListResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Money2.Result.EzListResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator Withdraw(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Money2.Result.EzWithdrawResult>> callback,
 		        IGameSession session,
