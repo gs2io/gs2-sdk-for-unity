@@ -32,6 +32,8 @@ namespace Gs2.Editor.ResourceTree.Gs2Limit.Editor
             EditorGUILayout.TextField("ResetDayOfMonth", item.ResetDayOfMonth?.ToString());
             EditorGUILayout.TextField("ResetDayOfWeek", item.ResetDayOfWeek);
             EditorGUILayout.TextField("ResetHour", item.ResetHour?.ToString());
+            EditorGUILayout.TextField("AnchorTimestamp", UnixTime.FromUnixTime(item.AnchorTimestamp ?? 0).ToString(CultureInfo.CurrentUICulture));
+            EditorGUILayout.TextField("Days", item.Days?.ToString());
             EditorGUI.EndDisabledGroup();
         }
     }
