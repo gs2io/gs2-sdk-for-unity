@@ -274,6 +274,11 @@ namespace Gs2.Unity.Core
             _gs2.ClearCache();
         }
 
+        public void ClearCacheAndAllUnsubscribe()
+        {
+            _gs2.ClearCacheAndAllUnsubscribe();
+        }
+
         public void ClearCache<TKind>(
             string parentKey,
             string key
