@@ -57,6 +57,15 @@ namespace Gs2.Editor.ResourceTree.Gs2Exchange.Editor
                 ScriptSettingEditorExt.OnGUI(item.IncrementalExchangeScript);
                 EditorGUI.indentLevel--;
             }
+            if (item.AcquireAwaitScript == null) {
+                EditorGUILayout.TextField("AcquireAwaitScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("AcquireAwaitScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.AcquireAwaitScript);
+                EditorGUI.indentLevel--;
+            }
             if (item.LogSetting == null) {
                 EditorGUILayout.TextField("LogSetting", "");
             }
