@@ -54,6 +54,33 @@ namespace Gs2.Unity.Gs2Inbox
             _restClient = new Gs2InboxRestClient(connection.RestSession);
 		}
 
+        public IEnumerator BatchRead(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzBatchReadResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                List<string> messageNames
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.BatchReadMessages(
+                    new Gs2.Gs2Inbox.Request.BatchReadMessagesRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithMessageNames(messageNames?.Select(v => {
+                            return v;
+                        }).ToArray())
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzBatchReadResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Inbox.Result.EzBatchReadResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator Delete(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Inbox.Result.EzDeleteResult>> callback,
 		        IGameSession session,

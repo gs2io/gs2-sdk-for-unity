@@ -118,6 +118,60 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         }
         #endif
 
+        [Obsolete("The name has been changed to BatchReadFuture.")]
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> BatchRead(
+            string[] messageNames,
+            bool speculativeExecute = true
+        )
+        {
+            return BatchReadFuture(
+                messageNames,
+                speculativeExecute
+            );
+        }
+
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> BatchReadFuture(
+            string[] messageNames,
+            bool speculativeExecute = true
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.BatchReadMessagesFuture(
+                        new BatchReadMessagesRequest()
+                            .WithMessageNames(messageNames),
+                        speculativeExecute
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(future.Result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(future.Result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> BatchReadAsync(
+            string[] messageNames,
+            bool speculativeExecute = true
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.BatchReadMessagesAsync(
+                    new BatchReadMessagesRequest()
+                        .WithMessageNames(messageNames),
+                    speculativeExecute
+                )
+            );
+            return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
+        }
+        #endif
+
         public Gs2Iterator<Gs2.Unity.Gs2Inbox.Model.EzMessage> Messages(
             bool? isRead = null
         )
