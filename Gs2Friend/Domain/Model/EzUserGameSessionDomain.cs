@@ -191,6 +191,14 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             );
         }
 
+        public void InvalidateFriends(
+            bool? withProfile = null
+        ) {
+            this._domain.InvalidateFriends(
+                withProfile
+            );
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> SendRequests(
         )
         {
@@ -244,6 +252,12 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         ) {
             this._domain.UnsubscribeSendRequests(
                 callbackId
+            );
+        }
+
+        public void InvalidateSendRequests(
+        ) {
+            this._domain.InvalidateSendRequests(
             );
         }
 
@@ -312,7 +326,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             );
         }
         
-        #if GS2_ENABLE_UNITASK
+#if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<string> BlackListUsersAsync(
         )
         {
@@ -338,8 +352,14 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                 }
             });
         }
-        #endif
-        
+#endif
+
+        public void InvalidateReceiveRequests(
+        ) {
+            this._domain.InvalidateReceiveRequests(
+            );
+        }
+
         public Gs2.Unity.Gs2Friend.Domain.Model.EzProfileGameSessionDomain Profile(
         ) {
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzProfileGameSessionDomain(
