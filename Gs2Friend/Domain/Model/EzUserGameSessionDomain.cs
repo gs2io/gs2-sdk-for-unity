@@ -71,7 +71,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
 
         [Obsolete("The name has been changed to SendRequestFuture.")]
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> SendRequest(
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain> SendRequest(
             string targetUserId
         )
         {
@@ -80,11 +80,11 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             );
         }
 
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> SendRequestFuture(
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain> SendRequestFuture(
             string targetUserId
         )
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain> self)
             {
                 var future = this._connection.RunFuture(
                     this._gameSession,
@@ -98,17 +98,17 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain(
+                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain(
                     future.Result,
                     this._gameSession,
                     this._connection
                 ));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain>(Impl);
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> SendRequestAsync(
+        public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain> SendRequestAsync(
             string targetUserId
         ) {
             var result = await this._connection.RunAsync(
@@ -118,7 +118,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                         .WithTargetUserId(targetUserId)
                 )
             );
-            return new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain(
+            return new Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain(
                 result,
                 this._gameSession,
                 this._connection

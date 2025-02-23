@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 
 using System;
@@ -46,6 +48,22 @@ namespace Gs2.Unity.Gs2Friend.Model
         }
 
         public static EzFriendRequest FromModel(Gs2.Gs2Friend.Model.FriendRequest model)
+        {
+            return new EzFriendRequest {
+                UserId = model.UserId == null ? null : model.UserId,
+                TargetUserId = model.TargetUserId == null ? null : model.TargetUserId,
+            };
+        }
+
+        public static EzFriendRequest FromModel(Gs2.Gs2Friend.Model.ReceiveFriendRequest model)
+        {
+            return new EzFriendRequest {
+                UserId = model.UserId == null ? null : model.UserId,
+                TargetUserId = model.TargetUserId == null ? null : model.TargetUserId,
+            };
+        }
+
+        public static EzFriendRequest FromModel(Gs2.Gs2Friend.Model.SendFriendRequest model)
         {
             return new EzFriendRequest {
                 UserId = model.UserId == null ? null : model.UserId,

@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -49,88 +51,4 @@ using System.Collections.Generic;
 
 namespace Gs2.Unity.Gs2Friend.Domain.Model
 {
-
-    public partial class EzFriendRequestGameSessionDomain {
-
-        private Gs2.Gs2Friend.Domain.Model.FriendRequestAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.IGameSession _gameSession;
-        private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string NamespaceName => _domain?.NamespaceName;
-        public string UserId => _domain?.UserId;
-        public string TargetUserId => _domain?.TargetUserId;
-        
-        public EzFriendRequestGameSessionDomain(
-            Gs2.Gs2Friend.Domain.Model.FriendRequestAccessTokenDomain domain,
-            Gs2.Unity.Util.IGameSession gameSession,
-            Gs2.Unity.Util.Gs2Connection connection
-        ) {
-            this._domain = domain;
-            this._gameSession = gameSession;
-            this._connection = connection;
-        }
-
-        public IFuture<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> Model()
-        {
-            return ModelFuture();
-        }
-
-#if GS2_ENABLE_UNITASK
-        public IFuture<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> ModelFuture()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> self)
-            {
-                yield return ModelAsync().ToCoroutine(
-                    self.OnComplete,
-                    e => self.OnError((Gs2.Core.Exception.Gs2Exception)e)
-                );
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Model.EzFriendRequest>(Impl);
-        }
-
-        public async UniTask<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> ModelAsync()
-        {
-            var item = await _connection.RunAsync(
-                null,
-                async () =>
-                {
-                    return await _domain.ModelAsync();
-                }
-            );
-            if (item == null) {
-                return null;
-            }
-            return Gs2.Unity.Gs2Friend.Model.EzFriendRequest.FromModel(
-                item
-            );
-        }
-        #else
-        public IFuture<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> ModelFuture()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> self)
-            {
-                var future = _connection.RunFuture(
-                    null,
-                    () => {
-                    	return _domain.ModelFuture();
-                    }
-                );
-                yield return future;
-                if (future.Error != null) {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var item = future.Result;
-                if (item == null) {
-                    self.OnComplete(null);
-                    yield break;
-                }
-                self.OnComplete(Gs2.Unity.Gs2Friend.Model.EzFriendRequest.FromModel(
-                    item
-                ));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Model.EzFriendRequest>(Impl);
-        }
-        #endif
-        
-    }
 }

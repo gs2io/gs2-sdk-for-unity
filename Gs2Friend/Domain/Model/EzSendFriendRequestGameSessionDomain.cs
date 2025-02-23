@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -69,17 +71,17 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
 
         [Obsolete("The name has been changed to DeleteRequestFuture.")]
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> DeleteRequest(
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain> DeleteRequest(
         )
         {
             return DeleteRequestFuture(
             );
         }
 
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> DeleteRequestFuture(
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain> DeleteRequestFuture(
         )
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain> self)
             {
                 var future = this._connection.RunFuture(
                     this._gameSession,
@@ -92,17 +94,17 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain(
+                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain(
                     future.Result,
                     this._gameSession,
                     this._connection
                 ));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain>(Impl);
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> DeleteRequestAsync(
+        public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain> DeleteRequestAsync(
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -110,7 +112,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                     new DeleteRequestRequest()
                 )
             );
-            return new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain(
+            return new Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain(
                 result,
                 this._gameSession,
                 this._connection

@@ -72,17 +72,17 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
 
         [Obsolete("The name has been changed to AcceptFuture.")]
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> Accept(
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzReceiveFriendRequestGameSessionDomain> Accept(
         )
         {
             return AcceptFuture(
             );
         }
 
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> AcceptFuture(
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzReceiveFriendRequestGameSessionDomain> AcceptFuture(
         )
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzReceiveFriendRequestGameSessionDomain> self)
             {
                 var future = this._connection.RunFuture(
                     this._gameSession,
@@ -95,17 +95,17 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain(
+                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzReceiveFriendRequestGameSessionDomain(
                     future.Result,
                     this._gameSession,
                     this._connection
                 ));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzReceiveFriendRequestGameSessionDomain>(Impl);
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> AcceptAsync(
+        public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzReceiveFriendRequestGameSessionDomain> AcceptAsync(
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -113,7 +113,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                     new AcceptRequestRequest()
                 )
             );
-            return new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain(
+            return new Gs2.Unity.Gs2Friend.Domain.Model.EzReceiveFriendRequestGameSessionDomain(
                 result,
                 this._gameSession,
                 this._connection
@@ -122,17 +122,17 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         #endif
 
         [Obsolete("The name has been changed to RejectFuture.")]
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> Reject(
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzReceiveFriendRequestGameSessionDomain> Reject(
         )
         {
             return RejectFuture(
             );
         }
 
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> RejectFuture(
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzReceiveFriendRequestGameSessionDomain> RejectFuture(
         )
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzReceiveFriendRequestGameSessionDomain> self)
             {
                 var future = this._connection.RunFuture(
                     this._gameSession,
@@ -145,17 +145,17 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain(
+                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzReceiveFriendRequestGameSessionDomain(
                     future.Result,
                     this._gameSession,
                     this._connection
                 ));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzReceiveFriendRequestGameSessionDomain>(Impl);
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> RejectAsync(
+        public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzReceiveFriendRequestGameSessionDomain> RejectAsync(
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -163,7 +163,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                     new RejectRequestRequest()
                 )
             );
-            return new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain(
+            return new Gs2.Unity.Gs2Friend.Domain.Model.EzReceiveFriendRequestGameSessionDomain(
                 result,
                 this._gameSession,
                 this._connection

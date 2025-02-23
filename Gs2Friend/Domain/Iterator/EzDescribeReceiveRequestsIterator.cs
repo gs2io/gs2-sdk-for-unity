@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -43,7 +45,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Iterator
 
     public class EzDescribeReceiveRequestsIterator : Gs2Iterator<Gs2.Unity.Gs2Friend.Model.EzFriendRequest>
     {
-        private Gs2Iterator<Gs2.Gs2Friend.Model.FriendRequest> _it;
+        private Gs2Iterator<Gs2.Gs2Friend.Model.ReceiveFriendRequest> _it;
         private readonly Gs2.Gs2Friend.Domain.Model.UserAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
