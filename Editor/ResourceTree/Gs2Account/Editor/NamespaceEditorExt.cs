@@ -66,6 +66,15 @@ namespace Gs2.Editor.ResourceTree.Gs2Account.Editor
                 ScriptSettingEditorExt.OnGUI(item.DoTakeOverScript);
                 EditorGUI.indentLevel--;
             }
+            if (item.BanScript == null) {
+                EditorGUILayout.TextField("BanScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("BanScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.BanScript);
+                EditorGUI.indentLevel--;
+            }
             if (item.LogSetting == null) {
                 EditorGUILayout.TextField("LogSetting", "");
             }
