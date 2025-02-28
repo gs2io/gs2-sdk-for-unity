@@ -27,6 +27,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Money2.Editor
             EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.TextField("PackageName", item.PackageName);
             EditorGUILayout.TextField("PublicKey", item.PublicKey);
+            EditorGUILayout.TextField("CredentialsJSON", item.CredentialsJSON);
             EditorGUI.EndDisabledGroup();
         }
     }

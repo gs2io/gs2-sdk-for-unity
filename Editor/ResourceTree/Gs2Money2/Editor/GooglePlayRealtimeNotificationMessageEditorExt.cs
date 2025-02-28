@@ -21,14 +21,13 @@ using UnityEditor;
 
 namespace Gs2.Editor.ResourceTree.Gs2Money2.Editor
 {
-    public static class AppleAppStoreSettingEditorExt
+    public static class GooglePlayRealtimeNotificationMessageEditorExt
     {
-        public static void OnGUI(Gs2.Gs2Money2.Model.AppleAppStoreSetting item) {
+        public static void OnGUI(Gs2.Gs2Money2.Model.GooglePlayRealtimeNotificationMessage item) {
             EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.TextField("BundleId", item.BundleId);
-            EditorGUILayout.TextField("TeamId", item.TeamId);
-            EditorGUILayout.TextField("KeyId", item.KeyId);
-            EditorGUILayout.TextField("PrivateKeyPem", item.PrivateKeyPem);
+            EditorGUILayout.TextField("Data", item.Data);
+            EditorGUILayout.TextField("MessageId", item.MessageId);
+            EditorGUILayout.TextField("PublishTime", item.PublishTime);
             EditorGUI.EndDisabledGroup();
         }
     }
