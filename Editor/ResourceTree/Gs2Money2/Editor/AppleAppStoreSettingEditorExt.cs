@@ -26,7 +26,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Money2.Editor
         public static void OnGUI(Gs2.Gs2Money2.Model.AppleAppStoreSetting item) {
             EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.TextField("BundleId", item.BundleId);
-            EditorGUILayout.TextField("TeamId", item.TeamId);
+            EditorGUILayout.TextField("IssuerId", item.IssuerId);
             EditorGUILayout.TextField("KeyId", item.KeyId);
             EditorGUILayout.TextField("PrivateKeyPem", item.PrivateKeyPem);
             EditorGUI.EndDisabledGroup();
