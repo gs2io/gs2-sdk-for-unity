@@ -26,10 +26,10 @@ namespace Gs2.Editor.ResourceTree.Gs2Money2.Editor
         public static void OnGUI(Gs2.Gs2Money2.Model.SubscribeTransaction item) {
             EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.TextField("SubscribeTransactionId", item.SubscribeTransactionId);
+            EditorGUILayout.TextField("ContentName", item.ContentName);
             EditorGUILayout.TextField("TransactionId", item.TransactionId);
             EditorGUILayout.TextField("Store", item.Store);
             EditorGUILayout.TextField("UserId", item.UserId);
-            EditorGUILayout.TextField("Status", item.Status);
             EditorGUILayout.TextField("StatusDetail", item.StatusDetail);
             EditorGUILayout.TextField("ExpiresAt", UnixTime.FromUnixTime(item.ExpiresAt ?? 0).ToString(CultureInfo.CurrentUICulture));
             EditorGUILayout.TextField("CreatedAt", UnixTime.FromUnixTime(item.CreatedAt ?? 0).ToString(CultureInfo.CurrentUICulture));

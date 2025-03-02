@@ -51,42 +51,19 @@ using System.Collections.Generic;
 namespace Gs2.Unity.Gs2Money2.Domain.Model
 {
 
-    public partial class EzUserDomain {
-        private readonly Gs2.Gs2Money2.Domain.Model.UserDomain _domain;
+    public partial class EzSubscriptionStatusDomain {
+        private readonly Gs2.Gs2Money2.Domain.Model.SubscriptionStatusDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public Gs2.Unity.Gs2Money2.Model.EzDepositTransaction[] WithdrawTransactions => _domain.WithdrawTransactions.Select(Gs2.Unity.Gs2Money2.Model.EzDepositTransaction.FromModel).ToArray();
-        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
+        public string ContentName => _domain?.ContentName;
 
-        public EzUserDomain(
-            Gs2.Gs2Money2.Domain.Model.UserDomain domain,
+        public EzSubscriptionStatusDomain(
+            Gs2.Gs2Money2.Domain.Model.SubscriptionStatusDomain domain,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
             this._connection = connection;
-        }
-
-        public Gs2.Unity.Gs2Money2.Domain.Model.EzWalletDomain Wallet(
-            int slot
-        ) {
-            return new Gs2.Unity.Gs2Money2.Domain.Model.EzWalletDomain(
-                _domain.Wallet(
-                    slot
-                ),
-                this._connection
-            );
-        }
-
-        public Gs2.Unity.Gs2Money2.Domain.Model.EzSubscriptionStatusDomain SubscriptionStatus(
-            string contentName
-        ) {
-            return new Gs2.Unity.Gs2Money2.Domain.Model.EzSubscriptionStatusDomain(
-                _domain.SubscriptionStatus(
-                    contentName
-                ),
-                this._connection
-            );
         }
 
     }

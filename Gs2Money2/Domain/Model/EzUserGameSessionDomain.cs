@@ -131,12 +131,86 @@ namespace Gs2.Unity.Gs2Money2.Domain.Model
             );
         }
 
+        public Gs2Iterator<Gs2.Unity.Gs2Money2.Model.EzSubscriptionStatus> SubscriptionStatuses(
+        )
+        {
+            return new Gs2.Unity.Gs2Money2.Domain.Iterator.EzListSubscriptionStatusesIterator(
+                this._domain,
+                this._gameSession,
+                this._connection
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Money2.Model.EzSubscriptionStatus> SubscriptionStatusesAsync(
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Money2.Model.EzSubscriptionStatus>(async (writer, token) =>
+            {
+                var it = _domain.SubscriptionStatusesAsync(
+                ).GetAsyncEnumerator();
+                while(
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.SubscriptionStatusesAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Money2.Model.EzSubscriptionStatus.FromModel(it.Current));
+                }
+            });
+        }
+        #endif
+
+        public ulong SubscribeSubscriptionStatuses(
+            Action<Gs2.Unity.Gs2Money2.Model.EzSubscriptionStatus[]> callback
+        ) {
+            return this._domain.SubscribeSubscriptionStatuses(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Money2.Model.EzSubscriptionStatus.FromModel).ToArray());
+                }
+            );
+        }
+
+        public void UnsubscribeSubscriptionStatuses(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeSubscriptionStatuses(
+                callbackId
+            );
+        }
+
+        public void InvalidateSubscriptionStatuses(
+        ) {
+            this._domain.InvalidateSubscriptionStatuses(
+            );
+        }
+
         public Gs2.Unity.Gs2Money2.Domain.Model.EzWalletGameSessionDomain Wallet(
             int slot
         ) {
             return new Gs2.Unity.Gs2Money2.Domain.Model.EzWalletGameSessionDomain(
                 _domain.Wallet(
                     slot
+                ),
+                this._gameSession,
+                this._connection
+            );
+        }
+
+        public Gs2.Unity.Gs2Money2.Domain.Model.EzSubscriptionStatusGameSessionDomain SubscriptionStatus(
+            string contentName
+        ) {
+            return new Gs2.Unity.Gs2Money2.Domain.Model.EzSubscriptionStatusGameSessionDomain(
+                _domain.SubscriptionStatus(
+                    contentName
                 ),
                 this._gameSession,
                 this._connection

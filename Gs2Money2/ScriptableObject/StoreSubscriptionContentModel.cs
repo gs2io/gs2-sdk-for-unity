@@ -27,49 +27,44 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Money2.ScriptableObject
 {
-    [CreateAssetMenu(fileName = "SubscribeTransaction", menuName = "Game Server Services/Gs2Money2/SubscribeTransaction")]
-    public class SubscribeTransaction : UnityEngine.ScriptableObject
+    [CreateAssetMenu(fileName = "StoreSubscriptionContentModel", menuName = "Game Server Services/Gs2Money2/StoreSubscriptionContentModel")]
+    public class StoreSubscriptionContentModel : UnityEngine.ScriptableObject
     {
         public Namespace Namespace;
         public string contentName;
-        public string transactionId;
 
         public string NamespaceName => this.Namespace?.NamespaceName;
         public string ContentName => this.contentName;
-        public string TransactionId => this.transactionId;
 
 #if UNITY_INCLUDE_TESTS
-        public static SubscribeTransaction Load(
+        public static StoreSubscriptionContentModel Load(
             string assetPath
         )
         {
             return Instantiate(
-                AssetDatabase.LoadAssetAtPath<SubscribeTransaction>(assetPath)
+                AssetDatabase.LoadAssetAtPath<StoreSubscriptionContentModel>(assetPath)
             );
         }
 #endif
 
-        public static SubscribeTransaction New(
+        public static StoreSubscriptionContentModel New(
             Namespace Namespace,
-            string contentName,
-            string transactionId
+            string contentName
         )
         {
-            var instance = CreateInstance<SubscribeTransaction>();
+            var instance = CreateInstance<StoreSubscriptionContentModel>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
             instance.contentName = contentName;
-            instance.transactionId = transactionId;
             return instance;
         }
 
-        public SubscribeTransaction Clone()
+        public StoreSubscriptionContentModel Clone()
         {
-            var instance = CreateInstance<SubscribeTransaction>();
+            var instance = CreateInstance<StoreSubscriptionContentModel>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
             instance.contentName = contentName;
-            instance.transactionId = transactionId;
             return instance;
         }
     }

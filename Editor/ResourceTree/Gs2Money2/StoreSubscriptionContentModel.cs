@@ -24,23 +24,22 @@ using UnityEngine;
 
 namespace Gs2.Editor.ResourceTree.Gs2Money2
 {
-    public sealed class SubscribeTransaction : AbstractTreeViewItem
+    public sealed class StoreSubscriptionContentModel : AbstractTreeViewItem
     {
-        private Gs2.Gs2Money2.Model.SubscribeTransaction _item;
+        private Gs2.Gs2Money2.Model.StoreSubscriptionContentModel _item;
         private Namespace _parent;
         public string NamespaceName => _parent.NamespaceName;
-        public string ContentName => _item.ContentName;
-        public string TransactionId => _item.TransactionId;
+        public string ContentName => _item.Name;
 
-        public SubscribeTransaction(
+        public StoreSubscriptionContentModel(
                 int id,
                 Namespace parent,
-                Gs2.Gs2Money2.Model.SubscribeTransaction item
+                Gs2.Gs2Money2.Model.StoreSubscriptionContentModel item
         ) {
             this.id = id = id * 100;
             this.depth = 4;
             this.icon = EditorGUIUtility.ObjectContent(null, typeof(GameObject)).image.ToTexture2D();
-            this.displayName = item.ContentName + item.TransactionId;
+            this.displayName = item.Name;
             this.children = new TreeViewItem[] {
             }.ToList();
             this._parent = parent;
@@ -63,23 +62,21 @@ namespace Gs2.Editor.ResourceTree.Gs2Money2
                 Debug.LogError("Gs2.Unity.Gs2Money2.ScriptableObject.Namespace not found.");
                 return null;
             }
-            var instance = Gs2.Unity.Gs2Money2.ScriptableObject.SubscribeTransaction.New(
+            var instance = Gs2.Unity.Gs2Money2.ScriptableObject.StoreSubscriptionContentModel.New(
                 parent,
-                this._item.ContentName,
-                this._item.TransactionId
+                this._item.Name
             );
-            instance.name = this._item.ContentName +this._item.TransactionId + "SubscribeTransaction";
+            instance.name = this._item.Name + "StoreSubscriptionContentModel";
             return instance;
         }
 
         public override void OnGUI() {
-            SubscribeTransactionEditorExt.OnGUI(this._item);
+            StoreSubscriptionContentModelEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
                 var directory = "Assets/Gs2/Resources/Money2";
                 directory += "/Namespace" + "/" + NamespaceName;
-                directory += "/SubscribeTransaction" + "/" + ContentName;
-                directory += "/SubscribeTransaction" + "/" + TransactionId;
+                directory += "/StoreSubscriptionContentModel" + "/" + ContentName;
 
                 CreateFolder(directory);
 

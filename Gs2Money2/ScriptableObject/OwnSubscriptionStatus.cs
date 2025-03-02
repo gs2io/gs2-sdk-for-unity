@@ -27,49 +27,42 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Money2.ScriptableObject
 {
-    [CreateAssetMenu(fileName = "SubscribeTransaction", menuName = "Game Server Services/Gs2Money2/SubscribeTransaction")]
-    public class SubscribeTransaction : UnityEngine.ScriptableObject
+    [CreateAssetMenu(fileName = "OwnSubscriptionStatus", menuName = "Game Server Services/Gs2Money2/OwnSubscriptionStatus")]
+    public class OwnSubscriptionStatus : UnityEngine.ScriptableObject
     {
         public Namespace Namespace;
         public string contentName;
-        public string transactionId;
 
-        public string NamespaceName => this.Namespace?.NamespaceName;
+        public string NamespaceName => this.Namespace.NamespaceName;
         public string ContentName => this.contentName;
-        public string TransactionId => this.transactionId;
 
 #if UNITY_INCLUDE_TESTS
-        public static SubscribeTransaction Load(
+        public static OwnSubscriptionStatus Load(
             string assetPath
         )
         {
             return Instantiate(
-                AssetDatabase.LoadAssetAtPath<SubscribeTransaction>(assetPath)
+                AssetDatabase.LoadAssetAtPath<OwnSubscriptionStatus>(assetPath)
             );
         }
 #endif
-
-        public static SubscribeTransaction New(
-            Namespace Namespace,
-            string contentName,
-            string transactionId
+        public static OwnSubscriptionStatus New(
+            Namespace @namespace,
+            string contentName
         )
         {
-            var instance = CreateInstance<SubscribeTransaction>();
+            var instance = CreateInstance<OwnSubscriptionStatus>();
             instance.name = "Runtime";
-            instance.Namespace = Namespace;
+            instance.Namespace = @namespace;
             instance.contentName = contentName;
-            instance.transactionId = transactionId;
             return instance;
         }
-
-        public SubscribeTransaction Clone()
+        public OwnSubscriptionStatus Clone()
         {
-            var instance = CreateInstance<SubscribeTransaction>();
+            var instance = CreateInstance<OwnSubscriptionStatus>();
             instance.name = "Runtime";
             instance.Namespace = Namespace;
             instance.contentName = contentName;
-            instance.transactionId = transactionId;
             return instance;
         }
     }

@@ -130,5 +130,53 @@ namespace Gs2.Unity.Gs2Money2
                 )
             );
 		}
+
+        public IEnumerator GetSubscriptionStatus(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Money2.Result.EzGetSubscriptionStatusResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string contentName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.GetSubscriptionStatus(
+                    new Gs2.Gs2Money2.Request.GetSubscriptionStatusRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithContentName(contentName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Money2.Result.EzGetSubscriptionStatusResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Money2.Result.EzGetSubscriptionStatusResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListSubscriptionStatuses(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Money2.Result.EzListSubscriptionStatusesResult>> callback,
+		        IGameSession session,
+                string namespaceName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribeSubscriptionStatuses(
+                    new Gs2.Gs2Money2.Request.DescribeSubscriptionStatusesRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Money2.Result.EzListSubscriptionStatusesResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Money2.Result.EzListSubscriptionStatusesResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
     }
 }
