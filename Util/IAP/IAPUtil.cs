@@ -46,9 +46,10 @@ namespace Gs2.Unity.Util
  
         public IEnumerator Buy(
             UnityAction<AsyncResult<PurchaseParameters>> callback,
-            string contentsId
+            string contentsId,
+            ProductType productType = ProductType.Consumable
         ) {
-            var future = BuyFuture(contentsId);
+            var future = BuyFuture(contentsId, productType);
             yield return future;
             callback.Invoke(new AsyncResult<PurchaseParameters>(
                 future.Result,
@@ -57,7 +58,8 @@ namespace Gs2.Unity.Util
         }
         
         public Gs2Future<PurchaseParameters> BuyFuture(
-            string contentsId
+            string contentsId,
+            ProductType productType = ProductType.Consumable
         )
         {
             IEnumerator Impl(Gs2Future<PurchaseParameters> result) {
@@ -80,7 +82,7 @@ namespace Gs2.Unity.Util
             
                 var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
                 var ids = new IDs {{contentsId, contentsId}};
-                builder.AddProduct(contentsId, ProductType.Consumable, ids);
+                builder.AddProduct(contentsId, productType, ids);
                 UnityPurchasing.Initialize(new Gs2StoreListener(this), builder);
                 while (_status == Status.Initializing)
                 {
@@ -114,7 +116,8 @@ namespace Gs2.Unity.Util
 #if GS2_ENABLE_UNITASK
         
         public async UniTask<PurchaseParameters> BuyAsync(
-            string contentsId
+            string contentsId,
+            ProductType productType = ProductType.Consumable
         )
         {
             if (_status != Status.None)
@@ -127,7 +130,7 @@ namespace Gs2.Unity.Util
             
             var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
             var ids = new IDs {{contentsId, contentsId}};
-            builder.AddProduct(contentsId, ProductType.Consumable, ids);
+            builder.AddProduct(contentsId, productType, ids);
             UnityPurchasing.Initialize(new Gs2StoreListener(this), builder);
             while (_status == Status.Initializing)
             {
@@ -135,7 +138,7 @@ namespace Gs2.Unity.Util
             }
             if (_status == Status.InitializeFailed)
             {
-                throw new Exception();
+                throw this._exception ?? new Exception();
             }
              
             _status = Status.Purchasing;

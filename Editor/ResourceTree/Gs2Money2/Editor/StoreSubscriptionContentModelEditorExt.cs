@@ -30,6 +30,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Money2.Editor
             EditorGUILayout.TextField("Metadata", item.Metadata);
             EditorGUILayout.TextField("ScheduleNamespaceId", item.ScheduleNamespaceId);
             EditorGUILayout.TextField("TriggerName", item.TriggerName);
+            EditorGUILayout.TextField("ReallocateSpanDays", item.ReallocateSpanDays?.ToString());
             if (item.AppleAppStore == null) {
                 EditorGUILayout.TextField("AppleAppStore", "");
             }

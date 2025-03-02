@@ -69,6 +69,118 @@ namespace Gs2.Unity.Gs2Money2.Domain.Model
             this._connection = connection;
         }
 
+        [Obsolete("The name has been changed to AllocateSubscriptionStatusFuture.")]
+        public IFuture<Gs2.Unity.Gs2Money2.Domain.Model.EzSubscriptionStatusGameSessionDomain> AllocateSubscriptionStatus(
+            string receipt
+        )
+        {
+            return AllocateSubscriptionStatusFuture(
+                receipt
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Money2.Domain.Model.EzSubscriptionStatusGameSessionDomain> AllocateSubscriptionStatusFuture(
+            string receipt
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Money2.Domain.Model.EzSubscriptionStatusGameSessionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.AllocateSubscriptionStatusFuture(
+                        new AllocateSubscriptionStatusRequest()
+                            .WithReceipt(receipt)
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Money2.Domain.Model.EzSubscriptionStatusGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Money2.Domain.Model.EzSubscriptionStatusGameSessionDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Money2.Domain.Model.EzSubscriptionStatusGameSessionDomain> AllocateSubscriptionStatusAsync(
+            string receipt
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.AllocateSubscriptionStatusAsync(
+                    new AllocateSubscriptionStatusRequest()
+                        .WithReceipt(receipt)
+                )
+            );
+            return new Gs2.Unity.Gs2Money2.Domain.Model.EzSubscriptionStatusGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
+        [Obsolete("The name has been changed to TakeOverSubscriptionStatusFuture.")]
+        public IFuture<Gs2.Unity.Gs2Money2.Domain.Model.EzSubscriptionStatusGameSessionDomain> TakeOverSubscriptionStatus(
+            string receipt
+        )
+        {
+            return TakeOverSubscriptionStatusFuture(
+                receipt
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Money2.Domain.Model.EzSubscriptionStatusGameSessionDomain> TakeOverSubscriptionStatusFuture(
+            string receipt
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Money2.Domain.Model.EzSubscriptionStatusGameSessionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.TakeoverSubscriptionStatusFuture(
+                        new TakeoverSubscriptionStatusRequest()
+                            .WithReceipt(receipt)
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Money2.Domain.Model.EzSubscriptionStatusGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Money2.Domain.Model.EzSubscriptionStatusGameSessionDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Money2.Domain.Model.EzSubscriptionStatusGameSessionDomain> TakeOverSubscriptionStatusAsync(
+            string receipt
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.TakeoverSubscriptionStatusAsync(
+                    new TakeoverSubscriptionStatusRequest()
+                        .WithReceipt(receipt)
+                )
+            );
+            return new Gs2.Unity.Gs2Money2.Domain.Model.EzSubscriptionStatusGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
         public Gs2Iterator<Gs2.Unity.Gs2Money2.Model.EzWallet> Wallets(
         )
         {

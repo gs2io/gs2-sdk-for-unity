@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 
 using Gs2.Gs2Money2;
@@ -131,6 +133,31 @@ namespace Gs2.Unity.Gs2Money2
             );
 		}
 
+        public IEnumerator AllocateSubscriptionStatus(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Money2.Result.EzAllocateSubscriptionStatusResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string receipt
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.AllocateSubscriptionStatus(
+                    new Gs2.Gs2Money2.Request.AllocateSubscriptionStatusRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithReceipt(receipt),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Money2.Result.EzAllocateSubscriptionStatusResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Money2.Result.EzAllocateSubscriptionStatusResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator GetSubscriptionStatus(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Money2.Result.EzGetSubscriptionStatusResult>> callback,
 		        IGameSession session,
@@ -172,6 +199,31 @@ namespace Gs2.Unity.Gs2Money2
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Money2.Result.EzListSubscriptionStatusesResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Money2.Result.EzListSubscriptionStatusesResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator TakeOverSubscriptionStatus(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Money2.Result.EzTakeOverSubscriptionStatusResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string receipt
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.TakeoverSubscriptionStatus(
+                    new Gs2.Gs2Money2.Request.TakeoverSubscriptionStatusRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithReceipt(receipt),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Money2.Result.EzTakeOverSubscriptionStatusResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Money2.Result.EzTakeOverSubscriptionStatusResult.FromModel(r.Result),
                             r.Error
                         )
                     )
