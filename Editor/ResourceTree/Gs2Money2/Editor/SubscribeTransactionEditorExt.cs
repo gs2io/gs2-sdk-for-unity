@@ -33,6 +33,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Money2.Editor
             EditorGUILayout.TextField("StatusDetail", item.StatusDetail);
             EditorGUILayout.TextField("ExpiresAt", UnixTime.FromUnixTime(item.ExpiresAt ?? 0).ToString(CultureInfo.CurrentUICulture));
             EditorGUILayout.TextField("LastAllocatedAt", UnixTime.FromUnixTime(item.LastAllocatedAt ?? 0).ToString(CultureInfo.CurrentUICulture));
+            EditorGUILayout.TextField("LastTakeOverAt", UnixTime.FromUnixTime(item.LastTakeOverAt ?? 0).ToString(CultureInfo.CurrentUICulture));
             EditorGUILayout.TextField("CreatedAt", UnixTime.FromUnixTime(item.CreatedAt ?? 0).ToString(CultureInfo.CurrentUICulture));
             EditorGUILayout.TextField("UpdatedAt", UnixTime.FromUnixTime(item.UpdatedAt ?? 0).ToString(CultureInfo.CurrentUICulture));
             EditorGUILayout.TextField("Revision", item.Revision?.ToString());
