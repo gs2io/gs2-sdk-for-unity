@@ -81,8 +81,7 @@ namespace Gs2.Unity.Util
                 _status = Status.Initializing;
             
                 var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-                var ids = new IDs {{contentsId, contentsId}};
-                builder.AddProduct(contentsId, productType, ids);
+                builder.AddProduct(contentsId, productType);
                 UnityPurchasing.Initialize(new Gs2StoreListener(this), builder);
                 while (_status == Status.Initializing)
                 {
@@ -129,8 +128,7 @@ namespace Gs2.Unity.Util
             _status = Status.Initializing;
             
             var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-            var ids = new IDs {{contentsId, contentsId}};
-            builder.AddProduct(contentsId, productType, ids);
+            builder.AddProduct(contentsId, productType);
             UnityPurchasing.Initialize(new Gs2StoreListener(this), builder);
             while (_status == Status.Initializing)
             {
@@ -142,6 +140,18 @@ namespace Gs2.Unity.Util
             }
              
             _status = Status.Purchasing;
+
+            foreach (var product in _controller.products.all ?? Array.Empty<Product>()) {
+                if (product.hasReceipt) {
+                    return new PurchaseParameters
+                    {
+                        receipt = product.receipt,
+                        controller = _controller,
+                        product = product,
+                    };
+                }
+            }
+            
             _controller.InitiatePurchase(_controller.products.WithID(contentsId));
             while (_status == Status.Purchasing)
             {

@@ -76,10 +76,10 @@ namespace Gs2.Unity.Gs2Money2.Domain
             );
         }
 
-        public event UnityAction<ChangeSubscriptionStatusNotification> OnChangeSubscriptionStatusNotification
+        public event UnityAction<ChangeSubscriptionStatus> OnChangeSubscriptionStatus
         {
-            add => _domain.OnChangeSubscriptionStatusNotification += value;
-            remove => _domain.OnChangeSubscriptionStatusNotification -= value;
+            add => _domain.OnChangeSubscriptionStatus += value;
+            remove => _domain.OnChangeSubscriptionStatus -= value;
         }
     }
 }
