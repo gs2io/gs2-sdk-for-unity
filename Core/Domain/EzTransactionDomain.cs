@@ -11,6 +11,8 @@ namespace Gs2.Unity.Core.Domain
     public class EzTransactionDomain
     {
         private readonly TransactionAccessTokenDomain _domain;
+        public string TransactionId => _domain?.TransactionId();
+        public string JobName => _domain?.JobName();
         
         public EzTransactionDomain(
             TransactionAccessTokenDomain domain
