@@ -130,6 +130,68 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
             );
         }
 
+        public Gs2Iterator<Gs2.Unity.Gs2Dictionary.Model.EzLike> Likes(
+        )
+        {
+            return new Gs2.Unity.Gs2Dictionary.Domain.Iterator.EzListLikesIterator(
+                this._domain,
+                this._gameSession,
+                this._connection
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Dictionary.Model.EzLike> LikesAsync(
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Dictionary.Model.EzLike>(async (writer, token) =>
+            {
+                var it = _domain.LikesAsync(
+                ).GetAsyncEnumerator();
+                while(
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.LikesAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Dictionary.Model.EzLike.FromModel(it.Current));
+                }
+            });
+        }
+        #endif
+
+        public ulong SubscribeLikes(
+            Action<Gs2.Unity.Gs2Dictionary.Model.EzLike[]> callback
+        ) {
+            return this._domain.SubscribeLikes(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Dictionary.Model.EzLike.FromModel).ToArray());
+                }
+            );
+        }
+
+        public void UnsubscribeLikes(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeLikes(
+                callbackId
+            );
+        }
+
+        public void InvalidateLikes(
+        ) {
+            this._domain.InvalidateLikes(
+            );
+        }
+
         public Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryGameSessionDomain Entry(
             string entryModelName
         ) {

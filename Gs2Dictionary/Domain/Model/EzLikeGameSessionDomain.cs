@@ -68,5 +68,110 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
             this._connection = connection;
         }
 
+        [Obsolete("The name has been changed to ModelFuture.")]
+        public IFuture<Gs2.Unity.Gs2Dictionary.Model.EzLike> Model()
+        {
+            return ModelFuture();
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Dictionary.Model.EzLike> ModelAsync()
+        {
+            var item = await this._connection.RunAsync(
+                this._gameSession,
+                async () =>
+                {
+                    return await _domain.ModelAsync();
+                }
+            );
+            if (item == null) {
+                return null;
+            }
+            return Gs2.Unity.Gs2Dictionary.Model.EzLike.FromModel(
+                item
+            );
+        }
+        #endif
+
+        public IFuture<Gs2.Unity.Gs2Dictionary.Model.EzLike> ModelFuture()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Dictionary.Model.EzLike> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => {
+                    	return _domain.ModelFuture();
+                    }
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Dictionary.Model.EzLike.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Dictionary.Model.EzLike>(Impl);
+        }
+
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Dictionary.Model.EzLike> callback)
+        {
+            return this._domain.Subscribe(item => {
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Dictionary.Model.EzLike.FromModel(
+                    item
+                ));
+            });
+        }
+
+        public void Unsubscribe(ulong callbackId)
+        {
+            this._domain.Unsubscribe(callbackId);
+        }
+
+        #if UNITY_2017_1_OR_NEWER
+        public Gs2Future<ulong> SubscribeWithInitialCallFuture(Action<Gs2.Unity.Gs2Dictionary.Model.EzLike> callback)
+        {
+            IEnumerator Impl(IFuture<ulong> self)
+            {
+                var future = ModelFuture();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                var callbackId = Subscribe(callback);
+                callback.Invoke(item);
+                self.OnComplete(callbackId);
+            }
+            return new Gs2InlineFuture<ulong>(Impl);
+        }
+        #endif
+
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
+        public async UniTask<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Dictionary.Model.EzLike> callback)
+            #else
+        public async Task<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Dictionary.Model.EzLike> callback)
+            #endif
+        {
+            var item = await ModelAsync();
+            var callbackId = Subscribe(callback);
+            callback.Invoke(item);
+            return callbackId;
+        }
+        #endif
+
     }
 }

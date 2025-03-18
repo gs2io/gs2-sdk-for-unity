@@ -51,41 +51,19 @@ using System.Collections.Generic;
 namespace Gs2.Unity.Gs2Dictionary.Domain.Model
 {
 
-    public partial class EzUserDomain {
-        private readonly Gs2.Gs2Dictionary.Domain.Model.UserDomain _domain;
+    public partial class EzLikeDomain {
+        private readonly Gs2.Gs2Dictionary.Domain.Model.LikeDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
+        public string EntryModelName => _domain?.EntryModelName;
 
-        public EzUserDomain(
-            Gs2.Gs2Dictionary.Domain.Model.UserDomain domain,
+        public EzLikeDomain(
+            Gs2.Gs2Dictionary.Domain.Model.LikeDomain domain,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
             this._connection = connection;
-        }
-
-        public Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryDomain Entry(
-            string entryModelName
-        ) {
-            return new Gs2.Unity.Gs2Dictionary.Domain.Model.EzEntryDomain(
-                _domain.Entry(
-                    entryModelName
-                ),
-                this._connection
-            );
-        }
-
-        public Gs2.Unity.Gs2Dictionary.Domain.Model.EzLikeDomain Like(
-            string entryModelName
-        ) {
-            return new Gs2.Unity.Gs2Dictionary.Domain.Model.EzLikeDomain(
-                _domain.Like(
-                    entryModelName
-                ),
-                this._connection
-            );
         }
 
     }

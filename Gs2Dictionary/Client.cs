@@ -176,5 +176,57 @@ namespace Gs2.Unity.Gs2Dictionary
                 )
             );
 		}
+
+        public IEnumerator GetLike(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzGetLikeResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string entryModelName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _client.GetLike(
+                    new Gs2.Gs2Dictionary.Request.GetLikeRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithEntryModelName(entryModelName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzGetLikeResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Dictionary.Result.EzGetLikeResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListLikes(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzListLikesResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                int? limit = null,
+                string pageToken = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribeLikes(
+                    new Gs2.Gs2Dictionary.Request.DescribeLikesRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithLimit(limit)
+                        .WithPageToken(pageToken),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzListLikesResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Dictionary.Result.EzListLikesResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
     }
 }
