@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -68,5 +70,104 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             this._connection = connection;
         }
 
+        [Obsolete("The name has been changed to GetClusterRankingRankFuture.")]
+        public IFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataDomain> GetClusterRankingRank(
+        )
+        {
+            return GetClusterRankingRankFuture(
+            );
+        }
+        
+        public IFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataDomain> GetClusterRankingRankFuture(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    null,
+                    () => this._domain.GetClusterRankingFuture(
+                        new GetClusterRankingByUserIdRequest()
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataDomain(
+                    future.Result,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataDomain>(Impl);
+        }
+        
+#if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataDomain> GetClusterRankingRankAsync(
+        ) {
+            var result = await this._connection.RunAsync(
+                null,
+                () => this._domain.GetClusterRankingAsync(
+                    new GetClusterRankingByUserIdRequest()
+                )
+            );
+            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataDomain(
+                result,
+                this._connection
+            );
+        }
+#endif
+        
+        [Obsolete("The name has been changed to ModelFuture.")]
+        public IFuture<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData> Model()
+        {
+            return ModelFuture();
+        }
+
+#if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData> ModelAsync()
+        {
+            var item = await this._connection.RunAsync(
+                null,
+                async () =>
+                {
+                    return await _domain.ModelAsync();
+                }
+            );
+            if (item == null) {
+                return null;
+            }
+            return Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData.FromModel(
+                item
+            );
+        }
+#endif
+        
+        public IFuture<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData> ModelFuture()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData> self)
+            {
+                var future = this._connection.RunFuture(
+                    null,
+                    () => {
+                        return _domain.ModelFuture();
+                    }
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData>(Impl);
+        }
     }
 }

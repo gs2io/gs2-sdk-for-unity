@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -68,5 +70,104 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             this._connection = connection;
         }
 
+        [Obsolete("The name has been changed to GetSubscribeRankingRankFuture.")]
+        public IFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzSubscribeRankingDataDomain> GetSubscribeRankingRank(
+        )
+        {
+            return GetSubscribeRankingRankFuture(
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzSubscribeRankingDataDomain> GetSubscribeRankingRankFuture(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking2.Domain.Model.EzSubscribeRankingDataDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    null,
+                    () => this._domain.GetSubscribeRankingFuture(
+                        new GetSubscribeRankingByUserIdRequest()
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Ranking2.Domain.Model.EzSubscribeRankingDataDomain(
+                    future.Result,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzSubscribeRankingDataDomain>(Impl);
+        }
+        
+#if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Ranking2.Domain.Model.EzSubscribeRankingDataDomain> GetSubscribeRankingRankAsync(
+        ) {
+            var result = await this._connection.RunAsync(
+                null,
+                () => this._domain.GetSubscribeRankingAsync(
+                    new GetSubscribeRankingByUserIdRequest()
+                )
+            );
+            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzSubscribeRankingDataDomain(
+                result,
+                this._connection
+            );
+        }
+#endif
+        
+        [Obsolete("The name has been changed to ModelFuture.")]
+        public IFuture<Gs2.Unity.Gs2Ranking2.Model.EzSubscribeRankingData> Model()
+        {
+            return ModelFuture();
+        }
+
+#if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Ranking2.Model.EzSubscribeRankingData> ModelAsync()
+        {
+            var item = await this._connection.RunAsync(
+                null,
+                async () =>
+                {
+                    return await _domain.ModelAsync();
+                }
+            );
+            if (item == null) {
+                return null;
+            }
+            return Gs2.Unity.Gs2Ranking2.Model.EzSubscribeRankingData.FromModel(
+                item
+            );
+        }
+#endif
+
+        public IFuture<Gs2.Unity.Gs2Ranking2.Model.EzSubscribeRankingData> ModelFuture()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking2.Model.EzSubscribeRankingData> self)
+            {
+                var future = this._connection.RunFuture(
+                    null,
+                    () => {
+                        return _domain.ModelFuture();
+                    }
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Ranking2.Model.EzSubscribeRankingData.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking2.Model.EzSubscribeRankingData>(Impl);
+        }
     }
 }

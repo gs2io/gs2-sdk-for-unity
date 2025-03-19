@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -53,15 +51,16 @@ using System.Collections.Generic;
 namespace Gs2.Unity.Gs2Ranking2.Domain.Model
 {
 
-    public partial class EzGlobalRankingSeasonDomain {
+    public partial class EzGlobalRankingSeasonGameSessionDomain {
         private readonly Gs2.Gs2Ranking2.Domain.Model.GlobalRankingSeasonDomain _domain;
+        private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string RankingName => _domain?.RankingName;
         public long? Season => _domain?.Season;
 
-        public EzGlobalRankingSeasonDomain(
+        public EzGlobalRankingSeasonGameSessionDomain(
             Gs2.Gs2Ranking2.Domain.Model.GlobalRankingSeasonDomain domain,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
@@ -69,19 +68,13 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             this._connection = connection;
         }
 
-        public void InvalidateGlobalRankings()
-        {
-            this._domain.InvalidateGlobalRankings();
-        }
-
-        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain GlobalRankingData(
+        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataDomain GlobalRankingData(
             Gs2.Unity.Util.IGameSession gameSession
         ) {
-            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain(
+            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataDomain(
                 _domain.GlobalRankingData(
                     gameSession.AccessToken
                 ),
-                gameSession,
                 this._connection
             );
         }
