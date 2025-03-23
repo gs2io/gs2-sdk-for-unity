@@ -43,6 +43,7 @@ using Gs2.Core.Domain;
 using Gs2.Core.Util;
 using UnityEngine.Scripting;
 using System.Collections;
+using Gs2.Unity.Util;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
@@ -85,5 +86,47 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
                 this._connection
             );
         }
+
+        public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData> GlobalRankings(
+            IGameSession gameSession
+        )
+        {
+            return new Gs2.Unity.Gs2Ranking2.Domain.Iterator.EzListGlobalRankingsIterator(
+                this._domain,
+                gameSession,
+                this._connection
+            );
+        }
+
+#if GS2_ENABLE_UNITASK
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData> GlobalRankingsAsync(
+            IGameSession gameSession
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData>(async (writer, token) =>
+            {
+                var it = _domain.GlobalRankingsAsync(
+                    gameSession.AccessToken
+                ).GetAsyncEnumerator();
+                while(
+                    await this._connection.RunIteratorAsync(
+                        gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.GlobalRankingsAsync(
+                                gameSession.AccessToken
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData.FromModel(it.Current));
+                }
+            });
+        }
+#endif
     }
 }

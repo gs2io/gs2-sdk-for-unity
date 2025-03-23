@@ -83,5 +83,51 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             );
         }
 
+        public void InvalidateClusterRankings()
+        {
+            this._domain.InvalidateClusterRankings();
+        }
+
+        public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData> ClusterRankings(
+            IGameSession gameSession
+        )
+        {
+            return new Gs2.Unity.Gs2Ranking2.Domain.Iterator.EzListClusterRankingsIterator(
+                this._domain,
+                gameSession,
+                this._connection
+            );
+        }
+
+#if GS2_ENABLE_UNITASK
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData> ClusterRankingsAsync(
+            IGameSession gameSession
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData>(async (writer, token) =>
+            {
+                var it = _domain.ClusterRankingsAsync(
+                    gameSession.AccessToken
+                ).GetAsyncEnumerator();
+                while(
+                    await this._connection.RunIteratorAsync(
+                        gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.ClusterRankingsAsync(
+                                gameSession.AccessToken
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData.FromModel(it.Current));
+                }
+            });
+        }
+#endif
     }
 }
