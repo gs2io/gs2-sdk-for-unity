@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 
 using Gs2.Gs2Chat;
@@ -130,6 +128,35 @@ namespace Gs2.Unity.Gs2Chat
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Chat.Result.EzGetRoomResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Chat.Result.EzGetRoomResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator GetMessage(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzGetMessageResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string roomName,
+                string messageName = null,
+                string password = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _client.GetMessage(
+                    new Gs2.Gs2Chat.Request.GetMessageRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRoomName(roomName)
+                        .WithMessageName(messageName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithPassword(password),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Chat.Result.EzGetMessageResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Chat.Result.EzGetMessageResult.FromModel(r.Result),
                             r.Error
                         )
                     )

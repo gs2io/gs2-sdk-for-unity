@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -183,6 +181,68 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         }
         #endif
 
+        public Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzMessage> LatestMessages(
+        )
+        {
+            return new Gs2.Unity.Gs2Chat.Domain.Iterator.EzListLatestMessagesIterator(
+                this._domain,
+                this._gameSession,
+                this._connection
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Chat.Model.EzMessage> LatestMessagesAsync(
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Chat.Model.EzMessage>(async (writer, token) =>
+            {
+                var it = _domain.LatestMessagesAsync(
+                ).GetAsyncEnumerator();
+                while(
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.LatestMessagesAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Chat.Model.EzMessage.FromModel(it.Current));
+                }
+            });
+        }
+        #endif
+
+        public ulong SubscribeLatestMessages(
+            Action<Gs2.Unity.Gs2Chat.Model.EzMessage[]> callback
+        ) {
+            return this._domain.SubscribeLatestMessages(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Chat.Model.EzMessage.FromModel).ToArray());
+                }
+            );
+        }
+
+        public void UnsubscribeLatestMessages(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeLatestMessages(
+                callbackId
+            );
+        }
+
+        public void InvalidateLatestMessages(
+        ) {
+            this._domain.InvalidateLatestMessages(
+            );
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzMessage> Messages(
         )
         {
@@ -236,6 +296,12 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         ) {
             this._domain.UnsubscribeMessages(
                 callbackId
+            );
+        }
+
+        public void InvalidateMessages(
+        ) {
+            this._domain.InvalidateMessages(
             );
         }
 
@@ -311,7 +377,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         public ulong Subscribe(Action<Gs2.Unity.Gs2Chat.Model.EzRoom> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2Chat.Model.EzRoom.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Chat.Model.EzRoom.FromModel(
                     item
                 ));
             });
