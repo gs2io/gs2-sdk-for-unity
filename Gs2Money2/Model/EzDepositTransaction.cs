@@ -33,7 +33,7 @@ namespace Gs2.Unity.Gs2Money2.Model
 	public class EzDepositTransaction
 	{
 		[SerializeField]
-		public float Price;
+		public double Price;
 		[SerializeField]
 		public string Currency;
 		[SerializeField]
