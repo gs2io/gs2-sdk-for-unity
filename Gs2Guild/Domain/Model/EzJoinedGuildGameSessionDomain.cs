@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -68,6 +70,60 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
             this._gameSession = gameSession;
             this._connection = connection;
         }
+
+        [Obsolete("The name has been changed to UpdateMemberMetadataFuture.")]
+        public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildDomain> UpdateMemberMetadata(
+            string? metadata = null
+        )
+        {
+            return UpdateMemberMetadataFuture(
+                metadata
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildDomain> UpdateMemberMetadataFuture(
+            string? metadata = null
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.UpdateMemberMetadataFuture(
+                        new UpdateMemberMetadataRequest()
+                            .WithMetadata(metadata)
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Guild.Domain.Model.EzGuildDomain(
+                    future.Result,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Guild.Domain.Model.EzGuildDomain> UpdateMemberMetadataAsync(
+            string? metadata = null
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.UpdateMemberMetadataAsync(
+                    new UpdateMemberMetadataRequest()
+                        .WithMetadata(metadata)
+                )
+            );
+            return new Gs2.Unity.Gs2Guild.Domain.Model.EzGuildDomain(
+                result,
+                this._connection
+            );
+        }
+        #endif
 
         [Obsolete("The name has been changed to WithdrawGuildFuture.")]
         public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzJoinedGuildGameSessionDomain> WithdrawGuild(

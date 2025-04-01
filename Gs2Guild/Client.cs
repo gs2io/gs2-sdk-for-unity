@@ -415,35 +415,6 @@ namespace Gs2.Unity.Gs2Guild
             );
 		}
 
-        public IEnumerator UpdateMemberMetadata(
-		        UnityAction<AsyncResult<Gs2.Unity.Gs2Guild.Result.EzUpdateMemberMetadataResult>> callback,
-		        IGameSession session,
-                string namespaceName,
-                string guildModelName,
-                string guildName = null,
-                string metadata = null
-        )
-		{
-            yield return _connection.Run(
-                callback,
-		        session,
-                cb => _restClient.UpdateMemberMetadata(
-                    new Gs2.Gs2Guild.Request.UpdateMemberMetadataRequest()
-                        .WithNamespaceName(namespaceName)
-                        .WithGuildModelName(guildModelName)
-                        .WithGuildName(guildName)
-                        .WithAccessToken(session.AccessToken.Token)
-                        .WithMetadata(metadata),
-                    r => cb.Invoke(
-                        new AsyncResult<Gs2.Unity.Gs2Guild.Result.EzUpdateMemberMetadataResult>(
-                            r.Result == null ? null : Gs2.Unity.Gs2Guild.Result.EzUpdateMemberMetadataResult.FromModel(r.Result),
-                            r.Error
-                        )
-                    )
-                )
-            );
-		}
-
         public IEnumerator AcceptRequest(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Guild.Result.EzAcceptRequestResult>> callback,
 		        IGameSession session,
@@ -715,6 +686,35 @@ namespace Gs2.Unity.Gs2Guild
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Guild.Result.EzListJoinedGuildsResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Guild.Result.EzListJoinedGuildsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator UpdateMemberMetadata(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Guild.Result.EzUpdateMemberMetadataResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string guildModelName,
+                string guildName = null,
+                string metadata = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.UpdateMemberMetadata(
+                    new Gs2.Gs2Guild.Request.UpdateMemberMetadataRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithGuildModelName(guildModelName)
+                        .WithGuildName(guildName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithMetadata(metadata),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Guild.Result.EzUpdateMemberMetadataResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Guild.Result.EzUpdateMemberMetadataResult.FromModel(r.Result),
                             r.Error
                         )
                     )
