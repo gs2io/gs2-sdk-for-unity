@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -70,6 +72,44 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             this._gameSession = gameSession;
             this._connection = connection;
         }
+
+        public Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzSeasonGathering> DoSeasonMatchmaking(
+        )
+        {
+            return new Gs2.Unity.Gs2Matchmaking.Domain.Iterator.EzDoSeasonMatchmakingIterator(
+                this._domain,
+                this._gameSession,
+                this._connection
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Matchmaking.Model.EzSeasonGathering> DoSeasonMatchmakingAsync(
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Matchmaking.Model.EzSeasonGathering>(async (writer, token) =>
+            {
+                var it = _domain.DoSeasonMatchmakingAsync(
+                ).GetAsyncEnumerator();
+                while(
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.DoSeasonMatchmakingAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Matchmaking.Model.EzSeasonGathering.FromModel(it.Current));
+                }
+            });
+        }
+        #endif
 
         public Gs2Iterator<Gs2.Unity.Gs2Matchmaking.Model.EzJoinedSeasonGathering> JoinedSeasonGatherings(
         )

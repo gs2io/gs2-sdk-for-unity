@@ -256,12 +256,30 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             );
         }
 
+        public void InvalidateRatings(
+        ) {
+            this._domain.InvalidateRatings(
+            );
+        }
+
         public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain Gathering(
             string gatheringName
         ) {
             return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain(
                 _domain.Gathering(
                     gatheringName
+                ),
+                this._gameSession,
+                this._connection
+            );
+        }
+
+        public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzRatingGameSessionDomain Rating(
+            string ratingName
+        ) {
+            return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzRatingGameSessionDomain(
+                _domain.Rating(
+                    ratingName
                 ),
                 this._gameSession,
                 this._connection
@@ -286,12 +304,14 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             );
         }
 
-        public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzRatingGameSessionDomain Rating(
-            string ratingName
+        public Gs2.Unity.Gs2Matchmaking.Domain.Model.EzSeasonGameSessionDomain Season(
+            string seasonName,
+            long? season = null
         ) {
-            return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzRatingGameSessionDomain(
-                _domain.Rating(
-                    ratingName
+            return new Gs2.Unity.Gs2Matchmaking.Domain.Model.EzSeasonGameSessionDomain(
+                _domain.Season(
+                    seasonName,
+                    season
                 ),
                 this._gameSession,
                 this._connection

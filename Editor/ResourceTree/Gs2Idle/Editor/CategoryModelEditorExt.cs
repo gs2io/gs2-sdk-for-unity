@@ -30,6 +30,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Idle.Editor
             EditorGUILayout.TextField("Metadata", item.Metadata);
             EditorGUILayout.TextField("RewardIntervalMinutes", item.RewardIntervalMinutes?.ToString());
             EditorGUILayout.TextField("DefaultMaximumIdleMinutes", item.DefaultMaximumIdleMinutes?.ToString());
+            EditorGUILayout.TextField("RewardResetMode", item.RewardResetMode);
             EditorGUILayout.TextField("IdlePeriodScheduleId", item.IdlePeriodScheduleId);
             EditorGUILayout.TextField("ReceivePeriodScheduleId", item.ReceivePeriodScheduleId);
             EditorGUI.EndDisabledGroup();
