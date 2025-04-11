@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -46,12 +44,12 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Iterator
     public class EzListClusterRankingsIterator : Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData>
     {
         private Gs2Iterator<Gs2.Gs2Ranking2.Model.ClusterRankingData> _it;
-        private readonly Gs2.Gs2Ranking2.Domain.Model.ClusterRankingSeasonDomain _domain;
+        private readonly Gs2.Gs2Ranking2.Domain.Model.ClusterRankingSeasonAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
         public EzListClusterRankingsIterator(
-            Gs2.Gs2Ranking2.Domain.Model.ClusterRankingSeasonDomain domain,
+            Gs2.Gs2Ranking2.Domain.Model.ClusterRankingSeasonAccessTokenDomain domain,
             Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         )
@@ -60,7 +58,6 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Iterator
             _gameSession = gameSession;
             _connection = connection;
             _it = _domain.ClusterRankings(
-                this._gameSession.AccessToken
             );
         }
 
@@ -77,7 +74,6 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Iterator
                 () =>
                 {
                     return _it = _domain.ClusterRankings(
-                        this._gameSession.AccessToken
                     );
                 }
             );

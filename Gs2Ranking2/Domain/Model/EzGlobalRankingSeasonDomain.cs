@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -43,7 +41,6 @@ using Gs2.Core.Domain;
 using Gs2.Core.Util;
 using UnityEngine.Scripting;
 using System.Collections;
-using Gs2.Unity.Util;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
@@ -61,6 +58,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         public string NamespaceName => _domain?.NamespaceName;
         public string RankingName => _domain?.RankingName;
         public long? Season => _domain?.Season;
+        public string UserId => _domain?.UserId;
 
         public EzGlobalRankingSeasonDomain(
             Gs2.Gs2Ranking2.Domain.Model.GlobalRankingSeasonDomain domain,
@@ -70,63 +68,32 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             this._connection = connection;
         }
 
-        public void InvalidateGlobalRankings()
-        {
-            this._domain.InvalidateGlobalRankings();
-        }
-
-        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain GlobalRankingData(
-            Gs2.Unity.Util.IGameSession gameSession
+        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingScoreDomain GlobalRankingScore(
         ) {
-            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain(
-                _domain.GlobalRankingData(
-                    gameSession.AccessToken
+            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingScoreDomain(
+                _domain.GlobalRankingScore(
                 ),
-                gameSession,
                 this._connection
             );
         }
 
-        public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData> GlobalRankings(
-            IGameSession gameSession
-        )
-        {
-            return new Gs2.Unity.Gs2Ranking2.Domain.Iterator.EzListGlobalRankingsIterator(
-                this._domain,
-                gameSession,
+        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataDomain GlobalRankingData(
+        ) {
+            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataDomain(
+                _domain.GlobalRankingData(
+                ),
                 this._connection
             );
         }
 
-#if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData> GlobalRankingsAsync(
-            IGameSession gameSession
-        )
-        {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData>(async (writer, token) =>
-            {
-                var it = _domain.GlobalRankingsAsync(
-                    gameSession.AccessToken
-                ).GetAsyncEnumerator();
-                while(
-                    await this._connection.RunIteratorAsync(
-                        gameSession,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.GlobalRankingsAsync(
-                                gameSession.AccessToken
-                            ).GetAsyncEnumerator();
-                        }
-                    )
-                )
-                {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData.FromModel(it.Current));
-                }
-            });
+        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingReceivedRewardDomain GlobalRankingReceivedReward(
+        ) {
+            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingReceivedRewardDomain(
+                _domain.GlobalRankingReceivedReward(
+                ),
+                this._connection
+            );
         }
-#endif
+
     }
 }

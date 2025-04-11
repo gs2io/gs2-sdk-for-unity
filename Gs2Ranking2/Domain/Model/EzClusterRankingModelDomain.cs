@@ -43,6 +43,7 @@ using Gs2.Core.Domain;
 using Gs2.Core.Util;
 using UnityEngine.Scripting;
 using System.Collections;
+using Gs2.Unity.Util;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
@@ -67,12 +68,14 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             this._connection = connection;
         }
 
-        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingSeasonDomain ClusterRankingSeason(
+        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingSeasonGameSessionDomain ClusterRankingSeason(
             string clusterName,
+            IGameSession gameSession,
             long? season = null
         ) {
-            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingSeasonDomain(
-                this._domain.ClusterRankingSeason(clusterName, season),
+            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingSeasonGameSessionDomain(
+                this._domain.ClusterRankingSeason(clusterName, season, gameSession.AccessToken),
+                gameSession,
                 this._connection
             );
         }

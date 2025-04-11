@@ -50,18 +50,19 @@ using System.Collections.Generic;
 namespace Gs2.Unity.Gs2Ranking2.Domain.Model
 {
 
-    public partial class EzGlobalRankingSeasonGameSessionDomain {
-        private readonly Gs2.Gs2Ranking2.Domain.Model.GlobalRankingSeasonAccessTokenDomain _domain;
+    public partial class EzClusterRankingSeasonGameSessionDomain {
+        private readonly Gs2.Gs2Ranking2.Domain.Model.ClusterRankingSeasonAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string RankingName => _domain?.RankingName;
+        public string ClusterName => _domain?.ClusterName;
         public long? Season => _domain?.Season;
         public string UserId => _domain?.UserId;
 
-        public EzGlobalRankingSeasonGameSessionDomain(
-            Gs2.Gs2Ranking2.Domain.Model.GlobalRankingSeasonAccessTokenDomain domain,
+        public EzClusterRankingSeasonGameSessionDomain(
+            Gs2.Gs2Ranking2.Domain.Model.ClusterRankingSeasonAccessTokenDomain domain,
             Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
@@ -70,29 +71,29 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             this._connection = connection;
         }
 
-        [Obsolete("The name has been changed to PutGlobalRankingFuture.")]
-        public IFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingScoreGameSessionDomain> PutGlobalRanking(
+        [Obsolete("The name has been changed to PutClusterRankingFuture.")]
+        public IFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingScoreGameSessionDomain> PutClusterRanking(
             long score,
             string? metadata = null
         )
         {
-            return PutGlobalRankingFuture(
+            return PutClusterRankingFuture(
                 score,
                 metadata
             );
         }
 
-        public IFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingScoreGameSessionDomain> PutGlobalRankingFuture(
+        public IFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingScoreGameSessionDomain> PutClusterRankingFuture(
             long score,
             string? metadata = null
         )
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingScoreGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingScoreGameSessionDomain> self)
             {
                 var future = this._connection.RunFuture(
                     this._gameSession,
-                    () => this._domain.PutGlobalRankingScoreFuture(
-                        new PutGlobalRankingScoreRequest()
+                    () => this._domain.PutClusterRankingScoreFuture(
+                        new PutClusterRankingScoreRequest()
                             .WithScore(score)
                             .WithMetadata(metadata)
                     )
@@ -102,29 +103,29 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingScoreGameSessionDomain(
+                self.OnComplete(new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingScoreGameSessionDomain(
                     future.Result,
                     this._gameSession,
                     this._connection
                 ));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingScoreGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingScoreGameSessionDomain>(Impl);
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingScoreGameSessionDomain> PutGlobalRankingAsync(
+        public async UniTask<Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingScoreGameSessionDomain> PutClusterRankingAsync(
             long score,
             string? metadata = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
-                () => this._domain.PutGlobalRankingScoreAsync(
-                    new PutGlobalRankingScoreRequest()
+                () => this._domain.PutClusterRankingScoreAsync(
+                    new PutClusterRankingScoreRequest()
                         .WithScore(score)
                         .WithMetadata(metadata)
                 )
             );
-            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingScoreGameSessionDomain(
+            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingScoreGameSessionDomain(
                 result,
                 this._gameSession,
                 this._connection
@@ -132,10 +133,10 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         }
         #endif
 
-        public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData> GlobalRankings(
+        public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData> ClusterRankings(
         )
         {
-            return new Gs2.Unity.Gs2Ranking2.Domain.Iterator.EzListGlobalRankingsIterator(
+            return new Gs2.Unity.Gs2Ranking2.Domain.Iterator.EzListClusterRankingsIterator(
                 this._domain,
                 this._gameSession,
                 this._connection
@@ -143,12 +144,12 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData> GlobalRankingsAsync(
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData> ClusterRankingsAsync(
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData>(async (writer, token) =>
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData>(async (writer, token) =>
             {
-                var it = _domain.GlobalRankingsAsync(
+                var it = _domain.ClusterRankingsAsync(
                 ).GetAsyncEnumerator();
                 while(
                     await this._connection.RunIteratorAsync(
@@ -158,46 +159,46 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
                             return await it.MoveNextAsync();
                         },
                         () => {
-                            it = _domain.GlobalRankingsAsync(
+                            it = _domain.ClusterRankingsAsync(
                             ).GetAsyncEnumerator();
                         }
                     )
                 )
                 {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData.FromModel(it.Current));
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData.FromModel(it.Current));
                 }
             });
         }
         #endif
 
-        public ulong SubscribeGlobalRankings(
-            Action<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData[]> callback
+        public ulong SubscribeClusterRankings(
+            Action<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData[]> callback
         ) {
-            return this._domain.SubscribeGlobalRankings(
+            return this._domain.SubscribeClusterRankings(
                 items => {
-                    callback.Invoke(items.Select(Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData.FromModel).ToArray());
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingData.FromModel).ToArray());
                 }
             );
         }
 
-        public void UnsubscribeGlobalRankings(
+        public void UnsubscribeClusterRankings(
             ulong callbackId
         ) {
-            this._domain.UnsubscribeGlobalRankings(
+            this._domain.UnsubscribeClusterRankings(
                 callbackId
             );
         }
 
-        public void InvalidateGlobalRankings(
+        public void InvalidateClusterRankings(
         ) {
-            this._domain.InvalidateGlobalRankings(
+            this._domain.InvalidateClusterRankings(
             );
         }
 
-        public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingReceivedReward> GlobalRankingReceivedRewards(
+        public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingReceivedReward> ClusterRankingReceivedRewards(
         )
         {
-            return new Gs2.Unity.Gs2Ranking2.Domain.Iterator.EzListGlobalRankingReceivedRewardsIterator(
+            return new Gs2.Unity.Gs2Ranking2.Domain.Iterator.EzListClusterRankingReceivedRewardsIterator(
                 this._domain,
                 this._gameSession,
                 this._connection
@@ -205,12 +206,12 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingReceivedReward> GlobalRankingReceivedRewardsAsync(
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingReceivedReward> ClusterRankingReceivedRewardsAsync(
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingReceivedReward>(async (writer, token) =>
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingReceivedReward>(async (writer, token) =>
             {
-                var it = _domain.GlobalRankingReceivedRewardsAsync(
+                var it = _domain.ClusterRankingReceivedRewardsAsync(
                 ).GetAsyncEnumerator();
                 while(
                     await this._connection.RunIteratorAsync(
@@ -220,46 +221,46 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
                             return await it.MoveNextAsync();
                         },
                         () => {
-                            it = _domain.GlobalRankingReceivedRewardsAsync(
+                            it = _domain.ClusterRankingReceivedRewardsAsync(
                             ).GetAsyncEnumerator();
                         }
                     )
                 )
                 {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingReceivedReward.FromModel(it.Current));
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingReceivedReward.FromModel(it.Current));
                 }
             });
         }
         #endif
 
-        public ulong SubscribeGlobalRankingReceivedRewards(
-            Action<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingReceivedReward[]> callback
+        public ulong SubscribeClusterRankingReceivedRewards(
+            Action<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingReceivedReward[]> callback
         ) {
-            return this._domain.SubscribeGlobalRankingReceivedRewards(
+            return this._domain.SubscribeClusterRankingReceivedRewards(
                 items => {
-                    callback.Invoke(items.Select(Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingReceivedReward.FromModel).ToArray());
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingReceivedReward.FromModel).ToArray());
                 }
             );
         }
 
-        public void UnsubscribeGlobalRankingReceivedRewards(
+        public void UnsubscribeClusterRankingReceivedRewards(
             ulong callbackId
         ) {
-            this._domain.UnsubscribeGlobalRankingReceivedRewards(
+            this._domain.UnsubscribeClusterRankingReceivedRewards(
                 callbackId
             );
         }
 
-        public void InvalidateGlobalRankingReceivedRewards(
+        public void InvalidateClusterRankingReceivedRewards(
         ) {
-            this._domain.InvalidateGlobalRankingReceivedRewards(
+            this._domain.InvalidateClusterRankingReceivedRewards(
             );
         }
 
-        public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingScore> GlobalRankingScores(
+        public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingScore> ClusterRankingScores(
         )
         {
-            return new Gs2.Unity.Gs2Ranking2.Domain.Iterator.EzListGlobalRankingScoresIterator(
+            return new Gs2.Unity.Gs2Ranking2.Domain.Iterator.EzListClusterRankingScoresIterator(
                 this._domain,
                 this._gameSession,
                 this._connection
@@ -267,12 +268,12 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingScore> GlobalRankingScoresAsync(
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingScore> ClusterRankingScoresAsync(
         )
         {
-            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingScore>(async (writer, token) =>
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingScore>(async (writer, token) =>
             {
-                var it = _domain.GlobalRankingScoresAsync(
+                var it = _domain.ClusterRankingScoresAsync(
                 ).GetAsyncEnumerator();
                 while(
                     await this._connection.RunIteratorAsync(
@@ -282,66 +283,66 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
                             return await it.MoveNextAsync();
                         },
                         () => {
-                            it = _domain.GlobalRankingScoresAsync(
+                            it = _domain.ClusterRankingScoresAsync(
                             ).GetAsyncEnumerator();
                         }
                     )
                 )
                 {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingScore.FromModel(it.Current));
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingScore.FromModel(it.Current));
                 }
             });
         }
         #endif
 
-        public ulong SubscribeGlobalRankingScores(
-            Action<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingScore[]> callback
+        public ulong SubscribeClusterRankingScores(
+            Action<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingScore[]> callback
         ) {
-            return this._domain.SubscribeGlobalRankingScores(
+            return this._domain.SubscribeClusterRankingScores(
                 items => {
-                    callback.Invoke(items.Select(Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingScore.FromModel).ToArray());
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingScore.FromModel).ToArray());
                 }
             );
         }
 
-        public void UnsubscribeGlobalRankingScores(
+        public void UnsubscribeClusterRankingScores(
             ulong callbackId
         ) {
-            this._domain.UnsubscribeGlobalRankingScores(
+            this._domain.UnsubscribeClusterRankingScores(
                 callbackId
             );
         }
 
-        public void InvalidateGlobalRankingScores(
+        public void InvalidateClusterRankingScores(
         ) {
-            this._domain.InvalidateGlobalRankingScores(
+            this._domain.InvalidateClusterRankingScores(
             );
         }
 
-        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingScoreGameSessionDomain GlobalRankingScore(
+        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataGameSessionDomain ClusterRankingData(
         ) {
-            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingScoreGameSessionDomain(
-                _domain.GlobalRankingScore(
+            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataGameSessionDomain(
+                _domain.ClusterRankingData(
                 ),
                 this._gameSession,
                 this._connection
             );
         }
 
-        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain GlobalRankingData(
+        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingReceivedRewardGameSessionDomain ClusterRankingReceivedReward(
         ) {
-            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain(
-                _domain.GlobalRankingData(
+            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingReceivedRewardGameSessionDomain(
+                _domain.ClusterRankingReceivedReward(
                 ),
                 this._gameSession,
                 this._connection
             );
         }
 
-        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingReceivedRewardGameSessionDomain GlobalRankingReceivedReward(
+        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingScoreGameSessionDomain ClusterRankingScore(
         ) {
-            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingReceivedRewardGameSessionDomain(
-                _domain.GlobalRankingReceivedReward(
+            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingScoreGameSessionDomain(
+                _domain.ClusterRankingScore(
                 ),
                 this._gameSession,
                 this._connection

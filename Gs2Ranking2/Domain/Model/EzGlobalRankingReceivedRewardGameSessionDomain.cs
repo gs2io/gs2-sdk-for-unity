@@ -56,9 +56,9 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public Gs2.Unity.Core.Model.EzAcquireAction[] AcquireActions => _domain.AcquireActions.Select(Gs2.Unity.Core.Model.EzAcquireAction.FromModel).ToArray();
         public string NamespaceName => _domain?.NamespaceName;
-        public string UserId => _domain?.UserId;
         public string RankingName => _domain?.RankingName;
         public long? Season => _domain?.Season;
+        public string UserId => _domain?.UserId;
 
         public EzGlobalRankingReceivedRewardGameSessionDomain(
             Gs2.Gs2Ranking2.Domain.Model.GlobalRankingReceivedRewardAccessTokenDomain domain,

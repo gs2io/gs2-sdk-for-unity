@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -66,62 +64,6 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         ) {
             this._domain = domain;
             this._connection = connection;
-        }
-
-        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingScoreDomain GlobalRankingScore(
-            string rankingName,
-            long? season = null
-        ) {
-            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingScoreDomain(
-                _domain.GlobalRankingScore(
-                    rankingName,
-                    season
-                ),
-                this._connection
-            );
-        }
-
-        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingReceivedRewardDomain GlobalRankingReceivedReward(
-            string rankingName,
-            long? season = null
-        ) {
-            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingReceivedRewardDomain(
-                _domain.GlobalRankingReceivedReward(
-                    rankingName,
-                    season
-                ),
-                this._connection
-            );
-        }
-
-        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingReceivedRewardDomain ClusterRankingReceivedReward(
-            string rankingName,
-            string clusterName,
-            long? season = null
-        ) {
-            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingReceivedRewardDomain(
-                _domain.ClusterRankingReceivedReward(
-                    rankingName,
-                    clusterName,
-                    season
-                ),
-                this._connection
-            );
-        }
-
-        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingScoreDomain ClusterRankingScore(
-            string rankingName,
-            string clusterName,
-            long? season = null
-        ) {
-            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingScoreDomain(
-                _domain.ClusterRankingScore(
-                    rankingName,
-                    clusterName,
-                    season
-                ),
-                this._connection
-            );
         }
 
     }

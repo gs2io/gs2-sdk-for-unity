@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -46,12 +44,12 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Iterator
     public class EzListGlobalRankingsIterator : Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData>
     {
         private Gs2Iterator<Gs2.Gs2Ranking2.Model.GlobalRankingData> _it;
-        private readonly Gs2.Gs2Ranking2.Domain.Model.GlobalRankingSeasonDomain _domain;
+        private readonly Gs2.Gs2Ranking2.Domain.Model.GlobalRankingSeasonAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
 
         public EzListGlobalRankingsIterator(
-            Gs2.Gs2Ranking2.Domain.Model.GlobalRankingSeasonDomain domain,
+            Gs2.Gs2Ranking2.Domain.Model.GlobalRankingSeasonAccessTokenDomain domain,
             Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection
         )
@@ -60,7 +58,6 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Iterator
             _gameSession = gameSession;
             _connection = connection;
             _it = _domain.GlobalRankings(
-                this._gameSession.AccessToken
             );
         }
 
@@ -77,7 +74,6 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Iterator
                 () =>
                 {
                     return _it = _domain.GlobalRankings(
-                        this._gameSession.AccessToken
                     );
                 }
             );

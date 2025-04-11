@@ -55,10 +55,10 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         private readonly Gs2.Gs2Ranking2.Domain.Model.ClusterRankingScoreDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
-        public string UserId => _domain?.UserId;
         public string RankingName => _domain?.RankingName;
         public string ClusterName => _domain?.ClusterName;
         public long? Season => _domain?.Season;
+        public string UserId => _domain?.UserId;
 
         public EzClusterRankingScoreDomain(
             Gs2.Gs2Ranking2.Domain.Model.ClusterRankingScoreDomain domain,

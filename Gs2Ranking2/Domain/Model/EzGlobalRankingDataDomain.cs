@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -54,8 +52,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
 {
 
     public partial class EzGlobalRankingDataDomain {
-        private readonly Gs2.Gs2Ranking2.Domain.Model.GlobalRankingDataAccessTokenDomain _domain;
-        private readonly Gs2.Unity.Util.IGameSession _gameSession;
+        private readonly Gs2.Gs2Ranking2.Domain.Model.GlobalRankingDataDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
         public string NamespaceName => _domain?.NamespaceName;
         public string RankingName => _domain?.RankingName;
@@ -63,167 +60,12 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         public string UserId => _domain?.UserId;
 
         public EzGlobalRankingDataDomain(
-            Gs2.Gs2Ranking2.Domain.Model.GlobalRankingDataAccessTokenDomain domain,
+            Gs2.Gs2Ranking2.Domain.Model.GlobalRankingDataDomain domain,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
             this._connection = connection;
         }
-
-        [Obsolete("The name has been changed to GetGlobalRankingRankFuture.")]
-        public IFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain> GetGlobalRankingRank(
-        )
-        {
-            return GetGlobalRankingRankFuture(
-            );
-        }
-
-        public IFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain> GetGlobalRankingRankFuture(
-        )
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain> self)
-            {
-                var future = this._connection.RunFuture(
-                    this._gameSession,
-                    () => this._domain.GetGlobalRankingFuture(
-                        new GetGlobalRankingRequest()
-                    )
-                );
-                yield return future;
-                if (future.Error != null) {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                self.OnComplete(new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain(
-                    future.Result,
-                    this._gameSession,
-                    this._connection
-                ));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain>(Impl);
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain> GetGlobalRankingRankAsync(
-        ) {
-            var result = await this._connection.RunAsync(
-                this._gameSession,
-                () => this._domain.GetGlobalRankingAsync(
-                    new GetGlobalRankingRequest()
-                )
-            );
-            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain(
-                result,
-                this._gameSession,
-                this._connection
-            );
-        }
-        #endif
-
-        [Obsolete("The name has been changed to ModelFuture.")]
-        public IFuture<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData> Model()
-        {
-            return ModelFuture();
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData> ModelAsync()
-        {
-            var item = await this._connection.RunAsync(
-                this._gameSession,
-                async () =>
-                {
-                    return await _domain.ModelAsync();
-                }
-            );
-            if (item == null) {
-                return null;
-            }
-            return Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData.FromModel(
-                item
-            );
-        }
-        #endif
-
-        public IFuture<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData> ModelFuture()
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData> self)
-            {
-                var future = this._connection.RunFuture(
-                    this._gameSession,
-                    () => {
-                    	return _domain.ModelFuture();
-                    }
-                );
-                yield return future;
-                if (future.Error != null) {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var item = future.Result;
-                if (item == null) {
-                    self.OnComplete(null);
-                    yield break;
-                }
-                self.OnComplete(Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData.FromModel(
-                    item
-                ));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData>(Impl);
-        }
-
-        public void Invalidate()
-        {
-            this._domain.Invalidate();
-        }
-
-        public ulong Subscribe(Action<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData> callback)
-        {
-            return this._domain.Subscribe(item => {
-                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData.FromModel(
-                    item
-                ));
-            });
-        }
-
-        public void Unsubscribe(ulong callbackId)
-        {
-            this._domain.Unsubscribe(callbackId);
-        }
-
-        #if UNITY_2017_1_OR_NEWER
-        public Gs2Future<ulong> SubscribeWithInitialCallFuture(Action<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData> callback)
-        {
-            IEnumerator Impl(IFuture<ulong> self)
-            {
-                var future = ModelFuture();
-                yield return future;
-                if (future.Error != null) {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                var item = future.Result;
-                var callbackId = Subscribe(callback);
-                callback.Invoke(item);
-                self.OnComplete(callbackId);
-            }
-            return new Gs2InlineFuture<ulong>(Impl);
-        }
-        #endif
-
-        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
-            #if UNITY_2017_1_OR_NEWER
-        public async UniTask<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData> callback)
-            #else
-        public async Task<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData> callback)
-            #endif
-        {
-            var item = await ModelAsync();
-            var callbackId = Subscribe(callback);
-            callback.Invoke(item);
-            return callbackId;
-        }
-        #endif
 
     }
 }

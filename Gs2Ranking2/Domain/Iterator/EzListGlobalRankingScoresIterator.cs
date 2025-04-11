@@ -44,24 +44,20 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Iterator
     public class EzListGlobalRankingScoresIterator : Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingScore>
     {
         private Gs2Iterator<Gs2.Gs2Ranking2.Model.GlobalRankingScore> _it;
-        private readonly Gs2.Gs2Ranking2.Domain.Model.UserAccessTokenDomain _domain;
+        private readonly Gs2.Gs2Ranking2.Domain.Model.GlobalRankingSeasonAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        private readonly string _rankingName;
 
         public EzListGlobalRankingScoresIterator(
-            Gs2.Gs2Ranking2.Domain.Model.UserAccessTokenDomain domain,
+            Gs2.Gs2Ranking2.Domain.Model.GlobalRankingSeasonAccessTokenDomain domain,
             Gs2.Unity.Util.IGameSession gameSession,
-            Gs2.Unity.Util.Gs2Connection connection,
-            string? rankingName = null
+            Gs2.Unity.Util.Gs2Connection connection
         )
         {
             _domain = domain;
             _gameSession = gameSession;
             _connection = connection;
-            _rankingName = rankingName;
             _it = _domain.GlobalRankingScores(
-                rankingName
             );
         }
 
@@ -78,7 +74,6 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Iterator
                 () =>
                 {
                     return _it = _domain.GlobalRankingScores(
-                        this._rankingName
                     );
                 }
             );

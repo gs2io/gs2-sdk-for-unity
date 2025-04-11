@@ -44,32 +44,20 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Iterator
     public class EzListClusterRankingReceivedRewardsIterator : Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingReceivedReward>
     {
         private Gs2Iterator<Gs2.Gs2Ranking2.Model.ClusterRankingReceivedReward> _it;
-        private readonly Gs2.Gs2Ranking2.Domain.Model.UserAccessTokenDomain _domain;
+        private readonly Gs2.Gs2Ranking2.Domain.Model.ClusterRankingSeasonAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        private readonly string _rankingName;
-        private readonly string? _clusterName;
-        private readonly long? _season;
 
         public EzListClusterRankingReceivedRewardsIterator(
-            Gs2.Gs2Ranking2.Domain.Model.UserAccessTokenDomain domain,
+            Gs2.Gs2Ranking2.Domain.Model.ClusterRankingSeasonAccessTokenDomain domain,
             Gs2.Unity.Util.IGameSession gameSession,
-            Gs2.Unity.Util.Gs2Connection connection,
-            string? rankingName = null,
-            string? clusterName = null,
-            long? season = null
+            Gs2.Unity.Util.Gs2Connection connection
         )
         {
             _domain = domain;
             _gameSession = gameSession;
             _connection = connection;
-            _rankingName = rankingName;
-            _clusterName = clusterName;
-            _season = season;
             _it = _domain.ClusterRankingReceivedRewards(
-                rankingName,
-                clusterName,
-                season
             );
         }
 
@@ -86,9 +74,6 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Iterator
                 () =>
                 {
                     return _it = _domain.ClusterRankingReceivedRewards(
-                        this._rankingName,
-                        this._clusterName,
-                        this._season
                     );
                 }
             );

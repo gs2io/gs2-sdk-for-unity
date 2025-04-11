@@ -44,28 +44,20 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Iterator
     public class EzListGlobalRankingReceivedRewardsIterator : Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingReceivedReward>
     {
         private Gs2Iterator<Gs2.Gs2Ranking2.Model.GlobalRankingReceivedReward> _it;
-        private readonly Gs2.Gs2Ranking2.Domain.Model.UserAccessTokenDomain _domain;
+        private readonly Gs2.Gs2Ranking2.Domain.Model.GlobalRankingSeasonAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        private readonly string _rankingName;
-        private readonly long? _season;
 
         public EzListGlobalRankingReceivedRewardsIterator(
-            Gs2.Gs2Ranking2.Domain.Model.UserAccessTokenDomain domain,
+            Gs2.Gs2Ranking2.Domain.Model.GlobalRankingSeasonAccessTokenDomain domain,
             Gs2.Unity.Util.IGameSession gameSession,
-            Gs2.Unity.Util.Gs2Connection connection,
-            string? rankingName = null,
-            long? season = null
+            Gs2.Unity.Util.Gs2Connection connection
         )
         {
             _domain = domain;
             _gameSession = gameSession;
             _connection = connection;
-            _rankingName = rankingName;
-            _season = season;
             _it = _domain.GlobalRankingReceivedRewards(
-                rankingName,
-                season
             );
         }
 
@@ -82,8 +74,6 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Iterator
                 () =>
                 {
                     return _it = _domain.GlobalRankingReceivedRewards(
-                        this._rankingName,
-                        this._season
                     );
                 }
             );
