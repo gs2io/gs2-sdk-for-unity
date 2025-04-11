@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -205,11 +207,13 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
         }
 
         public Gs2.Unity.Gs2Schedule.Domain.Model.EzEventGameSessionDomain Event(
-            string eventName
+            string eventName,
+            bool isInSchedule = true
         ) {
             return new Gs2.Unity.Gs2Schedule.Domain.Model.EzEventGameSessionDomain(
                 _domain.Event(
-                    eventName
+                    eventName,
+                    isInSchedule
                 ),
                 this._gameSession,
                 this._connection

@@ -442,7 +442,7 @@ namespace Gs2.Unity.Gs2Matchmaking
 		        IGameSession session,
                 string namespaceName,
                 string seasonName,
-                long season
+                long? season = null
         )
 		{
             yield return _connection.Run(
@@ -520,8 +520,8 @@ namespace Gs2.Unity.Gs2Matchmaking
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzGetSeasonGatheringResult>> callback,
                 string namespaceName,
                 string seasonName,
-                long season,
                 long tier,
+                long? season = null,
                 string seasonGatheringName = null
         )
 		{

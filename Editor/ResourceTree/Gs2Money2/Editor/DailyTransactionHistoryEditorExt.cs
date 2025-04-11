@@ -32,6 +32,8 @@ namespace Gs2.Editor.ResourceTree.Gs2Money2.Editor
             EditorGUILayout.TextField("Currency", item.Currency);
             EditorGUILayout.TextField("DepositAmount", item.DepositAmount?.ToString());
             EditorGUILayout.TextField("WithdrawAmount", item.WithdrawAmount?.ToString());
+            EditorGUILayout.TextField("IssueCount", item.IssueCount?.ToString());
+            EditorGUILayout.TextField("ConsumeCount", item.ConsumeCount?.ToString());
             EditorGUILayout.TextField("UpdatedAt", UnixTime.FromUnixTime(item.UpdatedAt ?? 0).ToString(CultureInfo.CurrentUICulture));
             EditorGUILayout.TextField("Revision", item.Revision?.ToString());
             EditorGUI.EndDisabledGroup();
