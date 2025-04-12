@@ -70,6 +70,60 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             this._connection = connection;
         }
 
+        [Obsolete("The name has been changed to ReceiveFuture.")]
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Receive(
+            Gs2.Unity.Gs2Ranking2.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
+        )
+        {
+            return ReceiveFuture(
+                config,
+                speculativeExecute
+            );
+        }
+
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveFuture(
+            Gs2.Unity.Gs2Ranking2.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.ReceiveFuture(
+                        new ReceiveGlobalRankingReceivedRewardRequest()
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                        speculativeExecute
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(future.Result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(future.Result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveAsync(
+            Gs2.Unity.Gs2Ranking2.Model.EzConfig[] config = null,
+            bool speculativeExecute = true
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.ReceiveAsync(
+                    new ReceiveGlobalRankingReceivedRewardRequest()
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                    speculativeExecute
+                )
+            );
+            return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
+        }
+        #endif
+
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingReceivedReward> Model()
         {
