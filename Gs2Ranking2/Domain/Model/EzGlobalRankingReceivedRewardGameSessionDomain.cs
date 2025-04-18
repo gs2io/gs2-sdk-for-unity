@@ -70,19 +70,19 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             this._connection = connection;
         }
 
-        [Obsolete("The name has been changed to ReceiveFuture.")]
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Receive(
+        [Obsolete("The name has been changed to ReceiveGlobalRankingRewardFuture.")]
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveGlobalRankingReward(
             Gs2.Unity.Gs2Ranking2.Model.EzConfig[] config = null,
             bool speculativeExecute = true
         )
         {
-            return ReceiveFuture(
+            return ReceiveGlobalRankingRewardFuture(
                 config,
                 speculativeExecute
             );
         }
 
-        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveFuture(
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveGlobalRankingRewardFuture(
             Gs2.Unity.Gs2Ranking2.Model.EzConfig[] config = null,
             bool speculativeExecute = true
         )
@@ -108,7 +108,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveAsync(
+        public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveGlobalRankingRewardAsync(
             Gs2.Unity.Gs2Ranking2.Model.EzConfig[] config = null,
             bool speculativeExecute = true
         ) {

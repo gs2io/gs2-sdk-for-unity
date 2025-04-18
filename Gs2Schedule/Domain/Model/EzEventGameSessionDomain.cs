@@ -60,7 +60,6 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string EventName => _domain?.EventName;
-        public bool? IsInSchedule => _domain.IsInSchedule;
 
         public EzEventGameSessionDomain(
             Gs2.Gs2Schedule.Domain.Model.EventAccessTokenDomain domain,

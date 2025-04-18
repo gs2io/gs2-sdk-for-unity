@@ -214,6 +214,37 @@ namespace Gs2.Unity.Gs2Ranking2
             );
 		}
 
+        public IEnumerator ReceiveGlobalRankingReward(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking2.Result.EzReceiveGlobalRankingRewardResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string rankingName,
+                long? season = null,
+                List<Gs2.Unity.Gs2Ranking2.Model.EzConfig> config = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.ReceiveGlobalRankingReceivedReward(
+                    new Gs2.Gs2Ranking2.Request.ReceiveGlobalRankingReceivedRewardRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRankingName(rankingName)
+                        .WithSeason(season)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithConfig(config?.Select(v => {
+                            return v?.ToModel();
+                        }).ToArray()),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Ranking2.Result.EzReceiveGlobalRankingRewardResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Ranking2.Result.EzReceiveGlobalRankingRewardResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator GetGlobalRankingScore(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking2.Result.EzGetGlobalRankingScoreResult>> callback,
 		        IGameSession session,
@@ -460,6 +491,39 @@ namespace Gs2.Unity.Gs2Ranking2
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Ranking2.Result.EzListClusterRankingReceivedRewardsResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Ranking2.Result.EzListClusterRankingReceivedRewardsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ReceiveClusterRankingReward(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Ranking2.Result.EzReceiveClusterRankingRewardResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string rankingName,
+                string clusterName,
+                long? season = null,
+                List<Gs2.Unity.Gs2Ranking2.Model.EzConfig> config = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.ReceiveClusterRankingReceivedReward(
+                    new Gs2.Gs2Ranking2.Request.ReceiveClusterRankingReceivedRewardRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRankingName(rankingName)
+                        .WithClusterName(clusterName)
+                        .WithSeason(season)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithConfig(config?.Select(v => {
+                            return v?.ToModel();
+                        }).ToArray()),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Ranking2.Result.EzReceiveClusterRankingRewardResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Ranking2.Result.EzReceiveClusterRankingRewardResult.FromModel(r.Result),
                             r.Error
                         )
                     )
