@@ -59,7 +59,7 @@ namespace Gs2.Unity.Gs2LoginReward
 		        IGameSession session,
                 string namespaceName,
                 string bonusModelName,
-                int stepNumber,
+                int? stepNumber = null,
                 List<Gs2.Unity.Gs2LoginReward.Model.EzConfig> config = null
         )
 		{

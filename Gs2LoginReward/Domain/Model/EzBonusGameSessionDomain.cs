@@ -130,7 +130,7 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
         [Obsolete("The name has been changed to MissedReceiveFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> MissedReceive(
             string bonusModelName,
-            int stepNumber,
+            int? stepNumber = null,
             Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null,
             bool speculativeExecute = true
         )
@@ -145,7 +145,7 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
 
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> MissedReceiveFuture(
             string bonusModelName,
-            int stepNumber,
+            int? stepNumber = null,
             Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null,
             bool speculativeExecute = true
         )
@@ -175,7 +175,7 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
         #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> MissedReceiveAsync(
             string bonusModelName,
-            int stepNumber,
+            int? stepNumber = null,
             Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null,
             bool speculativeExecute = true
         ) {
