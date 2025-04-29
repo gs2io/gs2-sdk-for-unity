@@ -49,19 +49,21 @@ namespace Gs2.Unity.Gs2Chat.Domain.Iterator
         private readonly Gs2.Gs2Chat.Domain.Model.RoomAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        private readonly string? _password;
-        private readonly long _startAt;
+        private readonly int? _category;
 
         public EzListMessagesIterator(
             Gs2.Gs2Chat.Domain.Model.RoomAccessTokenDomain domain,
             Gs2.Unity.Util.IGameSession gameSession,
-            Gs2.Unity.Util.Gs2Connection connection
+            Gs2.Unity.Util.Gs2Connection connection,
+            int? category = null
         )
         {
             _domain = domain;
             _gameSession = gameSession;
             _connection = connection;
+            _category = category;
             _it = _domain.Messages(
+                category
             );
         }
 
@@ -78,6 +80,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Iterator
                 () =>
                 {
                     return _it = _domain.Messages(
+                        this._category
                     );
                 }
             );

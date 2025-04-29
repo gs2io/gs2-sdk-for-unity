@@ -168,7 +168,7 @@ namespace Gs2.Unity.Gs2Chat
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzListLatestMessagesResult>> callback,
 		        IGameSession session,
                 string namespaceName,
-                string roomName,
+                string roomName = null,
                 int? limit = null,
                 string password = null
         )
@@ -197,7 +197,7 @@ namespace Gs2.Unity.Gs2Chat
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzListMessagesResult>> callback,
 		        IGameSession session,
                 string namespaceName,
-                string roomName,
+                string roomName = null,
                 long? startAt = null,
                 int? limit = null,
                 string password = null

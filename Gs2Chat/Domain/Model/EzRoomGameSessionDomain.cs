@@ -182,22 +182,26 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #endif
 
         public Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzMessage> LatestMessages(
+            int? category = null
         )
         {
             return new Gs2.Unity.Gs2Chat.Domain.Iterator.EzListLatestMessagesIterator(
                 this._domain,
                 this._gameSession,
-                this._connection
+                this._connection,
+                category
             );
         }
 
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Chat.Model.EzMessage> LatestMessagesAsync(
+              int? category = null
         )
         {
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Chat.Model.EzMessage>(async (writer, token) =>
             {
                 var it = _domain.LatestMessagesAsync(
+                    category
                 ).GetAsyncEnumerator();
                 while(
                     await this._connection.RunIteratorAsync(
@@ -208,6 +212,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                         },
                         () => {
                             it = _domain.LatestMessagesAsync(
+                                category
                             ).GetAsyncEnumerator();
                         }
                     )
@@ -220,46 +225,56 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #endif
 
         public ulong SubscribeLatestMessages(
-            Action<Gs2.Unity.Gs2Chat.Model.EzMessage[]> callback
+            Action<Gs2.Unity.Gs2Chat.Model.EzMessage[]> callback,
+            int? category = null
         ) {
             return this._domain.SubscribeLatestMessages(
                 items => {
                     callback.Invoke(items.Select(Gs2.Unity.Gs2Chat.Model.EzMessage.FromModel).ToArray());
-                }
+                },
+                category
             );
         }
 
         public void UnsubscribeLatestMessages(
-            ulong callbackId
+            ulong callbackId,
+            int? category = null
         ) {
             this._domain.UnsubscribeLatestMessages(
-                callbackId
+                callbackId,
+                category
             );
         }
 
         public void InvalidateLatestMessages(
+            int? category = null
         ) {
             this._domain.InvalidateLatestMessages(
+                category
             );
         }
 
         public Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzMessage> Messages(
+            int? category = null
         )
         {
             return new Gs2.Unity.Gs2Chat.Domain.Iterator.EzListMessagesIterator(
                 this._domain,
                 this._gameSession,
-                this._connection
+                this._connection,
+                category
             );
         }
 
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Chat.Model.EzMessage> MessagesAsync(
+              int? category = null
         )
         {
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Chat.Model.EzMessage>(async (writer, token) =>
             {
                 var it = _domain.MessagesAsync(
+                    category
                 ).GetAsyncEnumerator();
                 while(
                     await this._connection.RunIteratorAsync(
@@ -270,6 +285,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                         },
                         () => {
                             it = _domain.MessagesAsync(
+                                category
                             ).GetAsyncEnumerator();
                         }
                     )
@@ -282,26 +298,32 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #endif
 
         public ulong SubscribeMessages(
-            Action<Gs2.Unity.Gs2Chat.Model.EzMessage[]> callback
+            Action<Gs2.Unity.Gs2Chat.Model.EzMessage[]> callback,
+            int? category = null
         ) {
             return this._domain.SubscribeMessages(
                 items => {
                     callback.Invoke(items.Select(Gs2.Unity.Gs2Chat.Model.EzMessage.FromModel).ToArray());
-                }
+                },
+                category
             );
         }
 
         public void UnsubscribeMessages(
-            ulong callbackId
+            ulong callbackId,
+            int? category = null
         ) {
             this._domain.UnsubscribeMessages(
-                callbackId
+                callbackId,
+                category
             );
         }
 
         public void InvalidateMessages(
+            int? category = null
         ) {
             this._domain.InvalidateMessages(
+                category
             );
         }
 
