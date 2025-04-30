@@ -36,12 +36,17 @@ namespace Gs2.Unity.Gs2Chat.Model
 		public string Name;
 		[SerializeField]
 		public string Metadata;
+		[SerializeField]
+		public List<string> WhiteListUserIds;
 
         public Gs2.Gs2Chat.Model.Room ToModel()
         {
             return new Gs2.Gs2Chat.Model.Room {
                 Name = Name,
                 Metadata = Metadata,
+                WhiteListUserIds = WhiteListUserIds?.Select(v => {
+                    return v;
+                }).ToArray(),
             };
         }
 
@@ -50,6 +55,9 @@ namespace Gs2.Unity.Gs2Chat.Model
             return new EzRoom {
                 Name = model.Name == null ? null : model.Name,
                 Metadata = model.Metadata == null ? null : model.Metadata,
+                WhiteListUserIds = model.WhiteListUserIds == null ? new List<string>() : model.WhiteListUserIds.Select(v => {
+                    return v;
+                }).ToList(),
             };
         }
     }
