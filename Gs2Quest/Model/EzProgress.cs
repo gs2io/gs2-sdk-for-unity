@@ -41,6 +41,8 @@ namespace Gs2.Unity.Gs2Quest.Model
 		[SerializeField]
 		public long RandomSeed;
 		[SerializeField]
+		public string Metadata;
+		[SerializeField]
 		public List<Gs2.Unity.Gs2Quest.Model.EzReward> Rewards;
 		[SerializeField]
 		public List<Gs2.Unity.Gs2Quest.Model.EzReward> FailedRewards;
@@ -52,6 +54,7 @@ namespace Gs2.Unity.Gs2Quest.Model
                 TransactionId = TransactionId,
                 QuestModelId = QuestModelId,
                 RandomSeed = RandomSeed,
+                Metadata = Metadata,
                 Rewards = Rewards?.Select(v => {
                     return v.ToModel();
                 }).ToArray(),
@@ -68,6 +71,7 @@ namespace Gs2.Unity.Gs2Quest.Model
                 TransactionId = model.TransactionId == null ? null : model.TransactionId,
                 QuestModelId = model.QuestModelId == null ? null : model.QuestModelId,
                 RandomSeed = model.RandomSeed ?? 0,
+                Metadata = model.Metadata == null ? null : model.Metadata,
                 Rewards = model.Rewards == null ? new List<Gs2.Unity.Gs2Quest.Model.EzReward>() : model.Rewards.Select(v => {
                     return Gs2.Unity.Gs2Quest.Model.EzReward.FromModel(v);
                 }).ToList(),
