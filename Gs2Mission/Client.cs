@@ -59,7 +59,8 @@ namespace Gs2.Unity.Gs2Mission
 		        IGameSession session,
                 string namespaceName,
                 string missionGroupName,
-                List<string> missionTaskNames
+                List<string> missionTaskNames,
+                List<Gs2.Unity.Gs2Mission.Model.EzConfig> config = null
         )
 		{
             yield return _connection.Run(
@@ -72,7 +73,10 @@ namespace Gs2.Unity.Gs2Mission
                         .WithMissionTaskNames(missionTaskNames?.Select(v => {
                             return v;
                         }).ToArray())
-                        .WithAccessToken(session.AccessToken.Token),
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithConfig(config?.Select(v => {
+                            return v?.ToModel();
+                        }).ToArray()),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Mission.Result.EzBatchReceiveRewardsResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Mission.Result.EzBatchReceiveRewardsResult.FromModel(r.Result),
@@ -165,7 +169,8 @@ namespace Gs2.Unity.Gs2Mission
 		        IGameSession session,
                 string namespaceName,
                 string missionGroupName,
-                string missionTaskName
+                string missionTaskName,
+                List<Gs2.Unity.Gs2Mission.Model.EzConfig> config = null
         )
 		{
             yield return _connection.Run(
@@ -176,7 +181,10 @@ namespace Gs2.Unity.Gs2Mission
                         .WithNamespaceName(namespaceName)
                         .WithMissionGroupName(missionGroupName)
                         .WithMissionTaskName(missionTaskName)
-                        .WithAccessToken(session.AccessToken.Token),
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithConfig(config?.Select(v => {
+                            return v?.ToModel();
+                        }).ToArray()),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Mission.Result.EzReceiveRewardsResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Mission.Result.EzReceiveRewardsResult.FromModel(r.Result),

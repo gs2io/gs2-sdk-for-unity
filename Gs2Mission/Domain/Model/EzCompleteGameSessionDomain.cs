@@ -71,17 +71,20 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         [Obsolete("The name has been changed to ReceiveRewardsFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveRewards(
             string missionTaskName,
+            Gs2.Unity.Gs2Mission.Model.EzConfig[] config = null,
             bool speculativeExecute = true
         )
         {
             return ReceiveRewardsFuture(
                 missionTaskName,
+                config,
                 speculativeExecute
             );
         }
 
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveRewardsFuture(
             string missionTaskName,
+            Gs2.Unity.Gs2Mission.Model.EzConfig[] config = null,
             bool speculativeExecute = true
         )
         {
@@ -91,7 +94,8 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                     this._gameSession,
                     () => this._domain.CompleteFuture(
                         new CompleteRequest()
-                            .WithMissionTaskName(missionTaskName),
+                            .WithMissionTaskName(missionTaskName)
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
                         speculativeExecute
                     )
                 );
@@ -108,13 +112,15 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveRewardsAsync(
             string missionTaskName,
+            Gs2.Unity.Gs2Mission.Model.EzConfig[] config = null,
             bool speculativeExecute = true
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.CompleteAsync(
                     new CompleteRequest()
-                        .WithMissionTaskName(missionTaskName),
+                        .WithMissionTaskName(missionTaskName)
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
                     speculativeExecute
                 )
             );
@@ -125,17 +131,20 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         [Obsolete("The name has been changed to BatchReceiveRewardsFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> BatchReceiveRewards(
             string[] missionTaskNames,
+            Gs2.Unity.Gs2Mission.Model.EzConfig[] config = null,
             bool speculativeExecute = true
         )
         {
             return BatchReceiveRewardsFuture(
                 missionTaskNames,
+                config,
                 speculativeExecute
             );
         }
 
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> BatchReceiveRewardsFuture(
             string[] missionTaskNames,
+            Gs2.Unity.Gs2Mission.Model.EzConfig[] config = null,
             bool speculativeExecute = true
         )
         {
@@ -145,7 +154,8 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                     this._gameSession,
                     () => this._domain.BatchFuture(
                         new BatchCompleteRequest()
-                            .WithMissionTaskNames(missionTaskNames),
+                            .WithMissionTaskNames(missionTaskNames)
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
                         speculativeExecute
                     )
                 );
@@ -162,13 +172,15 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> BatchReceiveRewardsAsync(
             string[] missionTaskNames,
+            Gs2.Unity.Gs2Mission.Model.EzConfig[] config = null,
             bool speculativeExecute = true
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.BatchAsync(
                     new BatchCompleteRequest()
-                        .WithMissionTaskNames(missionTaskNames),
+                        .WithMissionTaskNames(missionTaskNames)
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
                     speculativeExecute
                 )
             );
