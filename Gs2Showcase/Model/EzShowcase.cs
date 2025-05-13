@@ -38,6 +38,8 @@ namespace Gs2.Unity.Gs2Showcase.Model
 		public string Metadata;
 		[SerializeField]
 		public List<Gs2.Unity.Gs2Showcase.Model.EzDisplayItem> DisplayItems;
+		[SerializeField]
+		public string SalesPeriodEventId;
 
         public Gs2.Gs2Showcase.Model.Showcase ToModel()
         {
@@ -47,6 +49,7 @@ namespace Gs2.Unity.Gs2Showcase.Model
                 DisplayItems = DisplayItems?.Select(v => {
                     return v.ToModel();
                 }).ToArray(),
+                SalesPeriodEventId = SalesPeriodEventId,
             };
         }
 
@@ -58,6 +61,7 @@ namespace Gs2.Unity.Gs2Showcase.Model
                 DisplayItems = model.DisplayItems == null ? new List<Gs2.Unity.Gs2Showcase.Model.EzDisplayItem>() : model.DisplayItems.Select(v => {
                     return Gs2.Unity.Gs2Showcase.Model.EzDisplayItem.FromModel(v);
                 }).ToList(),
+                SalesPeriodEventId = model.SalesPeriodEventId == null ? null : model.SalesPeriodEventId,
             };
         }
     }
