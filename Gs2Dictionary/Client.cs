@@ -177,6 +177,60 @@ namespace Gs2.Unity.Gs2Dictionary
             );
 		}
 
+        public IEnumerator AddLikes(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzAddLikesResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                List<string> entryModelNames = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.AddLikes(
+                    new Gs2.Gs2Dictionary.Request.AddLikesRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithEntryModelNames(entryModelNames?.Select(v => {
+                            return v;
+                        }).ToArray()),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzAddLikesResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Dictionary.Result.EzAddLikesResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator DeleteLikes(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzDeleteLikesResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                List<string> entryModelNames = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.DeleteLikes(
+                    new Gs2.Gs2Dictionary.Request.DeleteLikesRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithEntryModelNames(entryModelNames?.Select(v => {
+                            return v;
+                        }).ToArray()),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzDeleteLikesResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Dictionary.Result.EzDeleteLikesResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator GetLike(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Dictionary.Result.EzGetLikeResult>> callback,
 		        IGameSession session,

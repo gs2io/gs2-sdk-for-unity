@@ -68,6 +68,118 @@ namespace Gs2.Unity.Gs2Dictionary.Domain.Model
             this._connection = connection;
         }
 
+        [Obsolete("The name has been changed to AddLikesFuture.")]
+        public IFuture<Gs2.Unity.Gs2Dictionary.Domain.Model.EzLikeGameSessionDomain[]> AddLikes(
+            string[] entryModelNames = null
+        )
+        {
+            return AddLikesFuture(
+                entryModelNames
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Dictionary.Domain.Model.EzLikeGameSessionDomain[]> AddLikesFuture(
+            string[] entryModelNames = null
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Dictionary.Domain.Model.EzLikeGameSessionDomain[]> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.AddLikesFuture(
+                        new AddLikesRequest()
+                            .WithEntryModelNames(entryModelNames)
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(future.Result.Select(v => new Gs2.Unity.Gs2Dictionary.Domain.Model.EzLikeGameSessionDomain(
+                    v,
+                    this._gameSession,
+                    this._connection
+                )).ToArray());
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Dictionary.Domain.Model.EzLikeGameSessionDomain[]>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Dictionary.Domain.Model.EzLikeGameSessionDomain[]> AddLikesAsync(
+            string[] entryModelNames = null
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.AddLikesAsync(
+                    new AddLikesRequest()
+                        .WithEntryModelNames(entryModelNames)
+                )
+            );
+            return result.Select(v => new Gs2.Unity.Gs2Dictionary.Domain.Model.EzLikeGameSessionDomain(
+                v,
+                this._gameSession,
+                this._connection
+            )).ToArray();
+        }
+        #endif
+
+        [Obsolete("The name has been changed to DeleteLikesFuture.")]
+        public IFuture<Gs2.Unity.Gs2Dictionary.Domain.Model.EzLikeGameSessionDomain[]> DeleteLikes(
+            string[] entryModelNames = null
+        )
+        {
+            return DeleteLikesFuture(
+                entryModelNames
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Dictionary.Domain.Model.EzLikeGameSessionDomain[]> DeleteLikesFuture(
+            string[] entryModelNames = null
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Dictionary.Domain.Model.EzLikeGameSessionDomain[]> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.DeleteLikesFuture(
+                        new DeleteLikesRequest()
+                            .WithEntryModelNames(entryModelNames)
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(future.Result.Select(v => new Gs2.Unity.Gs2Dictionary.Domain.Model.EzLikeGameSessionDomain(
+                    v,
+                    this._gameSession,
+                    this._connection
+                )).ToArray());
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Dictionary.Domain.Model.EzLikeGameSessionDomain[]>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Dictionary.Domain.Model.EzLikeGameSessionDomain[]> DeleteLikesAsync(
+            string[] entryModelNames = null
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.DeleteLikesAsync(
+                    new DeleteLikesRequest()
+                        .WithEntryModelNames(entryModelNames)
+                )
+            );
+            return result.Select(v => new Gs2.Unity.Gs2Dictionary.Domain.Model.EzLikeGameSessionDomain(
+                v,
+                this._gameSession,
+                this._connection
+            )).ToArray();
+        }
+        #endif
+
         public Gs2Iterator<Gs2.Unity.Gs2Dictionary.Model.EzEntry> Entries(
         )
         {
