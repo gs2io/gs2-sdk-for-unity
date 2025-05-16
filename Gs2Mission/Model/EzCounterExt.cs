@@ -29,5 +29,14 @@ namespace Gs2.Unity.Gs2Mission.Model
                 Value = 0,
             };
         }
+        
+        public static EzScopedValue ValueByConditionName(this EzCounter self, string conditionName)
+        {
+            return self.Values.FirstOrDefault(v => v.ConditionName == conditionName) ?? new EzScopedValue
+            {
+                ConditionName = conditionName,
+                Value = 0,
+            };
+        }
     }
 }

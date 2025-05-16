@@ -35,12 +35,15 @@ namespace Gs2.Unity.Gs2Mission.Model
 		[SerializeField]
 		public string ResetType;
 		[SerializeField]
+		public string ConditionName;
+		[SerializeField]
 		public long Value;
 
         public Gs2.Gs2Mission.Model.ScopedValue ToModel()
         {
             return new Gs2.Gs2Mission.Model.ScopedValue {
                 ResetType = ResetType,
+                ConditionName = ConditionName,
                 Value = Value,
             };
         }
@@ -49,6 +52,7 @@ namespace Gs2.Unity.Gs2Mission.Model
         {
             return new EzScopedValue {
                 ResetType = model.ResetType == null ? null : model.ResetType,
+                ConditionName = model.ConditionName == null ? null : model.ConditionName,
                 Value = model.Value ?? 0,
             };
         }
