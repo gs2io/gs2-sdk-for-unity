@@ -102,5 +102,14 @@ namespace Gs2.Unity.Util
             return true;
         }
 #endif
+
+        public override int GetHashCode() {
+            unchecked {
+                int hash = 17;
+                hash = hash * 23 + (this.AccessToken?.TimeOffset?.GetHashCode() ?? 0);
+                hash = hash * 23 + (this.GuildName?.GetHashCode() ?? 0);
+                return hash;
+            }
+        }
     }
 }
