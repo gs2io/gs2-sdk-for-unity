@@ -32,7 +32,7 @@ namespace Gs2.Unity.Util
         public AccessToken AccessToken { get; set; }
 
         public string UserId => this.AccessToken.UserId;
-        public string LoginUserId => this.UserId;
+        public string LoginUserId => this._userId;
         
         public GameSession(
             IAuthenticator authenticator,
