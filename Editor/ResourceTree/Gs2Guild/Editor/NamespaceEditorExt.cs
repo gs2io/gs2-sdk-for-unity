@@ -127,6 +127,15 @@ namespace Gs2.Editor.ResourceTree.Gs2Guild.Editor
                 ScriptSettingEditorExt.OnGUI(item.ChangeRoleScript);
                 EditorGUI.indentLevel--;
             }
+            if (item.DeleteGuildScript == null) {
+                EditorGUILayout.TextField("DeleteGuildScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("DeleteGuildScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.DeleteGuildScript);
+                EditorGUI.indentLevel--;
+            }
             if (item.LogSetting == null) {
                 EditorGUILayout.TextField("LogSetting", "");
             }

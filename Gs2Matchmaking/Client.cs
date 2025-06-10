@@ -468,7 +468,7 @@ namespace Gs2.Unity.Gs2Matchmaking
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Matchmaking.Result.EzListJoinedSeasonGatheringsResult>> callback,
 		        IGameSession session,
                 string namespaceName,
-                string seasonName
+                string seasonName = null
         )
 		{
             yield return _connection.Run(
