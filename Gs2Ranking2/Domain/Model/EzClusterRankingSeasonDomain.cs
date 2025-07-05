@@ -69,15 +69,6 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             this._connection = connection;
         }
 
-        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataDomain ClusterRankingData(
-        ) {
-            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataDomain(
-                _domain.ClusterRankingData(
-                ),
-                this._connection
-            );
-        }
-
         public Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingReceivedRewardDomain ClusterRankingReceivedReward(
         ) {
             return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingReceivedRewardDomain(

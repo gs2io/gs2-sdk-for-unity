@@ -77,15 +77,6 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             );
         }
 
-        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataDomain GlobalRankingData(
-        ) {
-            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataDomain(
-                _domain.GlobalRankingData(
-                ),
-                this._connection
-            );
-        }
-
         public Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingReceivedRewardDomain GlobalRankingReceivedReward(
         ) {
             return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingReceivedRewardDomain(

@@ -58,6 +58,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         public string RankingName => _domain?.RankingName;
         public long? Season => _domain?.Season;
         public string UserId => _domain?.UserId;
+        public string ScorerUserId => _domain?.ScorerUserId;
 
         public EzGlobalRankingDataDomain(
             Gs2.Gs2Ranking2.Domain.Model.GlobalRankingDataDomain domain,

@@ -71,6 +71,56 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             this._connection = connection;
         }
 
+        [Obsolete("The name has been changed to GetClusterRankingRankFuture.")]
+        public IFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataGameSessionDomain> GetClusterRankingRank(
+        )
+        {
+            return GetClusterRankingRankFuture(
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataGameSessionDomain> GetClusterRankingRankFuture(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataGameSessionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.GetClusterRankingFuture(
+                        new GetClusterRankingRequest()
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataGameSessionDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataGameSessionDomain> GetClusterRankingRankAsync(
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.GetClusterRankingAsync(
+                    new GetClusterRankingRequest()
+                )
+            );
+            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
         [Obsolete("The name has been changed to PutClusterRankingFuture.")]
         public IFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingScoreGameSessionDomain> PutClusterRanking(
             long score,
@@ -320,9 +370,11 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         }
 
         public Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataGameSessionDomain ClusterRankingData(
+            string scorerUserId
         ) {
             return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingDataGameSessionDomain(
                 _domain.ClusterRankingData(
+                    scorerUserId
                 ),
                 this._gameSession,
                 this._connection

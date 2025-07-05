@@ -58,6 +58,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         public string RankingName => _domain?.RankingName;
         public long? Season => _domain?.Season;
         public string UserId => _domain?.UserId;
+        public string ScorerUserId => _domain?.ScorerUserId;
 
         public EzGlobalRankingDataGameSessionDomain(
             Gs2.Gs2Ranking2.Domain.Model.GlobalRankingDataAccessTokenDomain domain,
@@ -68,56 +69,6 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             this._gameSession = gameSession;
             this._connection = connection;
         }
-
-        [Obsolete("The name has been changed to GetGlobalRankingRankFuture.")]
-        public IFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain> GetGlobalRankingRank(
-        )
-        {
-            return GetGlobalRankingRankFuture(
-            );
-        }
-
-        public IFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain> GetGlobalRankingRankFuture(
-        )
-        {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain> self)
-            {
-                var future = this._connection.RunFuture(
-                    this._gameSession,
-                    () => this._domain.GetGlobalRankingFuture(
-                        new GetGlobalRankingRequest()
-                    )
-                );
-                yield return future;
-                if (future.Error != null) {
-                    self.OnError(future.Error);
-                    yield break;
-                }
-                self.OnComplete(new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain(
-                    future.Result,
-                    this._gameSession,
-                    this._connection
-                ));
-            }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain>(Impl);
-        }
-
-        #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain> GetGlobalRankingRankAsync(
-        ) {
-            var result = await this._connection.RunAsync(
-                this._gameSession,
-                () => this._domain.GetGlobalRankingAsync(
-                    new GetGlobalRankingRequest()
-                )
-            );
-            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain(
-                result,
-                this._gameSession,
-                this._connection
-            );
-        }
-        #endif
 
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData> Model()

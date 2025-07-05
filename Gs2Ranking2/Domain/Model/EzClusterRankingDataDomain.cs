@@ -59,6 +59,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         public string ClusterName => _domain?.ClusterName;
         public long? Season => _domain?.Season;
         public string UserId => _domain?.UserId;
+        public string ScorerUserId => _domain?.ScorerUserId;
 
         public EzClusterRankingDataDomain(
             Gs2.Gs2Ranking2.Domain.Model.ClusterRankingDataDomain domain,
