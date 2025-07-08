@@ -32,6 +32,8 @@ namespace Gs2.Unity.Gs2Chat.Result
 	{
 		[SerializeField]
 		public List<Gs2.Unity.Gs2Chat.Model.EzMessage> Items;
+		[SerializeField]
+		public string NextPageToken;
 
         public static EzListLatestMessagesResult FromModel(Gs2.Gs2Chat.Result.DescribeLatestMessagesResult model)
         {
@@ -39,6 +41,7 @@ namespace Gs2.Unity.Gs2Chat.Result
                 Items = model.Items == null ? new List<Gs2.Unity.Gs2Chat.Model.EzMessage>() : model.Items.Select(v => {
                     return Gs2.Unity.Gs2Chat.Model.EzMessage.FromModel(v);
                 }).ToList(),
+                NextPageToken = model.NextPageToken == null ? null : model.NextPageToken,
             };
         }
     }

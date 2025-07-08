@@ -54,6 +54,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
     public partial class EzRoomDomain {
         private readonly Gs2.Gs2Chat.Domain.Model.RoomDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string RoomName => _domain?.RoomName;
