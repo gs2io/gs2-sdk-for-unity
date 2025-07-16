@@ -109,6 +109,15 @@ namespace Gs2.Editor.ResourceTree.Gs2Guild.Editor
                 ScriptSettingEditorExt.OnGUI(item.JoinGuildScript);
                 EditorGUI.indentLevel--;
             }
+            if (item.ReceiveJoinRequestScript == null) {
+                EditorGUILayout.TextField("ReceiveJoinRequestScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("ReceiveJoinRequestScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.ReceiveJoinRequestScript);
+                EditorGUI.indentLevel--;
+            }
             if (item.LeaveGuildScript == null) {
                 EditorGUILayout.TextField("LeaveGuildScript", "");
             }
