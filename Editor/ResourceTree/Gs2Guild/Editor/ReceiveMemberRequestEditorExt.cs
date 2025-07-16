@@ -28,6 +28,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Guild.Editor
             EditorGUILayout.TextField("UserId", item.UserId);
             EditorGUILayout.TextField("TargetGuildName", item.TargetGuildName);
             EditorGUILayout.TextField("Metadata", item.Metadata);
+            EditorGUILayout.TextField("CreatedAt", UnixTime.FromUnixTime(item.CreatedAt ?? 0).ToString(CultureInfo.CurrentUICulture));
             EditorGUI.EndDisabledGroup();
         }
     }
