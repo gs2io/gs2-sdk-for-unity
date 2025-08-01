@@ -58,6 +58,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         public string? Url => _domain.Url;
         public string? UploadToken => _domain.UploadToken;
         public string? UploadUrl => _domain.UploadUrl;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
 
         public EzNamespaceDomain(
@@ -66,6 +67,78 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         ) {
             this._domain = domain;
             this._connection = connection;
+        }
+
+        public Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzCategoryModel> CategoryModels(
+        )
+        {
+            return new Gs2.Unity.Gs2Chat.Domain.Iterator.EzListCategoryModelsIterator(
+                this._domain,
+                this._connection
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Chat.Model.EzCategoryModel> CategoryModelsAsync(
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Chat.Model.EzCategoryModel>(async (writer, token) =>
+            {
+                var it = _domain.CategoryModelsAsync(
+                ).GetAsyncEnumerator();
+                while(
+                    await this._connection.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.CategoryModelsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Chat.Model.EzCategoryModel.FromModel(it.Current));
+                }
+            });
+        }
+        #endif
+
+        public ulong SubscribeCategoryModels(
+            Action<Gs2.Unity.Gs2Chat.Model.EzCategoryModel[]> callback
+        ) {
+            return this._domain.SubscribeCategoryModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Chat.Model.EzCategoryModel.FromModel).ToArray());
+                }
+            );
+        }
+
+        public void UnsubscribeCategoryModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeCategoryModels(
+                callbackId
+            );
+        }
+
+        public void InvalidateCategoryModels(
+        ) {
+            this._domain.InvalidateCategoryModels(
+            );
+        }
+
+        public Gs2.Unity.Gs2Chat.Domain.Model.EzCategoryModelDomain CategoryModel(
+            int category
+        ) {
+            return new Gs2.Unity.Gs2Chat.Domain.Model.EzCategoryModelDomain(
+                _domain.CategoryModel(
+                    category
+                ),
+                this._connection
+            );
         }
 
         public Gs2.Unity.Gs2Chat.Domain.Model.EzUserDomain User(

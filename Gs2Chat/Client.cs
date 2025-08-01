@@ -364,5 +364,49 @@ namespace Gs2.Unity.Gs2Chat
                 )
             );
 		}
+
+        public IEnumerator GetCategoryModel(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzGetCategoryModelResult>> callback,
+                string namespaceName,
+                int category
+        )
+		{
+            yield return _connection.Run(
+                callback,
+                null,
+                cb => _client.GetCategoryModel(
+                    new Gs2.Gs2Chat.Request.GetCategoryModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithCategory(category),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Chat.Result.EzGetCategoryModelResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Chat.Result.EzGetCategoryModelResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListCategoryModels(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Chat.Result.EzListCategoryModelsResult>> callback,
+                string namespaceName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeCategoryModels(
+                    new Gs2.Gs2Chat.Request.DescribeCategoryModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Chat.Result.EzListCategoryModelsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Chat.Result.EzListCategoryModelsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
     }
 }

@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 
 using System.IO;
@@ -24,39 +26,59 @@ using UnityEngine;
 
 namespace Gs2.Editor.ResourceTree.Gs2Chat
 {
-    public sealed class Namespace : AbstractTreeViewItem
+    public sealed class CategoryModel : AbstractTreeViewItem
     {
-        private Gs2.Gs2Chat.Model.Namespace _item;
-        public string NamespaceName => _item.Name;
+        private Gs2.Gs2Chat.Model.CategoryModel _item;
+        private Namespace _parent;
+        public string NamespaceName => _parent.NamespaceName;
+        public int? Category => _item.Category;
 
-        public Namespace(
+        public CategoryModel(
                 int id,
-                Gs2.Gs2Chat.Model.Namespace item
+                Namespace parent,
+                Gs2.Gs2Chat.Model.CategoryModel item
         ) {
             this.id = id = id * 100;
-            this.depth = 2;
+            this.depth = 4;
             this.icon = EditorGUIUtility.ObjectContent(null, typeof(GameObject)).image.ToTexture2D();
-            this.displayName = item.Name;
+            this.displayName = item.Category.ToString();
             this.children = new TreeViewItem[] {
-                new CategoryModelHolder(++id, this)
             }.ToList();
+            this._parent = parent;
             this._item = item;
         }
 
         public override ScriptableObject ToScriptableObject() {
-            var instance = Gs2.Unity.Gs2Chat.ScriptableObject.Namespace.New(
-                this._item.Name
+            Gs2.Unity.Gs2Chat.ScriptableObject.Namespace parent = null;
+            var guids = AssetDatabase.FindAssets("t:Gs2.Unity.Gs2Chat.ScriptableObject.Namespace");
+            foreach (var guid in guids) {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var item = AssetDatabase.LoadAssetAtPath<Gs2.Unity.Gs2Chat.ScriptableObject.Namespace>(path);
+                if (
+                    item.NamespaceName == NamespaceName
+                ) {
+                    parent = item;
+                }
+            }
+            if (parent == null) {
+                Debug.LogError("Gs2.Unity.Gs2Chat.ScriptableObject.Namespace not found.");
+                return null;
+            }
+            var instance = Gs2.Unity.Gs2Chat.ScriptableObject.CategoryModel.New(
+                parent,
+                this._item.Category ?? 0
             );
-            instance.name = this._item.Name + "Namespace";
+            instance.name = this._item.Category + "CategoryModel";
             return instance;
         }
 
         public override void OnGUI() {
-            NamespaceEditorExt.OnGUI(this._item);
+            CategoryModelEditorExt.OnGUI(this._item);
             
             if (GUILayout.Button("Create Reference Object")) {
                 var directory = "Assets/Gs2/Resources/Chat";
                 directory += "/Namespace" + "/" + NamespaceName;
+                directory += "/CategoryModel" + "/" + Category;
 
                 CreateFolder(directory);
 
