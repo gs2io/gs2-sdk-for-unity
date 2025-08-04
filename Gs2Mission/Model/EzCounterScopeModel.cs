@@ -33,7 +33,11 @@ namespace Gs2.Unity.Gs2Mission.Model
 	public class EzCounterScopeModel
 	{
 		[SerializeField]
+		public string ScopeType;
+		[SerializeField]
 		public string ResetType;
+		[SerializeField]
+		public string ConditionName;
 		[SerializeField]
 		public int ResetDayOfMonth;
 		[SerializeField]
@@ -44,7 +48,9 @@ namespace Gs2.Unity.Gs2Mission.Model
         public Gs2.Gs2Mission.Model.CounterScopeModel ToModel()
         {
             return new Gs2.Gs2Mission.Model.CounterScopeModel {
+                ScopeType = ScopeType,
                 ResetType = ResetType,
+                ConditionName = ConditionName,
                 ResetDayOfMonth = ResetDayOfMonth,
                 ResetDayOfWeek = ResetDayOfWeek,
                 ResetHour = ResetHour,
@@ -54,7 +60,9 @@ namespace Gs2.Unity.Gs2Mission.Model
         public static EzCounterScopeModel FromModel(Gs2.Gs2Mission.Model.CounterScopeModel model)
         {
             return new EzCounterScopeModel {
+                ScopeType = model.ScopeType == null ? null : model.ScopeType,
                 ResetType = model.ResetType == null ? null : model.ResetType,
+                ConditionName = model.ConditionName == null ? null : model.ConditionName,
                 ResetDayOfMonth = model.ResetDayOfMonth ?? 0,
                 ResetDayOfWeek = model.ResetDayOfWeek == null ? null : model.ResetDayOfWeek,
                 ResetHour = model.ResetHour ?? 0,
