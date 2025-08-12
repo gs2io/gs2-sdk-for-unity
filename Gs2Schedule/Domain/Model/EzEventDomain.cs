@@ -57,6 +57,7 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
         public bool? InSchedule => _domain.InSchedule;
         public long? ScheduleStartAt => _domain.ScheduleStartAt;
         public long? ScheduleEndAt => _domain.ScheduleEndAt;
+        public bool? IsGlobalSchedule => _domain.IsGlobalSchedule;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public string EventName => _domain?.EventName;

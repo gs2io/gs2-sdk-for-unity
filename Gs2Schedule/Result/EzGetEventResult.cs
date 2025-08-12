@@ -40,6 +40,8 @@ namespace Gs2.Unity.Gs2Schedule.Result
 		public long ScheduleEndAt;
 		[SerializeField]
 		public Gs2.Unity.Gs2Schedule.Model.EzRepeatSchedule RepeatSchedule;
+		[SerializeField]
+		public bool IsGlobalSchedule;
 
         public static EzGetEventResult FromModel(Gs2.Gs2Schedule.Result.GetEventResult model)
         {
@@ -49,6 +51,7 @@ namespace Gs2.Unity.Gs2Schedule.Result
                 ScheduleStartAt = model.ScheduleStartAt ?? 0,
                 ScheduleEndAt = model.ScheduleEndAt ?? 0,
                 RepeatSchedule = model.RepeatSchedule == null ? null : Gs2.Unity.Gs2Schedule.Model.EzRepeatSchedule.FromModel(model.RepeatSchedule),
+                IsGlobalSchedule = model.IsGlobalSchedule ?? false,
             };
         }
     }
