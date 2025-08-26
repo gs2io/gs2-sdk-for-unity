@@ -38,7 +38,6 @@ namespace Gs2.Editor.ResourceTree.Gs2Lottery.Editor
                 EditorGUI.indentLevel--;
             }
             EditorGUILayout.TextField("LotteryTriggerScriptId", item.LotteryTriggerScriptId);
-            EditorGUILayout.TextField("ChoicePrizeTableScriptId", item.ChoicePrizeTableScriptId);
             if (item.LogSetting == null) {
                 EditorGUILayout.TextField("LogSetting", "");
             }

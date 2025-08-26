@@ -64,7 +64,7 @@ namespace Gs2.Unity.Gs2Datastore
             yield return _connection.Run(
                 callback,
 		        session,
-                cb => _restClient.DeleteDataObject(
+                cb => _client.DeleteDataObject(
                     new Gs2.Gs2Datastore.Request.DeleteDataObjectRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
@@ -89,7 +89,7 @@ namespace Gs2.Unity.Gs2Datastore
             yield return _connection.Run(
                 callback,
 		        session,
-                cb => _restClient.DoneUpload(
+                cb => _client.DoneUpload(
                     new Gs2.Gs2Datastore.Request.DoneUploadRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
@@ -249,7 +249,7 @@ namespace Gs2.Unity.Gs2Datastore
             yield return _connection.Run(
                 callback,
 		        session,
-                cb => _restClient.PrepareUpload(
+                cb => _client.PrepareUpload(
                     new Gs2.Gs2Datastore.Request.PrepareUploadRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
@@ -279,7 +279,7 @@ namespace Gs2.Unity.Gs2Datastore
             yield return _connection.Run(
                 callback,
                 null,
-                cb => _restClient.RestoreDataObject(
+                cb => _client.RestoreDataObject(
                     new Gs2.Gs2Datastore.Request.RestoreDataObjectRequest()
                         .WithNamespaceName(namespaceName)
                         .WithDataObjectId(dataObjectId),
@@ -304,7 +304,7 @@ namespace Gs2.Unity.Gs2Datastore
             yield return _connection.Run(
                 callback,
 		        session,
-                cb => _restClient.UpdateDataObject(
+                cb => _client.UpdateDataObject(
                     new Gs2.Gs2Datastore.Request.UpdateDataObjectRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)

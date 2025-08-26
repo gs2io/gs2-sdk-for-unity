@@ -57,6 +57,15 @@ namespace Gs2.Editor.ResourceTree.Gs2Money2.Editor
                 ScriptSettingEditorExt.OnGUI(item.WithdrawBalanceScript);
                 EditorGUI.indentLevel--;
             }
+            if (item.VerifyReceiptScript == null) {
+                EditorGUILayout.TextField("VerifyReceiptScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("VerifyReceiptScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.VerifyReceiptScript);
+                EditorGUI.indentLevel--;
+            }
             EditorGUILayout.TextField("SubscribeScript", item.SubscribeScript);
             EditorGUILayout.TextField("RenewScript", item.RenewScript);
             EditorGUILayout.TextField("UnsubscribeScript", item.UnsubscribeScript);

@@ -64,7 +64,7 @@ namespace Gs2.Unity.Gs2Auth
             yield return _connection.Run(
                 callback,
                 null,
-                cb => _restClient.LoginBySignature(
+                cb => _client.LoginBySignature(
                     new Gs2.Gs2Auth.Request.LoginBySignatureRequest()
                         .WithKeyId(keyId)
                         .WithBody(body)
