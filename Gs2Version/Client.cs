@@ -177,6 +177,33 @@ namespace Gs2.Unity.Gs2Version
             );
 		}
 
+        public IEnumerator Reject(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Version.Result.EzRejectResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string versionName,
+                Gs2.Unity.Gs2Version.Model.EzVersion version = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _client.Reject(
+                    new Gs2.Gs2Version.Request.RejectRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithVersionName(versionName)
+                        .WithVersion(version?.ToModel()),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Version.Result.EzRejectResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Version.Result.EzRejectResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator CheckVersion(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Version.Result.EzCheckVersionResult>> callback,
 		        IGameSession session,

@@ -124,6 +124,62 @@ namespace Gs2.Unity.Gs2Version.Domain.Model
         }
         #endif
 
+        [Obsolete("The name has been changed to RejectFuture.")]
+        public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> Reject(
+            Gs2.Unity.Gs2Version.Model.EzVersion version = null
+        )
+        {
+            return RejectFuture(
+                version
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> RejectFuture(
+            Gs2.Unity.Gs2Version.Model.EzVersion version = null
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.RejectFuture(
+                        new RejectRequest()
+                            .WithVersion(version?.ToModel())
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> RejectAsync(
+            Gs2.Unity.Gs2Version.Model.EzVersion version = null
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.RejectAsync(
+                    new RejectRequest()
+                        .WithVersion(version?.ToModel())
+                )
+            );
+            return new Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
         [Obsolete("The name has been changed to DeleteFuture.")]
         public IFuture<Gs2.Unity.Gs2Version.Domain.Model.EzAcceptVersionGameSessionDomain> Delete(
         )
