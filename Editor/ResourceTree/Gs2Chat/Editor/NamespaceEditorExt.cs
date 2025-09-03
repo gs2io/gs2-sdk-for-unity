@@ -28,6 +28,15 @@ namespace Gs2.Editor.ResourceTree.Gs2Chat.Editor
             EditorGUILayout.TextField("NamespaceId", item.NamespaceId);
             EditorGUILayout.TextField("Name", item.Name);
             EditorGUILayout.TextField("Description", item.Description);
+            if (item.TransactionSetting == null) {
+                EditorGUILayout.TextField("TransactionSetting", "");
+            }
+            else {
+                EditorGUILayout.LabelField("TransactionSetting");
+                EditorGUI.indentLevel++;
+                TransactionSettingEditorExt.OnGUI(item.TransactionSetting);
+                EditorGUI.indentLevel--;
+            }
             EditorGUILayout.TextField("AllowCreateRoom", item.AllowCreateRoom?.ToString());
             EditorGUILayout.TextField("MessageLifeTimeDays", item.MessageLifeTimeDays?.ToString());
             if (item.PostMessageScript == null) {

@@ -28,6 +28,15 @@ namespace Gs2.Editor.ResourceTree.Gs2Money2.Editor
             EditorGUILayout.TextField("NamespaceId", item.NamespaceId);
             EditorGUILayout.TextField("Name", item.Name);
             EditorGUILayout.TextField("Description", item.Description);
+            if (item.TransactionSetting == null) {
+                EditorGUILayout.TextField("TransactionSetting", "");
+            }
+            else {
+                EditorGUILayout.LabelField("TransactionSetting");
+                EditorGUI.indentLevel++;
+                TransactionSettingEditorExt.OnGUI(item.TransactionSetting);
+                EditorGUI.indentLevel--;
+            }
             EditorGUILayout.TextField("CurrencyUsagePriority", item.CurrencyUsagePriority);
             EditorGUILayout.TextField("SharedFreeCurrency", item.SharedFreeCurrency?.ToString());
             if (item.PlatformSetting == null) {

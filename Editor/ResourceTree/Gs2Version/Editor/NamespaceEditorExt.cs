@@ -28,6 +28,15 @@ namespace Gs2.Editor.ResourceTree.Gs2Version.Editor
             EditorGUILayout.TextField("NamespaceId", item.NamespaceId);
             EditorGUILayout.TextField("Name", item.Name);
             EditorGUILayout.TextField("Description", item.Description);
+            if (item.TransactionSetting == null) {
+                EditorGUILayout.TextField("TransactionSetting", "");
+            }
+            else {
+                EditorGUILayout.LabelField("TransactionSetting");
+                EditorGUI.indentLevel++;
+                TransactionSettingEditorExt.OnGUI(item.TransactionSetting);
+                EditorGUI.indentLevel--;
+            }
             EditorGUILayout.TextField("AssumeUserId", item.AssumeUserId);
             if (item.AcceptVersionScript == null) {
                 EditorGUILayout.TextField("AcceptVersionScript", "");

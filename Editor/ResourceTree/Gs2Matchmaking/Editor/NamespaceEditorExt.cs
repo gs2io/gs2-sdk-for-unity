@@ -28,6 +28,15 @@ namespace Gs2.Editor.ResourceTree.Gs2Matchmaking.Editor
             EditorGUILayout.TextField("NamespaceId", item.NamespaceId);
             EditorGUILayout.TextField("Name", item.Name);
             EditorGUILayout.TextField("Description", item.Description);
+            if (item.TransactionSetting == null) {
+                EditorGUILayout.TextField("TransactionSetting", "");
+            }
+            else {
+                EditorGUILayout.LabelField("TransactionSetting");
+                EditorGUI.indentLevel++;
+                TransactionSettingEditorExt.OnGUI(item.TransactionSetting);
+                EditorGUI.indentLevel--;
+            }
             EditorGUILayout.TextField("EnableRating", item.EnableRating?.ToString());
             EditorGUILayout.TextField("EnableDisconnectDetection", item.EnableDisconnectDetection);
             EditorGUILayout.TextField("DisconnectDetectionTimeoutSeconds", item.DisconnectDetectionTimeoutSeconds?.ToString());
