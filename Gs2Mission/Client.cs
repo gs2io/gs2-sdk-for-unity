@@ -272,6 +272,35 @@ namespace Gs2.Unity.Gs2Mission
             );
 		}
 
+        public IEnumerator ResetCounter(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Mission.Result.EzResetCounterResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string counterName,
+                List<Gs2.Unity.Gs2Mission.Model.EzScopedValue> scopes
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _client.ResetCounter(
+                    new Gs2.Gs2Mission.Request.ResetCounterRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithCounterName(counterName)
+                        .WithScopes(scopes?.Select(v => {
+                            return v?.ToModel();
+                        }).ToArray()),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Mission.Result.EzResetCounterResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Mission.Result.EzResetCounterResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator GetCounterModel(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Mission.Result.EzGetCounterModelResult>> callback,
                 string namespaceName,

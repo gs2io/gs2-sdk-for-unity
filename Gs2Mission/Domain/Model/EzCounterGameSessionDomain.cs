@@ -69,6 +69,62 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             this._connection = connection;
         }
 
+        [Obsolete("The name has been changed to ResetCounterFuture.")]
+        public IFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> ResetCounter(
+            Gs2.Unity.Gs2Mission.Model.EzScopedValue[] scopes
+        )
+        {
+            return ResetCounterFuture(
+                scopes
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> ResetCounterFuture(
+            Gs2.Unity.Gs2Mission.Model.EzScopedValue[] scopes
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.ResetFuture(
+                        new ResetCounterRequest()
+                            .WithScopes(scopes?.Select(v => v.ToModel()).ToArray())
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain>(Impl);
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> ResetCounterAsync(
+            Gs2.Unity.Gs2Mission.Model.EzScopedValue[] scopes
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.ResetAsync(
+                    new ResetCounterRequest()
+                        .WithScopes(scopes?.Select(v => v.ToModel()).ToArray())
+                )
+            );
+            return new Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
         [Obsolete("The name has been changed to DeleteCounterFuture.")]
         public IFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> DeleteCounter(
         )
