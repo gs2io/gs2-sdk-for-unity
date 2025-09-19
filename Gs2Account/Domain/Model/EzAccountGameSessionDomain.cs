@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -74,26 +72,26 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             this._connection = connection;
         }
 
-        [Obsolete("The name has been changed to GetAuthorizationUrlFuture.")]
-        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountGameSessionDomain> GetAuthorizationUrl(
+        [Obsolete("The name has been changed to DeleteTakeOverSettingFuture.")]
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> DeleteTakeOverSetting(
             int type
         )
         {
-            return GetAuthorizationUrlFuture(
+            return DeleteTakeOverSettingFuture(
                 type
             );
         }
 
-        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountGameSessionDomain> GetAuthorizationUrlFuture(
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> DeleteTakeOverSettingFuture(
             int type
         )
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountGameSessionDomain> self)
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> self)
             {
                 var future = this._connection.RunFuture(
                     this._gameSession,
-                    () => this._domain.GetAuthorizationUrlFuture(
-                        new GetAuthorizationUrlRequest()
+                    () => this._domain.DeleteTakeOverFuture(
+                        new DeleteTakeOverRequest()
                             .WithType(type)
                     )
                 );
@@ -102,27 +100,27 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzAccountGameSessionDomain(
+                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain(
                     future.Result,
                     this._gameSession,
                     this._connection
                 ));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountGameSessionDomain>(Impl);
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain>(Impl);
         }
 
         #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzAccountGameSessionDomain> GetAuthorizationUrlAsync(
+        public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> DeleteTakeOverSettingAsync(
             int type
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
-                () => this._domain.GetAuthorizationUrlAsync(
-                    new GetAuthorizationUrlRequest()
+                () => this._domain.DeleteTakeOverAsync(
+                    new DeleteTakeOverRequest()
                         .WithType(type)
                 )
             );
-            return new Gs2.Unity.Gs2Account.Domain.Model.EzAccountGameSessionDomain(
+            return new Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain(
                 result,
                 this._gameSession,
                 this._connection
@@ -186,6 +184,12 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             );
         }
 
+        public void InvalidateTakeOvers(
+        ) {
+            this._domain.InvalidateTakeOvers(
+            );
+        }
+
         public Gs2Iterator<Gs2.Unity.Gs2Account.Model.EzPlatformId> PlatformIds(
         )
         {
@@ -239,6 +243,12 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         ) {
             this._domain.UnsubscribePlatformIds(
                 callbackId
+            );
+        }
+
+        public void InvalidatePlatformIds(
+        ) {
+            this._domain.InvalidatePlatformIds(
             );
         }
 

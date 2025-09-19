@@ -143,22 +143,26 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #endif
 
         public Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzSubscribe> Subscribes(
+            string? namePrefix = null
         )
         {
             return new Gs2.Unity.Gs2Chat.Domain.Iterator.EzListSubscribeRoomsIterator(
                 this._domain,
                 this._gameSession,
-                this._connection
+                this._connection,
+                namePrefix
             );
         }
 
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Chat.Model.EzSubscribe> SubscribesAsync(
+              string? namePrefix = null
         )
         {
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Chat.Model.EzSubscribe>(async (writer, token) =>
             {
                 var it = _domain.SubscribesAsync(
+                    namePrefix
                 ).GetAsyncEnumerator();
                 while(
                     await this._connection.RunIteratorAsync(
@@ -169,6 +173,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                         },
                         () => {
                             it = _domain.SubscribesAsync(
+                                namePrefix
                             ).GetAsyncEnumerator();
                         }
                     )
@@ -181,26 +186,32 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #endif
 
         public ulong SubscribeSubscribes(
-            Action<Gs2.Unity.Gs2Chat.Model.EzSubscribe[]> callback
+            Action<Gs2.Unity.Gs2Chat.Model.EzSubscribe[]> callback,
+            string? namePrefix = null
         ) {
             return this._domain.SubscribeSubscribes(
                 items => {
                     callback.Invoke(items.Select(Gs2.Unity.Gs2Chat.Model.EzSubscribe.FromModel).ToArray());
-                }
+                },
+                namePrefix
             );
         }
 
         public void UnsubscribeSubscribes(
-            ulong callbackId
+            ulong callbackId,
+            string? namePrefix = null
         ) {
             this._domain.UnsubscribeSubscribes(
-                callbackId
+                callbackId,
+                namePrefix
             );
         }
 
         public void InvalidateSubscribes(
+            string? namePrefix = null
         ) {
             this._domain.InvalidateSubscribes(
+                namePrefix
             );
         }
 

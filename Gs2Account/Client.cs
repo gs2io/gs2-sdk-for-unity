@@ -262,18 +262,16 @@ namespace Gs2.Unity.Gs2Account
 
         public IEnumerator GetAuthorizationUrl(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzGetAuthorizationUrlResult>> callback,
-		        IGameSession session,
                 string namespaceName,
                 int type
         )
 		{
             yield return _connection.Run(
                 callback,
-		        session,
+                null,
                 cb => _client.GetAuthorizationUrl(
                     new Gs2.Gs2Account.Request.GetAuthorizationUrlRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithAccessToken(session.AccessToken.Token)
                         .WithType(type),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Account.Result.EzGetAuthorizationUrlResult>(
