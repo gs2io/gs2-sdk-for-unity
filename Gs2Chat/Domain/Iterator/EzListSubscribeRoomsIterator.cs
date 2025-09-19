@@ -47,21 +47,21 @@ namespace Gs2.Unity.Gs2Chat.Domain.Iterator
         private readonly Gs2.Gs2Chat.Domain.Model.UserAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        private readonly string? _namePrefix;
+        private readonly string? _roomNamePrefix;
 
         public EzListSubscribeRoomsIterator(
             Gs2.Gs2Chat.Domain.Model.UserAccessTokenDomain domain,
             Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection,
-            string? namePrefix = null
+            string? roomNamePrefix = null
         )
         {
             _domain = domain;
             _gameSession = gameSession;
             _connection = connection;
-            _namePrefix = namePrefix;
+            _roomNamePrefix = roomNamePrefix;
             _it = _domain.Subscribes(
-                namePrefix
+                roomNamePrefix
             );
         }
 
@@ -78,7 +78,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Iterator
                 () =>
                 {
                     return _it = _domain.Subscribes(
-                        this._namePrefix
+                        this._roomNamePrefix
                     );
                 }
             );

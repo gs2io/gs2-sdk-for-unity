@@ -143,26 +143,26 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
         #endif
 
         public Gs2Iterator<Gs2.Unity.Gs2Chat.Model.EzSubscribe> Subscribes(
-            string? namePrefix = null
+            string? roomNamePrefix = null
         )
         {
             return new Gs2.Unity.Gs2Chat.Domain.Iterator.EzListSubscribeRoomsIterator(
                 this._domain,
                 this._gameSession,
                 this._connection,
-                namePrefix
+                roomNamePrefix
             );
         }
 
         #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Chat.Model.EzSubscribe> SubscribesAsync(
-              string? namePrefix = null
+              string? roomNamePrefix = null
         )
         {
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Chat.Model.EzSubscribe>(async (writer, token) =>
             {
                 var it = _domain.SubscribesAsync(
-                    namePrefix
+                    roomNamePrefix
                 ).GetAsyncEnumerator();
                 while(
                     await this._connection.RunIteratorAsync(
@@ -173,7 +173,7 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
                         },
                         () => {
                             it = _domain.SubscribesAsync(
-                                namePrefix
+                                roomNamePrefix
                             ).GetAsyncEnumerator();
                         }
                     )
@@ -187,31 +187,31 @@ namespace Gs2.Unity.Gs2Chat.Domain.Model
 
         public ulong SubscribeSubscribes(
             Action<Gs2.Unity.Gs2Chat.Model.EzSubscribe[]> callback,
-            string? namePrefix = null
+            string? roomNamePrefix = null
         ) {
             return this._domain.SubscribeSubscribes(
                 items => {
                     callback.Invoke(items.Select(Gs2.Unity.Gs2Chat.Model.EzSubscribe.FromModel).ToArray());
                 },
-                namePrefix
+                roomNamePrefix
             );
         }
 
         public void UnsubscribeSubscribes(
             ulong callbackId,
-            string? namePrefix = null
+            string? roomNamePrefix = null
         ) {
             this._domain.UnsubscribeSubscribes(
                 callbackId,
-                namePrefix
+                roomNamePrefix
             );
         }
 
         public void InvalidateSubscribes(
-            string? namePrefix = null
+            string? roomNamePrefix = null
         ) {
             this._domain.InvalidateSubscribes(
-                namePrefix
+                roomNamePrefix
             );
         }
 
