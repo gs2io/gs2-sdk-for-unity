@@ -73,6 +73,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Guild.Editor
                 NotificationSettingEditorExt.OnGUI(item.ChangeMemberNotification);
                 EditorGUI.indentLevel--;
             }
+            EditorGUILayout.TextField("ChangeMemberNotificationIgnoreChangeMetadata", item.ChangeMemberNotificationIgnoreChangeMetadata?.ToString());
             if (item.ReceiveRequestNotification == null) {
                 EditorGUILayout.TextField("ReceiveRequestNotification", "");
             }
