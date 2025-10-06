@@ -72,16 +72,19 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
 
         [Obsolete("The name has been changed to SetUserIdFuture.")]
         public IFuture<Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain> SetUserId(
-            bool? allowConcurrentAccess = null
+            bool? allowConcurrentAccess = null,
+            string? sessionId = null
         )
         {
             return SetUserIdFuture(
-                allowConcurrentAccess
+                allowConcurrentAccess,
+                sessionId
             );
         }
 
         public IFuture<Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain> SetUserIdFuture(
-            bool? allowConcurrentAccess = null
+            bool? allowConcurrentAccess = null,
+            string? sessionId = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain> self)
@@ -91,6 +94,7 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
                     () => this._domain.SetUserIdFuture(
                         new SetUserIdRequest()
                             .WithAllowConcurrentAccess(allowConcurrentAccess)
+                            .WithSessionId(sessionId)
                     )
                 );
                 yield return future;
@@ -109,13 +113,15 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain> SetUserIdAsync(
-            bool? allowConcurrentAccess = null
+            bool? allowConcurrentAccess = null,
+            string? sessionId = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.SetUserIdAsync(
                     new SetUserIdRequest()
                         .WithAllowConcurrentAccess(allowConcurrentAccess)
+                        .WithSessionId(sessionId)
                 )
             );
             return new Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain(

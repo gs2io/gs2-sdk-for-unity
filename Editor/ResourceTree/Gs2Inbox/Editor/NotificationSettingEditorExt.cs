@@ -28,6 +28,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Inbox.Editor
             EditorGUILayout.TextField("GatewayNamespaceId", item.GatewayNamespaceId);
             EditorGUILayout.TextField("EnableTransferMobileNotification", item.EnableTransferMobileNotification?.ToString());
             EditorGUILayout.TextField("Sound", item.Sound);
+            EditorGUILayout.TextField("Enable", item.Enable);
             EditorGUI.EndDisabledGroup();
         }
     }

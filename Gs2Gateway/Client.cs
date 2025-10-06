@@ -58,7 +58,8 @@ namespace Gs2.Unity.Gs2Gateway
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Gateway.Result.EzSetUserIdResult>> callback,
 		        IGameSession session,
                 string namespaceName,
-                bool? allowConcurrentAccess = null
+                bool? allowConcurrentAccess = null,
+                string sessionId = null
         )
 		{
             yield return _connection.Run(
@@ -68,7 +69,8 @@ namespace Gs2.Unity.Gs2Gateway
                     new Gs2.Gs2Gateway.Request.SetUserIdRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
-                        .WithAllowConcurrentAccess(allowConcurrentAccess),
+                        .WithAllowConcurrentAccess(allowConcurrentAccess)
+                        .WithSessionId(sessionId),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Gateway.Result.EzSetUserIdResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Gateway.Result.EzSetUserIdResult.FromModel(r.Result),
