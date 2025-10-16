@@ -137,21 +137,28 @@ namespace Gs2.Unity.Util
                 {
                     new(contentsId, productType),
                 });
-                controller.OnPurchasePending += pending =>
-                {
+                
+                void OnPurchasePending(PendingOrder pending) {
                     _receipt = pending.Info.Receipt;
                     order = pending;
                     _status = Status.Purchased;
-                };
-                controller.OnPurchaseFailed += failed =>
-                {
+                }
+                
+                void OnPurchaseFailed(FailedOrder failed) {
                     _exception = new BadGatewayException(failed.ToString());
                     _status = Status.PurchaseFailed;
-                };
-            
-                while (_status == Status.Purchasing)
-                {
-                    yield return new WaitForSeconds(0.1f);
+                }
+
+                try {
+                    controller.OnPurchasePending += OnPurchasePending;
+                    controller.OnPurchaseFailed += OnPurchaseFailed;
+
+                    while (_status == Status.Purchasing) {
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                } finally {
+                    controller.OnPurchasePending -= OnPurchasePending;
+                    controller.OnPurchaseFailed -= OnPurchaseFailed;
                 }
 
                 result.OnComplete(
@@ -234,23 +241,30 @@ namespace Gs2.Unity.Util
             {
                 new(contentsId, productType),
             });
-            controller.OnPurchasePending += pending =>
-            {
+            
+            void OnPurchasePending(PendingOrder pending) {
                 _receipt = pending.Info.Receipt;
                 order = pending;
                 _status = Status.Purchased;
-            };
-            controller.OnPurchaseFailed += failed =>
-            {
+            }
+                
+            void OnPurchaseFailed(FailedOrder failed) {
                 _exception = new BadGatewayException(failed.ToString());
                 _status = Status.PurchaseFailed;
-            };
-            
-            while (_status == Status.Purchasing)
-            {
-                await UniTask.Delay(TimeSpan.FromMilliseconds(100));
             }
-            
+
+            controller.OnPurchasePending += OnPurchasePending;
+            controller.OnPurchaseFailed += OnPurchaseFailed;
+
+            try {
+                while (_status == Status.Purchasing) {
+                    await UniTask.Delay(TimeSpan.FromMilliseconds(100));
+                }
+            } finally {
+                controller.OnPurchasePending -= OnPurchasePending;
+                controller.OnPurchaseFailed -= OnPurchaseFailed;
+            }
+
             return new PurchaseParameters
             {
                 receipt = _receipt,
