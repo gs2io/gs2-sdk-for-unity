@@ -3,6 +3,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Gs2.Core;
 using Gs2.Core.Exception;
@@ -32,13 +33,27 @@ namespace Gs2.Unity.Util
     public class PurchaseParameters
     {
         public string receipt;
+#if !GS2_IAP_5_0_0_OR_NEWER
         public IStoreController controller;
         public Product product;
+#else
+        public StoreController controller;
+        public PendingOrder order;
+        public PendingOrder product => order;
+#endif
     }
-
+    
+    public static class StoreControllerExt {
+        public static void ConfirmPendingPurchase(this StoreController self, PendingOrder order) {
+            self.ConfirmPurchase(order);
+        }
+    }
+    
     public class IAPUtil
     {
+#if !GS2_IAP_5_0_0_OR_NEWER
         private IStoreController _controller;
+#endif
 
         private Status _status = Status.None;
         private Gs2Exception _exception;
@@ -80,6 +95,7 @@ namespace Gs2.Unity.Util
                 _receipt = null;
                 _status = Status.Initializing;
             
+#if !GS2_IAP_5_0_0_OR_NEWER
                 var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
                 builder.AddProduct(contentsId, productType);
                 UnityPurchasing.Initialize(new Gs2StoreListener(this), builder);
@@ -97,7 +113,7 @@ namespace Gs2.Unity.Util
                 _controller.InitiatePurchase(_controller.products.WithID(contentsId));
                 while (_status == Status.Purchasing)
                 {
-                    yield return new WaitForSeconds(1);
+                    yield return new WaitForSeconds(0.1f);
                 }
             
                 result.OnComplete(
@@ -107,6 +123,45 @@ namespace Gs2.Unity.Util
                         product = _controller.products.WithID(contentsId),
                     }
                 );
+#else
+                _receipt = null;
+                _exception = null;
+            
+                var controller = UnityIAPServices.StoreController();
+                controller.Connect().Start();
+            
+                _status = Status.Purchasing;
+
+                PendingOrder order = null;
+                controller.FetchProducts(new List<ProductDefinition>
+                {
+                    new(contentsId, productType),
+                });
+                controller.OnPurchasePending += pending =>
+                {
+                    _receipt = pending.Info.Receipt;
+                    order = pending;
+                    _status = Status.Purchased;
+                };
+                controller.OnPurchaseFailed += failed =>
+                {
+                    _exception = new BadGatewayException(failed.ToString());
+                    _status = Status.PurchaseFailed;
+                };
+            
+                while (_status == Status.Purchasing)
+                {
+                    yield return new WaitForSeconds(0.1f);
+                }
+
+                result.OnComplete(
+                    new PurchaseParameters {
+                        receipt = _receipt,
+                        controller = controller,
+                        order = order,
+                    }
+                );
+#endif
             }
 
             return new Gs2InlineFuture<PurchaseParameters>(Impl);
@@ -127,6 +182,7 @@ namespace Gs2.Unity.Util
             _receipt = null;
             _status = Status.Initializing;
             
+#if !GS2_IAP_5_0_0_OR_NEWER
             var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
             builder.AddProduct(contentsId, productType);
             UnityPurchasing.Initialize(new Gs2StoreListener(this), builder);
@@ -164,9 +220,48 @@ namespace Gs2.Unity.Util
                 controller = _controller,
                 product = _controller.products.WithID(contentsId),
             };
+#else
+            _receipt = null;
+            _exception = null;
+            
+            var controller = UnityIAPServices.StoreController();
+            await controller.Connect();
+            
+            _status = Status.Purchasing;
+
+            PendingOrder order = null;
+            controller.FetchProducts(new List<ProductDefinition>
+            {
+                new(contentsId, productType),
+            });
+            controller.OnPurchasePending += pending =>
+            {
+                _receipt = pending.Info.Receipt;
+                order = pending;
+                _status = Status.Purchased;
+            };
+            controller.OnPurchaseFailed += failed =>
+            {
+                _exception = new BadGatewayException(failed.ToString());
+                _status = Status.PurchaseFailed;
+            };
+            
+            while (_status == Status.Purchasing)
+            {
+                await UniTask.Delay(TimeSpan.FromMilliseconds(100));
+            }
+            
+            return new PurchaseParameters
+            {
+                receipt = _receipt,
+                controller = controller,
+                order = order,
+            };
+#endif
         }
 #endif
 
+#if !GS2_IAP_5_0_0_OR_NEWER
         private class Gs2StoreListener : IStoreListener
         {
             private readonly IAPUtil _client;
@@ -210,6 +305,7 @@ namespace Gs2.Unity.Util
                 _client._status = Status.PurchaseFailed;
             }
         }
+#endif
     }
 }
 

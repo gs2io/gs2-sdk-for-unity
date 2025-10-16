@@ -9,7 +9,8 @@
         "UnityEngine.Purchasing.Stores",
         "UnityEngine.Advertisements",
         "MaxSdk.Scripts",
-        "unity-webview"
+        "unity-webview",
+        "Unity.Purchasing"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -28,6 +29,11 @@
             "name": "com.unity.purchasing",
             "expression": "4.6.0",
             "define": "GS2_IAP_4_6_0_OR_NEWER"
+        },
+        {
+            "name": "com.unity.purchasing",
+            "expression": "5.0.0",
+            "define": "GS2_IAP_5_0_0_OR_NEWER"
         },
         {
             "name": "com.unity.ads",
