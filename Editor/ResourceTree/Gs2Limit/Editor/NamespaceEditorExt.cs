@@ -37,6 +37,15 @@ namespace Gs2.Editor.ResourceTree.Gs2Limit.Editor
                 TransactionSettingEditorExt.OnGUI(item.TransactionSetting);
                 EditorGUI.indentLevel--;
             }
+            if (item.CountUpScript == null) {
+                EditorGUILayout.TextField("CountUpScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("CountUpScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.CountUpScript);
+                EditorGUI.indentLevel--;
+            }
             if (item.LogSetting == null) {
                 EditorGUILayout.TextField("LogSetting", "");
             }
