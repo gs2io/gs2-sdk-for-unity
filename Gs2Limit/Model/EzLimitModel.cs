@@ -46,6 +46,10 @@ namespace Gs2.Unity.Gs2Limit.Model
 		public string ResetDayOfWeek;
 		[SerializeField]
 		public int ResetHour;
+		[SerializeField]
+		public long AnchorTimestamp;
+		[SerializeField]
+		public int Days;
 
         public Gs2.Gs2Limit.Model.LimitModel ToModel()
         {
@@ -57,6 +61,8 @@ namespace Gs2.Unity.Gs2Limit.Model
                 ResetDayOfMonth = ResetDayOfMonth,
                 ResetDayOfWeek = ResetDayOfWeek,
                 ResetHour = ResetHour,
+                AnchorTimestamp = AnchorTimestamp,
+                Days = Days,
             };
         }
 
@@ -70,6 +76,8 @@ namespace Gs2.Unity.Gs2Limit.Model
                 ResetDayOfMonth = model.ResetDayOfMonth ?? 0,
                 ResetDayOfWeek = model.ResetDayOfWeek == null ? null : model.ResetDayOfWeek,
                 ResetHour = model.ResetHour ?? 0,
+                AnchorTimestamp = model.AnchorTimestamp ?? 0,
+                Days = model.Days ?? 0,
             };
         }
     }
