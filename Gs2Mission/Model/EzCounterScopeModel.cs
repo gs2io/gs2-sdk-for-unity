@@ -37,23 +37,32 @@ namespace Gs2.Unity.Gs2Mission.Model
 		[SerializeField]
 		public string ResetType;
 		[SerializeField]
-		public string ConditionName;
-		[SerializeField]
 		public int ResetDayOfMonth;
 		[SerializeField]
 		public string ResetDayOfWeek;
 		[SerializeField]
 		public int ResetHour;
+		[SerializeField]
+		public string ConditionName;
+		[SerializeField]
+		public Gs2.Unity.Core.Model.EzVerifyAction Condition;
+		[SerializeField]
+		public long AnchorTimestamp;
+		[SerializeField]
+		public int Days;
 
         public Gs2.Gs2Mission.Model.CounterScopeModel ToModel()
         {
             return new Gs2.Gs2Mission.Model.CounterScopeModel {
                 ScopeType = ScopeType,
                 ResetType = ResetType,
-                ConditionName = ConditionName,
                 ResetDayOfMonth = ResetDayOfMonth,
                 ResetDayOfWeek = ResetDayOfWeek,
                 ResetHour = ResetHour,
+                ConditionName = ConditionName,
+                Condition = Condition?.ToModel(),
+                AnchorTimestamp = AnchorTimestamp,
+                Days = Days,
             };
         }
 
@@ -62,10 +71,13 @@ namespace Gs2.Unity.Gs2Mission.Model
             return new EzCounterScopeModel {
                 ScopeType = model.ScopeType == null ? null : model.ScopeType,
                 ResetType = model.ResetType == null ? null : model.ResetType,
-                ConditionName = model.ConditionName == null ? null : model.ConditionName,
                 ResetDayOfMonth = model.ResetDayOfMonth ?? 0,
                 ResetDayOfWeek = model.ResetDayOfWeek == null ? null : model.ResetDayOfWeek,
                 ResetHour = model.ResetHour ?? 0,
+                ConditionName = model.ConditionName == null ? null : model.ConditionName,
+                Condition = model.Condition == null ? null : Gs2.Unity.Core.Model.EzVerifyAction.FromModel(model.Condition),
+                AnchorTimestamp = model.AnchorTimestamp ?? 0,
+                Days = model.Days ?? 0,
             };
         }
     }

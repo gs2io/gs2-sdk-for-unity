@@ -35,7 +35,11 @@ namespace Gs2.Unity.Gs2Mission.Model
 		[SerializeField]
 		public string CounterName;
 		[SerializeField]
+		public string ScopeType;
+		[SerializeField]
 		public string ResetType;
+		[SerializeField]
+		public string ConditionName;
 		[SerializeField]
 		public long Value;
 
@@ -43,7 +47,9 @@ namespace Gs2.Unity.Gs2Mission.Model
         {
             return new Gs2.Gs2Mission.Model.TargetCounterModel {
                 CounterName = CounterName,
+                ScopeType = ScopeType,
                 ResetType = ResetType,
+                ConditionName = ConditionName,
                 Value = Value,
             };
         }
@@ -52,7 +58,9 @@ namespace Gs2.Unity.Gs2Mission.Model
         {
             return new EzTargetCounterModel {
                 CounterName = model.CounterName == null ? null : model.CounterName,
+                ScopeType = model.ScopeType == null ? null : model.ScopeType,
                 ResetType = model.ResetType == null ? null : model.ResetType,
+                ConditionName = model.ConditionName == null ? null : model.ConditionName,
                 Value = model.Value ?? 0,
             };
         }

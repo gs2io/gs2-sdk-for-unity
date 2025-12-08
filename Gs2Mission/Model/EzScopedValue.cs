@@ -33,6 +33,8 @@ namespace Gs2.Unity.Gs2Mission.Model
 	public class EzScopedValue
 	{
 		[SerializeField]
+		public string ScopeType;
+		[SerializeField]
 		public string ResetType;
 		[SerializeField]
 		public string ConditionName;
@@ -42,6 +44,7 @@ namespace Gs2.Unity.Gs2Mission.Model
         public Gs2.Gs2Mission.Model.ScopedValue ToModel()
         {
             return new Gs2.Gs2Mission.Model.ScopedValue {
+                ScopeType = ScopeType,
                 ResetType = ResetType,
                 ConditionName = ConditionName,
                 Value = Value,
@@ -51,6 +54,7 @@ namespace Gs2.Unity.Gs2Mission.Model
         public static EzScopedValue FromModel(Gs2.Gs2Mission.Model.ScopedValue model)
         {
             return new EzScopedValue {
+                ScopeType = model.ScopeType == null ? null : model.ScopeType,
                 ResetType = model.ResetType == null ? null : model.ResetType,
                 ConditionName = model.ConditionName == null ? null : model.ConditionName,
                 Value = model.Value ?? 0,
