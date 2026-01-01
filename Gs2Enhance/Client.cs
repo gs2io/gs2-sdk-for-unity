@@ -98,6 +98,50 @@ namespace Gs2.Unity.Gs2Enhance
             );
 		}
 
+        public IEnumerator GetUnleashRateModel(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Enhance.Result.EzGetUnleashRateModelResult>> callback,
+                string namespaceName,
+                string rateName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+                null,
+                cb => _client.GetUnleashRateModel(
+                    new Gs2.Gs2Enhance.Request.GetUnleashRateModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRateName(rateName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Enhance.Result.EzGetUnleashRateModelResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Enhance.Result.EzGetUnleashRateModelResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListUnleashRateModels(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Enhance.Result.EzListUnleashRateModelsResult>> callback,
+                string namespaceName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeUnleashRateModels(
+                    new Gs2.Gs2Enhance.Request.DescribeUnleashRateModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Enhance.Result.EzListUnleashRateModelsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Enhance.Result.EzListUnleashRateModelsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator DeleteProgress(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Enhance.Result.EzDeleteProgressResult>> callback,
 		        IGameSession session,

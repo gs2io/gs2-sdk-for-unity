@@ -130,6 +130,78 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
             );
         }
 
+        public Gs2Iterator<Gs2.Unity.Gs2Enhance.Model.EzUnleashRateModel> UnleashRateModels(
+        )
+        {
+            return new Gs2.Unity.Gs2Enhance.Domain.Iterator.EzListUnleashRateModelsIterator(
+                this._domain,
+                this._connection
+            );
+        }
+
+        #if GS2_ENABLE_UNITASK
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Enhance.Model.EzUnleashRateModel> UnleashRateModelsAsync(
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Enhance.Model.EzUnleashRateModel>(async (writer, token) =>
+            {
+                var it = _domain.UnleashRateModelsAsync(
+                ).GetAsyncEnumerator();
+                while(
+                    await this._connection.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.UnleashRateModelsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Enhance.Model.EzUnleashRateModel.FromModel(it.Current));
+                }
+            });
+        }
+        #endif
+
+        public ulong SubscribeUnleashRateModels(
+            Action<Gs2.Unity.Gs2Enhance.Model.EzUnleashRateModel[]> callback
+        ) {
+            return this._domain.SubscribeUnleashRateModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Enhance.Model.EzUnleashRateModel.FromModel).ToArray());
+                }
+            );
+        }
+
+        public void UnsubscribeUnleashRateModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeUnleashRateModels(
+                callbackId
+            );
+        }
+
+        public void InvalidateUnleashRateModels(
+        ) {
+            this._domain.InvalidateUnleashRateModels(
+            );
+        }
+
+        public Gs2.Unity.Gs2Enhance.Domain.Model.EzUnleashRateModelDomain UnleashRateModel(
+            string rateName
+        ) {
+            return new Gs2.Unity.Gs2Enhance.Domain.Model.EzUnleashRateModelDomain(
+                _domain.UnleashRateModel(
+                    rateName
+                ),
+                this._connection
+            );
+        }
+
         public Gs2.Unity.Gs2Enhance.Domain.Model.EzRateModelDomain RateModel(
             string rateName
         ) {
