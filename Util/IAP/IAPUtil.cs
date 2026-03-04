@@ -43,11 +43,13 @@ namespace Gs2.Unity.Util
 #endif
     }
     
+#if GS2_IAP_5_0_0_OR_NEWER
     public static class StoreControllerExt {
         public static void ConfirmPendingPurchase(this StoreController self, PendingOrder order) {
             self.ConfirmPurchase(order);
         }
     }
+#endif
     
     public class IAPUtil
     {
