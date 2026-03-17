@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design.Serialization;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 #if GS2_ENABLE_UNITASK
@@ -24,6 +25,7 @@ using Gs2.HybridWebSocket;
 using Gs2.Util.WebSocketSharp;
 #endif
 using UnityEngine.Scripting;
+using Debug = UnityEngine.Debug;
 
 namespace Gs2.Unity.Gs2Realtime
 {
@@ -39,11 +41,14 @@ namespace Gs2.Unity.Gs2Realtime
     public delegate void OnErrorWithMetadataHandler(Error e, MessageMetadata metadata);
     public delegate void OnGeneralErrorHandler(ErrorEventArgs e);
     public delegate void OnCloseHandler(CloseEventArgs e);
-    
+
     [Preserve]
     public class RealtimeSession : IDisposable
     {
         public static bool NotUseWaitForSeconds = false;
+
+        [Conditional("ENABLE_DEBUGLOG")]
+        private static void DebugLog(string msg) => Debug.Log(msg);
 
 #if UNITY_WEBGL && !UNITY_EDITOR
         protected readonly HybridWebSocket.WebSocket _webSocket;
@@ -55,7 +60,7 @@ namespace Gs2.Unity.Gs2Realtime
         private Coroutine _dispatchCoroutine;
 
         protected readonly string _accessToken;
-        
+
         protected readonly Queue<RealtimeEvent> _eventQueue = new Queue<RealtimeEvent>();
 
         public bool Connected { get; private set; } = false;
@@ -78,7 +83,7 @@ namespace Gs2.Unity.Gs2Realtime
         protected virtual void EventHandler(RealtimeEvent @event)
         {
             if (@event == null) return;
-            
+
             switch (@event.EventType)
             {
                 case RealtimeEventType.OnMessage:
@@ -140,7 +145,7 @@ namespace Gs2.Unity.Gs2Realtime
                     break;
             }
         }
-         
+
         public IEnumerator Dispatch()
         {
             while (true)
@@ -165,9 +170,8 @@ namespace Gs2.Unity.Gs2Realtime
             ByteString profile = null
         )
         {
-#if ENABLE_DEBUGLOG
-            Debug.Log(string.Format("ws://{0}:{1}/", ipAddress, port));
-#endif
+            DebugLog(string.Format("ws://{0}:{1}/", ipAddress, port));
+
 #if UNITY_WEBGL && !UNITY_EDITOR
             _webSocket = WebSocketFactory.CreateInstance(string.Format("ws://{0}:{1}/", ipAddress, port));
 #else
@@ -176,7 +180,7 @@ namespace Gs2.Unity.Gs2Realtime
             _messenger = new Messenger(encryptionKey);
             _accessToken = accessToken;
             Profile = profile;
-            
+
 #if UNITY_WEBGL && !UNITY_EDITOR
             _webSocket.OnClose += (args) =>
             {
@@ -224,7 +228,7 @@ namespace Gs2.Unity.Gs2Realtime
         protected virtual void OnMessageHandler(byte[] data)
         {
             Debug.Log("OnMessageHandler ");
-            
+
             var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data);
             var message = _messenger.Parse(messageType, payload);
             if (message is JoinNotification joinNotification)
@@ -282,7 +286,7 @@ namespace Gs2.Unity.Gs2Realtime
         protected virtual void OnMessageHandler(object sender, EventArgs e)
         {
             if (!(e is MessageEventArgs data)) return;
-            
+
             var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data.RawData);
             var message = _messenger.Parse(messageType, payload);
             if (message is JoinNotification joinNotification)
@@ -338,75 +342,126 @@ namespace Gs2.Unity.Gs2Realtime
         }
 #endif
 
-#if GS2_ENABLE_UNITASK && !UNITY_WEBGL
-        
+#if GS2_ENABLE_UNITASK
+
         public async UniTask ConnectAsync(
             MonoBehaviour monoBehaviour
         )
         {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            _webSocket.OnMessageBinary -= this.OnMessageHandler;
+#else
             _webSocket.OnMessage -= this.OnMessageHandler;
+#endif
             _webSocket.OnError -= this.OnErrorHandler;
-            
-            var done = false;
-            var success = false;
+
+            var tcs = AutoResetUniTaskCompletionSource<bool>.Create();
             EventArgs args = null;
             Player[] players = null;
+#if UNITY_WEBGL && !UNITY_EDITOR
+            var messageList = new List<byte[]>();
+
+            void OnOpenHandler()
+            {
+                // 完了フラグ・成功フラグを立てる
+                DebugLog("OnOpenHandler");
+
+                tcs.TrySetResult(true);
+            }
+            void OnErrorHandler(EventArgs e)
+            {
+                DebugLog("OnErrorHandler: " + e);
+
+                // 失敗理由を記録
+                args = e;
+            }
+
+            void OnCloseHandler(EventArgs e)
+            {
+                DebugLog("OnCloseHandler: " + e);
+
+                // 完了フラグを立てる
+                tcs.TrySetResult(false);
+            }
+#else // UNITY_WEBGL
             var messageArgsList = new List<MessageEventArgs>();
-            
+
             void OnOpenHandler(object sender, EventArgs e)
             {
                 // 完了フラグ・成功フラグを立てる
-#if ENABLE_DEBUGLOG
-                Debug.Log("OnOpenHandler: " + e);
-#endif
-                done = true;
-                success = true;
+                DebugLog("OnOpenHandler: " + e);
+
+                tcs.TrySetResult(true);
             }
             void OnErrorHandler(object sender, EventArgs e)
             {
-#if ENABLE_DEBUGLOG
-                Debug.Log("OnErrorHandler: " + e);
-#endif
+                DebugLog("OnErrorHandler: " + e);
+
                 // 失敗理由を記録
                 args = e;
             }
             void OnCloseHandler(object sender, EventArgs e)
             {
-#if ENABLE_DEBUGLOG
-                Debug.Log("OnCloseHandler: " + e);
-#endif
+                DebugLog("OnCloseHandler: " + e);
+
                 // 完了フラグを立てる
-                done = true;
+                tcs.TrySetResult(false);
             }
+#endif // UNITY_WEBGL && !UNITY_EDITOR
 
             try
             {
                 _webSocket.OnOpen += OnOpenHandler;
                 _webSocket.OnError += OnErrorHandler;
                 _webSocket.OnClose += OnCloseHandler;
+#if UNITY_WEBGL && !UNITY_EDITOR
+                _webSocket.Connect();
+#else
                 _webSocket.ConnectAsync();
+#endif
 
-                await UniTask.WaitUntil(() => done).Timeout(TimeSpan.FromSeconds(30));
-
-                if (!success)
+                if (!await tcs.Task.Timeout(TimeSpan.FromSeconds(30)))
                 {
                     // 失敗した場合は抜ける
                     throw new ConnectionException(EventArgs.Empty);
                 }
 
-                success = false;
-                done = false;
+                DebugLog("Hello");
 
-#if ENABLE_DEBUGLOG
-                Debug.Log("Hello");
-#endif
-                HelloResult helloResult = null;
+                var helloTcs = AutoResetUniTaskCompletionSource<HelloResult>.Create();
+#if UNITY_WEBGL && !UNITY_EDITOR
+                void OnMessageHandler(byte[] data)
+                {
+                    // 認証処理の応答を処理するためのハンドラ
+                    {
+                        var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data);
+                        var message = _messenger.Parse(messageType, payload);
+                        if (message is Error error)
+                        {
+                            _eventQueue.Enqueue(
+                                new OnErrorEvent(
+                                    error,
+                                    sequenceNumber,
+                                    lifeTimeMilliSeconds
+                                )
+                            );
+                        }
+                        else if (message is HelloResult helloResult)
+                        {
+                            helloTcs.TrySetResult(helloResult);
+                        }
+                        else
+                        {
+                            messageList.Add(data);
+                        }
+                    }
+                }
+#else // UNITY_WEBGL
                 void OnMessageHandler(object sender, EventArgs e)
                 {
                     // 認証処理の応答を処理するためのハンドラ
-#if ENABLE_DEBUGLOG
-                    Debug.Log("OnMessage: " + e.ToString());
-#endif
+                    DebugLog("OnMessage: " + e.ToString());
+
                     if (e is MessageEventArgs data)
                     {
                         var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data.RawData);
@@ -422,11 +477,9 @@ namespace Gs2.Unity.Gs2Realtime
                             );
                             return;
                         }
-                        else if (message is HelloResult)
+                        else if (message is HelloResult helloResult)
                         {
-                            helloResult = message as HelloResult;
-                            success = true;
-                            done = true;
+                            helloTcs.TrySetResult(helloResult);
                         }
                         else
                         {
@@ -438,14 +491,19 @@ namespace Gs2.Unity.Gs2Realtime
                         args = e;
                     }
                 }
+#endif // UNITY_WEBGL && !UNITY_EDITOR
 
                 try
                 {
+#if UNITY_WEBGL && !UNITY_EDITOR
+                    _webSocket.OnMessageBinary += OnMessageHandler;
+#else
                     _webSocket.OnMessage += OnMessageHandler;
-                    
-#if ENABLE_DEBUGLOG
-                    Debug.Log("SendAsync");
 #endif
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+                    DebugLog("Send");
+
                     _webSocket.Send(
                         _messenger.Pack(
                             new HelloRequest
@@ -455,8 +513,22 @@ namespace Gs2.Unity.Gs2Realtime
                             }
                         )
                     );
-                    
-                    await UniTask.WaitUntil(() => helloResult != null).Timeout(TimeSpan.FromSeconds(30));
+#else // UNITY_WEBGL
+                    DebugLog("SendAsync");
+
+                    _webSocket.SendAsync(
+                        _messenger.Pack(
+                            new HelloRequest
+                            {
+                                AccessToken = _accessToken,
+                                MyProfile = Profile,
+                            }
+                        ),
+                        null
+                    );
+#endif // UNITY_WEBGL && !UNITY_EDITOR
+
+                    var helloResult = await helloTcs.Task.Timeout(TimeSpan.FromSeconds(30));
 
                     MyConnectionId = helloResult.MyProfile.ConnectionId;
                     players = helloResult.Players.ToArray();
@@ -465,7 +537,11 @@ namespace Gs2.Unity.Gs2Realtime
                 }
                 finally
                 {
+#if UNITY_WEBGL && !UNITY_EDITOR
+                    _webSocket.OnMessageBinary -= OnMessageHandler;
+#else
                     _webSocket.OnMessage -= OnMessageHandler;
+#endif
                 }
             }
             finally
@@ -473,7 +549,7 @@ namespace Gs2.Unity.Gs2Realtime
                 _webSocket.OnOpen -= OnOpenHandler;
                 _webSocket.OnError -= OnErrorHandler;
                 _webSocket.OnClose -= OnCloseHandler;
-            
+
                 if (players != null)
                 {
                     foreach (var player in players)
@@ -488,12 +564,21 @@ namespace Gs2.Unity.Gs2Realtime
                     }
                 }
 
+#if UNITY_WEBGL && !UNITY_EDITOR
+                foreach (var data in messageList)
+                {
+                    this.OnMessageHandler(data);
+                }
+
+                _webSocket.OnMessageBinary += this.OnMessageHandler;
+#else
                 foreach (var e in messageArgsList)
                 {
                     this.OnMessageHandler(null, e);
                 }
-                
+
                 _webSocket.OnMessage += this.OnMessageHandler;
+#endif
                 _webSocket.OnError += this.OnErrorHandler;
             }
 
@@ -505,19 +590,38 @@ namespace Gs2.Unity.Gs2Realtime
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+
         public async UniTask SendAsync(BinaryMessage message)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             if (!Connected)
             {
                 throw new SendException(message);
             }
 
-            this._webSocket.Send(
+#if UNITY_WEBGL && !UNITY_EDITOR
+            try
+            {
+                _webSocket.Send(
+                    _messenger.Pack(
+                        message
+                    )
+                );
+            }
+            catch (WebSocketException e)
+            {
+                throw new SendException(message);
+            }
+#else // UNITY_WEBGL
+            var tcs = AutoResetUniTaskCompletionSource<bool>.Create();
+            _webSocket.SendAsync(
                 _messenger.Pack(
                     message
-                )
+                ),
+                success => tcs.TrySetResult(success)
             );
+
+            if (!await tcs.Task) throw new SendException(message);
+#endif // UNITY_WEBGL && !UNITY_EDITOR
         }
 
         public async UniTask UpdateProfileAsync(ByteString profile)
@@ -527,62 +631,90 @@ namespace Gs2.Unity.Gs2Realtime
                 throw new UpdateProfileException(profile);
             }
 
-            var success = false;
-            var done = false;
+#if UNITY_WEBGL && !UNITY_EDITOR
+            try
+            {
+                _webSocket.Send(
+                    _messenger.Pack(
+                        new UpdateProfileRequest
+                        {
+                            MyProfile = profile
+                        }
+                    )
+                );
+            }
+            catch (WebSocketException e)
+            {
+                throw new UpdateProfileException(profile);
+            }
+#else // UNITY_WEBGL
+            var tcs = AutoResetUniTaskCompletionSource<bool>.Create();
             _webSocket.SendAsync(
                 _messenger.Pack(
                     new UpdateProfileRequest
                     {
                         MyProfile = profile
                     }
-                ), completed =>
-                {
-                    if (completed)
-                    {
-                        success = true;
-                    }
-                    done = true;
-                });
-            
-            await UniTask.WaitUntil(() => done).Timeout(TimeSpan.FromSeconds(30));
+                ),
+                success => tcs.TrySetResult(success)
+            );
 
-            if (!success)
+            if (!await tcs.Task.Timeout(TimeSpan.FromSeconds(30)))
             {
                 throw new UpdateProfileException(profile);
             }
+#endif
             Profile = profile;
         }
-        
+
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+
         public async UniTask CloseAsync()
         {
             if (!Connected)
             {
                 return;
             }
-            
-            var done = false;
+
+            var tcs = AutoResetUniTaskCompletionSource.Create();
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+            void OnCloseHandler(EventArgs e)
+            {
+                tcs.TrySetResult();
+            }
+            void OnErrorHandler(EventArgs e)
+            {
+                tcs.TrySetResult();
+            }
+#else // UNITY_WEBGL
             void OnCloseHandler(object sender, EventArgs e)
             {
-                done = true;
+                tcs.TrySetResult();
             }
             void OnErrorHandler(object sender, EventArgs e)
             {
-                done = true;
+                tcs.TrySetResult();
             }
+#endif // UNITY_WEBGL && !UNITY_EDITOR
 
             try
             {
                 _webSocket.OnClose += OnCloseHandler;
                 _webSocket.OnError += OnErrorHandler;
+#if UNITY_WEBGL && !UNITY_EDITOR
+                _webSocket.Close();
+#else
                 _webSocket.CloseAsync();
+#endif
 
-                await UniTask.WaitUntil(() => done).Timeout(TimeSpan.FromSeconds(30));
+                await tcs.Task.Timeout(TimeSpan.FromSeconds(30));
             }
             finally
             {
                 _webSocket.OnClose -= OnCloseHandler;
                 _webSocket.OnError -= OnErrorHandler;
-                
+
                 if (_dispatchCoroutine != null)
                 {
                     if (_monoBehaviour != null)
@@ -597,7 +729,7 @@ namespace Gs2.Unity.Gs2Realtime
         }
 
 #endif
-        
+
         public IEnumerator Connect(
             MonoBehaviour monoBehaviour,
             UnityAction<AsyncResult<bool>> callback
@@ -609,7 +741,7 @@ namespace Gs2.Unity.Gs2Realtime
             _webSocket.OnMessage -= this.OnMessageHandler;
 #endif
             _webSocket.OnError -= this.OnErrorHandler;
-            
+
             var done = false;
             var success = false;
             EventArgs args = null;
@@ -619,33 +751,28 @@ namespace Gs2.Unity.Gs2Realtime
 #else
             var messageArgsList = new List<MessageEventArgs>();
 #endif
-            
+
 #if UNITY_WEBGL && !UNITY_EDITOR
             void OnOpenHandler()
             {
                 // 完了フラグ・成功フラグを立てる
-#if ENABLE_DEBUGLOG
-                Debug.Log("OnOpenHandler");
-#endif
+                DebugLog("OnOpenHandler");
+
                 done = true;
                 success = true;
             }
             void OnErrorHandler(EventArgs e)
             {
-#if ENABLE_DEBUGLOG
-                Debug.Log("OnErrorHandler: " + e);
-#endif
+                DebugLog("OnErrorHandler: " + e);
+
                 // 失敗理由を記録
                 args = e;
             }
 
             void OnCloseHandler(EventArgs e)
-
-
             {
-#if ENABLE_DEBUGLOG
-                Debug.Log("OnCloseHandler: " + e);
-#endif
+                DebugLog("OnCloseHandler: " + e);
+
                 // 完了フラグを立てる
                 done = true;
             }
@@ -653,25 +780,22 @@ namespace Gs2.Unity.Gs2Realtime
             void OnOpenHandler(object sender, EventArgs e)
             {
                 // 完了フラグ・成功フラグを立てる
-#if ENABLE_DEBUGLOG
-                Debug.Log("OnOpenHandler: " + e);
-#endif
+                DebugLog("OnOpenHandler: " + e);
+
                 done = true;
                 success = true;
             }
             void OnErrorHandler(object sender, EventArgs e)
             {
-#if ENABLE_DEBUGLOG
-                Debug.Log("OnErrorHandler: " + e);
-#endif
+                DebugLog("OnErrorHandler: " + e);
+
                 // 失敗理由を記録
                 args = e;
             }
             void OnCloseHandler(object sender, EventArgs e)
             {
-#if ENABLE_DEBUGLOG
-                Debug.Log("OnCloseHandler: " + e);
-#endif
+                DebugLog("OnCloseHandler: " + e);
+
                 // 完了フラグを立てる
                 done = true;
             }
@@ -711,9 +835,9 @@ namespace Gs2.Unity.Gs2Realtime
 
                 success = false;
                 done = false;
-#if ENABLE_DEBUGLOG
-                Debug.Log("Hello");
-#endif
+
+                DebugLog("Hello");
+
                 HelloResult helloResult = null;
 #if UNITY_WEBGL && !UNITY_EDITOR
                 void OnMessageHandler(byte[] data)
@@ -749,9 +873,8 @@ namespace Gs2.Unity.Gs2Realtime
                 void OnMessageHandler(object sender, EventArgs e)
                 {
                     // 認証処理の応答を処理するためのハンドラ
-#if ENABLE_DEBUGLOG
-                    Debug.Log("OnMessage: " + e.ToString());
-#endif
+                    DebugLog("OnMessage: " + e.ToString());
+
                     if (e is MessageEventArgs data)
                     {
                         var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data.RawData);
@@ -794,19 +917,33 @@ namespace Gs2.Unity.Gs2Realtime
 #endif
 
 #if UNITY_WEBGL && !UNITY_EDITOR
-#if ENABLE_DEBUGLOG
-                    Debug.Log("Send");
-#endif
-                    
+                    DebugLog("Send");
+
                     _webSocket.Send(
-                    	_messenger.Pack(
-	                        new HelloRequest
-    	                    {
-        	                    AccessToken = _accessToken,
-            	                MyProfile = Profile,
-                	        }
-                    	)
-                   	);
+                        _messenger.Pack(
+                            new HelloRequest
+                            {
+                                AccessToken = _accessToken,
+                                MyProfile = Profile,
+                            }
+                        )
+                    );
+#else // UNITY_WEBGL
+                    DebugLog("SendAsync");
+
+                    _webSocket.SendAsync(
+                        _messenger.Pack(
+                            new HelloRequest {
+                                AccessToken = _accessToken,
+                                MyProfile = Profile,
+                            }
+                        ),
+                        completed =>
+                        {
+
+                        }
+                    );
+#endif // UNITY_WEBGL && !UNITY_EDITOR
 
                     for (var i=0; i<30 && !done; i++)
                     {
@@ -824,49 +961,6 @@ namespace Gs2.Unity.Gs2Realtime
                         }
 #endif
                     }
-                    
-                    if (!success || helloResult == null)
-                    {
-                        // 失敗した場合は抜ける
-                        yield break;
-                    }
-
-                    MyConnectionId = helloResult.MyProfile.ConnectionId;
-                    players = helloResult.Players.ToArray();
-
-                    Connected = true;
-#else // UNITY_WEBGL
-#if ENABLE_DEBUGLOG
-                    Debug.Log("SendAsync");
-#endif
-                    {
-                        _webSocket.SendAsync(
-                            _messenger.Pack(
-                                new HelloRequest {
-                                    AccessToken = _accessToken,
-                                    MyProfile = Profile,
-                                }
-                            ),
-                            completed =>
-                            {
-                                
-                            }
-                        );
-
-                        for (var i = 0; i < 30 && !done; i++) {
-#if DISABLE_COROUTINE
-                        yield return null;
-#else
-                            if (NotUseWaitForSeconds) {
-                                Thread.Sleep(1000);
-                                yield return null;
-                            }
-                            else {
-                                yield return new WaitForSeconds(1);
-                            }
-#endif
-                        }
-                    }
 
                     if (!success || helloResult == null)
                     {
@@ -878,7 +972,6 @@ namespace Gs2.Unity.Gs2Realtime
                     players = helloResult.Players.ToArray();
 
                     Connected = true;
-#endif // UNITY_WEBGL && !UNITY_EDITOR
                 }
                 finally
                 {
@@ -894,7 +987,7 @@ namespace Gs2.Unity.Gs2Realtime
                 _webSocket.OnOpen -= OnOpenHandler;
                 _webSocket.OnError -= OnErrorHandler;
                 _webSocket.OnClose -= OnCloseHandler;
-            
+
                 callback.Invoke(new AsyncResult<bool>(
                     success,
                     success ? null : new ConnectionException(args)
@@ -919,14 +1012,14 @@ namespace Gs2.Unity.Gs2Realtime
                 {
                     this.OnMessageHandler(data);
                 }
-                
-				_webSocket.OnMessageBinary += this.OnMessageHandler;
+
+                _webSocket.OnMessageBinary += this.OnMessageHandler;
 #else
                 foreach (var e in messageArgsList)
                 {
                     this.OnMessageHandler(null, e);
                 }
-                
+
                 _webSocket.OnMessage += this.OnMessageHandler;
 #endif
                 _webSocket.OnError += this.OnErrorHandler;
@@ -949,7 +1042,7 @@ namespace Gs2.Unity.Gs2Realtime
                 ));
                 yield break;
             }
-            
+
             var success = false;
             var done = false;
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -985,7 +1078,7 @@ namespace Gs2.Unity.Gs2Realtime
                 }
                 done = true;
             });
-            
+
             for (var i=0; i<30 && !done; i++)
             {
 #if DISABLE_COROUTINE
@@ -1002,7 +1095,7 @@ namespace Gs2.Unity.Gs2Realtime
                 }
 #endif
             }
-            
+
             callback.Invoke(new AsyncResult<bool>(
                 success,
                 success ? null : new SendException(message)
@@ -1048,7 +1141,7 @@ namespace Gs2.Unity.Gs2Realtime
                     }
                     done = true;
                 });
-            
+
             for (var i=0; i<30 && !done; i++)
             {
 #if DISABLE_COROUTINE
@@ -1075,11 +1168,11 @@ namespace Gs2.Unity.Gs2Realtime
                 success ? null : new UpdateProfileException(profile)
             ));
         }
-        
+
         public IEnumerator Close()
         {
             if (!Connected) yield break;
-            
+
             var done = false;
 #if UNITY_WEBGL && !UNITY_EDITOR
             void OnCloseHandler(EventArgs e)
@@ -1130,7 +1223,7 @@ namespace Gs2.Unity.Gs2Realtime
             {
                 _webSocket.OnClose -= OnCloseHandler;
                 _webSocket.OnError -= OnErrorHandler;
-                
+
                 if (_dispatchCoroutine != null)
                 {
                     if (_monoBehaviour != null)

@@ -130,8 +130,20 @@ namespace Gs2.Unity.Util
                     Debug.Log("The GS2-Gateway namespace does not exist and could not be configured to receive notifications from the server.");
                 }
                 catch (SessionNotOpenException) {
-                    await connection.WebSocketSession.ReOpenFuture();
-                    throw;
+                    await connection.WebSocketSession.ReOpenAsync();
+                    try {
+                        await new Gs2GatewayWebSocketClient(connection.WebSocketSession).SetUserIdAsync(
+                            new SetUserIdRequest()
+                                .WithNamespaceName(this._gatewaySetting.gatewayNamespaceName)
+                                .WithAccessToken(accessToken.Token)
+                                .WithAllowConcurrentAccess(this._gatewaySetting.allowConcurrentAccess)
+                        );
+                    }
+                    catch (ConflictException) {
+                    }
+                    catch (NotFoundException) {
+                        Debug.Log("The GS2-Gateway namespace does not exist and could not be configured to receive notifications from the server.");
+                    }
                 }
                 NeedReAuthentication = false;
                 connection.WebSocketSession.OnDisconnect -= OnDisconnect;

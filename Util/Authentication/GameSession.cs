@@ -15,6 +15,7 @@
  */
 
 using System.Collections;
+using System.Threading;
 using Gs2.Core.Domain;
 using Gs2.Gs2Auth.Model;
 #if GS2_ENABLE_UNITASK
@@ -30,6 +31,10 @@ namespace Gs2.Unity.Util
         private readonly string _userId;
         private readonly string _password;
         public AccessToken AccessToken { get; set; }
+
+#if GS2_ENABLE_UNITASK
+        private readonly SemaphoreSlim _refreshSemaphore = new SemaphoreSlim(1, 1);
+#endif
 
         public string UserId => this.AccessToken.UserId;
         public string LoginUserId => this._userId;
@@ -78,10 +83,7 @@ namespace Gs2.Unity.Util
         }
         
 #if GS2_ENABLE_UNITASK
-        public async UniTask RefreshAsync() {
-            if (this._authenticator == null) {
-                return;
-            }
+        private async UniTask RefreshCoreAsync() {
             var result = await this._authenticator.AuthenticationAsync(
                 this._connection,
                 this._userId,
@@ -96,6 +98,18 @@ namespace Gs2.Unity.Util
                     .WithUserId(result.UserId)
                     .WithExpire(result.Expire)
                     .WithTimeOffset(result.TimeOffset);
+            }
+        }
+
+        public async UniTask RefreshAsync() {
+            if (this._authenticator == null) {
+                return;
+            }
+            await _refreshSemaphore.WaitAsync();
+            try {
+                await RefreshCoreAsync();
+            } finally {
+                _refreshSemaphore.Release();
             }
         }
 #endif
@@ -122,8 +136,16 @@ namespace Gs2.Unity.Util
             if (this._authenticator == null || !this._authenticator.NeedReAuthentication) {
                 return false;
             }
-            await RefreshAsync();
-            return true;
+            await _refreshSemaphore.WaitAsync();
+            try {
+                if (!this._authenticator.NeedReAuthentication) {
+                    return false;
+                }
+                await RefreshCoreAsync();
+                return true;
+            } finally {
+                _refreshSemaphore.Release();
+            }
         }
 #endif
 
