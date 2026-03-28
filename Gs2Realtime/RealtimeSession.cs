@@ -355,7 +355,7 @@ namespace Gs2.Unity.Gs2Realtime
 #endif
             _webSocket.OnError -= this.OnErrorHandler;
 
-            var tcs = AutoResetUniTaskCompletionSource<bool>.Create();
+            var tcs = new UniTaskCompletionSource<bool>();
             EventArgs args = null;
             Player[] players = null;
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -420,15 +420,18 @@ namespace Gs2.Unity.Gs2Realtime
                 _webSocket.ConnectAsync();
 #endif
 
-                if (!await tcs.Task.Timeout(TimeSpan.FromSeconds(30)))
+                await using (UniTask.ReturnToMainThread())
                 {
-                    // 失敗した場合は抜ける
-                    throw new ConnectionException(EventArgs.Empty);
+                    if (!await tcs.Task.Timeout(TimeSpan.FromSeconds(30)))
+                    {
+                        // 失敗した場合は抜ける
+                        throw new ConnectionException(EventArgs.Empty);
+                    }
                 }
 
                 DebugLog("Hello");
 
-                var helloTcs = AutoResetUniTaskCompletionSource<HelloResult>.Create();
+                var helloTcs = new UniTaskCompletionSource<HelloResult>();
 #if UNITY_WEBGL && !UNITY_EDITOR
                 void OnMessageHandler(byte[] data)
                 {
@@ -528,7 +531,11 @@ namespace Gs2.Unity.Gs2Realtime
                     );
 #endif // UNITY_WEBGL && !UNITY_EDITOR
 
-                    var helloResult = await helloTcs.Task.Timeout(TimeSpan.FromSeconds(30));
+                    HelloResult helloResult;
+                    await using (UniTask.ReturnToMainThread())
+                    {
+                        helloResult = await helloTcs.Task.Timeout(TimeSpan.FromSeconds(30));
+                    }
 
                     MyConnectionId = helloResult.MyProfile.ConnectionId;
                     players = helloResult.Players.ToArray();
@@ -612,7 +619,7 @@ namespace Gs2.Unity.Gs2Realtime
                 throw new SendException(message);
             }
 #else // UNITY_WEBGL
-            var tcs = AutoResetUniTaskCompletionSource<bool>.Create();
+            var tcs = new UniTaskCompletionSource<bool>();
             _webSocket.SendAsync(
                 _messenger.Pack(
                     message
@@ -620,7 +627,10 @@ namespace Gs2.Unity.Gs2Realtime
                 success => tcs.TrySetResult(success)
             );
 
-            if (!await tcs.Task) throw new SendException(message);
+            await using (UniTask.ReturnToMainThread())
+            {
+                if (!await tcs.Task) throw new SendException(message);
+            }
 #endif // UNITY_WEBGL && !UNITY_EDITOR
         }
 
@@ -648,7 +658,7 @@ namespace Gs2.Unity.Gs2Realtime
                 throw new UpdateProfileException(profile);
             }
 #else // UNITY_WEBGL
-            var tcs = AutoResetUniTaskCompletionSource<bool>.Create();
+            var tcs = new UniTaskCompletionSource<bool>();
             _webSocket.SendAsync(
                 _messenger.Pack(
                     new UpdateProfileRequest
@@ -659,9 +669,12 @@ namespace Gs2.Unity.Gs2Realtime
                 success => tcs.TrySetResult(success)
             );
 
-            if (!await tcs.Task.Timeout(TimeSpan.FromSeconds(30)))
+            await using (UniTask.ReturnToMainThread())
             {
-                throw new UpdateProfileException(profile);
+                if (!await tcs.Task.Timeout(TimeSpan.FromSeconds(30)))
+                {
+                    throw new UpdateProfileException(profile);
+                }
             }
 #endif
             Profile = profile;
@@ -676,7 +689,7 @@ namespace Gs2.Unity.Gs2Realtime
                 return;
             }
 
-            var tcs = AutoResetUniTaskCompletionSource.Create();
+            var tcs = new UniTaskCompletionSource();
 
 #if UNITY_WEBGL && !UNITY_EDITOR
             void OnCloseHandler(EventArgs e)
@@ -708,7 +721,10 @@ namespace Gs2.Unity.Gs2Realtime
                 _webSocket.CloseAsync();
 #endif
 
-                await tcs.Task.Timeout(TimeSpan.FromSeconds(30));
+                await using (UniTask.ReturnToMainThread())
+                {
+                    await tcs.Task.Timeout(TimeSpan.FromSeconds(30));
+                }
             }
             finally
             {
