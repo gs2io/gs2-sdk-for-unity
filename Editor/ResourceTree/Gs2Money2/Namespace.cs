@@ -23,6 +23,9 @@ using Gs2.Editor.ResourceTree.Gs2Money2.Editor;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
+#if UNITY_6000_2_OR_NEWER
+using TreeViewItem = UnityEditor.IMGUI.Controls.TreeViewItem<int>;
+#endif
 
 namespace Gs2.Editor.ResourceTree.Gs2Money2
 {

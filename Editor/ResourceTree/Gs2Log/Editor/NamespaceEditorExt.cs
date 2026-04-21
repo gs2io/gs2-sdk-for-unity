@@ -36,6 +36,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Log.Editor
             EditorGUILayout.TextField("AwsAccessKeyId", item.AwsAccessKeyId);
             EditorGUILayout.TextField("AwsSecretAccessKey", item.AwsSecretAccessKey);
             EditorGUILayout.TextField("FirehoseStreamName", item.FirehoseStreamName);
+            EditorGUILayout.TextField("FirehoseCompressData", item.FirehoseCompressData);
             EditorGUILayout.TextField("Status", item.Status);
             EditorGUILayout.TextField("CreatedAt", UnixTime.FromUnixTime(item.CreatedAt ?? 0).ToString(CultureInfo.CurrentUICulture));
             EditorGUILayout.TextField("UpdatedAt", UnixTime.FromUnixTime(item.UpdatedAt ?? 0).ToString(CultureInfo.CurrentUICulture));

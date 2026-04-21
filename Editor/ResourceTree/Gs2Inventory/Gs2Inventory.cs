@@ -17,6 +17,9 @@
 using System.Linq;
 using Gs2.Editor.ResourceTree.Core;
 using UnityEditor.IMGUI.Controls;
+#if UNITY_6000_2_OR_NEWER
+using TreeViewItem = UnityEditor.IMGUI.Controls.TreeViewItem<int>;
+#endif
 
 namespace Gs2.Editor.ResourceTree.Gs2Inventory
 {

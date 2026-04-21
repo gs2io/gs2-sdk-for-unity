@@ -6,6 +6,10 @@ using Gs2.Core.Net;
 using Gs2.Core.Util;
 using Gs2.Editor.ResourceTree.Core;
 using UnityEditor.IMGUI.Controls;
+#if UNITY_6000_2_OR_NEWER
+using TreeView = UnityEditor.IMGUI.Controls.TreeView<int>;
+using TreeViewItem = UnityEditor.IMGUI.Controls.TreeViewItem<int>;
+#endif
 
 namespace Gs2.Editor.ResourceTree.Core
 {

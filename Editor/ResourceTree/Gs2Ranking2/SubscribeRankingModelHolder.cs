@@ -24,6 +24,10 @@ using Gs2.Gs2Ranking2;
 using Gs2.Gs2Ranking2.Request;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
+#if UNITY_6000_2_OR_NEWER
+using TreeView = UnityEditor.IMGUI.Controls.TreeView<int>;
+using TreeViewItem = UnityEditor.IMGUI.Controls.TreeViewItem<int>;
+#endif
 
 namespace Gs2.Editor.ResourceTree.Gs2Ranking2
 {
