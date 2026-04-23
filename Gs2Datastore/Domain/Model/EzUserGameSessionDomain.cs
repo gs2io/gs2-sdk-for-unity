@@ -229,22 +229,29 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
                 var it = _domain.DataObjectsAsync(
                     status
                 ).GetAsyncEnumerator();
-                while(
-                    await this._connection.RunIteratorAsync(
-                        this._gameSession,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.DataObjectsAsync(
-                                status
-                            ).GetAsyncEnumerator();
-                        }
-                    )
-                )
+                try
                 {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Datastore.Model.EzDataObject.FromModel(it.Current));
+                    while(
+                        await this._connection.RunIteratorAsync(
+                            this._gameSession,
+                            async () =>
+                            {
+                                return await it.MoveNextAsync();
+                            },
+                            () => {
+                                it = _domain.DataObjectsAsync(
+                                    status
+                                ).GetAsyncEnumerator();
+                            }
+                        )
+                    )
+                    {
+                        await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Datastore.Model.EzDataObject.FromModel(it.Current));
+                    }
+                }
+                finally
+                {
+                    await it.DisposeAsync();
                 }
             });
         }

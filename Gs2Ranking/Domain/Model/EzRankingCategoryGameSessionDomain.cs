@@ -207,21 +207,28 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             {
                 var it = _domain.SubscribeUsersAsync(
                 ).GetAsyncEnumerator();
-                while(
-                    await this._connection.RunIteratorAsync(
-                        this._gameSession,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.SubscribeUsersAsync(
-                            ).GetAsyncEnumerator();
-                        }
-                    )
-                )
+                try
                 {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser.FromModel(it.Current));
+                    while(
+                        await this._connection.RunIteratorAsync(
+                            this._gameSession,
+                            async () =>
+                            {
+                                return await it.MoveNextAsync();
+                            },
+                            () => {
+                                it = _domain.SubscribeUsersAsync(
+                                ).GetAsyncEnumerator();
+                            }
+                        )
+                    )
+                    {
+                        await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser.FromModel(it.Current));
+                    }
+                }
+                finally
+                {
+                    await it.DisposeAsync();
                 }
             });
         }
@@ -269,21 +276,28 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             {
                 var it = _domain.RankingsAsync(
                 ).GetAsyncEnumerator();
-                while(
-                    await this._connection.RunIteratorAsync(
-                        this._gameSession,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.RankingsAsync(
-                            ).GetAsyncEnumerator();
-                        }
-                    )
-                )
+                try
                 {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(it.Current));
+                    while(
+                        await this._connection.RunIteratorAsync(
+                            this._gameSession,
+                            async () =>
+                            {
+                                return await it.MoveNextAsync();
+                            },
+                            () => {
+                                it = _domain.RankingsAsync(
+                                ).GetAsyncEnumerator();
+                            }
+                        )
+                    )
+                    {
+                        await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(it.Current));
+                    }
+                }
+                finally
+                {
+                    await it.DisposeAsync();
                 }
             });
         }

@@ -86,21 +86,28 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             {
                 var it = _domain.CounterModelsAsync(
                 ).GetAsyncEnumerator();
-                while(
-                    await this._connection.RunIteratorAsync(
-                        null,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.CounterModelsAsync(
-                            ).GetAsyncEnumerator();
-                        }
-                    )
-                )
+                try
                 {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Mission.Model.EzCounterModel.FromModel(it.Current));
+                    while(
+                        await this._connection.RunIteratorAsync(
+                            null,
+                            async () =>
+                            {
+                                return await it.MoveNextAsync();
+                            },
+                            () => {
+                                it = _domain.CounterModelsAsync(
+                                ).GetAsyncEnumerator();
+                            }
+                        )
+                    )
+                    {
+                        await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Mission.Model.EzCounterModel.FromModel(it.Current));
+                    }
+                }
+                finally
+                {
+                    await it.DisposeAsync();
                 }
             });
         }
@@ -147,21 +154,28 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             {
                 var it = _domain.MissionGroupModelsAsync(
                 ).GetAsyncEnumerator();
-                while(
-                    await this._connection.RunIteratorAsync(
-                        null,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.MissionGroupModelsAsync(
-                            ).GetAsyncEnumerator();
-                        }
-                    )
-                )
+                try
                 {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel.FromModel(it.Current));
+                    while(
+                        await this._connection.RunIteratorAsync(
+                            null,
+                            async () =>
+                            {
+                                return await it.MoveNextAsync();
+                            },
+                            () => {
+                                it = _domain.MissionGroupModelsAsync(
+                                ).GetAsyncEnumerator();
+                            }
+                        )
+                    )
+                    {
+                        await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Mission.Model.EzMissionGroupModel.FromModel(it.Current));
+                    }
+                }
+                finally
+                {
+                    await it.DisposeAsync();
                 }
             });
         }

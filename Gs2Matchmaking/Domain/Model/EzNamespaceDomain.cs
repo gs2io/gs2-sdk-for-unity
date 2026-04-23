@@ -224,21 +224,28 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             {
                 var it = _domain.RatingModelsAsync(
                 ).GetAsyncEnumerator();
-                while(
-                    await this._connection.RunIteratorAsync(
-                        null,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.RatingModelsAsync(
-                            ).GetAsyncEnumerator();
-                        }
-                    )
-                )
+                try
                 {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel.FromModel(it.Current));
+                    while(
+                        await this._connection.RunIteratorAsync(
+                            null,
+                            async () =>
+                            {
+                                return await it.MoveNextAsync();
+                            },
+                            () => {
+                                it = _domain.RatingModelsAsync(
+                                ).GetAsyncEnumerator();
+                            }
+                        )
+                    )
+                    {
+                        await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Matchmaking.Model.EzRatingModel.FromModel(it.Current));
+                    }
+                }
+                finally
+                {
+                    await it.DisposeAsync();
                 }
             });
         }
@@ -285,21 +292,28 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             {
                 var it = _domain.SeasonModelsAsync(
                 ).GetAsyncEnumerator();
-                while(
-                    await this._connection.RunIteratorAsync(
-                        null,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.SeasonModelsAsync(
-                            ).GetAsyncEnumerator();
-                        }
-                    )
-                )
+                try
                 {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Matchmaking.Model.EzSeasonModel.FromModel(it.Current));
+                    while(
+                        await this._connection.RunIteratorAsync(
+                            null,
+                            async () =>
+                            {
+                                return await it.MoveNextAsync();
+                            },
+                            () => {
+                                it = _domain.SeasonModelsAsync(
+                                ).GetAsyncEnumerator();
+                            }
+                        )
+                    )
+                    {
+                        await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Matchmaking.Model.EzSeasonModel.FromModel(it.Current));
+                    }
+                }
+                finally
+                {
+                    await it.DisposeAsync();
                 }
             });
         }

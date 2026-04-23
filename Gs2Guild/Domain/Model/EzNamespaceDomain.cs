@@ -88,21 +88,28 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
             {
                 var it = _domain.GuildModelsAsync(
                 ).GetAsyncEnumerator();
-                while(
-                    await this._connection.RunIteratorAsync(
-                        null,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.GuildModelsAsync(
-                            ).GetAsyncEnumerator();
-                        }
-                    )
-                )
+                try
                 {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Guild.Model.EzGuildModel.FromModel(it.Current));
+                    while(
+                        await this._connection.RunIteratorAsync(
+                            null,
+                            async () =>
+                            {
+                                return await it.MoveNextAsync();
+                            },
+                            () => {
+                                it = _domain.GuildModelsAsync(
+                                ).GetAsyncEnumerator();
+                            }
+                        )
+                    )
+                    {
+                        await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Guild.Model.EzGuildModel.FromModel(it.Current));
+                    }
+                }
+                finally
+                {
+                    await it.DisposeAsync();
                 }
             });
         }

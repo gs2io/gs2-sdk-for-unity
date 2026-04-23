@@ -86,21 +86,28 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
             {
                 var it = _domain.RandomDisplayItemsAsync(
                 ).GetAsyncEnumerator();
-                while(
-                    await this._connection.RunIteratorAsync(
-                        this._gameSession,
-                        async () =>
-                        {
-                            return await it.MoveNextAsync();
-                        },
-                        () => {
-                            it = _domain.RandomDisplayItemsAsync(
-                            ).GetAsyncEnumerator();
-                        }
-                    )
-                )
+                try
                 {
-                    await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem.FromModel(it.Current));
+                    while(
+                        await this._connection.RunIteratorAsync(
+                            this._gameSession,
+                            async () =>
+                            {
+                                return await it.MoveNextAsync();
+                            },
+                            () => {
+                                it = _domain.RandomDisplayItemsAsync(
+                                ).GetAsyncEnumerator();
+                            }
+                        )
+                    )
+                    {
+                        await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Showcase.Model.EzRandomDisplayItem.FromModel(it.Current));
+                    }
+                }
+                finally
+                {
+                    await it.DisposeAsync();
                 }
             });
         }
