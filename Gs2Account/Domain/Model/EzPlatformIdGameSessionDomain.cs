@@ -72,13 +72,16 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
 
         [Obsolete("The name has been changed to AddPlatformIdSettingFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzPlatformIdGameSessionDomain> AddPlatformIdSetting(
+            string userIdentifier
         )
         {
             return AddPlatformIdSettingFuture(
+                userIdentifier
             );
         }
 
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzPlatformIdGameSessionDomain> AddPlatformIdSettingFuture(
+            string userIdentifier
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzPlatformIdGameSessionDomain> self)
@@ -87,6 +90,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                     this._gameSession,
                     () => this._domain.CreateFuture(
                         new CreatePlatformIdRequest()
+                            .WithUserIdentifier(userIdentifier)
                     )
                 );
                 yield return future;
@@ -105,11 +109,13 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzPlatformIdGameSessionDomain> AddPlatformIdSettingAsync(
+            string userIdentifier
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.CreateAsync(
                     new CreatePlatformIdRequest()
+                        .WithUserIdentifier(userIdentifier)
                 )
             );
             return new Gs2.Unity.Gs2Account.Domain.Model.EzPlatformIdGameSessionDomain(
@@ -122,13 +128,16 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
 
         [Obsolete("The name has been changed to FindPlatformUserFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Model.EzPlatformUser> FindPlatformUser(
+            string userIdentifier
         )
         {
             return FindPlatformUserFuture(
+                userIdentifier
             );
         }
 
         public IFuture<Gs2.Unity.Gs2Account.Model.EzPlatformUser> FindPlatformUserFuture(
+            string userIdentifier
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Model.EzPlatformUser> self)
@@ -137,6 +146,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                     this._gameSession,
                     () => this._domain.FindFuture(
                         new FindPlatformIdRequest()
+                            .WithUserIdentifier(userIdentifier)
                     )
                 );
                 yield return future;
@@ -153,11 +163,13 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
 
         #if GS2_ENABLE_UNITASK
         public async UniTask<Gs2.Unity.Gs2Account.Model.EzPlatformUser> FindPlatformUserAsync(
+            string userIdentifier
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.FindAsync(
                     new FindPlatformIdRequest()
+                        .WithUserIdentifier(userIdentifier)
                 )
             );
             return Gs2.Unity.Gs2Account.Model.EzPlatformUser.FromModel(

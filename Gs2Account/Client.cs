@@ -406,7 +406,8 @@ namespace Gs2.Unity.Gs2Account
                     new Gs2.Gs2Account.Request.FindPlatformIdRequest()
                         .WithNamespaceName(namespaceName)
                         .WithType(type)
-                        .WithUserIdentifier(userIdentifier),
+                        .WithUserIdentifier(userIdentifier)
+                        .WithAccessToken(session.AccessToken.Token),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Account.Result.EzFindPlatformUserResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Account.Result.EzFindPlatformUserResult.FromModel(r.Result),

@@ -58,6 +58,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         public string? Url => _domain.Url;
         public string? UploadToken => _domain.UploadToken;
         public string? UploadUrl => _domain.UploadUrl;
+        public string? AuthorizationUrl => _domain.AuthorizationUrl;
         public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
 
@@ -242,6 +243,60 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             );
         }
         #endif
+        
+        [Obsolete("The name has been changed to GetAuthorizationUrlFuture.")]
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzNamespaceDomain> GetAuthorizationUrl(
+            int type
+        )
+        {
+            return GetAuthorizationUrlFuture(
+                type
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzNamespaceDomain> GetAuthorizationUrlFuture(
+            int type
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzNamespaceDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    null,
+                    () => this._domain.GetAuthorizationUrlFuture(
+                        new GetAuthorizationUrlRequest()
+                            .WithType(type)
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzNamespaceDomain(
+                    future.Result,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzNamespaceDomain>(Impl);
+        }
+
+#if GS2_ENABLE_UNITASK
+        public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzNamespaceDomain> GetAuthorizationUrlAsync(
+            int type
+        ) {
+            var result = await this._connection.RunAsync(
+                null,
+                () => this._domain.GetAuthorizationUrlAsync(
+                    new GetAuthorizationUrlRequest()
+                        .WithType(type)
+                )
+            );
+            return new Gs2.Unity.Gs2Account.Domain.Model.EzNamespaceDomain(
+                result,
+                this._connection
+            );
+        }
+#endif
 
         public Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain Account(
             string userId
