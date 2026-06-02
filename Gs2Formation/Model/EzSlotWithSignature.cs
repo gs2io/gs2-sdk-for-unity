@@ -20,27 +20,41 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Formation.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzSlotWithSignature
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Name;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string PropertyType;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Body;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Signature;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Metadata;
 
         public Gs2.Gs2Formation.Model.SlotWithSignature ToModel()

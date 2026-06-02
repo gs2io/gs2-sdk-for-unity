@@ -65,8 +65,6 @@ namespace Gs2.Unity.Util
                     {
                         return clientHolders[0];
                     }
-
-                    _instance = new GameObject("Gs2ClientHolder").AddComponent<Gs2ClientHolder>();
                 }
                 return _instance;
             }

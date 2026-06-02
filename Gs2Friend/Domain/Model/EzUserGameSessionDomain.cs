@@ -40,13 +40,19 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
+    #endif
+#else
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2Friend.Domain.Model
@@ -70,6 +76,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to SendRequestFuture.")]
         public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain> SendRequest(
             string targetUserId
@@ -106,9 +113,14 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain> SendRequestAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain> SendRequestAsync(
+            #endif
             string targetUserId
         ) {
             var result = await this._connection.RunAsync(
@@ -126,6 +138,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         public Gs2Iterator<Gs2.Unity.Gs2Friend.Model.EzFriendUser> Friends(
             bool? withProfile = null
         )
@@ -137,8 +150,10 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                 withProfile
             );
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Friend.Model.EzFriendUser> FriendsAsync(
               bool? withProfile = null
         )
@@ -174,6 +189,40 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                 }
             });
         }
+            #else
+        public async IAsyncEnumerable<Gs2.Unity.Gs2Friend.Model.EzFriendUser> FriendsAsync(
+              bool? withProfile = null
+        )
+        {
+            var it = _domain.FriendsAsync(
+                withProfile
+            ).GetAsyncEnumerator();
+            try
+            {
+                while(
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.FriendsAsync(
+                                withProfile
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    yield return it.Current == null ? null : Gs2.Unity.Gs2Friend.Model.EzFriendUser.FromModel(it.Current);
+                }
+            }
+            finally
+            {
+                await it.DisposeAsync();
+            }
+        }
+            #endif
         #endif
 
         public ulong SubscribeFriends(
@@ -206,18 +255,24 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             );
         }
 
+        #if UNITY_2017_1_OR_NEWER
         public Gs2Iterator<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> SendRequests(
+            bool? withProfile = null
         )
         {
             return new Gs2.Unity.Gs2Friend.Domain.Iterator.EzDescribeSendRequestsIterator(
                 this._domain,
                 this._gameSession,
-                this._connection
+                this._connection,
+                withProfile
             );
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> SendRequestsAsync(
+              bool? withProfile = null
         )
         {
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Friend.Model.EzFriendRequest>(async (writer, token) =>
@@ -249,10 +304,43 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                 }
             });
         }
+            #else
+        public async IAsyncEnumerable<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> SendRequestsAsync(
+              bool? withProfile = null
+        )
+        {
+            var it = _domain.SendRequestsAsync(
+            ).GetAsyncEnumerator();
+            try
+            {
+                while(
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.SendRequestsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    yield return it.Current == null ? null : Gs2.Unity.Gs2Friend.Model.EzFriendRequest.FromModel(it.Current);
+                }
+            }
+            finally
+            {
+                await it.DisposeAsync();
+            }
+        }
+            #endif
         #endif
 
         public ulong SubscribeSendRequests(
-            Action<Gs2.Unity.Gs2Friend.Model.EzFriendRequest[]> callback
+            Action<Gs2.Unity.Gs2Friend.Model.EzFriendRequest[]> callback,
+            bool? withProfile = null
         ) {
             return this._domain.SubscribeSendRequests(
                 items => {
@@ -262,7 +350,8 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
 
         public void UnsubscribeSendRequests(
-            ulong callbackId
+            ulong callbackId,
+            bool? withProfile = null
         ) {
             this._domain.UnsubscribeSendRequests(
                 callbackId
@@ -270,23 +359,30 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
 
         public void InvalidateSendRequests(
+            bool? withProfile = null
         ) {
             this._domain.InvalidateSendRequests(
             );
         }
 
+        #if UNITY_2017_1_OR_NEWER
         public Gs2Iterator<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> ReceiveRequests(
+            bool? withProfile = null
         )
         {
             return new Gs2.Unity.Gs2Friend.Domain.Iterator.EzDescribeReceiveRequestsIterator(
                 this._domain,
                 this._gameSession,
-                this._connection
+                this._connection,
+                withProfile
             );
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> ReceiveRequestsAsync(
+              bool? withProfile = null
         )
         {
             return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Friend.Model.EzFriendRequest>(async (writer, token) =>
@@ -318,10 +414,43 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                 }
             });
         }
+            #else
+        public async IAsyncEnumerable<Gs2.Unity.Gs2Friend.Model.EzFriendRequest> ReceiveRequestsAsync(
+              bool? withProfile = null
+        )
+        {
+            var it = _domain.ReceiveRequestsAsync(
+            ).GetAsyncEnumerator();
+            try
+            {
+                while(
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.ReceiveRequestsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    yield return it.Current == null ? null : Gs2.Unity.Gs2Friend.Model.EzFriendRequest.FromModel(it.Current);
+                }
+            }
+            finally
+            {
+                await it.DisposeAsync();
+            }
+        }
+            #endif
         #endif
 
         public ulong SubscribeReceiveRequests(
-            Action<Gs2.Unity.Gs2Friend.Model.EzFriendRequest[]> callback
+            Action<Gs2.Unity.Gs2Friend.Model.EzFriendRequest[]> callback,
+            bool? withProfile = null
         ) {
             return this._domain.SubscribeReceiveRequests(
                 items => {
@@ -331,13 +460,22 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
 
         public void UnsubscribeReceiveRequests(
-            ulong callbackId
+            ulong callbackId,
+            bool? withProfile = null
         ) {
             this._domain.UnsubscribeReceiveRequests(
                 callbackId
             );
         }
 
+        public void InvalidateReceiveRequests(
+            bool? withProfile = null
+        ) {
+            this._domain.InvalidateReceiveRequests(
+            );
+        }
+
+        #if UNITY_2017_1_OR_NEWER
         public Gs2Iterator<string> BlackListUsers(
         ) {
             return new Gs2.Unity.Gs2Friend.Domain.Iterator.EzBlackListUsersIterator(
@@ -346,8 +484,10 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                 this._connection
             );
         }
+        #endif
         
-#if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<string> BlackListUsersAsync(
         )
         {
@@ -380,13 +520,39 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                 }
             });
         }
-#endif
-
-        public void InvalidateReceiveRequests(
-        ) {
-            this._domain.InvalidateReceiveRequests(
-            );
+            #else
+        public async IAsyncEnumerable<string> BlackListUsersAsync(
+              bool? withProfile = null
+        )
+        {
+            var it = _domain.BlackListUsersAsync(
+            ).GetAsyncEnumerator();
+            try
+            {
+                while(
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.BlackListUsersAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    yield return it.Current == null ? null : it.Current;
+                }
+            }
+            finally
+            {
+                await it.DisposeAsync();
+            }
         }
+            #endif
+        #endif
 
         public Gs2.Unity.Gs2Friend.Domain.Model.EzProfileGameSessionDomain Profile(
         ) {

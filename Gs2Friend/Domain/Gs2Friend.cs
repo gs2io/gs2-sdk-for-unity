@@ -41,13 +41,18 @@ using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
+#if UNITY_2017_1_OR_NEWER
 using System.Collections;
 using UnityEngine.Events;
 using UnityEngine.Scripting;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
+    #endif
+#else
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2Friend.Domain
@@ -75,41 +80,47 @@ namespace Gs2.Unity.Gs2Friend.Domain
                 this._connection
             );
         }
-
+    #if UNITY_2017_1_OR_NEWER
         public event UnityAction<FollowNotification> OnFollowNotification
         {
             add => _domain.OnFollowNotification += value;
             remove => _domain.OnFollowNotification -= value;
         }
-
+    #endif
+    #if UNITY_2017_1_OR_NEWER
         public event UnityAction<AcceptRequestNotification> OnAcceptRequestNotification
         {
             add => _domain.OnAcceptRequestNotification += value;
             remove => _domain.OnAcceptRequestNotification -= value;
         }
-
+    #endif
+    #if UNITY_2017_1_OR_NEWER
         public event UnityAction<RejectRequestNotification> OnRejectRequestNotification
         {
             add => _domain.OnRejectRequestNotification += value;
             remove => _domain.OnRejectRequestNotification -= value;
         }
-
+    #endif
+    #if UNITY_2017_1_OR_NEWER
         public event UnityAction<DeleteFriendNotification> OnDeleteFriendNotification
         {
             add => _domain.OnDeleteFriendNotification += value;
             remove => _domain.OnDeleteFriendNotification -= value;
         }
-
+    #endif
+    #if UNITY_2017_1_OR_NEWER
         public event UnityAction<ReceiveRequestNotification> OnReceiveRequestNotification
         {
             add => _domain.OnReceiveRequestNotification += value;
             remove => _domain.OnReceiveRequestNotification -= value;
         }
-
+    #endif
+    #if UNITY_2017_1_OR_NEWER
         public event UnityAction<CancelRequestNotification> OnCancelRequestNotification
         {
             add => _domain.OnCancelRequestNotification += value;
             remove => _domain.OnCancelRequestNotification -= value;
         }
+    #endif
     }
 }

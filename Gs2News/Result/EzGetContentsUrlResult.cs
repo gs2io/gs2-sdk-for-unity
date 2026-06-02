@@ -19,22 +19,32 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2News.Result
 {
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzGetContentsUrlResult
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<Gs2.Unity.Gs2News.Model.EzSetCookieRequestEntry> Items;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string BrowserUrl;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string ZipUrl;
 
         public static EzGetContentsUrlResult FromModel(Gs2.Gs2News.Result.WantGrantResult model)

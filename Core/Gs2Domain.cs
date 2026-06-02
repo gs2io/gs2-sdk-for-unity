@@ -20,8 +20,10 @@ using Gs2.Core.Net;
 using Gs2.Core.Domain;
 using Gs2.Core.Model;
 using Gs2.Unity.Util;
-#if GS2_ENABLE_UNITASK
+#if UNITY_2017_1_OR_NEWER && GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
+#elif !UNITY_2017_1_OR_NEWER
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Core
@@ -174,6 +176,7 @@ namespace Gs2.Unity.Core
 
         public Gs2Connection Connection { get; private set; }
 
+#if UNITY_2017_1_OR_NEWER
         [Obsolete("The method of initializing the SDK has changed; use Gs2Client.Create().")]
         public Gs2Domain(
             Profile profile,
@@ -190,6 +193,7 @@ namespace Gs2.Unity.Core
         ) {
             
         }
+#endif
 
         private void Initialize(
             Gs2Connection connection
@@ -331,6 +335,7 @@ namespace Gs2.Unity.Core
         }
 #endif
 
+#if UNITY_2017_1_OR_NEWER
         public Gs2Future<bool> DispatchFuture(
             IGameSession gameSession
         )
@@ -339,17 +344,25 @@ namespace Gs2.Unity.Core
                 gameSession.AccessToken
             );
         }
+#endif
 
-#if GS2_ENABLE_UNITASK
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+    #if UNITY_2017_1_OR_NEWER
         public async UniTask DispatchAsync(
             IGameSession gameSession
         )
+    #else
+        public async Task DispatchAsync(
+            IGameSession gameSession
+        )
+    #endif
         {
             await this._gs2.DispatchAsync(
                 gameSession.AccessToken
             );
         }
 #endif
+#if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to DispatchFuture.")]
         public IFuture<bool> Dispatch(
             IGameSession gameSession
@@ -357,6 +370,7 @@ namespace Gs2.Unity.Core
         {
             return DispatchFuture(gameSession);
         }
+#endif
         
         public Gs2Future DisconnectFuture()
         {

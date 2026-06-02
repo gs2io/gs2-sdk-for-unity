@@ -40,13 +40,19 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
+    #endif
+#else
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2Account.Domain.Model
@@ -70,6 +76,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to AddPlatformIdSettingFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzPlatformIdGameSessionDomain> AddPlatformIdSetting(
             string userIdentifier
@@ -106,9 +113,14 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzPlatformIdGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzPlatformIdGameSessionDomain> AddPlatformIdSettingAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Account.Domain.Model.EzPlatformIdGameSessionDomain> AddPlatformIdSettingAsync(
+            #endif
             string userIdentifier
         ) {
             var result = await this._connection.RunAsync(
@@ -126,6 +138,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to FindPlatformUserFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Model.EzPlatformUser> FindPlatformUser(
             string userIdentifier
@@ -160,9 +173,14 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Model.EzPlatformUser>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Account.Model.EzPlatformUser> FindPlatformUserAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Account.Model.EzPlatformUser> FindPlatformUserAsync(
+            #endif
             string userIdentifier
         ) {
             var result = await this._connection.RunAsync(
@@ -178,6 +196,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to DeletePlatformIdSettingFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzPlatformIdGameSessionDomain> DeletePlatformIdSetting(
         )
@@ -210,9 +229,14 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzPlatformIdGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzPlatformIdGameSessionDomain> DeletePlatformIdSettingAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Account.Domain.Model.EzPlatformIdGameSessionDomain> DeletePlatformIdSettingAsync(
+            #endif
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -228,14 +252,20 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Model.EzPlatformId> Model()
         {
             return ModelFuture();
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Account.Model.EzPlatformId> ModelAsync()
+            #else
+        public async Task<Gs2.Unity.Gs2Account.Model.EzPlatformId> ModelAsync()
+            #endif
         {
             var item = await this._connection.RunAsync(
                 this._gameSession,
@@ -253,6 +283,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         public IFuture<Gs2.Unity.Gs2Account.Model.EzPlatformId> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Model.EzPlatformId> self)
@@ -279,6 +310,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Model.EzPlatformId>(Impl);
         }
+        #endif
 
         public void Invalidate()
         {

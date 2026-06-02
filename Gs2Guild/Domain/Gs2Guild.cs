@@ -41,13 +41,18 @@ using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
+#if UNITY_2017_1_OR_NEWER
 using System.Collections;
 using UnityEngine.Events;
 using UnityEngine.Scripting;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
+    #endif
+#else
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2Guild.Domain
@@ -75,41 +80,47 @@ namespace Gs2.Unity.Gs2Guild.Domain
                 this._connection
             );
         }
-
+    #if UNITY_2017_1_OR_NEWER
         public event UnityAction<ReceiveRequestNotification> OnReceiveRequestNotification
         {
             add => _domain.OnReceiveRequestNotification += value;
             remove => _domain.OnReceiveRequestNotification -= value;
         }
-
+    #endif
+    #if UNITY_2017_1_OR_NEWER
         public event UnityAction<RemoveRequestNotification> OnRemoveRequestNotification
         {
             add => _domain.OnRemoveRequestNotification += value;
             remove => _domain.OnRemoveRequestNotification -= value;
         }
-
+    #endif
+    #if UNITY_2017_1_OR_NEWER
         public event UnityAction<ChangeNotification> OnChangeNotification
         {
             add => _domain.OnChangeNotification += value;
             remove => _domain.OnChangeNotification -= value;
         }
-
+    #endif
+    #if UNITY_2017_1_OR_NEWER
         public event UnityAction<JoinNotification> OnJoinNotification
         {
             add => _domain.OnJoinNotification += value;
             remove => _domain.OnJoinNotification -= value;
         }
-
+    #endif
+    #if UNITY_2017_1_OR_NEWER
         public event UnityAction<LeaveNotification> OnLeaveNotification
         {
             add => _domain.OnLeaveNotification += value;
             remove => _domain.OnLeaveNotification -= value;
         }
-
+    #endif
+    #if UNITY_2017_1_OR_NEWER
         public event UnityAction<ChangeMemberNotification> OnChangeMemberNotification
         {
             add => _domain.OnChangeMemberNotification += value;
             remove => _domain.OnChangeMemberNotification -= value;
         }
+    #endif
     }
 }

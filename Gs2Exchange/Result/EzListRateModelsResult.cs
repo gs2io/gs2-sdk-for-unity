@@ -19,18 +19,24 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Exchange.Result
 {
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzListRateModelsResult
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<Gs2.Unity.Gs2Exchange.Model.EzRateModel> Items;
 
         public static EzListRateModelsResult FromModel(Gs2.Gs2Exchange.Result.DescribeRateModelsResult model)

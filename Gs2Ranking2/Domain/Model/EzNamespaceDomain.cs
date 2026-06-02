@@ -39,13 +39,19 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
+    #endif
+#else
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2Ranking2.Domain.Model
@@ -69,6 +75,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
         public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingModel> GlobalRankingModels(
         )
         {
@@ -77,8 +84,10 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
                 this._connection
             );
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingModel> GlobalRankingModelsAsync(
         )
         {
@@ -111,6 +120,37 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
                 }
             });
         }
+            #else
+        public async IAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingModel> GlobalRankingModelsAsync(
+        )
+        {
+            var it = _domain.GlobalRankingModelsAsync(
+            ).GetAsyncEnumerator();
+            try
+            {
+                while(
+                    await this._connection.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.GlobalRankingModelsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    yield return it.Current == null ? null : Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingModel.FromModel(it.Current);
+                }
+            }
+            finally
+            {
+                await it.DisposeAsync();
+            }
+        }
+            #endif
         #endif
 
         public ulong SubscribeGlobalRankingModels(
@@ -137,6 +177,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             );
         }
 
+        #if UNITY_2017_1_OR_NEWER
         public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingModel> ClusterRankingModels(
         )
         {
@@ -145,8 +186,10 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
                 this._connection
             );
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingModel> ClusterRankingModelsAsync(
         )
         {
@@ -179,6 +222,37 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
                 }
             });
         }
+            #else
+        public async IAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingModel> ClusterRankingModelsAsync(
+        )
+        {
+            var it = _domain.ClusterRankingModelsAsync(
+            ).GetAsyncEnumerator();
+            try
+            {
+                while(
+                    await this._connection.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.ClusterRankingModelsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    yield return it.Current == null ? null : Gs2.Unity.Gs2Ranking2.Model.EzClusterRankingModel.FromModel(it.Current);
+                }
+            }
+            finally
+            {
+                await it.DisposeAsync();
+            }
+        }
+            #endif
         #endif
 
         public ulong SubscribeClusterRankingModels(
@@ -205,6 +279,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             );
         }
 
+        #if UNITY_2017_1_OR_NEWER
         public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzSubscribeRankingModel> SubscribeRankingModels(
         )
         {
@@ -213,8 +288,10 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
                 this._connection
             );
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzSubscribeRankingModel> SubscribeRankingModelsAsync(
         )
         {
@@ -247,6 +324,37 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
                 }
             });
         }
+            #else
+        public async IAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzSubscribeRankingModel> SubscribeRankingModelsAsync(
+        )
+        {
+            var it = _domain.SubscribeRankingModelsAsync(
+            ).GetAsyncEnumerator();
+            try
+            {
+                while(
+                    await this._connection.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.SubscribeRankingModelsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    yield return it.Current == null ? null : Gs2.Unity.Gs2Ranking2.Model.EzSubscribeRankingModel.FromModel(it.Current);
+                }
+            }
+            finally
+            {
+                await it.DisposeAsync();
+            }
+        }
+            #endif
         #endif
 
         public ulong SubscribeSubscribeRankingModels(

@@ -27,20 +27,19 @@ using Gs2.Unity.Util;
 
 namespace Gs2.Unity.Gs2Guild.Domain.Model
 {
-    public static class EzNamespaceDomainExt
+    public partial class EzNamespaceDomain
     {
-        public static EzGuildGameSessionDomain GuildGameSession(
-            this EzNamespaceDomain self,
+        public EzGuildGameSessionDomain GuildGameSession(
             string guildModelName,
             GuildGameSession guildGameSession
         ) {
             return new Gs2.Unity.Gs2Guild.Domain.Model.EzGuildGameSessionDomain(
-                self._domain.GuildAccessToken(
+                _domain.GuildAccessToken(
                     guildModelName,
                     guildGameSession.AccessToken
                 ),
                 guildGameSession,
-                self._connection
+                _connection
             );
         }
     }

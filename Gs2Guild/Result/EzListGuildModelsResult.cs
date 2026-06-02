@@ -19,18 +19,24 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Guild.Result
 {
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzListGuildModelsResult
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<Gs2.Unity.Gs2Guild.Model.EzGuildModel> Items;
 
         public static EzListGuildModelsResult FromModel(Gs2.Gs2Guild.Result.DescribeGuildModelsResult model)

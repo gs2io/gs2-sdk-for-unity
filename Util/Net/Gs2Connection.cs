@@ -6,9 +6,13 @@ using Gs2.Core.Exception;
 using Gs2.Core.Model;
 using Gs2.Core.Net;
 using Gs2.Core.Result;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Events;
-#if GS2_ENABLE_UNITASK
+#endif
+#if UNITY_2017_1_OR_NEWER && GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
+#elif !UNITY_2017_1_OR_NEWER
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Util
@@ -64,8 +68,12 @@ namespace Gs2.Unity.Util
             return new Gs2InlineFuture<OpenResult>(Impl);
         }
         
-#if GS2_ENABLE_UNITASK
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+    #if UNITY_2017_1_OR_NEWER
         public async UniTask<OpenResult> ConnectAsync() {
+    #else
+        public async Task<OpenResult> ConnectAsync() {
+    #endif
             await this.RestSession.ReOpenAsync();
             await this.WebSocketSession.ReOpenAsync();
             return new OpenResult();
@@ -99,13 +107,17 @@ namespace Gs2.Unity.Util
             return new Gs2InlineFuture(Impl);
         }
         
-#if GS2_ENABLE_UNITASK
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+    #if UNITY_2017_1_OR_NEWER
         public async UniTask DisconnectAsync() {
+    #else
+        public async Task DisconnectAsync() {
+    #endif
             await this.RestSession.CloseAsync();
             await this.WebSocketSession.CloseAsync();
         }
 #endif
-        
+
         public delegate IFuture<T> RetryAction<T>();
         
         public Gs2Future<T> RunFuture<T>(
@@ -173,8 +185,9 @@ namespace Gs2.Unity.Util
             return new Gs2InlineFuture<T>(Impl);
         }
 
+#if UNITY_2017_1_OR_NEWER
         public delegate IEnumerator RequestAction<T>(UnityAction<AsyncResult<T>> callback);
-        
+
         public IEnumerator Run<T>(
             UnityAction<AsyncResult<T>> callback,
             IGameSession gameSession,
@@ -240,13 +253,21 @@ namespace Gs2.Unity.Util
             
             callback.Invoke(asyncResult);
         }
+#endif
 
-#if GS2_ENABLE_UNITASK
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
 
+    #if UNITY_2017_1_OR_NEWER
         public async UniTask<T> RunAsync<T>(
             IGameSession gameSession,
             Func<UniTask<T>> requestActionAsync
         )
+    #else
+        public async Task<T> RunAsync<T>(
+            IGameSession gameSession,
+            Func<Task<T>> requestActionAsync
+        )
+    #endif
         {
             var isReopenTried = false;
             var isAuthenticationTried = false;
@@ -343,14 +364,21 @@ namespace Gs2.Unity.Util
             }
         }
 
-#if GS2_ENABLE_UNITASK
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
 
         public delegate void RetryAction();
-        
+
+    #if UNITY_2017_1_OR_NEWER
         public async UniTask<bool> RunIteratorAsync(
             IGameSession gameSession,
             Func<UniTask<bool>> requestActionAsync,
             RetryAction retryAction)
+    #else
+        public async Task<bool> RunIteratorAsync(
+            IGameSession gameSession,
+            Func<Task<bool>> requestActionAsync,
+            RetryAction retryAction)
+    #endif
         {
             var isReopenTried = false;
             var isAuthenticationTried = false;

@@ -20,21 +20,29 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Lottery.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzProbability
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public Gs2.Unity.Gs2Lottery.Model.EzDrawnPrize Prize;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public float Rate;
 
         public Gs2.Gs2Lottery.Model.Probability ToModel()

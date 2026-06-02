@@ -16,8 +16,10 @@
 
 using Gs2.Core.Domain;
 using Gs2.Gs2Auth.Model;
-#if GS2_ENABLE_UNITASK
+#if UNITY_2017_1_OR_NEWER && GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
+#elif !UNITY_2017_1_OR_NEWER
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Util
@@ -28,15 +30,23 @@ namespace Gs2.Unity.Util
         public AccessToken AccessToken { get; }
 
         public Gs2Future RefreshFuture();
-        
-#if GS2_ENABLE_UNITASK
+
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+    #if UNITY_2017_1_OR_NEWER
         public UniTask RefreshAsync();
+    #else
+        public Task RefreshAsync();
+    #endif
 #endif
 
         public Gs2Future<bool> RefreshIfNeedRefreshFuture();
-        
-#if GS2_ENABLE_UNITASK
+
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+    #if UNITY_2017_1_OR_NEWER
         public UniTask<bool> RefreshIfNeedRefreshAsync();
+    #else
+        public Task<bool> RefreshIfNeedRefreshAsync();
+    #endif
 #endif
     }
 }

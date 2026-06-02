@@ -20,27 +20,41 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Distributor.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzStampSheetResult
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string TransactionId;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<Gs2.Unity.Core.Model.EzConsumeAction> TaskRequests;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public Gs2.Unity.Core.Model.EzAcquireAction SheetRequest;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<string> TaskResults;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string SheetResult;
 
         public Gs2.Gs2Distributor.Model.StampSheetResult ToModel()

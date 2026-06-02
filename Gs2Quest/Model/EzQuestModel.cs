@@ -20,37 +20,61 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Quest.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzQuestModel
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string QuestModelId;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Name;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Metadata;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<Gs2.Unity.Gs2Quest.Model.EzContents> Contents;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string ChallengePeriodEventId;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<Gs2.Unity.Core.Model.EzAcquireAction> FirstCompleteAcquireActions;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<Gs2.Unity.Core.Model.EzVerifyAction> VerifyActions;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<Gs2.Unity.Core.Model.EzConsumeAction> ConsumeActions;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<Gs2.Unity.Core.Model.EzAcquireAction> FailedAcquireActions;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<string> PremiseQuestNames;
 
         public Gs2.Gs2Quest.Model.QuestModel ToModel()

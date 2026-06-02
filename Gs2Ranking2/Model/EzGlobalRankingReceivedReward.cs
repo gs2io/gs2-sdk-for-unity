@@ -20,25 +20,37 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Ranking2.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzGlobalRankingReceivedReward
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string RankingName;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public long Season;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string UserId;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public long ReceivedAt;
 
         public Gs2.Gs2Ranking2.Model.GlobalRankingReceivedReward ToModel()

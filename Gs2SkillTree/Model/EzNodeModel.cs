@@ -20,29 +20,45 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2SkillTree.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzNodeModel
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Name;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Metadata;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<Gs2.Unity.Core.Model.EzVerifyAction> ReleaseVerifyActions;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<Gs2.Unity.Core.Model.EzConsumeAction> ReleaseConsumeActions;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<Gs2.Unity.Core.Model.EzAcquireAction> ReturnAcquireActions;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public float RestrainReturnRate;
 
         public Gs2.Gs2SkillTree.Model.NodeModel ToModel()

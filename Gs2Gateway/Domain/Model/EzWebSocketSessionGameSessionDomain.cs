@@ -40,13 +40,19 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
+    #endif
+#else
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2Gateway.Domain.Model
@@ -70,6 +76,7 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to SetUserIdFuture.")]
         public IFuture<Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain> SetUserId(
             bool? allowConcurrentAccess = null,
@@ -110,9 +117,14 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain> SetUserIdAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain> SetUserIdAsync(
+            #endif
             bool? allowConcurrentAccess = null,
             string? sessionId = null
         ) {
@@ -132,14 +144,20 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> Model()
         {
             return ModelFuture();
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> ModelAsync()
+            #else
+        public async Task<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> ModelAsync()
+            #endif
         {
             var item = await this._connection.RunAsync(
                 this._gameSession,
@@ -157,6 +175,7 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         public IFuture<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession> self)
@@ -183,6 +202,7 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Gateway.Model.EzWebSocketSession>(Impl);
         }
+        #endif
 
         public void Invalidate()
         {

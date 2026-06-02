@@ -40,13 +40,19 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
+    #endif
+#else
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2Schedule.Domain.Model
@@ -70,6 +76,7 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
         public Gs2Iterator<Gs2.Unity.Gs2Schedule.Model.EzTrigger> Triggers(
         )
         {
@@ -79,8 +86,10 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
                 this._connection
             );
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Schedule.Model.EzTrigger> TriggersAsync(
         )
         {
@@ -113,6 +122,37 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
                 }
             });
         }
+            #else
+        public async IAsyncEnumerable<Gs2.Unity.Gs2Schedule.Model.EzTrigger> TriggersAsync(
+        )
+        {
+            var it = _domain.TriggersAsync(
+            ).GetAsyncEnumerator();
+            try
+            {
+                while(
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.TriggersAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    yield return it.Current == null ? null : Gs2.Unity.Gs2Schedule.Model.EzTrigger.FromModel(it.Current);
+                }
+            }
+            finally
+            {
+                await it.DisposeAsync();
+            }
+        }
+            #endif
         #endif
 
         public ulong SubscribeTriggers(
@@ -139,6 +179,7 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
             );
         }
 
+        #if UNITY_2017_1_OR_NEWER
         public Gs2Iterator<Gs2.Unity.Gs2Schedule.Model.EzEvent> Events(
         )
         {
@@ -148,8 +189,10 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
                 this._connection
             );
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Schedule.Model.EzEvent> EventsAsync(
         )
         {
@@ -182,6 +225,37 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
                 }
             });
         }
+            #else
+        public async IAsyncEnumerable<Gs2.Unity.Gs2Schedule.Model.EzEvent> EventsAsync(
+        )
+        {
+            var it = _domain.EventsAsync(
+            ).GetAsyncEnumerator();
+            try
+            {
+                while(
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.EventsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    yield return it.Current == null ? null : Gs2.Unity.Gs2Schedule.Model.EzEvent.FromModel(it.Current);
+                }
+            }
+            finally
+            {
+                await it.DisposeAsync();
+            }
+        }
+            #endif
         #endif
 
         public ulong SubscribeEvents(

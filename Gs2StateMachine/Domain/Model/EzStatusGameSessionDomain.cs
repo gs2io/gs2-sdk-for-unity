@@ -38,13 +38,19 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
+    #endif
+#else
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2StateMachine.Domain.Model
@@ -68,6 +74,7 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to EmitFuture.")]
         public IFuture<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> Emit(
             string eventName,
@@ -108,9 +115,14 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> EmitAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> EmitAsync(
+            #endif
             string eventName,
             string? args = null
         ) {
@@ -130,6 +142,7 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ReportFuture.")]
         public IFuture<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> Report(
             Gs2.Unity.Gs2StateMachine.Model.EzEvent[] events = null
@@ -166,9 +179,14 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> ReportAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> ReportAsync(
+            #endif
             Gs2.Unity.Gs2StateMachine.Model.EzEvent[] events = null
         ) {
             var result = await this._connection.RunAsync(
@@ -186,6 +204,7 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ExitFuture.")]
         public IFuture<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> Exit(
         )
@@ -218,9 +237,14 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> ExitAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2StateMachine.Domain.Model.EzStatusGameSessionDomain> ExitAsync(
+            #endif
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -236,14 +260,20 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2StateMachine.Model.EzStatus> Model()
         {
             return ModelFuture();
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2StateMachine.Model.EzStatus> ModelAsync()
+            #else
+        public async Task<Gs2.Unity.Gs2StateMachine.Model.EzStatus> ModelAsync()
+            #endif
         {
             var item = await this._connection.RunAsync(
                 this._gameSession,
@@ -261,6 +291,7 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         public IFuture<Gs2.Unity.Gs2StateMachine.Model.EzStatus> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2StateMachine.Model.EzStatus> self)
@@ -287,6 +318,7 @@ namespace Gs2.Unity.Gs2StateMachine.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2StateMachine.Model.EzStatus>(Impl);
         }
+        #endif
 
         public void Invalidate()
         {

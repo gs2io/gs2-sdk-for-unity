@@ -40,13 +40,19 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
+    #endif
+#else
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2Account.Domain.Model
@@ -70,6 +76,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to AddTakeOverSettingFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> AddTakeOverSetting(
             string userIdentifier,
@@ -110,10 +117,15 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> AddTakeOverSettingAsync(
-              string userIdentifier,
+            #else
+        public async Task<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> AddTakeOverSettingAsync(
+            #endif
+            string userIdentifier,
             string password
         ) {
             var result = await this._connection.RunAsync(
@@ -132,6 +144,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to AddTakeOverSettingOpenIdConnectFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> AddTakeOverSettingOpenIdConnect(
             string idToken
@@ -168,9 +181,14 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> AddTakeOverSettingOpenIdConnectAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> AddTakeOverSettingOpenIdConnectAsync(
+            #endif
             string idToken
         ) {
             var result = await this._connection.RunAsync(
@@ -188,6 +206,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to UpdateTakeOverSettingFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> UpdateTakeOverSetting(
             string oldPassword,
@@ -228,9 +247,14 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> UpdateTakeOverSettingAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> UpdateTakeOverSettingAsync(
+            #endif
             string oldPassword,
             string password
         ) {
@@ -250,6 +274,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to DeleteTakeOverSettingFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> DeleteTakeOverSetting(
         )
@@ -282,9 +307,14 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> DeleteTakeOverSettingAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> DeleteTakeOverSettingAsync(
+            #endif
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -300,14 +330,20 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Model.EzTakeOver> Model()
         {
             return ModelFuture();
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Account.Model.EzTakeOver> ModelAsync()
+            #else
+        public async Task<Gs2.Unity.Gs2Account.Model.EzTakeOver> ModelAsync()
+            #endif
         {
             var item = await this._connection.RunAsync(
                 this._gameSession,
@@ -325,6 +361,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         public IFuture<Gs2.Unity.Gs2Account.Model.EzTakeOver> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Model.EzTakeOver> self)
@@ -351,6 +388,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Model.EzTakeOver>(Impl);
         }
+        #endif
 
         public void Invalidate()
         {

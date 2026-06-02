@@ -20,37 +20,61 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2StateMachine.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzStatus
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string StatusId;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Name;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string EnableSpeculativeExecution;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string StateMachineDefinition;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public Gs2.Unity.Gs2StateMachine.Model.EzRandomStatus RandomStatus;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<Gs2.Unity.Gs2StateMachine.Model.EzStackEntry> Stacks;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<Gs2.Unity.Gs2StateMachine.Model.EzVariable> Variables;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Status;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string LastError;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int TransitionCount;
 
         public Gs2.Gs2StateMachine.Model.Status ToModel()

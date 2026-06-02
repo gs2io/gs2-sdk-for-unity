@@ -12,6 +12,8 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -39,13 +41,19 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
+    #endif
+#else
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2Account.Domain.Model
@@ -70,6 +78,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to CreateFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> Create(
         )
@@ -101,9 +110,14 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> CreateAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> CreateAsync(
+            #endif
         ) {
             var result = await this._connection.RunAsync(
                 null,
@@ -118,6 +132,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to DoTakeOverFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOver(
             int type,
@@ -161,9 +176,14 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOverAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOverAsync(
+            #endif
             int type,
             string userIdentifier,
             string password
@@ -184,6 +204,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to DoTakeOverOpenIdConnectFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOverOpenIdConnect(
             int type,
@@ -223,9 +244,14 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOverOpenIdConnectAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOverOpenIdConnectAsync(
+            #endif
             int type,
             string idToken
         ) {
@@ -244,6 +270,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
         #endif
         
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to GetAuthorizationUrlFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzNamespaceDomain> GetAuthorizationUrl(
             int type
@@ -280,8 +307,14 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzNamespaceDomain>(Impl);
         }
 
-#if GS2_ENABLE_UNITASK
+        #endif
+
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzNamespaceDomain> GetAuthorizationUrlAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Account.Domain.Model.EzNamespaceDomain> GetAuthorizationUrlAsync(
+            #endif
             int type
         ) {
             var result = await this._connection.RunAsync(
@@ -296,7 +329,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                 this._connection
             );
         }
-#endif
+        #endif
 
         public Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain Account(
             string userId

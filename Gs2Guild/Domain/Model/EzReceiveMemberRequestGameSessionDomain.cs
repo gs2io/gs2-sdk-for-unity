@@ -40,13 +40,19 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
+    #endif
+#else
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2Guild.Domain.Model
@@ -71,26 +77,11 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
             this._connection = connection;
         }
 
-        #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Guild.Domain.Model.EzReceiveMemberRequestGameSessionDomain> AcceptAsync(
-        ) {
-            var result = await this._connection.RunAsync(
-                this._gameSession,
-                () => this._domain.AcceptAsync(
-                    new AcceptRequestRequest()
-                )
-            );
-            return new Gs2.Unity.Gs2Guild.Domain.Model.EzReceiveMemberRequestGameSessionDomain(
-                result,
-                this._gameSession,
-                this._connection
-            );
-        }
-        #endif
-
+        #if UNITY_2017_1_OR_NEWER
         public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzReceiveMemberRequestGameSessionDomain> AcceptFuture(
-        ) {
-            IEnumerator Impl(IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzReceiveMemberRequestGameSessionDomain> self)
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Guild.Domain.Model.EzReceiveMemberRequestGameSessionDomain> self)
             {
                 var future = this._connection.RunFuture(
                     this._gameSession,
@@ -111,14 +102,19 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzReceiveMemberRequestGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
-        public async UniTask<Gs2.Unity.Gs2Guild.Domain.Model.EzReceiveMemberRequestGameSessionDomain> RejectAsync(
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
+        public async UniTask<Gs2.Unity.Gs2Guild.Domain.Model.EzReceiveMemberRequestGameSessionDomain> AcceptAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Guild.Domain.Model.EzReceiveMemberRequestGameSessionDomain> AcceptAsync(
+            #endif
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
-                () => this._domain.RejectAsync(
-                    new RejectRequestRequest()
+                () => this._domain.AcceptAsync(
+                    new AcceptRequestRequest()
                 )
             );
             return new Gs2.Unity.Gs2Guild.Domain.Model.EzReceiveMemberRequestGameSessionDomain(
@@ -129,9 +125,11 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         public IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzReceiveMemberRequestGameSessionDomain> RejectFuture(
-        ) {
-            IEnumerator Impl(IFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzReceiveMemberRequestGameSessionDomain> self)
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Guild.Domain.Model.EzReceiveMemberRequestGameSessionDomain> self)
             {
                 var future = this._connection.RunFuture(
                     this._gameSession,
@@ -152,15 +150,43 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Guild.Domain.Model.EzReceiveMemberRequestGameSessionDomain>(Impl);
         }
+        #endif
 
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
+        public async UniTask<Gs2.Unity.Gs2Guild.Domain.Model.EzReceiveMemberRequestGameSessionDomain> RejectAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Guild.Domain.Model.EzReceiveMemberRequestGameSessionDomain> RejectAsync(
+            #endif
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.RejectAsync(
+                    new RejectRequestRequest()
+                )
+            );
+            return new Gs2.Unity.Gs2Guild.Domain.Model.EzReceiveMemberRequestGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Guild.Model.EzReceiveMemberRequest> Model()
         {
             return ModelFuture();
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Guild.Model.EzReceiveMemberRequest> ModelAsync()
+            #else
+        public async Task<Gs2.Unity.Gs2Guild.Model.EzReceiveMemberRequest> ModelAsync()
+            #endif
         {
             var item = await this._connection.RunAsync(
                 this._gameSession,
@@ -178,6 +204,7 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         public IFuture<Gs2.Unity.Gs2Guild.Model.EzReceiveMemberRequest> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Guild.Model.EzReceiveMemberRequest> self)
@@ -204,6 +231,7 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Guild.Model.EzReceiveMemberRequest>(Impl);
         }
+        #endif
 
         public void Invalidate()
         {

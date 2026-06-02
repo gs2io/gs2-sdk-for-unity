@@ -20,21 +20,29 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Enhance.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzUnleashRateEntryModel
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public long GradeValue;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int NeedCount;
 
         public Gs2.Gs2Enhance.Model.UnleashRateEntryModel ToModel()

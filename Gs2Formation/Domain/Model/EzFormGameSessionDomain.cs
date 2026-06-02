@@ -38,13 +38,19 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
+    #endif
+#else
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2Formation.Domain.Model
@@ -71,6 +77,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to GetFormWithSignatureFuture.")]
         public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> GetFormWithSignature(
             string keyId = null
@@ -107,9 +114,14 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> GetFormWithSignatureAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> GetFormWithSignatureAsync(
+            #endif
             string keyId = null
         ) {
             var result = await this._connection.RunAsync(
@@ -127,6 +139,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to SetFormFuture.")]
         public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> SetForm(
             Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature[] slots,
@@ -167,9 +180,14 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> SetFormAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> SetFormAsync(
+            #endif
             Gs2.Unity.Gs2Formation.Model.EzSlotWithSignature[] slots,
             string keyId = null
         ) {
@@ -189,6 +207,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to DeleteFormFuture.")]
         public IFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> DeleteForm(
         )
@@ -221,9 +240,14 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> DeleteFormAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Formation.Domain.Model.EzFormGameSessionDomain> DeleteFormAsync(
+            #endif
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -239,14 +263,20 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Formation.Model.EzForm> Model()
         {
             return ModelFuture();
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Formation.Model.EzForm> ModelAsync()
+            #else
+        public async Task<Gs2.Unity.Gs2Formation.Model.EzForm> ModelAsync()
+            #endif
         {
             var item = await this._connection.RunAsync(
                 this._gameSession,
@@ -264,6 +294,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         public IFuture<Gs2.Unity.Gs2Formation.Model.EzForm> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Formation.Model.EzForm> self)
@@ -290,6 +321,7 @@ namespace Gs2.Unity.Gs2Formation.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Formation.Model.EzForm>(Impl);
         }
+        #endif
 
         public void Invalidate()
         {

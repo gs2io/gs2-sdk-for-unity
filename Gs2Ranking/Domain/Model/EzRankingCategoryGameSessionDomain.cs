@@ -38,13 +38,19 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
+    #endif
+#else
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2Ranking.Domain.Model
@@ -71,6 +77,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to SubscribeFuture.")]
         public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> Subscribe(
             string targetUserId
@@ -107,9 +114,14 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> SubscribeAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Ranking.Domain.Model.EzSubscribeUserGameSessionDomain> SubscribeAsync(
+            #endif
             string targetUserId
         ) {
             var result = await this._connection.RunAsync(
@@ -127,6 +139,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to PutScoreFuture.")]
         public IFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain> PutScore(
             long score,
@@ -167,9 +180,14 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain> PutScoreAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Ranking.Domain.Model.EzScoreGameSessionDomain> PutScoreAsync(
+            #endif
             long score,
             string? metadata = null
         ) {
@@ -189,6 +207,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         public Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> SubscribeUsers(
         )
         {
@@ -198,8 +217,10 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 this._connection
             );
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> SubscribeUsersAsync(
         )
         {
@@ -232,6 +253,37 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 }
             });
         }
+            #else
+        public async IAsyncEnumerable<Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser> SubscribeUsersAsync(
+        )
+        {
+            var it = _domain.SubscribeUsersAsync(
+            ).GetAsyncEnumerator();
+            try
+            {
+                while(
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.SubscribeUsersAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    yield return it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzSubscribeUser.FromModel(it.Current);
+                }
+            }
+            finally
+            {
+                await it.DisposeAsync();
+            }
+        }
+            #endif
         #endif
 
         public ulong SubscribeSubscribeUsers(
@@ -258,6 +310,7 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
             );
         }
 
+        #if UNITY_2017_1_OR_NEWER
         public Gs2Iterator<Gs2.Unity.Gs2Ranking.Model.EzRanking> Rankings(
         )
         {
@@ -267,8 +320,10 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 this._connection
             );
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking.Model.EzRanking> RankingsAsync(
         )
         {
@@ -301,6 +356,37 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
                 }
             });
         }
+            #else
+        public async IAsyncEnumerable<Gs2.Unity.Gs2Ranking.Model.EzRanking> RankingsAsync(
+        )
+        {
+            var it = _domain.RankingsAsync(
+            ).GetAsyncEnumerator();
+            try
+            {
+                while(
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.RankingsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    yield return it.Current == null ? null : Gs2.Unity.Gs2Ranking.Model.EzRanking.FromModel(it.Current);
+                }
+            }
+            finally
+            {
+                await it.DisposeAsync();
+            }
+        }
+            #endif
         #endif
 
         public ulong SubscribeRankings(

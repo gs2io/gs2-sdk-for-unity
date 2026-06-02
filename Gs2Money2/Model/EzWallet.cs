@@ -20,25 +20,37 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Money2.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzWallet
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int Slot;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public Gs2.Unity.Gs2Money2.Model.EzWalletSummary Summary;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public bool SharedFreeCurrency;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public long UpdatedAt;
 
         public Gs2.Gs2Money2.Model.Wallet ToModel()

@@ -41,13 +41,19 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
+    #endif
+#else
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2Account.Domain.Model
@@ -59,6 +65,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         public Gs2.Unity.Gs2Account.Model.EzBanStatus[] BanStatuses => _domain.BanStatuses.Select(Gs2.Unity.Gs2Account.Model.EzBanStatus.FromModel).ToArray();
         public string? Body => _domain.Body;
         public string? Signature => _domain.Signature;
+        public string? AuthorizationUrl => _domain.AuthorizationUrl;
         public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
@@ -71,6 +78,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to AuthenticationFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> Authentication(
             string password,
@@ -110,9 +118,14 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> AuthenticationAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> AuthenticationAsync(
+            #endif
             string password,
             string keyId = null
         ) {
@@ -153,14 +166,20 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             );
         }
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Model.EzAccount> Model()
         {
             return ModelFuture();
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Account.Model.EzAccount> ModelAsync()
+            #else
+        public async Task<Gs2.Unity.Gs2Account.Model.EzAccount> ModelAsync()
+            #endif
         {
             var item = await this._connection.RunAsync(
                 null,
@@ -178,6 +197,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         public IFuture<Gs2.Unity.Gs2Account.Model.EzAccount> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Model.EzAccount> self)
@@ -204,6 +224,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Model.EzAccount>(Impl);
         }
+        #endif
 
         public void Invalidate()
         {

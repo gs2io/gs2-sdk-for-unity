@@ -20,37 +20,61 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2LoginReward.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzBonusModel
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Name;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Metadata;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Mode;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string PeriodEventId;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int ResetHour;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Repeat;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<Gs2.Unity.Gs2LoginReward.Model.EzReward> Rewards;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string MissedReceiveRelief;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<Gs2.Unity.Core.Model.EzVerifyAction> MissedReceiveReliefVerifyActions;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<Gs2.Unity.Core.Model.EzConsumeAction> MissedReceiveReliefConsumeActions;
 
         public Gs2.Gs2LoginReward.Model.BonusModel ToModel()

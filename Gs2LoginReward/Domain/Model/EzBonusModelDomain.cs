@@ -39,13 +39,19 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
+    #endif
+#else
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2LoginReward.Domain.Model
@@ -65,14 +71,20 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2LoginReward.Model.EzBonusModel> Model()
         {
             return ModelFuture();
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2LoginReward.Model.EzBonusModel> ModelAsync()
+            #else
+        public async Task<Gs2.Unity.Gs2LoginReward.Model.EzBonusModel> ModelAsync()
+            #endif
         {
             var item = await this._connection.RunAsync(
                 null,
@@ -90,6 +102,7 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         public IFuture<Gs2.Unity.Gs2LoginReward.Model.EzBonusModel> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2LoginReward.Model.EzBonusModel> self)
@@ -116,6 +129,7 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2LoginReward.Model.EzBonusModel>(Impl);
         }
+        #endif
 
         public void Invalidate()
         {

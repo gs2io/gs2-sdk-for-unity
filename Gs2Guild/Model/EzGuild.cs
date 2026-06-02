@@ -20,41 +20,69 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Guild.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzGuild
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string GuildModelName;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Name;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string DisplayName;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int Attribute1;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int Attribute2;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int Attribute3;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int Attribute4;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int Attribute5;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Metadata;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string JoinPolicy;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<Gs2.Unity.Gs2Guild.Model.EzRoleModel> CustomRoles;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<Gs2.Unity.Gs2Guild.Model.EzMember> Members;
 
         public Gs2.Gs2Guild.Model.Guild ToModel()

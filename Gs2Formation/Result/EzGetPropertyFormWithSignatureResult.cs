@@ -19,24 +19,36 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Formation.Result
 {
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzGetPropertyFormWithSignatureResult
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public Gs2.Unity.Gs2Formation.Model.EzPropertyForm Item;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Body;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Signature;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public Gs2.Unity.Gs2Formation.Model.EzPropertyFormModel PropertyFormModel;
 
         public static EzGetPropertyFormWithSignatureResult FromModel(Gs2.Gs2Formation.Result.GetPropertyFormWithSignatureResult model)

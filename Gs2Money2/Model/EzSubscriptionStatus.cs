@@ -20,27 +20,41 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Money2.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzSubscriptionStatus
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string ContentName;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string UserId;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Status;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public long ExpiresAt;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<Gs2.Unity.Gs2Money2.Model.EzSubscribeTransaction> Detail;
 
         public Gs2.Gs2Money2.Model.SubscriptionStatus ToModel()

@@ -20,29 +20,45 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2News.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzNews
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Section;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Content;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Title;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string ScheduleEventId;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public long Timestamp;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string FrontMatter;
 
         public Gs2.Gs2News.Model.News ToModel()

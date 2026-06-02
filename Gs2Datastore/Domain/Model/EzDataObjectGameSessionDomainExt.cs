@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if GS2_ENABLE_UNITASK
+#if UNITY_2017_1_OR_NEWER && GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
+#elif !UNITY_2017_1_OR_NEWER
+using System.Threading.Tasks;
 #endif
 using Gs2.Core;
 using Gs2.Core.Domain;
@@ -10,13 +12,16 @@ using Gs2.Core.Net;
 using Gs2.Gs2Datastore.Request;
 using Gs2.Unity.Gs2Datastore.Model;
 using Gs2.Unity.Gs2Datastore.Result;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Events;
+#endif
 
 namespace Gs2.Unity.Gs2Datastore.Domain.Model
 {
 
     public partial class EzDataObjectGameSessionDomain {
 
+#if UNITY_2017_1_OR_NEWER
         public Gs2Future<byte[]> DownloadFuture(
         )
         {
@@ -39,10 +44,16 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             }
             return new Gs2InlineFuture<byte[]>(Impl);
         }
+#endif
 
-#if GS2_ENABLE_UNITASK
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+    #if UNITY_2017_1_OR_NEWER
         public async UniTask<byte[]> DownloadAsync(
         )
+    #else
+        public async Task<byte[]> DownloadAsync(
+        )
+    #endif
         {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -54,12 +65,15 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             return result;
         }
 #endif
+#if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to DownloadFuture.")]
         public IFuture<byte[]> Download()
         {
             return DownloadFuture();
         }
+#endif
 
+#if UNITY_2017_1_OR_NEWER
         public Gs2Future<byte[]> DownloadOwnFuture(
         )
         {
@@ -82,10 +96,16 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             }
             return new Gs2InlineFuture<byte[]>(Impl);
         }
+#endif
 
-#if GS2_ENABLE_UNITASK
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+    #if UNITY_2017_1_OR_NEWER
         public async UniTask<byte[]> DownloadOwnAsync(
         )
+    #else
+        public async Task<byte[]> DownloadOwnAsync(
+        )
+    #endif
         {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -97,12 +117,15 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             return result;
         }
 #endif
+#if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to DownloadOwn.")]
         public IFuture<byte[]> DownloadOwn()
         {
             return DownloadOwnFuture();
         }
+#endif
 
+#if UNITY_2017_1_OR_NEWER
         public Gs2Future<EzDataObjectGameSessionDomain> ReUploadFuture(
             byte[] data
         )
@@ -132,11 +155,18 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             }
             return new Gs2InlineFuture<EzDataObjectGameSessionDomain>(Impl);
         }
+#endif
 
-#if GS2_ENABLE_UNITASK
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+    #if UNITY_2017_1_OR_NEWER
         public async UniTask<EzDataObjectGameSessionDomain> ReUploadAsync(
             byte[] data
         )
+    #else
+        public async Task<EzDataObjectGameSessionDomain> ReUploadAsync(
+            byte[] data
+        )
+    #endif
         {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -154,6 +184,7 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
             );
         }
 #endif
+#if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ReUploadFuture.")]
         public IFuture<EzDataObjectGameSessionDomain> ReUpload(
             byte[] data
@@ -161,5 +192,6 @@ namespace Gs2.Unity.Gs2Datastore.Domain.Model
         {
             return ReUploadFuture(data);
         }
+#endif
     }
 }

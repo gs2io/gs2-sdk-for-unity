@@ -2,8 +2,10 @@ using System.Collections;
 using Gs2.Core.Domain;
 using Gs2.Core.Net;
 
-#if GS2_ENABLE_UNITASK
+#if UNITY_2017_1_OR_NEWER && GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
+#elif !UNITY_2017_1_OR_NEWER
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Core.Domain
@@ -20,6 +22,7 @@ namespace Gs2.Unity.Core.Domain
             this._domain = domain;
         }
         
+#if UNITY_2017_1_OR_NEWER
         public IFuture<EzTransactionDomain> WaitFuture(bool all = false) {
             IEnumerator Impl(IFuture<EzTransactionDomain> self) {
                 var future = this._domain.WaitFuture(all);
@@ -32,9 +35,14 @@ namespace Gs2.Unity.Core.Domain
             }
             return new Gs2InlineFuture<EzTransactionDomain>(Impl);
         }
-        
-#if GS2_ENABLE_UNITASK
+#endif
+
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+    #if UNITY_2017_1_OR_NEWER
         public async UniTask<EzTransactionDomain> WaitAsync(bool all = false) {
+    #else
+        public async Task<EzTransactionDomain> WaitAsync(bool all = false) {
+    #endif
             var next = await this._domain.WaitAsync(all);
             return next == null ? null : new EzTransactionDomain(next);
         }

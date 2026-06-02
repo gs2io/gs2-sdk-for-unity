@@ -99,7 +99,7 @@ namespace Gs2.Unity.Gs2News.Domain.Model
                 item
             );
         }
-        #else
+        #elif UNITY_2017_1_OR_NEWER
         public IFuture<Gs2.Unity.Gs2News.Model.EzSetCookieRequestEntry> Model()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2News.Model.EzSetCookieRequestEntry> self)
@@ -125,6 +125,23 @@ namespace Gs2.Unity.Gs2News.Domain.Model
                 ));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2News.Model.EzSetCookieRequestEntry>(Impl);
+        }
+        #else
+        public async System.Threading.Tasks.Task<Gs2.Unity.Gs2News.Model.EzSetCookieRequestEntry> ModelAsync()
+        {
+            var item = await _connection.RunAsync(
+                null,
+                async () =>
+                {
+                    return await _domain.ModelAsync();
+                }
+            );
+            if (item == null) {
+                return null;
+            }
+            return Gs2.Unity.Gs2News.Model.EzSetCookieRequestEntry.FromModel(
+                item
+            );
         }
         #endif
         

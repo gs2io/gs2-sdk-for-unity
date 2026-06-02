@@ -40,7 +40,9 @@ using Gs2.Core.Domain;
 using Gs2.Core.Util;
 using UnityEngine.Scripting;
 using System.Collections;
+#if UNITY_2017_1_OR_NEWER
 using Gs2.Unity.Gs2Lottery.Domain.Iterator;
+#endif
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
@@ -53,6 +55,7 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
 
     public partial class EzNamespaceDomain {
         
+#if UNITY_2017_1_OR_NEWER
         public Gs2Iterator<Gs2.Unity.Gs2Lottery.Model.EzDrawnPrize> DrawnPrizes(
         ) {
             return new EzListDrawnPrizesIterator(
@@ -60,8 +63,10 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
                 this._connection
             );
         }
+#endif
 
-#if GS2_ENABLE_UNITASK
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Lottery.Model.EzDrawnPrize> DrawnPrizesAsync(
         )
         {
@@ -94,6 +99,37 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
                 }
             });
         }
+    #else
+        public async System.Collections.Generic.IAsyncEnumerable<Gs2.Unity.Gs2Lottery.Model.EzDrawnPrize> DrawnPrizesAsync(
+        )
+        {
+            var it = _domain.DrawnPrizesAsync(
+            ).GetAsyncEnumerator();
+            try
+            {
+                while(
+                    await this._connection.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.DrawnPrizesAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    yield return it.Current == null ? null : Gs2.Unity.Gs2Lottery.Model.EzDrawnPrize.FromModel(it.Current);
+                }
+            }
+            finally
+            {
+                await it.DisposeAsync();
+            }
+        }
+    #endif
 #endif
         
         public ulong SubscribeDrawnPrizes(Action<Gs2.Unity.Gs2Lottery.Model.EzDrawnPrize[]> callback) {

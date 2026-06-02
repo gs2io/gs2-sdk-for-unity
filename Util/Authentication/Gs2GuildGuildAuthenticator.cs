@@ -6,9 +6,13 @@ using Gs2.Gs2Gateway;
 using Gs2.Gs2Gateway.Request;
 using Gs2.Gs2Guild;
 using Gs2.Gs2Guild.Request;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
-#if GS2_ENABLE_UNITASK
+#endif
+#if UNITY_2017_1_OR_NEWER && GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
+#elif !UNITY_2017_1_OR_NEWER
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Util
@@ -31,13 +35,21 @@ namespace Gs2.Unity.Util
             };
         }
 
-#if GS2_ENABLE_UNITASK
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
 
+    #if UNITY_2017_1_OR_NEWER
         public async UniTask<AccessToken> AuthenticationAsync(
             Gs2Connection connection,
             IGameSession userGameSession,
             string guildName
         )
+    #else
+        public async Task<AccessToken> AuthenticationAsync(
+            Gs2Connection connection,
+            IGameSession userGameSession,
+            string guildName
+        )
+    #endif
         {
             if (connection.IsDisconnected()) {
                 await connection.ConnectAsync();
@@ -72,10 +84,12 @@ namespace Gs2.Unity.Util
                 catch (ConflictException) {
                 }
                 catch (NotFoundException) {
+#if UNITY_2017_1_OR_NEWER
                     Debug.Log("The GS2-Gateway namespace does not exist and could not be configured to receive notifications from the server.");
+#endif
                 }
                 catch (SessionNotOpenException) {
-                    await connection.WebSocketSession.ReOpenFuture();
+                    await connection.WebSocketSession.ReOpenAsync();
                     throw;
                 }
                 NeedReAuthentication = false;
@@ -92,6 +106,7 @@ namespace Gs2.Unity.Util
             NeedReAuthentication = true;
         }
         
+#if UNITY_2017_1_OR_NEWER
         public Gs2Future<AccessToken> AuthenticationFuture(
             Gs2Connection connection,
             IGameSession userGameSession,
@@ -157,5 +172,17 @@ namespace Gs2.Unity.Util
 
             return new Gs2InlineFuture<AccessToken>(Impl);
         }
+#else
+        public Gs2Future<AccessToken> AuthenticationFuture(
+            Gs2Connection connection,
+            IGameSession userGameSession,
+            string guildName
+        )
+        {
+            throw new System.NotSupportedException(
+                "Future (coroutine) based authentication is not available outside of Unity. Use AuthenticationAsync instead."
+            );
+        }
+#endif
     }
 }

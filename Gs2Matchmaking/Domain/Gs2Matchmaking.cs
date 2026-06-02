@@ -41,13 +41,18 @@ using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
+#if UNITY_2017_1_OR_NEWER
 using System.Collections;
 using UnityEngine.Events;
 using UnityEngine.Scripting;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
+    #endif
+#else
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2Matchmaking.Domain
@@ -75,29 +80,33 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain
                 this._connection
             );
         }
-
+    #if UNITY_2017_1_OR_NEWER
         public event UnityAction<JoinNotification> OnJoinNotification
         {
             add => _domain.OnJoinNotification += value;
             remove => _domain.OnJoinNotification -= value;
         }
-
+    #endif
+    #if UNITY_2017_1_OR_NEWER
         public event UnityAction<LeaveNotification> OnLeaveNotification
         {
             add => _domain.OnLeaveNotification += value;
             remove => _domain.OnLeaveNotification -= value;
         }
-
+    #endif
+    #if UNITY_2017_1_OR_NEWER
         public event UnityAction<CompleteNotification> OnCompleteNotification
         {
             add => _domain.OnCompleteNotification += value;
             remove => _domain.OnCompleteNotification -= value;
         }
-
+    #endif
+    #if UNITY_2017_1_OR_NEWER
         public event UnityAction<ChangeRatingNotification> OnChangeRatingNotification
         {
             add => _domain.OnChangeRatingNotification += value;
             remove => _domain.OnChangeRatingNotification -= value;
         }
+    #endif
     }
 }

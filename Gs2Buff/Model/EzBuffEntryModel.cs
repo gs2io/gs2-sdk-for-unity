@@ -20,31 +20,49 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Buff.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzBuffEntryModel
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Name;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Metadata;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string TargetType;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public Gs2.Unity.Gs2Buff.Model.EzBuffTargetModel TargetModel;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public Gs2.Unity.Gs2Buff.Model.EzBuffTargetAction TargetAction;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Expression;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string ApplyPeriodScheduleEventId;
 
         public Gs2.Gs2Buff.Model.BuffEntryModel ToModel()

@@ -19,8 +19,10 @@ using Gs2.Core.Domain;
 using Gs2.Gs2Auth.Model;
 using Gs2.Gs2Guild;
 using Gs2.Gs2Guild.Request;
-#if GS2_ENABLE_UNITASK
+#if UNITY_2017_1_OR_NEWER && GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
+#elif !UNITY_2017_1_OR_NEWER
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Util
@@ -66,8 +68,12 @@ namespace Gs2.Unity.Util
             return new Gs2InlineFuture(Impl);
         }
 
-#if GS2_ENABLE_UNITASK
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+    #if UNITY_2017_1_OR_NEWER
         public async UniTask RefreshAsync() {
+    #else
+        public async Task RefreshAsync() {
+    #endif
             AccessToken = await this._authenticator.AuthenticationAsync(
                 this._connection,
                 this._userGameSession,
@@ -93,8 +99,12 @@ namespace Gs2.Unity.Util
             return new Gs2InlineFuture<bool>(Impl);
         }
 
-#if GS2_ENABLE_UNITASK
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+    #if UNITY_2017_1_OR_NEWER
         public async UniTask<bool> RefreshIfNeedRefreshAsync() {
+    #else
+        public async Task<bool> RefreshIfNeedRefreshAsync() {
+    #endif
             if (this._authenticator == null || !this._authenticator.NeedReAuthentication) {
                 return false;
             }

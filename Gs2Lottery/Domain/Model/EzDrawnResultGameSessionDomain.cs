@@ -95,7 +95,7 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
                 item
             );
         }
-        #else
+        #elif UNITY_2017_1_OR_NEWER
         public IFuture<Gs2.Unity.Gs2Lottery.Model.EzDrawnPrize> Model()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Lottery.Model.EzDrawnPrize> self)
@@ -121,6 +121,23 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Model
                 ));
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Lottery.Model.EzDrawnPrize>(Impl);
+        }
+        #else
+        public async System.Threading.Tasks.Task<Gs2.Unity.Gs2Lottery.Model.EzDrawnPrize> ModelAsync()
+        {
+            var item = await _connection.RunAsync(
+                null,
+                async () =>
+                {
+                    return await _domain.Model();
+                }
+            );
+            if (item == null) {
+                return null;
+            }
+            return Gs2.Unity.Gs2Lottery.Model.EzDrawnPrize.FromModel(
+                item
+            );
         }
         #endif
 

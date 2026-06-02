@@ -20,25 +20,37 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Quest.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzConsumeActionResult
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Action;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string ConsumeRequest;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int StatusCode;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string ConsumeResult;
 
         public Gs2.Core.Model.ConsumeActionResult ToModel()

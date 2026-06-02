@@ -38,13 +38,19 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
+    #endif
+#else
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2Stamina.Domain.Model
@@ -69,6 +75,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ConsumeFuture.")]
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> Consume(
             int consumeValue
@@ -105,9 +112,14 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> ConsumeAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> ConsumeAsync(
+            #endif
             int consumeValue
         ) {
             var result = await this._connection.RunAsync(
@@ -125,6 +137,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ApplyFuture.")]
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> Apply(
         )
@@ -157,9 +170,14 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> ApplyAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> ApplyAsync(
+            #endif
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -175,6 +193,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to SetMaxValueFuture.")]
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetMaxValue(
             string signedStatusBody,
@@ -219,9 +238,14 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetMaxValueAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetMaxValueAsync(
+            #endif
             string signedStatusBody,
             string signedStatusSignature,
             string keyId = null
@@ -243,6 +267,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to SetRecoverIntervalFuture.")]
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverInterval(
             string signedStatusBody,
@@ -287,9 +312,14 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverIntervalAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverIntervalAsync(
+            #endif
             string signedStatusBody,
             string signedStatusSignature,
             string keyId = null
@@ -311,6 +341,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to SetRecoverValueFuture.")]
         public IFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverValue(
             string signedStatusBody,
@@ -355,9 +386,14 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverValueAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Stamina.Domain.Model.EzStaminaGameSessionDomain> SetRecoverValueAsync(
+            #endif
             string signedStatusBody,
             string signedStatusSignature,
             string keyId = null
@@ -379,14 +415,20 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Stamina.Model.EzStamina> Model()
         {
             return ModelFuture();
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Stamina.Model.EzStamina> ModelAsync()
+            #else
+        public async Task<Gs2.Unity.Gs2Stamina.Model.EzStamina> ModelAsync()
+            #endif
         {
             var item = await this._connection.RunAsync(
                 this._gameSession,
@@ -404,6 +446,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         public IFuture<Gs2.Unity.Gs2Stamina.Model.EzStamina> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Stamina.Model.EzStamina> self)
@@ -430,6 +473,7 @@ namespace Gs2.Unity.Gs2Stamina.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Stamina.Model.EzStamina>(Impl);
         }
+        #endif
 
         public void Invalidate()
         {

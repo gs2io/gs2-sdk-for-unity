@@ -38,6 +38,7 @@ using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
+#if UNITY_2017_1_OR_NEWER
 namespace Gs2.Unity.Gs2Lottery.Domain.Iterator
 {
 
@@ -84,3 +85,4 @@ namespace Gs2.Unity.Gs2Lottery.Domain.Iterator
     }
 
 }
+#endif

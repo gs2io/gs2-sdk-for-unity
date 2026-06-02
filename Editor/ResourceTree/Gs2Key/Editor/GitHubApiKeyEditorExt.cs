@@ -28,6 +28,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Key.Editor
             EditorGUILayout.TextField("ApiKeyId", item.ApiKeyId);
             EditorGUILayout.TextField("Name", item.Name);
             EditorGUILayout.TextField("Description", item.Description);
+            EditorGUILayout.TextField("ApiKey", item.ApiKey);
             EditorGUILayout.TextField("EncryptionKeyName", item.EncryptionKeyName);
             EditorGUILayout.TextField("CreatedAt", UnixTime.FromUnixTime(item.CreatedAt ?? 0).ToString(CultureInfo.CurrentUICulture));
             EditorGUILayout.TextField("UpdatedAt", UnixTime.FromUnixTime(item.UpdatedAt ?? 0).ToString(CultureInfo.CurrentUICulture));

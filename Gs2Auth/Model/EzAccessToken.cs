@@ -20,23 +20,33 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Auth.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzAccessToken
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Token;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string UserId;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public long Expire;
 
         public Gs2.Gs2Auth.Model.AccessToken ToModel()

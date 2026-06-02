@@ -405,9 +405,9 @@ namespace Gs2.Unity.Gs2Account
                 cb => _client.FindPlatformId(
                     new Gs2.Gs2Account.Request.FindPlatformIdRequest()
                         .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
                         .WithType(type)
-                        .WithUserIdentifier(userIdentifier)
-                        .WithAccessToken(session.AccessToken.Token),
+                        .WithUserIdentifier(userIdentifier),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Account.Result.EzFindPlatformUserResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Account.Result.EzFindPlatformUserResult.FromModel(r.Result),

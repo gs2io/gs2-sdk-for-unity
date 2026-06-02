@@ -26,6 +26,7 @@
 #pragma warning disable 1998
 
 using System;
+using System.Threading.Tasks;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gs2.Core.Model;
@@ -80,14 +81,20 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
             this._connection = connection;
         }
 
+#if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Schedule.Model.EzRepeatSchedule> Model()
         {
             return ModelFuture();
         }
+#endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Schedule.Model.EzRepeatSchedule> ModelAsync()
+            #else
+        public async Task<Gs2.Unity.Gs2Schedule.Model.EzRepeatSchedule> ModelAsync()
+            #endif
         {
             var item = await this._connection.RunAsync(
                 this._gameSession,
@@ -105,6 +112,7 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
         }
         #endif
 
+#if UNITY_2017_1_OR_NEWER
         public IFuture<Gs2.Unity.Gs2Schedule.Model.EzRepeatSchedule> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Schedule.Model.EzRepeatSchedule> self)
@@ -131,6 +139,7 @@ namespace Gs2.Unity.Gs2Schedule.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Schedule.Model.EzRepeatSchedule>(Impl);
         }
+#endif
 
         public void Invalidate()
         {

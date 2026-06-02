@@ -40,13 +40,19 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
+    #endif
+#else
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2MegaField.Domain.Model
@@ -71,6 +77,7 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to UpdateFuture.")]
         public IFuture<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]> Update(
             Gs2.Unity.Gs2MegaField.Model.EzMyPosition position,
@@ -110,9 +117,14 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]> UpdateAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2MegaField.Domain.Model.EzSpatialDomain[]> UpdateAsync(
+            #endif
             Gs2.Unity.Gs2MegaField.Model.EzMyPosition position,
             Gs2.Unity.Gs2MegaField.Model.EzScope[] scopes = null
         ) {
@@ -131,14 +143,20 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2MegaField.Model.EzSpatial> Model()
         {
             return ModelFuture();
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2MegaField.Model.EzSpatial> ModelAsync()
+            #else
+        public async Task<Gs2.Unity.Gs2MegaField.Model.EzSpatial> ModelAsync()
+            #endif
         {
             var item = await this._connection.RunAsync(
                 this._gameSession,
@@ -156,6 +174,7 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         public IFuture<Gs2.Unity.Gs2MegaField.Model.EzSpatial> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2MegaField.Model.EzSpatial> self)
@@ -182,11 +201,17 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2MegaField.Model.EzSpatial>(Impl);
         }
+        #endif
+
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
 
         public ulong Subscribe(Action<Gs2.Unity.Gs2MegaField.Model.EzSpatial> callback)
         {
             return this._domain.Subscribe(item => {
-                callback.Invoke(Gs2.Unity.Gs2MegaField.Model.EzSpatial.FromModel(
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2MegaField.Model.EzSpatial.FromModel(
                     item
                 ));
             });
@@ -196,6 +221,40 @@ namespace Gs2.Unity.Gs2MegaField.Domain.Model
         {
             this._domain.Unsubscribe(callbackId);
         }
+
+        #if UNITY_2017_1_OR_NEWER
+        public Gs2Future<ulong> SubscribeWithInitialCallFuture(Action<Gs2.Unity.Gs2MegaField.Model.EzSpatial> callback)
+        {
+            IEnumerator Impl(IFuture<ulong> self)
+            {
+                var future = ModelFuture();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                var callbackId = Subscribe(callback);
+                callback.Invoke(item);
+                self.OnComplete(callbackId);
+            }
+            return new Gs2InlineFuture<ulong>(Impl);
+        }
+        #endif
+
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
+        public async UniTask<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2MegaField.Model.EzSpatial> callback)
+            #else
+        public async Task<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2MegaField.Model.EzSpatial> callback)
+            #endif
+        {
+            var item = await ModelAsync();
+            var callbackId = Subscribe(callback);
+            callback.Invoke(item);
+            return callbackId;
+        }
+        #endif
 
     }
 }

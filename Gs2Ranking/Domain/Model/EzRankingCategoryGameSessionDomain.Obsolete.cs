@@ -47,6 +47,7 @@ using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
 #endif
 
+#if UNITY_2017_1_OR_NEWER
 namespace Gs2.Unity.Gs2Ranking.Domain.Model
 {
 
@@ -78,3 +79,4 @@ namespace Gs2.Unity.Gs2Ranking.Domain.Model
 
     }
 }
+#endif

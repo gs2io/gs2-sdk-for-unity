@@ -38,13 +38,19 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
+    #endif
+#else
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2Inbox.Domain.Model
@@ -68,6 +74,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ReceiveGlobalMessageFuture.")]
         public IFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain[]> ReceiveGlobalMessage(
         )
@@ -100,9 +107,14 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain[]>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain[]> ReceiveGlobalMessageAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Inbox.Domain.Model.EzMessageGameSessionDomain[]> ReceiveGlobalMessageAsync(
+            #endif
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -118,6 +130,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to BatchReadFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> BatchRead(
             string[] messageNames,
@@ -154,9 +167,14 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> BatchReadAsync(
+            #else
+        public async Task<Gs2.Unity.Core.Domain.EzTransactionDomain> BatchReadAsync(
+            #endif
             string[] messageNames,
             bool speculativeExecute = true
         ) {
@@ -172,6 +190,7 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         public Gs2Iterator<Gs2.Unity.Gs2Inbox.Model.EzMessage> Messages(
             bool? isRead = null
         )
@@ -183,8 +202,10 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
                 isRead
             );
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Inbox.Model.EzMessage> MessagesAsync(
               bool? isRead = null
         )
@@ -220,6 +241,40 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
                 }
             });
         }
+            #else
+        public async IAsyncEnumerable<Gs2.Unity.Gs2Inbox.Model.EzMessage> MessagesAsync(
+              bool? isRead = null
+        )
+        {
+            var it = _domain.MessagesAsync(
+                isRead
+            ).GetAsyncEnumerator();
+            try
+            {
+                while(
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.MessagesAsync(
+                                isRead
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    yield return it.Current == null ? null : Gs2.Unity.Gs2Inbox.Model.EzMessage.FromModel(it.Current);
+                }
+            }
+            finally
+            {
+                await it.DisposeAsync();
+            }
+        }
+            #endif
         #endif
 
         public ulong SubscribeMessages(

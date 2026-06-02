@@ -38,13 +38,19 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
+    #endif
+#else
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2SkillTree.Domain.Model
@@ -68,6 +74,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ReleaseFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Release(
             string[] nodeModelNames,
@@ -104,9 +111,14 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ReleaseAsync(
+            #else
+        public async Task<Gs2.Unity.Core.Domain.EzTransactionDomain> ReleaseAsync(
+            #endif
             string[] nodeModelNames,
             bool speculativeExecute = true
         ) {
@@ -122,6 +134,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to RestrainFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Restrain(
             string[] nodeModelNames,
@@ -158,9 +171,14 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> RestrainAsync(
+            #else
+        public async Task<Gs2.Unity.Core.Domain.EzTransactionDomain> RestrainAsync(
+            #endif
             string[] nodeModelNames,
             bool speculativeExecute = true
         ) {
@@ -176,6 +194,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ResetFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Reset(
             bool speculativeExecute = true
@@ -208,9 +227,14 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> ResetAsync(
+            #else
+        public async Task<Gs2.Unity.Core.Domain.EzTransactionDomain> ResetAsync(
+            #endif
             bool speculativeExecute = true
         ) {
             var result = await this._connection.RunAsync(
@@ -224,14 +248,20 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2SkillTree.Model.EzStatus> Model()
         {
             return ModelFuture();
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2SkillTree.Model.EzStatus> ModelAsync()
+            #else
+        public async Task<Gs2.Unity.Gs2SkillTree.Model.EzStatus> ModelAsync()
+            #endif
         {
             var item = await this._connection.RunAsync(
                 this._gameSession,
@@ -249,6 +279,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         public IFuture<Gs2.Unity.Gs2SkillTree.Model.EzStatus> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2SkillTree.Model.EzStatus> self)
@@ -275,6 +306,7 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2SkillTree.Model.EzStatus>(Impl);
         }
+        #endif
 
         public void Invalidate()
         {

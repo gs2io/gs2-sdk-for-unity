@@ -38,13 +38,19 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
+    #endif
+#else
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2Ranking2.Domain.Model
@@ -70,6 +76,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to PutGlobalRankingFuture.")]
         public IFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingScoreGameSessionDomain> PutGlobalRanking(
             long score,
@@ -110,9 +117,14 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingScoreGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingScoreGameSessionDomain> PutGlobalRankingAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingScoreGameSessionDomain> PutGlobalRankingAsync(
+            #endif
             long score,
             string? metadata = null
         ) {
@@ -132,6 +144,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to GetGlobalRankingRankFuture.")]
         public IFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain> GetGlobalRankingRank(
         )
@@ -164,9 +177,14 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain> GetGlobalRankingRankAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Ranking2.Domain.Model.EzGlobalRankingDataGameSessionDomain> GetGlobalRankingRankAsync(
+            #endif
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -182,6 +200,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData> GlobalRankings(
         )
         {
@@ -191,8 +210,10 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
                 this._connection
             );
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData> GlobalRankingsAsync(
         )
         {
@@ -225,6 +246,37 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
                 }
             });
         }
+            #else
+        public async IAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData> GlobalRankingsAsync(
+        )
+        {
+            var it = _domain.GlobalRankingsAsync(
+            ).GetAsyncEnumerator();
+            try
+            {
+                while(
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.GlobalRankingsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    yield return it.Current == null ? null : Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingData.FromModel(it.Current);
+                }
+            }
+            finally
+            {
+                await it.DisposeAsync();
+            }
+        }
+            #endif
         #endif
 
         public ulong SubscribeGlobalRankings(
@@ -251,6 +303,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             );
         }
 
+        #if UNITY_2017_1_OR_NEWER
         public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingReceivedReward> GlobalRankingReceivedRewards(
         )
         {
@@ -260,8 +313,10 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
                 this._connection
             );
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingReceivedReward> GlobalRankingReceivedRewardsAsync(
         )
         {
@@ -294,6 +349,37 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
                 }
             });
         }
+            #else
+        public async IAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingReceivedReward> GlobalRankingReceivedRewardsAsync(
+        )
+        {
+            var it = _domain.GlobalRankingReceivedRewardsAsync(
+            ).GetAsyncEnumerator();
+            try
+            {
+                while(
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.GlobalRankingReceivedRewardsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    yield return it.Current == null ? null : Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingReceivedReward.FromModel(it.Current);
+                }
+            }
+            finally
+            {
+                await it.DisposeAsync();
+            }
+        }
+            #endif
         #endif
 
         public ulong SubscribeGlobalRankingReceivedRewards(
@@ -320,6 +406,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
             );
         }
 
+        #if UNITY_2017_1_OR_NEWER
         public Gs2Iterator<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingScore> GlobalRankingScores(
         )
         {
@@ -329,8 +416,10 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
                 this._connection
             );
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingScore> GlobalRankingScoresAsync(
         )
         {
@@ -363,6 +452,37 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
                 }
             });
         }
+            #else
+        public async IAsyncEnumerable<Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingScore> GlobalRankingScoresAsync(
+        )
+        {
+            var it = _domain.GlobalRankingScoresAsync(
+            ).GetAsyncEnumerator();
+            try
+            {
+                while(
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.GlobalRankingScoresAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    yield return it.Current == null ? null : Gs2.Unity.Gs2Ranking2.Model.EzGlobalRankingScore.FromModel(it.Current);
+                }
+            }
+            finally
+            {
+                await it.DisposeAsync();
+            }
+        }
+            #endif
         #endif
 
         public ulong SubscribeGlobalRankingScores(

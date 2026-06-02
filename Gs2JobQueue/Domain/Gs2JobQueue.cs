@@ -41,13 +41,18 @@ using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
+#if UNITY_2017_1_OR_NEWER
 using System.Collections;
 using UnityEngine.Events;
 using UnityEngine.Scripting;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
+    #endif
+#else
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2JobQueue.Domain
@@ -75,17 +80,19 @@ namespace Gs2.Unity.Gs2JobQueue.Domain
                 this._connection
             );
         }
-
+    #if UNITY_2017_1_OR_NEWER
         public event UnityAction<PushNotification> OnPushNotification
         {
             add => _domain.OnPushNotification += value;
             remove => _domain.OnPushNotification -= value;
         }
-
+    #endif
+    #if UNITY_2017_1_OR_NEWER
         public event UnityAction<RunNotification> OnRunNotification
         {
             add => _domain.OnRunNotification += value;
             remove => _domain.OnRunNotification -= value;
         }
+    #endif
     }
 }

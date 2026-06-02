@@ -20,29 +20,45 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Limit.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzCounter
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string CounterId;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string LimitName;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Name;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int Count;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public long CreatedAt;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public long UpdatedAt;
 
         public Gs2.Gs2Limit.Model.Counter ToModel()

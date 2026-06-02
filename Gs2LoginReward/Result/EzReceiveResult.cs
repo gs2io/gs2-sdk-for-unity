@@ -19,34 +19,56 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2LoginReward.Result
 {
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzReceiveResult
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public Gs2.Unity.Gs2LoginReward.Model.EzReceiveStatus Item;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public Gs2.Unity.Gs2LoginReward.Model.EzBonusModel BonusModel;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string TransactionId;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string StampSheet;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string StampSheetEncryptionKeyId;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public bool AutoRunStampSheet;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public bool AtomicCommit;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Transaction;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public Gs2.Unity.Core.Model.EzTransactionResult TransactionResult;
 
         public static EzReceiveResult FromModel(Gs2.Gs2LoginReward.Result.ReceiveResult model)

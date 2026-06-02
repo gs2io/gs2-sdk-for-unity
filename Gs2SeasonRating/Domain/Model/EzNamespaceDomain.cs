@@ -39,13 +39,19 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
+    #endif
+#else
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2SeasonRating.Domain.Model
@@ -69,6 +75,7 @@ namespace Gs2.Unity.Gs2SeasonRating.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to VoteFuture.")]
         public IFuture<Gs2.Unity.Gs2SeasonRating.Domain.Model.EzBallotDomain> Vote(
             string ballotBody,
@@ -116,9 +123,14 @@ namespace Gs2.Unity.Gs2SeasonRating.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2SeasonRating.Domain.Model.EzBallotDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2SeasonRating.Domain.Model.EzBallotDomain> VoteAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2SeasonRating.Domain.Model.EzBallotDomain> VoteAsync(
+            #endif
             string ballotBody,
             string ballotSignature,
             Gs2.Unity.Gs2SeasonRating.Model.EzGameResult[] gameResults = null,
@@ -141,6 +153,7 @@ namespace Gs2.Unity.Gs2SeasonRating.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to VoteMultipleFuture.")]
         public IFuture<Gs2.Unity.Gs2SeasonRating.Domain.Model.EzBallotDomain> VoteMultiple(
             Gs2.Unity.Gs2SeasonRating.Model.EzSignedBallot[] signedBallots = null,
@@ -184,9 +197,14 @@ namespace Gs2.Unity.Gs2SeasonRating.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2SeasonRating.Domain.Model.EzBallotDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2SeasonRating.Domain.Model.EzBallotDomain> VoteMultipleAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2SeasonRating.Domain.Model.EzBallotDomain> VoteMultipleAsync(
+            #endif
             Gs2.Unity.Gs2SeasonRating.Model.EzSignedBallot[] signedBallots = null,
             Gs2.Unity.Gs2SeasonRating.Model.EzGameResult[] gameResults = null,
             string keyId = null
@@ -207,6 +225,7 @@ namespace Gs2.Unity.Gs2SeasonRating.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         public Gs2Iterator<Gs2.Unity.Gs2SeasonRating.Model.EzSeasonModel> SeasonModels(
         )
         {
@@ -215,8 +234,10 @@ namespace Gs2.Unity.Gs2SeasonRating.Domain.Model
                 this._connection
             );
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if GS2_ENABLE_UNITASK
         public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2SeasonRating.Model.EzSeasonModel> SeasonModelsAsync(
         )
         {
@@ -249,6 +270,37 @@ namespace Gs2.Unity.Gs2SeasonRating.Domain.Model
                 }
             });
         }
+            #else
+        public async IAsyncEnumerable<Gs2.Unity.Gs2SeasonRating.Model.EzSeasonModel> SeasonModelsAsync(
+        )
+        {
+            var it = _domain.SeasonModelsAsync(
+            ).GetAsyncEnumerator();
+            try
+            {
+                while(
+                    await this._connection.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.SeasonModelsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    yield return it.Current == null ? null : Gs2.Unity.Gs2SeasonRating.Model.EzSeasonModel.FromModel(it.Current);
+                }
+            }
+            finally
+            {
+                await it.DisposeAsync();
+            }
+        }
+            #endif
         #endif
 
         public ulong SubscribeSeasonModels(

@@ -20,29 +20,45 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Matchmaking.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzSeasonGathering
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string SeasonGatheringId;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string SeasonName;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public long Season;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public long Tier;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Name;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<string> Participants;
 
         public Gs2.Gs2Matchmaking.Model.SeasonGathering ToModel()

@@ -38,8 +38,11 @@ using Gs2.Core.Domain;
 using Gs2.Core.Util;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
+#endif
 
+#if UNITY_2017_1_OR_NEWER
 namespace Gs2.Unity.Gs2Friend.Domain.Iterator
 {
 
@@ -49,16 +52,19 @@ namespace Gs2.Unity.Gs2Friend.Domain.Iterator
         private readonly Gs2.Gs2Friend.Domain.Model.UserAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
+        private readonly bool? _withProfile;
 
         public EzDescribeSendRequestsIterator(
             Gs2.Gs2Friend.Domain.Model.UserAccessTokenDomain domain,
             Gs2.Unity.Util.IGameSession gameSession,
-            Gs2.Unity.Util.Gs2Connection connection
+            Gs2.Unity.Util.Gs2Connection connection,
+            bool? withProfile = null
         )
         {
             _domain = domain;
             _gameSession = gameSession;
             _connection = connection;
+            _withProfile = withProfile;
             _it = _domain.SendRequests(
             );
         }
@@ -89,3 +95,4 @@ namespace Gs2.Unity.Gs2Friend.Domain.Iterator
     }
 
 }
+#endif

@@ -40,14 +40,20 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
+using Gs2.Unity.Core;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
-using Gs2.Unity.Core;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
+    #endif
+#else
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2Buff.Domain.Model
@@ -71,6 +77,7 @@ namespace Gs2.Unity.Gs2Buff.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ApplyBuffFuture.")]
         public IFuture<Gs2.Unity.Core.Gs2Domain> ApplyBuff(
         )
@@ -101,9 +108,14 @@ namespace Gs2.Unity.Gs2Buff.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Core.Gs2Domain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Core.Gs2Domain> ApplyBuffAsync(
+            #else
+        public async Task<Gs2.Unity.Core.Gs2Domain> ApplyBuffAsync(
+            #endif
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,

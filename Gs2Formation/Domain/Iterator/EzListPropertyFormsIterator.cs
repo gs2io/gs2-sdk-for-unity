@@ -36,8 +36,11 @@ using Gs2.Core.Domain;
 using Gs2.Core.Util;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
+#endif
 
+#if UNITY_2017_1_OR_NEWER
 namespace Gs2.Unity.Gs2Formation.Domain.Iterator
 {
 
@@ -92,3 +95,4 @@ namespace Gs2.Unity.Gs2Formation.Domain.Iterator
     }
 
 }
+#endif

@@ -20,23 +20,33 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2SkillTree.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzStatus
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string StatusId;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string UserId;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<string> ReleasedNodeNames;
 
         public Gs2.Gs2SkillTree.Model.Status ToModel()

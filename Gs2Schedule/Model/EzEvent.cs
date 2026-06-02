@@ -20,43 +20,73 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Schedule.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzEvent
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Name;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Metadata;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string ScheduleType;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string RepeatType;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public long AbsoluteBegin;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public long AbsoluteEnd;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int RepeatBeginDayOfMonth;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int RepeatEndDayOfMonth;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string RepeatBeginDayOfWeek;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string RepeatEndDayOfWeek;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int RepeatBeginHour;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int RepeatEndHour;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string RelativeTriggerName;
 
         public Gs2.Gs2Schedule.Model.Event ToModel()

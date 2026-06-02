@@ -22,21 +22,29 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Friend.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzFriendRequest
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string UserId;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string TargetUserId;
 
         public Gs2.Gs2Friend.Model.FriendRequest ToModel()
@@ -57,18 +65,18 @@ namespace Gs2.Unity.Gs2Friend.Model
 
         public static EzFriendRequest FromModel(Gs2.Gs2Friend.Model.ReceiveFriendRequest model)
         {
-            return new EzFriendRequest {
-                UserId = model.UserId == null ? null : model.UserId,
-                TargetUserId = model.TargetUserId == null ? null : model.TargetUserId,
-            };
+	        return new EzFriendRequest {
+		        UserId = model.UserId == null ? null : model.UserId,
+		        TargetUserId = model.TargetUserId == null ? null : model.TargetUserId,
+	        };
         }
 
         public static EzFriendRequest FromModel(Gs2.Gs2Friend.Model.SendFriendRequest model)
         {
-            return new EzFriendRequest {
-                UserId = model.UserId == null ? null : model.UserId,
-                TargetUserId = model.TargetUserId == null ? null : model.TargetUserId,
-            };
+	        return new EzFriendRequest {
+		        UserId = model.UserId == null ? null : model.UserId,
+		        TargetUserId = model.TargetUserId == null ? null : model.TargetUserId,
+	        };
         }
     }
 }

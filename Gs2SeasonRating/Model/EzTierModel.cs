@@ -20,25 +20,37 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2SeasonRating.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzTierModel
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Metadata;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int RaiseRankBonus;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int MinimumChangePoint;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int MaximumChangePoint;
 
         public Gs2.Gs2SeasonRating.Model.TierModel ToModel()

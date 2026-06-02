@@ -20,31 +20,49 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Stamina.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzStamina
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string StaminaName;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int Value;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int OverflowValue;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int MaxValue;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int RecoverIntervalMinutes;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int RecoverValue;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public long NextRecoverAt;
 
         public Gs2.Gs2Stamina.Model.Stamina ToModel()

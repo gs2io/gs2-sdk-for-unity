@@ -38,8 +38,11 @@ using Gs2.Core.Domain;
 using Gs2.Core.Util;
 using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
+#endif
 
+#if UNITY_2017_1_OR_NEWER
 namespace Gs2.Unity.Gs2Chat.Domain.Iterator
 {
 
@@ -56,7 +59,8 @@ namespace Gs2.Unity.Gs2Chat.Domain.Iterator
             Gs2.Gs2Chat.Domain.Model.RoomAccessTokenDomain domain,
             Gs2.Unity.Util.IGameSession gameSession,
             Gs2.Unity.Util.Gs2Connection connection,
-            int? category = null
+            int? category = null,
+            string password = null
         )
         {
             _domain = domain;
@@ -95,3 +99,4 @@ namespace Gs2.Unity.Gs2Chat.Domain.Iterator
     }
 
 }
+#endif

@@ -20,23 +20,33 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2StateMachine.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzChangeStateEvent
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string TaskName;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Hash;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public long Timestamp;
 
         public Gs2.Gs2StateMachine.Model.ChangeStateEvent ToModel()

@@ -19,22 +19,32 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Experience.Result
 {
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzGetStatusWithSignatureResult
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public Gs2.Unity.Gs2Experience.Model.EzStatus Item;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Body;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string Signature;
 
         public static EzGetStatusWithSignatureResult FromModel(Gs2.Gs2Experience.Result.GetStatusWithSignatureResult model)

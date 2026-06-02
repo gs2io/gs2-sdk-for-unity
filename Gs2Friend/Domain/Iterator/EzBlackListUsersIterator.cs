@@ -13,7 +13,6 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -40,6 +39,7 @@ using Gs2.Gs2Auth.Model;
 using Gs2.Util.LitJson;
 using UnityEngine.Scripting;
 
+#if UNITY_2017_1_OR_NEWER
 namespace Gs2.Unity.Gs2Friend.Domain.Iterator
 {
 
@@ -89,3 +89,4 @@ namespace Gs2.Unity.Gs2Friend.Domain.Iterator
     }
 
 }
+#endif

@@ -38,13 +38,19 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
-#if GS2_ENABLE_UNITASK
+    #if GS2_ENABLE_UNITASK
 using Cysharp.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
+    #endif
+#else
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
@@ -68,6 +74,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to UpdateGatheringFuture.")]
         public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> UpdateGathering(
             Gs2.Unity.Gs2Matchmaking.Model.EzAttributeRange[] attributeRanges = null
@@ -104,9 +111,14 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> UpdateGatheringAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> UpdateGatheringAsync(
+            #endif
             Gs2.Unity.Gs2Matchmaking.Model.EzAttributeRange[] attributeRanges = null
         ) {
             var result = await this._connection.RunAsync(
@@ -124,6 +136,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to PingFuture.")]
         public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> Ping(
         )
@@ -156,9 +169,14 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> PingAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> PingAsync(
+            #endif
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -174,6 +192,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to CancelMatchmakingFuture.")]
         public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> CancelMatchmaking(
         )
@@ -206,9 +225,14 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> CancelMatchmakingAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> CancelMatchmakingAsync(
+            #endif
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -224,6 +248,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to EarlyCompleteMatchmakingFuture.")]
         public IFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> EarlyCompleteMatchmaking(
         )
@@ -256,9 +281,14 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain>(Impl);
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> EarlyCompleteMatchmakingAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Matchmaking.Domain.Model.EzGatheringGameSessionDomain> EarlyCompleteMatchmakingAsync(
+            #endif
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -274,14 +304,20 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ModelFuture.")]
         public IFuture<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> Model()
         {
             return ModelFuture();
         }
+        #endif
 
-        #if GS2_ENABLE_UNITASK
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
         public async UniTask<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> ModelAsync()
+            #else
+        public async Task<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> ModelAsync()
+            #endif
         {
             var item = await this._connection.RunAsync(
                 this._gameSession,
@@ -299,6 +335,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
         public IFuture<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> ModelFuture()
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Matchmaking.Model.EzGathering> self)
@@ -325,6 +362,7 @@ namespace Gs2.Unity.Gs2Matchmaking.Domain.Model
             }
             return new Gs2InlineFuture<Gs2.Unity.Gs2Matchmaking.Model.EzGathering>(Impl);
         }
+        #endif
 
         public void Invalidate()
         {

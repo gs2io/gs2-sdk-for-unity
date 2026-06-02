@@ -18,8 +18,10 @@ using System.Collections;
 using System.Threading;
 using Gs2.Core.Domain;
 using Gs2.Gs2Auth.Model;
-#if GS2_ENABLE_UNITASK
+#if UNITY_2017_1_OR_NEWER && GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
+#elif !UNITY_2017_1_OR_NEWER
+using System.Threading.Tasks;
 #endif
 
 namespace Gs2.Unity.Util
@@ -32,7 +34,7 @@ namespace Gs2.Unity.Util
         private readonly string _password;
         public AccessToken AccessToken { get; set; }
 
-#if GS2_ENABLE_UNITASK
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
         private readonly SemaphoreSlim _refreshSemaphore = new SemaphoreSlim(1, 1);
 #endif
 
@@ -82,8 +84,12 @@ namespace Gs2.Unity.Util
             return new Gs2InlineFuture(Impl);
         }
         
-#if GS2_ENABLE_UNITASK
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+    #if UNITY_2017_1_OR_NEWER
         private async UniTask RefreshCoreAsync() {
+    #else
+        private async Task RefreshCoreAsync() {
+    #endif
             var result = await this._authenticator.AuthenticationAsync(
                 this._connection,
                 this._userId,
@@ -101,7 +107,11 @@ namespace Gs2.Unity.Util
             }
         }
 
+    #if UNITY_2017_1_OR_NEWER
         public async UniTask RefreshAsync() {
+    #else
+        public async Task RefreshAsync() {
+    #endif
             if (this._authenticator == null) {
                 return;
             }
@@ -131,8 +141,12 @@ namespace Gs2.Unity.Util
             return new Gs2InlineFuture<bool>(Impl);
         }
         
-#if GS2_ENABLE_UNITASK
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+    #if UNITY_2017_1_OR_NEWER
         public async UniTask<bool> RefreshIfNeedRefreshAsync() {
+    #else
+        public async Task<bool> RefreshIfNeedRefreshAsync() {
+    #endif
             if (this._authenticator == null || !this._authenticator.NeedReAuthentication) {
                 return false;
             }

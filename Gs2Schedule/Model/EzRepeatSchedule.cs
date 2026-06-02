@@ -20,27 +20,41 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Schedule.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzRepeatSchedule
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int RepeatCount;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public long CurrentRepeatStartAt;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public long CurrentRepeatEndAt;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public long LastRepeatEndAt;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public long NextRepeatStartAt;
 
         public Gs2.Gs2Schedule.Model.RepeatSchedule ToModel()

@@ -20,25 +20,37 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Matchmaking.Model
 {
 
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzCapacityOfRole
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string RoleName;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<string> RoleAliases;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int Capacity;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<Gs2.Unity.Gs2Matchmaking.Model.EzPlayer> Participants;
 
         public Gs2.Gs2Matchmaking.Model.CapacityOfRole ToModel()

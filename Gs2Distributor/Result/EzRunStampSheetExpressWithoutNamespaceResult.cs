@@ -19,28 +19,44 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Gs2.Util.LitJson;
+#if UNITY_2017_1_OR_NEWER
 using UnityEngine;
 using UnityEngine.Scripting;
+#endif
 
 // ReSharper disable once CheckNamespace
 namespace Gs2.Unity.Gs2Distributor.Result
 {
+#if UNITY_2017_1_OR_NEWER
 	[Preserve]
+#endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public class EzRunStampSheetExpressWithoutNamespaceResult
 	{
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<int> VerifyTaskResultCodes;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<string> VerifyTaskResults;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<int> TaskResultCodes;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public List<string> TaskResults;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public int SheetResultCode;
+#if UNITY_2017_1_OR_NEWER
 		[SerializeField]
+#endif
 		public string SheetResult;
 
         public static EzRunStampSheetExpressWithoutNamespaceResult FromModel(Gs2.Gs2Distributor.Result.RunStampSheetExpressWithoutNamespaceResult model)
