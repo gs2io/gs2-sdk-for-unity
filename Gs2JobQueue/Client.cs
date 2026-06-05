@@ -81,7 +81,8 @@ namespace Gs2.Unity.Gs2JobQueue
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2JobQueue.Result.EzGetResultResult>> callback,
 		        IGameSession session,
                 string namespaceName,
-                string jobName = null
+                string jobName = null,
+                int? tryNumber = null
         )
 		{
             yield return _connection.Run(
@@ -91,7 +92,8 @@ namespace Gs2.Unity.Gs2JobQueue
                     new Gs2.Gs2JobQueue.Request.GetJobResultRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
-                        .WithJobName(jobName),
+                        .WithJobName(jobName)
+                        .WithTryNumber(tryNumber),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2JobQueue.Result.EzGetResultResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2JobQueue.Result.EzGetResultResult.FromModel(r.Result),
