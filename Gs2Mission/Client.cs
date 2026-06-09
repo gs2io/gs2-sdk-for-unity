@@ -195,6 +195,33 @@ namespace Gs2.Unity.Gs2Mission
             );
 		}
 
+        public IEnumerator DecreaseCounter(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Mission.Result.EzDecreaseCounterResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string counterName,
+                long value
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.DecreaseCounter(
+                    new Gs2.Gs2Mission.Request.DecreaseCounterRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithCounterName(counterName)
+                        .WithValue(value),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Mission.Result.EzDecreaseCounterResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Mission.Result.EzDecreaseCounterResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator DeleteCounter(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Mission.Result.EzDeleteCounterResult>> callback,
 		        IGameSession session,

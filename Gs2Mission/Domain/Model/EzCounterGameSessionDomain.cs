@@ -76,6 +76,68 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         }
 
         #if UNITY_2017_1_OR_NEWER
+        [Obsolete("The name has been changed to DecreaseCounterFuture.")]
+        public IFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> DecreaseCounter(
+            long value
+        )
+        {
+            return DecreaseCounterFuture(
+                value
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> DecreaseCounterFuture(
+            long value
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.DecreaseFuture(
+                        new DecreaseCounterRequest()
+                            .WithValue(value)
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain>(Impl);
+        }
+        #endif
+
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
+        public async UniTask<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> DecreaseCounterAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> DecreaseCounterAsync(
+            #endif
+            long value
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.DecreaseAsync(
+                    new DecreaseCounterRequest()
+                        .WithValue(value)
+                )
+            );
+            return new Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ResetCounterFuture.")]
         public IFuture<Gs2.Unity.Gs2Mission.Domain.Model.EzCounterGameSessionDomain> ResetCounter(
             Gs2.Unity.Gs2Mission.Model.EzScopedValue[] scopes
