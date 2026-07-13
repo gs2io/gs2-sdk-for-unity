@@ -205,6 +205,7 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
         }
         #endif
 
+/* diff +++ start */
 #if UNITY_2017_1_OR_NEWER
         public Gs2Iterator<Gs2.Unity.Gs2Guild.Model.EzGuild> SearchGuilds(
             string guildModelName,
@@ -288,6 +289,7 @@ namespace Gs2.Unity.Gs2Guild.Domain.Model
             });
         }
 #endif
+/* diff +++ end */
 
     #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to SendRequestFuture.")]

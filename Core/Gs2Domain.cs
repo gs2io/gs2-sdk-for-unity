@@ -336,7 +336,7 @@ namespace Gs2.Unity.Core
 #endif
 
 #if UNITY_2017_1_OR_NEWER
-        public Gs2Future<bool> DispatchFuture(
+        public Gs2Future DispatchFuture(
             IGameSession gameSession
         )
         {
@@ -364,7 +364,7 @@ namespace Gs2.Unity.Core
 #endif
 #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to DispatchFuture.")]
-        public IFuture<bool> Dispatch(
+        public Gs2Future Dispatch(
             IGameSession gameSession
         )
         {
