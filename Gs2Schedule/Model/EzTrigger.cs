@@ -47,7 +47,7 @@ namespace Gs2.Unity.Gs2Schedule.Model
 #if UNITY_2017_1_OR_NEWER
 		[SerializeField]
 #endif
-		public long CreatedAt;
+		public long TriggeredAt;
 #if UNITY_2017_1_OR_NEWER
 		[SerializeField]
 #endif
@@ -58,7 +58,7 @@ namespace Gs2.Unity.Gs2Schedule.Model
             return new Gs2.Gs2Schedule.Model.Trigger {
                 TriggerId = TriggerId,
                 Name = Name,
-                CreatedAt = CreatedAt,
+                TriggeredAt = TriggeredAt,
                 ExpiresAt = ExpiresAt,
             };
         }
@@ -68,7 +68,7 @@ namespace Gs2.Unity.Gs2Schedule.Model
             return new EzTrigger {
                 TriggerId = model.TriggerId == null ? null : model.TriggerId,
                 Name = model.Name == null ? null : model.Name,
-                CreatedAt = model.CreatedAt ?? 0,
+                TriggeredAt = model.TriggeredAt ?? 0,
                 ExpiresAt = model.ExpiresAt ?? 0,
             };
         }
