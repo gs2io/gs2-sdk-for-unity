@@ -30,13 +30,13 @@ namespace Gs2.Editor.ResourceTree.Gs2Exchange.Editor
             EditorGUILayout.TextField("Description", item.Description);
             EditorGUILayout.TextField("EnableDirectExchange", item.EnableDirectExchange?.ToString());
             EditorGUILayout.TextField("EnableAwaitExchange", item.EnableAwaitExchange?.ToString());
-            if (item.TransactionSetting == null) {
-                EditorGUILayout.TextField("TransactionSetting", "");
+            if (item.TransactionSettingV2 == null) {
+                EditorGUILayout.TextField("TransactionSettingV2", "");
             }
             else {
-                EditorGUILayout.LabelField("TransactionSetting");
+                EditorGUILayout.LabelField("TransactionSettingV2");
                 EditorGUI.indentLevel++;
-                TransactionSettingEditorExt.OnGUI(item.TransactionSetting);
+                TransactionSettingV2EditorExt.OnGUI(item.TransactionSettingV2);
                 EditorGUI.indentLevel--;
             }
             if (item.ExchangeScript == null) {

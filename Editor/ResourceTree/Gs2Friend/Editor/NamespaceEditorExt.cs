@@ -28,13 +28,13 @@ namespace Gs2.Editor.ResourceTree.Gs2Friend.Editor
             EditorGUILayout.TextField("NamespaceId", item.NamespaceId);
             EditorGUILayout.TextField("Name", item.Name);
             EditorGUILayout.TextField("Description", item.Description);
-            if (item.TransactionSetting == null) {
-                EditorGUILayout.TextField("TransactionSetting", "");
+            if (item.TransactionSettingV2 == null) {
+                EditorGUILayout.TextField("TransactionSettingV2", "");
             }
             else {
-                EditorGUILayout.LabelField("TransactionSetting");
+                EditorGUILayout.LabelField("TransactionSettingV2");
                 EditorGUI.indentLevel++;
-                TransactionSettingEditorExt.OnGUI(item.TransactionSetting);
+                TransactionSettingV2EditorExt.OnGUI(item.TransactionSettingV2);
                 EditorGUI.indentLevel--;
             }
             if (item.FollowScript == null) {
