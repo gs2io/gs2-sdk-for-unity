@@ -57,39 +57,18 @@ using System.Threading.Tasks;
 namespace Gs2.Unity.Gs2Gateway.Domain.Model
 {
 
-    public partial class EzUserDomain {
-        private readonly Gs2.Gs2Gateway.Domain.Model.UserDomain _domain;
+    public partial class EzFirebaseTokenDomain {
+        private readonly Gs2.Gs2Gateway.Domain.Model.FirebaseTokenDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
-        public string? Protocol => _domain.Protocol;
-        public string[] SendConnectionIds => _domain.SendConnectionIds;
-        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
-        public EzUserDomain(
-            Gs2.Gs2Gateway.Domain.Model.UserDomain domain,
+        public EzFirebaseTokenDomain(
+            Gs2.Gs2Gateway.Domain.Model.FirebaseTokenDomain domain,
             Gs2.Unity.Util.Gs2Connection connection
         ) {
             this._domain = domain;
             this._connection = connection;
-        }
-
-        public Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenDomain FirebaseToken(
-        ) {
-            return new Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenDomain(
-                _domain.FirebaseToken(
-                ),
-                this._connection
-            );
-        }
-
-        public Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionDomain WebSocketSession(
-        ) {
-            return new Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionDomain(
-                _domain.WebSocketSession(
-                ),
-                this._connection
-            );
         }
 
     }

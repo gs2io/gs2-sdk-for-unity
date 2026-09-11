@@ -80,5 +80,78 @@ namespace Gs2.Unity.Gs2Gateway
                 )
             );
 		}
+
+        public IEnumerator DeleteFirebaseToken(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Gateway.Result.EzDeleteFirebaseTokenResult>> callback,
+		        IGameSession session,
+                string namespaceName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _client.DeleteFirebaseToken(
+                    new Gs2.Gs2Gateway.Request.DeleteFirebaseTokenRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Gateway.Result.EzDeleteFirebaseTokenResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Gateway.Result.EzDeleteFirebaseTokenResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator GetFirebaseToken(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Gateway.Result.EzGetFirebaseTokenResult>> callback,
+		        IGameSession session,
+                string namespaceName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _client.GetFirebaseToken(
+                    new Gs2.Gs2Gateway.Request.GetFirebaseTokenRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Gateway.Result.EzGetFirebaseTokenResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Gateway.Result.EzGetFirebaseTokenResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator SetFirebaseToken(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Gateway.Result.EzSetFirebaseTokenResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string token,
+                string locale = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _client.SetFirebaseToken(
+                    new Gs2.Gs2Gateway.Request.SetFirebaseTokenRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithToken(token)
+                        .WithLocale(locale),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Gateway.Result.EzSetFirebaseTokenResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Gateway.Result.EzSetFirebaseTokenResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
     }
 }

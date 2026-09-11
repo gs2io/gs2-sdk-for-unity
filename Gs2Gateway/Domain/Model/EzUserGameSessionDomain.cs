@@ -76,20 +76,20 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
             this._connection = connection;
         }
 
-        public Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain WebSocketSession(
+        public Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain FirebaseToken(
         ) {
-            return new Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain(
-                _domain.WebSocketSession(
+            return new Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain(
+                _domain.FirebaseToken(
                 ),
                 this._gameSession,
                 this._connection
             );
         }
 
-        public Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain FirebaseToken(
+        public Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain WebSocketSession(
         ) {
-            return new Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain(
-                _domain.FirebaseToken(
+            return new Gs2.Unity.Gs2Gateway.Domain.Model.EzWebSocketSessionGameSessionDomain(
+                _domain.WebSocketSession(
                 ),
                 this._gameSession,
                 this._connection

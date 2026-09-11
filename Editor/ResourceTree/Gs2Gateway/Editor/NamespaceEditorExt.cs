@@ -37,7 +37,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Gateway.Editor
                 TransactionSettingV2EditorExt.OnGUI(item.TransactionSettingV2);
                 EditorGUI.indentLevel--;
             }
-            EditorGUILayout.TextField("FirebaseSecret", item.FirebaseSecret);
+            EditorGUILayout.TextField("FirebaseProjectId", item.FirebaseProjectId);
             if (item.LogSetting == null) {
                 EditorGUILayout.TextField("LogSetting", "");
             }

@@ -73,5 +73,242 @@ namespace Gs2.Unity.Gs2Gateway.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
+        [Obsolete("The name has been changed to SetFirebaseTokenFuture.")]
+        public IFuture<Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain> SetFirebaseToken(
+            string token,
+            string? locale = null
+        )
+        {
+            return SetFirebaseTokenFuture(
+                token,
+                locale
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain> SetFirebaseTokenFuture(
+            string token,
+            string? locale = null
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.SetFuture(
+                        new SetFirebaseTokenRequest()
+                            .WithToken(token)
+                            .WithLocale(locale)
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain>(Impl);
+        }
+        #endif
+
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
+        public async UniTask<Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain> SetFirebaseTokenAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain> SetFirebaseTokenAsync(
+            #endif
+            string token,
+            string? locale = null
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.SetAsync(
+                    new SetFirebaseTokenRequest()
+                        .WithToken(token)
+                        .WithLocale(locale)
+                )
+            );
+            return new Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
+        #if UNITY_2017_1_OR_NEWER
+        [Obsolete("The name has been changed to DeleteFirebaseTokenFuture.")]
+        public IFuture<Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain> DeleteFirebaseToken(
+        )
+        {
+            return DeleteFirebaseTokenFuture(
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain> DeleteFirebaseTokenFuture(
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.DeleteFuture(
+                        new DeleteFirebaseTokenRequest()
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain>(Impl);
+        }
+        #endif
+
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
+        public async UniTask<Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain> DeleteFirebaseTokenAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain> DeleteFirebaseTokenAsync(
+            #endif
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.DeleteAsync(
+                    new DeleteFirebaseTokenRequest()
+                )
+            );
+            return new Gs2.Unity.Gs2Gateway.Domain.Model.EzFirebaseTokenGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
+        #if UNITY_2017_1_OR_NEWER
+        [Obsolete("The name has been changed to ModelFuture.")]
+        public IFuture<Gs2.Unity.Gs2Gateway.Model.EzFirebaseToken> Model()
+        {
+            return ModelFuture();
+        }
+        #endif
+
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
+        public async UniTask<Gs2.Unity.Gs2Gateway.Model.EzFirebaseToken> ModelAsync()
+            #else
+        public async Task<Gs2.Unity.Gs2Gateway.Model.EzFirebaseToken> ModelAsync()
+            #endif
+        {
+            var item = await this._connection.RunAsync(
+                this._gameSession,
+                async () =>
+                {
+                    return await _domain.ModelAsync();
+                }
+            );
+            if (item == null) {
+                return null;
+            }
+            return Gs2.Unity.Gs2Gateway.Model.EzFirebaseToken.FromModel(
+                item
+            );
+        }
+        #endif
+
+        #if UNITY_2017_1_OR_NEWER
+        public IFuture<Gs2.Unity.Gs2Gateway.Model.EzFirebaseToken> ModelFuture()
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Gateway.Model.EzFirebaseToken> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => {
+                    	return _domain.ModelFuture();
+                    }
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                if (item == null) {
+                    self.OnComplete(null);
+                    yield break;
+                }
+                self.OnComplete(Gs2.Unity.Gs2Gateway.Model.EzFirebaseToken.FromModel(
+                    item
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Gateway.Model.EzFirebaseToken>(Impl);
+        }
+        #endif
+
+        public void Invalidate()
+        {
+            this._domain.Invalidate();
+        }
+
+        public ulong Subscribe(Action<Gs2.Unity.Gs2Gateway.Model.EzFirebaseToken> callback)
+        {
+            return this._domain.Subscribe(item => {
+                callback.Invoke(item == null ? null : Gs2.Unity.Gs2Gateway.Model.EzFirebaseToken.FromModel(
+                    item
+                ));
+            });
+        }
+
+        public void Unsubscribe(ulong callbackId)
+        {
+            this._domain.Unsubscribe(callbackId);
+        }
+
+        #if UNITY_2017_1_OR_NEWER
+        public Gs2Future<ulong> SubscribeWithInitialCallFuture(Action<Gs2.Unity.Gs2Gateway.Model.EzFirebaseToken> callback)
+        {
+            IEnumerator Impl(IFuture<ulong> self)
+            {
+                var future = ModelFuture();
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                var item = future.Result;
+                var callbackId = Subscribe(callback);
+                callback.Invoke(item);
+                self.OnComplete(callbackId);
+            }
+            return new Gs2InlineFuture<ulong>(Impl);
+        }
+        #endif
+
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
+        public async UniTask<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Gateway.Model.EzFirebaseToken> callback)
+            #else
+        public async Task<ulong> SubscribeWithInitialCallAsync(Action<Gs2.Unity.Gs2Gateway.Model.EzFirebaseToken> callback)
+            #endif
+        {
+            var item = await ModelAsync();
+            var callbackId = Subscribe(callback);
+            callback.Invoke(item);
+            return callbackId;
+        }
+        #endif
+
     }
 }
