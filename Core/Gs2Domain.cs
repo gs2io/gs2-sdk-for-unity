@@ -30,16 +30,19 @@ namespace Gs2.Unity.Core
 {
     public static class Gs2Client
     {
+        /// <param name="steadyEndpoint">Steady（専用フリート）の基点（https://&lt;host&gt;）。null なら共有クラウド</param>
         public static Gs2Future<Gs2Domain> CreateFuture(
             IGs2Credential credential,
             Region region = Region.ApNortheast1,
-            string distributorNamespaceName = "default"
+            string distributorNamespaceName = "default",
+            string steadyEndpoint = null
         ) {
             IEnumerator Impl(Gs2Future<Gs2Domain> self)
             {
                 var connection = new Gs2Connection(
                     credential,
-                    region
+                    region,
+                    steadyEndpoint
                 );
                 var future = connection.ConnectFuture();
                 yield return future;
@@ -58,14 +61,17 @@ namespace Gs2.Unity.Core
         }
         
 #if GS2_ENABLE_UNITASK
+        /// <param name="steadyEndpoint">Steady（専用フリート）の基点（https://&lt;host&gt;）。null なら共有クラウド</param>
         public static async UniTask<Gs2Domain> CreateAsync(
             IGs2Credential credential,
             Region region = Region.ApNortheast1,
-            string distributorNamespaceName = "default"
+            string distributorNamespaceName = "default",
+            string steadyEndpoint = null
         ) {
             var connection = new Gs2Connection(
                 credential,
-                region
+                region,
+                steadyEndpoint
             );
             await connection.ConnectAsync();
             return new Gs2Domain(
@@ -75,18 +81,21 @@ namespace Gs2.Unity.Core
         }
 #endif
         
+        /// <param name="steadyEndpoint">Steady（専用フリート）の基点（https://&lt;host&gt;）。null なら共有クラウド</param>
         public static Gs2Future<Gs2Domain> CreateChaosFuture(
             IGs2Credential credential,
             float chaos,
             Region region = Region.ApNortheast1,
-            string distributorNamespaceName = "default"
+            string distributorNamespaceName = "default",
+            string steadyEndpoint = null
         ) {
             IEnumerator Impl(Gs2Future<Gs2Domain> self)
             {
                 var connection = new Gs2Connection(
                     credential,
                     region,
-                    chaos
+                    chaos,
+                    steadyEndpoint
                 );
                 var future = connection.ConnectFuture();
                 yield return future;
@@ -105,16 +114,19 @@ namespace Gs2.Unity.Core
         }
         
 #if GS2_ENABLE_UNITASK
+        /// <param name="steadyEndpoint">Steady（専用フリート）の基点（https://&lt;host&gt;）。null なら共有クラウド</param>
         public static async UniTask<Gs2Domain> CreateChaosAsync(
             IGs2Credential credential,
             float chaos,
             Region region = Region.ApNortheast1,
-            string distributorNamespaceName = "default"
+            string distributorNamespaceName = "default",
+            string steadyEndpoint = null
         ) {
             var connection = new Gs2Connection(
                 credential,
                 region,
-                chaos
+                chaos,
+                steadyEndpoint
             );
             await connection.ConnectAsync();
             return new Gs2Domain(

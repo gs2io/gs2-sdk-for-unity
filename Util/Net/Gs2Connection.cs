@@ -24,21 +24,31 @@ namespace Gs2.Unity.Util
 
         public Region Region => RestSession.Region;
 
+        /// <summary>
+        /// Steady（専用フリート）の基点（https://&lt;host&gt;）。null なら共有クラウド。
+        /// 設定されていると REST は &lt;steady&gt;/&lt;service&gt;、WebSocket は wss://&lt;host&gt;/ へ繋ぎ、
+        /// 接続段階の失敗だけ同じ要求をもう 1 回だけ送る（Gs2RestSession の説明）。
+        /// </summary>
+        public string SteadyEndpoint => RestSession.SteadyEndpoint;
+
         public Gs2Connection(
             IGs2Credential credential,
-            Region region
+            Region region,
+            string steadyEndpoint = null
         ) {
-            RestSession = new Gs2RestSession(credential, region);
-            WebSocketSession = new Gs2WebSocketSession(credential, region);
+            // ★REST と WebSocket の両方に同じ基点を渡す（片方だけ Steady に向くのを防ぐ）。
+            RestSession = new Gs2RestSession(credential, region, steadyEndpoint: steadyEndpoint);
+            WebSocketSession = new Gs2WebSocketSession(credential, region, steadyEndpoint: steadyEndpoint);
         }
 
         public Gs2Connection(
             IGs2Credential credential,
             Region region,
-            float chaos
+            float chaos,
+            string steadyEndpoint = null
         ) {
-            RestSession = new Gs2.Core.Net.Chaos.ChaosGs2RestSession(credential, chaos, region);
-            WebSocketSession = new Gs2WebSocketSession(credential, region);
+            RestSession = new Gs2.Core.Net.Chaos.ChaosGs2RestSession(credential, chaos, region, steadyEndpoint: steadyEndpoint);
+            WebSocketSession = new Gs2WebSocketSession(credential, region, steadyEndpoint: steadyEndpoint);
         }
 
         public Gs2Future<OpenResult> ConnectFuture() {
