@@ -52,6 +52,10 @@ namespace Gs2.Unity.Gs2Mission.Model
 		[SerializeField]
 #endif
 		public long Value;
+#if UNITY_2017_1_OR_NEWER
+		[SerializeField]
+#endif
+		public long NextResetAt;
 
         public Gs2.Gs2Mission.Model.ScopedValue ToModel()
         {
@@ -60,6 +64,7 @@ namespace Gs2.Unity.Gs2Mission.Model
                 ResetType = ResetType,
                 ConditionName = ConditionName,
                 Value = Value,
+                NextResetAt = NextResetAt,
             };
         }
 
@@ -70,6 +75,7 @@ namespace Gs2.Unity.Gs2Mission.Model
                 ResetType = model.ResetType == null ? null : model.ResetType,
                 ConditionName = model.ConditionName == null ? null : model.ConditionName,
                 Value = model.Value ?? 0,
+                NextResetAt = model.NextResetAt ?? 0,
             };
         }
     }

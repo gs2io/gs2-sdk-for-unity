@@ -77,16 +77,19 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ReadFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Read(
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             return ReadFuture(
-                speculativeExecute
+                speculativeExecute,
+                duplicationAvoider
             );
         }
 
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReadFuture(
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -94,7 +97,8 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
                 var future = this._connection.RunFuture(
                     this._gameSession,
                     () => this._domain.ReadFuture(
-                        new ReadMessageRequest(),
+                        new ReadMessageRequest()
+                            .WithDuplicationAvoider(duplicationAvoider),
                         speculativeExecute
                     )
                 );
@@ -115,12 +119,14 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
             #else
         public async Task<Gs2.Unity.Core.Domain.EzTransactionDomain> ReadAsync(
             #endif
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.ReadAsync(
-                    new ReadMessageRequest(),
+                    new ReadMessageRequest()
+                        .WithDuplicationAvoider(duplicationAvoider),
                     speculativeExecute
                 )
             );

@@ -78,18 +78,21 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         [Obsolete("The name has been changed to ReleaseFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Release(
             string[] nodeModelNames,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             return ReleaseFuture(
                 nodeModelNames,
-                speculativeExecute
+                speculativeExecute,
+                duplicationAvoider
             );
         }
 
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReleaseFuture(
             string[] nodeModelNames,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -98,7 +101,8 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
                     this._gameSession,
                     () => this._domain.ReleaseFuture(
                         new ReleaseRequest()
-                            .WithNodeModelNames(nodeModelNames),
+                            .WithNodeModelNames(nodeModelNames)
+                            .WithDuplicationAvoider(duplicationAvoider),
                         speculativeExecute
                     )
                 );
@@ -120,13 +124,15 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         public async Task<Gs2.Unity.Core.Domain.EzTransactionDomain> ReleaseAsync(
             #endif
             string[] nodeModelNames,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.ReleaseAsync(
                     new ReleaseRequest()
-                        .WithNodeModelNames(nodeModelNames),
+                        .WithNodeModelNames(nodeModelNames)
+                        .WithDuplicationAvoider(duplicationAvoider),
                     speculativeExecute
                 )
             );
@@ -138,18 +144,21 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         [Obsolete("The name has been changed to RestrainFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Restrain(
             string[] nodeModelNames,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             return RestrainFuture(
                 nodeModelNames,
-                speculativeExecute
+                speculativeExecute,
+                duplicationAvoider
             );
         }
 
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> RestrainFuture(
             string[] nodeModelNames,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -158,7 +167,8 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
                     this._gameSession,
                     () => this._domain.RestrainFuture(
                         new RestrainRequest()
-                            .WithNodeModelNames(nodeModelNames),
+                            .WithNodeModelNames(nodeModelNames)
+                            .WithDuplicationAvoider(duplicationAvoider),
                         speculativeExecute
                     )
                 );
@@ -180,13 +190,15 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         public async Task<Gs2.Unity.Core.Domain.EzTransactionDomain> RestrainAsync(
             #endif
             string[] nodeModelNames,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.RestrainAsync(
                     new RestrainRequest()
-                        .WithNodeModelNames(nodeModelNames),
+                        .WithNodeModelNames(nodeModelNames)
+                        .WithDuplicationAvoider(duplicationAvoider),
                     speculativeExecute
                 )
             );
@@ -197,16 +209,19 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
         #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ResetFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Reset(
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             return ResetFuture(
-                speculativeExecute
+                speculativeExecute,
+                duplicationAvoider
             );
         }
 
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ResetFuture(
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -214,7 +229,8 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
                 var future = this._connection.RunFuture(
                     this._gameSession,
                     () => this._domain.ResetFuture(
-                        new ResetRequest(),
+                        new ResetRequest()
+                            .WithDuplicationAvoider(duplicationAvoider),
                         speculativeExecute
                     )
                 );
@@ -235,12 +251,14 @@ namespace Gs2.Unity.Gs2SkillTree.Domain.Model
             #else
         public async Task<Gs2.Unity.Core.Domain.EzTransactionDomain> ResetAsync(
             #endif
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.ResetAsync(
-                    new ResetRequest(),
+                    new ResetRequest()
+                        .WithDuplicationAvoider(duplicationAvoider),
                     speculativeExecute
                 )
             );

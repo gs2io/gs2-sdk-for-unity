@@ -80,18 +80,21 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         [Obsolete("The name has been changed to ReceiveGlobalRankingRewardFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveGlobalRankingReward(
             Gs2.Unity.Gs2Ranking2.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             return ReceiveGlobalRankingRewardFuture(
                 config,
-                speculativeExecute
+                speculativeExecute,
+                duplicationAvoider
             );
         }
 
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveGlobalRankingRewardFuture(
             Gs2.Unity.Gs2Ranking2.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -100,7 +103,8 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
                     this._gameSession,
                     () => this._domain.ReceiveFuture(
                         new ReceiveGlobalRankingReceivedRewardRequest()
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                            .WithDuplicationAvoider(duplicationAvoider),
                         speculativeExecute
                     )
                 );
@@ -122,13 +126,15 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
         public async Task<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveGlobalRankingRewardAsync(
             #endif
             Gs2.Unity.Gs2Ranking2.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.ReceiveAsync(
                     new ReceiveGlobalRankingReceivedRewardRequest()
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithDuplicationAvoider(duplicationAvoider),
                     speculativeExecute
                 )
             );

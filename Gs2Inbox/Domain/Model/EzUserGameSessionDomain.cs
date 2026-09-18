@@ -134,18 +134,21 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         [Obsolete("The name has been changed to BatchReadFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> BatchRead(
             string[] messageNames,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             return BatchReadFuture(
                 messageNames,
-                speculativeExecute
+                speculativeExecute,
+                duplicationAvoider
             );
         }
 
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> BatchReadFuture(
             string[] messageNames,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -154,7 +157,8 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
                     this._gameSession,
                     () => this._domain.BatchReadMessagesFuture(
                         new BatchReadMessagesRequest()
-                            .WithMessageNames(messageNames),
+                            .WithMessageNames(messageNames)
+                            .WithDuplicationAvoider(duplicationAvoider),
                         speculativeExecute
                     )
                 );
@@ -176,13 +180,15 @@ namespace Gs2.Unity.Gs2Inbox.Domain.Model
         public async Task<Gs2.Unity.Core.Domain.EzTransactionDomain> BatchReadAsync(
             #endif
             string[] messageNames,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.BatchReadMessagesAsync(
                     new BatchReadMessagesRequest()
-                        .WithMessageNames(messageNames),
+                        .WithMessageNames(messageNames)
+                        .WithDuplicationAvoider(duplicationAvoider),
                     speculativeExecute
                 )
             );

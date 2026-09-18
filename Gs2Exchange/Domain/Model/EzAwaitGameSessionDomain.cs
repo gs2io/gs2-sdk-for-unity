@@ -77,16 +77,19 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
         #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to AcquireFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Acquire(
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             return AcquireFuture(
-                speculativeExecute
+                speculativeExecute,
+                duplicationAvoider
             );
         }
 
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> AcquireFuture(
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -94,7 +97,8 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                 var future = this._connection.RunFuture(
                     this._gameSession,
                     () => this._domain.AcquireFuture(
-                        new AcquireRequest(),
+                        new AcquireRequest()
+                            .WithDuplicationAvoider(duplicationAvoider),
                         speculativeExecute
                     )
                 );
@@ -115,12 +119,14 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
             #else
         public async Task<Gs2.Unity.Core.Domain.EzTransactionDomain> AcquireAsync(
             #endif
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.AcquireAsync(
-                    new AcquireRequest(),
+                    new AcquireRequest()
+                        .WithDuplicationAvoider(duplicationAvoider),
                     speculativeExecute
                 )
             );

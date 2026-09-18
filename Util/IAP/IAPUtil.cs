@@ -33,6 +33,13 @@ namespace Gs2.Unity.Util
     public class PurchaseParameters
     {
         public string receipt;
+        /// <summary>
+        /// The store's id for this purchase. A GS2 request that consumes the
+        /// receipt should carry it as the duplication avoider, so that retrying
+        /// the same purchase (a second click, a restored pending order) is
+        /// answered with the first result instead of a duplicate transaction.
+        /// </summary>
+        public string transactionId;
 #if !GS2_IAP_5_0_0_OR_NEWER
         public IStoreController controller;
         public Product product;
@@ -60,6 +67,7 @@ namespace Gs2.Unity.Util
         private Status _status = Status.None;
         private Gs2Exception _exception;
         private string _receipt;
+        private string _transactionId;
 
         public IEnumerator Buy(
             UnityAction<AsyncResult<PurchaseParameters>> callback,
@@ -95,6 +103,7 @@ namespace Gs2.Unity.Util
                 }
                 _exception = null;
                 _receipt = null;
+                _transactionId = null;
                 _status = Status.Initializing;
 
 #if !GS2_IAP_5_0_0_OR_NEWER
@@ -121,6 +130,7 @@ namespace Gs2.Unity.Util
                 result.OnComplete(
                     new PurchaseParameters {
                         receipt = _receipt,
+                        transactionId = _transactionId,
                         controller = _controller,
                         product = _controller.products.WithID(contentsId),
                     }
@@ -182,6 +192,7 @@ namespace Gs2.Unity.Util
                     result.OnComplete(
                         new PurchaseParameters {
                             receipt = _receipt,
+                            transactionId = _transactionId,
                             controller = session.Controller,
                             order = session.Order,
                         }
@@ -206,6 +217,7 @@ namespace Gs2.Unity.Util
             }
             _exception = null;
             _receipt = null;
+            _transactionId = null;
             _status = Status.Initializing;
 
 #if !GS2_IAP_5_0_0_OR_NEWER
@@ -228,6 +240,7 @@ namespace Gs2.Unity.Util
                     return new PurchaseParameters
                     {
                         receipt = product.receipt,
+                        transactionId = product.transactionID,
                         controller = _controller,
                         product = product,
                     };
@@ -243,6 +256,7 @@ namespace Gs2.Unity.Util
             return new PurchaseParameters
             {
                 receipt = _receipt,
+                transactionId = _transactionId,
                 controller = _controller,
                 product = _controller.products.WithID(contentsId),
             };
@@ -291,6 +305,7 @@ namespace Gs2.Unity.Util
                 return new PurchaseParameters
                 {
                     receipt = _receipt,
+                    transactionId = _transactionId,
                     controller = session.Controller,
                     order = session.Order,
                 };
@@ -333,6 +348,7 @@ namespace Gs2.Unity.Util
             public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs e)
             {
                 _client._receipt = e.purchasedProduct.receipt;
+                _client._transactionId = e.purchasedProduct.transactionID;
                 _client._status = Status.Purchased;
                 return PurchaseProcessingResult.Pending;
             }
@@ -421,6 +437,7 @@ namespace Gs2.Unity.Util
                 }
                 Order = order;
                 _client._receipt = order.Info.Receipt;
+                _client._transactionId = order.Info.TransactionID;
                 _client._status = Status.Purchased;
             }
 

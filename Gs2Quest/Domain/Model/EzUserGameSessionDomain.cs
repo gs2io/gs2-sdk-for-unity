@@ -81,7 +81,8 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             string questName,
             bool? force = null,
             Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             return StartFuture(
@@ -89,7 +90,8 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                 questName,
                 force,
                 config,
-                speculativeExecute
+                speculativeExecute,
+                duplicationAvoider
             );
         }
 
@@ -98,7 +100,8 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             string questName,
             bool? force = null,
             Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -110,7 +113,8 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                             .WithQuestGroupName(questGroupName)
                             .WithQuestName(questName)
                             .WithForce(force)
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                            .WithDuplicationAvoider(duplicationAvoider),
                         speculativeExecute
                     )
                 );
@@ -135,7 +139,8 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
             string questName,
             bool? force = null,
             Gs2.Unity.Gs2Quest.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -144,7 +149,8 @@ namespace Gs2.Unity.Gs2Quest.Domain.Model
                         .WithQuestGroupName(questGroupName)
                         .WithQuestName(questName)
                         .WithForce(force)
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithDuplicationAvoider(duplicationAvoider),
                     speculativeExecute
                 )
             );

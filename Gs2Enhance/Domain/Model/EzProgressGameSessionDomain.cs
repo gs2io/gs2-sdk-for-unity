@@ -83,7 +83,8 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
             Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials = null,
             bool? force = null,
             Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             return StartFuture(
@@ -92,7 +93,8 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
                 materials,
                 force,
                 config,
-                speculativeExecute
+                speculativeExecute,
+                duplicationAvoider
             );
         }
 
@@ -102,7 +104,8 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
             Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials = null,
             bool? force = null,
             Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -115,7 +118,8 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
                             .WithTargetItemSetId(targetItemSetId)
                             .WithMaterials(materials?.Select(v => v.ToModel()).ToArray())
                             .WithForce(force)
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                            .WithDuplicationAvoider(duplicationAvoider),
                         speculativeExecute
                     )
                 );
@@ -141,7 +145,8 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
             Gs2.Unity.Gs2Enhance.Model.EzMaterial[] materials = null,
             bool? force = null,
             Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -151,7 +156,8 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
                         .WithTargetItemSetId(targetItemSetId)
                         .WithMaterials(materials?.Select(v => v.ToModel()).ToArray())
                         .WithForce(force)
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithDuplicationAvoider(duplicationAvoider),
                     speculativeExecute
                 )
             );
@@ -163,18 +169,21 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
         [Obsolete("The name has been changed to EndFuture.")]
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> End(
             Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             return EndFuture(
                 config,
-                speculativeExecute
+                speculativeExecute,
+                duplicationAvoider
             );
         }
 
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> EndFuture(
             Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -183,7 +192,8 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
                     this._gameSession,
                     () => this._domain.EndFuture(
                         new EndRequest()
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                            .WithDuplicationAvoider(duplicationAvoider),
                         speculativeExecute
                     )
                 );
@@ -205,13 +215,15 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
         public async Task<Gs2.Unity.Core.Domain.EzTransactionDomain> EndAsync(
             #endif
             Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.EndAsync(
                     new EndRequest()
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithDuplicationAvoider(duplicationAvoider),
                     speculativeExecute
                 )
             );

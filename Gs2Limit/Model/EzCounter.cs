@@ -55,6 +55,10 @@ namespace Gs2.Unity.Gs2Limit.Model
 #if UNITY_2017_1_OR_NEWER
 		[SerializeField]
 #endif
+		public long NextResetAt;
+#if UNITY_2017_1_OR_NEWER
+		[SerializeField]
+#endif
 		public long CreatedAt;
 #if UNITY_2017_1_OR_NEWER
 		[SerializeField]
@@ -68,6 +72,7 @@ namespace Gs2.Unity.Gs2Limit.Model
                 LimitName = LimitName,
                 Name = Name,
                 Count = Count,
+                NextResetAt = NextResetAt,
                 CreatedAt = CreatedAt,
                 UpdatedAt = UpdatedAt,
             };
@@ -80,6 +85,7 @@ namespace Gs2.Unity.Gs2Limit.Model
                 LimitName = model.LimitName == null ? null : model.LimitName,
                 Name = model.Name == null ? null : model.Name,
                 Count = model.Count ?? 0,
+                NextResetAt = model.NextResetAt ?? 0,
                 CreatedAt = model.CreatedAt ?? 0,
                 UpdatedAt = model.UpdatedAt ?? 0,
             };

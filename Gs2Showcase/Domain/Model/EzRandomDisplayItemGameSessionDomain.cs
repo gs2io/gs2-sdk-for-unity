@@ -80,20 +80,23 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> RandomShowcaseBuy(
             int? quantity = null,
             Gs2.Unity.Gs2Showcase.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             return RandomShowcaseBuyFuture(
                 quantity,
                 config,
-                speculativeExecute
+                speculativeExecute,
+                duplicationAvoider
             );
         }
 
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> RandomShowcaseBuyFuture(
             int? quantity = null,
             Gs2.Unity.Gs2Showcase.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -103,7 +106,8 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
                     () => this._domain.RandomShowcaseBuyFuture(
                         new RandomShowcaseBuyRequest()
                             .WithQuantity(quantity)
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                            .WithDuplicationAvoider(duplicationAvoider),
                         speculativeExecute
                     )
                 );
@@ -126,14 +130,16 @@ namespace Gs2.Unity.Gs2Showcase.Domain.Model
             #endif
             int? quantity = null,
             Gs2.Unity.Gs2Showcase.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.RandomShowcaseBuyAsync(
                     new RandomShowcaseBuyRequest()
                         .WithQuantity(quantity)
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithDuplicationAvoider(duplicationAvoider),
                     speculativeExecute
                 )
             );

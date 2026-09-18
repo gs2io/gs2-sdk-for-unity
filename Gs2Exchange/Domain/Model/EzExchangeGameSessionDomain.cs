@@ -79,14 +79,16 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
             string rateName,
             int count,
             Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             return ExchangeFuture(
                 rateName,
                 count,
                 config,
-                speculativeExecute
+                speculativeExecute,
+                duplicationAvoider
             );
         }
 
@@ -94,7 +96,8 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
             string rateName,
             int count,
             Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -105,7 +108,8 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                         new ExchangeRequest()
                             .WithRateName(rateName)
                             .WithCount(count)
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                            .WithDuplicationAvoider(duplicationAvoider),
                         speculativeExecute
                     )
                 );
@@ -129,7 +133,8 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
             string rateName,
             int count,
             Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -137,7 +142,8 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                     new ExchangeRequest()
                         .WithRateName(rateName)
                         .WithCount(count)
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithDuplicationAvoider(duplicationAvoider),
                     speculativeExecute
                 )
             );
@@ -151,14 +157,16 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
             string rateName,
             int count,
             Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             return IncrementalExchangeFuture(
                 rateName,
                 count,
                 config,
-                speculativeExecute
+                speculativeExecute,
+                duplicationAvoider
             );
         }
 
@@ -166,7 +174,8 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
             string rateName,
             int count,
             Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -177,7 +186,8 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                         new IncrementalExchangeRequest()
                             .WithRateName(rateName)
                             .WithCount(count)
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                            .WithDuplicationAvoider(duplicationAvoider),
                         speculativeExecute
                     )
                 );
@@ -201,7 +211,8 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
             string rateName,
             int count,
             Gs2.Unity.Gs2Exchange.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -209,7 +220,8 @@ namespace Gs2.Unity.Gs2Exchange.Domain.Model
                     new IncrementalExchangeRequest()
                         .WithRateName(rateName)
                         .WithCount(count)
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithDuplicationAvoider(duplicationAvoider),
                     speculativeExecute
                 )
             );

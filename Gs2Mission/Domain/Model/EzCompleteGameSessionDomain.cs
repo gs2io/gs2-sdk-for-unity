@@ -79,20 +79,23 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveRewards(
             string missionTaskName,
             Gs2.Unity.Gs2Mission.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             return ReceiveRewardsFuture(
                 missionTaskName,
                 config,
-                speculativeExecute
+                speculativeExecute,
+                duplicationAvoider
             );
         }
 
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveRewardsFuture(
             string missionTaskName,
             Gs2.Unity.Gs2Mission.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -102,7 +105,8 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                     () => this._domain.CompleteFuture(
                         new CompleteRequest()
                             .WithMissionTaskName(missionTaskName)
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                            .WithDuplicationAvoider(duplicationAvoider),
                         speculativeExecute
                     )
                 );
@@ -125,14 +129,16 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             #endif
             string missionTaskName,
             Gs2.Unity.Gs2Mission.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.CompleteAsync(
                     new CompleteRequest()
                         .WithMissionTaskName(missionTaskName)
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithDuplicationAvoider(duplicationAvoider),
                     speculativeExecute
                 )
             );
@@ -145,20 +151,23 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> BatchReceiveRewards(
             string[] missionTaskNames,
             Gs2.Unity.Gs2Mission.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             return BatchReceiveRewardsFuture(
                 missionTaskNames,
                 config,
-                speculativeExecute
+                speculativeExecute,
+                duplicationAvoider
             );
         }
 
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> BatchReceiveRewardsFuture(
             string[] missionTaskNames,
             Gs2.Unity.Gs2Mission.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -168,7 +177,8 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
                     () => this._domain.BatchFuture(
                         new BatchCompleteRequest()
                             .WithMissionTaskNames(missionTaskNames)
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                            .WithDuplicationAvoider(duplicationAvoider),
                         speculativeExecute
                     )
                 );
@@ -191,14 +201,16 @@ namespace Gs2.Unity.Gs2Mission.Domain.Model
             #endif
             string[] missionTaskNames,
             Gs2.Unity.Gs2Mission.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.BatchAsync(
                     new BatchCompleteRequest()
                         .WithMissionTaskNames(missionTaskNames)
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithDuplicationAvoider(duplicationAvoider),
                     speculativeExecute
                 )
             );

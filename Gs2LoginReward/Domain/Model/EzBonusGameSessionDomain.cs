@@ -78,20 +78,23 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Receive(
             string bonusModelName,
             Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             return ReceiveFuture(
                 bonusModelName,
                 config,
-                speculativeExecute
+                speculativeExecute,
+                duplicationAvoider
             );
         }
 
         public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> ReceiveFuture(
             string bonusModelName,
             Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -101,7 +104,8 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                     () => this._domain.ReceiveFuture(
                         new ReceiveRequest()
                             .WithBonusModelName(bonusModelName)
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                            .WithDuplicationAvoider(duplicationAvoider),
                         speculativeExecute
                     )
                 );
@@ -124,14 +128,16 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
             #endif
             string bonusModelName,
             Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
                 () => this._domain.ReceiveAsync(
                     new ReceiveRequest()
                         .WithBonusModelName(bonusModelName)
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithDuplicationAvoider(duplicationAvoider),
                     speculativeExecute
                 )
             );
@@ -145,14 +151,16 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
             string bonusModelName,
             int? stepNumber = null,
             Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             return MissedReceiveFuture(
                 bonusModelName,
                 stepNumber,
                 config,
-                speculativeExecute
+                speculativeExecute,
+                duplicationAvoider
             );
         }
 
@@ -160,7 +168,8 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
             string bonusModelName,
             int? stepNumber = null,
             Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         )
         {
             IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
@@ -171,7 +180,8 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                         new MissedReceiveRequest()
                             .WithBonusModelName(bonusModelName)
                             .WithStepNumber(stepNumber)
-                            .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                            .WithDuplicationAvoider(duplicationAvoider),
                         speculativeExecute
                     )
                 );
@@ -195,7 +205,8 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
             string bonusModelName,
             int? stepNumber = null,
             Gs2.Unity.Gs2LoginReward.Model.EzConfig[] config = null,
-            bool speculativeExecute = true
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
         ) {
             var result = await this._connection.RunAsync(
                 this._gameSession,
@@ -203,7 +214,8 @@ namespace Gs2.Unity.Gs2LoginReward.Domain.Model
                     new MissedReceiveRequest()
                         .WithBonusModelName(bonusModelName)
                         .WithStepNumber(stepNumber)
-                        .WithConfig(config?.Select(v => v.ToModel()).ToArray()),
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithDuplicationAvoider(duplicationAvoider),
                     speculativeExecute
                 )
             );

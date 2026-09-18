@@ -48,6 +48,10 @@ namespace Gs2.Unity.Gs2Mission.Model
 		[SerializeField]
 #endif
 		public List<string> ReceivedMissionTaskNames;
+#if UNITY_2017_1_OR_NEWER
+		[SerializeField]
+#endif
+		public long NextResetAt;
 
         public Gs2.Gs2Mission.Model.Complete ToModel()
         {
@@ -59,6 +63,7 @@ namespace Gs2.Unity.Gs2Mission.Model
                 ReceivedMissionTaskNames = ReceivedMissionTaskNames?.Select(v => {
                     return v;
                 }).ToArray(),
+                NextResetAt = NextResetAt,
             };
         }
 
@@ -72,6 +77,7 @@ namespace Gs2.Unity.Gs2Mission.Model
                 ReceivedMissionTaskNames = model.ReceivedMissionTaskNames == null ? new List<string>() : model.ReceivedMissionTaskNames.Select(v => {
                     return v;
                 }).ToList(),
+                NextResetAt = model.NextResetAt ?? 0,
             };
         }
     }
