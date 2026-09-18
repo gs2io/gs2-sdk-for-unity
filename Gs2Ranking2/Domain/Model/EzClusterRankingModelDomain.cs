@@ -12,7 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
  * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
@@ -41,7 +40,6 @@ using Gs2.Util.LitJson;
 using Gs2.Core;
 using Gs2.Core.Domain;
 using Gs2.Core.Util;
-using Gs2.Unity.Util;
 #if UNITY_2017_1_OR_NEWER
 using UnityEngine.Scripting;
 using System.Collections;
@@ -76,7 +74,23 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
 
         public Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingSeasonGameSessionDomain ClusterRankingSeason(
             string clusterName,
-            IGameSession gameSession,
+            long season,
+            Gs2.Unity.Util.IGameSession gameSession
+        ) {
+            return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingSeasonGameSessionDomain(
+                _domain.ClusterRankingSeason(
+                    clusterName,
+                    season,
+                    gameSession.AccessToken
+                ),
+                gameSession,
+                this._connection
+            );
+        }
+/* diff +++ start */
+        public Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingSeasonGameSessionDomain ClusterRankingSeason(
+            string clusterName,
+            Gs2.Unity.Util.IGameSession gameSession,
             long? season = null
         ) {
             return new Gs2.Unity.Gs2Ranking2.Domain.Model.EzClusterRankingSeasonGameSessionDomain(
@@ -85,6 +99,7 @@ namespace Gs2.Unity.Gs2Ranking2.Domain.Model
                 this._connection
             );
         }
+/* diff +++ end */
 
         #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to ModelFuture.")]

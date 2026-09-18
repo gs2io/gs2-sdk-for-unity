@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -61,6 +59,7 @@ namespace Gs2.Unity.Gs2Guild.Domain.Iterator
         private readonly int[] _attributes5;
         private readonly string[] _joinPolicies;
         private readonly bool? _includeFullMembersGuild;
+        private readonly string? _orderBy;
 
         public EzListGuildsIterator(
             Gs2.Gs2Guild.Domain.Model.UserAccessTokenDomain domain,
@@ -74,7 +73,8 @@ namespace Gs2.Unity.Gs2Guild.Domain.Iterator
             int[]? attributes4 = null,
             int[]? attributes5 = null,
             string[]? joinPolicies = null,
-            bool? includeFullMembersGuild = null
+            bool? includeFullMembersGuild = null,
+            string? orderBy = null
         )
         {
             _domain = domain;
@@ -89,6 +89,7 @@ namespace Gs2.Unity.Gs2Guild.Domain.Iterator
             _attributes5 = attributes5;
             _joinPolicies = joinPolicies;
             _includeFullMembersGuild = includeFullMembersGuild;
+            _orderBy = orderBy;
             _it = _domain.SearchGuilds(
                 guildModelName,
                 displayName,
@@ -98,7 +99,8 @@ namespace Gs2.Unity.Gs2Guild.Domain.Iterator
                 attributes4,
                 attributes5,
                 joinPolicies,
-                includeFullMembersGuild
+                includeFullMembersGuild,
+                orderBy
             );
         }
 
@@ -123,7 +125,8 @@ namespace Gs2.Unity.Gs2Guild.Domain.Iterator
                         this._attributes4,
                         this._attributes5,
                         this._joinPolicies,
-                        this._includeFullMembersGuild
+                        this._includeFullMembersGuild,
+                        this._orderBy
                     );
                 }
             );
