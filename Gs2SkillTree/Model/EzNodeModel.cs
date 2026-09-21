@@ -60,6 +60,10 @@ namespace Gs2.Unity.Gs2SkillTree.Model
 		[SerializeField]
 #endif
 		public float RestrainReturnRate;
+#if UNITY_2017_1_OR_NEWER
+		[SerializeField]
+#endif
+		public List<string> PremiseNodeNames;
 
         public Gs2.Gs2SkillTree.Model.NodeModel ToModel()
         {
@@ -76,6 +80,9 @@ namespace Gs2.Unity.Gs2SkillTree.Model
                     return v.ToModel();
                 }).ToArray(),
                 RestrainReturnRate = RestrainReturnRate,
+                PremiseNodeNames = PremiseNodeNames?.Select(v => {
+                    return v;
+                }).ToArray(),
             };
         }
 
@@ -94,6 +101,9 @@ namespace Gs2.Unity.Gs2SkillTree.Model
                     return Gs2.Unity.Core.Model.EzAcquireAction.FromModel(v);
                 }).ToList(),
                 RestrainReturnRate = model.RestrainReturnRate ?? 0,
+                PremiseNodeNames = model.PremiseNodeNames == null ? new List<string>() : model.PremiseNodeNames.Select(v => {
+                    return v;
+                }).ToList(),
             };
         }
     }

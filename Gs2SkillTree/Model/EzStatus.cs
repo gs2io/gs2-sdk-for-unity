@@ -47,6 +47,10 @@ namespace Gs2.Unity.Gs2SkillTree.Model
 #if UNITY_2017_1_OR_NEWER
 		[SerializeField]
 #endif
+		public string PropertyId;
+#if UNITY_2017_1_OR_NEWER
+		[SerializeField]
+#endif
 		public List<string> ReleasedNodeNames;
 
         public Gs2.Gs2SkillTree.Model.Status ToModel()
@@ -54,6 +58,7 @@ namespace Gs2.Unity.Gs2SkillTree.Model
             return new Gs2.Gs2SkillTree.Model.Status {
                 StatusId = StatusId,
                 UserId = UserId,
+                PropertyId = PropertyId,
                 ReleasedNodeNames = ReleasedNodeNames?.Select(v => {
                     return v;
                 }).ToArray(),
@@ -65,6 +70,7 @@ namespace Gs2.Unity.Gs2SkillTree.Model
             return new EzStatus {
                 StatusId = model.StatusId == null ? null : model.StatusId,
                 UserId = model.UserId == null ? null : model.UserId,
+                PropertyId = model.PropertyId == null ? null : model.PropertyId,
                 ReleasedNodeNames = model.ReleasedNodeNames == null ? new List<string>() : model.ReleasedNodeNames.Select(v => {
                     return v;
                 }).ToList(),
