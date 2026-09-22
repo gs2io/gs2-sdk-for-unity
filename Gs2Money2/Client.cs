@@ -228,5 +228,49 @@ namespace Gs2.Unity.Gs2Money2
                 )
             );
 		}
+
+        public IEnumerator GetStoreContentModel(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Money2.Result.EzGetStoreContentModelResult>> callback,
+                string namespaceName,
+                string contentName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+                null,
+                cb => _client.GetStoreContentModel(
+                    new Gs2.Gs2Money2.Request.GetStoreContentModelRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithContentName(contentName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Money2.Result.EzGetStoreContentModelResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Money2.Result.EzGetStoreContentModelResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator ListStoreContentModels(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Money2.Result.EzListStoreContentModelsResult>> callback,
+                string namespaceName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+                null,
+                cb => _restClient.DescribeStoreContentModels(
+                    new Gs2.Gs2Money2.Request.DescribeStoreContentModelsRequest()
+                        .WithNamespaceName(namespaceName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Money2.Result.EzListStoreContentModelsResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Money2.Result.EzListStoreContentModelsResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
     }
 }

@@ -12,8 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
- * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
 // ReSharper disable RedundantUsingDirective
@@ -77,6 +75,108 @@ namespace Gs2.Unity.Gs2Money2.Domain.Model
             this._connection = connection;
         }
 
+        #if UNITY_2017_1_OR_NEWER
+        public Gs2Iterator<Gs2.Unity.Gs2Money2.Model.EzStoreContentModel> StoreContentModels(
+        )
+        {
+            return new Gs2.Unity.Gs2Money2.Domain.Iterator.EzListStoreContentModelsIterator(
+                this._domain,
+                this._connection
+            );
+        }
+        #endif
+
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if GS2_ENABLE_UNITASK
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Money2.Model.EzStoreContentModel> StoreContentModelsAsync(
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Money2.Model.EzStoreContentModel>(async (writer, token) =>
+            {
+                var it = _domain.StoreContentModelsAsync(
+                ).GetAsyncEnumerator();
+                try
+                {
+                    while(
+                        await this._connection.RunIteratorAsync(
+                            null,
+                            async () =>
+                            {
+                                return await it.MoveNextAsync();
+                            },
+                            () => {
+                                it = _domain.StoreContentModelsAsync(
+                                ).GetAsyncEnumerator();
+                            }
+                        )
+                    )
+                    {
+                        await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Money2.Model.EzStoreContentModel.FromModel(it.Current));
+                    }
+                }
+                finally
+                {
+                    await it.DisposeAsync();
+                }
+            });
+        }
+            #else
+        public async IAsyncEnumerable<Gs2.Unity.Gs2Money2.Model.EzStoreContentModel> StoreContentModelsAsync(
+        )
+        {
+            var it = _domain.StoreContentModelsAsync(
+            ).GetAsyncEnumerator();
+            try
+            {
+                while(
+                    await this._connection.RunIteratorAsync(
+                        null,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.StoreContentModelsAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    yield return it.Current == null ? null : Gs2.Unity.Gs2Money2.Model.EzStoreContentModel.FromModel(it.Current);
+                }
+            }
+            finally
+            {
+                await it.DisposeAsync();
+            }
+        }
+            #endif
+        #endif
+
+        public ulong SubscribeStoreContentModels(
+            Action<Gs2.Unity.Gs2Money2.Model.EzStoreContentModel[]> callback
+        ) {
+            return this._domain.SubscribeStoreContentModels(
+                items => {
+                    callback.Invoke(items.Select(Gs2.Unity.Gs2Money2.Model.EzStoreContentModel.FromModel).ToArray());
+                }
+            );
+        }
+
+        public void UnsubscribeStoreContentModels(
+            ulong callbackId
+        ) {
+            this._domain.UnsubscribeStoreContentModels(
+                callbackId
+            );
+        }
+
+        public void InvalidateStoreContentModels(
+        ) {
+            this._domain.InvalidateStoreContentModels(
+            );
+        }
+
         public Gs2.Unity.Gs2Money2.Domain.Model.EzUserDomain User(
             string userId
         ) {
@@ -99,5 +199,17 @@ namespace Gs2.Unity.Gs2Money2.Domain.Model
                 this._connection
             );
         }
+
+        public Gs2.Unity.Gs2Money2.Domain.Model.EzStoreContentModelDomain StoreContentModel(
+            string contentName
+        ) {
+            return new Gs2.Unity.Gs2Money2.Domain.Model.EzStoreContentModelDomain(
+                _domain.StoreContentModel(
+                    contentName
+                ),
+                this._connection
+            );
+        }
+
     }
 }
