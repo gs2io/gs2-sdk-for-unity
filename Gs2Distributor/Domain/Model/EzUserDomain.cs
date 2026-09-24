@@ -60,6 +60,7 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
     public partial class EzUserDomain {
         private readonly Gs2.Gs2Distributor.Domain.Model.UserDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 

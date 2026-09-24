@@ -60,6 +60,7 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
         private readonly Gs2.Gs2Distributor.Domain.Model.UserAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
+        public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
 
@@ -72,6 +73,85 @@ namespace Gs2.Unity.Gs2Distributor.Domain.Model
             this._gameSession = gameSession;
             this._connection = connection;
         }
+
+        #if UNITY_2017_1_OR_NEWER
+        public Gs2Iterator<Gs2.Unity.Gs2Distributor.Model.EzUserDataEntry> UserData(
+        )
+        {
+            return new Gs2.Unity.Gs2Distributor.Domain.Iterator.EzDescribeUserDataIterator(
+                this._domain,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if GS2_ENABLE_UNITASK
+        public IUniTaskAsyncEnumerable<Gs2.Unity.Gs2Distributor.Model.EzUserDataEntry> UserDataAsync(
+        )
+        {
+            return UniTaskAsyncEnumerable.Create<Gs2.Unity.Gs2Distributor.Model.EzUserDataEntry>(async (writer, token) =>
+            {
+                var it = _domain.UserDataAsync(
+                ).GetAsyncEnumerator();
+                try
+                {
+                    while(
+                        await this._connection.RunIteratorAsync(
+                            this._gameSession,
+                            async () =>
+                            {
+                                return await it.MoveNextAsync();
+                            },
+                            () => {
+                                it = _domain.UserDataAsync(
+                                ).GetAsyncEnumerator();
+                            }
+                        )
+                    )
+                    {
+                        await writer.YieldAsync(it.Current == null ? null : Gs2.Unity.Gs2Distributor.Model.EzUserDataEntry.FromModel(it.Current));
+                    }
+                }
+                finally
+                {
+                    await it.DisposeAsync();
+                }
+            });
+        }
+            #else
+        public async IAsyncEnumerable<Gs2.Unity.Gs2Distributor.Model.EzUserDataEntry> UserDataAsync(
+        )
+        {
+            var it = _domain.UserDataAsync(
+            ).GetAsyncEnumerator();
+            try
+            {
+                while(
+                    await this._connection.RunIteratorAsync(
+                        this._gameSession,
+                        async () =>
+                        {
+                            return await it.MoveNextAsync();
+                        },
+                        () => {
+                            it = _domain.UserDataAsync(
+                            ).GetAsyncEnumerator();
+                        }
+                    )
+                )
+                {
+                    yield return it.Current == null ? null : Gs2.Unity.Gs2Distributor.Model.EzUserDataEntry.FromModel(it.Current);
+                }
+            }
+            finally
+            {
+                await it.DisposeAsync();
+            }
+        }
+            #endif
+        #endif
 
         public Gs2.Unity.Gs2Distributor.Domain.Model.EzStampSheetResultGameSessionDomain StampSheetResult(
             string transactionId

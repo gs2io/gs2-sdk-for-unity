@@ -94,5 +94,36 @@ namespace Gs2.Unity.Gs2Distributor.Domain
             remove => _domain.OnAutoRunTransactionNotification -= value;
         }
     #endif
+
+        /// <summary>
+        /// 一括取得（DescribeUserData）でこのユーザーの全データを各モデルのキャッシュへ入れる。ログイン直後に 1 回待つと、以後の
+        /// Get / Describe はサーバーへ出ない。キー方式 v2 のプロジェクトでだけ使える。戻り値はキャッシュへ入れたエントリ数。
+        /// </summary>
+    #if UNITY_2017_1_OR_NEWER
+        public Gs2Future<int> LoadUserDataFuture(
+            Gs2.Unity.Util.IGameSession gameSession
+        ) {
+            return this._domain.LoadUserDataFuture(
+                gameSession.AccessToken
+            );
+        }
+    #endif
+
+    #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+        #if UNITY_2017_1_OR_NEWER
+        public async UniTask<int> LoadUserDataAsync(
+            Gs2.Unity.Util.IGameSession gameSession
+        )
+        #else
+        public async Task<int> LoadUserDataAsync(
+            Gs2.Unity.Util.IGameSession gameSession
+        )
+        #endif
+        {
+            return await this._domain.LoadUserDataAsync(
+                gameSession.AccessToken
+            );
+        }
+    #endif
     }
 }

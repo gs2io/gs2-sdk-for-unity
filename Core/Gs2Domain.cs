@@ -374,6 +374,37 @@ namespace Gs2.Unity.Core
             );
         }
 #endif
+        /// <summary>
+        /// 一括取得（Gs2Distributor:DescribeUserData）でこのユーザーの全データを各モデルのキャッシュへ入れる。
+        /// ログイン直後に 1 回待つと、以後の Get / Describe はサーバーへ出ない。実態は Distributor.LoadUserData。
+        /// </summary>
+#if UNITY_2017_1_OR_NEWER
+        public Gs2Future<int> LoadUserDataFuture(
+            IGameSession gameSession
+        )
+        {
+            return this._gs2.LoadUserDataFuture(
+                gameSession.AccessToken
+            );
+        }
+#endif
+
+#if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+    #if UNITY_2017_1_OR_NEWER
+        public async UniTask<int> LoadUserDataAsync(
+            IGameSession gameSession
+        )
+    #else
+        public async Task<int> LoadUserDataAsync(
+            IGameSession gameSession
+        )
+    #endif
+        {
+            return await this._gs2.LoadUserDataAsync(
+                gameSession.AccessToken
+            );
+        }
+#endif
 #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to DispatchFuture.")]
         public Gs2Future Dispatch(

@@ -402,6 +402,31 @@ namespace Gs2.Unity.Gs2Distributor
             );
 		}
 
+        public IEnumerator DescribeUserData(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzDescribeUserDataResult>> callback,
+		        IGameSession session,
+                string pageToken = null,
+                int? limit = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.DescribeUserData(
+                    new Gs2.Gs2Distributor.Request.DescribeUserDataRequest()
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithPageToken(pageToken)
+                        .WithLimit(limit),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzDescribeUserDataResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Distributor.Result.EzDescribeUserDataResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator GetStampSheetResult(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Distributor.Result.EzGetStampSheetResultResult>> callback,
 		        IGameSession session,
