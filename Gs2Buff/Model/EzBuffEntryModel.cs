@@ -63,6 +63,10 @@ namespace Gs2.Unity.Gs2Buff.Model
 #if UNITY_2017_1_OR_NEWER
 		[SerializeField]
 #endif
+		public int Priority;
+#if UNITY_2017_1_OR_NEWER
+		[SerializeField]
+#endif
 		public string ApplyPeriodScheduleEventId;
 
         public Gs2.Gs2Buff.Model.BuffEntryModel ToModel()
@@ -74,6 +78,7 @@ namespace Gs2.Unity.Gs2Buff.Model
                 TargetModel = TargetModel?.ToModel(),
                 TargetAction = TargetAction?.ToModel(),
                 Expression = Expression,
+                Priority = Priority,
                 ApplyPeriodScheduleEventId = ApplyPeriodScheduleEventId,
             };
         }
@@ -87,6 +92,7 @@ namespace Gs2.Unity.Gs2Buff.Model
                 TargetModel = model.TargetModel == null ? null : Gs2.Unity.Gs2Buff.Model.EzBuffTargetModel.FromModel(model.TargetModel),
                 TargetAction = model.TargetAction == null ? null : Gs2.Unity.Gs2Buff.Model.EzBuffTargetAction.FromModel(model.TargetAction),
                 Expression = model.Expression == null ? null : model.Expression,
+                Priority = model.Priority ?? 0,
                 ApplyPeriodScheduleEventId = model.ApplyPeriodScheduleEventId == null ? null : model.ApplyPeriodScheduleEventId,
             };
         }
