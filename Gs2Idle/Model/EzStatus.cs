@@ -52,6 +52,10 @@ namespace Gs2.Unity.Gs2Idle.Model
 		[SerializeField]
 #endif
 		public int MaximumIdleMinutes;
+#if UNITY_2017_1_OR_NEWER
+		[SerializeField]
+#endif
+		public long NextRewardsAt;
 
         public Gs2.Gs2Idle.Model.Status ToModel()
         {
@@ -60,6 +64,7 @@ namespace Gs2.Unity.Gs2Idle.Model
                 RandomSeed = RandomSeed,
                 IdleMinutes = IdleMinutes,
                 MaximumIdleMinutes = MaximumIdleMinutes,
+                NextRewardsAt = NextRewardsAt,
             };
         }
 
@@ -70,6 +75,7 @@ namespace Gs2.Unity.Gs2Idle.Model
                 RandomSeed = model.RandomSeed ?? 0,
                 IdleMinutes = model.IdleMinutes ?? 0,
                 MaximumIdleMinutes = model.MaximumIdleMinutes ?? 0,
+                NextRewardsAt = model.NextRewardsAt ?? 0,
             };
         }
     }

@@ -95,10 +95,6 @@ namespace Gs2.Unity.Gs2Distributor.Domain
         }
     #endif
 
-        /// <summary>
-        /// 一括取得（DescribeUserData）でこのユーザーの全データを各モデルのキャッシュへ入れる。ログイン直後に 1 回待つと、以後の
-        /// Get / Describe はサーバーへ出ない。キー方式 v2 のプロジェクトでだけ使える。戻り値はキャッシュへ入れたエントリ数。
-        /// </summary>
     #if UNITY_2017_1_OR_NEWER
         public Gs2Future<int> LoadUserDataFuture(
             Gs2.Unity.Util.IGameSession gameSession
