@@ -51,6 +51,22 @@ namespace Gs2.Unity.Gs2Ranking2.Model
 #if UNITY_2017_1_OR_NEWER
 		[SerializeField]
 #endif
+		public long MinimumValue;
+#if UNITY_2017_1_OR_NEWER
+		[SerializeField]
+#endif
+		public long MaximumValue;
+#if UNITY_2017_1_OR_NEWER
+		[SerializeField]
+#endif
+		public bool Sum;
+#if UNITY_2017_1_OR_NEWER
+		[SerializeField]
+#endif
+		public string OrderDirection;
+#if UNITY_2017_1_OR_NEWER
+		[SerializeField]
+#endif
 		public string EntryPeriodEventId;
 #if UNITY_2017_1_OR_NEWER
 		[SerializeField]
@@ -63,6 +79,10 @@ namespace Gs2.Unity.Gs2Ranking2.Model
                 SubscribeRankingModelId = SubscribeRankingModelId,
                 Name = Name,
                 Metadata = Metadata,
+                MinimumValue = MinimumValue,
+                MaximumValue = MaximumValue,
+                Sum = Sum,
+                OrderDirection = OrderDirection,
                 EntryPeriodEventId = EntryPeriodEventId,
                 AccessPeriodEventId = AccessPeriodEventId,
             };
@@ -74,6 +94,10 @@ namespace Gs2.Unity.Gs2Ranking2.Model
                 SubscribeRankingModelId = model.SubscribeRankingModelId == null ? null : model.SubscribeRankingModelId,
                 Name = model.Name == null ? null : model.Name,
                 Metadata = model.Metadata == null ? null : model.Metadata,
+                MinimumValue = model.MinimumValue ?? 0,
+                MaximumValue = model.MaximumValue ?? 0,
+                Sum = model.Sum ?? false,
+                OrderDirection = model.OrderDirection == null ? null : model.OrderDirection,
                 EntryPeriodEventId = model.EntryPeriodEventId == null ? null : model.EntryPeriodEventId,
                 AccessPeriodEventId = model.AccessPeriodEventId == null ? null : model.AccessPeriodEventId,
             };
