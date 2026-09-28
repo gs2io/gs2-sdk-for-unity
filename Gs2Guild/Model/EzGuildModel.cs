@@ -59,7 +59,19 @@ namespace Gs2.Unity.Gs2Guild.Model
 #if UNITY_2017_1_OR_NEWER
 		[SerializeField]
 #endif
+		public int InactivityPeriodDays;
+#if UNITY_2017_1_OR_NEWER
+		[SerializeField]
+#endif
 		public int RejoinCoolTimeMinutes;
+#if UNITY_2017_1_OR_NEWER
+		[SerializeField]
+#endif
+		public int MaxConcurrentJoinGuilds;
+#if UNITY_2017_1_OR_NEWER
+		[SerializeField]
+#endif
+		public int MaxConcurrentGuildMasterCount;
 
         public Gs2.Gs2Guild.Model.GuildModel ToModel()
         {
@@ -71,7 +83,10 @@ namespace Gs2.Unity.Gs2Guild.Model
                 Roles = Roles?.Select(v => {
                     return v.ToModel();
                 }).ToArray(),
+                InactivityPeriodDays = InactivityPeriodDays,
                 RejoinCoolTimeMinutes = RejoinCoolTimeMinutes,
+                MaxConcurrentJoinGuilds = MaxConcurrentJoinGuilds,
+                MaxConcurrentGuildMasterCount = MaxConcurrentGuildMasterCount,
             };
         }
 
@@ -85,7 +100,10 @@ namespace Gs2.Unity.Gs2Guild.Model
                 Roles = model.Roles == null ? new List<Gs2.Unity.Gs2Guild.Model.EzRoleModel>() : model.Roles.Select(v => {
                     return Gs2.Unity.Gs2Guild.Model.EzRoleModel.FromModel(v);
                 }).ToList(),
+                InactivityPeriodDays = model.InactivityPeriodDays ?? 0,
                 RejoinCoolTimeMinutes = model.RejoinCoolTimeMinutes ?? 0,
+                MaxConcurrentJoinGuilds = model.MaxConcurrentJoinGuilds ?? 0,
+                MaxConcurrentGuildMasterCount = model.MaxConcurrentGuildMasterCount ?? 0,
             };
         }
     }
