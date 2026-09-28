@@ -48,6 +48,10 @@ namespace Gs2.Unity.Gs2Version.Model
 		[SerializeField]
 #endif
 		public Gs2.Unity.Gs2Version.Model.EzVersion Version;
+#if UNITY_2017_1_OR_NEWER
+		[SerializeField]
+#endif
+		public string Status;
 
         public Gs2.Gs2Version.Model.AcceptVersion ToModel()
         {
@@ -55,6 +59,7 @@ namespace Gs2.Unity.Gs2Version.Model
                 VersionName = VersionName,
                 UserId = UserId,
                 Version = Version?.ToModel(),
+                Status = Status,
             };
         }
 
@@ -64,6 +69,7 @@ namespace Gs2.Unity.Gs2Version.Model
                 VersionName = model.VersionName == null ? null : model.VersionName,
                 UserId = model.UserId == null ? null : model.UserId,
                 Version = model.Version == null ? null : Gs2.Unity.Gs2Version.Model.EzVersion.FromModel(model.Version),
+                Status = model.Status == null ? null : model.Status,
             };
         }
     }

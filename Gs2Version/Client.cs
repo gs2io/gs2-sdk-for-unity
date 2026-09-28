@@ -150,6 +150,31 @@ namespace Gs2.Unity.Gs2Version
             );
 		}
 
+        public IEnumerator Get(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Version.Result.EzGetResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string versionName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _client.GetAcceptVersion(
+                    new Gs2.Gs2Version.Request.GetAcceptVersionRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithVersionName(versionName),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Version.Result.EzGetResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Version.Result.EzGetResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator List(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Version.Result.EzListResult>> callback,
 		        IGameSession session,

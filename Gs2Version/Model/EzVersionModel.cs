@@ -64,6 +64,10 @@ namespace Gs2.Unity.Gs2Version.Model
 		[SerializeField]
 #endif
 		public bool NeedSignature;
+#if UNITY_2017_1_OR_NEWER
+		[SerializeField]
+#endif
+		public string ApproveRequirement;
 
         public Gs2.Gs2Version.Model.VersionModel ToModel()
         {
@@ -75,6 +79,7 @@ namespace Gs2.Unity.Gs2Version.Model
                 Scope = Scope,
                 CurrentVersion = CurrentVersion?.ToModel(),
                 NeedSignature = NeedSignature,
+                ApproveRequirement = ApproveRequirement,
             };
         }
 
@@ -88,6 +93,7 @@ namespace Gs2.Unity.Gs2Version.Model
                 Scope = model.Scope == null ? null : model.Scope,
                 CurrentVersion = model.CurrentVersion == null ? null : Gs2.Unity.Gs2Version.Model.EzVersion.FromModel(model.CurrentVersion),
                 NeedSignature = model.NeedSignature ?? false,
+                ApproveRequirement = model.ApproveRequirement == null ? null : model.ApproveRequirement,
             };
         }
     }
