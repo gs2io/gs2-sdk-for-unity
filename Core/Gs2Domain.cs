@@ -30,7 +30,6 @@ namespace Gs2.Unity.Core
 {
     public static class Gs2Client
     {
-        /// <param name="steadyEndpoint">Steady（専用フリート）の基点（https://&lt;host&gt;）。null なら共有クラウド</param>
         public static Gs2Future<Gs2Domain> CreateFuture(
             IGs2Credential credential,
             Region region = Region.ApNortheast1,
@@ -61,7 +60,6 @@ namespace Gs2.Unity.Core
         }
         
 #if GS2_ENABLE_UNITASK
-        /// <param name="steadyEndpoint">Steady（専用フリート）の基点（https://&lt;host&gt;）。null なら共有クラウド</param>
         public static async UniTask<Gs2Domain> CreateAsync(
             IGs2Credential credential,
             Region region = Region.ApNortheast1,
@@ -81,7 +79,6 @@ namespace Gs2.Unity.Core
         }
 #endif
         
-        /// <param name="steadyEndpoint">Steady（専用フリート）の基点（https://&lt;host&gt;）。null なら共有クラウド</param>
         public static Gs2Future<Gs2Domain> CreateChaosFuture(
             IGs2Credential credential,
             float chaos,
@@ -114,7 +111,6 @@ namespace Gs2.Unity.Core
         }
         
 #if GS2_ENABLE_UNITASK
-        /// <param name="steadyEndpoint">Steady（専用フリート）の基点（https://&lt;host&gt;）。null なら共有クラウド</param>
         public static async UniTask<Gs2Domain> CreateChaosAsync(
             IGs2Credential credential,
             float chaos,
@@ -374,10 +370,6 @@ namespace Gs2.Unity.Core
             );
         }
 #endif
-        /// <summary>
-        /// 一括取得（Gs2Distributor:DescribeUserData）でこのユーザーの全データを各モデルのキャッシュへ入れる。
-        /// ログイン直後に 1 回待つと、以後の Get / Describe はサーバーへ出ない。実態は Distributor.LoadUserData。
-        /// </summary>
 #if UNITY_2017_1_OR_NEWER
         public Gs2Future<int> LoadUserDataFuture(
             IGameSession gameSession
