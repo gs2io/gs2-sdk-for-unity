@@ -21,13 +21,14 @@ using UnityEditor;
 
 namespace Gs2.Editor.ResourceTree.Gs2Enhance.Editor
 {
-    public static class UnleashRateEntryModelEditorExt
+    public static class UnleashQuantityMaterialSettingEditorExt
     {
-        public static void OnGUI(Gs2.Gs2Enhance.Model.UnleashRateEntryModel item) {
+        public static void OnGUI(Gs2.Gs2Enhance.Model.UnleashQuantityMaterialSetting item) {
             EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.TextField("GradeValue", item.GradeValue?.ToString());
-            EditorGUILayout.TextField("Type", item.Type);
-            EditorGUILayout.TextField("NeedCount", item.NeedCount?.ToString());
+            EditorGUILayout.TextField("MatchType", item.MatchType);
+            EditorGUILayout.TextField("MaterialInventoryModelId", item.MaterialInventoryModelId);
+            EditorGUILayout.TextField("ItemModelId", item.ItemModelId);
+            EditorGUILayout.TextField("Count", item.Count?.ToString());
             EditorGUI.EndDisabledGroup();
         }
     }

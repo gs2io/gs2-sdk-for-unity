@@ -34,46 +34,42 @@ namespace Gs2.Unity.Gs2Enhance.Model
 #endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
-	public class EzUnleashRateEntryModel
+	public class EzUnleashQuantityMaterialSetting
 	{
 #if UNITY_2017_1_OR_NEWER
 		[SerializeField]
 #endif
-		public long GradeValue;
+		public string MatchType;
 #if UNITY_2017_1_OR_NEWER
 		[SerializeField]
 #endif
-		public string Type;
+		public string MaterialInventoryModelId;
 #if UNITY_2017_1_OR_NEWER
 		[SerializeField]
 #endif
-		public int NeedCount;
+		public string ItemModelId;
 #if UNITY_2017_1_OR_NEWER
 		[SerializeField]
 #endif
-		public List<Gs2.Unity.Gs2Enhance.Model.EzUnleashRecipe> Recipes;
+		public int Count;
 
-        public Gs2.Gs2Enhance.Model.UnleashRateEntryModel ToModel()
+        public Gs2.Gs2Enhance.Model.UnleashQuantityMaterialSetting ToModel()
         {
-            return new Gs2.Gs2Enhance.Model.UnleashRateEntryModel {
-                GradeValue = GradeValue,
-                Type = Type,
-                NeedCount = NeedCount,
-                Recipes = Recipes?.Select(v => {
-                    return v.ToModel();
-                }).ToArray(),
+            return new Gs2.Gs2Enhance.Model.UnleashQuantityMaterialSetting {
+                MatchType = MatchType,
+                MaterialInventoryModelId = MaterialInventoryModelId,
+                ItemModelId = ItemModelId,
+                Count = Count,
             };
         }
 
-        public static EzUnleashRateEntryModel FromModel(Gs2.Gs2Enhance.Model.UnleashRateEntryModel model)
+        public static EzUnleashQuantityMaterialSetting FromModel(Gs2.Gs2Enhance.Model.UnleashQuantityMaterialSetting model)
         {
-            return new EzUnleashRateEntryModel {
-                GradeValue = model.GradeValue ?? 0,
-                Type = model.Type == null ? null : model.Type,
-                NeedCount = model.NeedCount ?? 0,
-                Recipes = model.Recipes == null ? new List<Gs2.Unity.Gs2Enhance.Model.EzUnleashRecipe>() : model.Recipes.Select(v => {
-                    return Gs2.Unity.Gs2Enhance.Model.EzUnleashRecipe.FromModel(v);
-                }).ToList(),
+            return new EzUnleashQuantityMaterialSetting {
+                MatchType = model.MatchType == null ? null : model.MatchType,
+                MaterialInventoryModelId = model.MaterialInventoryModelId == null ? null : model.MaterialInventoryModelId,
+                ItemModelId = model.ItemModelId == null ? null : model.ItemModelId,
+                Count = model.Count ?? 0,
             };
         }
     }

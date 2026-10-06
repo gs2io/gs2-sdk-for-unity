@@ -107,7 +107,7 @@ namespace Gs2.Unity.Gs2Enhance
             yield return _connection.Run(
                 callback,
                 null,
-                cb => _client.GetUnleashRateModel(
+                cb => _restClient.GetUnleashRateModel(
                     new Gs2.Gs2Enhance.Request.GetUnleashRateModelRequest()
                         .WithNamespaceName(namespaceName)
                         .WithRateName(rateName),

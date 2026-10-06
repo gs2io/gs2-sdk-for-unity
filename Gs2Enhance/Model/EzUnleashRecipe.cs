@@ -34,7 +34,7 @@ namespace Gs2.Unity.Gs2Enhance.Model
 #endif
 	[System.Serializable]
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
-	public class EzUnleashRateModel
+	public class EzUnleashRecipe
 	{
 #if UNITY_2017_1_OR_NEWER
 		[SerializeField]
@@ -47,48 +47,36 @@ namespace Gs2.Unity.Gs2Enhance.Model
 #if UNITY_2017_1_OR_NEWER
 		[SerializeField]
 #endif
-		public string TargetInventoryModelId;
+		public List<string> TargetGroupKeys;
 #if UNITY_2017_1_OR_NEWER
 		[SerializeField]
 #endif
-		public string GradeModelId;
-#if UNITY_2017_1_OR_NEWER
-		[SerializeField]
-#endif
-		public List<string> GroupKeyHierarchy;
-#if UNITY_2017_1_OR_NEWER
-		[SerializeField]
-#endif
-		public List<Gs2.Unity.Gs2Enhance.Model.EzUnleashRateEntryModel> GradeEntries;
+		public List<Gs2.Unity.Gs2Enhance.Model.EzUnleashMaterial> Materials;
 
-        public Gs2.Gs2Enhance.Model.UnleashRateModel ToModel()
+        public Gs2.Gs2Enhance.Model.UnleashRecipe ToModel()
         {
-            return new Gs2.Gs2Enhance.Model.UnleashRateModel {
+            return new Gs2.Gs2Enhance.Model.UnleashRecipe {
                 Name = Name,
                 Metadata = Metadata,
-                TargetInventoryModelId = TargetInventoryModelId,
-                GradeModelId = GradeModelId,
-                GroupKeyHierarchy = GroupKeyHierarchy?.Select(v => {
+                TargetGroupKeys = TargetGroupKeys?.Select(v => {
                     return v;
                 }).ToArray(),
-                GradeEntries = GradeEntries?.Select(v => {
+                Materials = Materials?.Select(v => {
                     return v.ToModel();
                 }).ToArray(),
             };
         }
 
-        public static EzUnleashRateModel FromModel(Gs2.Gs2Enhance.Model.UnleashRateModel model)
+        public static EzUnleashRecipe FromModel(Gs2.Gs2Enhance.Model.UnleashRecipe model)
         {
-            return new EzUnleashRateModel {
+            return new EzUnleashRecipe {
                 Name = model.Name == null ? null : model.Name,
                 Metadata = model.Metadata == null ? null : model.Metadata,
-                TargetInventoryModelId = model.TargetInventoryModelId == null ? null : model.TargetInventoryModelId,
-                GradeModelId = model.GradeModelId == null ? null : model.GradeModelId,
-                GroupKeyHierarchy = model.GroupKeyHierarchy == null ? new List<string>() : model.GroupKeyHierarchy.Select(v => {
+                TargetGroupKeys = model.TargetGroupKeys == null ? new List<string>() : model.TargetGroupKeys.Select(v => {
                     return v;
                 }).ToList(),
-                GradeEntries = model.GradeEntries == null ? new List<Gs2.Unity.Gs2Enhance.Model.EzUnleashRateEntryModel>() : model.GradeEntries.Select(v => {
-                    return Gs2.Unity.Gs2Enhance.Model.EzUnleashRateEntryModel.FromModel(v);
+                Materials = model.Materials == null ? new List<Gs2.Unity.Gs2Enhance.Model.EzUnleashMaterial>() : model.Materials.Select(v => {
+                    return Gs2.Unity.Gs2Enhance.Model.EzUnleashMaterial.FromModel(v);
                 }).ToList(),
             };
         }

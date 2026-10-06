@@ -21,13 +21,12 @@ using UnityEditor;
 
 namespace Gs2.Editor.ResourceTree.Gs2Enhance.Editor
 {
-    public static class UnleashRateEntryModelEditorExt
+    public static class UnleashRecipeEditorExt
     {
-        public static void OnGUI(Gs2.Gs2Enhance.Model.UnleashRateEntryModel item) {
+        public static void OnGUI(Gs2.Gs2Enhance.Model.UnleashRecipe item) {
             EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.TextField("GradeValue", item.GradeValue?.ToString());
-            EditorGUILayout.TextField("Type", item.Type);
-            EditorGUILayout.TextField("NeedCount", item.NeedCount?.ToString());
+            EditorGUILayout.TextField("Name", item.Name);
+            EditorGUILayout.TextField("Metadata", item.Metadata);
             EditorGUI.EndDisabledGroup();
         }
     }
