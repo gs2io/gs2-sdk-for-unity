@@ -4,11 +4,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Gs2.Core;
 using Gs2.Core.Exception;
 using Gs2.Core.Model;
 using Gs2.Core.Domain;
+using Gs2.Util.LitJson;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Purchasing;
@@ -142,7 +142,7 @@ namespace Gs2.Unity.Util
                     while (!connectTask.IsCompleted) {
                         yield return null;
                     }
-                    if (connectTask.IsFaulted) {
+                    if (connectTask.IsFaulted || connectTask.IsCanceled) {
                         _status = Status.InitializeFailed;
                         result.OnError(
                             new BadGatewayException(
@@ -173,6 +173,11 @@ namespace Gs2.Unity.Util
                         yield return new WaitForSeconds(0.1f);
                     }
 
+                    if (_exception != null) {
+                        result.OnError(_exception);
+                        yield break;
+                    }
+
                     if (session.Order == null) {
                         _status = Status.Purchasing;
                         session.Controller.PurchaseProduct(session.Product);
@@ -181,7 +186,7 @@ namespace Gs2.Unity.Util
                         }
                     }
 
-                    if (session.Order == null) {
+                    if (_exception != null || session.Order == null) {
                         _status = Status.PurchaseFailed;
                         result.OnError(
                             _exception ?? new BadGatewayException("purchase failed: " + contentsId)
@@ -213,7 +218,13 @@ namespace Gs2.Unity.Util
         {
             if (_status != Status.None)
             {
+#if GS2_IAP_5_0_0_OR_NEWER
+                throw new ConflictException(new[] {
+                    new RequestError("state", "money.state.state.error.running")
+                });
+#else
                 return null;
+#endif
             }
             _exception = null;
             _receipt = null;
@@ -289,6 +300,10 @@ namespace Gs2.Unity.Util
                     await UniTask.Delay(TimeSpan.FromMilliseconds(100));
                 }
 
+                if (_exception != null) {
+                    throw _exception;
+                }
+
                 if (session.Order == null) {
                     _status = Status.Purchasing;
                     session.Controller.PurchaseProduct(session.Product);
@@ -297,7 +312,7 @@ namespace Gs2.Unity.Util
                     }
                 }
 
-                if (session.Order == null) {
+                if (_exception != null || session.Order == null) {
                     _status = Status.PurchaseFailed;
                     throw _exception ?? new BadGatewayException("purchase failed: " + contentsId);
                 }
@@ -360,6 +375,49 @@ namespace Gs2.Unity.Util
             }
         }
 #else
+        // Info.Receipt is already a unified receipt. Only replace Apple's payload;
+        // wrapping the entire receipt again would send JSON where GS2 expects a JWS.
+        private static string BuildReceipt(IOrderInfo info)
+        {
+            if (info == null || string.IsNullOrWhiteSpace(info.TransactionID)) {
+                throw new BadGatewayException("purchase transaction ID is missing");
+            }
+            var jws = info.Apple?.jwsRepresentation;
+            if (!string.IsNullOrWhiteSpace(jws)) {
+                return new JsonData {
+                    ["Store"] = "AppleAppStore",
+                    ["TransactionID"] = info.TransactionID,
+                    ["Payload"] = jws,
+                }.ToJson();
+            }
+
+            var receipt = info.Receipt;
+            if (string.IsNullOrWhiteSpace(receipt)) {
+                throw new BadGatewayException("purchase receipt is missing");
+            }
+            // StoreKit 1 may still supply a valid legacy payload without a JWS.
+            // Reject empty Apple payloads, including receipts without Apple metadata.
+            try {
+                var data = JsonMapper.ToObject(receipt);
+                if (info.Apple != null ||
+                    (data.IsObject && data.Keys.Contains("Store") &&
+                     data["Store"]?.ToString() == "AppleAppStore")) {
+                    if (!data.IsObject || !data.Keys.Contains("Payload") ||
+                        data["Payload"] == null || !data["Payload"].IsString ||
+                        string.IsNullOrWhiteSpace(data["Payload"].ToString())) {
+                        throw new BadGatewayException("Apple purchase has neither JWS nor a legacy receipt payload");
+                    }
+                }
+            }
+            catch (Gs2Exception) {
+                throw;
+            }
+            catch (Exception) {
+                throw new BadGatewayException("purchase receipt is not valid JSON");
+            }
+            return receipt;
+        }
+
         private class Gs2StoreSession : IDisposable
         {
             private readonly IAPUtil _client;
@@ -400,6 +458,9 @@ namespace Gs2.Unity.Util
                 Controller.OnPurchasePending -= OnPurchasePending;
                 Controller.OnPurchaseDeferred -= OnPurchaseDeferred;
                 Controller.OnPurchaseFailed -= OnPurchaseFailed;
+                // A failed or unconfirmed order remains in the store and can be
+                // fetched again on the next Buy call, including on this instance.
+                _client._status = Status.None;
             }
 
             private void OnProductsFetched(List<Product> products)
@@ -419,14 +480,18 @@ namespace Gs2.Unity.Util
                 foreach (var pending in orders.PendingOrders) {
                     OnPurchasePending(pending);
                 }
+                foreach (var deferred in orders.DeferredOrders) {
+                    OnPurchaseDeferred(deferred);
+                }
                 PurchasesFetched = true;
             }
 
             private void OnPurchasesFetchFailed(PurchasesFetchFailureDescription failure)
             {
-                Debug.LogWarning(
-                    "GS2: failed to fetch purchases. " + failure.FailureReason + " " + failure.Message
+                _client._exception = new BadGatewayException(
+                    "failed to fetch purchases: " + failure.FailureReason + " " + failure.Message
                 );
+                _client._status = Status.PurchaseFailed;
                 PurchasesFetched = true;
             }
 
@@ -436,9 +501,15 @@ namespace Gs2.Unity.Util
                     return;
                 }
                 Order = order;
-                _client._receipt = order.Info.Receipt;
-                _client._transactionId = order.Info.TransactionID;
-                _client._status = Status.Purchased;
+                try {
+                    _client._receipt = BuildReceipt(order.Info);
+                    _client._transactionId = order.Info.TransactionID;
+                    _client._status = Status.Purchased;
+                }
+                catch (Gs2Exception e) {
+                    _client._exception = e;
+                    _client._status = Status.PurchaseFailed;
+                }
             }
 
             private void OnPurchaseDeferred(DeferredOrder order)
