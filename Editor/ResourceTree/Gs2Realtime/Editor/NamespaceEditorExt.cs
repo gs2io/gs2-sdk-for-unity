@@ -39,6 +39,9 @@ namespace Gs2.Editor.ResourceTree.Gs2Realtime.Editor
             }
             EditorGUILayout.TextField("ServerType", item.ServerType);
             EditorGUILayout.TextField("ServerSpec", item.ServerSpec);
+            EditorGUILayout.TextField("ObjectCatalog", item.ObjectCatalog);
+            EditorGUILayout.TextField("StateMachineNamespaceId", item.StateMachineNamespaceId);
+            EditorGUILayout.TextField("StateMachineVersion", item.StateMachineVersion?.ToString());
             if (item.CreateNotification == null) {
                 EditorGUILayout.TextField("CreateNotification", "");
             }
