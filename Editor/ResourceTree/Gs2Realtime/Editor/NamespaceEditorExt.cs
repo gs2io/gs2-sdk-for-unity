@@ -39,9 +39,24 @@ namespace Gs2.Editor.ResourceTree.Gs2Realtime.Editor
             }
             EditorGUILayout.TextField("ServerType", item.ServerType);
             EditorGUILayout.TextField("ServerSpec", item.ServerSpec);
-            EditorGUILayout.TextField("ObjectCatalog", item.ObjectCatalog);
-            EditorGUILayout.TextField("StateMachineNamespaceId", item.StateMachineNamespaceId);
-            EditorGUILayout.TextField("StateMachineVersion", item.StateMachineVersion?.ToString());
+            if (item.SyncSetting == null) {
+                EditorGUILayout.TextField("SyncSetting", "");
+            }
+            else {
+                EditorGUILayout.LabelField("SyncSetting");
+                EditorGUI.indentLevel++;
+                SyncSettingEditorExt.OnGUI(item.SyncSetting);
+                EditorGUI.indentLevel--;
+            }
+            if (item.StateMachineSetting == null) {
+                EditorGUILayout.TextField("StateMachineSetting", "");
+            }
+            else {
+                EditorGUILayout.LabelField("StateMachineSetting");
+                EditorGUI.indentLevel++;
+                StateMachineSettingEditorExt.OnGUI(item.StateMachineSetting);
+                EditorGUI.indentLevel--;
+            }
             if (item.CreateNotification == null) {
                 EditorGUILayout.TextField("CreateNotification", "");
             }

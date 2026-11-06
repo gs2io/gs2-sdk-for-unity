@@ -65,6 +65,31 @@ namespace Gs2.Realtime.Sync.Editor
                 ClearEvents(entry);
             }
             serializedObject.ApplyModifiedProperties();
+            DrawRpcs((NetworkEntity)target);
+        }
+        // Lists [NetworkRpc] methods so their IDs can be copied into the room's object catalog.
+        static void DrawRpcs(NetworkEntity entity)
+        {
+            NetworkRpcDescription[] rpcs;
+            try
+            {
+                rpcs = entity.DescribeRpcs();
+            }
+            catch (System.InvalidOperationException e)
+            {
+                EditorGUILayout.HelpBox(e.Message, MessageType.Error);
+                return;
+            }
+            if (rpcs.Length == 0)
+                return;
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Remote procedure calls", EditorStyles.boldLabel);
+            foreach (var rpc in rpcs)
+            {
+                var parameters = string.Join(", ", rpc.Parameters.Select(p => p.Name));
+                EditorGUILayout.LabelField(rpc.Id + (rpc.AnyCaller ? "  (any caller)  " : "  ") + rpc.Component.Name + "." + rpc.Name + "(" + parameters + ")");
+            }
+            EditorGUILayout.HelpBox("The room's object catalog must list these IDs (\"methods\", or \"publicMethods\" for any caller). Use the prefab catalog's context menu \"Copy Object Catalog JSON\".", MessageType.Info);
         }
     }
 }

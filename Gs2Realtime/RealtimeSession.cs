@@ -65,6 +65,11 @@ namespace Gs2.Unity.Gs2Realtime
 
         public bool Connected { get; private set; } = false;
         public uint MyConnectionId { get; private set; } = 0;
+        // UDP side channel registration secret from HelloResult (0 when the room has no UDP).
+        public uint UdpSecret { get; private set; } = 0;
+        public string IpAddress { get; }
+        public int Port { get; }
+        public string EncryptionKey { get; }
         public ByteString Profile { get; private set; } = null;
 
         public event OnMessageHandler OnMessage;
@@ -180,6 +185,9 @@ namespace Gs2.Unity.Gs2Realtime
             _messenger = new Messenger(encryptionKey);
             _accessToken = accessToken;
             Profile = profile;
+            IpAddress = ipAddress;
+            Port = port;
+            EncryptionKey = encryptionKey;
 
 #if UNITY_WEBGL && !UNITY_EDITOR
             _webSocket.OnClose += (args) =>
@@ -538,6 +546,7 @@ namespace Gs2.Unity.Gs2Realtime
                     }
 
                     MyConnectionId = helloResult.MyProfile.ConnectionId;
+                    UdpSecret = helloResult.Secret;
                     players = helloResult.Players.ToArray();
 
                     Connected = true;
@@ -985,6 +994,7 @@ namespace Gs2.Unity.Gs2Realtime
                     }
 
                     MyConnectionId = helloResult.MyProfile.ConnectionId;
+                    UdpSecret = helloResult.Secret;
                     players = helloResult.Players.ToArray();
 
                     Connected = true;
