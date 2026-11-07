@@ -16,11 +16,14 @@ namespace Gs2.Realtime.Sync
         [SerializeField, Min(0)] float interpolation = 20;
         [SerializeField, Min(0), Tooltip("Remote objects farther than this from the received position jump instead of interpolating (0 = never).")] float teleportDistance;
         [SerializeField, Min(0), Tooltip("With server timestamps, remote objects show the pose from this many seconds ago, interpolated between received updates.")] float interpolationDelay = .1f;
+        [SerializeField, Min(0), Tooltip("Predicted objects fade out a correction by the room over about this many seconds (0 = jump).")] float correctionTime = .1f;
         int[] positionSlots = new int[3], rotationSlots = new int[3];
         float[] positionUnits = new float[3], rotationUnits = new float[3];
         SyncClient client;
         NetworkObject state;
         Vector3 targetPosition, targetEuler;
+        // Predicted objects: the remaining display offset of corrections by the room.
+        Vector3 positionError, eulerError;
         // Timestamped poses (server time) when the world receives with timestamps.
         struct Sample
         {
@@ -55,6 +58,11 @@ namespace Gs2.Realtime.Sync
         public float InterpolationDelay
         {
             get => interpolationDelay; set => interpolationDelay = Mathf.Max(0, value);
+        }
+        // Time constant (seconds) over which a predicted object's correction fades.
+        public float CorrectionTime
+        {
+            get => correctionTime; set => correctionTime = Mathf.Max(0, value);
         }
         // Remote objects jump to the latest received pose (e.g. after a respawn).
         public void SnapToNetwork()
@@ -95,6 +103,9 @@ namespace Gs2.Realtime.Sync
             state = value;
             state.Changed += OnChanged;
             state.AuthorityChanged += OnAuthority;
+            state.Predicted += OnPredicted;
+            state.PredictionCorrected += OnCorrected;
+            positionError = eulerError = Vector3.zero;
             world = GetComponentInParent<NetworkWorld>(true);
             sampleCount = 0;
             targetPosition = Target.position;
@@ -224,9 +235,80 @@ namespace Gs2.Realtime.Sync
                 Target.eulerAngles = Merge(Target.eulerAngles, euler, rotationAxes);
             return true;
         }
+        // Predicted objects (NetworkWorld.RegisterPrediction) show the prediction between
+        // its last two ticks, plus the fading offset of the latest corrections.
+        void OnPredicted(float alpha)
+        {
+            float fade = correctionTime <= 0 ? 0 : Mathf.Exp(-Time.unscaledDeltaTime / correctionTime);
+            positionError *= fade;
+            eulerError *= fade;
+            var position = Target.position;
+            var euler = Target.eulerAngles;
+            for (int axis = 0; axis < 3; axis++)
+            {
+                if (((int)positionAxes & (1 << axis)) != 0)
+                {
+                    int slot = positionSlots[axis];
+                    position[axis] = Mathf.Lerp(state.PreviousPredictedValues[slot], state.PredictedValues[slot], alpha) * positionUnits[axis] + positionError[axis];
+                }
+                if (((int)rotationAxes & (1 << axis)) != 0)
+                {
+                    int slot = rotationSlots[axis];
+                    euler[axis] = Mathf.LerpAngle(state.PreviousPredictedValues[slot] * rotationUnits[axis], state.PredictedValues[slot] * rotationUnits[axis], alpha) + eulerError[axis];
+                }
+            }
+            Target.position = position;
+            if (rotationAxes != SyncAxes.None)
+                Target.eulerAngles = euler;
+        }
+        // Places an instance that is not bound to an object yet (a predicted spawn).
+        // Slots and precisions come from the entity's schema, resolved once.
+        NetworkSchema.Field[] unbound;
+        internal void ShowUnbound(int[] previous, int[] current, float alpha)
+        {
+            if (unbound == null)
+            {
+                var schema = GetComponentInParent<NetworkEntity>(true)?.Schema;
+                unbound = new NetworkSchema.Field[6];
+                for (int axis = 0; axis < 3; axis++)
+                {
+                    if (((int)positionAxes & (1 << axis)) != 0)
+                        unbound[axis] = NetworkSchema.Resolve(schema, "Position" + "XYZ"[axis]);
+                    if (((int)rotationAxes & (1 << axis)) != 0)
+                        unbound[3 + axis] = NetworkSchema.Resolve(schema, "Rotation" + "XYZ"[axis]);
+                }
+            }
+            var position = Target.position;
+            var euler = Target.eulerAngles;
+            for (int axis = 0; axis < 3; axis++)
+            {
+                var field = unbound[axis];
+                if (field != null)
+                    position[axis] = Mathf.Lerp(previous[field.Slot], current[field.Slot], alpha) * field.Precision;
+                field = unbound[3 + axis];
+                if (field != null)
+                    euler[axis] = Mathf.LerpAngle(previous[field.Slot] * field.Precision, current[field.Slot] * field.Precision, alpha);
+            }
+            Target.position = position;
+            if (rotationAxes != SyncAxes.None)
+                Target.eulerAngles = euler;
+        }
+        void OnCorrected(uint mask)
+        {
+            for (int axis = 0; axis < 3; axis++)
+            {
+                if (((int)positionAxes & (1 << axis)) != 0 && (mask & (1u << positionSlots[axis])) != 0)
+                    positionError[axis] += state.PredictionError[positionSlots[axis]] * positionUnits[axis];
+                if (((int)rotationAxes & (1 << axis)) != 0 && (mask & (1u << rotationSlots[axis])) != 0)
+                    eulerError[axis] = Mathf.DeltaAngle(0, eulerError[axis] + state.PredictionError[rotationSlots[axis]] * rotationUnits[axis]);
+            }
+            // A large correction (e.g. a respawn) is a teleport, not an error to fade.
+            if (teleportDistance > 0 && positionError.sqrMagnitude > teleportDistance * teleportDistance)
+                positionError = eulerError = Vector3.zero;
+        }
         void Update()
         {
-            if (client == null || !client.CanSend)
+            if (client == null || !client.CanSend || state.IsPredicted)
                 return;
             if (IsOwner)
             {
@@ -279,6 +361,8 @@ namespace Gs2.Realtime.Sync
             {
                 state.Changed -= OnChanged;
                 state.AuthorityChanged -= OnAuthority;
+                state.Predicted -= OnPredicted;
+                state.PredictionCorrected -= OnCorrected;
             }
             state = null;
             client = null;

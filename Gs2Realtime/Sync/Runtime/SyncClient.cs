@@ -6,7 +6,8 @@ namespace Gs2.Realtime.Sync
     // Invoke Receive/Set/Flush on one thread (Unity's main thread). The transport
     // must copy or consume the provided buffer before TrySend returns true.
     public delegate bool TrySend(byte[] data, int count);
-    public enum ObjectMode : byte { Player, Lease, Server }
+    // Simulated: the room's rules write the fields every tick; the owner sends inputs.
+    public enum ObjectMode : byte { Player, Lease, Server, Simulated }
     public enum LeaseAction : byte { Acquire = AuthorityKind.Acquire, Renew = AuthorityKind.Renew, Release = AuthorityKind.Release }
     public enum CommandResult : uint { Success, MissingObject, Forbidden, LeaseBusy, StaleEpoch, InvalidOperation, AlreadyApplied, StaleRequest }
     public sealed class NetworkObject
@@ -19,7 +20,7 @@ namespace Gs2.Realtime.Sync
         {
             get; internal set;
         }
-        // Owner of a player object (changes with ownership transfers); 0 for shared objects.
+        // Owner of a player or simulated object (changes with ownership transfers); 0 for shared objects.
         public uint Owner
         {
             get; internal set;
@@ -52,6 +53,29 @@ namespace Gs2.Realtime.Sync
         internal readonly int[] Sent = new int[32];
         // Fields sent over the unreliable channel since the last Refresh.
         internal uint Recent;
+
+        // ---- Prediction (NetworkWorld.RegisterPrediction) ----
+        // True while this client predicts the object: a simulated object it owns whose
+        // prefab has a registered prediction. Values stays the room's latest state.
+        public bool IsPredicted { get; internal set; }
+        // Values after the newest predicted tick (NetworkWorld.InputTick) and after the
+        // tick before it; show them blended by the alpha of Predicted.
+        public readonly int[] PredictedValues = new int[32];
+        public readonly int[] PreviousPredictedValues = new int[32];
+        // Raised every frame while predicted, after the prediction ran; the argument is
+        // the progress (0..1) from the previous predicted tick to the newest one.
+        public event Action<float> Predicted;
+        internal void NotifyPredicted(float alpha) { Predicted?.Invoke(alpha); }
+        // The room disagreed with an earlier prediction: PredictionError holds, per
+        // field, the old predicted value minus the corrected one at the same tick.
+        // Presentation can fade this offset out instead of jumping.
+        public readonly int[] PredictionError = new int[32];
+        internal uint PredictionErrorMask;
+        public event Action<uint> PredictionCorrected;
+        // The prediction despawned this object (Room.Despawn in a [Predict] method); the
+        // world hides its renderers until the room agrees or the prediction changes.
+        public bool PredictedRemoved { get; internal set; }
+        internal void NotifyCorrected(uint mask) { PredictionCorrected?.Invoke(mask); }
     }
     public sealed class SyncClient
     {
@@ -83,7 +107,7 @@ namespace Gs2.Realtime.Sync
         {
             get; private set;
         }
-        public IEnumerable<NetworkObject> Objects
+        public Dictionary<uint, NetworkObject>.ValueCollection Objects
         {
             get
             {
@@ -110,6 +134,21 @@ namespace Gs2.Realtime.Sync
         public event Action<NetworkObject> GroupChanged;
         // A snapshot starts: objects, master and properties are replaced.
         public event Action SnapshotStarted;
+        // A ticking room's clock: (tick, ticks per second, newest input tick it received from us).
+        public event Action<uint, uint, uint> ClockReceived;
+        // Ticks per second of a ticking room (0 until a clock arrives or when not ticking).
+        public uint TickRate { get; private set; }
+        // Inputs of recent ticks, repeated in every input packet.
+        public const int InputHistory = 8;
+        readonly Record[] inputs = new Record[InputHistory];
+        int inputCount;
+        int inputRedundancy = 3;
+        // Ticks per input packet (1..8): the newest input and the ones before it.
+        public int InputRedundancy
+        {
+            get => inputRedundancy;
+            set => inputRedundancy = Math.Max(1, Math.Min(InputHistory, value));
+        }
         public SyncClient(uint connectionId, TrySend trySend)
         {
             if (connectionId == 0 || trySend == null)
@@ -136,7 +175,8 @@ namespace Gs2.Realtime.Sync
         public uint Spawn(uint prefab, uint mask, int[] values)
         {
             CheckReady();
-            if (nextRequest == 0)
+            // Bit 31 marks the room's predicted-spawn keys.
+            if (nextRequest == 0 || nextRequest >= 1u << 31)
                 throw new InvalidOperationException("Request IDs exhausted");
             command.Clear();
             command.Id = nextRequest;
@@ -157,9 +197,41 @@ namespace Gs2.Realtime.Sync
         NetworkObject Owned(uint id)
         {
             var o = Find(id);
-            if (o == null || o.Mode != ObjectMode.Player || o.Owner != ConnectionId)
+            if (o == null || !IsOwned(o) || o.Owner != ConnectionId)
                 throw new InvalidOperationException("Object is not owned by this connection");
             return o;
+        }
+        // Player and simulated objects belong to a member (Owner).
+        static bool IsOwned(NetworkObject o)
+        {
+            return o.Mode == ObjectMode.Player || o.Mode == ObjectMode.Simulated;
+        }
+        // Sends this client's input for a tick (newer than the previous one), together
+        // with the inputs of the InputRedundancy - 1 ticks before it, over the
+        // unreliable sender when one is set. values holds the slots selected by mask.
+        // viewLag: how far the remote objects on screen trailed tick, in 1/16 ticks; the
+        // room rewinds hit tests made for this client's objects by it (lag compensation).
+        public bool SendInput(uint tick, uint mask, int[] values, uint viewLag = 0)
+        {
+            CheckReady();
+            if (TickRate == 0)
+                throw new InvalidOperationException("The room is not ticking");
+            if (inputCount > 0 && unchecked((int)(tick - inputs[(inputCount - 1) % InputHistory].Id)) <= 0)
+                throw new ArgumentOutOfRangeException(nameof(tick), "Inputs must advance");
+            var r = inputs[inputCount % InputHistory] ?? (inputs[inputCount % InputHistory] = new Record());
+            r.Clear();
+            r.Id = tick;
+            r.Epoch = viewLag;
+            r.Mask = mask;
+            for (int f = 0; f < 32; f++)
+                if ((mask & (1u << f)) != 0)
+                    r.Values[f] = values[f];
+            inputCount++;
+            int count = Math.Min(inputRedundancy, Math.Min(inputCount, InputHistory));
+            for (int i = 0; i < count; i++)
+                output[i] = inputs[(inputCount - count + i) % InputHistory];
+            int n = SyncCodec.Encode(buffer, Op.Input, output, count);
+            return (Unreliable ?? send)(buffer, n);
         }
         public void Set(uint id, int field, int value)
         {
@@ -291,8 +363,8 @@ namespace Gs2.Realtime.Sync
         {
             CheckReady();
             var o = Find(id);
-            if (o == null || o.Mode != ObjectMode.Player)
-                throw new InvalidOperationException("RPCs target player objects");
+            if (o == null || !IsOwned(o))
+                throw new InvalidOperationException("RPCs target player and simulated objects");
             return Call(id, method, target, args, count, recipient);
         }
         // A room event (not tied to an object), like PhotonNetwork.RaiseEvent. Any member
@@ -325,8 +397,8 @@ namespace Gs2.Realtime.Sync
         {
             CheckReady();
             var o = Find(id);
-            if (o == null || o.Mode != ObjectMode.Player || newOwner == 0)
-                throw new InvalidOperationException("Ownership transfers player objects");
+            if (o == null || !IsOwned(o) || newOwner == 0)
+                throw new InvalidOperationException("Ownership transfers player and simulated objects");
             if (!FlushReliable())
                 return false;
             command.Clear();
@@ -388,6 +460,8 @@ namespace Gs2.Realtime.Sync
                 throw new ArgumentException();
             ConnectionId = connectionId;
             Ready = false;
+            TickRate = 0;
+            inputCount = 0;
             ClearObjects();
         }
         void ClearObjects()
@@ -435,7 +509,7 @@ namespace Gs2.Realtime.Sync
                             if (objects.ContainsKey(r.Id) || objects.Count >= 4096)
                                 throw new FormatException("Duplicate object or capacity exceeded");
                             o = new NetworkObject { Id = r.Id, Prefab = r.Prefab, Mode = (ObjectMode)r.Mode, Request = r.Request, Fields = r.Mask };
-                            if (o.Mode == ObjectMode.Player)
+                            if (IsOwned(o))
                                 o.Owner = r.Owner;
                             else
                             {
@@ -490,7 +564,7 @@ namespace Gs2.Realtime.Sync
                             }
                             if (o == null || r.Kind != AuthorityKind.State || o.Mode == ObjectMode.Server)
                                 throw new FormatException("Unknown authority object");
-                            if (o.Mode == ObjectMode.Player)
+                            if (IsOwned(o))
                             {
                                 if (o.Owner == r.Owner)
                                     break;
@@ -518,6 +592,12 @@ namespace Gs2.Realtime.Sync
                                 SpawnRejected?.Invoke(r.Request, (CommandResult)r.Method);
                             else
                                 Rejected?.Invoke((CommandResult)r.Method);
+                            break;
+                        case Op.Clock:
+                            if (r.TTL == 0 || r.TTL > 60)
+                                throw new FormatException("Invalid tick rate");
+                            TickRate = r.TTL;
+                            ClockReceived?.Invoke(r.Id, r.TTL, r.Request);
                             break;
                         case Op.Room:
                             if (r.Kind == RoomKind.Master)

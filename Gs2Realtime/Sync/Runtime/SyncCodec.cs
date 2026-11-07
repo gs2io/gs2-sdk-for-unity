@@ -24,7 +24,14 @@ namespace Gs2.Realtime.Sync
         // id, request, code. ID 0 with a request: refused spawn; ID 0 without: refused command.
         Result,
         // kind, id, owner, argLength, args.
-        Room
+        Room,
+        // id (tick), epoch (view lag in 1/16 ticks), mask, values. Client to server:
+        // input for a tick of a ticking room; packets repeat recent ticks so that a lost
+        // datagram costs nothing.
+        Input,
+        // id (tick), ttl (ticks per second), request (newest input tick the room has
+        // received from this client). Server to client after each simulation step.
+        Clock
     }
     // Call target byte. Low bits select receivers; Buffered (All/Others only) replays the
     // call to later joiners. Player is followed by Record.Recipient. The server delivers
@@ -208,7 +215,7 @@ namespace Gs2.Realtime.Sync
             switch (op)
             {
                 case Op.Spawn:
-                    if (r.Mode > (byte)ObjectMode.Server)
+                    if (r.Mode > (byte)ObjectMode.Simulated)
                         throw new ArgumentException("Invalid object mode");
                     return n + Size(r.Prefab) + 1 + Size(r.Owner) + Size(r.Request) + Size(r.Epoch) + Size(r.TTL) + FieldsSize(r);
                 case Op.Update:
@@ -234,12 +241,16 @@ namespace Gs2.Realtime.Sync
                     if (r.Kind < RoomKind.Master || r.Kind > RoomKind.Interest || !ValidArgs(r))
                         throw new ArgumentException("Invalid room record");
                     return n + 1 + Size(r.Owner) + Size((uint)r.ArgsCount) + r.ArgsCount;
+                case Op.Input:
+                    return n + Size(r.Epoch) + FieldsSize(r);
+                case Op.Clock:
+                    return n + Size(r.TTL) + Size(r.Request);
             }
             throw new ArgumentException("Invalid sync operation");
         }
         public static int Encode(byte[] dst, Op op, Record[] records, int count)
         {
-            if (dst == null || records == null || count < 1 || count > MaxRecords || count > records.Length || op < Op.Spawn || op > Op.Room)
+            if (dst == null || records == null || count < 1 || count > MaxRecords || count > records.Length || op < Op.Spawn || op > Op.Clock)
                 throw new ArgumentException("Invalid sync packet");
             bool flagged = Flagged(op, records, count);
             int length = 3;
@@ -301,6 +312,14 @@ namespace Gs2.Realtime.Sync
                         Put(dst, ref at, r.Owner);
                         PutArgs(dst, ref at, r);
                         break;
+                    case Op.Input:
+                        Put(dst, ref at, r.Epoch);
+                        PutFields(dst, ref at, r);
+                        break;
+                    case Op.Clock:
+                        Put(dst, ref at, r.TTL);
+                        Put(dst, ref at, r.Request);
+                        break;
                 }
             }
             return at;
@@ -312,7 +331,7 @@ namespace Gs2.Realtime.Sync
             var op = (Op)(b[1] & 15);
             int records = b[2] & ~Variant;
             bool flagged = (b[2] & Variant) != 0;
-            if (op < Op.Spawn || op > Op.Room || records < 1 || records > MaxRecords || (flagged && op != Op.Update && op != Op.Call && op != Op.Snapshot))
+            if (op < Op.Spawn || op > Op.Clock || records < 1 || records > MaxRecords || (flagged && op != Op.Update && op != Op.Call && op != Op.Snapshot))
                 throw new FormatException("Invalid sync header");
             int at = 3;
             for (int i = 0; i < records; i++)
@@ -331,7 +350,7 @@ namespace Gs2.Realtime.Sync
                     case Op.Spawn:
                         r.Prefab = Get(b, ref at, count);
                         r.Mode = GetByte(b, ref at, count);
-                        if (r.Mode > (byte)ObjectMode.Server)
+                        if (r.Mode > (byte)ObjectMode.Simulated)
                             throw new FormatException("Invalid object mode");
                         r.Owner = Get(b, ref at, count);
                         r.Request = Get(b, ref at, count);
@@ -376,6 +395,14 @@ namespace Gs2.Realtime.Sync
                     case Op.Room:
                         r.Owner = Get(b, ref at, count);
                         GetArgs(b, ref at, count, r);
+                        break;
+                    case Op.Input:
+                        r.Epoch = Get(b, ref at, count);
+                        GetFields(b, ref at, count, r);
+                        break;
+                    case Op.Clock:
+                        r.TTL = Get(b, ref at, count);
+                        r.Request = Get(b, ref at, count);
                         break;
                 }
             }

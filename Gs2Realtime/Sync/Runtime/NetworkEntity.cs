@@ -164,11 +164,13 @@ namespace Gs2.Realtime.Sync
         public NetworkBoolEvent ControlChanged => controlChanged;
         public NetworkIntEvent CommandCompleted => commandCompleted;
 
-        // True while this connection may write the object: the owner of a player object,
-        // or the current controller of a leased object. Server objects are never mine.
-        public bool IsMine => placeholder || Client != null && Object != null && (Object.Mode == ObjectMode.Player ? Object.Owner == Client.ConnectionId : Object.Mode == ObjectMode.Lease && Object.Controller == Client.ConnectionId);
-        // Owner of a player object, controller of a leased object (0 when free), 0 for server objects.
-        public uint OwnerId => Object == null ? 0 : Object.Mode == ObjectMode.Player ? Object.Owner : Object.Mode == ObjectMode.Lease ? Object.Controller : 0;
+        // True for the owner of a player or simulated object, and for the current controller
+        // of a leased object. Server objects are never mine. A simulated object's owner sends
+        // inputs (NetworkWorld.SetInput); the room writes its fields, so CanWrite stays false.
+        public bool IsMine => placeholder || Client != null && Object != null && (Owned ? Object.Owner == Client.ConnectionId : Object.Mode == ObjectMode.Lease && Object.Controller == Client.ConnectionId);
+        // Owner of a player or simulated object, controller of a leased object (0 when free), 0 for server objects.
+        public uint OwnerId => Object == null ? 0 : Owned ? Object.Owner : Object.Mode == ObjectMode.Lease ? Object.Controller : 0;
+        bool Owned => Object.Mode == ObjectMode.Player || Object.Mode == ObjectMode.Simulated;
         public ObjectMode Mode => Object?.Mode ?? ObjectMode.Player;
 
         // ---- Remote procedure calls ----
@@ -263,8 +265,8 @@ namespace Gs2.Realtime.Sync
         {
             if (Client == null || Object == null)
                 throw new InvalidOperationException("Entity is not bound to a network object");
-            if (Object.Mode != ObjectMode.Player || Object.Owner != Client.ConnectionId)
-                throw new InvalidOperationException("Only the owner of a player object can " + action + "; shared objects change through SharedObject.Interact or a lease");
+            if (!Owned || Object.Owner != Client.ConnectionId)
+                throw new InvalidOperationException("Only the owner of a player or simulated object can " + action + "; shared objects change through SharedObject.Interact or a lease");
         }
         // Calls a [NetworkRpc] method by name on the receivers selected by target.
         public bool Rpc(string method, RpcTarget target, params object[] args)
@@ -297,8 +299,8 @@ namespace Gs2.Realtime.Sync
         {
             if (!placeholder && (Client == null || Object == null))
                 throw new InvalidOperationException("Entity is not bound to a network object");
-            if (!placeholder && Object.Mode != ObjectMode.Player)
-                throw new InvalidOperationException("RPCs target player objects; shared objects change through SharedObject.Interact or a lease");
+            if (!placeholder && !Owned)
+                throw new InvalidOperationException("RPCs target player and simulated objects; shared objects change through SharedObject.Interact or a lease");
             var handler = FindRpc(method) ?? throw new ArgumentException("No [NetworkRpc(" + method + ")] method on " + name);
             // Who may call is decided by the room: with an object catalog, only the owner
             // unless the method is in publicMethods; without one, anyone.
@@ -325,8 +327,8 @@ namespace Gs2.Realtime.Sync
         {
             if (Client == null || Object == null)
                 throw new InvalidOperationException("Entity is not bound to a network object");
-            if (Object.Mode != ObjectMode.Player)
-                throw new InvalidOperationException("Ownership transfers player objects; shared objects use leases");
+            if (!Owned)
+                throw new InvalidOperationException("Ownership transfers player and simulated objects; shared objects use leases");
             if (connectionId == 0)
                 throw new ArgumentOutOfRangeException(nameof(connectionId));
             if (Client.CanSend && pendingRpcs.Count == 0)
@@ -358,10 +360,14 @@ namespace Gs2.Realtime.Sync
         }
 
         // Despawns a player object owned by this connection (queued like Rpc inside callbacks).
+        // Simulated objects belong to the room rules: they are removed by Room.Despawn or
+        // when the owner leaves, never by the owner.
         public bool Destroy()
         {
             if (!placeholder)
                 RequireOwnedPlayerObject("destroy it");
+            if (!placeholder && Object.Mode == ObjectMode.Simulated)
+                throw new InvalidOperationException("Simulated objects are removed by the room rules (Room.Despawn) or when their owner leaves");
             if (destroying)
                 return true;
             destroying = true;
@@ -513,7 +519,7 @@ namespace Gs2.Realtime.Sync
                     Object.Changed += ReadObservables;
                     ReadObservables(Object.Fields);
                 }
-                if (state.Mode == ObjectMode.Player)
+                if (state.Mode == ObjectMode.Player || state.Mode == ObjectMode.Simulated)
                     state.AuthorityChanged += OnOwnerChanged;
                 // Only leased objects need command results and renewal notices.
                 if (state.Mode == ObjectMode.Lease)

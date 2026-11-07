@@ -21,7 +21,7 @@ namespace Gs2.Realtime.Sync
         }
         public void Bind(SyncClient session, NetworkObject value)
         {
-            if (value.Mode == ObjectMode.Player)
+            if (value.Mode == ObjectMode.Player || value.Mode == ObjectMode.Simulated)
                 throw new System.ArgumentException("Expected shared object");
             client = session;
             Object = value;

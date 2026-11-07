@@ -273,6 +273,7 @@ namespace Gs2.Realtime.Sync
         }
         void OnSnapshotStarted()
         {
+            ResetClock();
             roomProperties.Clear();
             playerProperties.Clear();
         }

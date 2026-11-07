@@ -108,6 +108,8 @@ namespace Gs2.Realtime.Sync
             Client.Despawned += Despawn;
             Client.RpcReceived += OnRpc;
             Client.SpawnRejected += OnSpawnRejected;
+            Client.ClockReceived += OnClock;
+            ResetClock();
             AttachRoom();
             nextFlush = Time.unscaledTime;
             hasServerTime = false;
@@ -298,14 +300,22 @@ namespace Gs2.Realtime.Sync
         }
         void Spawn(NetworkObject value)
         {
+            predictionDirty = true; // a predicted spawn may hand over to this object
             if (!catalog.TryGetValue(value.Prefab, out var prefab))
                 throw new InvalidOperationException("Unknown prefab ID: " + value.Prefab);
             NetworkEntity placeholder = null;
-            if (value.Owner == Client.ConnectionId && placeholders.TryGetValue(value.Request, out placeholder))
+            // A predicted spawn's placeholder only takes an object of its own prefab:
+            // keys count spawns per prefab, so two prefabs may share one.
+            bool predicted = (value.Request & (1u << 31)) != 0;
+            if (value.Owner == Client.ConnectionId && placeholders.TryGetValue(value.Request, out placeholder) &&
+                (!predicted || PlaceholderPrefab(value.Request) == value.Prefab))
                 placeholders.Remove(value.Request);
+            else
+                placeholder = null;
             // A placeholder destroyed by the game before confirmation: create the object
-            // normally and despawn it, so the room does not keep an orphan.
-            bool orphan = placeholder == null && value.Owner == Client.ConnectionId && value.Request != 0 && !ReferenceEquals(placeholder, null);
+            // normally and despawn it, so the room does not keep an orphan. Predicted
+            // spawns belong to the rules and are never despawned by the member.
+            bool orphan = !predicted && value.Mode != ObjectMode.Simulated && placeholder == null && value.Owner == Client.ConnectionId && value.Request != 0 && !ReferenceEquals(placeholder, null);
             var instance = placeholder != null ? placeholder.gameObject : UnityEngine.Object.Instantiate(prefab, transform);
             try
             {
@@ -348,6 +358,7 @@ namespace Gs2.Realtime.Sync
         }
         void Despawn(NetworkObject value)
         {
+            predictionDirty = true;
             if (!instances.TryGetValue(value.Id, out var entity))
                 return;
             instances.Remove(value.Id);
@@ -359,6 +370,8 @@ namespace Gs2.Realtime.Sync
                 return;
             ServiceRoom();
             SendSpawns();
+            ServiceTick();
+            ServicePrediction();
             foreach (var entity in instances.Values)
                 entity.Service();
         }
@@ -386,7 +399,9 @@ namespace Gs2.Realtime.Sync
                 Client.Despawned -= Despawn;
                 Client.RpcReceived -= OnRpc;
                 Client.SpawnRejected -= OnSpawnRejected;
+                Client.ClockReceived -= OnClock;
             }
+            ResetClock();
             DetachRoom();
             foreach (var entity in placeholders.Values)
                 if (entity != null)
