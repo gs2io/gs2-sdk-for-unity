@@ -14,7 +14,6 @@ using Gs2.Unity.Gs2Realtime.Util;
 using Gs2.Unity.Util;
 using UnityEngine;
 using UnityEngine.Events;
-using Gs2.Util.WebSocketSharp;
 using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Realtime
@@ -22,9 +21,14 @@ namespace Gs2.Unity.Gs2Realtime
     public delegate void OnRelayMessageHandler(RelayBinaryMessage message);
     public delegate void OnRelayMessageWithMetadataHandler(RelayBinaryMessage message, MessageMetadata metadata);
     
+    /// <summary>
+    /// A RealtimeSession for relay rooms: binary messages are RelayBinaryMessages, which can be
+    /// addressed to specific connections, and arrive through OnRelayMessage instead of OnMessage.
+    /// </summary>
     [Preserve]
     public class RelayRealtimeSession : RealtimeSession
     {
+        /// <summary>A relayed message arrived. Raised by Dispatch on the main thread.</summary>
         public event OnRelayMessageHandler OnRelayMessage;
         public event OnRelayMessageWithMetadataHandler OnRelayMessageWithMetadata;
 
@@ -45,80 +49,31 @@ namespace Gs2.Unity.Gs2Realtime
             
         }
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-        protected override void OnMessageHandler(byte[] data)
-#else
-        protected override void OnMessageHandler(object sender, EventArgs e)
-#endif
+        protected override void Handle(IMessage message, uint sequenceNumber, uint lifeTimeMilliSeconds)
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
-            var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data);
-            var message = _messenger.Parse(messageType, payload);
             if (message is BinaryMessage binaryMessage)
             {
-                _eventQueue.Enqueue(
-                    new OnRelayMessageWithMetadataEvent(
-                        RelayBinaryMessage.Parser.ParseFrom(binaryMessage.Data),
-                        new MessageMetadata
-                        {
-                            SequenceNumber = sequenceNumber,
-                            LifeTimeMilliSeconds = lifeTimeMilliSeconds,
-                        }
-                    )
-                );
+                Enqueue(new OnRelayMessageEvent(
+                    RelayBinaryMessage.Parser.ParseFrom(binaryMessage.Data),
+                    new MessageMetadata
+                    {
+                        SequenceNumber = sequenceNumber,
+                        LifeTimeMilliSeconds = lifeTimeMilliSeconds,
+                    }
+                ));
+                return;
             }
-            else
-            {
-                base.OnMessageHandler(data);
-            }
-#else
-            if (!(e is MessageEventArgs data)) return;
-            
-            var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data.RawData);
-            var message = _messenger.Parse(messageType, payload);
-            if (message is BinaryMessage binaryMessage)
-            {
-                _eventQueue.Enqueue(
-                    new OnRelayMessageWithMetadataEvent(
-                        RelayBinaryMessage.Parser.ParseFrom(binaryMessage.Data),
-                        new MessageMetadata
-                        {
-                            SequenceNumber = sequenceNumber,
-                            LifeTimeMilliSeconds = lifeTimeMilliSeconds,
-                        }
-                    )
-                );
-            }
-            else
-            {
-                base.OnMessageHandler(sender, e);
-            }   
-#endif
+            base.Handle(message, sequenceNumber, lifeTimeMilliSeconds);
         }
 
-        protected override void EventHandler(RealtimeEvent @event)
+        internal void RaiseRelayMessage(RelayBinaryMessage message, MessageMetadata metadata)
         {
-            if (@event == null) return;
-            
-            base.EventHandler(@event);
-
-            if (@event is RelayRealtimeEvent relayEvent)
-            {
-                switch (relayEvent.EventType)
-                {
-                    case RelayRealtimeEventType.OnRelayMessage:
-                        if (relayEvent is OnRelayMessageWithMetadataEvent relayMessageEvent) {
-                            OnRelayMessage?.Invoke(relayMessageEvent.Message);
-                            OnRelayMessageWithMetadata?.Invoke(relayMessageEvent.Message, relayMessageEvent.Metadata);
-                        }
-                        break;
-                    default:
-                        return;
-                }
-            }
+            OnRelayMessage?.Invoke(message);
+            OnRelayMessageWithMetadata?.Invoke(message, metadata);
         }
 #if GS2_ENABLE_UNITASK
         
+        /// <summary>As the coroutine Send; throws SendException on failure.</summary>
         public async UniTask SendAsync(ByteString data, uint[] targetConnectionIds = null)
         {
             var relayBinaryMessage = new RelayBinaryMessage
@@ -142,6 +97,10 @@ namespace Gs2.Unity.Gs2Realtime
             await base.SendAsync(message);
         }
 #endif
+        /// <summary>
+        /// Relays data through the room. When targetConnectionIds is given, the message is
+        /// addressed to those connections only.
+        /// </summary>
         public IEnumerator Send(UnityAction<AsyncResult<bool>> callback, ByteString data, uint[] targetConnectionIds = null)
         {
             var relayBinaryMessage = new RelayBinaryMessage

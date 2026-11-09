@@ -1,12 +1,7 @@
-// #define DISABLE_COROUTINE
-// #define ENABLE_DEBUGLOG
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.Design.Serialization;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 #if GS2_ENABLE_UNITASK
 using Cysharp.Threading.Tasks;
@@ -16,7 +11,6 @@ using Gs2.Core;
 using Gs2.Gs2Realtime.Message;
 using Gs2.Unity.Gs2Realtime.Exception;
 using Gs2.Unity.Gs2Realtime.Util;
-using Gs2.Unity.Util;
 using UnityEngine;
 using UnityEngine.Events;
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -25,7 +19,6 @@ using Gs2.HybridWebSocket;
 using Gs2.Util.WebSocketSharp;
 #endif
 using UnityEngine.Scripting;
-using Debug = UnityEngine.Debug;
 
 namespace Gs2.Unity.Gs2Realtime
 {
@@ -42,1232 +35,486 @@ namespace Gs2.Unity.Gs2Realtime
     public delegate void OnGeneralErrorHandler(ErrorEventArgs e);
     public delegate void OnCloseHandler(CloseEventArgs e);
 
+    /// <summary>The lifecycle state of a <see cref="RealtimeSession"/>.</summary>
+    public enum RealtimeSessionState : byte
+    {
+        /// <summary>Created; Connect has not been called yet.</summary>
+        Idle,
+        /// <summary>The WebSocket is opening.</summary>
+        Opening,
+        /// <summary>Open; Hello sent, waiting for the room's HelloResult.</summary>
+        Greeting,
+        /// <summary>The room accepted Hello.</summary>
+        Connected,
+        /// <summary>Close was called.</summary>
+        Closing,
+        /// <summary>Closed after being connected.</summary>
+        Closed,
+        /// <summary>The connection or Hello failed (ConnectionError says why).</summary>
+        Failed,
+    }
+
+    /// <summary>
+    /// A connection to a GS2-Realtime room. Connect, Send, UpdateProfile and Close (coroutines,
+    /// or their UniTask forms) each wait at most 30 s of real time for their outcome. Room
+    /// messages are queued and raised as events by <see cref="Dispatch"/> on the main thread.
+    /// </summary>
+    // The connection is one state machine (RealtimeSessionState) driven by the socket's events
+    // under _gate: the socket may raise them on another thread. Messages that arrive while
+    // Hello is being answered are delivered right after it, in order.
     [Preserve]
     public class RealtimeSession : IDisposable
     {
+        /// <summary>
+        /// When true, each wait step also sleeps 10 ms on the calling thread, for driving the
+        /// coroutines without Unity frames.
+        /// </summary>
         public static bool NotUseWaitForSeconds = false;
+        const double TimeoutSeconds = 30;
 
-        [Conditional("ENABLE_DEBUGLOG")]
-        private static void DebugLog(string msg) => Debug.Log(msg);
-
-#if UNITY_WEBGL && !UNITY_EDITOR
-        protected readonly HybridWebSocket.WebSocket _webSocket;
-#else
-        protected readonly WebSocket _webSocket;
-#endif
+        readonly IRealtimeSocket _socket;
         protected readonly Messenger _messenger;
-        private MonoBehaviour _monoBehaviour;
-        private Coroutine _dispatchCoroutine;
+        readonly string _accessToken;
+        readonly object _gate = new object();
+        readonly Queue<RealtimeEvent> _eventQueue = new Queue<RealtimeEvent>();
+        // Room messages received while Greeting, delivered once Connected.
+        readonly List<byte[]> _early = new List<byte[]>();
+        Error _helloError;           // the room's answer refusing Hello
+        EventArgs _socketError;      // the socket's latest error before Connected
+        MonoBehaviour _monoBehaviour;
+        Coroutine _dispatchCoroutine;
 
-        protected readonly string _accessToken;
-
-        protected readonly Queue<RealtimeEvent> _eventQueue = new Queue<RealtimeEvent>();
-
-        public bool Connected { get; private set; } = false;
-        public uint MyConnectionId { get; private set; } = 0;
-        // UDP side channel registration secret from HelloResult (0 when the room has no UDP).
-        public uint UdpSecret { get; private set; } = 0;
+        /// <summary>The current lifecycle state.</summary>
+        public RealtimeSessionState State { get; private set; }
+        /// <summary>True while the room has accepted this session and it is not closing.</summary>
+        public bool Connected => State == RealtimeSessionState.Connected;
+        /// <summary>This player's connection id in the room, set once connected.</summary>
+        public uint MyConnectionId { get; private set; }
+        /// <summary>
+        /// Registration secret for the UDP side channel, from HelloResult (0 when the room has no
+        /// UDP). See <see cref="RealtimeUdpChannel"/>.
+        /// </summary>
+        public uint UdpSecret { get; private set; }
         public string IpAddress { get; }
         public int Port { get; }
         public string EncryptionKey { get; }
-        public ByteString Profile { get; private set; } = null;
+        /// <summary>This player's profile; replaced when UpdateProfile succeeds.</summary>
+        public ByteString Profile { get; private set; }
+        /// <summary>
+        /// Why Connect failed (State is Failed); its ServerError holds the room's answer, if any.
+        /// </summary>
+        public ConnectionException ConnectionError { get; private set; }
 
+        // The events below are raised by Dispatch on the thread that runs it (the main thread).
+        // The ...WithMetadata variants also carry the message's sequence number and lifetime.
+
+        /// <summary>A binary message from another player arrived.</summary>
         public event OnMessageHandler OnMessage;
         public event OnMessageWithMetadataHandler OnMessageWithMetadata;
+        /// <summary>
+        /// A player joined. Also raised for each player the room lists when this session connects.
+        /// </summary>
         public event OnJoinPlayerHandler OnJoinPlayer;
         public event OnJoinPlayerWithMetadataHandler OnJoinPlayerWithMetadata;
+        /// <summary>A player left the room.</summary>
         public event OnLeavePlayerHandler OnLeavePlayer;
         public event OnLeavePlayerWithMetadataHandler OnLeavePlayerWithMetadata;
+        /// <summary>A player changed their profile.</summary>
         public event OnUpdateProfileHandler OnUpdateProfile;
         public event OnUpdateProfileWithMetadataHandler OnUpdateProfileWithMetadata;
+        /// <summary>The room reported an error.</summary>
         public event OnErrorHandler OnError;
         public event OnErrorWithMetadataHandler OnErrorWithMetadata;
+        /// <summary>The WebSocket reported an error after the session connected.</summary>
         public event OnGeneralErrorHandler OnGeneralError;
+        /// <summary>The connection closed after the session connected.</summary>
         public event OnCloseHandler OnClose;
 
-        protected virtual void EventHandler(RealtimeEvent @event)
-        {
-            if (@event == null) return;
-
-            switch (@event.EventType)
-            {
-                case RealtimeEventType.OnMessage:
-                {
-                    if (@event is OnMessageEvent typedEvent) {
-                        OnMessage?.Invoke(typedEvent.Message);
-                        OnMessageWithMetadata?.Invoke(typedEvent.Message, typedEvent.Metadata);
-                    }
-                    break;
-                }
-                case RealtimeEventType.OnJoinPlayer:
-                {
-                    if (@event is OnJoinPlayerEvent typedEvent) {
-                        OnJoinPlayer?.Invoke(typedEvent.Player);
-                        OnJoinPlayerWithMetadata?.Invoke(typedEvent.Player, typedEvent.Metadata);
-                    }
-                    break;
-                }
-                case RealtimeEventType.OnLeavePlayer:
-                {
-                    if (@event is OnLeavePlayerEvent typedEvent) {
-                        OnLeavePlayer?.Invoke(typedEvent.Player);
-                        OnLeavePlayerWithMetadata?.Invoke(typedEvent.Player, typedEvent.Metadata);
-                    }
-                    break;
-                }
-                case RealtimeEventType.OnUpdateProfile:
-                {
-                    if (@event is OnUpdateProfileEvent typedEvent) {
-                        OnUpdateProfile?.Invoke(typedEvent.Player);
-                        OnUpdateProfileWithMetadata?.Invoke(typedEvent.Player, typedEvent.Metadata);
-                    }
-
-                    break;
-                }
-                case RealtimeEventType.OnError:
-                {
-                    if (@event is OnErrorEvent typedEvent) {
-                        OnError?.Invoke(typedEvent.Error);
-                        OnErrorWithMetadata?.Invoke(typedEvent.Error, typedEvent.Metadata);
-                    }
-                    break;
-                }
-                case RealtimeEventType.OnGeneralError:
-                {
-                    if (@event is OnGeneralErrorEvent typedEvent) {
-                        OnGeneralError?.Invoke(typedEvent.Error);
-                    }
-                    break;
-                }
-                case RealtimeEventType.OnClose:
-                {
-                    if (@event is OnCloseEvent typedEvent) {
-                        OnClose?.Invoke(typedEvent.Error);
-                    }
-                    break;
-                }
-                case RealtimeEventType.PluginEventType:
-                    break;
-            }
-        }
-
-        public IEnumerator Dispatch()
-        {
-            while (true)
-            {
-                if (_eventQueue.Count > 0)
-                {
-                    var @event = _eventQueue.Dequeue();
-                    EventHandler(@event);
-                }
-                else
-                {
-                    yield return null;
-                }
-            }
-        }
-
+        /// <summary>A session to the room at ipAddress:port over the platform's WebSocket.</summary>
         public RealtimeSession(
-            string accessToken, 
-            string ipAddress, 
-            int port, 
+            string accessToken,
+            string ipAddress,
+            int port,
+            string encryptionKey,
+            ByteString profile = null
+        ) : this(new RealtimeSocket(string.Format("ws://{0}:{1}/", ipAddress, port)), accessToken, ipAddress, port, encryptionKey, profile)
+        {
+        }
+
+        /// <summary>
+        /// A session over a custom transport. ipAddress and port are still what
+        /// <see cref="RealtimeUdpChannel"/> uses.
+        /// </summary>
+        public RealtimeSession(
+            IRealtimeSocket socket,
+            string accessToken,
+            string ipAddress,
+            int port,
             string encryptionKey,
             ByteString profile = null
         )
         {
-            DebugLog(string.Format("ws://{0}:{1}/", ipAddress, port));
-
-#if UNITY_WEBGL && !UNITY_EDITOR
-            _webSocket = WebSocketFactory.CreateInstance(string.Format("ws://{0}:{1}/", ipAddress, port));
-#else
-            _webSocket = new WebSocket(string.Format("ws://{0}:{1}/", ipAddress, port));
-#endif
+            _socket = socket ?? throw new ArgumentNullException(nameof(socket));
             _messenger = new Messenger(encryptionKey);
             _accessToken = accessToken;
-            Profile = profile;
+            Profile = profile ?? ByteString.Empty;
             IpAddress = ipAddress;
             Port = port;
             EncryptionKey = encryptionKey;
+            _socket.Opened += () => Step(SocketEvent.Opened);
+            _socket.Received += data => Step(SocketEvent.Received, data);
+            _socket.Failed += e => Step(SocketEvent.Failed, error: e);
+            _socket.Closed += e => Step(SocketEvent.Closed, close: e);
+        }
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-            _webSocket.OnClose += (args) =>
+        enum SocketEvent : byte { Opened, Received, Failed, Closed }
+
+        // Every transition driven by the socket happens here, under _gate.
+        void Step(SocketEvent what, byte[] data = null, ErrorEventArgs error = null, CloseEventArgs close = null)
+        {
+            lock (_gate)
             {
-                if (Connected)
+                switch (what)
                 {
-                    _eventQueue.Enqueue(
-                        new OnCloseEvent(args)
-                    );
-
-                    Connected = false;
+                    case SocketEvent.Opened when State == RealtimeSessionState.Opening:
+                        State = RealtimeSessionState.Greeting;
+                        _socket.Send(_messenger.Pack(new HelloRequest { AccessToken = _accessToken, MyProfile = Profile }), null);
+                        break;
+                    case SocketEvent.Received when State == RealtimeSessionState.Greeting:
+                        Greet(data);
+                        break;
+                    case SocketEvent.Received when State == RealtimeSessionState.Connected || State == RealtimeSessionState.Closing:
+                        Receive(data);
+                        break;
+                    case SocketEvent.Failed when State == RealtimeSessionState.Connected || State == RealtimeSessionState.Closing:
+                        _eventQueue.Enqueue(new OnGeneralErrorEvent(error));
+                        break;
+                    case SocketEvent.Failed:
+                        _socketError = error; // the reason, if the attempt then fails
+                        break;
+                    case SocketEvent.Closed when State == RealtimeSessionState.Opening || State == RealtimeSessionState.Greeting:
+                        Fail();
+                        break;
+                    case SocketEvent.Closed when State == RealtimeSessionState.Connected || State == RealtimeSessionState.Closing:
+                        State = RealtimeSessionState.Closed;
+                        _eventQueue.Enqueue(new OnCloseEvent(close));
+                        break;
                 }
-            };
-#else
-            _webSocket.OnClose += (sender, args) =>
-            {
-                if (Connected)
-                {
-                    _eventQueue.Enqueue(
-                        new OnCloseEvent(args)
-                    );
-
-                    Connected = false;
-                }
-            };
-#endif
+            }
         }
-
-#if UNITY_WEBGL && !UNITY_EDITOR
-        protected void OnErrorHandler(ErrorEventArgs e)
+        // While Greeting: the room's answer to Hello, or a message that follows it early.
+        void Greet(byte[] data)
         {
-            _eventQueue.Enqueue(
-                new OnGeneralErrorEvent(e)
-            );
-        }
-#else
-        protected void OnErrorHandler(object sender, ErrorEventArgs e)
-        {
-            _eventQueue.Enqueue(
-                new OnGeneralErrorEvent(e)
-            );
-        }
-#endif
-
-#if UNITY_WEBGL && !UNITY_EDITOR
-        protected virtual void OnMessageHandler(byte[] data)
-        {
-            Debug.Log("OnMessageHandler ");
-
             var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data);
-            var message = _messenger.Parse(messageType, payload);
-            if (message is JoinNotification joinNotification)
+            switch (_messenger.Parse(messageType, payload))
             {
-                _eventQueue.Enqueue(
-                    new OnJoinPlayerEvent(
-                        joinNotification.JoinPlayer,
-                        sequenceNumber,
-                        lifeTimeMilliSeconds
-                    )
-                );
-            }
-            if (message is LeaveNotification leaveNotification)
-            {
-                _eventQueue.Enqueue(
-                    new OnLeavePlayerEvent(
-                        leaveNotification.LeavePlayer,
-                        sequenceNumber,
-                        lifeTimeMilliSeconds
-                    )
-                );
-            }
-            if (message is UpdateProfileNotification updateProfileNotification)
-            {
-                _eventQueue.Enqueue(
-                    new OnUpdateProfileEvent(
-                        updateProfileNotification.UpdatePlayer,
-                        sequenceNumber,
-                        lifeTimeMilliSeconds
-                    )
-                );
-            }
-            if (message is BinaryMessage binaryMessage)
-            {
-                _eventQueue.Enqueue(
-                    new OnMessageEvent(
-                        binaryMessage,
-                        sequenceNumber,
-                        lifeTimeMilliSeconds
-                    )
-                );
-            }
-            if (message is Error error)
-            {
-                _eventQueue.Enqueue(
-                    new OnErrorEvent(
-                        error,
-                        sequenceNumber,
-                        lifeTimeMilliSeconds
-                    )
-                );
+                case Error error:
+                    _eventQueue.Enqueue(new OnErrorEvent(error, sequenceNumber, lifeTimeMilliSeconds));
+                    _helloError = error;
+                    Fail();
+                    _socket.Close();
+                    break;
+                case HelloResult hello:
+                    MyConnectionId = hello.MyProfile.ConnectionId;
+                    UdpSecret = hello.Secret;
+                    State = RealtimeSessionState.Connected;
+                    foreach (var player in hello.Players)
+                        _eventQueue.Enqueue(new OnJoinPlayerEvent(player, 0, 0));
+                    foreach (var early in _early)
+                        Receive(early);
+                    _early.Clear();
+                    break;
+                default:
+                    _early.Add(data);
+                    break;
             }
         }
-#else
-        protected virtual void OnMessageHandler(object sender, EventArgs e)
+        void Fail()
         {
-            if (!(e is MessageEventArgs data)) return;
-
-            var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data.RawData);
-            var message = _messenger.Parse(messageType, payload);
-            if (message is JoinNotification joinNotification)
-            {
-                _eventQueue.Enqueue(
-                    new OnJoinPlayerEvent(
-                        joinNotification.JoinPlayer,
-                        sequenceNumber,
-                        lifeTimeMilliSeconds
-                    )
-                );
-            }
-            if (message is LeaveNotification leaveNotification)
-            {
-                _eventQueue.Enqueue(
-                    new OnLeavePlayerEvent(
-                        leaveNotification.LeavePlayer,
-                        sequenceNumber,
-                        lifeTimeMilliSeconds
-                    )
-                );
-            }
-            if (message is UpdateProfileNotification updateProfileNotification)
-            {
-                _eventQueue.Enqueue(
-                    new OnUpdateProfileEvent(
-                        updateProfileNotification.UpdatePlayer,
-                        sequenceNumber,
-                        lifeTimeMilliSeconds
-                    )
-                );
-            }
-            if (message is BinaryMessage binaryMessage)
-            {
-                _eventQueue.Enqueue(
-                    new OnMessageEvent(
-                        binaryMessage,
-                        sequenceNumber,
-                        lifeTimeMilliSeconds
-                    )
-                );
-            }
-            if (message is Error error)
-            {
-                _eventQueue.Enqueue(
-                    new OnErrorEvent(
-                        error,
-                        sequenceNumber,
-                        lifeTimeMilliSeconds
-                    )
-                );
-            }
-        }
-#endif
-
-#if GS2_ENABLE_UNITASK
-
-        public async UniTask ConnectAsync(
-            MonoBehaviour monoBehaviour
-        )
-        {
-#if UNITY_WEBGL && !UNITY_EDITOR
-            _webSocket.OnMessageBinary -= this.OnMessageHandler;
-#else
-            _webSocket.OnMessage -= this.OnMessageHandler;
-#endif
-            _webSocket.OnError -= this.OnErrorHandler;
-
-            var tcs = new UniTaskCompletionSource<bool>();
-            EventArgs args = null;
-            Player[] players = null;
-#if UNITY_WEBGL && !UNITY_EDITOR
-            var messageList = new List<byte[]>();
-
-            void OnOpenHandler()
-            {
-                // 完了フラグ・成功フラグを立てる
-                DebugLog("OnOpenHandler");
-
-                tcs.TrySetResult(true);
-            }
-            void OnErrorHandler(EventArgs e)
-            {
-                DebugLog("OnErrorHandler: " + e);
-
-                // 失敗理由を記録
-                args = e;
-            }
-
-            void OnCloseHandler(EventArgs e)
-            {
-                DebugLog("OnCloseHandler: " + e);
-
-                // 完了フラグを立てる
-                tcs.TrySetResult(false);
-            }
-#else // UNITY_WEBGL
-            var messageArgsList = new List<MessageEventArgs>();
-
-            void OnOpenHandler(object sender, EventArgs e)
-            {
-                // 完了フラグ・成功フラグを立てる
-                DebugLog("OnOpenHandler: " + e);
-
-                tcs.TrySetResult(true);
-            }
-            void OnErrorHandler(object sender, EventArgs e)
-            {
-                DebugLog("OnErrorHandler: " + e);
-
-                // 失敗理由を記録
-                args = e;
-            }
-            void OnCloseHandler(object sender, EventArgs e)
-            {
-                DebugLog("OnCloseHandler: " + e);
-
-                // 完了フラグを立てる
-                tcs.TrySetResult(false);
-            }
-#endif // UNITY_WEBGL && !UNITY_EDITOR
-
-            try
-            {
-                _webSocket.OnOpen += OnOpenHandler;
-                _webSocket.OnError += OnErrorHandler;
-                _webSocket.OnClose += OnCloseHandler;
-#if UNITY_WEBGL && !UNITY_EDITOR
-                _webSocket.Connect();
-#else
-                _webSocket.ConnectAsync();
-#endif
-
-                await using (UniTask.ReturnToMainThread())
-                {
-                    if (!await tcs.Task.Timeout(TimeSpan.FromSeconds(30)))
-                    {
-                        // 失敗した場合は抜ける
-                        throw new ConnectionException(EventArgs.Empty);
-                    }
-                }
-
-                DebugLog("Hello");
-
-                var helloTcs = new UniTaskCompletionSource<HelloResult>();
-#if UNITY_WEBGL && !UNITY_EDITOR
-                void OnMessageHandler(byte[] data)
-                {
-                    // 認証処理の応答を処理するためのハンドラ
-                    {
-                        var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data);
-                        var message = _messenger.Parse(messageType, payload);
-                        if (message is Error error)
-                        {
-                            _eventQueue.Enqueue(
-                                new OnErrorEvent(
-                                    error,
-                                    sequenceNumber,
-                                    lifeTimeMilliSeconds
-                                )
-                            );
-                        }
-                        else if (message is HelloResult helloResult)
-                        {
-                            helloTcs.TrySetResult(helloResult);
-                        }
-                        else
-                        {
-                            messageList.Add(data);
-                        }
-                    }
-                }
-#else // UNITY_WEBGL
-                void OnMessageHandler(object sender, EventArgs e)
-                {
-                    // 認証処理の応答を処理するためのハンドラ
-                    DebugLog("OnMessage: " + e.ToString());
-
-                    if (e is MessageEventArgs data)
-                    {
-                        var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data.RawData);
-                        var message = _messenger.Parse(messageType, payload);
-                        if (message is Error error)
-                        {
-                            _eventQueue.Enqueue(
-                                new OnErrorEvent(
-                                    error,
-                                    sequenceNumber,
-                                    lifeTimeMilliSeconds
-                                )
-                            );
-                            return;
-                        }
-                        else if (message is HelloResult helloResult)
-                        {
-                            helloTcs.TrySetResult(helloResult);
-                        }
-                        else
-                        {
-                            messageArgsList.Add(data);
-                        }
-                    }
-                    else
-                    {
-                        args = e;
-                    }
-                }
-#endif // UNITY_WEBGL && !UNITY_EDITOR
-
-                try
-                {
-#if UNITY_WEBGL && !UNITY_EDITOR
-                    _webSocket.OnMessageBinary += OnMessageHandler;
-#else
-                    _webSocket.OnMessage += OnMessageHandler;
-#endif
-
-#if UNITY_WEBGL && !UNITY_EDITOR
-                    DebugLog("Send");
-
-                    _webSocket.Send(
-                        _messenger.Pack(
-                            new HelloRequest
-                            {
-                                AccessToken = _accessToken,
-                                MyProfile = Profile,
-                            }
-                        )
-                    );
-#else // UNITY_WEBGL
-                    DebugLog("SendAsync");
-
-                    _webSocket.SendAsync(
-                        _messenger.Pack(
-                            new HelloRequest
-                            {
-                                AccessToken = _accessToken,
-                                MyProfile = Profile,
-                            }
-                        ),
-                        null
-                    );
-#endif // UNITY_WEBGL && !UNITY_EDITOR
-
-                    HelloResult helloResult;
-                    await using (UniTask.ReturnToMainThread())
-                    {
-                        helloResult = await helloTcs.Task.Timeout(TimeSpan.FromSeconds(30));
-                    }
-
-                    MyConnectionId = helloResult.MyProfile.ConnectionId;
-                    UdpSecret = helloResult.Secret;
-                    players = helloResult.Players.ToArray();
-
-                    Connected = true;
-                }
-                finally
-                {
-#if UNITY_WEBGL && !UNITY_EDITOR
-                    _webSocket.OnMessageBinary -= OnMessageHandler;
-#else
-                    _webSocket.OnMessage -= OnMessageHandler;
-#endif
-                }
-            }
-            finally
-            {
-                _webSocket.OnOpen -= OnOpenHandler;
-                _webSocket.OnError -= OnErrorHandler;
-                _webSocket.OnClose -= OnCloseHandler;
-
-                if (players != null)
-                {
-                    foreach (var player in players)
-                    {
-                        _eventQueue.Enqueue(
-                            new OnJoinPlayerEvent(
-                                player,
-                                0,
-                                0
-                            )
-                        );
-                    }
-                }
-
-#if UNITY_WEBGL && !UNITY_EDITOR
-                foreach (var data in messageList)
-                {
-                    this.OnMessageHandler(data);
-                }
-
-                _webSocket.OnMessageBinary += this.OnMessageHandler;
-#else
-                foreach (var e in messageArgsList)
-                {
-                    this.OnMessageHandler(null, e);
-                }
-
-                _webSocket.OnMessage += this.OnMessageHandler;
-#endif
-                _webSocket.OnError += this.OnErrorHandler;
-            }
-
-            _monoBehaviour = monoBehaviour;
-            if (monoBehaviour != null)
-            {
-                _dispatchCoroutine = monoBehaviour.StartCoroutine(Dispatch());
-            }
-        }
-
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-
-        public async UniTask SendAsync(BinaryMessage message)
-        {
-            if (!Connected)
-            {
-                throw new SendException(message);
-            }
-
-#if UNITY_WEBGL && !UNITY_EDITOR
-            try
-            {
-                _webSocket.Send(
-                    _messenger.Pack(
-                        message
-                    )
-                );
-            }
-            catch (WebSocketException e)
-            {
-                throw new SendException(message);
-            }
-#else // UNITY_WEBGL
-            var tcs = new UniTaskCompletionSource<bool>();
-            _webSocket.SendAsync(
-                _messenger.Pack(
-                    message
-                ),
-                success => tcs.TrySetResult(success)
-            );
-
-            await using (UniTask.ReturnToMainThread())
-            {
-                if (!await tcs.Task) throw new SendException(message);
-            }
-#endif // UNITY_WEBGL && !UNITY_EDITOR
-        }
-
-        public async UniTask UpdateProfileAsync(ByteString profile)
-        {
-            if (!Connected)
-            {
-                throw new UpdateProfileException(profile);
-            }
-
-#if UNITY_WEBGL && !UNITY_EDITOR
-            try
-            {
-                _webSocket.Send(
-                    _messenger.Pack(
-                        new UpdateProfileRequest
-                        {
-                            MyProfile = profile
-                        }
-                    )
-                );
-            }
-            catch (WebSocketException e)
-            {
-                throw new UpdateProfileException(profile);
-            }
-#else // UNITY_WEBGL
-            var tcs = new UniTaskCompletionSource<bool>();
-            _webSocket.SendAsync(
-                _messenger.Pack(
-                    new UpdateProfileRequest
-                    {
-                        MyProfile = profile
-                    }
-                ),
-                success => tcs.TrySetResult(success)
-            );
-
-            await using (UniTask.ReturnToMainThread())
-            {
-                if (!await tcs.Task.Timeout(TimeSpan.FromSeconds(30)))
-                {
-                    throw new UpdateProfileException(profile);
-                }
-            }
-#endif
-            Profile = profile;
-        }
-
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-
-        public async UniTask CloseAsync()
-        {
-            if (!Connected)
-            {
+            if (State == RealtimeSessionState.Failed)
                 return;
+            State = RealtimeSessionState.Failed;
+            ConnectionError = new ConnectionException(_socketError ?? EventArgs.Empty, _helloError);
+            _early.Clear();
+        }
+        void Receive(byte[] data)
+        {
+            var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data);
+            Handle(_messenger.Parse(messageType, payload), sequenceNumber, lifeTimeMilliSeconds);
+        }
+        /// <summary>
+        /// Turns a room message into its event. Called under the session's lock, possibly on the
+        /// socket's thread: only <see cref="Enqueue"/> events here, never raise them.
+        /// </summary>
+        protected virtual void Handle(IMessage message, uint sequenceNumber, uint lifeTimeMilliSeconds)
+        {
+            switch (message)
+            {
+                case JoinNotification join:
+                    Enqueue(new OnJoinPlayerEvent(join.JoinPlayer, sequenceNumber, lifeTimeMilliSeconds));
+                    break;
+                case LeaveNotification leave:
+                    Enqueue(new OnLeavePlayerEvent(leave.LeavePlayer, sequenceNumber, lifeTimeMilliSeconds));
+                    break;
+                case UpdateProfileNotification update:
+                    Enqueue(new OnUpdateProfileEvent(update.UpdatePlayer, sequenceNumber, lifeTimeMilliSeconds));
+                    break;
+                case BinaryMessage binary:
+                    Enqueue(new OnMessageEvent(binary, sequenceNumber, lifeTimeMilliSeconds));
+                    break;
+                case Error error:
+                    Enqueue(new OnErrorEvent(error, sequenceNumber, lifeTimeMilliSeconds));
+                    break;
             }
+        }
+        /// <summary>Queues an event for Dispatch. Call only from <see cref="Handle"/>.</summary>
+        protected void Enqueue(RealtimeEvent @event) => _eventQueue.Enqueue(@event);
 
-            var tcs = new UniTaskCompletionSource();
+        // Called by each RealtimeEvent as Dispatch delivers it.
+        internal void RaiseMessage(BinaryMessage message, MessageMetadata metadata)
+        {
+            OnMessage?.Invoke(message);
+            OnMessageWithMetadata?.Invoke(message, metadata);
+        }
+        internal void RaiseJoinPlayer(Player player, MessageMetadata metadata)
+        {
+            OnJoinPlayer?.Invoke(player);
+            OnJoinPlayerWithMetadata?.Invoke(player, metadata);
+        }
+        internal void RaiseLeavePlayer(Player player, MessageMetadata metadata)
+        {
+            OnLeavePlayer?.Invoke(player);
+            OnLeavePlayerWithMetadata?.Invoke(player, metadata);
+        }
+        internal void RaiseUpdateProfile(Player player, MessageMetadata metadata)
+        {
+            OnUpdateProfile?.Invoke(player);
+            OnUpdateProfileWithMetadata?.Invoke(player, metadata);
+        }
+        internal void RaiseError(Error error, MessageMetadata metadata)
+        {
+            OnError?.Invoke(error);
+            OnErrorWithMetadata?.Invoke(error, metadata);
+        }
+        internal void RaiseGeneralError(ErrorEventArgs error) => OnGeneralError?.Invoke(error);
+        internal void RaiseClose(CloseEventArgs error) => OnClose?.Invoke(error);
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-            void OnCloseHandler(EventArgs e)
+        /// <summary>
+        /// Raises the queued events, as a coroutine that never ends. Connect starts it when given
+        /// a MonoBehaviour; otherwise run it yourself on the main thread.
+        /// </summary>
+        public IEnumerator Dispatch()
+        {
+            while (true)
             {
-                tcs.TrySetResult();
-            }
-            void OnErrorHandler(EventArgs e)
-            {
-                tcs.TrySetResult();
-            }
-#else // UNITY_WEBGL
-            void OnCloseHandler(object sender, EventArgs e)
-            {
-                tcs.TrySetResult();
-            }
-            void OnErrorHandler(object sender, EventArgs e)
-            {
-                tcs.TrySetResult();
-            }
-#endif // UNITY_WEBGL && !UNITY_EDITOR
-
-            try
-            {
-                _webSocket.OnClose += OnCloseHandler;
-                _webSocket.OnError += OnErrorHandler;
-#if UNITY_WEBGL && !UNITY_EDITOR
-                _webSocket.Close();
-#else
-                _webSocket.CloseAsync();
-#endif
-
-                await using (UniTask.ReturnToMainThread())
+                RealtimeEvent next = null;
+                lock (_gate)
                 {
-                    await tcs.Task.Timeout(TimeSpan.FromSeconds(30));
+                    if (_eventQueue.Count > 0)
+                        next = _eventQueue.Dequeue();
                 }
-            }
-            finally
-            {
-                _webSocket.OnClose -= OnCloseHandler;
-                _webSocket.OnError -= OnErrorHandler;
-
-                if (_dispatchCoroutine != null)
-                {
-                    if (_monoBehaviour != null)
-                    {
-                        _monoBehaviour.StopCoroutine(_dispatchCoroutine);
-                    }
-                    _dispatchCoroutine = null;
-                }
-
-                _monoBehaviour = null;
+                if (next == null)
+                    yield return null;
+                else
+                    next.DeliverTo(this);
             }
         }
 
-#endif
-
-        public IEnumerator Connect(
-            MonoBehaviour monoBehaviour,
-            UnityAction<AsyncResult<bool>> callback
-        )
+        bool BeginConnect()
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
-            _webSocket.OnMessageBinary -= this.OnMessageHandler;
-#else
-            _webSocket.OnMessage -= this.OnMessageHandler;
-#endif
-            _webSocket.OnError -= this.OnErrorHandler;
-
-            var done = false;
-            var success = false;
-            EventArgs args = null;
-            Player[] players = null;
-#if UNITY_WEBGL && !UNITY_EDITOR
-            var messageList = new List<byte[]>();
-#else
-            var messageArgsList = new List<MessageEventArgs>();
-#endif
-
-#if UNITY_WEBGL && !UNITY_EDITOR
-            void OnOpenHandler()
+            lock (_gate)
             {
-                // 完了フラグ・成功フラグを立てる
-                DebugLog("OnOpenHandler");
-
-                done = true;
-                success = true;
+                if (State != RealtimeSessionState.Idle)
+                    return false;
+                State = RealtimeSessionState.Opening;
             }
-            void OnErrorHandler(EventArgs e)
+            _socket.Open();
+            return true;
+        }
+        // An attempt still unsettled here has timed out: fail it and close the socket.
+        bool EndConnect(MonoBehaviour monoBehaviour)
+        {
+            lock (_gate)
             {
-                DebugLog("OnErrorHandler: " + e);
-
-                // 失敗理由を記録
-                args = e;
-            }
-
-            void OnCloseHandler(EventArgs e)
-            {
-                DebugLog("OnCloseHandler: " + e);
-
-                // 完了フラグを立てる
-                done = true;
-            }
-#else // UNITY_WEBGL
-            void OnOpenHandler(object sender, EventArgs e)
-            {
-                // 完了フラグ・成功フラグを立てる
-                DebugLog("OnOpenHandler: " + e);
-
-                done = true;
-                success = true;
-            }
-            void OnErrorHandler(object sender, EventArgs e)
-            {
-                DebugLog("OnErrorHandler: " + e);
-
-                // 失敗理由を記録
-                args = e;
-            }
-            void OnCloseHandler(object sender, EventArgs e)
-            {
-                DebugLog("OnCloseHandler: " + e);
-
-                // 完了フラグを立てる
-                done = true;
-            }
-#endif // UNITY_WEBGL && !UNITY_EDITOR
-            try
-            {
-                _webSocket.OnOpen += OnOpenHandler;
-                _webSocket.OnError += OnErrorHandler;
-                _webSocket.OnClose += OnCloseHandler;
-#if UNITY_WEBGL && !UNITY_EDITOR
-                _webSocket.Connect();
-#else
-                _webSocket.ConnectAsync();
-#endif
-                for (var i=0; i<30 && !done; i++)
+                if (State == RealtimeSessionState.Opening || State == RealtimeSessionState.Greeting)
                 {
-#if DISABLE_COROUTINE
-                    yield return null;
-#else
-                    if (NotUseWaitForSeconds)
-                    {
-                        Thread.Sleep(1000);
-                        yield return null;
-                    }
-                    else
-                    {
-                        yield return new WaitForSeconds(1);
-                    }
-#endif
+                    Fail();
+                    _socket.Close();
                 }
-
-                if (!success)
+                if (State != RealtimeSessionState.Connected)
                 {
-                    // 失敗した場合は抜ける
-                    yield break;
-                }
-
-                success = false;
-                done = false;
-
-                DebugLog("Hello");
-
-                HelloResult helloResult = null;
-#if UNITY_WEBGL && !UNITY_EDITOR
-                void OnMessageHandler(byte[] data)
-                {
-                    // 認証処理の応答を処理するためのハンドラ
-                    {
-                        var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data);
-                        var message = _messenger.Parse(messageType, payload);
-                        if (message is Error error)
-                        {
-                            _eventQueue.Enqueue(
-                                new OnErrorEvent(
-                                    error,
-                                    sequenceNumber,
-                                    lifeTimeMilliSeconds
-                                )
-                            );
-                            done = true;
-                        }
-                        else if (message is HelloResult)
-                        {
-                            helloResult = message as HelloResult;
-                            done = true;
-                            success = true;
-                        }
-                        else
-                        {
-                            messageList.Add(data);
-                        }
-                    }
-                }
-#else // UNITY_WEBGL
-                void OnMessageHandler(object sender, EventArgs e)
-                {
-                    // 認証処理の応答を処理するためのハンドラ
-                    DebugLog("OnMessage: " + e.ToString());
-
-                    if (e is MessageEventArgs data)
-                    {
-                        var (messageType, payload, sequenceNumber, lifeTimeMilliSeconds) = _messenger.Unpack(data.RawData);
-                        var message = _messenger.Parse(messageType, payload);
-                        if (message is Error error)
-                        {
-                            _eventQueue.Enqueue(
-                                new OnErrorEvent(
-                                    error,
-                                    sequenceNumber,
-                                    lifeTimeMilliSeconds
-                                )
-                            );
-                            done = true;
-                        }
-                        else if (message is HelloResult)
-                        {
-                            helloResult = message as HelloResult;
-                            success = true;
-                            done = true;
-                        }
-                        else
-                        {
-                            messageArgsList.Add(data);
-                        }
-                    }
-                    else
-                    {
-                        args = e;
-                    }
-                }
-#endif // UNITY_WEBGL && !UNITY_EDITOR
-
-                try
-                {
-#if UNITY_WEBGL && !UNITY_EDITOR
-                    _webSocket.OnMessageBinary += OnMessageHandler;
-#else
-                    _webSocket.OnMessage += OnMessageHandler;
-#endif
-
-#if UNITY_WEBGL && !UNITY_EDITOR
-                    DebugLog("Send");
-
-                    _webSocket.Send(
-                        _messenger.Pack(
-                            new HelloRequest
-                            {
-                                AccessToken = _accessToken,
-                                MyProfile = Profile,
-                            }
-                        )
-                    );
-#else // UNITY_WEBGL
-                    DebugLog("SendAsync");
-
-                    _webSocket.SendAsync(
-                        _messenger.Pack(
-                            new HelloRequest {
-                                AccessToken = _accessToken,
-                                MyProfile = Profile,
-                            }
-                        ),
-                        completed =>
-                        {
-
-                        }
-                    );
-#endif // UNITY_WEBGL && !UNITY_EDITOR
-
-                    for (var i=0; i<30 && !done; i++)
-                    {
-#if DISABLE_COROUTINE
-                        yield return null;
-#else
-                        if (NotUseWaitForSeconds)
-                        {
-                            Thread.Sleep(1000);
-                            yield return null;
-                        }
-                        else
-                        {
-                            yield return new WaitForSeconds(1);
-                        }
-#endif
-                    }
-
-                    if (!success || helloResult == null)
-                    {
-                        // 失敗した場合は抜ける
-                        yield break;
-                    }
-
-                    MyConnectionId = helloResult.MyProfile.ConnectionId;
-                    UdpSecret = helloResult.Secret;
-                    players = helloResult.Players.ToArray();
-
-                    Connected = true;
-                }
-                finally
-                {
-#if UNITY_WEBGL && !UNITY_EDITOR
-                    _webSocket.OnMessageBinary -= OnMessageHandler;
-#else
-                    _webSocket.OnMessage -= OnMessageHandler;
-#endif
+                    ConnectionError = ConnectionError ?? new ConnectionException(EventArgs.Empty);
+                    return false;
                 }
             }
-            finally
-            {
-                _webSocket.OnOpen -= OnOpenHandler;
-                _webSocket.OnError -= OnErrorHandler;
-                _webSocket.OnClose -= OnCloseHandler;
-
-                callback.Invoke(new AsyncResult<bool>(
-                    success,
-                    success ? null : new ConnectionException(args)
-                ));
-
-                if (players != null)
-                {
-                    foreach (var player in players)
-                    {
-                        _eventQueue.Enqueue(
-                            new OnJoinPlayerEvent(
-                                player,
-                                0,
-                                0
-                            )
-                        );
-                    }
-                }
-
-#if UNITY_WEBGL && !UNITY_EDITOR
-                foreach (var data in messageList)
-                {
-                    this.OnMessageHandler(data);
-                }
-
-                _webSocket.OnMessageBinary += this.OnMessageHandler;
-#else
-                foreach (var e in messageArgsList)
-                {
-                    this.OnMessageHandler(null, e);
-                }
-
-                _webSocket.OnMessage += this.OnMessageHandler;
-#endif
-                _webSocket.OnError += this.OnErrorHandler;
-            }
-
-            _monoBehaviour = monoBehaviour;
             if (monoBehaviour != null)
             {
+                _monoBehaviour = monoBehaviour;
                 _dispatchCoroutine = monoBehaviour.StartCoroutine(Dispatch());
+            }
+            return true;
+        }
+        bool Settled => State != RealtimeSessionState.Opening && State != RealtimeSessionState.Greeting;
+        bool Ended => State == RealtimeSessionState.Closed || State == RealtimeSessionState.Failed;
+
+        // A send's outcome, set by the socket possibly on another thread (hence volatile).
+        sealed class Pending
+        {
+            volatile bool done, ok;
+            public bool Done => done;
+            public bool Ok => ok;
+            public void Set(bool result)
+            {
+                ok = result;
+                done = true;
+            }
+        }
+        Pending Transmit(IMessage message)
+        {
+            var pending = new Pending();
+            if (!Connected)
+                pending.Set(false);
+            else
+                _socket.Send(_messenger.Pack(message), pending.Set);
+            return pending;
+        }
+        bool BeginClose()
+        {
+            lock (_gate)
+            {
+                if (State != RealtimeSessionState.Connected)
+                    return false;
+                State = RealtimeSessionState.Closing;
+            }
+            _socket.Close();
+            return true;
+        }
+        void EndClose()
+        {
+            lock (_gate)
+            {
+                if (State == RealtimeSessionState.Closing)
+                    State = RealtimeSessionState.Closed; // no close frame in time
+            }
+            if (_dispatchCoroutine != null && _monoBehaviour != null)
+                _monoBehaviour.StopCoroutine(_dispatchCoroutine);
+            _dispatchCoroutine = null;
+            _monoBehaviour = null;
+        }
+
+        // Real time, not game time: a paused game (Time.timeScale = 0) must not stop the
+        // connection.
+        static IEnumerator WaitUntil(Func<bool> done)
+        {
+            for (var clock = Stopwatch.StartNew(); !done() && clock.Elapsed.TotalSeconds < TimeoutSeconds;)
+            {
+                if (NotUseWaitForSeconds)
+                    Thread.Sleep(10);
+                yield return null;
             }
         }
 
+        /// <summary>
+        /// Opens the connection and sends Hello, waiting at most 30 s. A session connects only
+        /// once; calling this again reports whether it is connected. On failure the result's
+        /// error is <see cref="ConnectionError"/>.
+        /// </summary>
+        /// <param name="monoBehaviour">
+        /// When given, runs <see cref="Dispatch"/> once connected; when null, the caller must.
+        /// </param>
+        public IEnumerator Connect(MonoBehaviour monoBehaviour, UnityAction<AsyncResult<bool>> callback)
+        {
+            if (BeginConnect())
+                yield return WaitUntil(() => Settled);
+            bool connected = EndConnect(monoBehaviour);
+            callback.Invoke(new AsyncResult<bool>(connected, connected ? null : ConnectionError));
+        }
+
+        /// <summary>
+        /// Sends a message to the room. The result is false, with a <see cref="SendException"/>,
+        /// when not connected or the socket did not take the frame within 30 s.
+        /// </summary>
         public IEnumerator Send(UnityAction<AsyncResult<bool>> callback, BinaryMessage message)
         {
-            if (!Connected)
-            {
-                callback.Invoke(new AsyncResult<bool>(
-                    false,
-                    new SendException(message)
-                ));
-                yield break;
-            }
-
-            var success = false;
-            var done = false;
-#if UNITY_WEBGL && !UNITY_EDITOR
-
-            try
-            {
-                _webSocket.Send(
-                    _messenger.Pack(
-                        message
-                    )
-                );
-                success = true;
-            }
-            catch (WebSocketException e)
-            {
-                success = false;
-            }
-
-            callback.Invoke(new AsyncResult<bool>(
-                success,
-                success ? null : new SendException(message)
-            ));
-
-#else // UNITY_WEBGL
-            _webSocket.SendAsync(
-                _messenger.Pack(
-                    message
-                ), completed =>
-            {
-                if (completed)
-                {
-                    success = true;
-                }
-                done = true;
-            });
-
-            for (var i=0; i<30 && !done; i++)
-            {
-#if DISABLE_COROUTINE
-                yield return null;
-#else
-                if (NotUseWaitForSeconds)
-                {
-                    Thread.Sleep(1000);
-                    yield return null;
-                }
-                else
-                {
-                    yield return new WaitForSeconds(1);
-                }
-#endif
-            }
-
-            callback.Invoke(new AsyncResult<bool>(
-                success,
-                success ? null : new SendException(message)
-            ));
-#endif // UNITY_WEBGL && !UNITY_EDITOR
+            var pending = Transmit(message);
+            yield return WaitUntil(() => pending.Done);
+            callback.Invoke(new AsyncResult<bool>(pending.Ok, pending.Ok ? null : new SendException(message)));
         }
 
+        /// <summary>
+        /// Sends a new profile and, once sent, stores it in <see cref="Profile"/>. Fails like Send,
+        /// with an <see cref="UpdateProfileException"/>.
+        /// </summary>
         public IEnumerator UpdateProfile(UnityAction<AsyncResult<bool>> callback, ByteString profile)
         {
-            if (!Connected)
-            {
-                callback.Invoke(new AsyncResult<bool>(
-                    false,
-                    new UpdateProfileException(profile)
-                ));
-                yield break;
-            }
-
-            var success = false;
-            var done = false;
-#if UNITY_WEBGL && !UNITY_EDITOR
-            var data = _messenger.Pack(
-                new UpdateProfileRequest
-                {
-                    MyProfile = profile
-                }
-            );
-            _webSocket.Send(data);
-            success = true;
-            Profile = profile;
-#else // UNITY_WEBGL
-            _webSocket.SendAsync(
-                _messenger.Pack(
-                    new UpdateProfileRequest
-                    {
-                        MyProfile = profile
-                    }
-                ), completed =>
-                {
-                    if (completed)
-                    {
-                        success = true;
-                    }
-                    done = true;
-                });
-
-            for (var i=0; i<30 && !done; i++)
-            {
-#if DISABLE_COROUTINE
-                yield return null;
-#else
-                if (NotUseWaitForSeconds)
-                {
-                    yield return null;
-                }
-                else
-                {
-                    yield return new WaitForSeconds(1);
-                }
-#endif
-            }
-
-            if (success)
-            {
+            var pending = Transmit(new UpdateProfileRequest { MyProfile = profile });
+            yield return WaitUntil(() => pending.Done);
+            if (pending.Ok)
                 Profile = profile;
-            }
-#endif // UNITY_WEBGL && !UNITY_EDITOR
-            callback.Invoke(new AsyncResult<bool>(
-                success,
-                success ? null : new UpdateProfileException(profile)
-            ));
+            callback.Invoke(new AsyncResult<bool>(pending.Ok, pending.Ok ? null : new UpdateProfileException(profile)));
         }
 
+        /// <summary>
+        /// Closes a connected session, waiting at most 30 s for the socket to close, and stops
+        /// the Dispatch coroutine that Connect started.
+        /// </summary>
         public IEnumerator Close()
         {
-            if (!Connected) yield break;
-
-            var done = false;
-#if UNITY_WEBGL && !UNITY_EDITOR
-            void OnCloseHandler(EventArgs e)
-            {
-                done = true;
-            }
-            void OnErrorHandler(EventArgs e)
-            {
-                done = true;
-            }
-#else // UNITY_WEBGL
-            void OnCloseHandler(object sender, EventArgs e)
-            {
-                done = true;
-            }
-            void OnErrorHandler(object sender, EventArgs e)
-            {
-                done = true;
-            }
-#endif // UNITY_WEBGL && !UNITY_EDITOR
-            try
-            {
-                _webSocket.OnClose += OnCloseHandler;
-                _webSocket.OnError += OnErrorHandler;
-#if UNITY_WEBGL && !UNITY_EDITOR
-                _webSocket.Close();
-#else
-                _webSocket.CloseAsync();
-#endif
-
-                for (var i=0; i<30 && !done; i++)
-                {
-#if DISABLE_COROUTINE
-                    yield return null;
-#else
-                    if (NotUseWaitForSeconds)
-                    {
-                        yield return null;
-                    }
-                    else
-                    {
-                        yield return new WaitForSeconds(1);
-                    }
-#endif
-                }
-            }
-            finally
-            {
-                _webSocket.OnClose -= OnCloseHandler;
-                _webSocket.OnError -= OnErrorHandler;
-
-                if (_dispatchCoroutine != null)
-                {
-                    if (_monoBehaviour != null)
-                    {
-                        _monoBehaviour.StopCoroutine(_dispatchCoroutine);
-                    }
-                    _dispatchCoroutine = null;
-                }
-
-                _monoBehaviour = null;
-            }
-
-            yield break;
+            if (BeginClose())
+                yield return WaitUntil(() => Ended);
+            EndClose();
         }
 
+#if GS2_ENABLE_UNITASK
+        static async UniTask WaitUntilAsync(Func<bool> done)
+        {
+            for (var clock = Stopwatch.StartNew(); !done() && clock.Elapsed.TotalSeconds < TimeoutSeconds;)
+                await UniTask.Yield();
+        }
+
+        /// <summary>As <see cref="Connect"/>; throws <see cref="ConnectionError"/> on failure.</summary>
+        public async UniTask ConnectAsync(MonoBehaviour monoBehaviour)
+        {
+            if (BeginConnect())
+                await WaitUntilAsync(() => Settled);
+            if (!EndConnect(monoBehaviour))
+                throw ConnectionError;
+        }
+
+        /// <summary>As <see cref="Send"/>; throws <see cref="SendException"/> on failure.</summary>
+        public async UniTask SendAsync(BinaryMessage message)
+        {
+            var pending = Transmit(message);
+            await WaitUntilAsync(() => pending.Done);
+            if (!pending.Ok)
+                throw new SendException(message);
+        }
+
+        /// <summary>
+        /// As <see cref="UpdateProfile"/>; throws <see cref="UpdateProfileException"/> on failure.
+        /// </summary>
+        public async UniTask UpdateProfileAsync(ByteString profile)
+        {
+            var pending = Transmit(new UpdateProfileRequest { MyProfile = profile });
+            await WaitUntilAsync(() => pending.Done);
+            if (!pending.Ok)
+                throw new UpdateProfileException(profile);
+            Profile = profile;
+        }
+
+        /// <summary>As <see cref="Close"/>.</summary>
+        public async UniTask CloseAsync()
+        {
+            if (BeginClose())
+                await WaitUntilAsync(() => Ended);
+            EndClose();
+        }
+#endif
+
+        /// <summary>Disposes the underlying socket.</summary>
         public void Dispose()
         {
-            ((IDisposable)_webSocket).Dispose();
+            _socket.Dispose();
         }
     }
 }

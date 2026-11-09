@@ -5,6 +5,9 @@ using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Realtime.Exception
 {
+    /// <summary>
+    /// RealtimeSession.Send failed: not connected, or the socket did not take the message in time.
+    /// </summary>
 	[Preserve]
     public class SendException : Gs2Exception
     {

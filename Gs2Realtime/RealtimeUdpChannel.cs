@@ -9,15 +9,21 @@ using Gs2.Unity.Gs2Realtime.Util;
 
 namespace Gs2.Unity.Gs2Realtime
 {
-    // UDP side channel of a synchronized room. The WebSocket session authenticates
-    // (HelloResult.Secret); this channel then carries only the room's periodic state
-    // updates, which may be lost or reordered. WebGL cannot use UDP and keeps WebSocket.
-    //
-    // Call Poll every frame from the main thread: it sends registration/keepalives and
-    // hands received payloads to the callback. Use TrySend (for example as the sync
-    // client's unreliable sender) only while Active.
+    /// <summary>
+    /// UDP side channel of a synchronized room, for the room's periodic state updates, which may
+    /// be lost or reordered. Create it after the RealtimeSession connects (it authenticates with
+    /// the session's UdpSecret). Not available on WebGL, which keeps everything on WebSocket.
+    /// </summary>
+    /// <remarks>
+    /// Call <see cref="Poll"/> every frame from the main thread. Use <see cref="TrySend"/> (for
+    /// example as the sync client's unreliable sender) only while <see cref="Active"/>.
+    /// </remarks>
     public sealed class RealtimeUdpChannel : IDisposable
     {
+        /// <summary>
+        /// Timings in seconds: keepalive interval once acknowledged, registration retry interval
+        /// before that, and how long after the last datagram the channel counts as Active.
+        /// </summary>
         // The room drops a registration after 15 s of silence; stay well inside it.
         public const double KeepAliveSeconds = 2, RetrySeconds = .5, ActiveSeconds = 10;
         readonly UdpClient udp;
@@ -28,6 +34,9 @@ namespace Gs2.Unity.Gs2Realtime
         bool acknowledged, hasSequence;
         double lastSent = double.NegativeInfinity, lastHeard = double.NegativeInfinity;
 
+        /// <summary>
+        /// A channel to the session's room. Throws ArgumentException when the room has no UDP.
+        /// </summary>
         public RealtimeUdpChannel(RealtimeSession session)
             : this(session.IpAddress, session.Port, session.MyConnectionId, session.UdpSecret, session.EncryptionKey)
         {
@@ -43,8 +52,14 @@ namespace Gs2.Unity.Gs2Realtime
             udp.Connect(host, port);
         }
         double Now => clock.Elapsed.TotalSeconds;
-        // The room answered recently: datagrams in both directions get through.
+        /// <summary>
+        /// True when the room answered within ActiveSeconds, so datagrams get through both ways.
+        /// </summary>
         public bool Active => acknowledged && Now - lastHeard < ActiveSeconds;
+        /// <summary>
+        /// Sends the first count bytes of data as one datagram. Returns false, without sending,
+        /// when not Active or the socket refused it.
+        /// </summary>
         public bool TrySend(byte[] data, int count)
         {
             if (!Active)
@@ -67,6 +82,11 @@ namespace Gs2.Unity.Gs2Realtime
             udp.Send(bytes, bytes.Length);
             lastSent = Now;
         }
+        /// <summary>
+        /// Sends registration or keepalive datagrams when due and hands each newly received state
+        /// update to received (payload, lifetime in milliseconds). Datagrams older than the
+        /// latest one received are dropped. Call every frame on the main thread.
+        /// </summary>
         public void Poll(Action<byte[], uint> received)
         {
             double now = Now;
@@ -102,7 +122,8 @@ namespace Gs2.Unity.Gs2Realtime
             }
             catch (SocketException)
             {
-                // ICMP unreachable or similar: the channel stays inactive and WebSocket carries everything.
+                // ICMP unreachable or similar: the channel stays inactive and WebSocket carries
+                // everything.
             }
         }
         public void Dispose()

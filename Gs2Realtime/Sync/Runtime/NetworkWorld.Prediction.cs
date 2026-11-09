@@ -14,41 +14,94 @@ namespace Gs2.Realtime.Sync
     // reported as PredictionError for presentation to fade out.
     public sealed partial class NetworkWorld
     {
-        // Ticks of inputs kept for re-simulation; a larger gap shows the room's state.
+        /// <summary>
+        /// Ticks of inputs kept for re-simulation. When InputTick is further than this
+        /// ahead of ConfirmedTick, predicted objects show the room's state instead.
+        /// </summary>
         public const int PredictionWindow = 64;
         sealed class InputFrame
         {
             public uint Tick, Mask;
             public readonly int[] Values = new int[32];
+            public int Value(int slot) => FieldMask.Contains(Mask, slot) ? Values[slot] : 0;
         }
         readonly Dictionary<uint, Action<int, int>> predictions = new Dictionary<uint, Action<int, int>>();
+        // Prefabs in registration order: each tick runs one prefab's prediction over all
+        // its objects before the next prefab's, as the rules' Tick runs the [Predict]
+        // methods (the generated Register lists them in declaration order).
+        readonly List<uint> predictionOrder = new List<uint>();
         readonly InputFrame[] inputFrames = new InputFrame[PredictionWindow];
-        // Room state of simulated objects at confirmedTick, copied when its clock arrived:
-        // later updates belong to later ticks.
-        readonly Dictionary<uint, int[]> confirmed = new Dictionary<uint, int[]>();
+        // Room state of simulated objects at confirmedTick: the values of state versions up
+        // to the clock's (confirmedState). Updates and clocks travel over UDP and WebSocket,
+        // so a value of that state may arrive after the clock and a later one before it.
+        readonly Dictionary<uint, ConfirmedFields> confirmed = new Dictionary<uint, ConfirmedFields>();
+        readonly Stack<ConfirmedFields> confirmedPool = new Stack<ConfirmedFields>();
+        // One object's fields in the confirmed state: each value, and the state version it
+        // is known as of when it has one (a spawn's initial value has none). A late update
+        // older than that version changes nothing.
+        sealed class ConfirmedFields
+        {
+            public readonly int[] Values = new int[32];
+            readonly uint[] versions = new uint[32];
+            uint versionedMask;
+            public bool IsVersioned(int field) => FieldMask.Contains(versionedMask, field);
+            public uint Version(int field) => versions[field];
+            // The value is known as of a version newer than state: an update of state is
+            // older than what the confirmed state holds.
+            public bool KnowsNewerThan(int field, uint state) => IsVersioned(field) && Serial.Before(state, versions[field]);
+            public void Set(int field, int value, uint version, bool versioned)
+            {
+                Values[field] = value;
+                versions[field] = version;
+                if (versioned)
+                    versionedMask |= 1u << field;
+                else
+                    versionedMask &= ~(1u << field);
+            }
+        }
+        uint confirmedState;
         readonly Dictionary<uint, int[]> scratch = new Dictionary<uint, int[]>();
         readonly Stack<int[]> valuePool = new Stack<int[]>();
         readonly Dictionary<int, List<uint>> prefabObjects = new Dictionary<int, List<uint>>();
         readonly List<NetworkObject> predictedObjects = new List<NetworkObject>();
         readonly List<uint> idBuffer = new List<uint>();
         uint confirmedTick, predictedTick, predictingTick;
-        bool hasConfirmed, predictionDirty, predictionFailed;
+        // Unconfirmed: no clock yet (nothing to predict from). Predicting: from the latest
+        // confirmed state. Failed: a [Predict] method threw; the room's state is shown until
+        // the next confirmed state or registration retries.
+        enum PredictionPhase : byte { Unconfirmed, Predicting, Failed }
+        PredictionPhase phase;
+        // The prediction is recomputed on the next frame (inputs, state or registrations changed).
+        bool predictionDirty;
 
-        // Registers the prediction of a prefab's simulated objects: step(objectId, tick)
-        // as generated from the [Predict] method. Generated Register methods call this.
+        /// <summary>
+        /// Registers the prediction of a prefab's simulated objects: step(objectId, tick) as
+        /// generated from the [Predict] method. Generated Register methods call this; a
+        /// prediction that failed is retried after a registration.
+        /// </summary>
         public void RegisterPrediction(uint prefab, Action<int, int> step)
         {
-            predictions[prefab] = step ?? throw new ArgumentNullException(nameof(step));
+            if (step == null)
+                throw new ArgumentNullException(nameof(step));
+            if (!predictions.ContainsKey(prefab))
+                predictionOrder.Add(prefab);
+            predictions[prefab] = step;
             predictionDirty = true;
-            predictionFailed = false;
+            if (phase == PredictionPhase.Failed)
+                phase = PredictionPhase.Predicting;
         }
-        // Stops predicting a prefab's objects; they are shown from the room's state again.
+        /// <summary>
+        /// Stops predicting a prefab's objects; they are shown from the room's state again.
+        /// </summary>
         public void UnregisterPrediction(uint prefab)
         {
             predictions.Remove(prefab);
+            predictionOrder.Remove(prefab);
             predictionDirty = true;
         }
-        // The tick the room state used for prediction belongs to (the latest clock).
+        /// <summary>
+        /// The tick of the room state that prediction starts from (the latest clock).
+        /// </summary>
         public uint ConfirmedTick => confirmedTick;
 
         void ResetPrediction()
@@ -59,17 +112,18 @@ namespace Gs2.Realtime.Sync
             foreach (var spawn in localSpawns)
                 spawnPool.Push(spawn);
             localSpawns.Clear();
-            spawnsByKey.Clear();
+            unmatchedSpawns.Clear();
             predictedRemovals.Clear();
             corrections.Clear();
             foreach (var values in scratch.Values)
                 valuePool.Push(values);
             scratch.Clear();
-            foreach (var values in confirmed.Values)
-                valuePool.Push(values);
+            foreach (var fields in confirmed.Values)
+                confirmedPool.Push(fields);
             confirmed.Clear();
+            confirmedState = 0;
             Array.Clear(inputFrames, 0, inputFrames.Length);
-            hasConfirmed = predictionFailed = false;
+            phase = PredictionPhase.Unconfirmed;
             ResetSpawns();
             confirmedTick = predictedTick = 0;
             predictionDirty = true;
@@ -82,8 +136,8 @@ namespace Gs2.Realtime.Sync
         {
             var frame = inputFrames[tick % PredictionWindow] ??= new InputFrame();
             frame.Tick = tick;
-            frame.Mask = inputMask;
-            Array.Copy(inputValues, frame.Values, 32);
+            frame.Mask = input.Mask;
+            input.CopyTo(frame.Values);
             predictionDirty = true;
         }
         InputFrame InputAt(uint tick)
@@ -97,32 +151,84 @@ namespace Gs2.Realtime.Sync
             }
             return null;
         }
-        void Confirm(uint tick)
+        void Confirm(uint tick, uint state)
         {
-            if (hasConfirmed && unchecked((int)(tick - confirmedTick)) <= 0)
+            if (phase != PredictionPhase.Unconfirmed && !Serial.After(tick, confirmedTick))
                 return; // an older clock overtaken by a newer one
-            hasConfirmed = true;
+            phase = PredictionPhase.Predicting; // also retries a failed prediction
             confirmedTick = tick;
+            confirmedState = state;
             predictionDirty = true;
-            predictionFailed = false; // retry with the room's new state
             idBuffer.Clear();
             foreach (var id in confirmed.Keys)
                 if (Client.Find(id) == null)
                     idBuffer.Add(id);
             foreach (var id in idBuffer)
             {
-                valuePool.Push(confirmed[id]);
+                confirmedPool.Push(confirmed[id]);
                 confirmed.Remove(id);
             }
             foreach (var o in Client.Objects)
             {
-                if (o.Mode != ObjectMode.Simulated)
+                if (!o.Kind.Simulated)
                     continue;
-                if (!confirmed.TryGetValue(o.Id, out var values))
-                    confirmed.Add(o.Id, values = Rent());
-                Array.Copy(o.Values, values, 32);
+                bool known = confirmed.TryGetValue(o.Id, out var fields);
+                if (!known)
+                    confirmed.Add(o.Id, fields = confirmedPool.Count > 0 ? confirmedPool.Pop() : new ConfirmedFields());
+                for (int f = 0; f < 32; f++)
+                {
+                    bool confirmedVersioned = known && fields.IsVersioned(f);
+                    if (o.IsNewer(f, state))
+                    {
+                        // The value overtook the clock: it belongs to a later tick. Use the
+                        // value it replaced, unless the earlier confirmed value is newer.
+                        // A versioned confirmed value is newer than a spawn's initial one.
+                        bool priorUsable = o.TryPriorAsOf(f, state, out int prior, out uint priorVersion, out bool priorVersioned) &&
+                            (!confirmedVersioned || priorVersioned && NotOlder(priorVersion, fields.Version(f)));
+                        if (priorUsable)
+                        {
+                            fields.Set(f, prior, priorVersion, priorVersioned);
+                            continue;
+                        }
+                        if (known)
+                            continue; // keep the earlier confirmed value
+                    }
+                    o.Current(f, out int current, out _);
+                    bool versioned = o.KnownAsOf(f, state, out uint version);
+                    fields.Set(f, current, version, versioned);
+                }
             }
         }
+        // A value of the confirmed state that arrived after its clock (sent over WebSocket
+        // while the clock took UDP, or a reliable resend): complete the confirmed state
+        // and predict again from it.
+        void OnUpdateReceived(NetworkObject o, Record r, uint state)
+        {
+            bool partOfConfirmedState = phase != PredictionPhase.Unconfirmed && !Serial.After(state, confirmedState);
+            if (!partOfConfirmedState || !confirmed.TryGetValue(o.Id, out var fields))
+                return;
+            for (int f = 0; f < 32; f++)
+            {
+                if (!r.Has(f) || fields.KnowsNewerThan(f, state))
+                    continue;
+                bool changed = fields.Values[f] != r.Values[f];
+                fields.Set(f, r.Values[f], state, true); // known as of this update now
+                if (changed)
+                    predictionDirty = true;
+            }
+        }
+        readonly int[] liveValues = new int[32];
+        // The object's confirmed values, or a copy of its latest values outside the
+        // confirmed state (valid until the next call).
+        int[] ConfirmedValues(NetworkObject o)
+        {
+            if (confirmed.TryGetValue(o.Id, out var fields))
+                return fields.Values;
+            o.CopyValuesTo(liveValues);
+            return liveValues;
+        }
+        // State versions are serial numbers: a is not older than b.
+        static bool NotOlder(uint a, uint b) => !Serial.Before(a, b);
         int[] Rent()
         {
             return valuePool.Count > 0 ? valuePool.Pop() : new int[32];
@@ -131,52 +237,143 @@ namespace Gs2.Realtime.Sync
         // ---- Predicted spawns ----
         // An object that a prediction spawned with SpawnOwned. Local IDs are negative
         // (-1 for the first spawn of a run); keys match the room's Record.Request.
-        sealed class LocalSpawn
+        sealed class LocalSpawn : PredictedObject
         {
-            public uint Key, Prefab, SpawnTick;
+            public uint Key, Prefab, SpawnTick, Owner;
             public bool Mine, Removed;
             public readonly int[] Values = new int[32], Previous = new int[32];
+            // This client's spawn, still made by the prediction: the room's object for it
+            // (same prefab and key) takes over its instance.
+            public bool AwaitsRoom => Mine && !Removed && Key != 0;
+            public override uint PrefabId => Prefab;
+            public override uint Holder => Owner;
+            public override int Get(int field) => Values[CheckField(field)];
+            public override void Set(int field, int value) => Values[CheckField(field)] = value;
+            public override bool ReceivesMyInput => Mine;
+            public override uint SpawnOwner(uint me) => Mine ? me : 0;
+            public override void Despawn() => Removed = true;
+            static int CheckField(int field)
+            {
+                if (field < 0 || field >= 32)
+                    throw new ArgumentOutOfRangeException(nameof(field));
+                return field;
+            }
         }
-        // The instance shown for a predicted spawn until the room's object takes it over.
-        sealed class SpawnInstance
+        // What a [Predict] method's Room calls act on: an object of the room, or one the
+        // prediction itself spawned (SpawnOwned). Each answers in its own way, so the
+        // calls need not tell them apart.
+        abstract class PredictedObject
+        {
+            public abstract uint PrefabId { get; }
+            // Its owner or lease holder (0: none), as Room.OwnerOf reads it.
+            public abstract uint Holder { get; }
+            public abstract int Get(int field);
+            public abstract void Set(int field, int value);
+            // Its owner's input is this client's (the only input the prediction has).
+            public abstract bool ReceivesMyInput { get; }
+            // The member a SpawnOwned on its behalf belongs to (me: this client).
+            public abstract uint SpawnOwner(uint me);
+            public abstract void Despawn();
+        }
+        // A room object in the prediction: reads the confirmed state (or the room's latest
+        // values), writes a working copy. One view is reused: valid until the next Resolve.
+        sealed class RoomObjectView : PredictedObject
+        {
+            readonly NetworkWorld world;
+            NetworkObject o;
+            public RoomObjectView(NetworkWorld world) => this.world = world;
+            public RoomObjectView Of(NetworkObject value)
+            {
+                o = value;
+                return this;
+            }
+            public override uint PrefabId => o.Prefab;
+            public override uint Holder => o.Owner;
+            public override int Get(int field) => world.Values(o.Id)[CheckField(field)];
+            public override void Set(int field, int value) => world.WorkingValues(o.Id)[CheckField(field)] = value;
+            public override bool ReceivesMyInput => o.Kind.Simulated ? o.IsMine : throw new InvalidOperationException("Input requires a simulated object");
+            public override uint SpawnOwner(uint me) => o.Kind.Owned && o.HasHolder ? o.Owner : throw new InvalidOperationException("SpawnOwned requires an object owned by a member");
+            public override void Despawn()
+            {
+                if (o.Kind.HolderDespawns)
+                    throw new InvalidOperationException("Player objects cannot be despawned by the rules");
+                world.predictedRemovals.Add(o.Id);
+            }
+            int CheckField(int field)
+            {
+                if (!o.HasField(field))
+                    throw new ArgumentOutOfRangeException(nameof(field), "Field " + field + " is not synchronized for prefab " + o.Prefab);
+                return field;
+            }
+        }
+        RoomObjectView roomView;
+        // The object an ID names in the prediction: negative IDs are its own spawns.
+        PredictedObject Resolve(int objectId) =>
+            objectId < 0 ? (PredictedObject)Local(objectId) : (roomView ??= new RoomObjectView(this)).Of(Known(objectId));
+        // The instance shown for a predicted spawn, from the prediction that makes it until
+        // the room's object takes it over (Spawn), the prediction stops making it while
+        // its tick is unconfirmed (a misprediction), or the room's spawn does not come in
+        // time. Identified by (prefab, key): keys count spawns per owner and prefab, so
+        // two prefabs spawned in one tick share a key (SpawnSlot).
+        enum ShownState : byte
+        {
+            Predicted, // made by the latest prediction: moves with it
+            Waiting,   // no longer predicted (its tick is confirmed): frozen, waits for the room
+        }
+        sealed class ShownSpawn
         {
             public NetworkEntity Entity;
             public NetworkTransform[] Motions;
             public uint SpawnTick, Prefab;
-            public bool Seen;
+            public ShownState State;
             public readonly int[] Values = new int[32], Previous = new int[32];
         }
         readonly List<LocalSpawn> localSpawns = new List<LocalSpawn>();
         readonly Stack<LocalSpawn> spawnPool = new Stack<LocalSpawn>();
         readonly Dictionary<ulong, uint> spawnCounts = new Dictionary<ulong, uint>();
         readonly HashSet<uint> predictedRemovals = new HashSet<uint>();
-        readonly Dictionary<uint, SpawnInstance> spawnInstances = new Dictionary<uint, SpawnInstance>();
-        readonly Dictionary<uint, LocalSpawn> spawnsByKey = new Dictionary<uint, LocalSpawn>();
-        readonly List<uint> keyBuffer = new List<uint>();
+        readonly Dictionary<ulong, ShownSpawn> shownSpawns = new Dictionary<ulong, ShownSpawn>();
+        // The latest prediction's own spawns that no room object has taken over yet.
+        readonly Dictionary<ulong, LocalSpawn> unmatchedSpawns = new Dictionary<ulong, LocalSpawn>();
+        readonly List<ulong> slotBuffer = new List<ulong>();
         // Renderers this world disabled on objects the prediction despawned.
         readonly Dictionary<NetworkObject, List<Renderer>> hidden = new Dictionary<NetworkObject, List<Renderer>>();
         readonly List<NetworkObject> objectBuffer = new List<NetworkObject>();
         readonly List<NetworkObject> corrections = new List<NetworkObject>();
         InputFrame currentFrame;
         bool prefabListsDirty;
-        // Raised when a prediction shows a spawned object before the room confirms it.
-        // The instance is a placeholder (IsMine) that the room's object takes over; it
-        // is destroyed if the room does not spawn it.
+        /// <summary>
+        /// Raised when a prediction shows a spawned object before the room confirms it.
+        /// The instance is a placeholder (IsMine) that the room's object takes over; it
+        /// is destroyed if the room does not spawn it.
+        /// </summary>
         public event Action<NetworkEntity> PredictedSpawned;
 
+        static ulong SpawnSlot(uint prefab, uint key)
+        {
+            return (ulong)prefab << 32 | key;
+        }
+        // Hands a shown predicted spawn's instance to the room's object (null when none is
+        // shown, or the game destroyed it).
+        NetworkEntity TakeShownSpawn(uint prefab, uint key)
+        {
+            ulong slot = SpawnSlot(prefab, key);
+            if (!shownSpawns.TryGetValue(slot, out var shown))
+                return null;
+            shownSpawns.Remove(slot);
+            return shown.Entity;
+        }
+        const uint PredictedSpawnBit = 1u << 31;
         static uint SpawnKey(uint tick, uint n)
         {
-            return n >= 32 ? 0 : 1u << 31 | (tick & ((1u << 26) - 1)) << 5 | n;
+            return n >= 32 ? 0 : PredictedSpawnBit | (tick & ((1u << 26) - 1)) << 5 | n;
         }
         void ResetSpawns()
         {
-            foreach (var pair in spawnInstances)
-            {
-                placeholders.Remove(pair.Key);
-                if (pair.Value.Entity != null && pair.Value.Entity.Object == null)
-                    Discard(pair.Value.Entity.gameObject);
-            }
-            spawnInstances.Clear();
+            foreach (var shown in shownSpawns.Values)
+                if (shown.Entity != null)
+                    Discard(shown.Entity.gameObject);
+            shownSpawns.Clear();
             foreach (var pair in hidden)
                 foreach (var r in pair.Value)
                     if (r != null)
@@ -204,33 +401,35 @@ namespace Gs2.Realtime.Sync
                     Debug.LogException(e, this);
                 }
             }
-            foreach (var instance in spawnInstances.Values)
+            foreach (var shown in shownSpawns.Values)
             {
-                if (instance.Entity == null || instance.Entity.Object != null)
+                if (shown.Entity == null)
                     continue;
-                // An instance no longer predicted waits, frozen, for the room's object.
-                float shown = instance.Seen ? alpha : 1;
-                foreach (var motion in instance.Motions)
+                float progress = shown.State == ShownState.Predicted ? alpha : 1;
+                foreach (var motion in shown.Motions)
                     if (motion != null)
-                        motion.ShowUnbound(instance.Previous, instance.Values, shown);
+                        motion.ShowUnbound(shown.Previous, shown.Values, progress);
             }
         }
         void Predict()
         {
             // IsPredicted stays set on objects predicted before: Correct compares with them.
-            bool active = predictions.Count != 0 && clockStarted && hasConfirmed;
+            bool active = predictions.Count != 0 && clockStarted && phase != PredictionPhase.Unconfirmed;
             foreach (var o in predictedObjects)
-                if (!active || !Predictable(o) && !Unconfirmed(o))
+            {
+                bool stillPredicted = active && (Predictable(o) || Unconfirmed(o));
+                if (!stillPredicted)
                     o.IsPredicted = false;
+            }
             predictedObjects.Clear();
-            spawnsByKey.Clear();
+            unmatchedSpawns.Clear();
             foreach (var spawn in localSpawns)
                 spawnPool.Push(spawn);
             localSpawns.Clear();
             predictedRemovals.Clear();
             if (!active)
             {
-                UpdateSpawnInstances();
+                UpdateShownSpawns();
                 UpdateHidden();
                 return;
             }
@@ -238,21 +437,23 @@ namespace Gs2.Realtime.Sync
                 if (Predictable(o))
                     predictedObjects.Add(o);
             predictedObjects.Sort((a, b) => a.Id.CompareTo(b.Id));
-            int span = unchecked((int)(InputTick - confirmedTick));
+            int span = Serial.Diff(InputTick, confirmedTick);
             uint oldTick = predictedTick;
-            bool compare = predictedTick != 0 && unchecked((int)(oldTick - confirmedTick)) > 0 && unchecked((int)(InputTick - oldTick)) >= 0;
-            if (span <= 0 || span > PredictionWindow || predictionFailed)
+            // The earlier prediction's tick is re-predicted in this run (after the confirmed
+            // tick, not after InputTick): compare the two for corrections.
+            bool repredictsOldTick = predictedTick != 0 && Serial.After(oldTick, confirmedTick) && !Serial.After(oldTick, InputTick);
+            bool nothingToPredict = span <= 0 || span > PredictionWindow || phase == PredictionPhase.Failed;
+            if (nothingToPredict)
             {
-                // Nothing to predict (or too far ahead): show the room's state.
+                // Show the room's state as the prediction.
                 foreach (var o in predictedObjects)
                 {
-                    var values = confirmed.TryGetValue(o.Id, out var v) ? v : o.Values;
-                    Array.Copy(values, o.PredictedValues, 32);
-                    Array.Copy(values, o.PreviousPredictedValues, 32);
+                    var values = ConfirmedValues(o);
+                    o.SetPrediction(values, values);
                     o.IsPredicted = true;
                 }
                 predictedTick = 0;
-                UpdateSpawnInstances();
+                UpdateShownSpawns();
                 UpdateHidden();
                 return;
             }
@@ -264,28 +465,22 @@ namespace Gs2.Realtime.Sync
             PredictionRoom.Current = this;
             try
             {
-                for (uint tick = confirmedTick + 1; unchecked((int)(InputTick - tick)) >= 0; tick++)
+                for (uint tick = confirmedTick + 1; !Serial.After(tick, InputTick); tick++)
                 {
                     if (tick == InputTick)
                     {
                         foreach (var o in predictedObjects)
                             if (!predictedRemovals.Contains(o.Id))
-                                Array.Copy(Values(o.Id), o.PreviousPredictedValues, 32);
+                                o.SetPreviousPredicted(Values(o.Id));
                         foreach (var spawn in localSpawns)
                             Array.Copy(spawn.Values, spawn.Previous, 32);
                     }
                     predictingTick = tick;
                     currentFrame = InputAt(tick);
                     spawnCounts.Clear();
-                    // The room's objects first, then predicted spawns (which have higher
-                    // IDs in the room), including the ones spawned in this tick.
-                    foreach (var o in predictedObjects)
-                        if (!predictedRemovals.Contains(o.Id))
-                            predictions[o.Prefab](unchecked((int)o.Id), unchecked((int)tick));
-                    for (int i = 0; i < localSpawns.Count; i++)
-                        if (!localSpawns[i].Removed && predictions.TryGetValue(localSpawns[i].Prefab, out var step))
-                            step(-(i + 1), unchecked((int)tick));
-                    if (compare && tick == oldTick)
+                    foreach (var prefab in predictionOrder)
+                        PredictPrefab(prefab, tick);
+                    if (repredictsOldTick && tick == oldTick)
                         foreach (var o in predictedObjects)
                             if (!predictedRemovals.Contains(o.Id))
                                 Correct(o, Values(o.Id));
@@ -295,7 +490,7 @@ namespace Gs2.Realtime.Sync
             {
                 // The same method failing in the room would fail the room's Tick; stop
                 // predicting rather than show a state the room cannot reach.
-                predictionFailed = true;
+                phase = PredictionPhase.Failed;
                 Debug.LogException(e, this);
                 foreach (var o in predictedObjects)
                     o.IsPredicted = false;
@@ -305,7 +500,7 @@ namespace Gs2.Realtime.Sync
                 localSpawns.Clear();
                 corrections.Clear();
                 predictedRemovals.Clear();
-                UpdateSpawnInstances();
+                UpdateShownSpawns();
                 UpdateHidden();
                 predictionDirty = true; // show the room's state from the next frame
                 return;
@@ -319,7 +514,7 @@ namespace Gs2.Realtime.Sync
             {
                 try
                 {
-                    o.NotifyCorrected(o.PredictionErrorMask);
+                    o.NotifyCorrected();
                 }
                 catch (Exception e)
                 {
@@ -330,57 +525,70 @@ namespace Gs2.Realtime.Sync
             foreach (var o in predictedObjects)
             {
                 if (!predictedRemovals.Contains(o.Id))
-                    Array.Copy(Values(o.Id), o.PredictedValues, 32);
+                    o.SetPredicted(Values(o.Id));
                 o.IsPredicted = true;
             }
             predictedTick = InputTick;
             // The room's objects that a prediction spawned, before their spawn tick is
             // confirmed, show that prediction (they took over its instance).
-            spawnsByKey.Clear();
+            unmatchedSpawns.Clear();
             foreach (var spawn in localSpawns)
-                if (spawn.Mine && !spawn.Removed && spawn.Key != 0)
-                    spawnsByKey[spawn.Key] = spawn;
+                if (spawn.AwaitsRoom)
+                    unmatchedSpawns[SpawnSlot(spawn.Prefab, spawn.Key)] = spawn;
             foreach (var o in Client.Objects)
             {
-                if (!Unconfirmed(o) || !spawnsByKey.TryGetValue(o.Request, out var spawn) || spawn.Prefab != o.Prefab)
+                if (!Unconfirmed(o) || !unmatchedSpawns.TryGetValue(SpawnSlot(o.Prefab, o.Request), out var spawn))
                     continue;
-                Array.Copy(spawn.Values, o.PredictedValues, 32);
-                Array.Copy(spawn.SpawnTick == InputTick ? spawn.Values : spawn.Previous, o.PreviousPredictedValues, 32);
+                o.SetPrediction(spawn.Values, spawn.SpawnTick == InputTick ? spawn.Values : spawn.Previous);
                 o.IsPredicted = true;
                 predictedObjects.Add(o);
-                spawnsByKey.Remove(o.Request);
+                unmatchedSpawns.Remove(SpawnSlot(o.Prefab, o.Request));
             }
-            UpdateSpawnInstances();
+            UpdateShownSpawns();
             UpdateHidden();
+        }
+        // One prefab's step of a tick: the room's objects in ID order, then the predicted
+        // spawns of that prefab made so far (an earlier prefab's step may have spawned
+        // them this tick; the room's loop counts them too).
+        void PredictPrefab(uint prefab, uint tick)
+        {
+            var step = predictions[prefab];
+            foreach (var o in predictedObjects)
+                if (o.Prefab == prefab && !predictedRemovals.Contains(o.Id))
+                    step(unchecked((int)o.Id), unchecked((int)tick));
+            int spawned = localSpawns.Count;
+            for (int i = 0; i < spawned; i++)
+                if (localSpawns[i].Prefab == prefab && !localSpawns[i].Removed)
+                    step(-(i + 1), unchecked((int)tick));
         }
         // Own simulated objects spawned by a prediction whose spawn tick the room has not
         // confirmed yet.
         bool Unconfirmed(NetworkObject o)
         {
-            return o.Mode == ObjectMode.Simulated && o.Owner == Client.ConnectionId && (o.Request & (1u << 31)) != 0 &&
-                !confirmed.ContainsKey(o.Id) && Client.Find(o.Id) == o;
+            return IsLiveSimulatedOfMine(o) && o.HasPredictedSpawnKey && !confirmed.ContainsKey(o.Id);
         }
-        // Shows predicted spawns that the room has not delivered yet, and removes those
-        // the prediction no longer makes.
-        void UpdateSpawnInstances()
+        // Shows the latest prediction's spawns that the room has not delivered yet, and
+        // ends the shown spawns it no longer makes.
+        void UpdateShownSpawns()
         {
-            foreach (var instance in spawnInstances.Values)
-                instance.Seen = false;
-            foreach (var spawn in spawnsByKey.Values)
+            foreach (var shown in shownSpawns.Values)
+                if (shown.State == ShownState.Predicted)
+                    shown.State = ShownState.Waiting;
+            foreach (var pair in unmatchedSpawns)
             {
-                if (!spawnInstances.TryGetValue(spawn.Key, out var instance))
+                var spawn = pair.Value;
+                if (!shownSpawns.TryGetValue(pair.Key, out var shown))
                 {
                     if (!catalog.TryGetValue(spawn.Prefab, out var prefab))
                         continue;
                     var entity = UnityEngine.Object.Instantiate(prefab, transform).GetComponent<NetworkEntity>();
                     entity.BeginPlaceholder();
-                    instance = new SpawnInstance { Entity = entity, SpawnTick = spawn.SpawnTick, Prefab = spawn.Prefab, Motions = entity.GetComponentsInChildren<NetworkTransform>() };
-                    spawnInstances.Add(spawn.Key, instance);
-                    placeholders[spawn.Key] = entity;
-                    Array.Copy(spawn.SpawnTick == InputTick ? spawn.Values : spawn.Previous, instance.Previous, 32);
-                    Array.Copy(spawn.Values, instance.Values, 32);
-                    foreach (var motion in instance.Motions)
-                        motion.ShowUnbound(instance.Values, instance.Values, 1);
+                    shown = new ShownSpawn { Entity = entity, SpawnTick = spawn.SpawnTick, Prefab = spawn.Prefab, Motions = entity.GetComponentsInChildren<NetworkTransform>() };
+                    shownSpawns.Add(pair.Key, shown);
+                    Array.Copy(spawn.SpawnTick == InputTick ? spawn.Values : spawn.Previous, shown.Previous, 32);
+                    Array.Copy(spawn.Values, shown.Values, 32);
+                    foreach (var motion in shown.Motions)
+                        motion.ShowUnbound(shown.Values, shown.Values, 1);
                     try
                     {
                         PredictedSpawned?.Invoke(entity);
@@ -392,37 +600,33 @@ namespace Gs2.Realtime.Sync
                 }
                 else
                 {
-                    Array.Copy(spawn.SpawnTick == InputTick ? spawn.Values : spawn.Previous, instance.Previous, 32);
-                    Array.Copy(spawn.Values, instance.Values, 32);
+                    Array.Copy(spawn.SpawnTick == InputTick ? spawn.Values : spawn.Previous, shown.Previous, 32);
+                    Array.Copy(spawn.Values, shown.Values, 32);
                 }
-                instance.Seen = true;
+                shown.State = ShownState.Predicted;
             }
-            keyBuffer.Clear();
-            foreach (var pair in spawnInstances)
+            slotBuffer.Clear();
+            foreach (var pair in shownSpawns)
             {
-                var instance = pair.Value;
-                if (instance.Entity == null || instance.Entity.Object != null)
+                var shown = pair.Value;
+                if (shown.Entity == null)
                 {
-                    keyBuffer.Add(pair.Key); // destroyed, or taken over by the room's object
+                    slotBuffer.Add(pair.Key); // destroyed by the game
                     continue;
                 }
-                if (instance.Seen)
+                if (shown.State == ShownState.Predicted)
                     continue;
-                // Not predicted any more: a misprediction when its tick is still
-                // unconfirmed; otherwise wait briefly for the room's spawn message.
-                int age = unchecked((int)(confirmedTick - instance.SpawnTick));
+                // Not predicted any more: a misprediction while its tick is unconfirmed;
+                // otherwise wait briefly for the room's spawn message.
+                int age = Serial.Diff(confirmedTick, shown.SpawnTick);
                 if (age < 0 || age > Math.Max(1, Client.TickRate / 2))
                 {
-                    keyBuffer.Add(pair.Key);
-                    Discard(instance.Entity.gameObject);
+                    slotBuffer.Add(pair.Key);
+                    Discard(shown.Entity.gameObject);
                 }
             }
-            foreach (var key in keyBuffer)
-            {
-                spawnInstances.Remove(key);
-                if (placeholders.TryGetValue(key, out var entity) && (entity == null || entity.Object == null))
-                    placeholders.Remove(key);
-            }
+            foreach (var slot in slotBuffer)
+                shownSpawns.Remove(slot);
         }
         // Own objects that the prediction despawned are hidden until the room agrees.
         // Only renderers that were enabled are hidden, and only those are shown again.
@@ -456,33 +660,21 @@ namespace Gs2.Realtime.Sync
                 hidden.Remove(o);
             }
         }
-        // The prefab of a predicted spawn's placeholder (0 when there is none).
-        uint PlaceholderPrefab(uint key)
-        {
-            return spawnInstances.TryGetValue(key, out var instance) ? instance.Prefab : 0;
-        }
+        // A simulated object this client owns, still the client's current copy (not one a
+        // new snapshot replaced).
+        bool IsLiveSimulatedOfMine(NetworkObject o) => o.SimulatedForMe && Client.Find(o.Id) == o;
         bool Predictable(NetworkObject o)
         {
             // Only objects in the confirmed state: one spawned after the latest clock has
             // newer values than that state and would be stepped twice.
-            return o.Mode == ObjectMode.Simulated && o.Owner == Client.ConnectionId && predictions.ContainsKey(o.Prefab) &&
-                confirmed.ContainsKey(o.Id) && Client.Find(o.Id) == o;
+            return IsLiveSimulatedOfMine(o) && predictions.ContainsKey(o.Prefab) && confirmed.ContainsKey(o.Id);
         }
         // Compares the earlier prediction for a tick with the new one for the same tick.
         void Correct(NetworkObject o, int[] values)
         {
             if (!o.IsPredicted)
                 return; // first prediction of this object: nothing was shown
-            uint mask = 0;
-            for (int f = 0; f < 32; f++)
-            {
-                int error = unchecked(o.PredictedValues[f] - values[f]);
-                o.PredictionError[f] = error;
-                if (error != 0)
-                    mask |= 1u << f;
-            }
-            o.PredictionErrorMask = mask;
-            if (mask != 0)
+            if (o.MeasurePredictionError(values))
                 corrections.Add(o);
         }
 
@@ -500,21 +692,28 @@ namespace Gs2.Realtime.Sync
         {
             if (predictedRemovals.Contains(id))
                 throw new InvalidOperationException("Unknown object " + id);
-            if (scratch.TryGetValue(id, out var values) || confirmed.TryGetValue(id, out values))
+            if (scratch.TryGetValue(id, out var values))
                 return values;
+            if (confirmed.TryGetValue(id, out var fields))
+                return fields.Values;
+            // An object outside the confirmed state: this prediction works on a copy of the
+            // room's latest values.
             var o = Client.Find(id) ?? throw new InvalidOperationException("Unknown object " + id);
-            return o.Values;
+            values = Rent();
+            o.CopyValuesTo(values);
+            scratch.Add(id, values);
+            return values;
         }
-        static void Field(int field)
+        // The prediction's own copy of a room object's values, made on its first write.
+        int[] WorkingValues(uint id)
         {
-            if (field < 0 || field >= 32)
-                throw new ArgumentOutOfRangeException(nameof(field));
-        }
-        static uint Field(NetworkObject o, int field)
-        {
-            if (field < 0 || field >= 32 || (o.Fields & (1u << field)) == 0)
-                throw new ArgumentOutOfRangeException(nameof(field), "Field " + field + " is not synchronized for prefab " + o.Prefab);
-            return 1u << field;
+            if (!scratch.TryGetValue(id, out var values))
+            {
+                values = Rent();
+                Array.Copy(Values(id), values, 32);
+                scratch.Add(id, values);
+            }
+            return values;
         }
         NetworkObject Known(int objectId)
         {
@@ -523,69 +722,19 @@ namespace Gs2.Realtime.Sync
                 throw new InvalidOperationException("Unknown object " + objectId);
             return o;
         }
-        internal int PredictionGet(int objectId, int field)
-        {
-            var local = Local(objectId);
-            if (local != null)
-            {
-                Field(field);
-                return local.Values[field];
-            }
-            Field(Known(objectId), field);
-            return Values(unchecked((uint)objectId))[field];
-        }
-        internal void PredictionSet(int objectId, int field, int value)
-        {
-            var local = Local(objectId);
-            if (local != null)
-            {
-                Field(field);
-                local.Values[field] = value;
-                return;
-            }
-            Field(Known(objectId), field);
-            uint id = unchecked((uint)objectId);
-            if (!scratch.TryGetValue(id, out var values))
-            {
-                values = Rent();
-                Array.Copy(Values(id), values, 32);
-                scratch.Add(id, values);
-            }
-            values[field] = value;
-        }
+        internal int PredictionGet(int objectId, int field) => Resolve(objectId).Get(field);
+        internal void PredictionSet(int objectId, int field, int value) => Resolve(objectId).Set(field, value);
         internal int PredictionInput(int objectId, int field)
         {
-            var local = Local(objectId);
-            bool mine;
-            if (local != null)
-                mine = local.Mine;
-            else
-            {
-                var o = Known(objectId);
-                if (o.Mode != ObjectMode.Simulated)
-                    throw new InvalidOperationException("Input requires a simulated object");
-                mine = o.Owner == Client.ConnectionId;
-            }
-            if (field < 0 || field >= 32 || !mine)
-                return 0;
-            var frame = currentFrame;
-            return frame != null && (frame.Mask & (1u << field)) != 0 ? frame.Values[field] : 0;
+            bool mine = Resolve(objectId).ReceivesMyInput;
+            bool slot = field >= 0 && field < 32;
+            return mine && slot ? currentFrame?.Value(field) ?? 0 : 0;
         }
         internal int PredictionSpawnOwned(int prefab, int ownerObjectId, int x, int y, int z)
         {
             if (prefab <= 0)
                 throw new ArgumentOutOfRangeException(nameof(prefab));
-            uint owner;
-            var localOwner = Local(ownerObjectId);
-            if (localOwner != null)
-                owner = localOwner.Mine ? Client.ConnectionId : 0;
-            else
-            {
-                var o = Known(ownerObjectId);
-                if (o.Mode != ObjectMode.Player && o.Mode != ObjectMode.Simulated || o.Owner == 0)
-                    throw new InvalidOperationException("SpawnOwned requires an object owned by a member");
-                owner = o.Owner;
-            }
+            uint owner = Resolve(ownerObjectId).SpawnOwner(Client.ConnectionId);
             // Counted per owner and prefab like the room, so the n-th spawn has its key.
             ulong count = (ulong)owner << 32 | (uint)prefab;
             spawnCounts.TryGetValue(count, out var n);
@@ -593,10 +742,14 @@ namespace Gs2.Realtime.Sync
             var spawn = spawnPool.Count > 0 ? spawnPool.Pop() : new LocalSpawn();
             spawn.Prefab = (uint)prefab;
             spawn.SpawnTick = predictingTick;
+            spawn.Owner = owner;
             spawn.Mine = owner == Client.ConnectionId;
             spawn.Key = spawn.Mine ? SpawnKey(predictingTick, n) : 0;
             spawn.Removed = false;
             Array.Clear(spawn.Values, 0, 32);
+            // Fields with a [RoomField(Default)] start with it, as in the room.
+            if (catalog.TryGetValue((uint)prefab, out var shown))
+                shown.GetComponent<NetworkEntity>().Schema?.ApplyDefaults(spawn.Values);
             spawn.Values[0] = x;
             spawn.Values[1] = y;
             spawn.Values[2] = z;
@@ -605,18 +758,34 @@ namespace Gs2.Realtime.Sync
             prefabListsDirty = true;
             return -localSpawns.Count;
         }
+        internal int PredictionPrefabOf(int objectId) => unchecked((int)Resolve(objectId).PrefabId);
+        internal int PredictionOwnerOf(int objectId) => unchecked((int)Resolve(objectId).Holder);
+        // The first object of the prefab (room objects by ID, then this prediction's spawns)
+        // whose holder is the connection, or 0.
+        internal int PredictionFindOwned(int prefab, int connectionId)
+        {
+            if (connectionId <= 0)
+                return 0;
+            foreach (var id in PredictionObjects(prefab))
+                if (Resolve(unchecked((int)id)).Holder == (uint)connectionId)
+                    return unchecked((int)id);
+            return 0;
+        }
+        // An object the prediction can address: a room object it has not despawned, or one
+        // of its own spawns (negative IDs) it has not despawned. 0 is none.
+        internal bool PredictionExists(int objectId)
+        {
+            if (objectId < 0)
+            {
+                long index = -(long)objectId - 1;
+                return index < localSpawns.Count && !localSpawns[(int)index].Removed;
+            }
+            var o = objectId == 0 ? null : Client.Find(unchecked((uint)objectId));
+            return o != null && !predictedRemovals.Contains(o.Id);
+        }
         internal void PredictionDespawn(int objectId)
         {
-            var local = Local(objectId);
-            if (local != null)
-                local.Removed = true;
-            else
-            {
-                var o = Known(objectId);
-                if (o.Mode == ObjectMode.Player)
-                    throw new InvalidOperationException("Player objects cannot be despawned by the rules");
-                predictedRemovals.Add(o.Id);
-            }
+            Resolve(objectId).Despawn();
             prefabListsDirty = true;
         }
         internal List<uint> PredictionObjects(int prefab)
@@ -630,7 +799,9 @@ namespace Gs2.Realtime.Sync
                 {
                     // Simulated objects belong to the confirmed state; later ones (such as
                     // the room's copy of a predicted spawn) would be counted twice.
-                    if (predictedRemovals.Contains(o.Id) || o.Mode == ObjectMode.Simulated && !confirmed.ContainsKey(o.Id))
+                    bool removedByPrediction = predictedRemovals.Contains(o.Id);
+                    bool simulatedAfterClock = o.Kind.Simulated && !confirmed.ContainsKey(o.Id);
+                    if (removedByPrediction || simulatedAfterClock)
                         continue;
                     if (!prefabObjects.TryGetValue((int)o.Prefab, out var list))
                         prefabObjects.Add((int)o.Prefab, list = new List<uint>());

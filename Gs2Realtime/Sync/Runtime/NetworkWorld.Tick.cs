@@ -16,89 +16,110 @@ namespace Gs2.Realtime.Sync
         [SerializeField, Min(0), Tooltip("Seconds remote objects are shown behind the room; keep equal to NetworkTransform.InterpolationDelay so that lag-compensated hit tests match the screen.")]
         float viewDelay = .1f;
         double clockServerTime = double.NaN;
-        readonly int[] inputValues = new int[32];
-        uint inputMask;
-        bool clockStarted, leadMeasured;
+        readonly SlotValues input = new SlotValues();
+        // Following the room's clock: Stopped until the first clock; Settling ignores the
+        // clocks sent before the room saw a jump of InputTick; Measuring takes the next
+        // lead as it is; Following smooths the lead and steers InputTick towards it.
+        enum ClockPhase : byte { Stopped, Settling, Measuring, Following }
+        ClockPhase clockPhase;
+        int settlingClocks;
         double tickPhase;
         float tickScale = 1;
-        int pausedTicks, settlingClocks;
+        int pausedTicks; // ticks not sampled, so that InputTick falls back
         float nextSendWarning;
 
-        // True once a ticking room's clock arrived.
+        /// <summary>
+        /// True once the room's first clock arrived, for rooms with a tick rate
+        /// (Room.DefineTickRate in the room rules).
+        /// </summary>
         public bool IsTicking => Client != null && Client.TickRate != 0 && clockStarted;
-        // Simulation steps per second of the room (0 when it is not ticking).
+        /// <summary>Simulation steps per second of the room (0 when it is not ticking).</summary>
         public int TickRate => (int)(Client?.TickRate ?? 0);
-        // The step the room completed last, as of its latest clock.
+        /// <summary>The step the room completed last, as of its latest clock.</summary>
         public uint ServerTick { get; private set; }
-        // The tick of the next input; runs ahead of ServerTick.
+        /// <summary>
+        /// The tick inputs are stamped with; runs ahead of ServerTick so that inputs arrive
+        /// about InputLeadTicks before the room simulates them.
+        /// </summary>
         public uint InputTick { get; private set; }
-        // Target of InputLead: how many ticks early inputs should arrive (1..10).
+        /// <summary>Target of InputLead: how many ticks early inputs should arrive (1-10).</summary>
         public int InputLeadTicks
         {
             get => inputLeadTicks;
             set => inputLeadTicks = Mathf.Clamp(value, 1, 10);
         }
-        // Measured lead: ticks between the room's tick and the newest input it had
-        // received from this client (smoothed). Approaches InputLeadTicks.
+        /// <summary>
+        /// Measured lead: ticks between the room's tick and the newest input it had received
+        /// from this client (smoothed). Approaches InputLeadTicks.
+        /// </summary>
         public float InputLead { get; private set; }
+        /// <summary>
+        /// Seconds remote objects are shown behind the room. Keep it equal to
+        /// NetworkTransform.InterpolationDelay so that lag-compensated hit tests match the screen.
+        /// </summary>
         public float ViewDelay
         {
             get => viewDelay;
             set => viewDelay = Mathf.Max(0, value);
         }
-        // The (fractional) room tick of the remote objects on screen: ServerTick moved
-        // back by ViewDelay when the world receives server timestamps. Each input carries
-        // InputTick - ViewTick so that the room can rewind hit tests to this view.
+        /// <summary>
+        /// The (fractional) room tick of the remote objects on screen: ServerTick moved back by
+        /// ViewDelay when the world receives server timestamps. Each input carries
+        /// InputTick - ViewTick so that the room can rewind hit tests to this view.
+        /// </summary>
         public double ViewTick
         {
             get
             {
-                if (double.IsNaN(clockServerTime) || !HasServerTime || Client == null || Client.TickRate == 0)
+                bool timed = !double.IsNaN(clockServerTime) && HasServerTime;
+                if (!timed || TickRate == 0)
                     return ServerTick;
                 return ServerTick + (ServerTime - viewDelay - clockServerTime) * Client.TickRate;
             }
         }
-        // Raised before the input of each tick is sampled (argument: its tick), for
-        // games that set inputs per tick rather than per frame.
+        /// <summary>
+        /// Raised with the tick before its input is sampled, for games that set inputs per
+        /// tick rather than per frame. Runs from Update.
+        /// </summary>
         public event Action<uint> InputSampling;
 
         // ---- Input ----
-        // The input is a held state of up to 32 integer slots, sampled every tick while
-        // this client owns a simulated object. Room rules read it with Room.Input.
+        /// <summary>
+        /// Sets an input slot. The input is a held state of up to 32 integer slots, sampled every
+        /// tick and sent while this client owns a simulated object. Room rules read it with
+        /// Room.Input.
+        /// </summary>
         public void SetInput(int slot, int value)
         {
-            if (slot < 0 || slot >= 32)
-                throw new ArgumentOutOfRangeException(nameof(slot));
-            inputValues[slot] = value;
-            inputMask |= 1u << slot;
+            input.Set(slot, value);
         }
+        /// <summary>Sets an input slot to 1 (true) or 0 (false).</summary>
         public void SetInput(int slot, bool value)
         {
             SetInput(slot, value ? 1 : 0);
         }
-        // Quantized like synchronized float fields: value / precision, rounded.
+        /// <summary>
+        /// Sets an input slot quantized like synchronized float fields: value / precision, rounded.
+        /// </summary>
         public void SetInput(int slot, float value, float precision)
         {
             SetInput(slot, SyncCodec.Quantize(value, precision));
         }
-        // The value currently held in an input slot.
+        /// <summary>The value currently held in an input slot.</summary>
         public int GetInput(int slot)
         {
-            if (slot < 0 || slot >= 32)
-                throw new ArgumentOutOfRangeException(nameof(slot));
-            return inputValues[slot];
+            return input[slot];
         }
-        // Releases every input slot (all read as 0 by the room).
+        /// <summary>Releases every input slot (all read as 0 by the room).</summary>
         public void ClearInput()
         {
-            inputMask = 0;
-            Array.Clear(inputValues, 0, 32);
+            input.Clear();
         }
 
         // ---- Clock ----
         void ResetClock()
         {
-            clockStarted = leadMeasured = false;
+            clockPhase = ClockPhase.Stopped;
             tickPhase = 0;
             tickScale = 1;
             pausedTicks = settlingClocks = 0;
@@ -107,43 +128,45 @@ namespace Gs2.Realtime.Sync
             clockServerTime = double.NaN;
             ResetPrediction();
         }
+        bool clockStarted => clockPhase != ClockPhase.Stopped;
         void OnClock(uint tick, uint rate, uint latest)
         {
             // Clocks travel unreliably: one overtaken by a newer clock is stale.
-            if (clockStarted && unchecked((int)(tick - ServerTick)) < 0)
+            bool overtaken = clockStarted && Serial.Before(tick, ServerTick);
+            if (overtaken)
                 return;
             clockServerTime = ReceivedServerTime;
             ServerTick = tick;
-            Confirm(tick);
-            if (!clockStarted)
+            Confirm(tick, Client.ClockState);
+            // Start a little ahead; the measured lead corrects it within a second.
+            uint start = tick + (uint)(inputLeadTicks + Mathf.CeilToInt(rate * .1f));
+            if (clockPhase == ClockPhase.Stopped)
             {
-                // Start a little ahead; the measured lead corrects it within a second.
-                InputTick = tick + (uint)(inputLeadTicks + Mathf.CeilToInt(rate * .1f));
-                clockStarted = true;
+                InputTick = start;
+                clockPhase = ClockPhase.Measuring;
                 return;
             }
-            if (unchecked((int)(InputTick - tick)) <= 0)
+            bool behindTheRoom = !Serial.After(InputTick, tick);
+            if (behindTheRoom)
             {
                 // Behind the room itself (e.g. after long frames while no input was sent):
-                // every input would arrive too late. Restart ahead as on the first clock.
-                InputTick = tick + (uint)(inputLeadTicks + Mathf.CeilToInt(rate * .1f));
+                // every input would arrive too late. Restart ahead.
+                InputTick = start;
                 pausedTicks = 0;
-                leadMeasured = false;
-                settlingClocks = (int)rate / 2;
-                tickScale = 1;
+                Settle(rate);
                 return;
             }
             if (latest == 0)
                 return; // no input received yet
-            if (settlingClocks > 0)
+            if (clockPhase == ClockPhase.Settling)
             {
-                // Clocks sent before the room saw a jump would undo it.
-                settlingClocks--;
+                if (--settlingClocks <= 0)
+                    clockPhase = ClockPhase.Measuring;
                 return;
             }
-            float lead = unchecked((int)(latest - tick));
-            InputLead = leadMeasured ? InputLead + (lead - InputLead) * .1f : lead;
-            leadMeasured = true;
+            float lead = Serial.Diff(latest, tick);
+            InputLead = clockPhase == ClockPhase.Following ? InputLead + (lead - InputLead) * .1f : lead;
+            clockPhase = ClockPhase.Following;
             float error = inputLeadTicks - InputLead;
             if (Mathf.Abs(error) > rate * .5f)
             {
@@ -154,13 +177,18 @@ namespace Gs2.Realtime.Sync
                     InputTick += (uint)ticks;
                 else
                     pausedTicks = -ticks;
-                leadMeasured = false;
-                settlingClocks = (int)rate / 2;
-                tickScale = 1;
+                Settle(rate);
                 return;
             }
             // Otherwise run up to 10% faster or slower until the lead matches.
             tickScale = 1 + Mathf.Clamp(error * .02f, -.1f, .1f);
+        }
+        // After InputTick jumped: ignore the clocks of half a second, then measure afresh.
+        void Settle(uint rate)
+        {
+            settlingClocks = (int)rate / 2;
+            clockPhase = settlingClocks > 0 ? ClockPhase.Settling : ClockPhase.Measuring;
+            tickScale = 1;
         }
         void ServiceTick()
         {
@@ -190,7 +218,8 @@ namespace Gs2.Realtime.Sync
                     Debug.LogException(e, this); // the tick's input is still recorded and sent
                 }
                 RecordInput(InputTick);
-                if (OwnsSimulatedObject() && !Client.SendInput(InputTick, inputMask, inputValues, ViewLag()) && Time.unscaledTime >= nextSendWarning)
+                bool sent = !OwnsSimulatedObject() || Client.SendInput(InputTick, input, ViewLag());
+                if (!sent && Time.unscaledTime >= nextSendWarning)
                 {
                     nextSendWarning = Time.unscaledTime + 1;
                     Debug.LogWarning("Input for tick " + InputTick + " was not sent (transport busy)", this);
@@ -206,7 +235,7 @@ namespace Gs2.Realtime.Sync
         bool OwnsSimulatedObject()
         {
             foreach (var o in Client.Objects)
-                if (o.Mode == ObjectMode.Simulated && o.Owner == Client.ConnectionId)
+                if (o.SimulatedForMe)
                     return true;
             return false;
         }

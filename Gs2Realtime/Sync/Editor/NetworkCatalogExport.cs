@@ -8,8 +8,9 @@ using UnityEngine;
 namespace Gs2.Realtime.Sync.Editor
 {
     // Builds the player-object entries of the room's object catalog from a prefab catalog,
-    // so field masks and RPC IDs never have to be copied by hand. Shared (leased/server)
-    // prefabs are defined by the room rules and are left out.
+    // so field masks and RPC IDs never have to be copied by hand. Prefabs the room rules
+    // define (shared objects, and simulated objects: their schema says so) are left out;
+    // the room refuses a catalog that defines them again.
     public static class NetworkCatalogExport
     {
         public static string ToJson(NetworkPrefabCatalog catalog)
@@ -19,12 +20,12 @@ namespace Gs2.Realtime.Sync.Editor
             var entries = new SortedDictionary<uint, string>();
             foreach (var entry in catalog.Prefabs)
             {
-                if (entry == null || entry.Prefab == null || entry.Id == 0)
+                if (entry == null || !entry.IsComplete)
                     throw new InvalidOperationException("Catalog entry without a prefab or ID");
                 var prefab = entry.Prefab;
-                if (prefab.GetComponent<SharedObject>() != null)
-                    continue;
                 var entity = prefab.GetComponent<NetworkEntity>();
+                if (DefinedByRules(prefab, entity))
+                    continue;
                 uint fields = Fields(prefab, entity);
                 if (fields == 0)
                     throw new InvalidOperationException(prefab.name + " synchronizes no fields; add a NetworkTransform or assign a schema");
@@ -41,6 +42,11 @@ namespace Gs2.Realtime.Sync.Editor
                 entries[entry.Id] = json.ToString();
             }
             return "{" + string.Join(",", entries.Select(e => "\"" + e.Key + "\":" + e.Value)) + "}";
+        }
+
+        static bool DefinedByRules(GameObject prefab, NetworkEntity entity)
+        {
+            return prefab.GetComponent<SharedObject>() != null || (entity != null && entity.Schema != null && entity.Schema.RuleDefined);
         }
 
         // The schema's mask, or the standard transform fields the NetworkTransform selects.

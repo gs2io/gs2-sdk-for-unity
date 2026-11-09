@@ -9,28 +9,22 @@ using UnityEngine.Scripting;
 
 namespace Gs2.Realtime.Sync
 {
-    // Receivers of an RPC. Owner is the object's owner (the caller itself for owner-only
-    // methods). Buffered targets are also replayed to players who join later, until the
-    // object is removed or the caller leaves. To reach one player use NetworkEntity.RpcTo.
-    public enum RpcTarget : byte
-    {
-        All = RpcTargetByte.All,
-        Others = RpcTargetByte.Others,
-        Owner = RpcTargetByte.Owner,
-        AllBuffered = RpcTargetByte.All | RpcTargetByte.Buffered,
-        OthersBuffered = RpcTargetByte.Others | RpcTargetByte.Buffered
-    }
-
-    // Marks a method on a component under a NetworkEntity as a remote procedure.
-    // [NetworkRpc] derives the ID from the method name (like PUN's name-based RPCs);
-    // [NetworkRpc(id)] fixes it so the method can be renamed. When the room has an object
-    // catalog, the ID must be listed in the prefab's "methods" (owner-only) or, with
-    // AnyCaller, in "publicMethods" (any member, on any player's object); the room rejects
-    // other calls. Rooms without a catalog accept any call. Parameters are encoded in
-    // declaration order. An optional last NetworkRpcInfo parameter receives the sender.
+    /// <summary>
+    /// Marks a method on a component under a NetworkEntity as a remote procedure. It must
+    /// return void or IEnumerator (started as a coroutine) and take no ref/out parameters; an
+    /// optional last NetworkRpcInfo parameter receives the sender.
+    /// </summary>
+    /// <remarks>
+    /// [NetworkRpc] derives the ID from the method name (like PUN's name-based RPCs);
+    /// [NetworkRpc(id)] fixes it so the method can be renamed. When the room has an object
+    /// catalog, the ID must be listed in the prefab's "methods" (owner-only) or, with
+    /// AnyCaller, in "publicMethods" (any member, on any player's object); the room rejects
+    /// other calls. Rooms without a catalog accept any call.
+    /// </remarks>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public sealed class NetworkRpcAttribute : PreserveAttribute
     {
+        /// <summary>The explicit method ID, or 0 to derive it from the method name.</summary>
         public uint Id
         {
             get;
@@ -44,8 +38,10 @@ namespace Gs2.Realtime.Sync
                 throw new ArgumentOutOfRangeException(nameof(id), "RPC method ID must be positive");
             Id = id;
         }
-        // Stable ID for [NetworkRpc] without an explicit ID: FNV-1a (32-bit) of the UTF-8
-        // method name, never 0. The catalog exporter writes the same value.
+        /// <summary>
+        /// The ID of a [NetworkRpc] without an explicit ID: FNV-1a (32-bit) of the UTF-8 method
+        /// name, never 0. The catalog exporter writes the same value.
+        /// </summary>
         public static uint IdOf(string methodName)
         {
             uint hash = 2166136261;
@@ -56,20 +52,25 @@ namespace Gs2.Realtime.Sync
             }
             return hash == 0 ? 1 : hash;
         }
-        // Meant to be called by any member on other players' objects: the catalog export
-        // lists it in "publicMethods". The room, not the client, enforces the catalog.
+        /// <summary>
+        /// Lets any member call it on other players' objects: the catalog export lists it in
+        /// "publicMethods". The room, not the client, enforces the catalog.
+        /// </summary>
         public bool AnyCaller
         {
             get; set;
         }
     }
 
-    // Marks a room event handler, like PUN's RaiseEvent/OnEvent: register the component
-    // with NetworkWorld.AddEventTarget. [NetworkEvent] derives the code from the method
-    // name; [NetworkEvent(code)] fixes it. Parameters follow the [NetworkRpc] rules.
+    /// <summary>
+    /// Marks a room event handler, like PUN's RaiseEvent/OnEvent: register the component with
+    /// NetworkWorld.AddEventTarget. [NetworkEvent] derives the code from the method name;
+    /// [NetworkEvent(code)] fixes it. Parameters follow the [NetworkRpc] rules.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public sealed class NetworkEventAttribute : PreserveAttribute
     {
+        /// <summary>The explicit event code, or 0 to derive it from the method name.</summary>
         public uint Code
         {
             get;
@@ -85,7 +86,7 @@ namespace Gs2.Realtime.Sync
         }
     }
 
-    // A [NetworkRpc] method as declared, for tools (inspector, catalog export).
+    /// <summary>A [NetworkRpc] method as declared, for tools (inspector, catalog export).</summary>
     public readonly struct NetworkRpcDescription
     {
         public uint Id
@@ -118,21 +119,28 @@ namespace Gs2.Realtime.Sync
         }
     }
 
+    /// <summary>
+    /// Details of a received RPC or room event; declare it as the last parameter of a
+    /// [NetworkRpc] or [NetworkEvent] method to receive it.
+    /// </summary>
     public readonly struct NetworkRpcInfo
     {
+        /// <summary>The entity the RPC was called on (null for room events).</summary>
         public NetworkEntity Entity
         {
             get;
         }
+        /// <summary>The RPC method ID or event code.</summary>
         public uint Method
         {
             get;
         }
-        // Connection ID assigned by the server; clients cannot forge it.
+        /// <summary>The sender's connection ID, set by the server; clients cannot forge it.</summary>
         public uint Sender
         {
             get;
         }
+        /// <summary>True when this client sent it.</summary>
         public bool IsLocal
         {
             get;
@@ -152,10 +160,16 @@ namespace Gs2.Realtime.Sync
         public readonly uint Id;
         public readonly MethodInfo Method;
         public readonly Type[] Parameters;
+        // How each parameter travels, resolved once here.
+        public readonly NetworkRpcCodec.ArgumentCodec[] Codecs;
         public readonly bool HasInfo, IsCoroutine, AnyCaller;
         public string Name => Method.Name;
-        NetworkRpcMethod(uint id, MethodInfo method, Type[] parameters, bool hasInfo, bool isCoroutine, bool anyCaller)
+        NetworkRpcMethod(uint id, MethodInfo method, NetworkRpcCodec.ArgumentCodec[] codecs, bool hasInfo, bool isCoroutine, bool anyCaller)
         {
+            Codecs = codecs;
+            var parameters = new Type[codecs.Length];
+            for (int i = 0; i < codecs.Length; i++)
+                parameters[i] = codecs[i].Type;
             Id = id;
             AnyCaller = anyCaller;
             Method = method;
@@ -167,8 +181,8 @@ namespace Gs2.Realtime.Sync
         static readonly Dictionary<Type, NetworkRpcMethod[]> cache = new Dictionary<Type, NetworkRpcMethod[]>();
         static readonly Dictionary<Type, NetworkRpcMethod[]> eventCache = new Dictionary<Type, NetworkRpcMethod[]>();
 
-        // Reflection runs once per component type; later lookups reuse the table.
-        // events selects [NetworkEvent] handlers instead of [NetworkRpc] methods.
+        // Cached per component type. events selects [NetworkEvent] handlers instead of
+        // [NetworkRpc] methods.
         public static NetworkRpcMethod[] Of(Type type, bool events = false)
         {
             var table = events ? eventCache : cache;
@@ -198,7 +212,7 @@ namespace Gs2.Realtime.Sync
                         id = attribute.Id;
                         anyCaller = attribute.AnyCaller;
                     }
-                    // An override inherits the attribute; register the most derived declaration once.
+                    // An override inherits the attribute; register only the most derived one.
                     if (method.GetBaseDefinition() != method && result.Exists(m => m.Method.GetBaseDefinition() == method.GetBaseDefinition()))
                         continue;
                     var created = Create(type, method, id, anyCaller);
@@ -221,18 +235,17 @@ namespace Gs2.Realtime.Sync
                 throw new InvalidOperationException("RPC " + type.Name + "." + method.Name + " must not be generic");
             var parameters = method.GetParameters();
             bool hasInfo = parameters.Length > 0 && parameters[parameters.Length - 1].ParameterType == typeof(NetworkRpcInfo);
-            var types = new Type[hasInfo ? parameters.Length - 1 : parameters.Length];
-            for (int i = 0; i < types.Length; i++)
+            var codecs = new NetworkRpcCodec.ArgumentCodec[hasInfo ? parameters.Length - 1 : parameters.Length];
+            for (int i = 0; i < codecs.Length; i++)
             {
                 var parameter = parameters[i];
                 if (parameter.ParameterType.IsByRef || parameter.IsOut)
                     throw new InvalidOperationException("RPC " + type.Name + "." + method.Name + " must not use ref/out parameters");
-                if (!NetworkRpcCodec.Supports(parameter.ParameterType))
+                codecs[i] = NetworkRpcCodec.For(parameter.ParameterType) ??
                     throw new InvalidOperationException("RPC " + type.Name + "." + method.Name + " has unsupported parameter type " + parameter.ParameterType.Name);
-                types[i] = parameter.ParameterType;
             }
             uint id = explicitId != 0 ? explicitId : NetworkRpcAttribute.IdOf(method.Name);
-            return new NetworkRpcMethod(id, method, types, hasInfo, coroutine, anyCaller);
+            return new NetworkRpcMethod(id, method, codecs, hasInfo, coroutine, anyCaller);
         }
     }
 
@@ -243,31 +256,114 @@ namespace Gs2.Realtime.Sync
     {
         static readonly UTF8Encoding utf8 = new UTF8Encoding(false, true);
 
-        public static bool Supports(Type type)
+        internal delegate void WriteValue(ref Writer writer, object value);
+        internal delegate object ReadValue(ref Reader reader);
+        // How one argument type travels. One per supported type (and per enum type),
+        // chosen once when a method registers, so encoding and decoding never test types.
+        internal sealed class ArgumentCodec
         {
-            if (type.IsEnum)
-                return true;
-            return type == typeof(bool) || type == typeof(byte) || type == typeof(sbyte) || type == typeof(short) || type == typeof(ushort) ||
-                type == typeof(int) || type == typeof(uint) || type == typeof(long) || type == typeof(ulong) || type == typeof(char) ||
-                type == typeof(float) || type == typeof(double) || type == typeof(string) || type == typeof(byte[]) ||
-                type == typeof(Vector2) || type == typeof(Vector3) || type == typeof(Vector4) || type == typeof(Quaternion) || type == typeof(Color) ||
-                type == typeof(Vector2Int) || type == typeof(Vector3Int);
+            public readonly Type Type;
+            // Written before custom property values; 0 when the type cannot be one (enums).
+            public readonly byte Tag;
+            readonly WriteValue write;
+            readonly ReadValue read;
+            public ArgumentCodec(Type type, byte tag, WriteValue write, ReadValue read)
+            {
+                Type = type;
+                Tag = tag;
+                this.write = write;
+                this.read = read;
+            }
+            public void Write(ref Writer writer, object value) => write(ref writer, value);
+            public object Read(ref Reader reader) => read(ref reader);
         }
 
-        public static int Encode(byte[] buffer, Type[] types, object[] args)
+        // Their order gives the property tags (index + 1), which are the wire format: append
+        // new types at the end.
+        static readonly ArgumentCodec[] Tagged = Build(
+            (typeof(bool), (ref Writer w, object v) => w.Byte((bool)v ? (byte)1 : (byte)0), (ref Reader r) => ReadBool(ref r)),
+            (typeof(byte), (ref Writer w, object v) => w.Byte((byte)v), (ref Reader r) => r.Byte()),
+            (typeof(sbyte), (ref Writer w, object v) => w.Byte(unchecked((byte)(sbyte)v)), (ref Reader r) => unchecked((sbyte)r.Byte())),
+            (typeof(short), (ref Writer w, object v) => w.Signed((short)v), (ref Reader r) => checked((short)r.Signed())),
+            (typeof(ushort), (ref Writer w, object v) => w.Unsigned((ushort)v), (ref Reader r) => checked((ushort)r.Unsigned())),
+            (typeof(int), (ref Writer w, object v) => w.Signed((int)v), (ref Reader r) => checked((int)r.Signed())),
+            (typeof(uint), (ref Writer w, object v) => w.Unsigned((uint)v), (ref Reader r) => checked((uint)r.Unsigned())),
+            (typeof(long), (ref Writer w, object v) => w.Signed((long)v), (ref Reader r) => r.Signed()),
+            (typeof(ulong), (ref Writer w, object v) => w.Unsigned((ulong)v), (ref Reader r) => r.Unsigned()),
+            (typeof(char), (ref Writer w, object v) => w.Unsigned((char)v), (ref Reader r) => checked((char)r.Unsigned())),
+            (typeof(float), (ref Writer w, object v) => w.Single((float)v), (ref Reader r) => r.Single()),
+            (typeof(double), (ref Writer w, object v) => w.Fixed64(BitConverter.DoubleToInt64Bits((double)v)), (ref Reader r) => BitConverter.Int64BitsToDouble(r.Fixed64())),
+            (typeof(string), (ref Writer w, object v) => WriteString(ref w, (string)v), (ref Reader r) => ReadString(ref r)),
+            (typeof(byte[]), (ref Writer w, object v) => WriteBytes(ref w, (byte[])v), (ref Reader r) => ReadBytes(ref r)),
+            (typeof(Vector2), (ref Writer w, object v) => { var x = (Vector2)v; w.Single(x.x); w.Single(x.y); }, (ref Reader r) => new Vector2(r.Single(), r.Single())),
+            (typeof(Vector3), (ref Writer w, object v) => { var x = (Vector3)v; w.Single(x.x); w.Single(x.y); w.Single(x.z); }, (ref Reader r) => new Vector3(r.Single(), r.Single(), r.Single())),
+            (typeof(Vector4), (ref Writer w, object v) => { var x = (Vector4)v; w.Single(x.x); w.Single(x.y); w.Single(x.z); w.Single(x.w); }, (ref Reader r) => new Vector4(r.Single(), r.Single(), r.Single(), r.Single())),
+            (typeof(Quaternion), (ref Writer w, object v) => { var x = (Quaternion)v; w.Single(x.x); w.Single(x.y); w.Single(x.z); w.Single(x.w); }, (ref Reader r) => new Quaternion(r.Single(), r.Single(), r.Single(), r.Single())),
+            (typeof(Color), (ref Writer w, object v) => { var x = (Color)v; w.Single(x.r); w.Single(x.g); w.Single(x.b); w.Single(x.a); }, (ref Reader r) => new Color(r.Single(), r.Single(), r.Single(), r.Single())),
+            (typeof(Vector2Int), (ref Writer w, object v) => { var x = (Vector2Int)v; w.Signed(x.x); w.Signed(x.y); }, (ref Reader r) => new Vector2Int(checked((int)r.Signed()), checked((int)r.Signed()))),
+            (typeof(Vector3Int), (ref Writer w, object v) => { var x = (Vector3Int)v; w.Signed(x.x); w.Signed(x.y); w.Signed(x.z); }, (ref Reader r) => new Vector3Int(checked((int)r.Signed()), checked((int)r.Signed()), checked((int)r.Signed())))
+        );
+        static readonly Dictionary<Type, ArgumentCodec> byType = new Dictionary<Type, ArgumentCodec>();
+        static ArgumentCodec[] Build(params (Type type, WriteValue write, ReadValue read)[] entries)
         {
+            var codecs = new ArgumentCodec[entries.Length];
+            for (int i = 0; i < entries.Length; i++)
+                codecs[i] = new ArgumentCodec(entries[i].type, (byte)(i + 1), entries[i].write, entries[i].read);
+            return codecs;
+        }
+        static NetworkRpcCodec()
+        {
+            foreach (var codec in Tagged)
+                byType.Add(codec.Type, codec);
+        }
+
+        // The codec of a parameter type (an enum travels as its underlying integer); null
+        // when the type cannot be an RPC argument.
+        public static ArgumentCodec For(Type type)
+        {
+            if (byType.TryGetValue(type, out var codec))
+                return codec;
+            if (!type.IsEnum)
+                return null;
+            codec = EnumCodec(type);
+            byType.Add(type, codec);
+            return codec;
+        }
+        static ArgumentCodec EnumCodec(Type type)
+        {
+            var underlying = Enum.GetUnderlyingType(type);
+            var culture = System.Globalization.CultureInfo.InvariantCulture;
+            if (IsUnsigned(underlying))
+                return new ArgumentCodec(type, 0, (ref Writer w, object v) => w.Unsigned(Convert.ToUInt64(v, culture)), (ref Reader r) => EnumValue(type, underlying, r.Unsigned()));
+            return new ArgumentCodec(type, 0, (ref Writer w, object v) => w.Signed(Convert.ToInt64(v, culture)), (ref Reader r) => EnumValue(type, underlying, r.Signed()));
+        }
+        static object EnumValue(Type type, Type underlying, object raw)
+        {
+            try
+            {
+                return Enum.ToObject(type, Convert.ChangeType(raw, underlying, System.Globalization.CultureInfo.InvariantCulture));
+            }
+            catch (OverflowException e)
+            {
+                throw new FormatException("RPC enum value out of range", e);
+            }
+        }
+
+        public static int Encode(byte[] buffer, NetworkRpcMethod method, object[] args)
+        {
+            var codecs = method.Codecs;
             // Rpc(id, target, null) passes a null params array; it means one null argument.
             if (args == null)
-                args = types.Length == 1 ? new object[] { null } : Array.Empty<object>();
-            if (args.Length != types.Length)
-                throw new ArgumentException("RPC expects " + types.Length + " argument(s) but got " + args.Length);
+                args = codecs.Length == 1 ? new object[] { null } : Array.Empty<object>();
+            if (args.Length != codecs.Length)
+                throw new ArgumentException("RPC expects " + codecs.Length + " argument(s) but got " + args.Length);
             var writer = new Writer(buffer);
-            for (int i = 0; i < types.Length; i++)
-                Write(ref writer, types[i], Coerce(types[i], args[i], i));
+            for (int i = 0; i < codecs.Length; i++)
+                codecs[i].Write(ref writer, Coerce(codecs[i].Type, args[i], i));
             return writer.Position;
         }
 
-        // Accept the conversions C# would apply implicitly at a direct call site (e.g. 1 for a float).
+        // Accepts the conversions C# applies implicitly at a direct call (e.g. 1 for a float).
         static object Coerce(Type type, object value, int index)
         {
             if (value == null)
@@ -286,296 +382,129 @@ namespace Gs2.Realtime.Sync
                 if (IsNumber(type) && IsNumber(value.GetType()))
                     return Convert.ChangeType(value, type, System.Globalization.CultureInfo.InvariantCulture);
             }
-            catch (Exception e) when (e is InvalidCastException || e is OverflowException || e is FormatException || e is ArgumentException)
+            catch (Exception e) when (IsConversionFailure(e))
             {
                 throw new ArgumentException("RPC argument " + index + " cannot be converted to " + type.Name, e);
             }
             throw new ArgumentException("RPC argument " + index + " must be " + type.Name + " but was " + value.GetType().Name);
         }
 
+        // What Enum.ToObject and Convert.ChangeType throw for a value they cannot convert.
+        static bool IsConversionFailure(Exception e) =>
+            e is InvalidCastException || e is OverflowException || e is FormatException || e is ArgumentException;
+
+        static bool IsUnsigned(Type integer)
+        {
+            return integer == typeof(ulong) || integer == typeof(uint) || integer == typeof(ushort) || integer == typeof(byte);
+        }
         static bool IsNumber(Type type)
         {
             return type.IsPrimitive && type != typeof(bool) && type != typeof(char) && type != typeof(IntPtr) && type != typeof(UIntPtr);
         }
 
-        // Custom property values carry a type tag (index + 1 in Tagged); keys are a
-        // varint length and UTF-8. A key without a value deletes the property.
-        static readonly Type[] Tagged =
+        // Custom property values carry their type's tag; no value (empty) deletes the
+        // property. SyncClient frames them with their key.
+        public static int EncodePropertyValue(byte[] buffer, object value)
         {
-            typeof(bool), typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int), typeof(uint), typeof(long), typeof(ulong),
-            typeof(char), typeof(float), typeof(double), typeof(string), typeof(byte[]), typeof(Vector2), typeof(Vector3), typeof(Vector4),
-            typeof(Quaternion), typeof(Color), typeof(Vector2Int), typeof(Vector3Int)
-        };
-        public const int MaxPropertyKey = 64;
-        public static int EncodeProperty(byte[] buffer, string key, object value)
-        {
-            if (string.IsNullOrEmpty(key))
-                throw new ArgumentException("Property key must not be empty");
             var writer = new Writer(buffer);
-            int length = utf8.GetByteCount(key);
-            if (length > MaxPropertyKey)
-                throw new ArgumentException("Property key exceeds " + MaxPropertyKey + " bytes");
-            writer.Unsigned((ulong)length);
-            writer.Reserve(length);
-            writer.Position += utf8.GetBytes(key, 0, key.Length, writer.Buffer, writer.Position);
             if (value == null)
-                return writer.Position;
+                return 0;
             var type = value.GetType();
             if (type.IsEnum)
                 throw new ArgumentException("Store enums as their integer value");
-            int tag = Array.IndexOf(Tagged, type);
-            if (tag < 0)
+            if (!byType.TryGetValue(type, out var codec) || codec.Tag == 0)
                 throw new ArgumentException("Unsupported property type " + type.Name);
-            writer.Byte((byte)(tag + 1));
-            Write(ref writer, type, value);
+            writer.Byte(codec.Tag);
+            codec.Write(ref writer, value);
             return writer.Position;
         }
-        public static void DecodeProperty(byte[] buffer, int offset, int count, out string key, out object value)
+        // null for an empty (deleted) value.
+        public static object DecodePropertyValue(byte[] buffer, int offset, int count)
         {
+            if (count == 0)
+                return null;
             var reader = new Reader(buffer, offset, count);
-            ulong length = reader.Unsigned();
-            if (length == 0 || length > MaxPropertyKey || length > (ulong)(count - (reader.Position - offset)))
-                throw new FormatException("Invalid property key");
-            try
-            {
-                key = utf8.GetString(buffer, reader.Position, (int)length);
-            }
-            catch (DecoderFallbackException e)
-            {
-                throw new FormatException("Invalid UTF-8 in property key", e);
-            }
-            reader.Position += (int)length;
-            value = null;
-            if (reader.AtEnd)
-                return;
             int tag = reader.Byte() - 1;
             if (tag < 0 || tag >= Tagged.Length)
                 throw new FormatException("Unknown property type");
-            value = Read(ref reader, Tagged[tag]);
+            var value = Tagged[tag].Read(ref reader);
             if (!reader.AtEnd)
                 throw new FormatException("Trailing property data");
+            return value;
         }
-
         public static object[] Decode(byte[] buffer, int offset, int count, NetworkRpcMethod method, NetworkRpcInfo info)
         {
-            var types = method.Parameters;
-            var result = new object[method.HasInfo ? types.Length + 1 : types.Length];
+            var codecs = method.Codecs;
+            var result = new object[method.HasInfo ? codecs.Length + 1 : codecs.Length];
             var reader = new Reader(buffer, offset, count);
-            for (int i = 0; i < types.Length; i++)
-                result[i] = Read(ref reader, types[i]);
+            for (int i = 0; i < codecs.Length; i++)
+                result[i] = codecs[i].Read(ref reader);
             if (!reader.AtEnd)
                 throw new FormatException("Trailing RPC arguments");
             if (method.HasInfo)
-                result[types.Length] = info;
+                result[codecs.Length] = info;
             return result;
         }
 
-        static void Write(ref Writer w, Type type, object value)
+        static object ReadBool(ref Reader r)
         {
-            if (type.IsEnum)
-            {
-                var underlying = Enum.GetUnderlyingType(type);
-                if (underlying == typeof(ulong) || underlying == typeof(uint) || underlying == typeof(ushort) || underlying == typeof(byte))
-                    w.Unsigned(Convert.ToUInt64(value, System.Globalization.CultureInfo.InvariantCulture));
-                else
-                    w.Signed(Convert.ToInt64(value, System.Globalization.CultureInfo.InvariantCulture));
-                return;
-            }
-            switch (value)
-            {
-                case bool v:
-                    w.Byte(v ? (byte)1 : (byte)0);
-                    return;
-                case byte v:
-                    w.Byte(v);
-                    return;
-                case sbyte v:
-                    w.Byte(unchecked((byte)v));
-                    return;
-                case short v:
-                    w.Signed(v);
-                    return;
-                case int v:
-                    w.Signed(v);
-                    return;
-                case long v:
-                    w.Signed(v);
-                    return;
-                case ushort v:
-                    w.Unsigned(v);
-                    return;
-                case uint v:
-                    w.Unsigned(v);
-                    return;
-                case ulong v:
-                    w.Unsigned(v);
-                    return;
-                case char v:
-                    w.Unsigned(v);
-                    return;
-                case float v:
-                    w.Single(v);
-                    return;
-                case double v:
-                    w.Fixed64(BitConverter.DoubleToInt64Bits(v));
-                    return;
-                case Vector2 v:
-                    w.Single(v.x);
-                    w.Single(v.y);
-                    return;
-                case Vector3 v:
-                    w.Single(v.x);
-                    w.Single(v.y);
-                    w.Single(v.z);
-                    return;
-                case Vector4 v:
-                    w.Single(v.x);
-                    w.Single(v.y);
-                    w.Single(v.z);
-                    w.Single(v.w);
-                    return;
-                case Quaternion v:
-                    w.Single(v.x);
-                    w.Single(v.y);
-                    w.Single(v.z);
-                    w.Single(v.w);
-                    return;
-                case Color v:
-                    w.Single(v.r);
-                    w.Single(v.g);
-                    w.Single(v.b);
-                    w.Single(v.a);
-                    return;
-                case Vector2Int v:
-                    w.Signed(v.x);
-                    w.Signed(v.y);
-                    return;
-                case Vector3Int v:
-                    w.Signed(v.x);
-                    w.Signed(v.y);
-                    w.Signed(v.z);
-                    return;
-            }
-            if (type == typeof(string))
-            {
-                var text = (string)value;
-                if (text == null)
-                {
-                    w.Unsigned(0);
-                    return;
-                }
-                int length = utf8.GetByteCount(text);
-                w.Unsigned((ulong)length + 1);
-                w.Reserve(length);
-                w.Position += utf8.GetBytes(text, 0, text.Length, w.Buffer, w.Position);
-                return;
-            }
-            if (type == typeof(byte[]))
-            {
-                var bytes = (byte[])value;
-                if (bytes == null)
-                {
-                    w.Unsigned(0);
-                    return;
-                }
-                w.Unsigned((ulong)bytes.Length + 1);
-                w.Reserve(bytes.Length);
-                Buffer.BlockCopy(bytes, 0, w.Buffer, w.Position, bytes.Length);
-                w.Position += bytes.Length;
-                return;
-            }
-            throw new ArgumentException("Unsupported RPC argument type " + type.Name);
+            byte b = r.Byte();
+            if (b > 1)
+                throw new FormatException("Invalid RPC bool");
+            return b == 1;
         }
-
-        static object Read(ref Reader r, Type type)
+        static void WriteString(ref Writer w, string text)
         {
-            if (type.IsEnum)
+            if (text == null)
             {
-                var underlying = Enum.GetUnderlyingType(type);
-                bool unsigned = underlying == typeof(ulong) || underlying == typeof(uint) || underlying == typeof(ushort) || underlying == typeof(byte);
-                object raw = unsigned ? (object)r.Unsigned() : r.Signed();
-                try
-                {
-                    return Enum.ToObject(type, Convert.ChangeType(raw, underlying, System.Globalization.CultureInfo.InvariantCulture));
-                }
-                catch (OverflowException e)
-                {
-                    throw new FormatException("RPC enum value out of range", e);
-                }
+                w.Unsigned(0);
+                return;
             }
-            if (type == typeof(bool))
+            int length = utf8.GetByteCount(text);
+            w.Unsigned((ulong)length + 1);
+            w.Reserve(length);
+            w.Position += utf8.GetBytes(text, 0, text.Length, w.Buffer, w.Position);
+        }
+        static object ReadString(ref Reader r)
+        {
+            int length = r.Length();
+            if (length < 0)
+                return null;
+            try
             {
-                byte b = r.Byte();
-                if (b > 1)
-                    throw new FormatException("Invalid RPC bool");
-                return b == 1;
-            }
-            if (type == typeof(byte))
-                return r.Byte();
-            if (type == typeof(sbyte))
-                return unchecked((sbyte)r.Byte());
-            if (type == typeof(short))
-                return checked((short)r.Signed());
-            if (type == typeof(int))
-                return checked((int)r.Signed());
-            if (type == typeof(long))
-                return r.Signed();
-            if (type == typeof(ushort))
-                return checked((ushort)r.Unsigned());
-            if (type == typeof(uint))
-                return checked((uint)r.Unsigned());
-            if (type == typeof(ulong))
-                return r.Unsigned();
-            if (type == typeof(char))
-                return checked((char)r.Unsigned());
-            if (type == typeof(float))
-                return r.Single();
-            if (type == typeof(double))
-                return BitConverter.Int64BitsToDouble(r.Fixed64());
-            if (type == typeof(Vector2))
-                return new Vector2(r.Single(), r.Single());
-            if (type == typeof(Vector3))
-                return new Vector3(r.Single(), r.Single(), r.Single());
-            if (type == typeof(Vector4))
-                return new Vector4(r.Single(), r.Single(), r.Single(), r.Single());
-            if (type == typeof(Quaternion))
-                return new Quaternion(r.Single(), r.Single(), r.Single(), r.Single());
-            if (type == typeof(Color))
-                return new Color(r.Single(), r.Single(), r.Single(), r.Single());
-            if (type == typeof(Vector2Int))
-                return new Vector2Int(checked((int)r.Signed()), checked((int)r.Signed()));
-            if (type == typeof(Vector3Int))
-                return new Vector3Int(checked((int)r.Signed()), checked((int)r.Signed()), checked((int)r.Signed()));
-            if (type == typeof(string))
-            {
-                int length = r.Length();
-                if (length < 0)
-                    return null;
-                try
-                {
-                    var text = utf8.GetString(r.Buffer, r.Position, length);
-                    r.Position += length;
-                    return text;
-                }
-                catch (DecoderFallbackException e)
-                {
-                    throw new FormatException("Invalid UTF-8 in RPC string", e);
-                }
-            }
-            if (type == typeof(byte[]))
-            {
-                int length = r.Length();
-                if (length < 0)
-                    return null;
-                var bytes = new byte[length];
-                Buffer.BlockCopy(r.Buffer, r.Position, bytes, 0, length);
+                var text = utf8.GetString(r.Buffer, r.Position, length);
                 r.Position += length;
-                return bytes;
+                return text;
             }
-            throw new FormatException("Unsupported RPC argument type " + type.Name);
+            catch (DecoderFallbackException e)
+            {
+                throw new FormatException("Invalid UTF-8 in RPC string", e);
+            }
+        }
+        static void WriteBytes(ref Writer w, byte[] bytes)
+        {
+            if (bytes == null)
+            {
+                w.Unsigned(0);
+                return;
+            }
+            w.Unsigned((ulong)bytes.Length + 1);
+            w.Reserve(bytes.Length);
+            Buffer.BlockCopy(bytes, 0, w.Buffer, w.Position, bytes.Length);
+            w.Position += bytes.Length;
+        }
+        static object ReadBytes(ref Reader r)
+        {
+            int length = r.Length();
+            if (length < 0)
+                return null;
+            var bytes = new byte[length];
+            Buffer.BlockCopy(r.Buffer, r.Position, bytes, 0, length);
+            r.Position += length;
+            return bytes;
         }
 
-        struct Writer
+        internal struct Writer
         {
             public readonly byte[] Buffer;
             public int Position;
@@ -622,7 +551,7 @@ namespace Gs2.Realtime.Sync
             }
         }
 
-        struct Reader
+        internal struct Reader
         {
             public readonly byte[] Buffer;
             public int Position;

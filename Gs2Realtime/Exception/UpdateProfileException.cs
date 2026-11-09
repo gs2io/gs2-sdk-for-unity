@@ -7,6 +7,7 @@ using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Realtime.Exception
 {
+    /// <summary>RealtimeSession.UpdateProfile failed to send the profile.</summary>
     [Preserve]
     public class UpdateProfileException : Gs2Exception
     {

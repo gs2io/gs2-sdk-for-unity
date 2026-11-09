@@ -3,6 +3,7 @@ using UnityEngine.Scripting;
 
 namespace Gs2.Unity.Gs2Realtime
 {
+    /// <summary>The sequence number and lifetime (milliseconds) of a room message.</summary>
     [Preserve]
     public class MessageMetadata
     {
@@ -10,44 +11,17 @@ namespace Gs2.Unity.Gs2Realtime
         public uint LifeTimeMilliSeconds;
     }
 
+    /// <summary>A relayed message (RelayRealtimeSession).</summary>
     [Preserve]
-    public class RelayRealtimeEvent : RealtimeEvent
+    public sealed class OnRelayMessageEvent : RealtimeEvent
     {
-        public new RelayRealtimeEventType EventType;
-
-        public RelayRealtimeEvent(
-            RelayRealtimeEventType eventType
-        ) : base(RealtimeEventType.PluginEventType)
-        {
-            EventType = eventType;
-        }
-    }
-    
-    [Preserve]
-    public class OnRelayMessageEvent : RelayRealtimeEvent
-    {
-        public RelayBinaryMessage Message;
-
-        public OnRelayMessageEvent(
-            RelayBinaryMessage message
-        ) : base(RelayRealtimeEventType.OnRelayMessage)
+        public readonly RelayBinaryMessage Message;
+        public readonly MessageMetadata Metadata;
+        public OnRelayMessageEvent(RelayBinaryMessage message, MessageMetadata metadata)
         {
             Message = message;
-        }
-    }
-
-    [Preserve]
-    public class OnRelayMessageWithMetadataEvent : OnRelayMessageEvent
-    {
-        public MessageMetadata Metadata;
-
-        public OnRelayMessageWithMetadataEvent(
-            RelayBinaryMessage message,
-            MessageMetadata metadata
-        ) : base(message)
-        {
             Metadata = metadata;
         }
+        internal override void DeliverTo(RealtimeSession session) => ((RelayRealtimeSession)session).RaiseRelayMessage(Message, Metadata);
     }
-
 }

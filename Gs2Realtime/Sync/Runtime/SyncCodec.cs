@@ -2,74 +2,110 @@ using System;
 
 namespace Gs2.Realtime.Sync
 {
-    // Packet operation (wire version 2). One packet carries 1..64 records of one op.
-    // Header: 0xd7, 0x20|op, count; the count's high bit is a per-op variant flag that
-    // Encode derives from the records (Update: epoch present; Call: request present;
-    // Snapshot: end marker).
+    /// <summary>
+    /// Sync packet operation (wire version 3). One packet carries 1..64 records of one op.
+    /// Header: 0xd7, 0x30|op, count; the count's high bit is a per-op variant flag that
+    /// Encode derives from the records (Update: epoch present; Call: request present;
+    /// Snapshot: end marker). Update and Clock headers continue with the state version:
+    /// the server numbers its update packets in sending order, and a clock names the
+    /// newest update sent before it.
+    /// </summary>
     public enum Op : byte
     {
-        // id, prefab, mode, owner, request, epoch, ttl, mask, values.
+        /// <summary>id, prefab, mode, owner, request, epoch, ttl, mask, values.</summary>
         Spawn = 1,
-        // id, [epoch], mask, values.
+        /// <summary>id, [epoch], mask, values.</summary>
         Update,
-        // id.
+        /// <summary>id.</summary>
         Despawn,
-        // id, method, sender, target, [recipient], [request], argLength, args.
-        // Player object: RPC. Server object: interaction (with request). ID 0: room event.
+        /// <summary>
+        /// id, method, sender, target, [recipient], [request], argLength, args.
+        /// Player object: RPC. Server object: interaction (with request). ID 0: room event.
+        /// </summary>
         Call,
-        // id, kind, owner, epoch, ttl, request.
+        /// <summary>id, kind, owner, epoch, ttl, request.</summary>
         Authority,
-        // id (schema 1), owner (master client).
+        /// <summary>id (schema 1), owner (master client).</summary>
         Snapshot,
-        // id, request, code. ID 0 with a request: refused spawn; ID 0 without: refused command.
+        /// <summary>
+        /// id, request, code. ID 0 with a request: refused spawn; ID 0 without: refused command.
+        /// </summary>
         Result,
-        // kind, id, owner, argLength, args.
+        /// <summary>kind, id, owner, argLength, args.</summary>
         Room,
-        // id (tick), epoch (view lag in 1/16 ticks), mask, values. Client to server:
-        // input for a tick of a ticking room; packets repeat recent ticks so that a lost
-        // datagram costs nothing.
+        /// <summary>
+        /// id (tick), epoch (view lag in 1/16 ticks), mask, values. Client to server:
+        /// input for a tick of a ticking room; packets repeat recent ticks so that a lost
+        /// datagram costs nothing.
+        /// </summary>
         Input,
-        // id (tick), ttl (ticks per second), request (newest input tick the room has
-        // received from this client). Server to client after each simulation step.
+        /// <summary>
+        /// id (tick), ttl (ticks per second), request (newest input tick the room has
+        /// received from this client). Server to client after each simulation step.
+        /// </summary>
         Clock
     }
-    // Call target byte. Low bits select receivers; Buffered (All/Others only) replays the
-    // call to later joiners. Player is followed by Record.Recipient. The server delivers
-    // calls with 0 (all), 1 (others) or 2 (direct) only.
+    /// <summary>
+    /// Call target byte. Low bits select receivers; Buffered (All/Others only) replays the
+    /// call to later joiners. Player is followed by Record.Recipient. The server delivers
+    /// calls with 0 (all), 1 (others) or 2 (direct) only.
+    /// </summary>
     public static class RpcTargetByte
     {
         public const byte All = 0, Others = 1, Owner = 2, Player = 3, Buffered = 0x80;
+        /// <summary>Whether the byte is a target a call may carry.</summary>
         public static bool IsValid(byte target)
         {
             int baseTarget = target & ~Buffered;
             return baseTarget <= Player && ((target & Buffered) == 0 || baseTarget <= Others);
         }
-        public static bool HasRecipient(byte target)
-        {
-            return (target & ~Buffered) == Player;
-        }
+        /// <summary>Who receives the call now (the target without the Buffered flag).</summary>
+        public static byte Receivers(byte target) => (byte)(target & ~Buffered);
+        /// <summary>Whether the target is followed by a recipient (Player).</summary>
+        public static bool HasRecipient(byte target) => Receivers(target) == Player;
+        /// <summary>
+        /// A valid target that selects its receivers without naming one (All, Others, Owner).
+        /// </summary>
+        public static bool IsUnaddressed(byte target) => IsValid(target) && !HasRecipient(target);
     }
-    // Record.Kind values.
+    /// <summary>
+    /// Record.Kind values of Authority records. State: sent by the server
+    /// (owner/controller, epoch, remaining lease). Group: the object's interest group in
+    /// Owner (0 = everyone), set by its owner.
+    /// </summary>
     public static class AuthorityKind
     {
-        // State: sent by the server (owner/controller, epoch, remaining lease).
-        // Group: the object's interest group in Owner (0 = everyone), set by its owner.
         public const byte State = 0, Acquire = 1, Renew = 2, Release = 3, Transfer = 4, Group = 5;
     }
+    /// <summary>
+    /// Record.Kind values of Room records. Master: ID is the master client. Property: ID is
+    /// the scope (0 room, otherwise a player), Owner the writer, Args key length, key, value
+    /// (empty value deletes). Interest: ID is a group, Owner 1 subscribes and 0 unsubscribes.
+    /// </summary>
     public static class RoomKind
     {
-        // Master: ID is the master client. Property: ID is the scope (0 room, otherwise a
-        // player), Owner the writer, Args key length, key, value (empty value deletes).
-        // Interest: ID is a group, Owner 1 subscribes and 0 unsubscribes.
         public const byte Master = 1, Property = 2, Interest = 3;
     }
+    /// <summary>
+    /// Record.Kind values of Snapshot records (End is the header's variant flag).
+    /// </summary>
     public static class SnapshotKind
     {
         public const byte Begin = 0, End = 1;
     }
-    // Reusable storage. Arguments borrow the received byte[] until Receive returns.
+    /// <summary>A set of fields (or input slots) 0..31 as a bit mask.</summary>
+    public static class FieldMask
+    {
+        public static bool Contains(uint mask, int field) => (mask & (1u << field)) != 0;
+    }
+    /// <summary>
+    /// One record of a sync packet; instances are reused. Args borrows the received
+    /// byte[] until Receive returns.
+    /// </summary>
     public sealed class Record
     {
+        /// <summary>Whether the record carries field (0..31) in Mask.</summary>
+        public bool Has(int field) => FieldMask.Contains(Mask, field);
         public uint Id, Prefab, Owner, Request, Mask, Method, Epoch, TTL, Recipient;
         public byte Mode, Kind, Target;
         public readonly int[] Values = new int[32];
@@ -84,10 +120,14 @@ namespace Gs2.Realtime.Sync
             Array.Clear(Values, 0, 32);
         }
     }
+    /// <summary>
+    /// Encodes and decodes sync packets. Decode fills the reusable Records; a decoded
+    /// record is valid until the next Decode.
+    /// </summary>
     public sealed class SyncCodec
     {
         public const int MaxPacket = 16384, MaxRecords = 64, MaxArgs = 4096;
-        const byte Version = 0x20, Variant = 0x80;
+        const byte Version = 0x30, VariantBit = 0x80;
         public readonly Record[] Records = new Record[MaxRecords];
         public Op Operation
         {
@@ -96,6 +136,17 @@ namespace Gs2.Realtime.Sync
         public int Count
         {
             get; private set;
+        }
+        /// <summary>
+        /// State version of the decoded Update or Clock packet (0 for other operations).
+        /// </summary>
+        public uint State
+        {
+            get; private set;
+        }
+        static bool HasState(Op op)
+        {
+            return op == Op.Update || op == Op.Clock;
         }
         public SyncCodec()
         {
@@ -106,7 +157,9 @@ namespace Gs2.Realtime.Sync
         {
             return unchecked((uint)(v << 1) ^ (uint)(v >> 31));
         }
-        static int Size(uint v)
+        // Unsigned varints (7 bits per byte, least significant first), shared with the
+        // property encoding in SyncClient. Get accepts only the canonical (shortest) form.
+        internal static int Size(uint v)
         {
             int n = 1;
             while (v >= 128)
@@ -116,7 +169,7 @@ namespace Gs2.Realtime.Sync
             }
             return n;
         }
-        static void Put(byte[] b, ref int at, uint v)
+        internal static void Put(byte[] b, ref int at, uint v)
         {
             while (v >= 128)
             {
@@ -125,7 +178,7 @@ namespace Gs2.Realtime.Sync
             }
             b[at++] = (byte)v;
         }
-        static uint Get(byte[] b, ref int at, int end)
+        internal static uint Get(byte[] b, ref int at, int end)
         {
             uint v = 0;
             for (int i = 0; i < 5; i++)
@@ -145,272 +198,327 @@ namespace Gs2.Realtime.Sync
             }
             throw new FormatException("Invalid varint");
         }
-        static byte GetByte(byte[] b, ref int at, int end)
-        {
-            if (at >= end)
-                throw new FormatException("Truncated sync packet");
-            return b[at++];
-        }
+        // Args holds ArgsCount bytes from ArgsOffset (a count of 0 needs no array).
         static bool ValidArgs(Record r)
         {
-            return r.ArgsCount >= 0 && r.ArgsCount <= MaxArgs && r.ArgsOffset >= 0 && (r.ArgsCount == 0 || (r.Args != null && r.ArgsOffset <= r.Args.Length - r.ArgsCount));
+            if (r.ArgsCount < 0 || r.ArgsCount > MaxArgs || r.ArgsOffset < 0)
+                return false;
+            if (r.ArgsCount == 0)
+                return true;
+            return r.Args != null && r.ArgsOffset <= r.Args.Length - r.ArgsCount;
         }
-        static int FieldsSize(Record r)
+        static bool HasVariant(Op op)
         {
-            int n = Size(r.Mask);
-            for (int f = 0; f < 32; f++)
-                if ((r.Mask & (1u << f)) != 0)
-                    n += Size(Zig(r.Values[f]));
-            return n;
+            return op == Op.Update || op == Op.Call || op == Op.Snapshot;
         }
-        static void PutFields(byte[] dst, ref int at, Record r)
-        {
-            Put(dst, ref at, r.Mask);
-            for (int f = 0; f < 32; f++)
-                if ((r.Mask & (1u << f)) != 0)
-                    Put(dst, ref at, Zig(r.Values[f]));
-        }
-        static void GetFields(byte[] b, ref int at, int end, Record r)
-        {
-            r.Mask = Get(b, ref at, end);
-            for (int f = 0; f < 32; f++)
-                if ((r.Mask & (1u << f)) != 0)
-                {
-                    uint v = Get(b, ref at, end);
-                    r.Values[f] = unchecked((int)(v >> 1) ^ -(int)(v & 1));
-                }
-        }
-        static void PutArgs(byte[] dst, ref int at, Record r)
-        {
-            Put(dst, ref at, (uint)r.ArgsCount);
-            if (r.ArgsCount > 0)
-            {
-                Buffer.BlockCopy(r.Args, r.ArgsOffset, dst, at, r.ArgsCount);
-                at += r.ArgsCount;
-            }
-        }
-        static void GetArgs(byte[] b, ref int at, int end, Record r)
-        {
-            uint n = Get(b, ref at, end);
-            if (n > MaxArgs || n > (uint)(end - at))
-                throw new FormatException("Invalid arguments");
-            r.Args = b;
-            r.ArgsOffset = at;
-            r.ArgsCount = (int)n;
-            at += (int)n;
-        }
+        // The variant flag: an Update record with an epoch, a Call record with a request
+        // ID, or the end of a snapshot.
         static bool Flagged(Op op, Record[] records, int count)
         {
             for (int i = 0; i < count; i++)
-            {
-                var r = records[i];
-                if ((op == Op.Update && r.Epoch != 0) || (op == Op.Call && r.Request != 0) || (op == Op.Snapshot && r.Kind == SnapshotKind.End))
+                if (Variant(op, records[i]))
                     return true;
-            }
             return false;
         }
-        static int RecordSize(Op op, Record r, bool flagged)
+        static bool Variant(Op op, Record r)
         {
-            int n = Size(r.Id);
+            switch (op)
+            {
+                case Op.Update:
+                    return r.Epoch != 0;
+                case Op.Call:
+                    return r.Request != 0;
+                case Op.Snapshot:
+                    return r.Kind == SnapshotKind.End;
+                default:
+                    return false;
+            }
+        }
+        static bool ValidOp(Op op)
+        {
+            return op >= Op.Spawn && op <= Op.Clock;
+        }
+
+        // A direction a record is walked in: measuring its encoded size (Sizer), writing
+        // it (Writer) or reading it (Reader). Layout states each op's field order once for
+        // all three, so they cannot disagree. The directions are structs passed as type
+        // arguments: each gets its own compiled Layout, without virtual calls.
+        interface IWire
+        {
+            void Uint(ref uint v);
+            void Byte(ref byte v);
+            void Fields(Record r);
+            void Args(Record r);
+            // A value no record may carry: an encoder's argument error, a decoder's
+            // format error.
+            Exception Invalid(string message);
+        }
+        struct Sizer : IWire
+        {
+            public int Length;
+            public void Uint(ref uint v) { Length += Size(v); }
+            public void Byte(ref byte v) { Length++; }
+            public void Fields(Record r)
+            {
+                uint mask = r.Mask;
+                int n = Size(mask);
+                var values = r.Values;
+                for (int f = 0; mask != 0; f++, mask >>= 1)
+                    if ((mask & 1) != 0)
+                        n += Size(Zig(values[f]));
+                Length += n;
+            }
+            public void Args(Record r)
+            {
+                if (!ValidArgs(r))
+                    throw Invalid("Invalid arguments");
+                Length += Size((uint)r.ArgsCount) + r.ArgsCount;
+            }
+            public Exception Invalid(string message) { return new ArgumentException(message); }
+        }
+        // Writes a packet whose size was measured.
+        struct Writer : IWire
+        {
+            readonly byte[] dst;
+            public int At;
+            public Writer(byte[] dst, int at)
+            {
+                this.dst = dst;
+                At = at;
+            }
+            public void Uint(ref uint v) { Put(dst, ref At, v); }
+            public void Byte(ref byte v) { dst[At++] = v; }
+            public void Fields(Record r)
+            {
+                int at = At;
+                uint mask = r.Mask;
+                Put(dst, ref at, mask);
+                var values = r.Values;
+                for (int f = 0; mask != 0; f++, mask >>= 1)
+                    if ((mask & 1) != 0)
+                        Put(dst, ref at, Zig(values[f]));
+                At = at;
+            }
+            public void Args(Record r)
+            {
+                Put(dst, ref At, (uint)r.ArgsCount);
+                if (r.ArgsCount > 0)
+                {
+                    Buffer.BlockCopy(r.Args, r.ArgsOffset, dst, At, r.ArgsCount);
+                    At += r.ArgsCount;
+                }
+            }
+            public Exception Invalid(string message) { return new ArgumentException(message); }
+        }
+        struct Reader : IWire
+        {
+            readonly byte[] b;
+            readonly int end;
+            public int At;
+            public Reader(byte[] b, int at, int end)
+            {
+                this.b = b;
+                this.end = end;
+                At = at;
+            }
+            public void Uint(ref uint v) { v = Get(b, ref At, end); }
+            public void Byte(ref byte v)
+            {
+                if (At >= end)
+                    throw new FormatException("Truncated sync packet");
+                v = b[At++];
+            }
+            public void Fields(Record r)
+            {
+                int at = At;
+                uint mask = Get(b, ref at, end);
+                r.Mask = mask;
+                var values = r.Values;
+                for (int f = 0; mask != 0; f++, mask >>= 1)
+                    if ((mask & 1) != 0)
+                    {
+                        uint v = Get(b, ref at, end);
+                        values[f] = unchecked((int)(v >> 1) ^ -(int)(v & 1));
+                    }
+                At = at;
+            }
+            // Arguments borrow the packet buffer (no copy).
+            public void Args(Record r)
+            {
+                uint n = Get(b, ref At, end);
+                if (n > MaxArgs || n > (uint)(end - At))
+                    throw new FormatException("Invalid arguments");
+                r.Args = b;
+                r.ArgsOffset = At;
+                r.ArgsCount = (int)n;
+                At += (int)n;
+            }
+            public Exception Invalid(string message) { return new FormatException(message); }
+        }
+
+        // A record's fields in wire order, walked in direction W.
+        static void Layout<W>(ref W w, Op op, Record r, bool flagged) where W : struct, IWire
+        {
+            if (op == Op.Room)
+            {
+                w.Byte(ref r.Kind);
+                if (r.Kind < RoomKind.Master || r.Kind > RoomKind.Interest)
+                    throw w.Invalid("Invalid room record");
+            }
+            w.Uint(ref r.Id);
             switch (op)
             {
                 case Op.Spawn:
+                    w.Uint(ref r.Prefab);
+                    w.Byte(ref r.Mode);
                     if (r.Mode > (byte)ObjectMode.Simulated)
-                        throw new ArgumentException("Invalid object mode");
-                    return n + Size(r.Prefab) + 1 + Size(r.Owner) + Size(r.Request) + Size(r.Epoch) + Size(r.TTL) + FieldsSize(r);
+                        throw w.Invalid("Invalid object mode");
+                    w.Uint(ref r.Owner);
+                    w.Uint(ref r.Request);
+                    w.Uint(ref r.Epoch);
+                    w.Uint(ref r.TTL);
+                    w.Fields(r);
+                    break;
                 case Op.Update:
-                    return n + (flagged ? Size(r.Epoch) : 0) + FieldsSize(r);
+                    if (flagged)
+                        w.Uint(ref r.Epoch);
+                    w.Fields(r);
+                    break;
                 case Op.Despawn:
-                    return n;
+                    break;
                 case Op.Call:
-                    if (!RpcTargetByte.IsValid(r.Target) || !ValidArgs(r))
-                        throw new ArgumentException("Invalid call");
-                    n += Size(r.Method) + Size(r.Owner) + 1 + Size((uint)r.ArgsCount) + r.ArgsCount;
+                    w.Uint(ref r.Method);
+                    w.Uint(ref r.Owner);
+                    w.Byte(ref r.Target);
+                    if (!RpcTargetByte.IsValid(r.Target))
+                        throw w.Invalid("Invalid call target");
                     if (RpcTargetByte.HasRecipient(r.Target))
-                        n += Size(r.Recipient);
-                    return flagged ? n + Size(r.Request) : n;
+                        w.Uint(ref r.Recipient);
+                    if (flagged)
+                        w.Uint(ref r.Request);
+                    w.Args(r);
+                    break;
                 case Op.Authority:
+                    w.Byte(ref r.Kind);
                     if (r.Kind > AuthorityKind.Group)
-                        throw new ArgumentException("Invalid authority kind");
-                    return n + 1 + Size(r.Owner) + Size(r.Epoch) + Size(r.TTL) + Size(r.Request);
+                        throw w.Invalid("Invalid authority kind");
+                    w.Uint(ref r.Owner);
+                    w.Uint(ref r.Epoch);
+                    w.Uint(ref r.TTL);
+                    w.Uint(ref r.Request);
+                    break;
                 case Op.Snapshot:
-                    return n + Size(r.Owner);
+                    w.Uint(ref r.Owner);
+                    w.Uint(ref r.Epoch);
+                    break;
                 case Op.Result:
-                    return n + Size(r.Request) + Size(r.Method);
+                    w.Uint(ref r.Request);
+                    w.Uint(ref r.Method);
+                    w.Byte(ref r.Kind);
+                    w.Uint(ref r.Owner);
+                    break;
                 case Op.Room:
-                    if (r.Kind < RoomKind.Master || r.Kind > RoomKind.Interest || !ValidArgs(r))
-                        throw new ArgumentException("Invalid room record");
-                    return n + 1 + Size(r.Owner) + Size((uint)r.ArgsCount) + r.ArgsCount;
+                    w.Uint(ref r.Owner);
+                    w.Args(r);
+                    break;
                 case Op.Input:
-                    return n + Size(r.Epoch) + FieldsSize(r);
+                    w.Uint(ref r.Epoch);
+                    w.Fields(r);
+                    break;
                 case Op.Clock:
-                    return n + Size(r.TTL) + Size(r.Request);
+                    w.Uint(ref r.TTL);
+                    w.Uint(ref r.Request);
+                    break;
+                default:
+                    throw w.Invalid("Invalid sync operation");
             }
-            throw new ArgumentException("Invalid sync operation");
         }
+
+        // The encoded size of an update record, counting its epoch as present (the most
+        // it takes in a packet).
+        internal static int UpdateSize(Record r)
+        {
+            var size = new Sizer();
+            Layout(ref size, Op.Update, r, true);
+            return size.Length;
+        }
+        /// <summary>
+        /// Writes count records of op into dst and returns the packet length. Throws
+        /// ArgumentException for invalid records or a packet over MaxPacket bytes.
+        /// </summary>
         public static int Encode(byte[] dst, Op op, Record[] records, int count)
         {
-            if (dst == null || records == null || count < 1 || count > MaxRecords || count > records.Length || op < Op.Spawn || op > Op.Clock)
+            return Encode(dst, op, 0, records, count);
+        }
+        /// <summary>
+        /// Encode with the state version of Update and Clock packets (clients send 0).
+        /// </summary>
+        public static int Encode(byte[] dst, Op op, uint state, Record[] records, int count)
+        {
+            if (dst == null || records == null || !ValidOp(op))
+                throw new ArgumentException("Invalid sync packet");
+            if (count < 1 || count > MaxRecords || count > records.Length)
                 throw new ArgumentException("Invalid sync packet");
             bool flagged = Flagged(op, records, count);
-            int length = 3;
+            var size = new Sizer { Length = 3 };
+            if (HasState(op))
+                size.Uint(ref state);
             for (int i = 0; i < count; i++)
-                length += RecordSize(op, records[i], flagged);
-            if (length > MaxPacket || dst.Length < length)
+                Layout(ref size, op, records[i], flagged);
+            if (size.Length > MaxPacket || dst.Length < size.Length)
                 throw new ArgumentException("Sync packet too large");
-            int at = 0;
-            dst[at++] = 0xd7;
-            dst[at++] = (byte)(Version | (byte)op);
-            dst[at++] = (byte)(count | (flagged ? Variant : 0));
+            dst[0] = 0xd7;
+            dst[1] = (byte)(Version | (byte)op);
+            dst[2] = (byte)(count | (flagged ? VariantBit : 0));
+            var output = new Writer(dst, 3);
+            if (HasState(op))
+                output.Uint(ref state);
             for (int i = 0; i < count; i++)
-            {
-                var r = records[i];
-                if (op == Op.Room)
-                    dst[at++] = r.Kind;
-                Put(dst, ref at, r.Id);
-                switch (op)
-                {
-                    case Op.Spawn:
-                        Put(dst, ref at, r.Prefab);
-                        dst[at++] = r.Mode;
-                        Put(dst, ref at, r.Owner);
-                        Put(dst, ref at, r.Request);
-                        Put(dst, ref at, r.Epoch);
-                        Put(dst, ref at, r.TTL);
-                        PutFields(dst, ref at, r);
-                        break;
-                    case Op.Update:
-                        if (flagged)
-                            Put(dst, ref at, r.Epoch);
-                        PutFields(dst, ref at, r);
-                        break;
-                    case Op.Call:
-                        Put(dst, ref at, r.Method);
-                        Put(dst, ref at, r.Owner);
-                        dst[at++] = r.Target;
-                        if (RpcTargetByte.HasRecipient(r.Target))
-                            Put(dst, ref at, r.Recipient);
-                        if (flagged)
-                            Put(dst, ref at, r.Request);
-                        PutArgs(dst, ref at, r);
-                        break;
-                    case Op.Authority:
-                        dst[at++] = r.Kind;
-                        Put(dst, ref at, r.Owner);
-                        Put(dst, ref at, r.Epoch);
-                        Put(dst, ref at, r.TTL);
-                        Put(dst, ref at, r.Request);
-                        break;
-                    case Op.Snapshot:
-                        Put(dst, ref at, r.Owner);
-                        break;
-                    case Op.Result:
-                        Put(dst, ref at, r.Request);
-                        Put(dst, ref at, r.Method);
-                        break;
-                    case Op.Room:
-                        Put(dst, ref at, r.Owner);
-                        PutArgs(dst, ref at, r);
-                        break;
-                    case Op.Input:
-                        Put(dst, ref at, r.Epoch);
-                        PutFields(dst, ref at, r);
-                        break;
-                    case Op.Clock:
-                        Put(dst, ref at, r.TTL);
-                        Put(dst, ref at, r.Request);
-                        break;
-                }
-            }
-            return at;
+                Layout(ref output, op, records[i], flagged);
+            return output.At;
         }
+        /// <summary>
+        /// Decodes the first count bytes of b into Operation, Count, State and Records.
+        /// Throws FormatException for a malformed or non-canonical packet.
+        /// </summary>
         public void Decode(byte[] b, int count)
         {
-            if (b == null || count < 3 || count > b.Length || count > MaxPacket || b[0] != 0xd7 || (b[1] & 0xf0) != Version)
+            if (b == null || count < 3 || count > b.Length || count > MaxPacket)
+                throw new FormatException("Invalid sync header");
+            if (b[0] != 0xd7 || (b[1] & 0xf0) != Version)
                 throw new FormatException("Invalid sync header");
             var op = (Op)(b[1] & 15);
-            int records = b[2] & ~Variant;
-            bool flagged = (b[2] & Variant) != 0;
-            if (op < Op.Spawn || op > Op.Clock || records < 1 || records > MaxRecords || (flagged && op != Op.Update && op != Op.Call && op != Op.Snapshot))
+            int records = b[2] & ~VariantBit;
+            bool flagged = (b[2] & VariantBit) != 0;
+            if (!ValidOp(op) || records < 1 || records > MaxRecords)
                 throw new FormatException("Invalid sync header");
-            int at = 3;
+            if (flagged && !HasVariant(op))
+                throw new FormatException("Invalid sync header");
+            var input = new Reader(b, 3, count);
+            uint state = 0;
+            if (HasState(op))
+                input.Uint(ref state);
             for (int i = 0; i < records; i++)
             {
                 var r = Records[i];
                 r.Clear();
-                if (op == Op.Room)
-                {
-                    r.Kind = GetByte(b, ref at, count);
-                    if (r.Kind < RoomKind.Master || r.Kind > RoomKind.Interest)
-                        throw new FormatException("Invalid room record");
-                }
-                r.Id = Get(b, ref at, count);
-                switch (op)
-                {
-                    case Op.Spawn:
-                        r.Prefab = Get(b, ref at, count);
-                        r.Mode = GetByte(b, ref at, count);
-                        if (r.Mode > (byte)ObjectMode.Simulated)
-                            throw new FormatException("Invalid object mode");
-                        r.Owner = Get(b, ref at, count);
-                        r.Request = Get(b, ref at, count);
-                        r.Epoch = Get(b, ref at, count);
-                        r.TTL = Get(b, ref at, count);
-                        GetFields(b, ref at, count, r);
-                        break;
-                    case Op.Update:
-                        if (flagged)
-                            r.Epoch = Get(b, ref at, count);
-                        GetFields(b, ref at, count, r);
-                        break;
-                    case Op.Call:
-                        r.Method = Get(b, ref at, count);
-                        r.Owner = Get(b, ref at, count);
-                        r.Target = GetByte(b, ref at, count);
-                        if (!RpcTargetByte.IsValid(r.Target))
-                            throw new FormatException("Invalid call target");
-                        if (RpcTargetByte.HasRecipient(r.Target))
-                            r.Recipient = Get(b, ref at, count);
-                        if (flagged)
-                            r.Request = Get(b, ref at, count);
-                        GetArgs(b, ref at, count, r);
-                        break;
-                    case Op.Authority:
-                        r.Kind = GetByte(b, ref at, count);
-                        if (r.Kind > AuthorityKind.Group)
-                            throw new FormatException("Invalid authority kind");
-                        r.Owner = Get(b, ref at, count);
-                        r.Epoch = Get(b, ref at, count);
-                        r.TTL = Get(b, ref at, count);
-                        r.Request = Get(b, ref at, count);
-                        break;
-                    case Op.Snapshot:
-                        r.Kind = flagged ? SnapshotKind.End : SnapshotKind.Begin;
-                        r.Owner = Get(b, ref at, count);
-                        break;
-                    case Op.Result:
-                        r.Request = Get(b, ref at, count);
-                        r.Method = Get(b, ref at, count);
-                        break;
-                    case Op.Room:
-                        r.Owner = Get(b, ref at, count);
-                        GetArgs(b, ref at, count, r);
-                        break;
-                    case Op.Input:
-                        r.Epoch = Get(b, ref at, count);
-                        GetFields(b, ref at, count, r);
-                        break;
-                    case Op.Clock:
-                        r.TTL = Get(b, ref at, count);
-                        r.Request = Get(b, ref at, count);
-                        break;
-                }
+                Layout(ref input, op, r, flagged);
+                if (op == Op.Snapshot)
+                    r.Kind = flagged ? SnapshotKind.End : SnapshotKind.Begin;
             }
-            if (at != count)
+            if (input.At != count)
                 throw new FormatException("Trailing sync data");
+            // The variant flag is derived from the records; one that none needs is not canonical.
+            if (flagged != Flagged(op, Records, records))
+                throw new FormatException("Invalid sync header");
             Operation = op;
             Count = records;
+            State = state;
         }
+        /// <summary>
+        /// value / unitsPerStep rounded to the nearest int (halves away from zero).
+        /// Throws ArgumentOutOfRangeException for a non-positive step or a result outside int.
+        /// </summary>
         public static int Quantize(double value, double unitsPerStep)
         {
             if (double.IsNaN(unitsPerStep) || double.IsInfinity(unitsPerStep) || unitsPerStep <= 0)
