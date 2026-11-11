@@ -57,6 +57,15 @@ namespace Gs2.Editor.ResourceTree.Gs2Realtime.Editor
                 StateMachineSettingEditorExt.OnGUI(item.StateMachineSetting);
                 EditorGUI.indentLevel--;
             }
+            if (item.ParticipantSetting == null) {
+                EditorGUILayout.TextField("ParticipantSetting", "");
+            }
+            else {
+                EditorGUILayout.LabelField("ParticipantSetting");
+                EditorGUI.indentLevel++;
+                ParticipantSettingEditorExt.OnGUI(item.ParticipantSetting);
+                EditorGUI.indentLevel--;
+            }
             if (item.CreateNotification == null) {
                 EditorGUILayout.TextField("CreateNotification", "");
             }
