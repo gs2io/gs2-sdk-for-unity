@@ -159,5 +159,101 @@ namespace Gs2.Unity.Gs2Enhance.Domain.Model
         }
         #endif
 
+        #if UNITY_2017_1_OR_NEWER
+        [Obsolete("The name has been changed to UnleashFuture.")]
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> Unleash(
+            string rateName,
+            string targetItemSetId,
+            string[] materials = null,
+            string? recipeName = null,
+            Gs2.Unity.Gs2Enhance.Model.EzUnleashMaterialSelection[] recipeMaterials = null,
+            Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null,
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
+        )
+        {
+            return UnleashFuture(
+                rateName,
+                targetItemSetId,
+                materials,
+                recipeName,
+                recipeMaterials,
+                config,
+                speculativeExecute,
+                duplicationAvoider
+            );
+        }
+
+        public IFuture<Gs2.Unity.Core.Domain.EzTransactionDomain> UnleashFuture(
+            string rateName,
+            string targetItemSetId,
+            string[] materials = null,
+            string? recipeName = null,
+            Gs2.Unity.Gs2Enhance.Model.EzUnleashMaterialSelection[] recipeMaterials = null,
+            Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null,
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Core.Domain.EzTransactionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.UnleashFuture(
+                        new UnleashRequest()
+                            .WithRateName(rateName)
+                            .WithTargetItemSetId(targetItemSetId)
+                            .WithMaterials(materials)
+                            .WithRecipeName(recipeName)
+                            .WithRecipeMaterials(recipeMaterials?.Select(v => v.ToModel()).ToArray())
+                            .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                            .WithDuplicationAvoider(duplicationAvoider),
+                        speculativeExecute
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(future.Result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(future.Result));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Core.Domain.EzTransactionDomain>(Impl);
+        }
+        #endif
+
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
+        public async UniTask<Gs2.Unity.Core.Domain.EzTransactionDomain> UnleashAsync(
+            #else
+        public async Task<Gs2.Unity.Core.Domain.EzTransactionDomain> UnleashAsync(
+            #endif
+            string rateName,
+            string targetItemSetId,
+            string[] materials = null,
+            string? recipeName = null,
+            Gs2.Unity.Gs2Enhance.Model.EzUnleashMaterialSelection[] recipeMaterials = null,
+            Gs2.Unity.Gs2Enhance.Model.EzConfig[] config = null,
+            bool speculativeExecute = true,
+            string duplicationAvoider = null
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.UnleashAsync(
+                    new UnleashRequest()
+                        .WithRateName(rateName)
+                        .WithTargetItemSetId(targetItemSetId)
+                        .WithMaterials(materials)
+                        .WithRecipeName(recipeName)
+                        .WithRecipeMaterials(recipeMaterials?.Select(v => v.ToModel()).ToArray())
+                        .WithConfig(config?.Select(v => v.ToModel()).ToArray())
+                        .WithDuplicationAvoider(duplicationAvoider),
+                    speculativeExecute
+                )
+            );
+            return result == null ? null : new Gs2.Unity.Core.Domain.EzTransactionDomain(result);
+        }
+        #endif
+
     }
 }

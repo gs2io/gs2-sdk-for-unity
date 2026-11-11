@@ -46,12 +46,17 @@ namespace Gs2.Unity.Gs2Friend.Model
 		[SerializeField]
 #endif
 		public string TargetUserId;
+#if UNITY_2017_1_OR_NEWER
+		[SerializeField]
+#endif
+		public string PublicProfile;
 
         public Gs2.Gs2Friend.Model.FriendRequest ToModel()
         {
             return new Gs2.Gs2Friend.Model.FriendRequest {
                 UserId = UserId,
                 TargetUserId = TargetUserId,
+                PublicProfile = PublicProfile,
             };
         }
 
@@ -60,6 +65,7 @@ namespace Gs2.Unity.Gs2Friend.Model
             return new EzFriendRequest {
                 UserId = model.UserId == null ? null : model.UserId,
                 TargetUserId = model.TargetUserId == null ? null : model.TargetUserId,
+                PublicProfile = model.PublicProfile == null ? null : model.PublicProfile,
             };
         }
 
@@ -68,6 +74,7 @@ namespace Gs2.Unity.Gs2Friend.Model
 	        return new EzFriendRequest {
 		        UserId = model.UserId == null ? null : model.UserId,
 		        TargetUserId = model.TargetUserId == null ? null : model.TargetUserId,
+		        PublicProfile = model.PublicProfile == null ? null : model.PublicProfile,
 	        };
         }
 
@@ -76,6 +83,7 @@ namespace Gs2.Unity.Gs2Friend.Model
 	        return new EzFriendRequest {
 		        UserId = model.UserId == null ? null : model.UserId,
 		        TargetUserId = model.TargetUserId == null ? null : model.TargetUserId,
+		        PublicProfile = model.PublicProfile == null ? null : model.PublicProfile,
 	        };
         }
     }

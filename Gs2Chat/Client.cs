@@ -170,7 +170,9 @@ namespace Gs2.Unity.Gs2Chat
                 string namespaceName,
                 string roomName = null,
                 int? limit = null,
-                string password = null
+                string password = null,
+                int? category = null,
+                string pageToken = null
         )
 		{
             yield return _connection.Run(
@@ -182,7 +184,9 @@ namespace Gs2.Unity.Gs2Chat
                         .WithRoomName(roomName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithLimit(limit)
-                        .WithPassword(password),
+                        .WithPassword(password)
+                        .WithCategory(category)
+                        .WithPageToken(pageToken),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Chat.Result.EzListLatestMessagesResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Chat.Result.EzListLatestMessagesResult.FromModel(r.Result),
@@ -200,7 +204,8 @@ namespace Gs2.Unity.Gs2Chat
                 string roomName = null,
                 long? startAt = null,
                 int? limit = null,
-                string password = null
+                string password = null,
+                int? category = null
         )
 		{
             yield return _connection.Run(
@@ -213,7 +218,8 @@ namespace Gs2.Unity.Gs2Chat
                         .WithAccessToken(session.AccessToken.Token)
                         .WithStartAt(startAt)
                         .WithLimit(limit)
-                        .WithPassword(password),
+                        .WithPassword(password)
+                        .WithCategory(category),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Chat.Result.EzListMessagesResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Chat.Result.EzListMessagesResult.FromModel(r.Result),
@@ -260,7 +266,8 @@ namespace Gs2.Unity.Gs2Chat
 		        IGameSession session,
                 string namespaceName,
                 string pageToken = null,
-                int? limit = null
+                int? limit = null,
+                string roomNamePrefix = null
         )
 		{
             yield return _connection.Run(
@@ -271,7 +278,8 @@ namespace Gs2.Unity.Gs2Chat
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithPageToken(pageToken)
-                        .WithLimit(limit),
+                        .WithLimit(limit)
+                        .WithRoomNamePrefix(roomNamePrefix),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Chat.Result.EzListSubscribeRoomsResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Chat.Result.EzListSubscribeRoomsResult.FromModel(r.Result),

@@ -286,5 +286,46 @@ namespace Gs2.Unity.Gs2Enhance
                 )
             );
 		}
+
+        public IEnumerator Unleash(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Enhance.Result.EzUnleashResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                string rateName,
+                string targetItemSetId,
+                List<string> materials = null,
+                string recipeName = null,
+                List<Gs2.Unity.Gs2Enhance.Model.EzUnleashMaterialSelection> recipeMaterials = null,
+                List<Gs2.Unity.Gs2Enhance.Model.EzConfig> config = null
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _restClient.Unleash(
+                    new Gs2.Gs2Enhance.Request.UnleashRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithRateName(rateName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithTargetItemSetId(targetItemSetId)
+                        .WithMaterials(materials?.Select(v => {
+                            return v;
+                        }).ToArray())
+                        .WithRecipeName(recipeName)
+                        .WithRecipeMaterials(recipeMaterials?.Select(v => {
+                            return v?.ToModel();
+                        }).ToArray())
+                        .WithConfig(config?.Select(v => {
+                            return v?.ToModel();
+                        }).ToArray()),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Enhance.Result.EzUnleashResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Enhance.Result.EzUnleashResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
     }
 }

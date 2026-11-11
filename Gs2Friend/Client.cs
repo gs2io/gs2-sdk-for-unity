@@ -344,7 +344,8 @@ namespace Gs2.Unity.Gs2Friend
         public IEnumerator DescribeSendRequests(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzDescribeSendRequestsResult>> callback,
 		        IGameSession session,
-                string namespaceName
+                string namespaceName,
+                bool? withProfile = null
         )
 		{
             yield return _connection.Run(
@@ -353,7 +354,8 @@ namespace Gs2.Unity.Gs2Friend
                 cb => _restClient.DescribeSendRequests(
                     new Gs2.Gs2Friend.Request.DescribeSendRequestsRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithAccessToken(session.AccessToken.Token),
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithWithProfile(withProfile),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Friend.Result.EzDescribeSendRequestsResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Friend.Result.EzDescribeSendRequestsResult.FromModel(r.Result),
@@ -368,7 +370,8 @@ namespace Gs2.Unity.Gs2Friend
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzGetSendRequestResult>> callback,
 		        IGameSession session,
                 string namespaceName,
-                string targetUserId
+                string targetUserId,
+                bool? withProfile = null
         )
 		{
             yield return _connection.Run(
@@ -378,7 +381,8 @@ namespace Gs2.Unity.Gs2Friend
                     new Gs2.Gs2Friend.Request.GetSendRequestRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
-                        .WithTargetUserId(targetUserId),
+                        .WithTargetUserId(targetUserId)
+                        .WithWithProfile(withProfile),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Friend.Result.EzGetSendRequestResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Friend.Result.EzGetSendRequestResult.FromModel(r.Result),
@@ -393,7 +397,8 @@ namespace Gs2.Unity.Gs2Friend
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzSendRequestResult>> callback,
 		        IGameSession session,
                 string namespaceName,
-                string targetUserId
+                string targetUserId,
+                bool? withProfile = null
         )
 		{
             yield return _connection.Run(
@@ -403,7 +408,8 @@ namespace Gs2.Unity.Gs2Friend
                     new Gs2.Gs2Friend.Request.SendRequestRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
-                        .WithTargetUserId(targetUserId),
+                        .WithTargetUserId(targetUserId)
+                        .WithWithProfile(withProfile),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Friend.Result.EzSendRequestResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Friend.Result.EzSendRequestResult.FromModel(r.Result),
@@ -442,7 +448,8 @@ namespace Gs2.Unity.Gs2Friend
         public IEnumerator DescribeReceiveRequests(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzDescribeReceiveRequestsResult>> callback,
 		        IGameSession session,
-                string namespaceName
+                string namespaceName,
+                bool? withProfile = null
         )
 		{
             yield return _connection.Run(
@@ -451,7 +458,8 @@ namespace Gs2.Unity.Gs2Friend
                 cb => _restClient.DescribeReceiveRequests(
                     new Gs2.Gs2Friend.Request.DescribeReceiveRequestsRequest()
                         .WithNamespaceName(namespaceName)
-                        .WithAccessToken(session.AccessToken.Token),
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithWithProfile(withProfile),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Friend.Result.EzDescribeReceiveRequestsResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Friend.Result.EzDescribeReceiveRequestsResult.FromModel(r.Result),
@@ -466,7 +474,8 @@ namespace Gs2.Unity.Gs2Friend
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Friend.Result.EzGetReceiveRequestResult>> callback,
 		        IGameSession session,
                 string namespaceName,
-                string fromUserId
+                string fromUserId,
+                bool? withProfile = null
         )
 		{
             yield return _connection.Run(
@@ -476,7 +485,8 @@ namespace Gs2.Unity.Gs2Friend
                     new Gs2.Gs2Friend.Request.GetReceiveRequestRequest()
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
-                        .WithFromUserId(fromUserId),
+                        .WithFromUserId(fromUserId)
+                        .WithWithProfile(withProfile),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Friend.Result.EzGetReceiveRequestResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Friend.Result.EzGetReceiveRequestResult.FromModel(r.Result),

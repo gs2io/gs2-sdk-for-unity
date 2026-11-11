@@ -59,7 +59,8 @@ namespace Gs2.Unity.Gs2Gateway
 		        IGameSession session,
                 string namespaceName,
                 bool? allowConcurrentAccess = null,
-                string sessionId = null
+                string sessionId = null,
+                bool? force = null
         )
 		{
             yield return _connection.Run(
@@ -70,7 +71,8 @@ namespace Gs2.Unity.Gs2Gateway
                         .WithNamespaceName(namespaceName)
                         .WithAccessToken(session.AccessToken.Token)
                         .WithAllowConcurrentAccess(allowConcurrentAccess)
-                        .WithSessionId(sessionId),
+                        .WithSessionId(sessionId)
+                        .WithForce(force),
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Gateway.Result.EzSetUserIdResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Gateway.Result.EzSetUserIdResult.FromModel(r.Result),

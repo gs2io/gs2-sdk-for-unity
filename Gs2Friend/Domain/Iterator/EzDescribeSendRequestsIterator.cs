@@ -66,6 +66,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Iterator
             _connection = connection;
             _withProfile = withProfile;
             _it = _domain.SendRequests(
+                withProfile
             );
         }
 
@@ -82,6 +83,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Iterator
                 () =>
                 {
                     return _it = _domain.SendRequests(
+                        this._withProfile
                     );
                 }
             );
