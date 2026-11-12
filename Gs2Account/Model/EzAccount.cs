@@ -48,6 +48,10 @@ namespace Gs2.Unity.Gs2Account.Model
 		[SerializeField]
 #endif
 		public long CreatedAt;
+#if UNITY_2017_1_OR_NEWER
+		[SerializeField]
+#endif
+		public long DeletionScheduledAt;
 
         public Gs2.Gs2Account.Model.Account ToModel()
         {
@@ -55,6 +59,7 @@ namespace Gs2.Unity.Gs2Account.Model
                 UserId = UserId,
                 Password = Password,
                 CreatedAt = CreatedAt,
+                DeletionScheduledAt = DeletionScheduledAt,
             };
         }
 
@@ -64,6 +69,7 @@ namespace Gs2.Unity.Gs2Account.Model
                 UserId = model.UserId == null ? null : model.UserId,
                 Password = model.Password == null ? null : model.Password,
                 CreatedAt = model.CreatedAt ?? 0,
+                DeletionScheduledAt = model.DeletionScheduledAt ?? 0,
             };
         }
     }

@@ -93,6 +93,42 @@ namespace Gs2.Editor.ResourceTree.Gs2Account.Editor
                 ScriptSettingEditorExt.OnGUI(item.UnBanScript);
                 EditorGUI.indentLevel--;
             }
+            if (item.AccountDeletionSetting == null) {
+                EditorGUILayout.TextField("AccountDeletionSetting", "");
+            }
+            else {
+                EditorGUILayout.LabelField("AccountDeletionSetting");
+                EditorGUI.indentLevel++;
+                AccountDeletionSettingEditorExt.OnGUI(item.AccountDeletionSetting);
+                EditorGUI.indentLevel--;
+            }
+            if (item.RequestDeletionScript == null) {
+                EditorGUILayout.TextField("RequestDeletionScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("RequestDeletionScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.RequestDeletionScript);
+                EditorGUI.indentLevel--;
+            }
+            if (item.CancelDeletionScript == null) {
+                EditorGUILayout.TextField("CancelDeletionScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("CancelDeletionScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.CancelDeletionScript);
+                EditorGUI.indentLevel--;
+            }
+            if (item.ExecuteDeletionScript == null) {
+                EditorGUILayout.TextField("ExecuteDeletionScript", "");
+            }
+            else {
+                EditorGUILayout.LabelField("ExecuteDeletionScript");
+                EditorGUI.indentLevel++;
+                ScriptSettingEditorExt.OnGUI(item.ExecuteDeletionScript);
+                EditorGUI.indentLevel--;
+            }
             if (item.LogSetting == null) {
                 EditorGUILayout.TextField("LogSetting", "");
             }

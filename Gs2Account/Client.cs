@@ -81,6 +81,31 @@ namespace Gs2.Unity.Gs2Account
             );
 		}
 
+        public IEnumerator CancelDeletion(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzCancelDeletionResult>> callback,
+                string namespaceName,
+                string userId,
+                string password
+        )
+		{
+            yield return _connection.Run(
+                callback,
+                null,
+                cb => _client.CancelDeletion(
+                    new Gs2.Gs2Account.Request.CancelDeletionRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithUserId(userId)
+                        .WithPassword(password),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Account.Result.EzCancelDeletionResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Account.Result.EzCancelDeletionResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator Create(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzCreateResult>> callback,
                 string namespaceName
@@ -95,6 +120,29 @@ namespace Gs2.Unity.Gs2Account
                     r => cb.Invoke(
                         new AsyncResult<Gs2.Unity.Gs2Account.Result.EzCreateResult>(
                             r.Result == null ? null : Gs2.Unity.Gs2Account.Result.EzCreateResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator RequestDeletion(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzRequestDeletionResult>> callback,
+		        IGameSession session,
+                string namespaceName
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _client.RequestDeletion(
+                    new Gs2.Gs2Account.Request.RequestDeletionRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Account.Result.EzRequestDeletionResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Account.Result.EzRequestDeletionResult.FromModel(r.Result),
                             r.Error
                         )
                     )
