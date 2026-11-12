@@ -133,6 +133,144 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         #endif
 
         #if UNITY_2017_1_OR_NEWER
+        [Obsolete("The name has been changed to PreviewTakeOverFuture.")]
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> PreviewTakeOver(
+            int type,
+            string userIdentifier,
+            string password
+        )
+        {
+            return PreviewTakeOverFuture(
+                type,
+                userIdentifier,
+                password
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> PreviewTakeOverFuture(
+            int type,
+            string userIdentifier,
+            string password
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    null,
+                    () => this._domain.PreviewTakeOverFuture(
+                        new PreviewTakeOverRequest()
+                            .WithType(type)
+                            .WithUserIdentifier(userIdentifier)
+                            .WithPassword(password)
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(
+                    future.Result,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
+        }
+        #endif
+
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
+        public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> PreviewTakeOverAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> PreviewTakeOverAsync(
+            #endif
+            int type,
+            string userIdentifier,
+            string password
+        ) {
+            var result = await this._connection.RunAsync(
+                null,
+                () => this._domain.PreviewTakeOverAsync(
+                    new PreviewTakeOverRequest()
+                        .WithType(type)
+                        .WithUserIdentifier(userIdentifier)
+                        .WithPassword(password)
+                )
+            );
+            return new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(
+                result,
+                this._connection
+            );
+        }
+        #endif
+
+        #if UNITY_2017_1_OR_NEWER
+        [Obsolete("The name has been changed to PreviewTakeOverOpenIdConnectFuture.")]
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> PreviewTakeOverOpenIdConnect(
+            int type,
+            string idToken
+        )
+        {
+            return PreviewTakeOverOpenIdConnectFuture(
+                type,
+                idToken
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> PreviewTakeOverOpenIdConnectFuture(
+            int type,
+            string idToken
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    null,
+                    () => this._domain.PreviewTakeOverOpenIdConnectFuture(
+                        new PreviewTakeOverOpenIdConnectRequest()
+                            .WithType(type)
+                            .WithIdToken(idToken)
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(
+                    future.Result,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
+        }
+        #endif
+
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
+        public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> PreviewTakeOverOpenIdConnectAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> PreviewTakeOverOpenIdConnectAsync(
+            #endif
+            int type,
+            string idToken
+        ) {
+            var result = await this._connection.RunAsync(
+                null,
+                () => this._domain.PreviewTakeOverOpenIdConnectAsync(
+                    new PreviewTakeOverOpenIdConnectRequest()
+                        .WithType(type)
+                        .WithIdToken(idToken)
+                )
+            );
+            return new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(
+                result,
+                this._connection
+            );
+        }
+        #endif
+
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to DoTakeOverFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DoTakeOver(
             int type,

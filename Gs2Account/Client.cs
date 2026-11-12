@@ -127,6 +127,58 @@ namespace Gs2.Unity.Gs2Account
             );
 		}
 
+        public IEnumerator PreviewTakeOver(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzPreviewTakeOverResult>> callback,
+                string namespaceName,
+                int type,
+                string userIdentifier,
+                string password
+        )
+		{
+            yield return _connection.Run(
+                callback,
+                null,
+                cb => _restClient.PreviewTakeOver(
+                    new Gs2.Gs2Account.Request.PreviewTakeOverRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithType(type)
+                        .WithUserIdentifier(userIdentifier)
+                        .WithPassword(password),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Account.Result.EzPreviewTakeOverResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Account.Result.EzPreviewTakeOverResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
+        public IEnumerator PreviewTakeOverOpenIdConnect(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzPreviewTakeOverOpenIdConnectResult>> callback,
+                string namespaceName,
+                int type,
+                string idToken
+        )
+		{
+            yield return _connection.Run(
+                callback,
+                null,
+                cb => _restClient.PreviewTakeOverOpenIdConnect(
+                    new Gs2.Gs2Account.Request.PreviewTakeOverOpenIdConnectRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithType(type)
+                        .WithIdToken(idToken),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Account.Result.EzPreviewTakeOverOpenIdConnectResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Account.Result.EzPreviewTakeOverOpenIdConnectResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator RequestDeletion(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzRequestDeletionResult>> callback,
 		        IGameSession session,

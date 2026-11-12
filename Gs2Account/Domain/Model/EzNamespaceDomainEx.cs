@@ -53,6 +53,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
 {
 
     public partial class EzNamespaceDomain {
+        [Obsolete("Use PreviewTakeOver and EzAccountDomain.PreviewGameSession() to read the account before confirming, then DoTakeOver. This dry run returns a password that is never stored when changePasswordIfTakeOver is enabled.")]
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DryDoTakeOverFuture(
             int type,
             string userIdentifier,
@@ -85,6 +86,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        [Obsolete("Use PreviewTakeOver and EzAccountDomain.PreviewGameSession() to read the account before confirming, then DoTakeOver. This dry run returns a password that is never stored when changePasswordIfTakeOver is enabled.")]
         public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DryDoTakeOverAsync(
             int type,
             string userIdentifier,
@@ -107,6 +109,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
         #endif
 
+        [Obsolete("Use PreviewTakeOverOpenIdConnect and EzAccountDomain.PreviewGameSession() to read the account before confirming, then DoTakeOverOpenIdConnect. This dry run returns a password that is never stored when changePasswordIfTakeOver is enabled.")]
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DryDoTakeOverOpenIdConnectFuture(
             int type,
             string idToken
@@ -137,6 +140,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         }
 
         #if GS2_ENABLE_UNITASK
+        [Obsolete("Use PreviewTakeOverOpenIdConnect and EzAccountDomain.PreviewGameSession() to read the account before confirming, then DoTakeOverOpenIdConnect. This dry run returns a password that is never stored when changePasswordIfTakeOver is enabled.")]
         public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> DryDoTakeOverOpenIdConnectAsync(
             int type,
             string idToken

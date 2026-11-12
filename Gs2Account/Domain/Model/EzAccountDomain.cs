@@ -65,6 +65,8 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         public Gs2.Unity.Gs2Account.Model.EzBanStatus[] BanStatuses => _domain.BanStatuses.Select(Gs2.Unity.Gs2Account.Model.EzBanStatus.FromModel).ToArray();
         public string? Body => _domain.Body;
         public string? Signature => _domain.Signature;
+        public string? Token => _domain.Token;
+        public long? Expire => _domain.Expire;
         public string? AuthorizationUrl => _domain.AuthorizationUrl;
         public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;
@@ -134,6 +136,66 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
                 () => this._domain.AuthenticationAsync(
                     new AuthenticationRequest()
                         .WithKeyId(keyId)
+                        .WithPassword(password)
+                )
+            );
+            return new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(
+                result,
+                this._connection
+            );
+        }
+        #endif
+
+        #if UNITY_2017_1_OR_NEWER
+        [Obsolete("The name has been changed to CancelDeletionFuture.")]
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> CancelDeletion(
+            string password
+        )
+        {
+            return CancelDeletionFuture(
+                password
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> CancelDeletionFuture(
+            string password
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    null,
+                    () => this._domain.CancelDeletionFuture(
+                        new CancelDeletionRequest()
+                            .WithPassword(password)
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain(
+                    future.Result,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain>(Impl);
+        }
+        #endif
+
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
+        public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> CancelDeletionAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Account.Domain.Model.EzAccountDomain> CancelDeletionAsync(
+            #endif
+            string password
+        ) {
+            var result = await this._connection.RunAsync(
+                null,
+                () => this._domain.CancelDeletionAsync(
+                    new CancelDeletionRequest()
                         .WithPassword(password)
                 )
             );
