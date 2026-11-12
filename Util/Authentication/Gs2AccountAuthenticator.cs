@@ -99,6 +99,10 @@ namespace Gs2.Unity.Util
 
                 body = result.Body;
                 signature = result.Signature;
+
+                if (string.IsNullOrEmpty(body) || string.IsNullOrEmpty(signature)) {
+                    throw new AccountAuthenticationRefusedException(result.Item, result.BanStatuses);
+                }
             }
 
             var authClient = new Gs2AuthRestClient(connection.RestSession);
@@ -215,7 +219,13 @@ namespace Gs2.Unity.Util
                 var body = authenticationFuture.Result.Body;
                 var signature = authenticationFuture.Result.Signature;
 
-                if (body == null || signature == null) {
+                if (string.IsNullOrEmpty(body) || string.IsNullOrEmpty(signature)) {
+                    result.OnError(
+                        new AccountAuthenticationRefusedException(
+                            authenticationFuture.Result.Item,
+                            authenticationFuture.Result.BanStatuses
+                        )
+                    );
                     yield break;
                 }
 

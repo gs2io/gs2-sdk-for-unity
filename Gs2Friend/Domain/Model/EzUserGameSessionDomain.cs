@@ -12,7 +12,6 @@
  * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
- *
  * deny overwrite
  */
 // ReSharper disable RedundantNameQualifier
@@ -78,7 +77,10 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
 
         #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to SendRequestFuture.")]
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain> SendRequest(
+/* diff --- start
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> SendRequest(
+ diff --- end */
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain> SendRequest( /* diff +++ */
             string targetUserId,
             bool? withProfile = null
         )
@@ -89,12 +91,18 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             );
         }
 
-        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain> SendRequestFuture(
+/* diff --- start
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> SendRequestFuture(
+ diff --- end */
+        public IFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain> SendRequestFuture( /* diff +++ */
             string targetUserId,
             bool? withProfile = null
         )
         {
-            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain> self)
+/* diff --- start
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> self)
+ diff --- end */
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain> self) /* diff +++ */
             {
                 var future = this._connection.RunFuture(
                     this._gameSession,
@@ -109,21 +117,33 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                     self.OnError(future.Error);
                     yield break;
                 }
-                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain(
+/* diff --- start
+                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain(
+ diff --- end */
+                self.OnComplete(new Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain( /* diff +++ */
                     future.Result,
                     this._gameSession,
                     this._connection
                 ));
             }
-            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain>(Impl);
+/* diff --- start
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain>(Impl);
+ diff --- end */
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain>(Impl); /* diff +++ */
         }
         #endif
 
         #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
             #if UNITY_2017_1_OR_NEWER
-        public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain> SendRequestAsync(
+/* diff --- start
+        public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> SendRequestAsync(
+ diff --- end */
+        public async UniTask<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain> SendRequestAsync( /* diff +++ */
             #else
-        public async Task<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain> SendRequestAsync(
+/* diff --- start
+        public async Task<Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain> SendRequestAsync(
+ diff --- end */
+        public async Task<Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain> SendRequestAsync( /* diff +++ */
             #endif
             string targetUserId,
             bool? withProfile = null
@@ -136,7 +156,10 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
                         .WithWithProfile(withProfile)
                 )
             );
-            return new Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain(
+/* diff --- start
+            return new Gs2.Unity.Gs2Friend.Domain.Model.EzFriendRequestGameSessionDomain(
+ diff --- end */
+            return new Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain( /* diff +++ */
                 result,
                 this._gameSession,
                 this._connection
@@ -365,13 +388,8 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             bool? withProfile = null
         ) {
             this._domain.UnsubscribeSendRequests(
-/* diff --- start
-                callbackId
- diff --- end */
-/* diff +++ start */
                 callbackId,
                 withProfile
-/* diff +++ end */
             );
         }
 
@@ -379,6 +397,9 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             bool? withProfile = null
         ) {
             this._domain.InvalidateSendRequests(
+/* diff --- start
+                withProfile
+ diff --- end */
             );
         }
 
@@ -486,13 +507,8 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             bool? withProfile = null
         ) {
             this._domain.UnsubscribeReceiveRequests(
-/* diff --- start
-                callbackId
- diff --- end */
-/* diff +++ start */
                 callbackId,
                 withProfile
-/* diff +++ end */
             );
         }
 
@@ -500,8 +516,12 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
             bool? withProfile = null
         ) {
             this._domain.InvalidateReceiveRequests(
+/* diff --- start
+                withProfile
+ diff --- end */
             );
         }
+/* diff +++ start */
 
         #if UNITY_2017_1_OR_NEWER
         public Gs2Iterator<string> BlackListUsers(
@@ -581,6 +601,7 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
             #endif
         #endif
+/* diff +++ end */
 
         public Gs2.Unity.Gs2Friend.Domain.Model.EzProfileGameSessionDomain Profile(
         ) {
@@ -627,13 +648,23 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
 
         public Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain SendFriendRequest(
+/* diff --- start
+            string targetUserId
+ diff --- end */
+/* diff +++ start */
             string targetUserId,
             bool? withProfile = null
+/* diff +++ end */
         ) {
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzSendFriendRequestGameSessionDomain(
                 _domain.SendFriendRequest(
+/* diff --- start
+                    targetUserId
+ diff --- end */
+/* diff +++ start */
                     targetUserId,
                     withProfile
+/* diff +++ end */
                 ),
                 this._gameSession,
                 this._connection
@@ -641,13 +672,23 @@ namespace Gs2.Unity.Gs2Friend.Domain.Model
         }
 
         public Gs2.Unity.Gs2Friend.Domain.Model.EzReceiveFriendRequestGameSessionDomain ReceiveFriendRequest(
+/* diff --- start
+            string fromUserId
+ diff --- end */
+/* diff +++ start */
             string fromUserId,
             bool? withProfile = null
+/* diff +++ end */
         ) {
             return new Gs2.Unity.Gs2Friend.Domain.Model.EzReceiveFriendRequestGameSessionDomain(
                 _domain.ReceiveFriendRequest(
+/* diff --- start
+                    fromUserId
+ diff --- end */
+/* diff +++ start */
                     fromUserId,
                     withProfile
+/* diff +++ end */
                 ),
                 this._gameSession,
                 this._connection
