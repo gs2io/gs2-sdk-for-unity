@@ -383,6 +383,31 @@ namespace Gs2.Unity.Gs2Account
             );
 		}
 
+        public IEnumerator IssueTakeOverCode(
+		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzIssueTakeOverCodeResult>> callback,
+		        IGameSession session,
+                string namespaceName,
+                int type
+        )
+		{
+            yield return _connection.Run(
+                callback,
+		        session,
+                cb => _client.IssueTakeOverCode(
+                    new Gs2.Gs2Account.Request.IssueTakeOverCodeRequest()
+                        .WithNamespaceName(namespaceName)
+                        .WithAccessToken(session.AccessToken.Token)
+                        .WithType(type),
+                    r => cb.Invoke(
+                        new AsyncResult<Gs2.Unity.Gs2Account.Result.EzIssueTakeOverCodeResult>(
+                            r.Result == null ? null : Gs2.Unity.Gs2Account.Result.EzIssueTakeOverCodeResult.FromModel(r.Result),
+                            r.Error
+                        )
+                    )
+                )
+            );
+		}
+
         public IEnumerator ListTakeOverSettings(
 		        UnityAction<AsyncResult<Gs2.Unity.Gs2Account.Result.EzListTakeOverSettingsResult>> callback,
 		        IGameSession session,

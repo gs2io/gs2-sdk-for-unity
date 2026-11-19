@@ -28,6 +28,7 @@ namespace Gs2.Editor.ResourceTree.Gs2Account.Editor
             EditorGUILayout.TextField("TakeOverTypeModelId", item.TakeOverTypeModelId);
             EditorGUILayout.TextField("Type", item.Type?.ToString());
             EditorGUILayout.TextField("Metadata", item.Metadata);
+            EditorGUILayout.TextField("TakeOverMethod", item.TakeOverMethod);
             if (item.OpenIdConnectSetting == null) {
                 EditorGUILayout.TextField("OpenIdConnectSetting", "");
             }
@@ -35,6 +36,15 @@ namespace Gs2.Editor.ResourceTree.Gs2Account.Editor
                 EditorGUILayout.LabelField("OpenIdConnectSetting");
                 EditorGUI.indentLevel++;
                 OpenIdConnectSettingEditorExt.OnGUI(item.OpenIdConnectSetting);
+                EditorGUI.indentLevel--;
+            }
+            if (item.IssuedCodeSetting == null) {
+                EditorGUILayout.TextField("IssuedCodeSetting", "");
+            }
+            else {
+                EditorGUILayout.LabelField("IssuedCodeSetting");
+                EditorGUI.indentLevel++;
+                IssuedCodeSettingEditorExt.OnGUI(item.IssuedCodeSetting);
                 EditorGUI.indentLevel--;
             }
             EditorGUI.EndDisabledGroup();

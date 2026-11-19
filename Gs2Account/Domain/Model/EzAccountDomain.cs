@@ -67,6 +67,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         public string? Signature => _domain.Signature;
         public string? Token => _domain.Token;
         public long? Expire => _domain.Expire;
+        public string? Password => _domain.Password;
         public string? AuthorizationUrl => _domain.AuthorizationUrl;
         public string? NextPageToken => _domain.NextPageToken;
         public string NamespaceName => _domain?.NamespaceName;

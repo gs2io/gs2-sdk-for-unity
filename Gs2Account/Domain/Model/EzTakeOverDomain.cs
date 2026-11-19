@@ -60,6 +60,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
     public partial class EzTakeOverDomain {
         private readonly Gs2.Gs2Account.Domain.Model.TakeOverDomain _domain;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
+        public string? Password => _domain.Password;
         public string? AuthorizationUrl => _domain.AuthorizationUrl;
         public string? Payload => _domain.Payload;
         public string NamespaceName => _domain?.NamespaceName;

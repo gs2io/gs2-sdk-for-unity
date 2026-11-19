@@ -52,6 +52,10 @@ namespace Gs2.Unity.Gs2Account.Model
 		[SerializeField]
 #endif
 		public long CreatedAt;
+#if UNITY_2017_1_OR_NEWER
+		[SerializeField]
+#endif
+		public long ExpiresAt;
 
         public Gs2.Gs2Account.Model.TakeOver ToModel()
         {
@@ -60,6 +64,7 @@ namespace Gs2.Unity.Gs2Account.Model
                 Type = Type,
                 UserIdentifier = UserIdentifier,
                 CreatedAt = CreatedAt,
+                ExpiresAt = ExpiresAt,
             };
         }
 
@@ -70,6 +75,7 @@ namespace Gs2.Unity.Gs2Account.Model
                 Type = model.Type ?? 0,
                 UserIdentifier = model.UserIdentifier == null ? null : model.UserIdentifier,
                 CreatedAt = model.CreatedAt ?? 0,
+                ExpiresAt = model.ExpiresAt ?? 0,
             };
         }
     }

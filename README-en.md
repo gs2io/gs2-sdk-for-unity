@@ -1,9 +1,9 @@
-[⇒日本語のREADMEへ](README.md)
+[日本語](README.md) | **English** | [한국어](README-ko.md)
 
 # GS2 SDK for Unity
 
 SDK to use Game Server Services(https://gs2.io) in Unity.
-GS2 SDK for Unity consists of GS2-CSharp-SDK (for C# environment) and GS2 SDK for Unity (for Unity environment).
+GS2 SDK for Unity consists of GS2-CSharp-SDK (the shared C# module) and a Unity-specific module.
 
 ## What is Game Server Services?
 

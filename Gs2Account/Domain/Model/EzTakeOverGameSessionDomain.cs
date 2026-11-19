@@ -62,6 +62,7 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         private readonly Gs2.Gs2Account.Domain.Model.TakeOverAccessTokenDomain _domain;
         private readonly Gs2.Unity.Util.IGameSession _gameSession;
         private readonly Gs2.Unity.Util.Gs2Connection _connection;
+        public string? Password => _domain.Password;
         public string NamespaceName => _domain?.NamespaceName;
         public string UserId => _domain?.UserId;
         public int? Type => _domain?.Type;

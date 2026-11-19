@@ -136,6 +136,68 @@ namespace Gs2.Unity.Gs2Account.Domain.Model
         #endif
 
         #if UNITY_2017_1_OR_NEWER
+        [Obsolete("The name has been changed to IssueTakeOverCodeFuture.")]
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> IssueTakeOverCode(
+            int type
+        )
+        {
+            return IssueTakeOverCodeFuture(
+                type
+            );
+        }
+
+        public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> IssueTakeOverCodeFuture(
+            int type
+        )
+        {
+            IEnumerator Impl(Gs2Future<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> self)
+            {
+                var future = this._connection.RunFuture(
+                    this._gameSession,
+                    () => this._domain.IssueTakeOverCodeFuture(
+                        new IssueTakeOverCodeRequest()
+                            .WithType(type)
+                    )
+                );
+                yield return future;
+                if (future.Error != null) {
+                    self.OnError(future.Error);
+                    yield break;
+                }
+                self.OnComplete(new Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain(
+                    future.Result,
+                    this._gameSession,
+                    this._connection
+                ));
+            }
+            return new Gs2InlineFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain>(Impl);
+        }
+        #endif
+
+        #if !UNITY_2017_1_OR_NEWER || GS2_ENABLE_UNITASK
+            #if UNITY_2017_1_OR_NEWER
+        public async UniTask<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> IssueTakeOverCodeAsync(
+            #else
+        public async Task<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> IssueTakeOverCodeAsync(
+            #endif
+            int type
+        ) {
+            var result = await this._connection.RunAsync(
+                this._gameSession,
+                () => this._domain.IssueTakeOverCodeAsync(
+                    new IssueTakeOverCodeRequest()
+                        .WithType(type)
+                )
+            );
+            return new Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain(
+                result,
+                this._gameSession,
+                this._connection
+            );
+        }
+        #endif
+
+        #if UNITY_2017_1_OR_NEWER
         [Obsolete("The name has been changed to DeleteTakeOverSettingFuture.")]
         public IFuture<Gs2.Unity.Gs2Account.Domain.Model.EzTakeOverGameSessionDomain> DeleteTakeOverSetting(
             int type
